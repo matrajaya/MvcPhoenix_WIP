@@ -1,0 +1,305 @@
+﻿@{
+    ViewBag.Title = "Client Detail Management";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title <small>Sample Guide</small>
+            </h1>
+        </div>
+    </div>
+    <!-- /.Page Heading -->
+
+    <form role="form">
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+                    <input type="search" class="form-control" placeholder="Type Product Code...">
+                    <!--Populate with Clients in user's location-->
+                    <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                </div>
+                <hr />
+            </div>
+        </div>
+
+        <!-- Client Information -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#prodid"><i class="fa fa-book fa-fw"></i> Client Information</h3>
+            </div>
+            <div id="prodid" class="panel-body">
+                <div class="row">
+                    <h3>Client Info</h3>
+                    <div class="table-responsive col-md-6">
+                        <table class="table table-hover table-striped">
+                            <tr>
+                                <th>Akzo Nobel Contacts</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Client product set up</td>
+                                <td>Duygu Korkmaz</td>
+                                <td>+46 303 85-525</td>
+                                <td><a href="mailto:Duygu.Korkmaz@akzonobel.com">Duygu.Korkmaz@akzonobel.com</a></td>
+                            </tr>
+                            <tr>
+                                <td>Client SDS / TDS</td>
+                                <td>Duygu Korkmaz</td>
+                                <td>+46 303 85 525</td>
+                                <td><a href="mailto:Duygu.Korkmaz@akzonobel.com">Duygu.Korkmaz@akzonobel.com</a></td>
+                            </tr>
+                            <tr>
+                                <td>Client inventory / replenishment</td>
+                                <td><p>Lars Cerrone</p></td>
+                                <td><p>+46 (0)30385579</p></td>
+                                <td><p><a href="mailto:Lars.Cerrone@akzonobel.com">Lars.Cerrone@akzonobel.com</a></p></td>
+                            </tr>
+                            <tr>
+                                <td>Back-up</td>
+                                <td><p>Miguel Marques</p></td>
+                                <td><p>+46 303 85264</p></td>
+                                <td><p><a href="mailto:Miguel.Marques@akzonobel.com">Miguel.Marques@akzonobel.com</a></p></td>
+                            </tr>
+                            <tr>
+                                <td>Opvragen CoA's</td>
+                                <td>
+                                    <p>Lars Cerrone</p>
+                                </td>
+                                <td>
+                                    <p>+46 (0)30385579</p>
+                                </td>
+                                <td>
+                                    <p>
+                                        <a href="mailto:Lars.Cerrone@akzonobel.com">Lars.Cerrone@akzonobel.com</a>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><p>Andrea Marchese</p></td>
+                                <td></td>
+                                <td><p><a href="mailto:Andrea.Marchese@akzonobel.com">Andrea.Marchese@akzonobel.com</a></p></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="table-responsive col-md-6">
+                        <table class="table table-hover table-striped">
+                            <tr>
+                                <th>Contact Person(s)</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                            </tr>
+                            <tr>
+                                <td>CMCE Customer service</td>
+                                <td>Order entry team</td>
+                                <td>+ 31 (0)416 651 977</td>
+                                <td>
+                                    <a href="mailto:akzo_nobel@chemicalmarketing.nl">akzo_nobel@chemicalmarketing.nl</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CMCE Inventory / replenishment</td>
+                                <td>Inventory team</td>
+                                <td>+ 31 (0)416 651 977</td>
+                                <td>
+                                    <a href="mailto:akzonobel_inventory@chemicalmarketing.nl">akzonobel_inventory@chemicalmarketing.nl</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CMCE product set up</td>
+                                <td>Data team</td>
+                                <td>+ 31 (0)416 651 977</td>
+                                <td>
+                                    <a href="mailto:data@chemicalmarketing.nl">data@chemicalmarketing.nl</a>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                        </table>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <h3>Managing Support</h3>
+                        <p>
+                            <strong>Invoice details:</strong><br />Akzo Nobel Surface Chemistry AB<br />Company Code 7020<br />Box 50579<br />SE-202 15 Malm&ouml;<br />Sweden<br /><a href="mailto:adriana.lado@akzonobel.com">adriana.lado@akzonobel.com</a>
+                            <br /><a href="mailto:Lars.Cerrone@akzonobel.com">Lars.Cerrone@akzonobel.com</a>
+                        </p>
+                    </div>
+
+
+
+                    <h3>Details</h3>
+                    <div class="table-responsive col-md-12">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>Product set up details</td>
+                                    <td>&nbsp;Standard size / packaging: 0.5L<br />&nbsp;SDS download site:</td>
+                                </tr>
+                                <tr>
+                                    <td>SDS language(s)</td>
+                                    <td>&nbsp;GB, DE (DE when available)</td>
+                                </tr>
+                                <tr>
+                                    <td>SDS updates</td>
+                                    <td>&nbsp;No update trigger. SDS's can be downloaded from: <a href="http://www.sc.akzonobel.com/en/personalcare/Pages/msds-search.aspx">http://www.sc.akzonobel.com/en/personalcare/Pages/msds-search.aspx</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Label language(s)</td>
+                                    <td>&nbsp;GB</td>
+                                </tr>
+                                <tr>
+                                    <td>Documents with shipments:</td>
+                                    <td>&nbsp;No</td>
+                                </tr>
+                                <tr>
+                                    <td> CoA</td>
+                                    <td>&nbsp;Yes (only if available)</td>
+                                </tr>
+                                <tr>
+                                    <td> TDS</td>
+                                    <td>&nbsp;No</td>
+                                </tr>
+                                <tr>
+                                    <td> Standard letter</td>
+                                    <td>&nbsp;No</td>
+                                </tr>
+                                <tr>
+                                    <td>Inventory reports</td>
+                                    <td>
+                                        <ul>
+                                            <li>Replenishment: weekly Thursday, Lars Cerrone</li>
+                                            <li>Expiration last week of month, 2 months ahead,(Include the CoA's of the batches in the email)</li>
+                                            <li>Inactive December - June</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Time period to cease shipments before expiry date/months</td>
+                                    <td>&nbsp;1 week</td>
+                                </tr>
+                                <tr>
+                                    <td>Leadtime for replenishment</td>
+                                    <td>&nbsp;1.5 Month(s)</td>
+                                </tr>
+                                <tr>
+                                    <td>Expiry date on sample label</td>
+                                    <td>&nbsp;Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>Interpretation expiry date</td>
+                                    <td>
+                                        <p>&nbsp;Op COA / Manufacturing date + Shelf Life</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Waste procedure</td>
+                                    <td>&nbsp;Standard Sita Ecoservice</td>
+                                </tr>
+                                <tr>
+                                    <td>Additional inventory instructions</td>
+                                    <td>&nbsp;No additional instructions</td>
+                                </tr>
+                                <tr>
+                                    <td>Checklist inventory</td>
+                                    <td><a href="/eu/index.php/serviceprofiel/akzonobel/58-klantinformatie/akzo-nobel/523-inventory-checklist-akzo-nobel" target="_blank">Click here to go get the inventory checklist</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Special requests allowed</td>
+                                    <td>&nbsp;Yes - turning point: as of 4 samples</td>
+                                </tr>
+                                <tr>
+                                    <td>Value on commercial invoice</td>
+                                    <td>&nbsp;&euro; 3.00 / L</td>
+                                </tr>
+                                <tr>
+                                    <td>Freezable procedure</td>
+                                    <td>&nbsp;Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>Business rules customer service</td>
+                                    <td>
+                                        <p>Partial deliveries: Not with DHL Global Forwarding &amp;&nbsp;Wim Bosman &gt; &euro; 200</p>
+                                        <p>Consolidate different requests attached to one e-mail, the&nbsp;different reference numbers will be&nbsp;added in the special instructions.</p>
+                                        <p>When ordered size is not in stock, please send same quantity in available sizes.</p>
+                                        <p>Following products are not imported correctly:</p>
+                                        <p>226 = 7100226, Dermacryl E Polymer</p>
+                                        <p>2393 = 8002393, Balance RCF</p>
+                                        <p>2578 = 8002578, Dermacryl 2.0 Polymer</p>
+                                        <p>Please adjust manually in the order</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Email confirmations</td>
+                                    <td>
+                                        Shipping confirmation to:&nbsp;Receivers, <a href="mailto:personalcare.europe@akzonobel.com">personalcare.europe@akzonobel.com</a>
+                                        , <a href="mailto:Lars.Cerrone@akzonobel.com">Lars.Cerrone@akzonobel.com</a>
+                                        <p>
+                                            Delay confirmation to:&nbsp;Receivers, <a href="mailto:personalcare.europe@akzonobel.com">personalcare.europe@akzonobel.com</a>
+                                            ,<a href="mailto:Lars.Cerrone@akzonobel.com"> Lars.Cerrone@akzonobel.com</a>
+                                            .
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Web tool</td>
+                                    <td>No, download via excel file</td>
+                                </tr>
+                                <tr>
+                                    <td>Invoicing on basis of</td>
+                                    <td>Total</td>
+                                </tr>
+                                <tr>
+                                    <td>Additional charges</td>
+                                    <td>
+                                        <p>SHIP VERIFY:</p>
+                                        <p>D&amp;H - UN number &euro; 26.79 (per shipment)</p>
+                                        <p>Miscellaneous:<br />UN Box (U-&hellip;) &euro; 19.33<br />Fax/mail (D-&hellip;) &euro; 26.79</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suppliers Information -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title" data-toggle="collapse" data-target="#prodid"><i class="fa fa-book fa-fw"></i>Suppliers</h3>
+                </div>
+                <div id="prodid" class="panel-body">
+                    <div class="row">
+                        <label>Suppliers</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carriers Information -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title" data-toggle="collapse" data-target="#prodid"><i class="fa fa-book fa-fw"></i> Carriers</h3>
+                </div>
+                <div id="prodid" class="panel-body">
+                    <div class="row">
+                        <label>Suppliers</label>
+                    </div>
+                </div>
+            </div>
+
+    </form>
+</div>

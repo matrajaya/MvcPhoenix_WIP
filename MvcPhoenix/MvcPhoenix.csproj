@@ -195,6 +195,7 @@
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\ClientDetailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
@@ -296,6 +297,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\ClientDetailViewModel.cs" />
     <Compile Include="Models\InventoryViewModel.cs" />
     <Compile Include="Models\OrderItemViewModel.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
@@ -502,7 +504,6 @@
     <Content Include="Views\Login\Logout.cshtml" />
     <Content Include="Views\Shared\Logout.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\Orders\Import.cshtml" />
     <Content Include="Views\Orders\_ItemEditModal.cshtml" />
     <Content Include="Views\Orders\_TransEditModal.cshtml" />
     <Content Include="Views\Orders\PrintOrder.cshtml">
@@ -530,6 +531,7 @@
     <Content Include="Views\Products\_WasteProfile.cshtml" />
     <Content Include="Views\Products\_WasteProfileModal.cshtml" />
     <Content Include="Views\Orders\OrderImport.cshtml" />
+    <Content Include="Views\ClientDetail\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
