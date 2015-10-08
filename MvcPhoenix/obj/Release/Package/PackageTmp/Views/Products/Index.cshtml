@@ -1,0 +1,1016 @@
+﻿@{
+    ViewBag.Title = "Product Profiles";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title <small>Sample Guide</small>
+            </h1>
+        </div>
+    </div>
+    <!-- /.Page Heading -->
+
+    <form role="form">
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+                    <input type="search" class="form-control" placeholder="Type Product Code...">
+                    <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                </div>
+                <hr />
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#prodid"><i class="fa fa-suitcase fa-fw"></i> Product Identification</h3>
+            </div>
+            <div id="prodid" class="panel-body">
+                <div class="row">
+                    <label id="discontinued" class="col-md-12 collapse form-control" style="background-color: red; color: white"> Discontinued Product</label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Client</label>
+                        <select class="form-control">
+                            <option>Select Client</option>
+                            <option>Akzo Nobel</option>
+                            <option>Clariant</option>
+                            <option>DSM</option>
+                            <option>Elementis</option>
+                            <option>Evonik</option>
+                            <option>Grace</option>
+                            <option>Lonza</option>
+                            <option>OMG</option>
+                            <option>Stepan</option>
+                            <option>Thor</option>
+                            <option>Wacker</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Business Unit</label>
+                        <select class="form-control">
+                            <option></option>
+                            <option>Coatings</option>
+                            <option>Epoxy</option>
+                            <option>Paint</option>
+                            <option>Rubber
+                            <option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Cross Reference List</label><br />
+                        <textarea rows="5" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Profile Revision Date</label>
+                        <input type="datetime-local" class="form-control" disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>MSDS Revision Date</label>
+                        <input type="datetime-local" class="form-control" disabled>
+                    </div>
+                    <div class="form-group  col-md-3">
+                        <label>Label Revision Date</label>
+                        <input type="datetime-local" class="form-control" disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label><input type="checkbox" value=""> Global Product</label><br />
+                        <label><input type="checkbox" value=""> Accuracy Verified</label><br />
+                        <label data-toggle="collapse" data-target="#discontinued"><input type="checkbox" value=""> Discontinued</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Product Code</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Product Name</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label>Equivalence</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Shelf Life</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Hazard Class</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>S.G.</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Density LBS/GAL</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>pH Value</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-8">
+                        <label>Packages</label>
+                        <input class="form-control" placeholder="Search Part Number">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Restricted Quantity (lbs)</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="table-responsive col-md-12">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Part Number</th>
+                                    <th>Size</th>
+                                    <th>Weight</th>
+                                    <th>Package</th>
+                                    <th>DOT Spec</th>
+                                    <th>UN Spec</th>
+                                    <th>Torque</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
+                                    <td>CMC-84</td>
+                                    <td>QT</td>
+                                    <td></td>
+                                    <td>Plastic, Round, 38MM, Black Teflon Cap</td>
+                                    <td>2E</td>
+                                    <td>1H2/Y23/S</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
+                                    <td>CMC-84</td>
+                                    <td>GAL</td>
+                                    <td></td>
+                                    <td>Plastic, Round, 38MM, Black Teflon Cap</td>
+                                    <td>2E</td>
+                                    <td>1H2/Y23/S</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
+                                    <td>CMC-84</td>
+                                    <td>5GAL</td>
+                                    <td></td>
+                                    <td>Plastic, Round, 38MM, Black Teflon Cap</td>
+                                    <td>2E</td>
+                                    <td>1H2/Y23/S</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#special"><i class="fa fa-suitcase fa-fw"></i> Special Handling & Storage</h3>
+            </div>
+            <div id="special" class="panel-body collapse">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <p><input type="checkbox"> Global Product</p>
+                        <p><input type="checkbox"> Clean Room GMP</p>
+                        <p><input type="checkbox"> Nitrogen Blanket</p>
+                        <p><input type="checkbox"> Moisture Sensitive</p>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <p><input type="checkbox"> Mix Well</p>
+                        <p><input type="checkbox"> Don't Pack Above 60% RH</p>
+                        <p><input type="checkbox"> Flammable Ground</p>
+                        <p>Torque: <input></p>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <p><input type="checkbox"> Flash Point</p>
+                        <p><input type="checkbox"> Special Blend</p>
+                        <p><input type="checkbox"> Heat Prior to Filing</p>
+                        <p><input type="checkbox"> Freezer Storage</p>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <p><input type="checkbox"> Refrig Storage</p>
+                        <p><input type="checkbox"> Flammable Storage</p>
+                        <p>
+                            <b>Req By:</b>
+                            Client <input type="checkbox">
+                            CMC <input type="checkbox">
+                        </p>
+                        <p>Other: <input placeholder="Other Storage Req"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Heating Instructions</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Mixing Instructions</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Other Instructions</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Shipping SOP</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Normal Appearance</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Rejection Criterion</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="background-color: yellow">Right to Know</th>
+                                    <th style="text-align: center"><input type="checkbox"></th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: yellow">Fire List</th>
+                                    <th style="text-align: center"><input type="checkbox"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="background-color: yellow">Freezable List</th>
+                                    <th style="text-align: center"><input type="checkbox"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="background-color: yellow">SARA</th>
+                                    <th style="text-align: center"><input type="checkbox"></th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: green; color: white">SARA 313</th>
+                                    <th style="text-align: center"><input type="checkbox"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="background-color: purple; color: white">SARA 302</th>
+                                    <th style="text-align: center"><input type="checkbox"></th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: red; color: white">EPA Biocide</th>
+                                    <th style="text-align: center"><input type="checkbox"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#health"><i class="fa fa-suitcase fa-fw"></i> Health & Safety</h3>
+            </div>
+            <div id="health" class="panel-body collapse">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Equipment</label>
+                        <p><input type="checkbox"> Hood</p>
+                        <p><input type="checkbox"> Safety Glasses</p>
+                        <p><input type="checkbox"> Gloves</p>
+                        <p>
+                            <select class="form-control">
+                                <option>Glove Type</option>
+                                <option>Butyl</option>
+                                <option>Latex</option>
+                                <option>Latex/Neoprene</option>
+                                <option>Neoprene</option>
+                                <option>Nitrile</option>
+                                <option>Nitrile/Silver</option>
+                                <option>Polyvinyl</option>
+                                <option>Polyvinyl Alcohol</option>
+                                <option>Silver 4H</option>
+                                <option>Silver Shield</option>
+                                <option>Special</option>
+                                <option>Viton</option>
+                            </select>
+                        </p>
+                        <p><input type="checkbox"> Booties</p>
+                        <p><input type="checkbox"> Clean Room Equip</p>
+                        <p><input type="checkbox"> Apron</p>
+                        <p><input type="checkbox"> Arm Sleeves</p>
+                        <p><input type="checkbox"> Half Mask Resp</p>
+                        <p><input type="checkbox"> Full Face Resp</p>
+                        <p><input type="checkbox"> Full Suit</p>
+                        <p><input type="checkbox"> Other Equipment</p> <input class="form-control" placeholder="Type Other Equipment">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Health Hazards</label>
+                        <p><input type="checkbox"> Toxic</p>
+                        <p><input type="checkbox"> Highly Toxic</p>
+                        <p><input type="checkbox"> Reproductive Toxin</p>
+                        <p><input type="checkbox"> Corrosive Hazard</p>
+                        <p><input type="checkbox"> Sensitizer</p>
+                        <p><input type="checkbox"> Carcinogen</p>
+                        <p><input type="checkbox"> Irritant</p>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Routes of Entry</label>
+                        <p><input type="checkbox"> Ingestion</p>
+                        <p><input type="checkbox"> Inhalation</p>
+                        <p><input type="checkbox"> Skin Contact</p>
+                        <p><input type="checkbox"> Eye Contact</p>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Physical Hazards</label>
+                        <p><input type="checkbox"> Combustible</p>
+                        <p><input type="checkbox"> Corrosive</p>
+                        <p><input type="checkbox"> Flammable</p>
+                        <p><input type="checkbox"> Oxidizer</p>
+                        <p><input type="checkbox"> Reactive</p>
+                        <p><input type="checkbox"> Toxic</p>
+                        <p><input type="checkbox"> Peroxide Former</p>
+                        <p><input type="checkbox"> Polymerization Hazard</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>HMIS Ratings</label>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th style="background-color: blue; color: white">Health</th>
+                                    <th style="text-align: center">1</th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: red; color: white">Flammability</th>
+                                    <th style="text-align: center">3</th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: yellow">Reactivity</th>
+                                    <th style="text-align: center">0</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group col-md-9">
+                        <label>Target Organ Effects</label>
+                        <p><input type="checkbox"> Nephrotoxins kidney damage - edema, proteinurea</p>
+                        <p><input type="checkbox"> Neurotoxins nervous system damage - narcosis, behaviour change, decrease in motor functions</p>
+                        <p><input type="checkbox"> Hermatopoietics blood damage - cyanosis, unconsciousness</p>
+                        <p><input type="checkbox"> Reproductive toxin birth defects and sterility</p>
+                        <p><input type="checkbox"> Hepatotoxins: Liver damage - jaundice, liver enlargement</p>
+                        <p><input type="checkbox"> Pulmonary disfunctions: Lung damage, shortness of breath, chest tightness, cough</p>
+                        <p><input type="checkbox"> Cutaneous hazards - skin damage, rashes, defatting of skin</p>
+                        <p><input type="checkbox"> Eye hazards: Impaired vision, conjunctivitis, corneal damage</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#ghs"><i class="fa fa-suitcase fa-fw"></i> GHS Information</h3>
+            </div>
+            <div id="ghs" class="panel-body collapse">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>P & H Statements</label>
+                        <input class="form-control" placeholder="Search for statements"><br />
+                        <button type="button" class="btn btn-info btn-block">Update P&H Data</button>
+                    </div>
+                    <div class="form-group table-responsive col-md-9">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th></th>
+                                    <th>Label Exclude</th>
+                                    <th>P & H Code</th>
+                                    <th>Language</th>
+                                    <th>Statement</th>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
+                                    <td><input type="checkbox"></td>
+                                    <td>H226</td>
+                                    <td>EN</td>
+                                    <td>IF ON SKIN (or hair): Remove/take off immediately all contaminated clothing. Rinse skin with water/shower.</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
+                                    <td><input type="checkbox"></td>
+                                    <td>H302</td>
+                                    <td>EN</td>
+                                    <td>Harmful if swallowed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <div class="form-group">
+                            <label><input type="checkbox"> GHS Ready</label>
+                        </div>
+                        <div class="form-group">
+                            <label>GHS Signal Word</label>
+                            <select class="form-control">
+                                <option> </option>
+                                <option>Danger</option>
+                                <option>Warning</option>
+                                <option>Caution</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_Explosive.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Explosive
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_Flammable.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Flammable
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_Oxidizer.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Oxidizing
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_CompressedGas.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Compressed Gas
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="col-md-12">
+
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_Corrosive.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo.0">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Corrosive
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_Toxic.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Toxic
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_Irritant.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Irritant
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_HealthHazard.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Health Hazard
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="col-md-12"></div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="col-md-3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <input type="checkbox" class="checkbox">
+                                </div>
+                                <div class="panel-body">
+                                    <img src="~/Content/images/GHS/GHS_EnvironmentalHazard.svg" style="max-width: 100%; max-height: 100%; float: right" alt="acme logo">
+                                </div>
+                                <div class="panel-footer text-center">
+                                    Environmental Hazard
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#msds"><i class="fa fa-suitcase fa-fw"></i> MSDS Information</h3>
+            </div>
+            <div id="msds" class="panel-body collapse">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>MSDS Revision Date</label>
+                        <input type="date" class="form-control" disabled>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>MSDS Revision Number</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>MSDS Other Number</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label style="color: white">.</label>
+                        <button type="button" class="btn btn-info btn-block">Open SDS PDF</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>SDS Contact Name</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>SDS Contact Phone</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Label Revision Date</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Label Number</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>China Test Certification Date</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Label Contact Name</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Label Contact Phone</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Technical Sheet</label>
+                        <div class="radio">
+                            <label><input type="radio" name="optionsRadios" id="optionsRadios1" value="Yes">Yes</label>
+                            <label><input type="radio" name="optionsRadios" id="optionsRadios2" value="No" checked>No</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Technical Sheet Revision Date</label>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Return Location</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#shipping"><i class="fa fa-suitcase fa-fw"></i> Shipping Description</h3>
+            </div>
+            <div id="shipping" class="panel-body collapse">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Emergency Contact Number</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>End Use</label>
+                        <select class="form-control">
+                            <option></option>
+                            <option>Printing</option>
+                            <option>Powder Coating</option>
+                            <option>Acid Cleaner</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label>Harmonized Code</label>
+                        <select class="form-control">
+                            <option></option>
+                            <option>1302.16.3400</option>
+                            <option>2342.20.1243</option>
+                            <option>1232.00.0928</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Chemical Name</label>
+                        <input class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Label Notes (EPA, etc)</label>
+                        <input class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div role="tabpanel" class="col-md-12">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#ground" role="tab" data-toggle="tab" style="background-color: gold">Ground</a></li>
+                            <li role="presentation"><a href="#air-freight" role="tab" data-toggle="tab" style="background-color: blue; color: white">Air Freight</a></li>
+                            <li role="presentation"><a href="#rcra" role="tab" data-toggle="tab" style="background-color: darkgray; color: white">RCRA</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="ground">
+                                <div style="background-color: gold" class="panel-body">
+                                    <h3>Ground Shipping Description</h3>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>Proper Shipping Name</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>NOS Name</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>Hazard Class</label>
+                                            <input class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Packaging Group</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>I</option>
+                                                <option>II</option>
+                                                <option>III</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Sub Class</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>UN Number</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>UN0004</option>
+                                                <option>UN0005</option>
+                                                <option>UN0006</option>
+                                                <option>UN0007</option>
+                                                <option>UN0008</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Label Required</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>Non-flammable gas</option>
+                                                <option>Oxidizer</option>
+                                                <option>Oxidizer/Toxic</option>
+                                                <option>Poison</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Subsidiary Label Required</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>Non-flammable gas</option>
+                                                <option>Oxidizer</option>
+                                                <option>Oxidizer/Toxic</option>
+                                                <option>Poison</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="air-freight">
+                                <div style="background-color: blue; color: white" class="panel-body">
+                                    <h3>Air Freight Shipping Description</h3>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>Proper Shipping Name</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>NOS Name</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>Hazard Class</label>
+                                            <input class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Packaging Group</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>I</option>
+                                                <option>II</option>
+                                                <option>III</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Sub Class</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>UN Number</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>UN0004</option>
+                                                <option>UN0005</option>
+                                                <option>UN0006</option>
+                                                <option>UN0007</option>
+                                                <option>UN0008</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Label Required</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>Non-flammable gas</option>
+                                                <option>Oxidizer</option>
+                                                <option>Oxidizer/Toxic</option>
+                                                <option>Poison</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Subsidiary Label Required</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>Non-flammable gas</option>
+                                                <option>Oxidizer</option>
+                                                <option>Oxidizer/Toxic</option>
+                                                <option>Poison</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="rcra">
+                                <div style="background-color:darkgray; color: white" class="panel-body">
+                                    <h3>RCRA Shipping Description</h3>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>Proper Shipping Name</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <label>NOS Name</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>Hazard Class</label>
+                                            <input class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Packaging Group</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>I</option>
+                                                <option>II</option>
+                                                <option>III</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Sub Class</label>
+                                            <input class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-4">
+                                            <label>UN Number</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>UN0004</option>
+                                                <option>UN0005</option>
+                                                <option>UN0006</option>
+                                                <option>UN0007</option>
+                                                <option>UN0008</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Label Required</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>Non-flammable gas</option>
+                                                <option>Oxidizer</option>
+                                                <option>Oxidizer/Toxic</option>
+                                                <option>Poison</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label>Subsidiary Label Required</label>
+                                            <select class="form-control">
+                                                <option>None</option>
+                                                <option>Non-flammable gas</option>
+                                                <option>Oxidizer</option>
+                                                <option>Oxidizer/Toxic</option>
+                                                <option>Poison</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#notes"><i class="fa fa-suitcase fa-fw"></i> Notes</h3>
+            </div>
+            <div id="notes" class="panel-body collapse">
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <div id="">
+                            @Html.Partial("~/Views/Products/_LogNotes.cshtml")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <div id="">
+                            @Html.Partial("~/Views/Products/_Cas.cshtml")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-9">
+                        <div id="">
+                            @Html.Partial("~/Views/Products/_WasteProfile.cshtml")
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <p><input type="checkbox" value="RestQtyBool"> <label>EPA Hazardous Waste</label></p>
+                        <p><input type="checkbox" value="RestQtyBool"> <label>Non-RCRA Waste</label></p>
+                        <p><label>Waste Profile Number</label> <input class="form-control"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <div class="col-md-6">
+                <button class="btn btn-success btn-block">Save Changes</button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-danger btn-block">De-Activate</button>
+            </div>
+            <div class="clearfix"></div>
+            <br />
+            <div class="col-lg-12">
+                <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>
+                <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,56 @@
+﻿@{
+    var menus = new[]
+                {
+                   new { LinkText="Dashboard", ActionName="Index", ControllerName="Home", FaIconName="fa fa-fw fa-dashboard", Roles="All" },
+                   new { LinkText="Orders", ActionName="Index", ControllerName="Orders", FaIconName="fa fa-fw fa-file-text-o", Roles="All" },
+                   new { LinkText="Import Order", ActionName="OrderImport", ControllerName="Orders", FaIconName="fa fa-fw fa-cloud-upload", Roles="All" },
+                   new { LinkText="Invoice", ActionName="Index", ControllerName="Invoice", FaIconName="fa fa-fw fa-calculator", Roles="All" },
+                   new { LinkText="Products", ActionName="Index", ControllerName="Products", FaIconName="fa fa-fw fa-briefcase", Roles="All" },
+                   new { LinkText="Inventory", ActionName="Index", ControllerName="Inventory", FaIconName="fa fa-fw fa-dropbox", Roles="All" }
+                };
+}
+
+<ul id="menu" class="nav navbar-nav side-nav">
+@{
+    var links = from item in menus
+                where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                .Any(x => new String[] { "All", "Anonymous" }.Contains(x))
+                select item;
+
+    foreach (var link in links)
+    {
+        @:<li><a href="@Url.Action(link.ActionName, link.ControllerName )"><i class="@link.FaIconName"></i> @link.LinkText</a> </li>
+    }
+}
+
+@* 
+    Don't change or delete logic below -- Iffy
+
+    @if (HttpContext.Current.User.Identity.IsAuthenticated)
+    {
+        String[] roles = Roles.GetRolesForUser();
+        var links = from item in menus
+                    where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                    .Any(x => roles.Contains(x) || x == "All")
+                    select item;
+        foreach (var link in links)
+        {
+            @:
+            <li>@Html.ActionLink(link.LinkText, link.ActionName, link.ControllerName)</li>
+        }
+    }
+    else
+    {
+        var links = from item in menus
+                    where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                    .Any(x => new String[] { "All", "Anonymous" }.Contains(x))
+                    select item;
+
+        foreach (var link in links)
+        {
+            @:
+            <li><a href="@Url.Action(link.ActionName, link.ControllerName )"><i class="@link.FaIconName"></i> @link.LinkText</a> </li>
+        }
+    }
+*@
+</ul>

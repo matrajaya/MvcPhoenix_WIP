@@ -1,0 +1,630 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CMCSQL03Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tblCarrier">
+    <Key>
+      <PropertyRef Name="CarrierID" />
+    </Key>
+    <Property Name="CarrierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CarrierName" Type="nvarchar" MaxLength="10" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="CMCLocation" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblClient">
+    <Key>
+      <PropertyRef Name="ClientID" />
+    </Key>
+    <Property Name="ClientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="GlobalClientID" Type="int" />
+    <Property Name="ClientCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="ClientName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CMCLocation" Type="nvarchar" MaxLength="2" />
+    <Property Name="CustomerReference" Type="nvarchar" MaxLength="4" />
+    <Property Name="CMCLongCustomer" Type="nvarchar" MaxLength="50" />
+    <Property Name="MSDS" Type="bit" />
+    <Property Name="TDS" Type="bit" />
+    <Property Name="COA" Type="bit" />
+    <Property Name="DocumentDirectory" Type="nvarchar" MaxLength="100" />
+    <Property Name="MSDS_Folder" Type="nvarchar" MaxLength="100" />
+    <Property Name="TDS_Folder" Type="nvarchar" MaxLength="100" />
+    <Property Name="COA_Folder" Type="nvarchar" MaxLength="100" />
+    <Property Name="SP_ServiceSummary" Type="nvarchar" MaxLength="4000" />
+    <Property Name="SP_Detail1" Type="nvarchar" MaxLength="4000" />
+    <Property Name="SP_Detail2" Type="nvarchar" MaxLength="4000" />
+    <Property Name="SP_Detail3" Type="nvarchar" MaxLength="4000" />
+    <Property Name="SP_Detail4" Type="nvarchar" MaxLength="4000" />
+    <Property Name="SP_Detail5" Type="nvarchar" MaxLength="4000" />
+    <Property Name="SP_RevDate" Type="date" />
+    <Property Name="SP_CommValue" Type="nvarchar" MaxLength="20" />
+    <Property Name="SP_COARequired" Type="nvarchar" MaxLength="50" />
+    <Property Name="SP_TDSRequired" Type="nvarchar" MaxLength="50" />
+    <Property Name="SP_MSDSLanguage" Type="nvarchar" MaxLength="75" />
+    <Property Name="SP_Freezable" Type="nvarchar" MaxLength="50" />
+    <Property Name="SP_LabelLanguage" Type="nvarchar" MaxLength="50" />
+    <Property Name="SP_Expedite" Type="nvarchar" MaxLength="255" />
+    <Property Name="BOLComment" Type="nvarchar" MaxLength="4000" />
+    <Property Name="LogoFileName" Type="nvarchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="tblClientContact">
+    <Key>
+      <PropertyRef Name="ClientContactID" />
+    </Key>
+    <Property Name="ClientContactID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="ContactType" Type="nvarchar" MaxLength="20" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="60" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="Account" Type="nvarchar" MaxLength="15" />
+    <Property Name="Company" Type="nvarchar" MaxLength="20" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+    <Property Name="Territory" Type="nvarchar" MaxLength="20" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblClientIncidentalRate">
+    <Key>
+      <PropertyRef Name="ClientID" />
+    </Key>
+    <Property Name="ClientID" Type="int" Nullable="false" />
+    <Property Name="NetDayTradeCredit" Type="int" />
+    <Property Name="ManualEntry" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ManualEntryRevenue" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="FollowUp" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ProductSetup" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ProductMaintenance" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="LabelSetup" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="LabelPrint" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Relabel" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="RelabelLabor" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="MsdsCoaPrint" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CCProcessFee" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="RushShipment" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="EmptyContainer" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="EmptyPail" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="InactiveStockStorage" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ITProjectSupport" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="tblClientInvoiceTrans">
+    <Key>
+      <PropertyRef Name="InvoiceTransID" />
+    </Key>
+    <Property Name="InvoiceTransID" Type="int" Nullable="false" />
+    <Property Name="InvoiceID" Type="int" />
+    <Property Name="InvoiceDate" Type="datetime" />
+    <Property Name="PONumber" Type="int" />
+    <Property Name="NetDayTradeCredit" Type="int" />
+    <Property Name="BillClientID" Type="int" />
+    <Property Name="BillClientName" Type="nchar" MaxLength="50" />
+    <Property Name="BillClientAttention" Type="nchar" MaxLength="50" />
+    <Property Name="BillClientAddress1" Type="nchar" MaxLength="50" />
+    <Property Name="BillClientAddress2" Type="nchar" MaxLength="50" />
+    <Property Name="BillClientCity" Type="nchar" MaxLength="50" />
+    <Property Name="BillClientState" Type="nchar" MaxLength="50" />
+    <Property Name="BillClientZip" Type="nchar" MaxLength="50" />
+    <Property Name="BillClientCountry" Type="nchar" MaxLength="50" />
+    <Property Name="RemitToCompany" Type="nchar" MaxLength="50" />
+    <Property Name="RemitToAtention" Type="nchar" MaxLength="50" />
+    <Property Name="RemitToAddress1" Type="nchar" MaxLength="50" />
+    <Property Name="RemitToAddress2" Type="nchar" MaxLength="50" />
+    <Property Name="RemitToCity" Type="nchar" MaxLength="50" />
+    <Property Name="RemitToState" Type="nchar" MaxLength="50" />
+    <Property Name="RemitToZip" Type="nchar" MaxLength="50" />
+    <Property Name="RemitToCountry" Type="nchar" MaxLength="50" />
+    <Property Name="TotalSamples" Type="int" />
+    <Property Name="TotalSampleCost" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalFreight" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalFreightHzd" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalAdminCharges" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalChargesDue" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="TotalShipSameDay" Type="int" />
+    <Property Name="TotalShipNextDay" Type="int" />
+    <Property Name="TotalShipSecondDay" Type="int" />
+    <Property Name="TotalShipOther" Type="int" />
+    <Property Name="ChargeGrandTotal" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeManualEntry" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeManualEntryRevenue" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeFollowUp" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeProductSetup" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeProductMaintenance" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeLabelSetup" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeLabelPrint" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeRelabel" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeRelabelLabor" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeMsdsCoaPrint" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeCCProcessFee" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeRushShipment" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeEmptyContainer" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeEmptyPail" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeInactiveStockStorage" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeITProjectSupport" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="CreditCC" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeGlobalProcessing" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargeEmptyDrum" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="ChargePailsFreight" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="tblCountry">
+    <Key>
+      <PropertyRef Name="CountryID" />
+    </Key>
+    <Property Name="CountryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Country" Type="nvarchar" MaxLength="50" />
+    <Property Name="Code2" Type="nvarchar" MaxLength="5" />
+    <Property Name="Code3" Type="nvarchar" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="tblCustomer">
+    <Key>
+      <PropertyRef Name="CustomerID" />
+    </Key>
+    <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="ShipToCompany" Type="nvarchar" MaxLength="75" />
+    <Property Name="Street" Type="nvarchar" MaxLength="50" />
+    <Property Name="Street2" Type="nvarchar" MaxLength="50" />
+    <Property Name="Street3" Type="nvarchar" MaxLength="50" />
+    <Property Name="City" Type="nvarchar" MaxLength="25" />
+    <Property Name="State" Type="nvarchar" MaxLength="10" />
+    <Property Name="PostCode" Type="nvarchar" MaxLength="15" />
+    <Property Name="Country" Type="nvarchar" MaxLength="30" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Fax" Type="nvarchar" MaxLength="25" />
+    <Property Name="Restricted" Type="bit" />
+    <Property Name="RestrictNote1" Type="nvarchar" MaxLength="50" />
+    <Property Name="RestrictNote2" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustAcct" Type="nvarchar" MaxLength="10" />
+    <Property Name="Acode" Type="nvarchar" MaxLength="10" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblDhRate">
+    <Key>
+      <PropertyRef Name="DhRateID" />
+    </Key>
+    <Property Name="DhRateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="HazNonHaz" Type="nvarchar" MaxLength="6" />
+    <Property Name="DhServiceLevel1" Type="money" />
+    <Property Name="DhServiceLevel2" Type="money" />
+    <Property Name="DhServiceLevel3" Type="money" />
+    <Property Name="DhServiceLevel4" Type="money" />
+    <Property Name="Customerreference_MDB" Type="nvarchar" MaxLength="4" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblDivision">
+    <Key>
+      <PropertyRef Name="DivisionID" />
+    </Key>
+    <Property Name="DivisionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="Division" Type="nvarchar" MaxLength="50" />
+    <Property Name="BillingGroup" Type="nvarchar" MaxLength="50" />
+    <Property Name="BillingCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="BusinessUnit" Type="nvarchar" MaxLength="25" />
+    <Property Name="Abbr" Type="nvarchar" MaxLength="5" />
+    <Property Name="WasteRate_OffSpec" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="WasteRate_Empty" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="Inactive" Type="bit" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="tblEndUse">
+    <Key>
+      <PropertyRef Name="EndUseID" />
+    </Key>
+    <Property Name="EndUseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="EndUse" Type="nvarchar" MaxLength="50" />
+    <Property Name="Division" Type="nvarchar" MaxLength="25" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblOrderItem">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Name="ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderID" Type="int" />
+    <Property Name="CMCOrder" Type="int" />
+    <Property Name="LegacyCMCOrder" Type="nvarchar" MaxLength="15" />
+    <Property Name="CustOrdNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="BusArea" Type="nvarchar" MaxLength="30" />
+    <Property Name="ImportItemID" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProductCode" Type="nvarchar" MaxLength="15" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Mnemonic" Type="nvarchar" MaxLength="50" />
+    <Property Name="LotNumber" Type="nvarchar" MaxLength="25" />
+    <Property Name="Qty" Type="int" />
+    <Property Name="Size" Type="nvarchar" MaxLength="8" />
+    <Property Name="SRSize" Type="nvarchar" MaxLength="12" />
+    <Property Name="ShipDate" Type="datetime" />
+    <Property Name="NonCMCDelay" Type="bit" />
+    <Property Name="DelayReason" Type="nvarchar" MaxLength="50" />
+    <Property Name="Via" Type="nvarchar" MaxLength="12" />
+    <Property Name="FRT" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="FrtSurcharge" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="DH" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="Other" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="TotalSurcharge" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="SpecialRequest" Type="nvarchar" MaxLength="80" />
+    <Property Name="AirHazard" Type="nvarchar" MaxLength="15" />
+    <Property Name="GroundHazard" Type="nvarchar" MaxLength="15" />
+    <Property Name="BackOrdered" Type="bit" />
+    <Property Name="ProfitArea" Type="nvarchar" MaxLength="12" />
+    <Property Name="Status" Type="nvarchar" MaxLength="1000" />
+    <Property Name="AllocateStatus" Type="nvarchar" MaxLength="1" />
+    <Property Name="CSAllocate" Type="bit" />
+    <Property Name="Location" Type="nvarchar" MaxLength="20" />
+    <Property Name="ExpDate" Type="datetime" />
+    <Property Name="CustProdCode" Type="nvarchar" MaxLength="25" />
+    <Property Name="CustProdName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustSize" Type="nvarchar" MaxLength="15" />
+    <Property Name="Currency" Type="nvarchar" MaxLength="10" />
+    <Property Name="UnitPrice" Type="nvarchar" MaxLength="10" />
+    <Property Name="EmailSent" Type="bit" />
+    <Property Name="BackorderEmailSent" Type="bit" />
+    <Property Name="CustCode" Type="nvarchar" MaxLength="25" />
+    <Property Name="Weight" Type="nvarchar" MaxLength="10" />
+    <Property Name="CMCLocation" Type="nvarchar" MaxLength="3" />
+    <Property Name="LineItem" Type="int" />
+    <Property Name="SAPClosed" Type="bit" />
+    <Property Name="PackID" Type="int" />
+    <Property Name="ShipWt" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="ShipDimWt" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="SPSCost" Type="nvarchar" MaxLength="50" />
+    <Property Name="CarrierInvoiceRcvd" Type="bit" />
+    <Property Name="WasteOrderTotalWeight" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="CustStatus" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfileID" Type="int" />
+    <Property Name="LegacyID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblOrderMaster">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="Customer" Type="nvarchar" MaxLength="50" />
+    <Property Name="CMCOrder" Type="int" />
+    <Property Name="WebOrderID" Type="int" />
+    <Property Name="CMCLegacyNum" Type="nvarchar" MaxLength="15" />
+    <Property Name="CustOrdNum" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustSapNum" Type="nvarchar" MaxLength="15" />
+    <Property Name="CustRefNum" Type="nvarchar" MaxLength="40" />
+    <Property Name="ShipRef" Type="nvarchar" MaxLength="15" />
+    <Property Name="OrderType" Type="nvarchar" MaxLength="1" />
+    <Property Name="OrderStatus" Type="nvarchar" MaxLength="5" />
+    <Property Name="OrderDate" Type="datetime" />
+    <Property Name="Company" Type="nvarchar" MaxLength="75" />
+    <Property Name="Street" Type="nvarchar" MaxLength="75" />
+    <Property Name="Street2" Type="nvarchar" MaxLength="75" />
+    <Property Name="Street3" Type="nvarchar" MaxLength="75" />
+    <Property Name="City" Type="nvarchar" MaxLength="30" />
+    <Property Name="State" Type="nvarchar" MaxLength="5" />
+    <Property Name="Zip" Type="nvarchar" MaxLength="15" />
+    <Property Name="Country" Type="nvarchar" MaxLength="50" />
+    <Property Name="Attention" Type="nvarchar" MaxLength="60" />
+    <Property Name="Email" Type="nvarchar" MaxLength="75" />
+    <Property Name="SalesRep" Type="nvarchar" MaxLength="50" />
+    <Property Name="SalesEmail" Type="nvarchar" MaxLength="75" />
+    <Property Name="Req" Type="nvarchar" MaxLength="50" />
+    <Property Name="ReqPhone" Type="nvarchar" MaxLength="25" />
+    <Property Name="ReqFax" Type="nvarchar" MaxLength="25" />
+    <Property Name="ReqEmail" Type="nvarchar" MaxLength="100" />
+    <Property Name="EndUse" Type="nvarchar" MaxLength="40" />
+    <Property Name="ShipVia" Type="nvarchar" MaxLength="12" />
+    <Property Name="ShipAcct" Type="nvarchar" MaxLength="15" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="25" />
+    <Property Name="Source" Type="nvarchar" MaxLength="40" />
+    <Property Name="Fax" Type="nvarchar" MaxLength="20" />
+    <Property Name="Tracking" Type="nvarchar" MaxLength="500" />
+    <Property Name="Special" Type="nvarchar" MaxLength="1000" />
+    <Property Name="SpecialInternal" Type="nvarchar" MaxLength="255" />
+    <Property Name="Lit" Type="bit" />
+    <Property Name="Region" Type="nvarchar" MaxLength="10" />
+    <Property Name="COA" Type="bit" />
+    <Property Name="TDS" Type="bit" />
+    <Property Name="CID" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustAcct" Type="nvarchar" MaxLength="10" />
+    <Property Name="ACode" Type="nvarchar" MaxLength="10" />
+    <Property Name="ImportFile" Type="nvarchar" MaxLength="50" />
+    <Property Name="ImportDateLine" Type="datetime" />
+    <Property Name="Timing" Type="nvarchar" MaxLength="50" />
+    <Property Name="Volume" Type="nvarchar" MaxLength="20" />
+    <Property Name="SampleRack" Type="bit" />
+    <Property Name="CMCUser" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustomerReference" Type="nvarchar" MaxLength="4" />
+    <Property Name="Division" Type="nvarchar" MaxLength="50" />
+    <Property Name="BusArea" Type="nvarchar" MaxLength="30" />
+    <Property Name="TotalOrderWeight" Type="int" />
+    <Property Name="SPSTaxID" Type="nvarchar" MaxLength="25" />
+    <Property Name="SPSCurrency" Type="nvarchar" MaxLength="3" />
+    <Property Name="SPSShippedWt" Type="nvarchar" MaxLength="50" />
+    <Property Name="SPSFreightCost" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceCompany" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceTitle" Type="nvarchar" MaxLength="5" />
+    <Property Name="InvoiceFirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceLastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceAddress1" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceAddress2" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceAddress3" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceCity" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceStateProv" Type="nvarchar" MaxLength="40" />
+    <Property Name="InvoicePostalCode" Type="nvarchar" MaxLength="12" />
+    <Property Name="InvoiceCountry" Type="nvarchar" MaxLength="30" />
+    <Property Name="InvoicePhone" Type="nvarchar" MaxLength="40" />
+    <Property Name="CustOrderType" Type="nvarchar" MaxLength="5" />
+    <Property Name="CustRequestDate" Type="datetime" />
+    <Property Name="ApprovalDate" Type="datetime" />
+    <Property Name="RequestedDeliveryDate" Type="datetime" />
+    <Property Name="CustTotalItems" Type="int" />
+    <Property Name="CustRequestedCarrier" Type="nvarchar" MaxLength="5" />
+    <Property Name="SalesRepPhone" Type="nvarchar" MaxLength="25" />
+    <Property Name="SalesRepTerritory" Type="nvarchar" MaxLength="50" />
+    <Property Name="MarketingRep" Type="nvarchar" MaxLength="50" />
+    <Property Name="MarketingRepEmail" Type="nvarchar" MaxLength="100" />
+    <Property Name="Distributor" Type="nvarchar" MaxLength="50" />
+    <Property Name="PreferredCarrier" Type="nvarchar" MaxLength="255" />
+    <Property Name="ApprovalNeeded" Type="bit" />
+    <Property Name="LegacyID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblOrderSource">
+    <Key>
+      <PropertyRef Name="OrderSourceID" />
+    </Key>
+    <Property Name="OrderSourceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Source" Type="nvarchar" MaxLength="50" />
+    <Property Name="LegacyID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblOrderTrans">
+    <Key>
+      <PropertyRef Name="OrderTransID" />
+    </Key>
+    <Property Name="OrderTransID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SourceID" Type="int" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="OrderID" Type="int" />
+    <Property Name="OrderItemID" Type="int" />
+    <Property Name="UserID" Type="int" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="20" />
+    <Property Name="TransType" Type="nvarchar" MaxLength="25" />
+    <Property Name="TransDate" Type="datetime" />
+    <Property Name="TransQty" Type="int" />
+    <Property Name="TransAmount" Type="money" />
+    <Property Name="ChargeDate" Type="datetime" />
+    <Property Name="Comments" Type="nvarchar" MaxLength="500" />
+    <Property Name="CMCOrder_MDB" Type="int" />
+    <Property Name="Division_MDB" Type="nvarchar" MaxLength="25" />
+    <Property Name="BusinessUnit_MDB" Type="nvarchar" MaxLength="25" />
+    <Property Name="ChargeSource_MDB" Type="nvarchar" MaxLength="25" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+    <Property Name="CustomerReference_MDB" Type="nvarchar" MaxLength="4" />
+  </EntityType>
+  <EntityType Name="tblOrderType">
+    <Key>
+      <PropertyRef Name="OrderTypeID" />
+    </Key>
+    <Property Name="OrderTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderType" Type="nvarchar" MaxLength="1" />
+    <Property Name="Description" Type="nvarchar" MaxLength="35" />
+    <Property Name="LegacyID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblPreferredCarrierList">
+    <Key>
+      <PropertyRef Name="PreferredCarrierListID" />
+    </Key>
+    <Property Name="PreferredCarrierListID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CountryCode" Type="nvarchar" MaxLength="255" />
+    <Property Name="Country" Type="nvarchar" MaxLength="255" />
+    <Property Name="CommercialInvoice" Type="bit" />
+    <Property Name="NonHaz_Sm" Type="nvarchar" MaxLength="255" />
+    <Property Name="NonHaz_Lg" Type="nvarchar" MaxLength="255" />
+    <Property Name="NonHazIncoTerms" Type="nvarchar" MaxLength="255" />
+    <Property Name="HazIATA_Sm" Type="nvarchar" MaxLength="255" />
+    <Property Name="HazIATA_Lg" Type="nvarchar" MaxLength="255" />
+    <Property Name="HazCarrierADR_LQ" Type="nvarchar" MaxLength="255" />
+    <Property Name="HazCarrierADR" Type="nvarchar" MaxLength="255" />
+    <Property Name="HazIncoTerms" Type="nvarchar" MaxLength="255" />
+    <Property Name="IncoTermsDSM" Type="nvarchar" MaxLength="255" />
+    <Property Name="NotesAlgemeen" Type="nvarchar" MaxLength="255" />
+    <Property Name="NotesIATA_ADR" Type="nvarchar" MaxLength="255" />
+    <Property Name="NonHazIncoTermsAshLand_Importer" Type="nvarchar" MaxLength="255" />
+    <Property Name="HazIncoTermsAshLand_Importer" Type="nvarchar" MaxLength="255" />
+    <Property Name="xxNonHazCarrier2ndChoice" Type="nvarchar" MaxLength="255" />
+    <Property Name="LegacyID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblProductXRef">
+    <Key>
+      <PropertyRef Name="ProductXRefID" />
+    </Key>
+    <Property Name="ProductXRefID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="CMCProductCode" Type="nvarchar" MaxLength="25" />
+    <Property Name="CMCSize" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustProductCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustProductName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CustSize" Type="nvarchar" MaxLength="25" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblProfile">
+    <Key>
+      <PropertyRef Name="ProfileID" />
+    </Key>
+    <Property Name="ProfileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="DivisionID" Type="int" />
+    <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="BusArea" Type="nvarchar" MaxLength="30" />
+    <Property Name="ProfArea" Type="nvarchar" MaxLength="15" />
+    <Property Name="ProductCode" Type="nvarchar" MaxLength="15" />
+    <Property Name="ProductName" Type="nvarchar" MaxLength="30" />
+    <Property Name="Mnemonic" Type="nvarchar" MaxLength="30" />
+    <Property Name="GroundHazard" Type="nvarchar" MaxLength="15" />
+    <Property Name="AirHazard" Type="nvarchar" MaxLength="15" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="255" />
+    <Property Name="Discontinued" Type="bit" />
+    <Property Name="Alert" Type="nvarchar" MaxLength="200" />
+    <Property Name="CMCLocation" Type="nvarchar" MaxLength="3" />
+    <Property Name="CustCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="BillingCode" Type="nvarchar" MaxLength="15" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblSampSize">
+    <Key>
+      <PropertyRef Name="SampSizeID" />
+    </Key>
+    <Property Name="SampSizeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProfileID" Type="int" />
+    <Property Name="ProductCode" Type="nvarchar" MaxLength="15" />
+    <Property Name="Size" Type="nvarchar" MaxLength="8" />
+    <Property Name="HazardSurcharge" Type="bit" />
+    <Property Name="FlammableSurcharge" Type="bit" />
+    <Property Name="HeatSurcharge" Type="bit" />
+    <Property Name="RefrigeratorSurcharge" Type="bit" />
+    <Property Name="FreezerSurcharge" Type="bit" />
+    <Property Name="CleanSurcharge" Type="bit" />
+    <Property Name="BlendSurcharge" Type="bit" />
+    <Property Name="NalgeneSurcharge" Type="bit" />
+    <Property Name="NitrogenSurcharge" Type="bit" />
+    <Property Name="BiocideSurcharge" Type="bit" />
+    <Property Name="KosherSurcharge" Type="bit" />
+    <Property Name="LabelSurcharge" Type="bit" />
+    <Property Name="OtherSurcharge" Type="bit" />
+    <Property Name="OtherSurchargeAmt" Type="smallmoney" />
+    <Property Name="New" Type="nvarchar" MaxLength="8" />
+    <Property Name="InactiveSize" Type="bit" />
+    <Property Name="WebOEInclude" Type="bit" />
+    <Property Name="SortOrder" Type="int" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblState">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StateName" Type="nvarchar" MaxLength="25" />
+    <Property Name="StateAbbr" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblStatusNotes">
+    <Key>
+      <PropertyRef Name="StatusNotesID" />
+    </Key>
+    <Property Name="StatusNotesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Note" Type="nvarchar" MaxLength="100" />
+    <Property Name="LegacyID" Type="int" />
+  </EntityType>
+  <EntityType Name="tblSurcharge">
+    <Key>
+      <PropertyRef Name="SurchargeID" />
+    </Key>
+    <Property Name="SurchargeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="Haz" Type="numeric" Precision="8" Scale="2" />
+    <Property Name="Flam" Type="numeric" Precision="8" Scale="2" />
+    <Property Name="Clean" Type="numeric" Precision="8" Scale="2" />
+    <Property Name="Heat" Type="numeric" Precision="8" Scale="2" />
+    <Property Name="Refrig" Type="numeric" Precision="8" Scale="2" />
+    <Property Name="Freezer" Type="numeric" Precision="8" Scale="2" />
+    <Property Name="Nalgene" Type="numeric" Precision="8" Scale="2" />
+    <Property Name="LabelFee" Type="numeric" Precision="8" Scale="2" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblTier">
+    <Key>
+      <PropertyRef Name="TierID" />
+    </Key>
+    <Property Name="TierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="Tier" Type="nvarchar" MaxLength="2" />
+    <Property Name="Size" Type="nvarchar" MaxLength="10" />
+    <Property Name="LoSampAmt" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="HiSampAmt" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="Price" Type="numeric" Precision="10" Scale="2" />
+    <Property Name="LegacyID" Type="int" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
+    <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="tblUser">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClientID" Type="int" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LocationDefault" Type="nvarchar" MaxLength="2" />
+    <Property Name="Location" Type="nvarchar" MaxLength="2" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="25" />
+    <Property Name="UserLevel" Type="int" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="CMCSQL03ModelStoreContainer">
+    <EntitySet Name="tblCarrier" EntityType="Self.tblCarrier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClientContact" EntityType="Self.tblClientContact" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClientIncidentalRate" EntityType="Self.tblClientIncidentalRate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClientInvoiceTrans" EntityType="Self.tblClientInvoiceTrans" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCountry" EntityType="Self.tblCountry" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblCustomer" EntityType="Self.tblCustomer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblDhRate" EntityType="Self.tblDhRate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblDivision" EntityType="Self.tblDivision" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblEndUse" EntityType="Self.tblEndUse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblOrderItem" EntityType="Self.tblOrderItem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblOrderMaster" EntityType="Self.tblOrderMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblOrderSource" EntityType="Self.tblOrderSource" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblOrderTrans" EntityType="Self.tblOrderTrans" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblOrderType" EntityType="Self.tblOrderType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblPreferredCarrierList" EntityType="Self.tblPreferredCarrierList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProductXRef" EntityType="Self.tblProductXRef" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblProfile" EntityType="Self.tblProfile" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblSampSize" EntityType="Self.tblSampSize" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblState" EntityType="Self.tblState" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblStatusNotes" EntityType="Self.tblStatusNotes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblSurcharge" EntityType="Self.tblSurcharge" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblTier" EntityType="Self.tblTier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

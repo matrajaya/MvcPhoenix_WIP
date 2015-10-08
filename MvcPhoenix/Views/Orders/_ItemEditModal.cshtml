@@ -1,0 +1,214 @@
+﻿@model MvcPhoenix.Models.OrderItem
+@using MvcPhoenix.Models
+@{
+    MvcPhoenix.EF.CMCSQL03Entities widget004_db = new MvcPhoenix.EF.CMCSQL03Entities();
+    Model.OrderID = Convert.ToInt32(Session["OrderID"]);
+    var myclientid = (from t in widget004_db.tblOrderMaster
+                      where t.OrderID == Model.OrderID
+                      select t.ClientID).FirstOrDefault();
+
+    Model.ClientID = Convert.ToInt32(myclientid);
+    Model.ListOfStatuses = fnListOfOrderItemStatus();
+    Model.ListOfProfileIDs = fnProfileIDs(Model.ClientID);
+    Model.ListOfSizes = fnSizesForProfileID(Model.ProfileID);
+
+    // List for grid
+    var qryitems = (from t in widget004_db.tblOrderItem
+                    where t.OrderID == Model.OrderID
+                    orderby t.ProductCode, t.ShipDate descending
+                    select t).ToList();
+}
+
+@* Stash values to maintain state during postbacks *@
+<input id="w004_OrderID" type="hidden" value="@Model.OrderID" />
+<input id="w004_ClientID" type="hidden" value="@Model.ClientID" />
+<input id="w004_ItemID" type="hidden" value="@Model.ItemID" />
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h3>@Model.PartialMode Item Details</h3>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-7 form-group">
+        @Html.LabelFor(m => m.ProfileID, new { @class = "control-label" })
+        @Html.DropDownListFor(m => m.ProfileID, Model.ListOfProfileIDs, new { id = "w004_ProfileID", onchange = "w004_SetSizeDD();", @class = "form-control" })
+    </div>
+    <div class="col-md-5 form-group">
+        @Html.LabelFor(m => m.Size, new { @class = "control-label" })
+        <div id="mysizes">
+            @Html.DropDownListFor(m => m.Size, Model.ListOfSizes, new { id = "w004_Size", @class = "form-control" })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5 form-group">
+        @Html.LabelFor(m => m.LotNumber, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.LotNumber, Model.LotNumber, new { id = "w004_LotNumber", @class = "form-control" })
+    </div>
+    <div class="col-md-3 form-group">
+        @Html.LabelFor(m => m.Qty, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Qty, new { id = "w004_Qty", @class = "form-control", min = "1" })
+    </div>
+    <div class="col-md-4 form-group">
+        @Html.LabelFor(m => m.SRSize, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.SRSize, Model.SRSize, new { id = "w004_SRSize", @class = "form-control" })
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 form-group">
+        @Html.LabelFor(m => m.NonCMCDelay, new { @class = "control-label" })
+        <div class="pull-right">@Html.EditorFor(m => m.NonCMCDelay, Convert.ToBoolean(Model.NonCMCDelay))</div>
+
+    </div>
+    <div class="col-md-6 form-group">
+        @Html.LabelFor(m => m.CarrierInvoiceRcvd, new { @class = "control-label" })
+        <div class="pull-right">@Html.EditorFor(m => m.CarrierInvoiceRcvd, Convert.ToBoolean(Model.CarrierInvoiceRcvd))</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 form-group">
+        <label class="control-label">Select Status</label>
+        @Html.DropDownListFor(m => m.StatusID, Model.ListOfStatuses, new { @class = "form-control" })
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 form-group">
+        <label class="control-label">Status Notes</label>
+        <textarea id="w004_Status" class="form-control" rows="4">@Model.Status</textarea>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 form-group">
+        <span>
+            <input type="button" value="Save" onclick="w004_SaveRevB()" class="btn btn-md btn-success" />
+        </span>
+        <span class="pull-right">
+            @*Close action needs to update underlying HTML table AND close this content sitting in modal*@
+            @Ajax.ActionLink("Close", "RefreshItemsTable", "Orders", null,
+                    new AjaxOptions
+                    {
+                        UpdateTargetId = "w004",
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "GET",
+                        OnBegin = " $('#myModal').modal('hide');"
+                    }, new { @class = "btn btn-primary" })
+        </span>
+    </div>
+    <div>
+        <span class="text-info">
+            @Html.DisplayFor(m => m.UpdateResult)
+        </span>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    function w004_SetSizeDD() {
+        // build obj, push to controller and return content to the DIV inside the modal
+        var JsonData = {
+            ClientID: $("#w004_ClientID").val(),
+            ItemID: $("#w004_ItemID").val(),
+            OrderID: $("#w004_OrderID").val(),
+            PartialMode: $("#w004_PartialMode").val(),
+            ProfileID: $("#w004_ProfileID").val(),
+            Size: $("#w004_Size").val(),
+            SRSize: $("#w004_SRSize").val(),
+            Qty: $("#w004_Qty").val(),
+            LotNumber: $("#w004_LotNumber").val(),
+            NonCMCDelay: $("#NonCMCDelay").val(),
+            CarrierInvoiceRcvd: $("#CarrierInvoiceRcvd").val(),
+            StatusID: $("#StatusID").val(),
+            Status: $("#w004_Status").val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("GetSizesForProfileID", "Orders")",
+            data: JsonData,
+            success: function (result) { $("#modal99").html(result); }
+        });
+    }
+
+    function w004_SaveRevB() {
+        // build obj, push to controller and return content to the DIV inside the modal
+        var JsonData = {
+            ClientID: $("#w004_ClientID").val(),
+            ItemID: $("#w004_ItemID").val(),
+            OrderID: $("#w004_OrderID").val(),
+            PartialMode: $("#w004_PartialMode").val(),
+            ProfileID: $("#w004_ProfileID").val(),
+            Size: $("#w004_Size").val(),
+            SRSize: $("#w004_SRSize").val(),
+            Qty: $("#w004_Qty").val(),
+            LotNumber: $("#w004_LotNumber").val(),
+            NonCMCDelay: $("#NonCMCDelay").val(),
+            CarrierInvoiceRcvd: $("#CarrierInvoiceRcvd").val(),
+            StatusID: $("#StatusID").val(),
+            Status: $("#w004_Status").val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("UpdateOrderItemJson", "Orders")",
+            data: JsonData,
+            success: function (result) { $("#modal99").html(result); }
+        });
+
+        // This works: update the trans partial
+        $.ajax({
+            type: 'GET',
+            url: "@Url.Action("RefreshTransView", "Orders")",
+            data: null,
+            success: function (result) { $("#widget001").html(result); }
+        });
+    }
+</script>
+
+@functions
+{
+    private static List<SelectListItem> fnProfileIDs(int? clientid)
+    {
+        MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+        List<SelectListItem> mylist = new List<SelectListItem>();
+        mylist = (from t in db.tblProfile
+                  where t.ClientID == clientid
+                  orderby t.ProductCode
+                  select
+                    new SelectListItem { Value = t.ProfileID.ToString(), Text = t.ProductCode + " : " + t.ProductName }).ToList();
+        mylist.Insert(0, new SelectListItem { Value = "0", Text = "Product Code" });
+        db.Dispose();
+        return mylist;
+    }
+    private static List<SelectListItem> fnSizesForProfileID(int? myprofileid)
+    {
+        MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+        List<SelectListItem> mylist = new List<SelectListItem>();
+        mylist = (from t in db.tblSampSize
+                  where t.ProfileID == myprofileid
+                  orderby t.Size
+                  select
+                  new SelectListItem { Value = t.Size, Text = t.Size }).ToList();
+        mylist.Insert(0, new SelectListItem { Value = "0", Text = "Size" });
+        db.Dispose();
+        return mylist;
+    }
+
+    private static List<SelectListItem> fnListOfOrderItemStatus()
+    {
+        MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+        List<SelectListItem> mylist = new List<SelectListItem>();
+        mylist = (from t in db.tblStatusNotes
+                  orderby t.Note
+                  select
+                  new SelectListItem { Value = t.StatusNotesID.ToString(), Text = t.Note }).ToList();
+        mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+
+        db.Dispose();
+        return mylist;
+    }
+}

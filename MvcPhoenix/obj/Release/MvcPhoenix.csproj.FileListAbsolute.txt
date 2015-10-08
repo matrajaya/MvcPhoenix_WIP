@@ -1,0 +1,17 @@
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll.config
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.pdb
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\System.Net.Http.Formatting.dll
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Http.dll
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Http.WebHost.dll
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\System.Net.Http.Formatting.xml
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Http.xml
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Http.WebHost.xml
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.dll
+C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.pdb
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll.config
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.pdb
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.pdb
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.csprojResolveAssemblyReference.cache

@@ -1,0 +1,599 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CMCSQL03ModelStoreContainer" CdmEntityContainer="CMCSQL03Entities">
+    <EntitySetMapping Name="tblCarrier">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblCarrier">
+        <MappingFragment StoreEntitySet="tblCarrier">
+          <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClient">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblClient">
+        <MappingFragment StoreEntitySet="tblClient">
+          <ScalarProperty Name="LogoFileName" ColumnName="LogoFileName" />
+          <ScalarProperty Name="BOLComment" ColumnName="BOLComment" />
+          <ScalarProperty Name="SP_Expedite" ColumnName="SP_Expedite" />
+          <ScalarProperty Name="SP_LabelLanguage" ColumnName="SP_LabelLanguage" />
+          <ScalarProperty Name="SP_Freezable" ColumnName="SP_Freezable" />
+          <ScalarProperty Name="SP_MSDSLanguage" ColumnName="SP_MSDSLanguage" />
+          <ScalarProperty Name="SP_TDSRequired" ColumnName="SP_TDSRequired" />
+          <ScalarProperty Name="SP_COARequired" ColumnName="SP_COARequired" />
+          <ScalarProperty Name="SP_CommValue" ColumnName="SP_CommValue" />
+          <ScalarProperty Name="SP_RevDate" ColumnName="SP_RevDate" />
+          <ScalarProperty Name="SP_Detail5" ColumnName="SP_Detail5" />
+          <ScalarProperty Name="SP_Detail4" ColumnName="SP_Detail4" />
+          <ScalarProperty Name="SP_Detail3" ColumnName="SP_Detail3" />
+          <ScalarProperty Name="SP_Detail2" ColumnName="SP_Detail2" />
+          <ScalarProperty Name="SP_Detail1" ColumnName="SP_Detail1" />
+          <ScalarProperty Name="SP_ServiceSummary" ColumnName="SP_ServiceSummary" />
+          <ScalarProperty Name="COA_Folder" ColumnName="COA_Folder" />
+          <ScalarProperty Name="TDS_Folder" ColumnName="TDS_Folder" />
+          <ScalarProperty Name="MSDS_Folder" ColumnName="MSDS_Folder" />
+          <ScalarProperty Name="DocumentDirectory" ColumnName="DocumentDirectory" />
+          <ScalarProperty Name="COA" ColumnName="COA" />
+          <ScalarProperty Name="TDS" ColumnName="TDS" />
+          <ScalarProperty Name="MSDS" ColumnName="MSDS" />
+          <ScalarProperty Name="CMCLongCustomer" ColumnName="CMCLongCustomer" />
+          <ScalarProperty Name="CustomerReference" ColumnName="CustomerReference" />
+          <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="ClientCode" ColumnName="ClientCode" />
+          <ScalarProperty Name="GlobalClientID" ColumnName="GlobalClientID" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClientContact">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblClientContact">
+        <MappingFragment StoreEntitySet="tblClientContact">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="Territory" ColumnName="Territory" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Company" ColumnName="Company" />
+          <ScalarProperty Name="Account" ColumnName="Account" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="ClientContactID" ColumnName="ClientContactID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCountry">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblCountry">
+        <MappingFragment StoreEntitySet="tblCountry">
+          <ScalarProperty Name="Code3" ColumnName="Code3" />
+          <ScalarProperty Name="Code2" ColumnName="Code2" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblCustomer">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblCustomer">
+        <MappingFragment StoreEntitySet="tblCustomer">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="Acode" ColumnName="Acode" />
+          <ScalarProperty Name="CustAcct" ColumnName="CustAcct" />
+          <ScalarProperty Name="RestrictNote2" ColumnName="RestrictNote2" />
+          <ScalarProperty Name="RestrictNote1" ColumnName="RestrictNote1" />
+          <ScalarProperty Name="Restricted" ColumnName="Restricted" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Street3" ColumnName="Street3" />
+          <ScalarProperty Name="Street2" ColumnName="Street2" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="ShipToCompany" ColumnName="ShipToCompany" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblDhRate">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblDhRate">
+        <MappingFragment StoreEntitySet="tblDhRate">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Customerreference_MDB" ColumnName="Customerreference_MDB" />
+          <ScalarProperty Name="DhServiceLevel4" ColumnName="DhServiceLevel4" />
+          <ScalarProperty Name="DhServiceLevel3" ColumnName="DhServiceLevel3" />
+          <ScalarProperty Name="DhServiceLevel2" ColumnName="DhServiceLevel2" />
+          <ScalarProperty Name="DhServiceLevel1" ColumnName="DhServiceLevel1" />
+          <ScalarProperty Name="HazNonHaz" ColumnName="HazNonHaz" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="DhRateID" ColumnName="DhRateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblDivision">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblDivision">
+        <MappingFragment StoreEntitySet="tblDivision">
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="Inactive" ColumnName="Inactive" />
+          <ScalarProperty Name="WasteRate_Empty" ColumnName="WasteRate_Empty" />
+          <ScalarProperty Name="WasteRate_OffSpec" ColumnName="WasteRate_OffSpec" />
+          <ScalarProperty Name="Abbr" ColumnName="Abbr" />
+          <ScalarProperty Name="BusinessUnit" ColumnName="BusinessUnit" />
+          <ScalarProperty Name="BillingCode" ColumnName="BillingCode" />
+          <ScalarProperty Name="BillingGroup" ColumnName="BillingGroup" />
+          <ScalarProperty Name="Division" ColumnName="Division" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblEndUse">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblEndUse">
+        <MappingFragment StoreEntitySet="tblEndUse">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="Division" ColumnName="Division" />
+          <ScalarProperty Name="EndUse" ColumnName="EndUse" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="EndUseID" ColumnName="EndUseID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderItem">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderItem">
+        <MappingFragment StoreEntitySet="tblOrderItem">
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+          <ScalarProperty Name="CustStatus" ColumnName="CustStatus" />
+          <ScalarProperty Name="WasteOrderTotalWeight" ColumnName="WasteOrderTotalWeight" />
+          <ScalarProperty Name="CarrierInvoiceRcvd" ColumnName="CarrierInvoiceRcvd" />
+          <ScalarProperty Name="SPSCost" ColumnName="SPSCost" />
+          <ScalarProperty Name="ShipDimWt" ColumnName="ShipDimWt" />
+          <ScalarProperty Name="ShipWt" ColumnName="ShipWt" />
+          <ScalarProperty Name="PackID" ColumnName="PackID" />
+          <ScalarProperty Name="SAPClosed" ColumnName="SAPClosed" />
+          <ScalarProperty Name="LineItem" ColumnName="LineItem" />
+          <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+          <ScalarProperty Name="Weight" ColumnName="Weight" />
+          <ScalarProperty Name="CustCode" ColumnName="CustCode" />
+          <ScalarProperty Name="BackorderEmailSent" ColumnName="BackorderEmailSent" />
+          <ScalarProperty Name="EmailSent" ColumnName="EmailSent" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
+          <ScalarProperty Name="CustSize" ColumnName="CustSize" />
+          <ScalarProperty Name="CustProdName" ColumnName="CustProdName" />
+          <ScalarProperty Name="CustProdCode" ColumnName="CustProdCode" />
+          <ScalarProperty Name="ExpDate" ColumnName="ExpDate" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="CSAllocate" ColumnName="CSAllocate" />
+          <ScalarProperty Name="AllocateStatus" ColumnName="AllocateStatus" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ProfitArea" ColumnName="ProfitArea" />
+          <ScalarProperty Name="BackOrdered" ColumnName="BackOrdered" />
+          <ScalarProperty Name="GroundHazard" ColumnName="GroundHazard" />
+          <ScalarProperty Name="AirHazard" ColumnName="AirHazard" />
+          <ScalarProperty Name="SpecialRequest" ColumnName="SpecialRequest" />
+          <ScalarProperty Name="TotalSurcharge" ColumnName="TotalSurcharge" />
+          <ScalarProperty Name="Other" ColumnName="Other" />
+          <ScalarProperty Name="DH" ColumnName="DH" />
+          <ScalarProperty Name="FrtSurcharge" ColumnName="FrtSurcharge" />
+          <ScalarProperty Name="FRT" ColumnName="FRT" />
+          <ScalarProperty Name="Via" ColumnName="Via" />
+          <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
+          <ScalarProperty Name="NonCMCDelay" ColumnName="NonCMCDelay" />
+          <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+          <ScalarProperty Name="SRSize" ColumnName="SRSize" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="Mnemonic" ColumnName="Mnemonic" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ImportItemID" ColumnName="ImportItemID" />
+          <ScalarProperty Name="BusArea" ColumnName="BusArea" />
+          <ScalarProperty Name="CustOrdNum" ColumnName="CustOrdNum" />
+          <ScalarProperty Name="LegacyCMCOrder" ColumnName="LegacyCMCOrder" />
+          <ScalarProperty Name="CMCOrder" ColumnName="CMCOrder" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderMaster">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderMaster">
+        <MappingFragment StoreEntitySet="tblOrderMaster">
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="ApprovalNeeded" ColumnName="ApprovalNeeded" />
+          <ScalarProperty Name="PreferredCarrier" ColumnName="PreferredCarrier" />
+          <ScalarProperty Name="Distributor" ColumnName="Distributor" />
+          <ScalarProperty Name="MarketingRepEmail" ColumnName="MarketingRepEmail" />
+          <ScalarProperty Name="MarketingRep" ColumnName="MarketingRep" />
+          <ScalarProperty Name="SalesRepTerritory" ColumnName="SalesRepTerritory" />
+          <ScalarProperty Name="SalesRepPhone" ColumnName="SalesRepPhone" />
+          <ScalarProperty Name="CustRequestedCarrier" ColumnName="CustRequestedCarrier" />
+          <ScalarProperty Name="CustTotalItems" ColumnName="CustTotalItems" />
+          <ScalarProperty Name="RequestedDeliveryDate" ColumnName="RequestedDeliveryDate" />
+          <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
+          <ScalarProperty Name="CustRequestDate" ColumnName="CustRequestDate" />
+          <ScalarProperty Name="CustOrderType" ColumnName="CustOrderType" />
+          <ScalarProperty Name="InvoicePhone" ColumnName="InvoicePhone" />
+          <ScalarProperty Name="InvoiceCountry" ColumnName="InvoiceCountry" />
+          <ScalarProperty Name="InvoicePostalCode" ColumnName="InvoicePostalCode" />
+          <ScalarProperty Name="InvoiceStateProv" ColumnName="InvoiceStateProv" />
+          <ScalarProperty Name="InvoiceCity" ColumnName="InvoiceCity" />
+          <ScalarProperty Name="InvoiceAddress3" ColumnName="InvoiceAddress3" />
+          <ScalarProperty Name="InvoiceAddress2" ColumnName="InvoiceAddress2" />
+          <ScalarProperty Name="InvoiceAddress1" ColumnName="InvoiceAddress1" />
+          <ScalarProperty Name="InvoiceLastName" ColumnName="InvoiceLastName" />
+          <ScalarProperty Name="InvoiceFirstName" ColumnName="InvoiceFirstName" />
+          <ScalarProperty Name="InvoiceTitle" ColumnName="InvoiceTitle" />
+          <ScalarProperty Name="InvoiceCompany" ColumnName="InvoiceCompany" />
+          <ScalarProperty Name="SPSFreightCost" ColumnName="SPSFreightCost" />
+          <ScalarProperty Name="SPSShippedWt" ColumnName="SPSShippedWt" />
+          <ScalarProperty Name="SPSCurrency" ColumnName="SPSCurrency" />
+          <ScalarProperty Name="SPSTaxID" ColumnName="SPSTaxID" />
+          <ScalarProperty Name="TotalOrderWeight" ColumnName="TotalOrderWeight" />
+          <ScalarProperty Name="BusArea" ColumnName="BusArea" />
+          <ScalarProperty Name="Division" ColumnName="Division" />
+          <ScalarProperty Name="CustomerReference" ColumnName="CustomerReference" />
+          <ScalarProperty Name="CMCUser" ColumnName="CMCUser" />
+          <ScalarProperty Name="SampleRack" ColumnName="SampleRack" />
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="Timing" ColumnName="Timing" />
+          <ScalarProperty Name="ImportDateLine" ColumnName="ImportDateLine" />
+          <ScalarProperty Name="ImportFile" ColumnName="ImportFile" />
+          <ScalarProperty Name="ACode" ColumnName="ACode" />
+          <ScalarProperty Name="CustAcct" ColumnName="CustAcct" />
+          <ScalarProperty Name="CID" ColumnName="CID" />
+          <ScalarProperty Name="TDS" ColumnName="TDS" />
+          <ScalarProperty Name="COA" ColumnName="COA" />
+          <ScalarProperty Name="Region" ColumnName="Region" />
+          <ScalarProperty Name="Lit" ColumnName="Lit" />
+          <ScalarProperty Name="SpecialInternal" ColumnName="SpecialInternal" />
+          <ScalarProperty Name="Special" ColumnName="Special" />
+          <ScalarProperty Name="Tracking" ColumnName="Tracking" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="ShipAcct" ColumnName="ShipAcct" />
+          <ScalarProperty Name="ShipVia" ColumnName="ShipVia" />
+          <ScalarProperty Name="EndUse" ColumnName="EndUse" />
+          <ScalarProperty Name="ReqEmail" ColumnName="ReqEmail" />
+          <ScalarProperty Name="ReqFax" ColumnName="ReqFax" />
+          <ScalarProperty Name="ReqPhone" ColumnName="ReqPhone" />
+          <ScalarProperty Name="Req" ColumnName="Req" />
+          <ScalarProperty Name="SalesEmail" ColumnName="SalesEmail" />
+          <ScalarProperty Name="SalesRep" ColumnName="SalesRep" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Attention" ColumnName="Attention" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Street3" ColumnName="Street3" />
+          <ScalarProperty Name="Street2" ColumnName="Street2" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="Company" ColumnName="Company" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="ShipRef" ColumnName="ShipRef" />
+          <ScalarProperty Name="CustRefNum" ColumnName="CustRefNum" />
+          <ScalarProperty Name="CustSapNum" ColumnName="CustSapNum" />
+          <ScalarProperty Name="CustOrdNum" ColumnName="CustOrdNum" />
+          <ScalarProperty Name="CMCLegacyNum" ColumnName="CMCLegacyNum" />
+          <ScalarProperty Name="WebOrderID" ColumnName="WebOrderID" />
+          <ScalarProperty Name="CMCOrder" ColumnName="CMCOrder" />
+          <ScalarProperty Name="Customer" ColumnName="Customer" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderSource">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderSource">
+        <MappingFragment StoreEntitySet="tblOrderSource">
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="OrderSourceID" ColumnName="OrderSourceID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderTrans">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderTrans">
+        <MappingFragment StoreEntitySet="tblOrderTrans">
+          <ScalarProperty Name="CustomerReference_MDB" ColumnName="CustomerReference_MDB" />
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="ChargeSource_MDB" ColumnName="ChargeSource_MDB" />
+          <ScalarProperty Name="BusinessUnit_MDB" ColumnName="BusinessUnit_MDB" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="CMCOrder_MDB" ColumnName="CMCOrder_MDB" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="ChargeDate" ColumnName="ChargeDate" />
+          <ScalarProperty Name="TransAmount" ColumnName="TransAmount" />
+          <ScalarProperty Name="TransQty" ColumnName="TransQty" />
+          <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+          <ScalarProperty Name="TransType" ColumnName="TransType" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="OrderItemID" ColumnName="OrderItemID" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+          <ScalarProperty Name="OrderTransID" ColumnName="OrderTransID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderType">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderType">
+        <MappingFragment StoreEntitySet="tblOrderType">
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="OrderTypeID" ColumnName="OrderTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPreferredCarrierList">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblPreferredCarrierList">
+        <MappingFragment StoreEntitySet="tblPreferredCarrierList">
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="xxNonHazCarrier2ndChoice" ColumnName="xxNonHazCarrier2ndChoice" />
+          <ScalarProperty Name="HazIncoTermsAshLand_Importer" ColumnName="HazIncoTermsAshLand_Importer" />
+          <ScalarProperty Name="NonHazIncoTermsAshLand_Importer" ColumnName="NonHazIncoTermsAshLand_Importer" />
+          <ScalarProperty Name="NotesIATA_ADR" ColumnName="NotesIATA_ADR" />
+          <ScalarProperty Name="NotesAlgemeen" ColumnName="NotesAlgemeen" />
+          <ScalarProperty Name="IncoTermsDSM" ColumnName="IncoTermsDSM" />
+          <ScalarProperty Name="HazIncoTerms" ColumnName="HazIncoTerms" />
+          <ScalarProperty Name="HazCarrierADR" ColumnName="HazCarrierADR" />
+          <ScalarProperty Name="HazCarrierADR_LQ" ColumnName="HazCarrierADR_LQ" />
+          <ScalarProperty Name="HazIATA_Lg" ColumnName="HazIATA_Lg" />
+          <ScalarProperty Name="HazIATA_Sm" ColumnName="HazIATA_Sm" />
+          <ScalarProperty Name="NonHazIncoTerms" ColumnName="NonHazIncoTerms" />
+          <ScalarProperty Name="NonHaz_Lg" ColumnName="NonHaz_Lg" />
+          <ScalarProperty Name="NonHaz_Sm" ColumnName="NonHaz_Sm" />
+          <ScalarProperty Name="CommercialInvoice" ColumnName="CommercialInvoice" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+          <ScalarProperty Name="PreferredCarrierListID" ColumnName="PreferredCarrierListID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProductXRef">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblProductXRef">
+        <MappingFragment StoreEntitySet="tblProductXRef">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="CustSize" ColumnName="CustSize" />
+          <ScalarProperty Name="CustProductName" ColumnName="CustProductName" />
+          <ScalarProperty Name="CustProductCode" ColumnName="CustProductCode" />
+          <ScalarProperty Name="CMCSize" ColumnName="CMCSize" />
+          <ScalarProperty Name="CMCProductCode" ColumnName="CMCProductCode" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="ProductXRefID" ColumnName="ProductXRefID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProfile">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblProfile">
+        <MappingFragment StoreEntitySet="tblProfile">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="BillingCode" ColumnName="BillingCode" />
+          <ScalarProperty Name="CustCode" ColumnName="CustCode" />
+          <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+          <ScalarProperty Name="Alert" ColumnName="Alert" />
+          <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="AirHazard" ColumnName="AirHazard" />
+          <ScalarProperty Name="GroundHazard" ColumnName="GroundHazard" />
+          <ScalarProperty Name="Mnemonic" ColumnName="Mnemonic" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ProfArea" ColumnName="ProfArea" />
+          <ScalarProperty Name="BusArea" ColumnName="BusArea" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSampSize">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblSampSize">
+        <MappingFragment StoreEntitySet="tblSampSize">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+          <ScalarProperty Name="WebOEInclude" ColumnName="WebOEInclude" />
+          <ScalarProperty Name="InactiveSize" ColumnName="InactiveSize" />
+          <ScalarProperty Name="New" ColumnName="New" />
+          <ScalarProperty Name="OtherSurchargeAmt" ColumnName="OtherSurchargeAmt" />
+          <ScalarProperty Name="OtherSurcharge" ColumnName="OtherSurcharge" />
+          <ScalarProperty Name="LabelSurcharge" ColumnName="LabelSurcharge" />
+          <ScalarProperty Name="KosherSurcharge" ColumnName="KosherSurcharge" />
+          <ScalarProperty Name="BiocideSurcharge" ColumnName="BiocideSurcharge" />
+          <ScalarProperty Name="NitrogenSurcharge" ColumnName="NitrogenSurcharge" />
+          <ScalarProperty Name="NalgeneSurcharge" ColumnName="NalgeneSurcharge" />
+          <ScalarProperty Name="BlendSurcharge" ColumnName="BlendSurcharge" />
+          <ScalarProperty Name="CleanSurcharge" ColumnName="CleanSurcharge" />
+          <ScalarProperty Name="FreezerSurcharge" ColumnName="FreezerSurcharge" />
+          <ScalarProperty Name="RefrigeratorSurcharge" ColumnName="RefrigeratorSurcharge" />
+          <ScalarProperty Name="HeatSurcharge" ColumnName="HeatSurcharge" />
+          <ScalarProperty Name="FlammableSurcharge" ColumnName="FlammableSurcharge" />
+          <ScalarProperty Name="HazardSurcharge" ColumnName="HazardSurcharge" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+          <ScalarProperty Name="SampSizeID" ColumnName="SampSizeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblState">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblState">
+        <MappingFragment StoreEntitySet="tblState">
+          <ScalarProperty Name="StateAbbr" ColumnName="StateAbbr" />
+          <ScalarProperty Name="StateName" ColumnName="StateName" />
+          <ScalarProperty Name="StateID" ColumnName="StateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblStatusNotes">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblStatusNotes">
+        <MappingFragment StoreEntitySet="tblStatusNotes">
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="StatusNotesID" ColumnName="StatusNotesID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSurcharge">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblSurcharge">
+        <MappingFragment StoreEntitySet="tblSurcharge">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="LabelFee" ColumnName="LabelFee" />
+          <ScalarProperty Name="Nalgene" ColumnName="Nalgene" />
+          <ScalarProperty Name="Freezer" ColumnName="Freezer" />
+          <ScalarProperty Name="Refrig" ColumnName="Refrig" />
+          <ScalarProperty Name="Heat" ColumnName="Heat" />
+          <ScalarProperty Name="Clean" ColumnName="Clean" />
+          <ScalarProperty Name="Flam" ColumnName="Flam" />
+          <ScalarProperty Name="Haz" ColumnName="Haz" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="SurchargeID" ColumnName="SurchargeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTier">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblTier">
+        <MappingFragment StoreEntitySet="tblTier">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="HiSampAmt" ColumnName="HiSampAmt" />
+          <ScalarProperty Name="LoSampAmt" ColumnName="LoSampAmt" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Tier" ColumnName="Tier" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="TierID" ColumnName="TierID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUser">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblUser">
+        <MappingFragment StoreEntitySet="tblUser">
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="UserLevel" ColumnName="UserLevel" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="LocationDefault" ColumnName="LocationDefault" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClientIncidentalRate">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblClientIncidentalRate">
+        <MappingFragment StoreEntitySet="tblClientIncidentalRate">
+          <ScalarProperty Name="ITProjectSupport" ColumnName="ITProjectSupport" />
+          <ScalarProperty Name="InactiveStockStorage" ColumnName="InactiveStockStorage" />
+          <ScalarProperty Name="EmptyPail" ColumnName="EmptyPail" />
+          <ScalarProperty Name="EmptyContainer" ColumnName="EmptyContainer" />
+          <ScalarProperty Name="RushShipment" ColumnName="RushShipment" />
+          <ScalarProperty Name="CCProcessFee" ColumnName="CCProcessFee" />
+          <ScalarProperty Name="MsdsCoaPrint" ColumnName="MsdsCoaPrint" />
+          <ScalarProperty Name="RelabelLabor" ColumnName="RelabelLabor" />
+          <ScalarProperty Name="Relabel" ColumnName="Relabel" />
+          <ScalarProperty Name="LabelPrint" ColumnName="LabelPrint" />
+          <ScalarProperty Name="LabelSetup" ColumnName="LabelSetup" />
+          <ScalarProperty Name="ProductMaintenance" ColumnName="ProductMaintenance" />
+          <ScalarProperty Name="ProductSetup" ColumnName="ProductSetup" />
+          <ScalarProperty Name="FollowUp" ColumnName="FollowUp" />
+          <ScalarProperty Name="ManualEntryRevenue" ColumnName="ManualEntryRevenue" />
+          <ScalarProperty Name="ManualEntry" ColumnName="ManualEntry" />
+          <ScalarProperty Name="NetDayTradeCredit" ColumnName="NetDayTradeCredit" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblClientInvoiceTrans">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblClientInvoiceTrans">
+        <MappingFragment StoreEntitySet="tblClientInvoiceTrans">
+          <ScalarProperty Name="ChargePailsFreight" ColumnName="ChargePailsFreight" />
+          <ScalarProperty Name="ChargeEmptyDrum" ColumnName="ChargeEmptyDrum" />
+          <ScalarProperty Name="ChargeGlobalProcessing" ColumnName="ChargeGlobalProcessing" />
+          <ScalarProperty Name="CreditCC" ColumnName="CreditCC" />
+          <ScalarProperty Name="ChargeITProjectSupport" ColumnName="ChargeITProjectSupport" />
+          <ScalarProperty Name="ChargeInactiveStockStorage" ColumnName="ChargeInactiveStockStorage" />
+          <ScalarProperty Name="ChargeEmptyPail" ColumnName="ChargeEmptyPail" />
+          <ScalarProperty Name="ChargeEmptyContainer" ColumnName="ChargeEmptyContainer" />
+          <ScalarProperty Name="ChargeRushShipment" ColumnName="ChargeRushShipment" />
+          <ScalarProperty Name="ChargeCCProcessFee" ColumnName="ChargeCCProcessFee" />
+          <ScalarProperty Name="ChargeMsdsCoaPrint" ColumnName="ChargeMsdsCoaPrint" />
+          <ScalarProperty Name="ChargeRelabelLabor" ColumnName="ChargeRelabelLabor" />
+          <ScalarProperty Name="ChargeRelabel" ColumnName="ChargeRelabel" />
+          <ScalarProperty Name="ChargeLabelPrint" ColumnName="ChargeLabelPrint" />
+          <ScalarProperty Name="ChargeLabelSetup" ColumnName="ChargeLabelSetup" />
+          <ScalarProperty Name="ChargeProductMaintenance" ColumnName="ChargeProductMaintenance" />
+          <ScalarProperty Name="ChargeProductSetup" ColumnName="ChargeProductSetup" />
+          <ScalarProperty Name="ChargeFollowUp" ColumnName="ChargeFollowUp" />
+          <ScalarProperty Name="ChargeManualEntryRevenue" ColumnName="ChargeManualEntryRevenue" />
+          <ScalarProperty Name="ChargeManualEntry" ColumnName="ChargeManualEntry" />
+          <ScalarProperty Name="ChargeGrandTotal" ColumnName="ChargeGrandTotal" />
+          <ScalarProperty Name="TotalShipOther" ColumnName="TotalShipOther" />
+          <ScalarProperty Name="TotalShipSecondDay" ColumnName="TotalShipSecondDay" />
+          <ScalarProperty Name="TotalShipNextDay" ColumnName="TotalShipNextDay" />
+          <ScalarProperty Name="TotalShipSameDay" ColumnName="TotalShipSameDay" />
+          <ScalarProperty Name="TotalChargesDue" ColumnName="TotalChargesDue" />
+          <ScalarProperty Name="TotalAdminCharges" ColumnName="TotalAdminCharges" />
+          <ScalarProperty Name="TotalFreightHzd" ColumnName="TotalFreightHzd" />
+          <ScalarProperty Name="TotalFreight" ColumnName="TotalFreight" />
+          <ScalarProperty Name="TotalSampleCost" ColumnName="TotalSampleCost" />
+          <ScalarProperty Name="TotalSamples" ColumnName="TotalSamples" />
+          <ScalarProperty Name="RemitToCountry" ColumnName="RemitToCountry" />
+          <ScalarProperty Name="RemitToZip" ColumnName="RemitToZip" />
+          <ScalarProperty Name="RemitToState" ColumnName="RemitToState" />
+          <ScalarProperty Name="RemitToCity" ColumnName="RemitToCity" />
+          <ScalarProperty Name="RemitToAddress2" ColumnName="RemitToAddress2" />
+          <ScalarProperty Name="RemitToAddress1" ColumnName="RemitToAddress1" />
+          <ScalarProperty Name="RemitToAtention" ColumnName="RemitToAtention" />
+          <ScalarProperty Name="RemitToCompany" ColumnName="RemitToCompany" />
+          <ScalarProperty Name="BillClientCountry" ColumnName="BillClientCountry" />
+          <ScalarProperty Name="BillClientZip" ColumnName="BillClientZip" />
+          <ScalarProperty Name="BillClientState" ColumnName="BillClientState" />
+          <ScalarProperty Name="BillClientCity" ColumnName="BillClientCity" />
+          <ScalarProperty Name="BillClientAddress2" ColumnName="BillClientAddress2" />
+          <ScalarProperty Name="BillClientAddress1" ColumnName="BillClientAddress1" />
+          <ScalarProperty Name="BillClientAttention" ColumnName="BillClientAttention" />
+          <ScalarProperty Name="BillClientName" ColumnName="BillClientName" />
+          <ScalarProperty Name="BillClientID" ColumnName="BillClientID" />
+          <ScalarProperty Name="NetDayTradeCredit" ColumnName="NetDayTradeCredit" />
+          <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+          <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+          <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+          <ScalarProperty Name="InvoiceTransID" ColumnName="InvoiceTransID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

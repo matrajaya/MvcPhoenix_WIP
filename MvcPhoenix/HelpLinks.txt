@@ -1,0 +1,10 @@
+http://stackoverflow.com/questions/2595830/passing-multiple-parameters-in-an-mvc-ajax-actionlink
+
+
+Answer:
+http://stackoverflow.com/questions/7840291/actionlink-jquery-parameter
+
+http://stackoverflow.com/questions/6699301/passing-parameters-to-mvc-ajax-actionlink
+
+http://www.codeitive.com/0xyjXjUkjP/aspnet-mvc-30-ajaxactionlink-dynamic-object-route-values-using-javascript.html
+

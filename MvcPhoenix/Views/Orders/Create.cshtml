@@ -1,0 +1,352 @@
+﻿@model MvcPhoenix.Models.OrderMasterFull
+
+@{
+    ViewBag.Title = "Create New Order";
+    
+    ViewData["LastMessage"] = Session["LastMessage"];
+    ViewData["strOrderID"] = Model.orderid == -1 ? "New" : Model.orderid.ToString();
+    
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div>
+            <a name="top"><img src="~/Content/images/logos/acme.svg" style="float: right" alt="acme logo"></a>
+        </div>
+    </div>
+
+    <!-- Top of page panel to hold messages -->
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                @Model.ClientName &bull; Order ID:  @ViewData["strOrderID"] &nbsp;&bull;&nbsp;
+                @Model.orderdate.Value.ToString("dd-MMM-yyy") &nbsp;&bull;&nbsp; Ship To: @Model.company
+            </h4>
+        </div>
+
+        <div class="panel-body">
+            <h5>
+                @Html.ActionLink("Return to Landing Page", "Index", "Orders", null, new { @class = "btn btn-xs btn-default" })
+                &nbsp;&nbsp;@Html.ActionLink("Sample Action2", "Index", "Orders", null, new { @class = "btn btn-xs btn-default" })
+                &nbsp;&nbsp;@Html.ActionLink("Sample Action3", "Index", "Orders", null, new { @class = "btn btn-xs btn-default" })
+                &nbsp;&nbsp;@Html.ActionLink("Sample Action4", "Index", "Orders", null, new { @class = "btn btn-xs btn-default" })
+            </h5>
+            <h5 class="text-primary">@ViewData["LastMessage"]</h5>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("SavePostData", "Orders"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.orderid)
+
+        <input type="hidden" value="@Model.clientid" name="hiddenclientid" id="hiddenclientid" />
+
+        <div>
+            <div class="form-group"></div>
+            <!--Start: Client Information Section-->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Order Header &bull; @Model.ClientName</h3>
+                </div>
+                <div class="panel-body">
+                   @* <div class="form-group col-md-12">
+
+    @Html.LabelFor(m => m.clientid, htmlAttributes: new { @class = "control-label" })
+    @Html.DropDownListFor(m => m.clientid, MvcPhoenix.Models.CMC01.fnListOfClientIDs(), new { @disabled = "disabled" })
+
+                    </div>*@
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.orderdate, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(m => m.orderdate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.orderdate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.custordnum, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(m => m.custordnum, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.custordnum, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.custrefnum, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(m => m.custrefnum, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.custrefnum, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.division, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.division, MvcPhoenix.Models.CMC01.fnListOfDivisions(Model.clientid), new { onchange = "ChangeDivision();return false();" })
+                        @Html.ValidationMessageFor(m => m.division, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.busarea, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(m => m.busarea, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(m => m.busarea, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.ordertype, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.ordertype, MvcPhoenix.Models.CMC01.fnListOfOrderTypes())
+                        @Html.ValidationMessageFor(m => m.ordertype, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.source, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.source, MvcPhoenix.Models.CMC01.fnListOfOrderSources())
+                        @Html.ValidationMessageFor(model => model.source, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.shipvia, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.shipvia, MvcPhoenix.Models.CMC01.fnListOfShipVias())
+                        @Html.ValidationMessageFor(model => model.shipvia, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.shipacct, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.shipacct, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.shipacct, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.timing, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.timing, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.timing, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.volume, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.volume, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.volume, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.volume, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.volume, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.volume, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.spsfreightcost, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.spsfreightcost, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.spsfreightcost, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.spsshippedwt, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.spsshippedwt, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.spsshippedwt, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.spsshippedwt, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.spsshippedwt, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.spsshippedwt, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.importdateline, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.DisplayFor(m => m.importdateline)
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.enduse, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.enduse, MvcPhoenix.Models.CMC01.fnListOfEndUses(Model.clientid))
+                        @Html.ValidationMessageFor(model => model.enduse, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="panel-footer text-center">
+                    <a href="#bottom" class="btn btn-xs btn-info">Go to Bottom</a>
+                    &nbsp;<a href="#top" class="btn btn-xs btn-info">Go to Top</a>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sampled Items &bull; @Model.ClientName</h3>
+                </div>
+                <div class="panel-body">
+                    @Html.Partial("~/Views/Orders/OrderItemGrid02.cshtml",Model)
+                </div>
+                <div class="panel-footer text-center">
+                    <a href="#bottom" class="btn btn-xs btn-info">Go to Bottom</a>
+                    &nbsp;<a href="#top" class="btn btn-xs btn-info">Go to Top</a>
+                </div>
+            </div>
+
+            <!--Start: Product Selection Section-->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Add/Edit Product Item &bull; @Model.ClientName</h3>
+                </div>
+                <div class="panel-body">
+                    <p>This panel will be the div id that gets popped up to add or edit an order item</p>
+                    <p>I think a partial view bound to an OrderItem object</p>
+                    <p>One item at a time, maybe a form pager?</p>
+                </div>
+                <div class="panel-footer">
+                    @Html.ActionLink("Close", "Index", "Orders", new { @class = "btn btn-xs btn-info" })
+                </div>
+            </div>
+            <!--End: Product Selection Section-->
+            <!--Start: Ship-To Information Section-->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Ship To Details &bull; @Model.ClientName</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.attention, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.attention, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.attention, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.company, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.company, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.company, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.phone, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.fax, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.fax, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.fax, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.street, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.street, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.street, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.street2, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.street2, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.street2, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.street3, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.street3, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.street3, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.city, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.state, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.state, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.Zip, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.country, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.country, MvcPhoenix.Models.CMC01.fnListOfCountries())
+                        @Html.ValidationMessageFor(model => model.country, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <a href="#bottom" class="btn btn-xs btn-info">Go to Bottom</a>
+                    <a href="#top" class="btn btn-xs btn-info">Go to Top</a>
+                    @Html.ActionLink("Add To Lookup", "Index", "Orders", new { @class = "btn btn-xs btn-info" })
+                    @Html.ActionLink("Edit BlackList", "Index", "Orders", new { @class = "btn btn-xs btn-info" })
+                </div>
+            </div>
+            <!--End: Ship-To Information Section-->
+            <!--Start: Requestor Information Section-->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Requestor/Sales Rep Information &bull; @Model.ClientName</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.req, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.req, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.req, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.reqemail, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.reqemail, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.reqemail, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.reqphone, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.reqphone, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.reqphone, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.reqfax, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.reqfax, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.reqfax, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.salesrep, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.salesrep, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.salesrep, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.sales_email, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.sales_email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.sales_email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.reqemail, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.reqemail, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.reqemail, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.reqphone, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.reqphone, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.reqphone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="panel-footer text-center">
+                    <a href="#bottom" class="btn btn-xs btn-info">Go to Bottom</a>
+                    <a href="#top" class="btn btn-xs btn-info">Go to Top</a>
+                </div>
+            </div>
+            <!--End: Requestor Information Section-->
+            <!--Start: Special Instructions Section-->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Special Instructions &bull; @Model.ClientName</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.special, new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.special, new { @class = "form-control", @rows = 10 })
+                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <a href="#bottom" class="btn btn-xs btn-info">Go to Bottom</a>
+                    <a href="#top" class="btn btn-xs btn-info">Go to Top</a>
+                </div>
+            </div>
+            <!--End: Special Instructions Section-->
+
+            <a name="bottom" class="text-center">
+                <div class=" col-md-12">
+                    <input type="submit" value="Save Changes To Order" class="btn btn-success btn-block" />
+                </div>
+                <div class="clearfix"></div>
+            </a>
+        </div>
+    }
+
+    <a href="#top">Back to Top</a>
+
+</div>
+
+
+
+<script type="text/javascript">
+    function ChangeDivision() {
+        window.location.href =@String.Format("'{0}'",Url.Content("~/OrderMaint/ChangeDivision/")) +$('#Division').val();
+    }
+</script>
+
+
+

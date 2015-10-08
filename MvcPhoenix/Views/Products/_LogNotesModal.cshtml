@@ -1,0 +1,45 @@
+﻿@model MvcPhoenix.Models.ProductMaster
+@using MvcPhoenix.Models
+@{}
+
+
+
+<div class="row">
+    <div class="col-md-6 form-group">
+        <label>Date</label>
+        <input class="form-control" type="date">
+    </div>
+    <div class="col-md-6 form-group">
+        <label>Product Code</label>
+        <input class="form-control" value="0123987">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 form-group">
+        <label>Reason Code</label>
+        <select class="form-control">
+            <option></option>
+            <option>Change Client</option>
+            <option>Change Division</option>
+            <option>Change Handling</option>
+            <option>...</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 form-group">
+        <label>Notes</label>
+        <textarea class="form-control"></textarea>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 form-group">
+        <input class="btn btn-success btn-block" type="button" value="Save" />
+    </div>
+    <div class="col-md-6 form-group">
+        <input class="btn btn-danger btn-block" type="button" data-dismiss="modal" value="Close" />
+    </div>
+</div>
