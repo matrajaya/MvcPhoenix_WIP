@@ -532,6 +532,12 @@
     <Content Include="Views\Products\_WasteProfileModal.cshtml" />
     <Content Include="Views\Orders\OrderImport.cshtml" />
     <Content Include="Views\ClientDetail\Index.cshtml" />
+    <Content Include="Views\ClientDetail\_EndUse.cshtml" />
+    <Content Include="Views\ClientDetail\_Suppliers.cshtml" />
+    <Content Include="Views\ClientDetail\_Contacts.cshtml" />
+    <Content Include="Views\ClientDetail\_ContactsModal.cshtml" />
+    <Content Include="Views\ClientDetail\_EndUseModal.cshtml" />
+    <Content Include="Views\ClientDetail\_SuppliersModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
