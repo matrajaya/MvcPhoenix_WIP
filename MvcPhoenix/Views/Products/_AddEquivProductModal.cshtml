@@ -1,7 +1,7 @@
 ﻿@model MvcPhoenix.Models.ProductViewModel
 @using MvcPhoenix.Models
 @{}
-<label><a href="#" class="" data-toggle="modal" data-target="#addequivprod">Add Equivalent Product</a></label>
+@*<label><a href="#" class="" data-toggle="modal" data-target="#addequivprod">Add Equivalent Product</a></label>*@
 <div id="addequivprod" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -10,45 +10,8 @@
                 <h4 class="modal-title">Add Product</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label>Client</label>
-                        <select class="form-control">
-                            <option>Select Client</option>
-                            <option>Akzo Nobel</option>
-                            <option>Clariant</option>
-                            <option>DSM</option>
-                            <option>Elementis</option>
-                            <option>Evonik</option>
-                            <option>Grace</option>
-                            <option>Lonza</option>
-                            <option>OMG</option>
-                            <option>Stepan</option>
-                            <option>Thor</option>
-                            <option>Wacker</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label>Is this an equivalent product?</label>
-                        <div class="form-group">
-                            <label><input type="checkbox" class="checkbox newequivalentshow" name="producttype">Yes</label><!--load the div below-->
-                            <label class="pull-right"><input type="checkbox" class="checkbox" name="producttype">No</label><!--Open Product Profile/Create-->
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-
-                <form>
-                    <div id="newEquivalent" class="row toggle_newequivalentshow">
-                        <div class="form-group col-md-12">
-                            <select class="form-control">
-                                <option>MasterCode1</option>
-                                <option>MasterCode2</option>
-                                <option>MasterCode3</option>
-                            </select>
-                        </div>
+               <form>
+                    <div id="newEquivalent" class="row">
                         <div class="form-group col-md-6">
                             <label>BusArea</label>
                             <input class="form-control" />
@@ -162,7 +125,6 @@
                             <input class="form-control" />
                         </div>
 
-
                         <div class="form-group col-md-6">
                             <label>Customs Value</label>
                             <input class="form-control" />
@@ -175,24 +137,16 @@
                         <div class="clearfix"></div>
 
                         <div class="col-md-6 form-group">
-                            <input class="btn btn-success btn-block" type="button" value="Save" />
+                            <a href="~/Products/Edit">
+                                <input class="btn btn-success btn-block" type="button" value="Save" />
+                            </a>
                         </div>
                         <div class="col-md-6 form-group">
                             <input class="btn btn-danger btn-block" type="button" data-dismiss="modal" value="Close" />
                         </div>
-
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        $("input.newequivalentshow").click(function () {
-            //$(this).next(".toggle_newequivalentshow").slideToggle("slow");
-            $("toggle_newequivalentshow").show();
-        });
-    });
-</script>

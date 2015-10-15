@@ -4,7 +4,6 @@
 
 <div class="container-fluid">
 
-
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
@@ -31,7 +30,7 @@
                         <form>
                             <div class="input-group">
                                 <select class="form-control">
-                                    <option>Select Client</option>
+                                    <option>-- Select Client --</option>
                                     <option>Akzo Nobel</option>
                                     <option>Clariant</option>
                                     <option>DSM</option>
@@ -44,12 +43,12 @@
                                     <option>Thor</option>
                                     <option>Wacker</option>
                                 </select>
-                                <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create Original Product" /></span>
+                                <span class="input-group-btn"><a href="~/Products/Edit"><input type="button" class="btn btn-success" value="Create" /></a></span>
+                                @*<span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create" /></span>*@
                             </div>
                         </form>
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <div class="alert alert-warning">
                         <label>Create Equivalent Product Profile</label>
@@ -57,7 +56,7 @@
                         <form>
                             <div class="form-group">
                                 <select class="form-control">
-                                    <option>Select Client</option>
+                                    <option>-- Select Client --</option>
                                     <option>Akzo Nobel</option>
                                     <option>Clariant</option>
                                     <option>DSM</option>
@@ -80,11 +79,20 @@
                                     <option>12345D - Product Name</option>
                                     <option>12345E - Product Name</option>
                                 </select>
-                                <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create Equivalent Product" /></span>
+                                <span class="input-group-btn"><a href ="#" class="" data-toggle="modal" data-target="#addequivprod"><input type="submit" class="btn btn-success" value="Create" /></a></span>
+                                @*<span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create" /></span>*@
                             </div>
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <div id="">
+                @Html.Partial("~/Views/Products/_AddEquivProductModal.cshtml")
             </div>
         </div>
     </div>
@@ -96,6 +104,7 @@
                     <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Edit</h3>
                 </div>
                 <div class="panel-body">
+                    <label>Edit Product Profile</label>
                     <form>
                         <div class="form-group">
                             <select class="form-control">
@@ -122,22 +131,56 @@
                                 <option>12345D - Product Name</option>
                                 <option>12345E - Product Name</option>
                             </select>
-                            <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Edit Product Profile" /></span>
+                            <span class="input-group-btn"><a href="~/Products/Edit"><input type="button" class="btn btn-success" value="Edit Product" /></a></span>
+                            @*<span class="input-group-btn"><input type="submit" class="btn btn-success" value="Edit Product" /></span>*@
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Review</h3>
                 </div>
                 <div class="panel-body">
-
+                    <label>Open In Read Only Mode</label>
+                    <form>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>-- Select Client --</option>
+                                <option>Akzo Nobel</option>
+                                <option>Clariant</option>
+                                <option>DSM</option>
+                                <option>Elementis</option>
+                                <option>Evonik</option>
+                                <option>Grace</option>
+                                <option>Lonza</option>
+                                <option>OMG</option>
+                                <option>Stepan</option>
+                                <option>Thor</option>
+                                <option>Wacker</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select class="form-control">
+                                <option>-- Select Product Code --</option>
+                                <option>12345A - Product Name</option>
+                                <option>12345B - Product Name</option>
+                                <option>12345C - Product Name</option>
+                                <option>12345D - Product Name</option>
+                                <option>12345E - Product Name</option>
+                            </select>
+                            <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Review" /></span>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    
+
 </div>
 

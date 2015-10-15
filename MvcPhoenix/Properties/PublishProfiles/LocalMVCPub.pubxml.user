@@ -52,7 +52,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2015 13:39:40</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll">
-      <publishTime>10/14/2015 17:17:04</publishTime>
+      <publishTime>10/15/2015 15:06:38</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll.config">
       <publishTime>10/08/2015 10:08:26</publishTime>
@@ -436,7 +436,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2015 13:39:30</publishTime>
     </File>
     <File Include="Views/ClientDetail/Index.cshtml">
-      <publishTime>10/12/2015 16:26:57</publishTime>
+      <publishTime>10/15/2015 15:54:16</publishTime>
     </File>
     <File Include="Views/ClientDetail/_Contacts.cshtml">
       <publishTime>10/12/2015 17:10:58</publishTime>
@@ -555,8 +555,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Orders/_TransEditModal.cshtml">
       <publishTime>07/31/2015 12:20:16</publishTime>
     </File>
+    <File Include="Views/Products/Edit.cshtml">
+      <publishTime>10/15/2015 14:51:30</publishTime>
+    </File>
     <File Include="Views/Products/Index.cshtml">
-      <publishTime>10/14/2015 13:56:30</publishTime>
+      <publishTime>10/15/2015 14:54:51</publishTime>
+    </File>
+    <File Include="Views/Products/_AddEquivProductModal.cshtml">
+      <publishTime>10/15/2015 15:00:22</publishTime>
     </File>
     <File Include="Views/Products/_AddProductModal.cshtml">
       <publishTime>10/14/2015 17:16:13</publishTime>
