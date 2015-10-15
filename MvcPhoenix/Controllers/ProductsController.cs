@@ -10,8 +10,14 @@ namespace MvcPhoenix.Controllers
     {
         //
         // GET: /Products/
-
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        //
+        // GET: /Products/Edit
+        public ActionResult Edit()
         {
             return View();
         }

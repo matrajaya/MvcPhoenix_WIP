@@ -19,6 +19,14 @@
     <form role="form">
         <div class="row">
             <div class="form-group col-md-12">
+                <div id="">
+                    @Html.Partial("~/Views/Products/_AddProductModal.cshtml")
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-12">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
                     <input type="search" class="form-control" placeholder="Type Product Code...">

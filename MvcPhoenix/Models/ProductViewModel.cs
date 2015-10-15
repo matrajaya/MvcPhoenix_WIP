@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
-    public class ProductMaster
+    public class ProductViewModel
     {
         [Display(Name = "Client Name")]
         public string ClientName { get; set; }

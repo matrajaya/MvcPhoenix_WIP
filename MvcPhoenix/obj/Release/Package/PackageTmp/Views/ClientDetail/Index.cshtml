@@ -1,0 +1,457 @@
+﻿@{
+    ViewBag.Title = "Client Detail Management";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title <small>: Elementis</small>
+            </h1>
+        </div>
+    </div>
+    <!-- /.Page Heading -->
+
+    <form role="form">
+        <div class="row">
+            <div class="form-group col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
+                    @*<input type="search" class="form-control" placeholder="Type Product Code...">*@
+                    <!--Populate with Clients in user's location-->
+                    <select class="form-control">
+                        <option>Select Client</option>
+                        <option>Akzo Nobel</option>
+                        <option>Clariant</option>
+                        <option>DSM</option>
+                        <option>Elementis</option>
+                        <option>Evonik</option>
+                        <option>Grace</option>
+                        <option>Lonza</option>
+                        <option>OMG</option>
+                        <option>Stepan</option>
+                        <option>Thor</option>
+                        <option>Wacker</option>
+                    </select>
+                    <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                </div>
+                <hr />
+            </div>
+        </div>
+
+        <!-- Client Information -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#clientinfopanel"><i class="fa fa-book fa-fw"></i> Client Information</h3>
+            </div>
+            <div id="clientinfopanel" class="panel-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Invoice Details</strong>
+                            </div>
+                            <div class="panel-body">
+                                <span class="col-md-6">
+                                    <strong>Invoice Address</strong>
+                                    <br />Elementis UK Ltd
+                                    <br />c/o Elementis GmbH
+                                    <br />Stolberger Str. 370
+                                    <br />50933 Cologne
+                                    <br />Germany
+                                </span>
+                                <span class="col-md-6">
+                                    <strong>E-mail Invoice To:</strong>
+                                    <br /><a href="mailto:caroline.steinbeiss@elementis-eu.com">caroline.steinbeiss@elementis-eu.com</a>
+                                    <br /><a href="mailto:cor.vanrossum@elementis.com">cor.vanrossum@elementis.com</a>
+                                    <br /><a href="mailto:eric.zegger@elementis.com">eric.zegger@elementis.com</a>
+                                    <br /><a href="mailto:frank.kramer@elementis.com">frank.kramer@elementis.com</a>
+                                    <br /><a href="mailto:john.coulson@elementis.com">john.coulson@elementis.com</a>
+                                    <br /><a href="mailto:kathrin.schmitt@elementis.com">kathrin.schmitt@elementis.com</a>
+                                    <br /><a href="mailto:luc.plattiau@elementis.com">luc.plattiau@elementis.com</a>
+                                    <br /><a href="mailto:michel.degraaf@elementis.com">michel.degraaf@elementis.com</a>
+                                    <br /><a href="mailto:sandra.runderkamp@elementis.com">sandra.runderkamp@elementis.com</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Quick Directory</strong>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-hover table-striped">
+                                    <tr>
+                                        <th>Contact Person(s)</th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                    </tr>
+                                    <tr>
+                                        <td>CMCE Customer service</td>
+                                        <td>Order entry team</td>
+                                        <td>+ 31 (0)416 651 977</td>
+                                        <td>
+                                            <a href="mailto:akzo_nobel@chemicalmarketing.nl">akzo_nobel@chemicalmarketing.nl</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CMCE Inventory / replenishment</td>
+                                        <td>Inventory team</td>
+                                        <td>+ 31 (0)416 651 977</td>
+                                        <td>
+                                            <a href="mailto:akzonobel_inventory@chemicalmarketing.nl">akzonobel_inventory@chemicalmarketing.nl</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CMCE product set up</td>
+                                        <td>Data team</td>
+                                        <td>+ 31 (0)416 651 977</td>
+                                        <td>
+                                            <a href="mailto:data@chemicalmarketing.nl">data@chemicalmarketing.nl</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Client product set up</td>
+                                        <td>Duygu Korkmaz</td>
+                                        <td>+46 303 85-525</td>
+                                        <td><a href="mailto:Duygu.Korkmaz@akzonobel.com">Duygu.Korkmaz@akzonobel.com</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Client SDS / TDS</td>
+                                        <td>Duygu Korkmaz</td>
+                                        <td>+46 303 85 525</td>
+                                        <td><a href="mailto:Duygu.Korkmaz@akzonobel.com">Duygu.Korkmaz@akzonobel.com</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Client inventory / replenishment</td>
+                                        <td><p>Lars Cerrone</p></td>
+                                        <td><p>+46 (0)30385579</p></td>
+                                        <td><p><a href="mailto:Lars.Cerrone@akzonobel.com">Lars.Cerrone@akzonobel.com</a></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Back-up</td>
+                                        <td><p>Miguel Marques</p></td>
+                                        <td><p>+46 303 85264</p></td>
+                                        <td><p><a href="mailto:Miguel.Marques@akzonobel.com">Miguel.Marques@akzonobel.com</a></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Opvragen CoA's</td>
+                                        <td>
+                                            <p>Lars Cerrone</p>
+                                        </td>
+                                        <td>
+                                            <p>+46 (0)30385579</p>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <a href="mailto:Lars.Cerrone@akzonobel.com">Lars.Cerrone@akzonobel.com</a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><p>Andrea Marchese</p></td>
+                                        <td></td>
+                                        <td><p><a href="mailto:Andrea.Marchese@akzonobel.com">Andrea.Marchese@akzonobel.com</a></p></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Client Account Details</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <tr>
+                                            <td>Contact info Client:</td>
+                                            <td>
+                                                <p>Elise Rautenberg</p>
+                                                <p><a href="mailto:Elise.rautenberg@elementis.com">Elise.rautenberg@elementis.com</a><br>+49 221 2923 2081</p>
+                                                <p>Sarah Rausch<br>+49 (0) 221 2923 2068<br><a href="mailto:Sarah.Rausch@elementis.com">Sarah.Rausch@elementis.com</a></p>
+                                                <p>Surfactants:<br />Sandra Runderkamp (werkt dagelijks tot half 1)<br><a href="mailto:sandra.runderkamp@elementis.com">sandra.runderkamp@elementis.com</a><br>+31 (0)74 3775336<br></p>
+                                                <p>LTD: Sarah Rausch</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Contact Info CMC Europe:</td>
+                                            <td>
+                                                Order Entry team:<br>
+                                                <a href="mailto:elementis@chemicalmarketing.nl">elementis@chemicalmarketing.nl</a><br>
+                                                Inventory / Replenishment team:<br>
+                                                <a href="mailto:elementis_inventory@chemicalmarketing.nl">elementis_inventory@chemicalmarketing.nl</a><br>
+                                                Product set up / maintenance:<br>
+                                                <a href="mailto:data@chemicalmarketing.nl">data@chemicalmarketing.nl</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Website client</td>
+                                            <td>
+                                                <a href="http://www.elementis.com/" target="_blank">www.elementis.com</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Managing Support</td>
+                                            <td>
+                                                <a href="/eu/index.php/serviceprofiel/elementis/67-klantinformatie/elementis/448-elementis-managing-support"
+                                                   target="_blank">
+                                                    Click here to see the Managing Support
+                                                    information
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Product set up details</td>
+                                            <td>
+                                                0.25L: cmce-104 / cmce-405<br>
+                                                Verpakking bij voorkeur amber glas smalle hals, alleen bij
+                                                'viscous' producten een brede hals.<br>
+                                                SDS download site: <a href="http://www.elementis.com/esweb/esweb.nsf/pages/msds?opendocument">
+                                                    http://www.elementis.com/esweb/esweb.nsf/pages/msds?opendocument
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>SDS language(s)</td>
+                                            <td>GB,DE,FR,NL (if available)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SDS Updates</td>
+                                            <td>
+                                                No message to CMC, SDS's available on <a href="http://www.elementis.com/esweb/esweb.nsf/pages/msds?opendocument" target="_blank">Elementis website</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Label language(s)</td>
+                                            <td>GB</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Documents with shipments:</td>
+                                            <td>No</td>
+                                        </tr>
+                                        <tr>
+                                            <td>CoA</td>
+                                            <td>Yes</td>
+                                        </tr>
+                                        <tr>
+                                            <td>TDS</td>
+                                            <td>Yes (only when available)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Standard letter</td>
+                                            <td>
+                                                Yes, click <a href="/eu/images/Documents/Orderbeheer/ELEMENTIS%20-%20letter%20with%20samples%20shipment%20.pdf">HERE</a> to see the letter.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Inventory reports</td>
+                                            <td>
+                                                <ul>
+                                                    <li>Replenishment: weekly, Wednesday Elementis open bulk order report</li>
+                                                    <li>Expiry report: No</li>
+                                                    <li>Inactive report: Dec-Jun elementis inactive stock report</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Time period to cease shipments before expiry date/months</td>
+                                            <td>
+                                                Consumer/Consumer-Fancor: 90 days,<br>
+                                                Overige: 2 months
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Leadtime for replenishment</td>
+                                            <td>1.5 Month(s)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Expiry date on sample label</td>
+                                            <td>Yes</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Interpretation expiry date</td>
+                                            <td>
+                                                Based on calculation, see <a href="/eu/index.php/serviceprofiel/elementis/67-klantinformatie/elementis/410-elementis-inventory" target="_blank">inventory info</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Waste procedure</td>
+                                            <td>
+                                                Surfactants: retour Delden, zie <a href="/eu/index.php/serviceprofiel/elementis/67-klantinformatie/elementis/410-elementis-inventory" target="_blank">inventory info</a><br>
+                                                Overige divisies: Standard Sita Ecoservice
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Additional inventory instructions</td>
+                                            <td>
+                                                <p>
+                                                    <a href="/eu/index.php/serviceprofiel/elementis/67-klantinformatie/elementis/410-elementis-inventory" target="_blank">Click here to see the inventory info</a>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Checklist inventory</td>
+                                            <td>
+                                                <a href="/eu/index.php/serviceprofiel/elementis/67-klantinformatie/elementis/545-inventory-checklist-elementis" target="_blank">Click here to see the inventory checklist</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Special requests allowed</td>
+                                            <td>
+                                                Yes, only if quantity cannot be fulfilled with&nbsp;5
+                                                standard samples - Turning point: as of 5 samples
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Value on commercial invoice</td>
+                                            <td>&euro; 1.00 / L</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Freezable procedure</td>
+                                            <td>Yes</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Survey</td>
+                                            <td>No</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Business rules customer service</td>
+                                            <td>
+                                                <a href="/eu/index.php/serviceprofiel/elementis/67-klantinformatie/elementis/174-elementis-cs-info" target="_blank">Click here to see the customer service info</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email confirmations</td>
+                                            <td>
+                                                Shipping confirmation to: Requestors, Receivers, sales ep.<br>
+                                                Delay confirmation to: Requestors, Receivers, sales rep.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Web tool</td>
+                                            <td>Yes</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Invoicing on basis of</td>
+                                            <td>Division</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Additional charges</td>
+                                            <td>
+                                                <p>
+                                                    D&amp;H - UN number &euro; 23.42 (per shipment)<br>
+                                                    Miscellaneous:<br>
+                                                    Fax/mail (D-&hellip;.) &euro; 23.42<br>
+                                                    Certificate of Origin (D-&hellip;.) &euro; 75.-
+                                                </p>
+                                                <p>Handling repack 25L pails (H-....) &euro; 25.- per product</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Business Rules</strong>
+                            </div>
+                            <div class="panel-body">
+                                <p><strong>Partial Deliveries:</strong> Not with DHL Global Forwarding &amp; Wim Bosman &gt; &euro; 200</p>
+                                <p><strong>Orders met ACCOUNT nr. van een vervoerder</strong>:</p>
+                                <ul>
+                                    <li>account nrs. van onze eigen vervoerders kunnen gebruikt worden</li>
+                                    <li>account nrs. van andere vervoerders mogen we negeren en gewoon ons eigen proces volgen.</li>
+                                </ul>
+                                <p><strong>AZELIS RUSSIA</strong>: Geen gevarengoed sturen!!! Aanvrager informeren. Azelia geeft dan een alternatief afleveradres voor de betreffende order.</p>
+
+                                <p><strong>R&amp;D SAMPLES</strong>:</p>
+                                <ul>
+                                    <li>Elementis kan voor R&amp;D samples een order invoeren via ons web, de code is ELEM-RDSURF. In de special instructions wordt dan vermeld welk product en size het betreft.</li>
+                                    <li>Elementis stuurt de product(en) vervolgens hierheen, waarna we de order door kunnen sturen.</li>
+                                    <li>CMC delay vinkje aanzetten, met reason R&amp;D flow.</li>
+                                    <li>Er hoeven geen misc kosten voor in rekening gebracht te worden, deze zit al op de achtergrond bij de size verwerkt.</li>
+                                    <li>Wel moet in geval van gevarengoed handmatig de D&amp;H kosten ingevoerd worden.</li>
+                                </ul>
+
+                                <p><strong>PROMO Sample orders ivm coating show April 2015</strong></p>
+                                <p>Tijdelijk de volgende documenten meesturen indien "PROMO" vermeld in de order:</p>
+                                <ul>
+                                    <li>Post its boekje</li>
+                                    <li><a href="/eu/images/Documents/Customer%20info/_thank_you_note_for_samples.pdf">Begeleidende brief</a> (deze dubbelgevouwen bij de order doen)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Contacts Management -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#contactpanel"><i class="fa fa-book fa-fw"></i> Contacts</h3>
+            </div>
+            <div id="contactpanel" class="panel-body">
+                <div class="row">
+                    <div class="form-group">
+                        <div id="">
+                            @Html.Partial("~/Views/ClientDetail/_Contacts.cshtml")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Use Management -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#endusepanel"><i class="fa fa-book fa-fw"></i> End Use</h3>
+            </div>
+            <div id="endusepanel" class="panel-body">
+                <div class="row">
+                    <div class="form-group">
+                        <div id="">
+                            @Html.Partial("~/Views/ClientDetail/_EndUse.cshtml")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suppliers Information -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#supplierpanel"><i class="fa fa-book fa-fw"></i>Suppliers</h3>
+            </div>
+            <div id="supplierpanel" class="panel-body">
+                <div class="row">
+                    <div class="form-group">
+                        <div id="">
+                            @Html.Partial("~/Views/ClientDetail/_Suppliers.cshtml")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>

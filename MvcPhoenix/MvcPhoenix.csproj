@@ -538,6 +538,8 @@
     <Content Include="Views\ClientDetail\_ContactsModal.cshtml" />
     <Content Include="Views\ClientDetail\_EndUseModal.cshtml" />
     <Content Include="Views\ClientDetail\_SuppliersModal.cshtml" />
+    <Content Include="Views\Products\_AddEquivProductModal.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

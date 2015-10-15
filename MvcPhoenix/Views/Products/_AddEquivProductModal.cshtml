@@ -1,0 +1,198 @@
+﻿@model MvcPhoenix.Models.ProductViewModel
+@using MvcPhoenix.Models
+@{}
+<label><a href="#" class="" data-toggle="modal" data-target="#addequivprod">Add Equivalent Product</a></label>
+<div id="addequivprod" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Product</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Client</label>
+                        <select class="form-control">
+                            <option>Select Client</option>
+                            <option>Akzo Nobel</option>
+                            <option>Clariant</option>
+                            <option>DSM</option>
+                            <option>Elementis</option>
+                            <option>Evonik</option>
+                            <option>Grace</option>
+                            <option>Lonza</option>
+                            <option>OMG</option>
+                            <option>Stepan</option>
+                            <option>Thor</option>
+                            <option>Wacker</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>Is this an equivalent product?</label>
+                        <div class="form-group">
+                            <label><input type="checkbox" class="checkbox newequivalentshow" name="producttype">Yes</label><!--load the div below-->
+                            <label class="pull-right"><input type="checkbox" class="checkbox" name="producttype">No</label><!--Open Product Profile/Create-->
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <form>
+                    <div id="newEquivalent" class="row toggle_newequivalentshow">
+                        <div class="form-group col-md-12">
+                            <select class="form-control">
+                                <option>MasterCode1</option>
+                                <option>MasterCode2</option>
+                                <option>MasterCode3</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>BusArea</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Product Code</label>
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Product Name</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Client Product Code</label><!--CustCode-->
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label>Product Description</label>
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th><label>MultiLotReq</label></th>
+                                        <th style="text-align: center"><input type="checkbox" name="MultiLotReq"></th>
+                                    </tr>
+                                    <tr>
+                                        <th><label>ExtendableExpDt</label></th>
+                                        <th style="text-align: center"><input type="checkbox" name="ExtendableExpDt"></th>
+                                    </tr>
+                                    <tr>
+                                        <th><label>EPABiocide</label></th>
+                                        <th style="text-align: center"><input type="checkbox" name="EPABiocide"></th>
+                                    </tr>
+                                    <tr>
+                                        <th><label>GHSReady</label></th>
+                                        <th style="text-align: center"><input type="checkbox" name="GHSReady"></th>
+                                    </tr>
+                                    <tr>
+                                        <th><label>GlobalProduct</label></th>
+                                        <th style="text-align: center"><input type="checkbox" name="GlobalProduct"></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label>End Use</label>
+                            <select class="form-control">
+                                <option>EndUse Selection1</option>
+                                <option>EndUse Selection2</option>
+                                <option>End Use Selection3</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Harmonized Code</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>SG Revision Date</label>
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>MSDS Revision Date</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>MSDS Revision Number</label>
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Label Revision Date</label>
+                            <input class="form-control" type="date" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Label Number</label>
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label>Checked</label>
+                            <input type="checkbox" name="Checked">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Checked When</label>
+                            <input class="form-control" type="date" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Checked By</label>
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label>Shipping Notes</label>
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label>Label Info</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Other Label Notes</label>
+                            <input class="form-control" />
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label>Customs Value</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Customs Value Unit</label>
+                            <input class="form-control" />
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-6 form-group">
+                            <input class="btn btn-success btn-block" type="button" value="Save" />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <input class="btn btn-danger btn-block" type="button" data-dismiss="modal" value="Close" />
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("input.newequivalentshow").click(function () {
+            //$(this).next(".toggle_newequivalentshow").slideToggle("slow");
+            $("toggle_newequivalentshow").show();
+        });
+    });
+</script>
