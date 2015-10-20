@@ -762,7 +762,7 @@ namespace MvcPhoenix.Controllers
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 TempData["message"] = "Please make sure you browse and select atleast a file";
             }

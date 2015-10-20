@@ -1,5 +1,9 @@
-﻿@{
-    ViewBag.Title = "Product Profiles";
+﻿@model MvcPhoenix.Models.ProductProfileLanding
+@{
+    ViewBag.Title = "Product Profile";
+
+    if (Model == null)
+    { }
 }
 
 <div class="container-fluid">
@@ -27,75 +31,61 @@
                     <div class="alert alert-success">
                         <label>Create Original Product Profile</label>
                         <p>This will create a product with a mastercode type attribute</p><br />
-                        <form>
+
+                        @using (Html.BeginForm("SetUpProductProfileNew", "Products", FormMethod.Post))
+                        {
                             <div class="input-group">
-                                <select class="form-control">
-                                    <option>-- Select Client --</option>
-                                    <option>Akzo Nobel</option>
-                                    <option>Clariant</option>
-                                    <option>DSM</option>
-                                    <option>Elementis</option>
-                                    <option>Evonik</option>
-                                    <option>Grace</option>
-                                    <option>Lonza</option>
-                                    <option>OMG</option>
-                                    <option>Stepan</option>
-                                    <option>Thor</option>
-                                    <option>Wacker</option>
-                                </select>
-                                <span class="input-group-btn"><a href="~/Products/Edit"><input type="button" class="btn btn-success" value="Create" /></a></span>
-                                @*<span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create" /></span>*@
+                                @Html.DropDownList("clientid2", fnClientIDs(), new { @class = "form-control" })
+                                <span class="input-group-btn">
+                                    <input type="submit" id="btnNew" value="Create" class="btn btn-success" />
+                                </span>
                             </div>
-                        </form>
+                        }
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="alert alert-warning">
                         <label>Create Equivalent Product Profile</label>
                         <p></p>
-                        <form>
+
+                        @using (Html.BeginForm("SetUpProductProfileEquiv", "Products", FormMethod.Post))
+                        {
                             <div class="form-group">
-                                <select class="form-control">
-                                    <option>-- Select Client --</option>
-                                    <option>Akzo Nobel</option>
-                                    <option>Clariant</option>
-                                    <option>DSM</option>
-                                    <option>Elementis</option>
-                                    <option>Evonik</option>
-                                    <option>Grace</option>
-                                    <option>Lonza</option>
-                                    <option>OMG</option>
-                                    <option>Stepan</option>
-                                    <option>Thor</option>
-                                    <option>Wacker</option>
-                                </select>
+                                @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
                             </div>
                             <div class="input-group">
-                                <select class="form-control">
-                                    <option>-- Select Master Code --</option>
-                                    <option>12345A - Product Name</option>
-                                    <option>12345B - Product Name</option>
-                                    <option>12345C - Product Name</option>
-                                    <option>12345D - Product Name</option>
-                                    <option>12345E - Product Name</option>
-                                </select>
-                                <span class="input-group-btn"><a href ="#" class="" data-toggle="modal" data-target="#addequivprod"><input type="submit" class="btn btn-success" value="Create" /></a></span>
-                                @*<span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create" /></span>*@
+                                <div id="dvProductMasterIDs3">
+                                    <select name="productdetailid3" id='productdetailid3' class='form-control'>
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+                                <span class="input-group-btn">
+                                    <input type="submit" id="btnEquiv" value="Create" class="btn btn-success" />
+                                    @* Button below shows interactive modal for equivalent product. This will be implemmented later*@
+                                    @*<a href="#" class="" data-toggle="modal" data-target="#addequivprod"><input type="submit" class="btn btn-success" value="Create"></a>*@
+                                </span>
                             </div>
-                        </form>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="form-group col-md-12">
-            <div id="">
-                @Html.Partial("~/Views/Products/_AddEquivProductModal.cshtml")
-            </div>
-        </div>
-    </div>
+
+    @*  Note:
+        Modal pop-up when equivalent product create button is clicked.
+        After modal is filled and save button initiates creation of product.
+        Move data from modal form to product object.
+        Load newly created euivalent product in edit view with product master information filled in.
+        --------------------------------------------------------------------------------------------
+          <div class="row">
+              <div class="form-group">
+                  @Html.Partial("~/Views/Products/_AddEquivProductModal.cshtml")
+              </div>
+          </div>
+    *@
 
     <div class="row">
         <div class="col-md-6">
@@ -105,36 +95,22 @@
                 </div>
                 <div class="panel-body">
                     <label>Edit Product Profile</label>
-                    <form>
+                    @using (Html.BeginForm("SetUpProductProfileEdit", "Products", FormMethod.Post))
+                    {
                         <div class="form-group">
-                            <select class="form-control">
-                                <option>-- Select Client --</option>
-                                <option>Akzo Nobel</option>
-                                <option>Clariant</option>
-                                <option>DSM</option>
-                                <option>Elementis</option>
-                                <option>Evonik</option>
-                                <option>Grace</option>
-                                <option>Lonza</option>
-                                <option>OMG</option>
-                                <option>Stepan</option>
-                                <option>Thor</option>
-                                <option>Wacker</option>
-                            </select>
+                            @Html.DropDownList("clientid1", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Edit')", @class = "form-control" })
                         </div>
                         <div class="input-group">
-                            <select class="form-control">
-                                <option>-- Select Product Code --</option>
-                                <option>12345A - Product Name</option>
-                                <option>12345B - Product Name</option>
-                                <option>12345C - Product Name</option>
-                                <option>12345D - Product Name</option>
-                                <option>12345E - Product Name</option>
-                            </select>
-                            <span class="input-group-btn"><a href="~/Products/Edit"><input type="button" class="btn btn-success" value="Edit Product" /></a></span>
-                            @*<span class="input-group-btn"><input type="submit" class="btn btn-success" value="Edit Product" /></span>*@
+                            <div id="dvProductMasterIDs1">
+                                <select name="productdetailid1" id='productdetailid1' class='form-control'>
+                                    <option value="0"></option>
+                                </select>
+                            </div>
+                            <span class="input-group-btn">
+                                <input type="submit" id="btnEdit" value="Edit Product" class="btn btn-success" />
+                            </span>
                         </div>
-                    </form>
+                    }
                 </div>
             </div>
         </div>
@@ -145,42 +121,65 @@
                     <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Review</h3>
                 </div>
                 <div class="panel-body">
-                    <label>Open In Read Only Mode</label>
                     <form>
+                        <label>Open In Read Only Mode</label>
                         <div class="form-group">
                             <select class="form-control">
                                 <option>-- Select Client --</option>
                                 <option>Akzo Nobel</option>
                                 <option>Clariant</option>
-                                <option>DSM</option>
-                                <option>Elementis</option>
-                                <option>Evonik</option>
-                                <option>Grace</option>
-                                <option>Lonza</option>
-                                <option>OMG</option>
-                                <option>Stepan</option>
-                                <option>Thor</option>
-                                <option>Wacker</option>
+                                <option>...</option>
                             </select>
                         </div>
                         <div class="input-group">
                             <select class="form-control">
                                 <option>-- Select Product Code --</option>
                                 <option>12345A - Product Name</option>
-                                <option>12345B - Product Name</option>
-                                <option>12345C - Product Name</option>
-                                <option>12345D - Product Name</option>
-                                <option>12345E - Product Name</option>
+                                <option>...</option>
                             </select>
-                            <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Review" /></span>
+                            <span class="input-group-btn"><input type="button" class="btn btn-success" value="Review" /></span>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
     </div>
-
-    
-
 </div>
+
+<!-- Local javascript -->
+<script type="text/javascript">
+
+    function BuildProductCodesDropDown(vParam) {
+        //alert(vParam);
+        var myurl = '@Url.Action("ProductCodesDropDown", "Products")';
+
+        if (vParam == "Edit") {
+            $.get(myurl, { id: $('#clientid1').val(), divid: "productdetailid1" }, function (fromserver) { $('#dvProductMasterIDs1').html(fromserver); });
+        }
+
+        if (vParam == "Equiv") {
+            $.get(myurl, { id: $('#clientid3').val(), divid: "productdetailid3" }, function (fromserver) { $('#dvProductMasterIDs3').html(fromserver); });
+        }
+    }
+
+</script>
+
+<!-- Local Razor -->
+@functions
+{
+    private static List<SelectListItem> fnClientIDs()
+    {
+        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+        {
+            List<SelectListItem> mylist = new List<SelectListItem>();
+            mylist = (from t in db.tblClient
+                      orderby t.ClientName
+                      select
+                        new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+            return mylist;
+        }
+    }
+}
 

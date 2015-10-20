@@ -49,5 +49,22 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblClientIncidentalRate> tblClientIncidentalRate { get; set; }
         public virtual DbSet<tblClientInvoiceTrans> tblClientInvoiceTrans { get; set; }
+        public virtual DbSet<tblBulk> tblBulk { get; set; }
+        public virtual DbSet<tblBulkOrder> tblBulkOrder { get; set; }
+        public virtual DbSet<tblBulkOrderItem> tblBulkOrderItem { get; set; }
+        public virtual DbSet<tblBulkSupplier> tblBulkSupplier { get; set; }
+        public virtual DbSet<tblBulkUnKnown> tblBulkUnKnown { get; set; }
+        public virtual DbSet<tblInvLog> tblInvLog { get; set; }
+        public virtual DbSet<tblInvTrans> tblInvTrans { get; set; }
+        public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
+        public virtual DbSet<tblOrderItemArchive> tblOrderItemArchive { get; set; }
+        public virtual DbSet<tblPMNote> tblPMNote { get; set; }
+        public virtual DbSet<tblProductDetail> tblProductDetail { get; set; }
+        public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
+        public virtual DbSet<tblReportCriteria> tblReportCriteria { get; set; }
+        public virtual DbSet<tblShelfMaster> tblShelfMaster { get; set; }
+        public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }
+        public virtual DbSet<tblTransType> tblTransType { get; set; }
+        public virtual DbSet<tblOrderMasterArchive> tblOrderMasterArchive { get; set; }
     }
 }

@@ -9,6 +9,8 @@ namespace MvcPhoenix.Models
 {
     public class ProductViewModel
     {
+        #region
+
         [Display(Name = "Client Name")]
         public string ClientName { get; set; }
 
@@ -499,5 +501,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Waste Profile Number")]
         public string WasteProfileNum { get; set; }
 
+        #endregion
     }
+    //---------------------------------------------------------------------------------
 }

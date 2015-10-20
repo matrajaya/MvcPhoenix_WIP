@@ -595,5 +595,810 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tblBulk">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulk">
+        <MappingFragment StoreEntitySet="tblBulk">
+          <ScalarProperty Name="MigrationNotes" ColumnName="MigrationNotes" />
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="ProductName_MDB" ColumnName="ProductName_MDB" />
+          <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
+          <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
+          <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
+          <ScalarProperty Name="refrigerator" ColumnName="refrigerator" />
+          <ScalarProperty Name="freezer" ColumnName="freezer" />
+          <ScalarProperty Name="flammable" ColumnName="flammable" />
+          <ScalarProperty Name="ReceivedAsName" ColumnName="ReceivedAsName" />
+          <ScalarProperty Name="ReceivedAsCode" ColumnName="ReceivedAsCode" />
+          <ScalarProperty Name="LogRecordStatus" ColumnName="LogRecordStatus" />
+          <ScalarProperty Name="PercentOH" ColumnName="PercentOH" />
+          <ScalarProperty Name="TEW" ColumnName="TEW" />
+          <ScalarProperty Name="NCO" ColumnName="NCO" />
+          <ScalarProperty Name="PercentSolids" ColumnName="PercentSolids" />
+          <ScalarProperty Name="MSDSIncluded" ColumnName="MSDSIncluded" />
+          <ScalarProperty Name="COAIncluded" ColumnName="COAIncluded" />
+          <ScalarProperty Name="ContainerType" ColumnName="ContainerType" />
+          <ScalarProperty Name="LogNotes" ColumnName="LogNotes" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
+          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+          <ScalarProperty Name="BulkLabelNote" ColumnName="BulkLabelNote" />
+          <ScalarProperty Name="ContainerNotes" ColumnName="ContainerNotes" />
+          <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
+          <ScalarProperty Name="ContainerColor" ColumnName="ContainerColor" />
+          <ScalarProperty Name="NoticeDate" ColumnName="NoticeDate" />
+          <ScalarProperty Name="ReturnLocation" ColumnName="ReturnLocation" />
+          <ScalarProperty Name="PackOut" ColumnName="PackOut" />
+          <ScalarProperty Name="QCDate" ColumnName="QCDate" />
+          <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
+          <ScalarProperty Name="BulkStatus" ColumnName="BulkStatus" />
+          <ScalarProperty Name="MfgDate" ColumnName="MfgDate" />
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="CurrentWeight" ColumnName="CurrentWeight" />
+          <ScalarProperty Name="ReceiveWeight" ColumnName="ReceiveWeight" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UM" ColumnName="UM" />
+          <ScalarProperty Name="Bin" ColumnName="Bin" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+          <ScalarProperty Name="IsKnownMaterial" ColumnName="IsKnownMaterial" />
+          <ScalarProperty Name="LegacyBulkStockID" ColumnName="LegacyBulkStockID" />
+          <ScalarProperty Name="LegacyLogID" ColumnName="LegacyLogID" />
+          <ScalarProperty Name="BulkID" ColumnName="BulkID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblBulkOrder">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulkOrder">
+        <MappingFragment StoreEntitySet="tblBulkOrder">
+          <ScalarProperty Name="MigrationNotes" ColumnName="MigrationNotes" />
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+          <ScalarProperty Name="EmailSent" ColumnName="EmailSent" />
+          <ScalarProperty Name="BulkSupplierEmail" ColumnName="BulkSupplierEmail" />
+          <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyOrderNumber_Acc2" ColumnName="LegacyOrderNumber_Acc2" />
+          <ScalarProperty Name="LegacyOrderNumber" ColumnName="LegacyOrderNumber" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="BulkOrderID" ColumnName="BulkOrderID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblBulkOrderItem">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulkOrderItem">
+        <MappingFragment StoreEntitySet="tblBulkOrderItem">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Size_MDB" ColumnName="Size_MDB" />
+          <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
+          <ScalarProperty Name="ItemNotes" ColumnName="ItemNotes" />
+          <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
+          <ScalarProperty Name="AmountReceived" ColumnName="AmountReceived" />
+          <ScalarProperty Name="DateReceived" ColumnName="DateReceived" />
+          <ScalarProperty Name="ETA" ColumnName="ETA" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Weight" ColumnName="Weight" />
+          <ScalarProperty Name="CustCode" ColumnName="CustCode" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="LegacyOrderNumber" ColumnName="LegacyOrderNumber" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+          <ScalarProperty Name="ToBeClosed" ColumnName="ToBeClosed" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+          <ScalarProperty Name="BulkOrderID" ColumnName="BulkOrderID" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="BulkOrderItemID" ColumnName="BulkOrderItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblBulkSupplier">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulkSupplier">
+        <MappingFragment StoreEntitySet="tblBulkSupplier">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address3" ColumnName="Address3" />
+          <ScalarProperty Name="Address2" ColumnName="Address2" />
+          <ScalarProperty Name="Address1" ColumnName="Address1" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="BulkSupplierID" ColumnName="BulkSupplierID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblBulkUnKnown">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulkUnKnown">
+        <MappingFragment StoreEntitySet="tblBulkUnKnown">
+          <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
+          <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
+          <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
+          <ScalarProperty Name="refrigerator" ColumnName="refrigerator" />
+          <ScalarProperty Name="freezer" ColumnName="freezer" />
+          <ScalarProperty Name="flammable" ColumnName="flammable" />
+          <ScalarProperty Name="ReceivedAsName" ColumnName="ReceivedAsName" />
+          <ScalarProperty Name="ReceivedAsCode" ColumnName="ReceivedAsCode" />
+          <ScalarProperty Name="LogRecordStatus" ColumnName="LogRecordStatus" />
+          <ScalarProperty Name="PercentOH" ColumnName="PercentOH" />
+          <ScalarProperty Name="TEW" ColumnName="TEW" />
+          <ScalarProperty Name="NCO" ColumnName="NCO" />
+          <ScalarProperty Name="PercentSolids" ColumnName="PercentSolids" />
+          <ScalarProperty Name="MSDSIncluded" ColumnName="MSDSIncluded" />
+          <ScalarProperty Name="COAIncluded" ColumnName="COAIncluded" />
+          <ScalarProperty Name="ContainerType" ColumnName="ContainerType" />
+          <ScalarProperty Name="LogNotes" ColumnName="LogNotes" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
+          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+          <ScalarProperty Name="BulkLabelNote" ColumnName="BulkLabelNote" />
+          <ScalarProperty Name="ContainerNotes" ColumnName="ContainerNotes" />
+          <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
+          <ScalarProperty Name="ContainerColor" ColumnName="ContainerColor" />
+          <ScalarProperty Name="NoticeDate" ColumnName="NoticeDate" />
+          <ScalarProperty Name="ReturnLocation" ColumnName="ReturnLocation" />
+          <ScalarProperty Name="PackOut" ColumnName="PackOut" />
+          <ScalarProperty Name="QCDate" ColumnName="QCDate" />
+          <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
+          <ScalarProperty Name="BulkStatus" ColumnName="BulkStatus" />
+          <ScalarProperty Name="MfgDate" ColumnName="MfgDate" />
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="CurrentWeight" ColumnName="CurrentWeight" />
+          <ScalarProperty Name="ReceiveWeight" ColumnName="ReceiveWeight" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UM" ColumnName="UM" />
+          <ScalarProperty Name="Bin" ColumnName="Bin" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+          <ScalarProperty Name="BulkID" ColumnName="BulkID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInvLog">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblInvLog">
+        <MappingFragment StoreEntitySet="tblInvLog">
+          <ScalarProperty Name="MigrationNotes" ColumnName="MigrationNotes" />
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Initials" ColumnName="Initials" />
+          <ScalarProperty Name="DrumDeleted" ColumnName="DrumDeleted" />
+          <ScalarProperty Name="BulkContainerWeight" ColumnName="BulkContainerWeight" />
+          <ScalarProperty Name="ShelfLocation" ColumnName="ShelfLocation" />
+          <ScalarProperty Name="CurrentTest" ColumnName="CurrentTest" />
+          <ScalarProperty Name="CurrentTotal" ColumnName="CurrentTotal" />
+          <ScalarProperty Name="DatePackaged" ColumnName="DatePackaged" />
+          <ScalarProperty Name="BulkLocation" ColumnName="BulkLocation" />
+          <ScalarProperty Name="packoutnumber" ColumnName="packoutnumber" />
+          <ScalarProperty Name="CurrentPackages" ColumnName="CurrentPackages" />
+          <ScalarProperty Name="mastercode" ColumnName="mastercode" />
+          <ScalarProperty Name="UnitWeight" ColumnName="UnitWeight" />
+          <ScalarProperty Name="NumberOfPackages" ColumnName="NumberOfPackages" />
+          <ScalarProperty Name="UM" ColumnName="UM" />
+          <ScalarProperty Name="QCDate" ColumnName="QCDate" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+          <ScalarProperty Name="CurrentAvailable" ColumnName="CurrentAvailable" />
+          <ScalarProperty Name="DateShipped" ColumnName="DateShipped" />
+          <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+          <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
+          <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
+          <ScalarProperty Name="Other" ColumnName="Other" />
+          <ScalarProperty Name="refrigerator" ColumnName="refrigerator" />
+          <ScalarProperty Name="freezer" ColumnName="freezer" />
+          <ScalarProperty Name="flammable" ColumnName="flammable" />
+          <ScalarProperty Name="ReceivedAsName" ColumnName="ReceivedAsName" />
+          <ScalarProperty Name="ReceivedAsCode" ColumnName="ReceivedAsCode" />
+          <ScalarProperty Name="LogRecordStatus" ColumnName="LogRecordStatus" />
+          <ScalarProperty Name="PercentOH" ColumnName="PercentOH" />
+          <ScalarProperty Name="TEW" ColumnName="TEW" />
+          <ScalarProperty Name="NCO" ColumnName="NCO" />
+          <ScalarProperty Name="PercentSolids" ColumnName="PercentSolids" />
+          <ScalarProperty Name="MSDSIncluded" ColumnName="MSDSIncluded" />
+          <ScalarProperty Name="COAIncluded" ColumnName="COAIncluded" />
+          <ScalarProperty Name="ColorOfContainer" ColumnName="ColorOfContainer" />
+          <ScalarProperty Name="Weight" ColumnName="Weight" />
+          <ScalarProperty Name="ContainerType" ColumnName="ContainerType" />
+          <ScalarProperty Name="Container" ColumnName="Container" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="ceaseshipdate" ColumnName="ceaseshipdate" />
+          <ScalarProperty Name="expdt" ColumnName="expdt" />
+          <ScalarProperty Name="DOM" ColumnName="DOM" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="DateReceived" ColumnName="DateReceived" />
+          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
+          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+          <ScalarProperty Name="Division" ColumnName="Division" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="TransType" ColumnName="TransType" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblInvTrans">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblInvTrans">
+        <MappingFragment StoreEntitySet="tblInvTrans">
+          <ScalarProperty Name="Size_MDB" ColumnName="Size_MDB" />
+          <ScalarProperty Name="LotNumber_MDB" ColumnName="LotNumber_MDB" />
+          <ScalarProperty Name="ProductCode_MDB" ColumnName="ProductCode_MDB" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LogRecordStatus_MDB" ColumnName="LogRecordStatus_MDB" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Posted" ColumnName="Posted" />
+          <ScalarProperty Name="TransNotes" ColumnName="TransNotes" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="TransAmount" ColumnName="TransAmount" />
+          <ScalarProperty Name="TransQty" ColumnName="TransQty" />
+          <ScalarProperty Name="StockID" ColumnName="StockID" />
+          <ScalarProperty Name="BulkID" ColumnName="BulkID" />
+          <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+          <ScalarProperty Name="TransType" ColumnName="TransType" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="InvTransID" ColumnName="InvTransID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderImport">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderImport">
+        <MappingFragment StoreEntitySet="tblOrderImport">
+          <ScalarProperty Name="DuplicateFlag" ColumnName="DuplicateFlag" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+          <ScalarProperty Name="ImportFileName" ColumnName="ImportFileName" />
+          <ScalarProperty Name="IncludeCOA" ColumnName="IncludeCOA" />
+          <ScalarProperty Name="IncludeLiterature" ColumnName="IncludeLiterature" />
+          <ScalarProperty Name="AnnualUsage" ColumnName="AnnualUsage" />
+          <ScalarProperty Name="ItemNote" ColumnName="ItemNote" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="ItemNumber" ColumnName="ItemNumber" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="Distributor" ColumnName="Distributor" />
+          <ScalarProperty Name="SalesPhone" ColumnName="SalesPhone" />
+          <ScalarProperty Name="SalesEmail" ColumnName="SalesEmail" />
+          <ScalarProperty Name="SalesRepName" ColumnName="SalesRepName" />
+          <ScalarProperty Name="RequestorComments" ColumnName="RequestorComments" />
+          <ScalarProperty Name="RequestorPhone" ColumnName="RequestorPhone" />
+          <ScalarProperty Name="RequestorEmail" ColumnName="RequestorEmail" />
+          <ScalarProperty Name="RequestorName" ColumnName="RequestorName" />
+          <ScalarProperty Name="DecisionSupport" ColumnName="DecisionSupport" />
+          <ScalarProperty Name="DecisionRole" ColumnName="DecisionRole" />
+          <ScalarProperty Name="DecisionTimeFrame" ColumnName="DecisionTimeFrame" />
+          <ScalarProperty Name="ApplicationTypes" ColumnName="ApplicationTypes" />
+          <ScalarProperty Name="Comments" ColumnName="Comments" />
+          <ScalarProperty Name="EndUse" ColumnName="EndUse" />
+          <ScalarProperty Name="Market" ColumnName="Market" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="ACode" ColumnName="ACode" />
+          <ScalarProperty Name="ShipAcctNum" ColumnName="ShipAcctNum" />
+          <ScalarProperty Name="ShipExpedite" ColumnName="ShipExpedite" />
+          <ScalarProperty Name="RegionLocated" ColumnName="RegionLocated" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Street3" ColumnName="Street3" />
+          <ScalarProperty Name="Street2" ColumnName="Street2" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="CustOrderID" ColumnName="CustOrderID" />
+          <ScalarProperty Name="ClientOrderID" ColumnName="ClientOrderID" />
+          <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="CMCWarehouse" ColumnName="CMCWarehouse" />
+          <ScalarProperty Name="Territory" ColumnName="Territory" />
+          <ScalarProperty Name="Division" ColumnName="Division" />
+          <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="CMCOrderID" ColumnName="CMCOrderID" />
+          <ScalarProperty Name="ImportDate" ColumnName="ImportDate" />
+          <ScalarProperty Name="ImportID" ColumnName="ImportID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderItemArchive">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderItemArchive">
+        <MappingFragment StoreEntitySet="tblOrderItemArchive">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+          <ScalarProperty Name="CustStatus" ColumnName="CustStatus" />
+          <ScalarProperty Name="WasteOrderTotalWeight" ColumnName="WasteOrderTotalWeight" />
+          <ScalarProperty Name="CarrierInvoiceRcvd" ColumnName="CarrierInvoiceRcvd" />
+          <ScalarProperty Name="SPSCost" ColumnName="SPSCost" />
+          <ScalarProperty Name="ShipDimWt" ColumnName="ShipDimWt" />
+          <ScalarProperty Name="ShipWt" ColumnName="ShipWt" />
+          <ScalarProperty Name="PackID" ColumnName="PackID" />
+          <ScalarProperty Name="SAPClosed" ColumnName="SAPClosed" />
+          <ScalarProperty Name="LineItem" ColumnName="LineItem" />
+          <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+          <ScalarProperty Name="Weight" ColumnName="Weight" />
+          <ScalarProperty Name="CustCode" ColumnName="CustCode" />
+          <ScalarProperty Name="BackorderEmailSent" ColumnName="BackorderEmailSent" />
+          <ScalarProperty Name="EmailSent" ColumnName="EmailSent" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="Currency" ColumnName="Currency" />
+          <ScalarProperty Name="CustSize" ColumnName="CustSize" />
+          <ScalarProperty Name="CustProdName" ColumnName="CustProdName" />
+          <ScalarProperty Name="CustProdCode" ColumnName="CustProdCode" />
+          <ScalarProperty Name="ExpDate" ColumnName="ExpDate" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="CSAllocate" ColumnName="CSAllocate" />
+          <ScalarProperty Name="AllocateStatus" ColumnName="AllocateStatus" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ProfitArea" ColumnName="ProfitArea" />
+          <ScalarProperty Name="BackOrdered" ColumnName="BackOrdered" />
+          <ScalarProperty Name="GroundHazard" ColumnName="GroundHazard" />
+          <ScalarProperty Name="AirHazard" ColumnName="AirHazard" />
+          <ScalarProperty Name="SpecialRequest" ColumnName="SpecialRequest" />
+          <ScalarProperty Name="TotalSurcharge" ColumnName="TotalSurcharge" />
+          <ScalarProperty Name="Other" ColumnName="Other" />
+          <ScalarProperty Name="DH" ColumnName="DH" />
+          <ScalarProperty Name="FrtSurcharge" ColumnName="FrtSurcharge" />
+          <ScalarProperty Name="FRT" ColumnName="FRT" />
+          <ScalarProperty Name="Via" ColumnName="Via" />
+          <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
+          <ScalarProperty Name="NonCMCDelay" ColumnName="NonCMCDelay" />
+          <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+          <ScalarProperty Name="SRSize" ColumnName="SRSize" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="Mnemonic" ColumnName="Mnemonic" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="ImportItemID" ColumnName="ImportItemID" />
+          <ScalarProperty Name="BusArea" ColumnName="BusArea" />
+          <ScalarProperty Name="CustOrdNum" ColumnName="CustOrdNum" />
+          <ScalarProperty Name="LegacyCMCOrder" ColumnName="LegacyCMCOrder" />
+          <ScalarProperty Name="CMCOrder" ColumnName="CMCOrder" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblPMNote">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblPMNote">
+        <MappingFragment StoreEntitySet="tblPMNote">
+          <ScalarProperty Name="MigrateStatus" ColumnName="MigrateStatus" />
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="LotNumber_MDB" ColumnName="LotNumber_MDB" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="NoteDate" ColumnName="NoteDate" />
+          <ScalarProperty Name="ProductCode_MDB" ColumnName="ProductCode_MDB" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="PMNoteID" ColumnName="PMNoteID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProductDetail">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblProductDetail">
+        <MappingFragment StoreEntitySet="tblProductDetail">
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="AccuracyVerified" ColumnName="AccuracyVerified" />
+          <ScalarProperty Name="SpecificGravity" ColumnName="SpecificGravity" />
+          <ScalarProperty Name="GlobalProduct" ColumnName="GlobalProduct" />
+          <ScalarProperty Name="CustomsValueUnit" ColumnName="CustomsValueUnit" />
+          <ScalarProperty Name="CustomsValue" ColumnName="CustomsValue" />
+          <ScalarProperty Name="GHSReady" ColumnName="GHSReady" />
+          <ScalarProperty Name="LabelInfo" ColumnName="LabelInfo" />
+          <ScalarProperty Name="EPABiocide" ColumnName="EPABiocide" />
+          <ScalarProperty Name="CheckedWhen" ColumnName="CheckedWhen" />
+          <ScalarProperty Name="CheckedBy" ColumnName="CheckedBy" />
+          <ScalarProperty Name="ProductChecked" ColumnName="ProductChecked" />
+          <ScalarProperty Name="LabelNumber" ColumnName="LabelNumber" />
+          <ScalarProperty Name="LabelRevisionDate" ColumnName="LabelRevisionDate" />
+          <ScalarProperty Name="MSDSRevisionNumber" ColumnName="MSDSRevisionNumber" />
+          <ScalarProperty Name="MSDSRevisionDate" ColumnName="MSDSRevisionDate" />
+          <ScalarProperty Name="SGRevisionDate" ColumnName="SGRevisionDate" />
+          <ScalarProperty Name="EndUse" ColumnName="EndUse" />
+          <ScalarProperty Name="HarmonizedCode" ColumnName="HarmonizedCode" />
+          <ScalarProperty Name="ExtendableExpDt" ColumnName="ExtendableExpDt" />
+          <ScalarProperty Name="MultiLotReq" ColumnName="MultiLotReq" />
+          <ScalarProperty Name="CustCode" ColumnName="CustCode" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+          <ScalarProperty Name="BusArea" ColumnName="BusArea" />
+          <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+          <ScalarProperty Name="SGLegacyID" ColumnName="SGLegacyID" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+          <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblProductMaster">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblProductMaster">
+        <MappingFragment StoreEntitySet="tblProductMaster">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="SEAMFAGNO" ColumnName="SEAMFAGNO" />
+          <ScalarProperty Name="SEAEMSNO" ColumnName="SEAEMSNO" />
+          <ScalarProperty Name="SEAHAZMAT" ColumnName="SEAHAZMAT" />
+          <ScalarProperty Name="SEASUBLABEL" ColumnName="SEASUBLABEL" />
+          <ScalarProperty Name="SEAHAZSUBCL" ColumnName="SEAHAZSUBCL" />
+          <ScalarProperty Name="SEALABEL" ColumnName="SEALABEL" />
+          <ScalarProperty Name="SEAHAZCL" ColumnName="SEAHAZCL" />
+          <ScalarProperty Name="SEAPKGRP" ColumnName="SEAPKGRP" />
+          <ScalarProperty Name="SEAUNNUM" ColumnName="SEAUNNUM" />
+          <ScalarProperty Name="SEANOSNAME" ColumnName="SEANOSNAME" />
+          <ScalarProperty Name="SEASHIPNAMED" ColumnName="SEASHIPNAMED" />
+          <ScalarProperty Name="SEASHIPNAME" ColumnName="SEASHIPNAME" />
+          <ScalarProperty Name="GRNHAZSUBCL" ColumnName="GRNHAZSUBCL" />
+          <ScalarProperty Name="AIRHAZSUBCL" ColumnName="AIRHAZSUBCL" />
+          <ScalarProperty Name="AIRSUBLABEL" ColumnName="AIRSUBLABEL" />
+          <ScalarProperty Name="AIRLABEL" ColumnName="AIRLABEL" />
+          <ScalarProperty Name="AIRPKGRP" ColumnName="AIRPKGRP" />
+          <ScalarProperty Name="AIRHAZCL" ColumnName="AIRHAZCL" />
+          <ScalarProperty Name="AIRUNNUMBER" ColumnName="AIRUNNUMBER" />
+          <ScalarProperty Name="AIRNOSNAME" ColumnName="AIRNOSNAME" />
+          <ScalarProperty Name="AIRSHIPNAME" ColumnName="AIRSHIPNAME" />
+          <ScalarProperty Name="GRNTREMACARD" ColumnName="GRNTREMACARD" />
+          <ScalarProperty Name="GRNSUBLABEL" ColumnName="GRNSUBLABEL" />
+          <ScalarProperty Name="GRNLABEL" ColumnName="GRNLABEL" />
+          <ScalarProperty Name="GRNPKGRP" ColumnName="GRNPKGRP" />
+          <ScalarProperty Name="GRNHAZCL" ColumnName="GRNHAZCL" />
+          <ScalarProperty Name="GRNUNNUMBER" ColumnName="GRNUNNUMBER" />
+          <ScalarProperty Name="GRNOSNAME" ColumnName="GRNOSNAME" />
+          <ScalarProperty Name="GRNSHIPNAMED" ColumnName="GRNSHIPNAMED" />
+          <ScalarProperty Name="GRNSHIPNAME" ColumnName="GRNSHIPNAME" />
+          <ScalarProperty Name="PeroxideFormer" ColumnName="PeroxideFormer" />
+          <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+          <ScalarProperty Name="OtherLabelNotes" ColumnName="OtherLabelNotes" />
+          <ScalarProperty Name="ShippingNotes" ColumnName="ShippingNotes" />
+          <ScalarProperty Name="Handling" ColumnName="Handling" />
+          <ScalarProperty Name="EECSymbol3" ColumnName="EECSymbol3" />
+          <ScalarProperty Name="EECSymbol2" ColumnName="EECSymbol2" />
+          <ScalarProperty Name="EECSymbol1" ColumnName="EECSymbol1" />
+          <ScalarProperty Name="Dutch" ColumnName="Dutch" />
+          <ScalarProperty Name="German" ColumnName="German" />
+          <ScalarProperty Name="English" ColumnName="English" />
+          <ScalarProperty Name="PHAll" ColumnName="PHAll" />
+          <ScalarProperty Name="SPhrasesAll" ColumnName="SPhrasesAll" />
+          <ScalarProperty Name="RPhrasesAll" ColumnName="RPhrasesAll" />
+          <ScalarProperty Name="EECAll" ColumnName="EECAll" />
+          <ScalarProperty Name="OtherPkg" ColumnName="OtherPkg" />
+          <ScalarProperty Name="TorqueRequirements" ColumnName="TorqueRequirements" />
+          <ScalarProperty Name="Torque" ColumnName="Torque" />
+          <ScalarProperty Name="Restrictedamount" ColumnName="Restrictedamount" />
+          <ScalarProperty Name="FullFaceRespirator" ColumnName="FullFaceRespirator" />
+          <ScalarProperty Name="HalfMaskRespirator" ColumnName="HalfMaskRespirator" />
+          <ScalarProperty Name="SARA313" ColumnName="SARA313" />
+          <ScalarProperty Name="SARA302EHS" ColumnName="SARA302EHS" />
+          <ScalarProperty Name="SpecialBlend" ColumnName="SpecialBlend" />
+          <ScalarProperty Name="DENSITY" ColumnName="DENSITY" />
+          <ScalarProperty Name="RETURNLOCATION" ColumnName="RETURNLOCATION" />
+          <ScalarProperty Name="CMCREQ" ColumnName="CMCREQ" />
+          <ScalarProperty Name="CLIENTREQ" ColumnName="CLIENTREQ" />
+          <ScalarProperty Name="FREEZERSTORAGE" ColumnName="FREEZERSTORAGE" />
+          <ScalarProperty Name="MSDSOTHERNUMBER" ColumnName="MSDSOTHERNUMBER" />
+          <ScalarProperty Name="RefrigeratedList" ColumnName="RefrigeratedList" />
+          <ScalarProperty Name="FreezableList" ColumnName="FreezableList" />
+          <ScalarProperty Name="FireList" ColumnName="FireList" />
+          <ScalarProperty Name="FlammableStorageRoom" ColumnName="FlammableStorageRoom" />
+          <ScalarProperty Name="SARA" ColumnName="SARA" />
+          <ScalarProperty Name="RighttoKnow" ColumnName="RighttoKnow" />
+          <ScalarProperty Name="irritant" ColumnName="irritant" />
+          <ScalarProperty Name="HazardClassGround_SG" ColumnName="HazardClassGround_SG" />
+          <ScalarProperty Name="Booties" ColumnName="Booties" />
+          <ScalarProperty Name="ShlfLife" ColumnName="ShlfLife" />
+          <ScalarProperty Name="OtherEquipmentDescription" ColumnName="OtherEquipmentDescription" />
+          <ScalarProperty Name="Reactivity" ColumnName="Reactivity" />
+          <ScalarProperty Name="Flammability" ColumnName="Flammability" />
+          <ScalarProperty Name="Health" ColumnName="Health" />
+          <ScalarProperty Name="EyeHazards" ColumnName="EyeHazards" />
+          <ScalarProperty Name="CutaneousHazards" ColumnName="CutaneousHazards" />
+          <ScalarProperty Name="ReporductiveToxin" ColumnName="ReporductiveToxin" />
+          <ScalarProperty Name="PulmonaryDisfunction" ColumnName="PulmonaryDisfunction" />
+          <ScalarProperty Name="Hepatopoetics" ColumnName="Hepatopoetics" />
+          <ScalarProperty Name="Neurotoxins" ColumnName="Neurotoxins" />
+          <ScalarProperty Name="Nephrotoxins" ColumnName="Nephrotoxins" />
+          <ScalarProperty Name="Hepatotoxins" ColumnName="Hepatotoxins" />
+          <ScalarProperty Name="Reactive" ColumnName="Reactive" />
+          <ScalarProperty Name="Oxidizer" ColumnName="Oxidizer" />
+          <ScalarProperty Name="Flammable" ColumnName="Flammable" />
+          <ScalarProperty Name="Corrosive" ColumnName="Corrosive" />
+          <ScalarProperty Name="Combustible" ColumnName="Combustible" />
+          <ScalarProperty Name="EyeContact" ColumnName="EyeContact" />
+          <ScalarProperty Name="SkinContact" ColumnName="SkinContact" />
+          <ScalarProperty Name="Skin" ColumnName="Skin" />
+          <ScalarProperty Name="Inhalation" ColumnName="Inhalation" />
+          <ScalarProperty Name="Ingestion" ColumnName="Ingestion" />
+          <ScalarProperty Name="Carcinogen" ColumnName="Carcinogen" />
+          <ScalarProperty Name="Sensitizer" ColumnName="Sensitizer" />
+          <ScalarProperty Name="CorrosiveHaz" ColumnName="CorrosiveHaz" />
+          <ScalarProperty Name="ReproductiveToxin" ColumnName="ReproductiveToxin" />
+          <ScalarProperty Name="HighlyToxic" ColumnName="HighlyToxic" />
+          <ScalarProperty Name="Toxic" ColumnName="Toxic" />
+          <ScalarProperty Name="OtherEquipment" ColumnName="OtherEquipment" />
+          <ScalarProperty Name="CleanRoomEquipment" ColumnName="CleanRoomEquipment" />
+          <ScalarProperty Name="FullSuit" ColumnName="FullSuit" />
+          <ScalarProperty Name="FaceShield" ColumnName="FaceShield" />
+          <ScalarProperty Name="Respirator" ColumnName="Respirator" />
+          <ScalarProperty Name="ArmSleeves" ColumnName="ArmSleeves" />
+          <ScalarProperty Name="Apron" ColumnName="Apron" />
+          <ScalarProperty Name="GloveType" ColumnName="GloveType" />
+          <ScalarProperty Name="Gloves" ColumnName="Gloves" />
+          <ScalarProperty Name="SafetyGlasses" ColumnName="SafetyGlasses" />
+          <ScalarProperty Name="WalkInHood" ColumnName="WalkInHood" />
+          <ScalarProperty Name="LabHood" ColumnName="LabHood" />
+          <ScalarProperty Name="Hood" ColumnName="Hood" />
+          <ScalarProperty Name="RejectionCriterion" ColumnName="RejectionCriterion" />
+          <ScalarProperty Name="NormalAppearence" ColumnName="NormalAppearence" />
+          <ScalarProperty Name="Other" ColumnName="Other" />
+          <ScalarProperty Name="HeatingInstructions" ColumnName="HeatingInstructions" />
+          <ScalarProperty Name="FlashPoint" ColumnName="FlashPoint" />
+          <ScalarProperty Name="HeatPriorToFilling" ColumnName="HeatPriorToFilling" />
+          <ScalarProperty Name="FlammableGround" ColumnName="FlammableGround" />
+          <ScalarProperty Name="HandlingOther" ColumnName="HandlingOther" />
+          <ScalarProperty Name="DoNotPackAbove60" ColumnName="DoNotPackAbove60" />
+          <ScalarProperty Name="Refrigerate" ColumnName="Refrigerate" />
+          <ScalarProperty Name="MixingInstructions" ColumnName="MixingInstructions" />
+          <ScalarProperty Name="MixWell" ColumnName="MixWell" />
+          <ScalarProperty Name="MoistureSensitive" ColumnName="MoistureSensitive" />
+          <ScalarProperty Name="NitrogenBlanket" ColumnName="NitrogenBlanket" />
+          <ScalarProperty Name="CleanRoomGMP" ColumnName="CleanRoomGMP" />
+          <ScalarProperty Name="CeaseShipDifferential" ColumnName="CeaseShipDifferential" />
+          <ScalarProperty Name="ReOrderAdjustmentDays" ColumnName="ReOrderAdjustmentDays" />
+          <ScalarProperty Name="MasterNotesAlert" ColumnName="MasterNotesAlert" />
+          <ScalarProperty Name="MasterNotes" ColumnName="MasterNotes" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="RestrictedToAmount" ColumnName="RestrictedToAmount" />
+          <ScalarProperty Name="PackOutOnReceipt" ColumnName="PackOutOnReceipt" />
+          <ScalarProperty Name="NoReorder" ColumnName="NoReorder" />
+          <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
+          <ScalarProperty Name="SUPPLYID" ColumnName="SUPPLYID" />
+          <ScalarProperty Name="MasterDivisionID" ColumnName="MasterDivisionID" />
+          <ScalarProperty Name="MasterName" ColumnName="MasterName" />
+          <ScalarProperty Name="MasterCode" ColumnName="MasterCode" />
+          <ScalarProperty Name="SDLegacyID" ColumnName="SDLegacyID" />
+          <ScalarProperty Name="SGLegacyID" ColumnName="SGLegacyID" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblReportCriteria">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblReportCriteria">
+        <MappingFragment StoreEntitySet="tblReportCriteria">
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="DateCriteria" ColumnName="DateCriteria" />
+          <ScalarProperty Name="QueryName" ColumnName="QueryName" />
+          <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+          <ScalarProperty Name="Display" ColumnName="Display" />
+          <ScalarProperty Name="Criteria" ColumnName="Criteria" />
+          <ScalarProperty Name="ReportCategory" ColumnName="ReportCategory" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="ReportCriteriaID" ColumnName="ReportCriteriaID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblShelfMaster">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblShelfMaster">
+        <MappingFragment StoreEntitySet="tblShelfMaster">
+          <ScalarProperty Name="MigrationNotes" ColumnName="MigrationNotes" />
+          <ScalarProperty Name="CustCode" ColumnName="CustCode" />
+          <ScalarProperty Name="Alert" ColumnName="Alert" />
+          <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="AirHazard" ColumnName="AirHazard" />
+          <ScalarProperty Name="GroundHazard" ColumnName="GroundHazard" />
+          <ScalarProperty Name="Mnemonic" ColumnName="Mnemonic" />
+          <ScalarProperty Name="BusArea" ColumnName="BusArea" />
+          <ScalarProperty Name="ProductCode_MDB" ColumnName="ProductCode_MDB" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="UNSpec" ColumnName="UNSpec" />
+          <ScalarProperty Name="DOTSpec" ColumnName="DOTSpec" />
+          <ScalarProperty Name="PackageWeight" ColumnName="PackageWeight" />
+          <ScalarProperty Name="PackagePartNumber" ColumnName="PackagePartNumber" />
+          <ScalarProperty Name="Package" ColumnName="Package" />
+          <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+          <ScalarProperty Name="WebOEInclude" ColumnName="WebOEInclude" />
+          <ScalarProperty Name="InactiveSize" ColumnName="InactiveSize" />
+          <ScalarProperty Name="NewItem" ColumnName="NewItem" />
+          <ScalarProperty Name="OtherSurchargeAmt" ColumnName="OtherSurchargeAmt" />
+          <ScalarProperty Name="OtherSurcharge" ColumnName="OtherSurcharge" />
+          <ScalarProperty Name="LabelSurcharge" ColumnName="LabelSurcharge" />
+          <ScalarProperty Name="KosherSurcharge" ColumnName="KosherSurcharge" />
+          <ScalarProperty Name="BiocideSurcharge" ColumnName="BiocideSurcharge" />
+          <ScalarProperty Name="NitrogenSurcharge" ColumnName="NitrogenSurcharge" />
+          <ScalarProperty Name="NalgeneSurcharge" ColumnName="NalgeneSurcharge" />
+          <ScalarProperty Name="BlendSurcharge" ColumnName="BlendSurcharge" />
+          <ScalarProperty Name="CleanSurcharge" ColumnName="CleanSurcharge" />
+          <ScalarProperty Name="FreezerSurcharge" ColumnName="FreezerSurcharge" />
+          <ScalarProperty Name="RefrigSurcharge" ColumnName="RefrigSurcharge" />
+          <ScalarProperty Name="HeatSurcharge" ColumnName="HeatSurcharge" />
+          <ScalarProperty Name="FlammableSurcharge" ColumnName="FlammableSurcharge" />
+          <ScalarProperty Name="HazardSurcharge" ColumnName="HazardSurcharge" />
+          <ScalarProperty Name="Bin" ColumnName="Bin" />
+          <ScalarProperty Name="ReorderQty" ColumnName="ReorderQty" />
+          <ScalarProperty Name="ReorderMax" ColumnName="ReorderMax" />
+          <ScalarProperty Name="ReorderMin" ColumnName="ReorderMin" />
+          <ScalarProperty Name="UnitWeight" ColumnName="UnitWeight" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+          <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
+          <ScalarProperty Name="ShelfID" ColumnName="ShelfID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblSuggestedBulk">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblSuggestedBulk">
+        <MappingFragment StoreEntitySet="tblSuggestedBulk">
+          <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+          <ScalarProperty Name="IsAddOn" ColumnName="IsAddOn" />
+          <ScalarProperty Name="ReorderNotes" ColumnName="ReorderNotes" />
+          <ScalarProperty Name="ReorderWeight" ColumnName="ReorderWeight" />
+          <ScalarProperty Name="BulkOnOrder" ColumnName="BulkOnOrder" />
+          <ScalarProperty Name="ReorderThis" ColumnName="ReorderThis" />
+          <ScalarProperty Name="PrePackedBulk" ColumnName="PrePackedBulk" />
+          <ScalarProperty Name="AverageLeadTime" ColumnName="AverageLeadTime" />
+          <ScalarProperty Name="DaysSupplyLeft" ColumnName="DaysSupplyLeft" />
+          <ScalarProperty Name="UseThisDaysTilExpiration" ColumnName="UseThisDaysTilExpiration" />
+          <ScalarProperty Name="UseThisExpirationDate" ColumnName="UseThisExpirationDate" />
+          <ScalarProperty Name="ShelfDaysTilExpiration" ColumnName="ShelfDaysTilExpiration" />
+          <ScalarProperty Name="ShelfLatestExpirationDate" ColumnName="ShelfLatestExpirationDate" />
+          <ScalarProperty Name="BulkDaysTilExpiration" ColumnName="BulkDaysTilExpiration" />
+          <ScalarProperty Name="BulkLatestExpirationDate" ColumnName="BulkLatestExpirationDate" />
+          <ScalarProperty Name="ShelfShippedPerDay" ColumnName="ShelfShippedPerDay" />
+          <ScalarProperty Name="ShelfShippedPastYear" ColumnName="ShelfShippedPastYear" />
+          <ScalarProperty Name="BulkShippedPerDay" ColumnName="BulkShippedPerDay" />
+          <ScalarProperty Name="BulkShippedPastYear" ColumnName="BulkShippedPastYear" />
+          <ScalarProperty Name="CurrentAvailable" ColumnName="CurrentAvailable" />
+          <ScalarProperty Name="ShelfCurrentAvailable" ColumnName="ShelfCurrentAvailable" />
+          <ScalarProperty Name="BulkCurrentAvailable" ColumnName="BulkCurrentAvailable" />
+          <ScalarProperty Name="ProductMasterAge" ColumnName="ProductMasterAge" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
+          <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
+          <ScalarProperty Name="MasterDivisionID" ColumnName="MasterDivisionID" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblTransType">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblTransType">
+        <MappingFragment StoreEntitySet="tblTransType">
+          <ScalarProperty Name="TransDescription" ColumnName="TransDescription" />
+          <ScalarProperty Name="TransType" ColumnName="TransType" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOrderMasterArchive">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderMasterArchive">
+        <MappingFragment StoreEntitySet="tblOrderMasterArchive">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+          <ScalarProperty Name="ApprovalNeeded" ColumnName="ApprovalNeeded" />
+          <ScalarProperty Name="PreferredCarrier" ColumnName="PreferredCarrier" />
+          <ScalarProperty Name="Distributor" ColumnName="Distributor" />
+          <ScalarProperty Name="MarketingRepEmail" ColumnName="MarketingRepEmail" />
+          <ScalarProperty Name="MarketingRep" ColumnName="MarketingRep" />
+          <ScalarProperty Name="SalesRepTerritory" ColumnName="SalesRepTerritory" />
+          <ScalarProperty Name="SalesRepPhone" ColumnName="SalesRepPhone" />
+          <ScalarProperty Name="CustRequestedCarrier" ColumnName="CustRequestedCarrier" />
+          <ScalarProperty Name="CustTotalItems" ColumnName="CustTotalItems" />
+          <ScalarProperty Name="RequestedDeliveryDate" ColumnName="RequestedDeliveryDate" />
+          <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
+          <ScalarProperty Name="CustRequestDate" ColumnName="CustRequestDate" />
+          <ScalarProperty Name="CustOrderType" ColumnName="CustOrderType" />
+          <ScalarProperty Name="InvoicePhone" ColumnName="InvoicePhone" />
+          <ScalarProperty Name="InvoiceCountry" ColumnName="InvoiceCountry" />
+          <ScalarProperty Name="InvoicePostalCode" ColumnName="InvoicePostalCode" />
+          <ScalarProperty Name="InvoiceStateProv" ColumnName="InvoiceStateProv" />
+          <ScalarProperty Name="InvoiceCity" ColumnName="InvoiceCity" />
+          <ScalarProperty Name="InvoiceAddress3" ColumnName="InvoiceAddress3" />
+          <ScalarProperty Name="InvoiceAddress2" ColumnName="InvoiceAddress2" />
+          <ScalarProperty Name="InvoiceAddress1" ColumnName="InvoiceAddress1" />
+          <ScalarProperty Name="InvoiceLastName" ColumnName="InvoiceLastName" />
+          <ScalarProperty Name="InvoiceFirstName" ColumnName="InvoiceFirstName" />
+          <ScalarProperty Name="InvoiceTitle" ColumnName="InvoiceTitle" />
+          <ScalarProperty Name="InvoiceCompany" ColumnName="InvoiceCompany" />
+          <ScalarProperty Name="SPSFreightCost" ColumnName="SPSFreightCost" />
+          <ScalarProperty Name="SPSShippedWt" ColumnName="SPSShippedWt" />
+          <ScalarProperty Name="SPSCurrency" ColumnName="SPSCurrency" />
+          <ScalarProperty Name="SPSTaxID" ColumnName="SPSTaxID" />
+          <ScalarProperty Name="TotalOrderWeight" ColumnName="TotalOrderWeight" />
+          <ScalarProperty Name="BusArea" ColumnName="BusArea" />
+          <ScalarProperty Name="Division" ColumnName="Division" />
+          <ScalarProperty Name="CustomerReference" ColumnName="CustomerReference" />
+          <ScalarProperty Name="CMCUser" ColumnName="CMCUser" />
+          <ScalarProperty Name="SampleRack" ColumnName="SampleRack" />
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="Timing" ColumnName="Timing" />
+          <ScalarProperty Name="ImportDateLine" ColumnName="ImportDateLine" />
+          <ScalarProperty Name="ImportFile" ColumnName="ImportFile" />
+          <ScalarProperty Name="ACode" ColumnName="ACode" />
+          <ScalarProperty Name="CustAcct" ColumnName="CustAcct" />
+          <ScalarProperty Name="CID" ColumnName="CID" />
+          <ScalarProperty Name="TDS" ColumnName="TDS" />
+          <ScalarProperty Name="COA" ColumnName="COA" />
+          <ScalarProperty Name="Region" ColumnName="Region" />
+          <ScalarProperty Name="Lit" ColumnName="Lit" />
+          <ScalarProperty Name="SpecialInternal" ColumnName="SpecialInternal" />
+          <ScalarProperty Name="Special" ColumnName="Special" />
+          <ScalarProperty Name="Tracking" ColumnName="Tracking" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="ShipAcct" ColumnName="ShipAcct" />
+          <ScalarProperty Name="ShipVia" ColumnName="ShipVia" />
+          <ScalarProperty Name="EndUse" ColumnName="EndUse" />
+          <ScalarProperty Name="ReqEmail" ColumnName="ReqEmail" />
+          <ScalarProperty Name="ReqFax" ColumnName="ReqFax" />
+          <ScalarProperty Name="ReqPhone" ColumnName="ReqPhone" />
+          <ScalarProperty Name="Req" ColumnName="Req" />
+          <ScalarProperty Name="SalesEmail" ColumnName="SalesEmail" />
+          <ScalarProperty Name="SalesRep" ColumnName="SalesRep" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Attention" ColumnName="Attention" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Street3" ColumnName="Street3" />
+          <ScalarProperty Name="Street2" ColumnName="Street2" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="Company" ColumnName="Company" />
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+          <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+          <ScalarProperty Name="ShipRef" ColumnName="ShipRef" />
+          <ScalarProperty Name="CustRefNum" ColumnName="CustRefNum" />
+          <ScalarProperty Name="CustSapNum" ColumnName="CustSapNum" />
+          <ScalarProperty Name="CustOrdNum" ColumnName="CustOrdNum" />
+          <ScalarProperty Name="CMCLegacyNum" ColumnName="CMCLegacyNum" />
+          <ScalarProperty Name="WebOrderID" ColumnName="WebOrderID" />
+          <ScalarProperty Name="CMCOrder" ColumnName="CMCOrder" />
+          <ScalarProperty Name="Customer" ColumnName="Customer" />
+          <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
