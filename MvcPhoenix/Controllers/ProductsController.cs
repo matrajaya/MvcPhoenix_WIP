@@ -19,6 +19,12 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Products/Index.cshtml");
         }
 
+        // GET: Products/Edit
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
         // called from javascript function in Index to return a string as a DD
         public string ProductCodesDropDown(int id, string divid)
         {
