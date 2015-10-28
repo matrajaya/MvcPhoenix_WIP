@@ -31,7 +31,7 @@
                     <div class="alert alert-success">
                         <label>Create Original Product Profile</label>
                         <p>This will create a product with a mastercode type attribute</p><br />
-
+                        @*@using (Html.BeginForm("New", "Products", FormMethod.Post))*@
                         @using (Html.BeginForm("SetUpProductProfileNew", "Products", FormMethod.Post))
                         {
                             <div class="input-group">
@@ -48,7 +48,7 @@
                     <div class="alert alert-warning">
                         <label>Create Equivalent Product Profile</label>
                         <p></p>
-
+                        @*@using (Html.BeginForm("Equiv", "Products", FormMethod.Post))*@
                         @using (Html.BeginForm("SetUpProductProfileEquiv", "Products", FormMethod.Post))
                         {
                             <div class="form-group">
@@ -80,11 +80,11 @@
         Move data from modal form to product object.
         Load newly created euivalent product in edit view with product master information filled in.
         --------------------------------------------------------------------------------------------
-          <div class="row">
-              <div class="form-group">
-                  @Html.Partial("~/Views/Products/_AddEquivProductModal.cshtml")
-              </div>
-          </div>
+        <div class="row">
+            <div class="form-group">
+                @Html.Partial("~/Views/Products/_AddEquivProductModal.cshtml")
+            </div>
+        </div>
     *@
 
     <div class="row">
@@ -95,6 +95,7 @@
                 </div>
                 <div class="panel-body">
                     <label>Edit Product Profile</label>
+                    @*@using (Html.BeginForm("Edit", "Products", FormMethod.Post))*@
                     @using (Html.BeginForm("SetUpProductProfileEdit", "Products", FormMethod.Post))
                     {
                         <div class="form-group">
@@ -108,6 +109,11 @@
                             </div>
                             <span class="input-group-btn">
                                 <input type="submit" id="btnEdit" value="Edit Product" class="btn btn-success" />
+                                @*
+                                    @Html.ActionLink("Edit", "Edit", "Products", new { id = "productdetailid" }, null)
+                                    this produces the desired url structure with <Products/Edit/productdetailid>
+                                    I need to find a way to extract the selected productdetailid value
+                                *@
                             </span>
                         </div>
                     }
@@ -137,7 +143,7 @@
                                 <option>12345A - Product Name</option>
                                 <option>...</option>
                             </select>
-                            <span class="input-group-btn"><input type="button" class="btn btn-success" value="Review" /></span>
+                            <span class="input-group-btn"><input type="button" class="btn btn-success" value="Review" onclick="alert('TODO Build, TODO')" /></span>
                         </div>
                     </form>
                 </div>
@@ -180,6 +186,7 @@
             mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
             return mylist;
         }
-    }
-}
 
+    }
+
+}

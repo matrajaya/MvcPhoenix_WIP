@@ -27,5 +27,30 @@ namespace MvcPhoenix.EF
         public Nullable<int> LegacyID { get; set; }
         public string Location_MDB { get; set; }
         public string Company_MDB { get; set; }
+        public string ContactLabelName { get; set; }
+        public string ContactLabelPhone { get; set; }
+        public string ContactMSDSName { get; set; }
+        public string ContactMSDSPhone { get; set; }
+        public string EmergencyNumber { get; set; }
+        public string UPSHazBook { get; set; }
+        public string ExtMSDS { get; set; }
+        public string ExtLabel { get; set; }
+        public string MainContactName { get; set; }
+        public string MainContactNumber { get; set; }
+        public string CompanyName { get; set; }
+        public string CompanyStreet1 { get; set; }
+        public string CompanyStreet2 { get; set; }
+        public string CompanyStreet3 { get; set; }
+        public string CompanyPostalCode { get; set; }
+        public string CompanyCity { get; set; }
+        public string CompanyCountry { get; set; }
+        public string CompanyTelephone { get; set; }
+        public string CompanyFax { get; set; }
+        public string CompanyEmergencyTelephone { get; set; }
+        public string CompanyEmail { get; set; }
+        public string CompanyWebsite { get; set; }
+        public string CompanyLogo { get; set; }
+        public string CompanyLogo2 { get; set; }
+        public Nullable<bool> IncludeExpDtOnLabel { get; set; }
     }
 }

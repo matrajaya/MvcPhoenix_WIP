@@ -40,8 +40,20 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> CustomsValue { get; set; }
         public string CustomsValueUnit { get; set; }
         public Nullable<bool> GlobalProduct { get; set; }
-        public Nullable<decimal> SpecificGravity { get; set; }
         public Nullable<bool> AccuracyVerified { get; set; }
+        public Nullable<bool> PolmerizationHazard { get; set; }
+        public string SDSContactName { get; set; }
+        public string SDSContactPhone { get; set; }
+        public Nullable<System.DateTime> ChinaCertificationDate { get; set; }
+        public string LabelContactName { get; set; }
+        public string LabelContactPhone { get; set; }
+        public Nullable<bool> TechnicalSheet { get; set; }
+        public Nullable<System.DateTime> TechnicalSheetRevisionDate { get; set; }
+        public string EmergencyContactNumber { get; set; }
+        public Nullable<bool> EPAHazardousWaste { get; set; }
+        public Nullable<bool> NonRCRAWaste { get; set; }
+        public string WasteProfileNumber { get; set; }
+        public Nullable<System.DateTime> LastUpDate { get; set; }
         public string Company_MDB { get; set; }
         public string MasterCode_MDB { get; set; }
         public string Division_MDB { get; set; }

@@ -77,8 +77,13 @@
                         </textarea>
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Cross Reference List - D & List*</label><br />
-                        <textarea rows="5" class="form-control"></textarea>
+                        <label>Cross Reference List</label><br />
+                        <textarea rows="5" class="form-control" readonly="readonly">
+                            @for (int i = 0; i < Model.ListOfProductCodesXRefs.Count(); i++)
+                            {
+                                @Model.ListOfProductCodesXRefs[i];
+                            }
+                        </textarea>
                     </div>
                     <div class="form-group col-md-3">
                         <label>Profile Revision Date</label>
@@ -94,10 +99,9 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct) Global Product</label><br />
-                        <label><input type="checkbox" value=""> Accuracy Verified - D*</label><br />
-
-                        @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
+                        <label>@Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified) Accuracy Verified</label><br />
                         <!--Todo: Creat condition at target if dicontinued is true then show-->
+                        @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
                         <label data-toggle="collapse" data-target="#discontinued">Discontinued</label>
                     </div>
                 </div>
@@ -121,16 +125,16 @@
                         @Html.TextBoxFor(m => m.hazardclassground_sg, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-2">
-                        <label>S.G. - M*</label>
-                        <input class="form-control">
+                        <label>S.G.</label>
+                        @Html.TextBoxFor(m => m.specificgravity, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-2">
                         <label>Density LBS/GAL</label>
                         @Html.TextBoxFor(m => m.density, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-2">
-                        <label>pH Value - M*</label>
-                        <input class="form-control">
+                        <label>pH</label>
+                        @Html.TextBoxFor(m => m.phvalue, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-2">
                         <label>Restricted Qty (lbs)</label>
@@ -219,22 +223,22 @@
                             <tbody>
                                 @foreach (var item in Model.ListOfShelfItems)
                                 {
-                                <tr>
-                                    <td><a href="#" onclick="alert('Build Object, Modal delete confirm')"><i class="fa fa-minus-circle fa-fw" style="color: red"></i></a></td>
-                                    <td><strong>@item.size</strong></td>
-                                    <td>@item.mnemonic</td>
-                                    <td>@item.busarea</td>
-                                    <td>@item.warehouse</td>
-                                    <td>@item.bin</td>
-                                    <td>@item.reordermin.ToString()</td>
-                                    <td>@item.reordermax.ToString()</td>
-                                    <td>@item.reorderqty.ToString()</td>
-                                    <td>@item.package</td>
-                                    <td>@item.groundhazard</td>
-                                    <td>@item.airhazard</td>
-                                    <td>@item.notes</td>
-                                    <td><a href="#" onclick="alert('Build object, Modal edit popup')">Edit</a></td>
-                                </tr>
+                                    <tr>
+                                        <td><a href="#" onclick="alert('Build Object, Modal delete confirm')"><i class="fa fa-minus-circle fa-fw" style="color: red"></i></a></td>
+                                        <td><strong>@item.size</strong></td>
+                                        <td>@item.mnemonic</td>
+                                        <td>@item.busarea</td>
+                                        <td>@item.warehouse</td>
+                                        <td>@item.bin</td>
+                                        <td>@item.reordermin.ToString()</td>
+                                        <td>@item.reordermax.ToString()</td>
+                                        <td>@item.reorderqty.ToString()</td>
+                                        <td>@item.package</td>
+                                        <td>@item.groundhazard</td>
+                                        <td>@item.airhazard</td>
+                                        <td>@item.notes</td>
+                                        <td><a href="#" onclick="alert('Build object, Modal edit popup')">Edit</a></td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -275,7 +279,7 @@
                             Client @Html.CheckBox("clientreq", Model.clientreq != null && (bool)Model.clientreq)
                             CMC @Html.CheckBox("cmcreq", Model.cmcreq != null && (bool)Model.cmcreq)
                         </p>
-                        <p>Other - Uncertain*: @Html.TextBoxFor(m => m.handlingother)</p>
+                        <p>Other: @Html.TextBoxFor(m => m.otherpkg)</p>
                     </div>
                 </div>
                 <div class="row">
@@ -290,8 +294,8 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label>Other Instructions - Uncertain*</label>
-                        @Html.TextBoxFor(m => m.other, new { @class = "form-control" })
+                        <label>Other Instructions</label>
+                        @Html.TextBoxFor(m => m.otherhandlinginstr, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-6">
                         <label>Shipping SOP</label>
@@ -377,7 +381,8 @@
                         <p>@Html.CheckBox("safetyglasses", Model.safetyglasses != null && (bool)Model.safetyglasses) Safety Glasses</p>
                         <p>@Html.CheckBox("gloves", Model.gloves != null && (bool)Model.gloves) Gloves</p>
                         <p>
-                            @Html.TextBoxFor(m => m.glovetype, new { @class = "form-control" })
+                            @*@Html.TextBoxFor(m => m.glovetype, new { @class = "form-control" })*@
+                            @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
                             <!--#region DDL for Glove Types-->
                             @*<select class="form-control">
                                     <option>Glove Type</option>
@@ -408,7 +413,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Health Hazards</label>
-                        <p>@Html.CheckBox("toxic", Model.toxic != null && (bool)Model.toxic) Toxic - Uncertain*</p>
+                        <p>@Html.CheckBox("toxic", Model.toxic != null && (bool)Model.toxic) Toxic</p>
                         <p>@Html.CheckBox("highlytoxic", Model.highlytoxic != null && (bool)Model.highlytoxic) Highly Toxic</p>
                         <p>@Html.CheckBox("reproductivetoxin", Model.reproductivetoxin != null && (bool)Model.reproductivetoxin) Reproductive Toxin</p>
                         <p>@Html.CheckBox("corrosivehaz", Model.corrosivehaz != null && (bool)Model.corrosivehaz) Corrosive Hazard</p>
@@ -430,9 +435,9 @@
                         <p>@Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable) Flammable</p>
                         <p>@Html.CheckBox("oxidizer", Model.oxidizer != null && (bool)Model.oxidizer) Oxidizer</p>
                         <p>@Html.CheckBox("reactive", Model.reactive != null && (bool)Model.reactive) Reactive</p>
-                        <p>@Html.CheckBox("toxic", Model.toxic != null && (bool)Model.toxic) Toxic - Uncertain*</p>
+                        <p><input type="checkbox"> Toxic - (Physical Toxic) M*</p>
                         <p>@Html.CheckBox("peroxideformer", Model.peroxideformer != null && (bool)Model.peroxideformer) Peroxide Former</p>
-                        <p><input type="checkbox"> Polymerization Hazard - D*</p>
+                        <p>@Html.CheckBox("polmerizationhazard", Model.polmerizationhazard != null && (bool)Model.polmerizationhazard) Polymerization Hazard</p>
                     </div>
                 </div>
                 <hr>
@@ -690,12 +695,12 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label>SDS Contact Name - D*</label>
-                        <input class="form-control">
+                        <label>SDS Contact Name</label>
+                        @Html.TextBoxFor(m => m.sdscontactname, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-6">
-                        <label>SDS Contact Phone - D*</label>
-                        <input class="form-control">
+                        <label>SDS Contact Phone</label>
+                        @Html.TextBoxFor(m => m.sdscontactphone, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -708,30 +713,31 @@
                         @Html.TextBoxFor(m => m.labelnumber, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>China Test Certification Date - D*</label>
-                        <input type="date" class="form-control">
+                        <label>China Test Certification Date</label>
+                        @Html.TextBoxFor(m => m.chinacertificationdate, new { @class = "form-control" })
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label>Label Contact Name - D*</label>
-                        <input class="form-control">
+                        <label>Label Contact Name</label>
+                        @Html.TextBoxFor(m => m.labelcontactname, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Label Contact Phone -D*</label>
-                        <input class="form-control">
+                        <label>Label Contact Phone</label>
+                        @Html.TextBoxFor(m => m.labelcontactphone, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Technical Sheet - D*</label>
-                        <div class="radio">
-                            <label><input type="radio" name="optionsRadios" id="optionsRadios1" value="Yes">Yes</label>
-                            <label><input type="radio" name="optionsRadios" id="optionsRadios2" value="No">No</label>
-                        </div>
+                        <label>Technical Sheet</label>
+                        <p>@Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet)</p>
+                        @*<div class="radio">
+                                <label><input type="radio" name="optionsRadios" id="optionsRadios1" value="Yes">Yes</label>
+                                <label><input type="radio" name="optionsRadios" id="optionsRadios2" value="No">No</label>
+                            </div>*@
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Technical Sheet Revision Date - D*</label>
-                        <input type="date" class="form-control">
+                        <label>Technical Sheet Revision Date</label>
+                        @Html.TextBoxFor(m => m.technicalsheetrevisondate, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -750,43 +756,29 @@
             <div id="shipping" class="panel-body collapse">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label>Emergency Contact Number - D*</label>
-                        <input class="form-control">
+                        <label>Emergency Contact Number</label>
+                        @Html.TextBoxFor(m => m.emergencycontactnumber, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-6">
-                        <label>End Use - DDL*</label>
-                        @Html.TextBoxFor(m => m.enduse, new { @class = "form-control" })
-                        <!--#region DDL-->
-                        @*<select class="form-control">
-                                <option></option>
-                                <option>Printing</option>
-                                <option>Powder Coating</option>
-                                <option>Acid Cleaner</option>
-                                <option>...</option>
-                            </select>*@
-                        <!--#endregion-->
+                        <label>End Use</label>
+                        @Html.DropDownListFor(m => m.enduse, Model.ListOfEndUsesForCustoms, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-2">
-                        <label>Harmonized Code - DDL*</label>
-                        @Html.TextBoxFor(m => m.harmonizedcode, new { @class = "form-control" })
-                        <!--#region DDL-->
-                        @*<select class="form-control">
-                                <option></option>
-                                <option>1302.16.3400</option>
-                                <option>2342.20.1243</option>
-                                <option>1232.00.0928</option>
-                                <option>...</option>
-                            </select>*@<!--#endregion-->
+                        <label>Harmonized Code</label>
+                        @Html.DropDownListFor(m => m.harmonizedcode, Model.ListOfHarmonizedCodes, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-4">
                         <label>Chemical Name - Uncertain*</label>
+                        <!-- Note:
+                            Currently exists as labelinfo in NM DB will be created
+                            as shippingchemicalname going forward after model and DB update from Phil-->
                         @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Label Notes (EPA, etc) - Uncertain*</label>
-                        @Html.TextBoxFor(m => m.labelinfo, new { @class = "form-control" })
+                        <label>Label Notes (EPA, etc)</label>
+                        @Html.TextBoxFor(m => m.otherlabelnotes, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -1084,24 +1076,15 @@
                         </div>
                     </div>
                     <div class="form-group col-md-3">
-                        <p><input type="checkbox"> <label>EPA Hazardous Waste - D*</label></p>
-                        <p><input type="checkbox"> <label>Non-RCRA Waste - D*</label></p>
-                        <p><label>Waste Profile Number - D*</label> <input class="form-control"></p>
+                        <p>@Html.CheckBox("epahazardouswaste", Model.epahazardouswaste != null && (bool)Model.epahazardouswaste) <label>EPA Hazardous Waste</label></p>
+                        <p>@Html.CheckBox("nonrcrawaste", Model.nonrcrawaste != null && (bool)Model.nonrcrawaste) <label>Non-RCRA Waste</label></p>
+                        <p><label>Waste Profile Number</label> @Html.TextBoxFor(m => m.wasteprofilenumber, new { @class = "form-control" })</p>
                     </div>
                 </div>
 
             </div>
         </div>
 
-
-        <div class="form-group row">
-            <div class="col-md-3" id="dvspinner" style="display:none;">
-                <img src="~/Content/images/ani-rebuild.gif" /> Saving Profile
-            </div>
-
-            <div id="dvSaveResult" class="col-md-4">
-            </div>
-        </div>
 
         <div class="form-group row">
             <div class="col-md-6">
@@ -1123,6 +1106,15 @@
             <div class="col-lg-12">
                 <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>
                 <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+            </div>
+        </div>
+
+        <div class="form-group row center-block">
+            <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-weight:bold">
+                <img src="~/Content/images/ani-rebuild.gif" /> Saving Profile
+            </div>
+
+            <div id="dvSaveResult" class="col-md-12 text-center" style="font-weight:bold">
             </div>
         </div>
     }

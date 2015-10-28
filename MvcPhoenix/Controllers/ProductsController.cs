@@ -7,25 +7,17 @@ using System.Web.Mvc;
 //pc add
 using MvcPhoenix.Models;
 using MvcPhoenix.EF;
+//using MvcPhoenix.Models.ProductProfileRepository;
 
 namespace MvcPhoenix.Controllers
 {
     public class ProductsController : Controller
     {
-        // GET: Products/
-        // Build a ProductProfileLanding model and return the view
         public ActionResult Index()
         {
             return View("~/Views/Products/Index.cshtml");
         }
 
-        // GET: Products/Edit
-        public ActionResult Edit()
-        {
-            return View();
-        }
-
-        // called from javascript function in Index to return a string as a DD
         public string ProductCodesDropDown(int id, string divid)
         {
             string s = "";
@@ -39,16 +31,82 @@ namespace MvcPhoenix.Controllers
             // IMPORTANT: set the id and the name 
             s = "<select name='" + divid + "' id='" + divid + "' class='form-control'>";
             s = s + "<option value='0' selected=true>Product Code</option>";
+
             foreach (var item in qry)
             {
                 s = s + "<option value=" + item.ProductDetailID.ToString() + ">" + item.ProductCode + " - " + item.MasterCode + " - " + item.ProductName + "</option>";
             }
+            
             s = s + "</select>";
+            
             db.Dispose();
+            
             return s;
         }
 
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            if (id == 0)
+            {
+                return View("~/Views/Products/Index.cshtml"); // cycle back
+            }
+            else
+            {
+                ProductProfile PP = new ProductProfile();
+                PP.productdetailid = id;
+                PP = FillFromPD(PP);
+                PP = FillFromPM(PP);
+                PP = fnFillOtherPMProps(PP);
+                //return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
+                return View(PP);
+            }
+        }
 
+        [HttpGet]
+        public ActionResult New(int id)
+        {
+            if (id == 0)
+            {
+                return View("~/Views/Products/Index.cshtml"); // cycle back
+            }
+            else
+            {
+                ProductProfile PP = new ProductProfile();
+                PP.clientid = id;
+                PP.productmasterid = -1;
+                PP.productdetailid = -1;
+                // no reason to go to DB - this is a new object
+                PP = fnFillOtherPMProps(PP);
+                return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Equiv(int id)
+        {
+            if (id == 0)
+            {
+                return View("~/Views/Products/Index.cshtml"); // cycle back
+            }
+            else
+            {
+                using (var db = new CMCSQL03Entities())
+                {
+                    var q = (from t in db.tblProductDetail where t.ProductDetailID == id select new { t.ProductMasterID }).FirstOrDefault();
+                    ProductProfile PP = new ProductProfile();
+                    PP.productdetailid = -1;
+                    PP.productmasterid = q.ProductMasterID;
+                    PP = FillFromPM(PP);
+                    
+                    PP = fnFillOtherPMProps(PP);
+                    return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
+                }
+            }
+        }
+
+        #region Older Post Actions
+        // Older POST versions - need for pc to test plumbing using landing page 
         [HttpPost]
         public ActionResult SetUpProductProfileEdit(int productdetailid1)
         {
@@ -67,7 +125,6 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-
         [HttpPost]
         public ActionResult SetUpProductProfileNew(int clientid2)
         {
@@ -81,12 +138,13 @@ namespace MvcPhoenix.Controllers
                 PP.clientid = clientid2;
                 PP.productmasterid = -1;
                 PP.productdetailid = -1;
+
                 // no reason to go to DB - this is a new object
                 PP = fnFillOtherPMProps(PP);
+                
                 return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
             }
         }
-
 
         [HttpPost]
         public ActionResult SetUpProductProfileEquiv(int productdetailid3)
@@ -104,44 +162,88 @@ namespace MvcPhoenix.Controllers
                     PP.productdetailid = -1;
                     PP.productmasterid = q.ProductMasterID;
                     PP = FillFromPM(PP);
-                    // NO  PP = FillPD(PP);
                     PP = fnFillOtherPMProps(PP);
                     return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
                 }
-
             }
         }
+        #endregion
+
 
         // ***********************************************************************
         // Controller Support Actions Below
         // ***********************************************************************
 
+        // These can be moved to an external .cs file and referenced in from this controller...
         private ProductProfile fnFillOtherPMProps(ProductProfile PP)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                // Add equivalents
-                var qry = (from t in db.tblProductDetail where t.ProductMasterID == PP.productmasterid select new { t.ProductCode }).Distinct().ToList();
-                var mylist1 = new List<string>();
-                foreach (var item in qry)
-                { mylist1.Add(item.ProductCode); }
-                PP.ListOfEquivalents = mylist1;
+                //GloveType
+                List<SelectListItem> gloves = new List<SelectListItem>();
+                gloves.Add(new SelectListItem { Value = "", Text = "" });
+                gloves.Add(new SelectListItem { Value = "GMP NITRILE", Text = "GMP NITRILE" });
+                gloves.Add(new SelectListItem { Value = "NEOPRENE", Text = "NEOPRENE" });
+                gloves.Add(new SelectListItem { Value = "NEOPRENE+NITRIL", Text = "NEOPRENE+NITRIL" });
+                gloves.Add(new SelectListItem { Value = "NITRILE", Text = "NITRILE" });
+                PP.ListOfGloves = gloves;
 
+                //PackageTypes
+                PP.ListOfPackageTypes = (from t in db.tblPackageType orderby t.PartNumber select new SelectListItem { Value = t.PartNumber, Text = t.Description }).ToList();
+
+                // Equivs
+                PP.ListOfEquivalents = (from t in db.tblProductDetail where t.ProductMasterID == PP.productmasterid && t.ProductCode != PP.productcode select new SelectListItem { Value = t.ProductCode, Text = t.ProductCode }).ToList();
+                
+                PP.ListOfEndUsesForCustoms = (from t in db.tblEndUseForCustoms orderby t.EndUse select new SelectListItem { Value = t.EndUse, Text = t.EndUse }).ToList();
+
+                PP.ListOfHarmonizedCodes = (from t in db.tblHSCode orderby t.HarmonizedCode select new SelectListItem { Value = t.HarmonizedCode, Text = t.HarmonizedCode }).ToList();
+
+                // Productcode xRefs
+                PP.ListOfProductCodesXRefs = (from t in db.tblProductXRef where t.CMCProductCode == PP.mastercode select new SelectListItem { Value = t.ProductXRefID.ToString(), Text = t.CustProductCode }).ToList();
+
+                // Logo filename (needs to be moved to a Client class)
                 var q = (from t in db.tblClient where t.ClientID == PP.clientid select new { t.ClientName, t.LogoFileName }).FirstOrDefault();
                 PP.clientname = q.ClientName;
                 PP.logofilename = "http://www.mysamplecenter.com/Logos/" + q.LogoFileName;
 
-                List<SelectListItem> mylist2 = new List<SelectListItem>();
-                mylist2 = (from t in db.tblDivision where t.ClientID == PP.clientid select new SelectListItem { Value = t.DivisionID.ToString(), Text = t.Division }).ToList();
-                mylist2.Insert(0, new SelectListItem { Value = "0", Text = "" });
-                PP.ListOfDivisions = mylist2;
+                // Divisions
+                PP.ListOfDivisions = (from t in db.tblDivision where t.ClientID == PP.clientid select new SelectListItem { Value = t.DivisionID.ToString(), Text = t.Division }).ToList();
+                PP.ListOfDivisions.Insert(0, (new SelectListItem { Value = "0", Text = "" }));
 
-                List<SelectListItem> mylist3 = new List<SelectListItem>();
-                mylist3 = (from t in db.tblBulkSupplier where t.ClientID == PP.clientid select new SelectListItem { Value = t.SupplyID, Text = t.SupplyID }).ToList();
-                mylist3.Insert(0, new SelectListItem { Value = "0", Text = "" });
-                PP.ListOfSupplyIDs = mylist3;
+                // SupplyIDs
+                PP.ListOfSupplyIDs = (from t in db.tblBulkSupplier where t.ClientID == PP.clientid select new SelectListItem { Value = t.SupplyID, Text = t.SupplyID }).ToList();
+                PP.ListOfSupplyIDs.Insert(0, new SelectListItem { Value = "0", Text = "" });
 
-                // build ListOfShelfItems
+                PP.ListOfProductNotes = (from t in db.tblProductNotes
+                                         where t.ProductDetailID == PP.productdetailid
+                                         select new ProductNote
+                                         {
+                                             productnoteid = t.ProductNoteID,
+                                             productdetailid = t.ProductDetailID,
+                                             notedate = t.NoteDate,
+                                             notes = t.Notes,
+                                             reasoncode = t.ReasonCode
+                                         }).ToList();
+
+                PP.ListOfCasNumbers = (from t in db.tblCAS
+                                       where t.ProductDetailID == PP.productdetailid
+                                       select new Cas
+                                       {
+                                           casid = t.CASID,
+                                           productdetailid = t.ProductDetailID,
+                                           casnumber = t.CasNumber,
+                                           chemicalname = t.ChemicalName,
+                                           percentage = t.Percentage,
+                                           restrictedqty = t.RestrictedQty,
+                                           restrictedamount = t.RestrictedAmount,
+                                           packonreceipt = t.PackOnReceipt,
+                                           reportableqty = t.ReportableQty,
+                                           reportableamount = t.ReportableAmount,
+                                           lessthan = t.LessThan,
+                                           excludefromlabel = t.ExcludeFromLabel
+                                       }).ToList();
+
+                // ShelfItems
                 var qshelf = (from t in db.tblShelfMaster
                               where t.ProductDetailID == PP.productdetailid
                               select new ShelfMaster
@@ -165,7 +267,6 @@ namespace MvcPhoenix.Controllers
             return PP;
         }
 
-
         // Pass a PP, return original plus tblProductDetail properties
         private ProductProfile FillFromPD(ProductProfile PP)
         {
@@ -174,9 +275,7 @@ namespace MvcPhoenix.Controllers
             {
                 var qd = (from t in db.tblProductDetail where t.ProductDetailID == PP.productdetailid select t).FirstOrDefault();
                 PP.productdetailid = qd.ProductDetailID;
-                //PP.fkproductmasterid = qd.ProductMasterID;
                 PP.productmasterid = qd.ProductMasterID;
-                //PP.sglegacyid = qd.SGLegacyID;
                 PP.divisionid = qd.DivisionID;
                 PP.busarea = qd.BusArea;
                 PP.productcode = qd.ProductCode;
@@ -192,7 +291,6 @@ namespace MvcPhoenix.Controllers
                 PP.labelrevisiondate = qd.LabelRevisionDate;
                 PP.labelnumber = qd.LabelNumber;
                 PP.productchecked = qd.ProductChecked;
-                //PP.checked = qd.Checked;
                 PP.checkedby = qd.CheckedBy;
                 PP.checkedwhen = qd.CheckedWhen;
                 PP.epabiocide = qd.EPABiocide;
@@ -201,7 +299,22 @@ namespace MvcPhoenix.Controllers
                 PP.customsvalue = qd.CustomsValue;
                 PP.customsvalueunit = qd.CustomsValueUnit;
                 PP.globalproduct = qd.GlobalProduct;
+                PP.accuracyverified = qd.AccuracyVerified;
+                PP.sdscontactname = qd.SDSContactName;
+                PP.sdscontactphone = qd.SDSContactPhone;
+                PP.chinacertificationdate = qd.ChinaCertificationDate;
+                PP.labelcontactname = qd.LabelContactName;
+                PP.labelcontactphone = qd.LabelContactPhone;
+                PP.technicalsheet = qd.TechnicalSheet;
+                PP.technicalsheetrevisondate = qd.TechnicalSheetRevisionDate;
 
+                PP.emergencycontactnumber = qd.EmergencyContactNumber;
+
+                PP.epahazardouswaste = qd.EPAHazardousWaste;
+                PP.nonrcrawaste = qd.NonRCRAWaste;
+                PP.wasteprofilenumber = qd.WasteProfileNumber;
+
+                PP.polmerizationhazard = qd.PolmerizationHazard;
                 return PP;
             }
         }
@@ -240,7 +353,7 @@ namespace MvcPhoenix.Controllers
                 PP.heatpriortofilling = q.HeatPriorToFilling;
                 PP.flashpoint = q.FlashPoint;
                 PP.heatinginstructions = q.HeatingInstructions;
-                PP.other = q.Other;
+                PP.otherhandlinginstr = q.OtherHandlingInstr;
                 PP.normalappearence = q.NormalAppearence;
                 PP.rejectioncriterion = q.RejectionCriterion;
                 PP.hood = q.Hood;
@@ -354,11 +467,12 @@ namespace MvcPhoenix.Controllers
                 PP.seahazmat = q.SEAHAZMAT;
                 PP.seaemsno = q.SEAEMSNO;
                 PP.seamfagno = q.SEAMFAGNO;
-
+                PP.specificgravity = q.SpecificGravity;
+                PP.phvalue = q.phValue;
+                
                 return PP;
             }
         }
-
 
         [HttpPost]
         public ActionResult SaveProductProfile(ProductProfile PP)
@@ -376,23 +490,19 @@ namespace MvcPhoenix.Controllers
                 {
                     PP.productmasterid = fnNewProductMasterID();
                 }
-
                 SaveProductMaster(PP);
-
                 if (PP.productdetailid == -1)
                 {
                     PP.productdetailid = fnNewProductDetailID();
                 }
                 SaveProductDetail(PP);
-                return Content("Profiled Update At " + DateTime.Now.ToString());
+                return Content("Profile UPDATED at " + DateTime.Now.ToString());
             }
             catch
             {
-                return Content("DB Error - Profiled NOT UPDATED At " + DateTime.Now.ToString());
+                return Content("DB Error - Profile NOT UPDATED at " + DateTime.Now.ToString());
             }
-
         }
-
 
         // ************** Save to DB **********************************************
 
@@ -400,12 +510,10 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new CMCSQL03Entities())
             {
-                //fnArchiveProductMaster(pm.productmasterid);
                 var q = (from t in db.tblProductDetail where t.ProductDetailID == PP.productdetailid select t).FirstOrDefault();
                 q.ProductCode = PP.productcode;
                 q.ProductDetailID = PP.productdetailid;
                 q.ProductMasterID = PP.productmasterid;
-                
                 q.DivisionID = PP.divisionid;
                 q.BusArea = PP.busarea;
                 q.ProductCode = PP.productcode;
@@ -429,16 +537,34 @@ namespace MvcPhoenix.Controllers
                 q.CustomsValue = PP.customsvalue;
                 q.CustomsValueUnit = PP.customsvalueunit;
                 q.GlobalProduct = PP.globalproduct;
-                
+
+                q.AccuracyVerified = PP.accuracyverified;
+
+                q.SDSContactName = PP.sdscontactname;
+                q.SDSContactPhone = PP.sdscontactphone;
+                q.ChinaCertificationDate = PP.chinacertificationdate;
+                q.LabelContactName = PP.labelcontactname;
+                q.LabelContactPhone = PP.labelcontactphone;
+                q.TechnicalSheet = PP.technicalsheet;
+                q.TechnicalSheetRevisionDate = PP.technicalsheetrevisondate;
+
+                q.EmergencyContactNumber = PP.emergencycontactnumber;
+
+                q.EPAHazardousWaste = PP.epahazardouswaste;
+                q.NonRCRAWaste = PP.nonrcrawaste;
+                q.WasteProfileNumber = PP.wasteprofilenumber;
+
+                q.PolmerizationHazard = PP.polmerizationhazard;
+
                 db.SaveChanges();
             }
         }
+
 
         public void SaveProductMaster(ProductProfile pm)
         {
             using (var db = new CMCSQL03Entities())
             {
-                //fnArchiveProductMaster(pm.productmasterid);
                 var q = (from t in db.tblProductMaster where t.ProductMasterID == pm.productmasterid select t).FirstOrDefault();
 
                 q.ClientID = pm.clientid;
@@ -467,7 +593,8 @@ namespace MvcPhoenix.Controllers
                 q.HeatPriorToFilling = pm.heatpriortofilling;
                 q.FlashPoint = pm.flashpoint;
                 q.HeatingInstructions = pm.heatinginstructions;
-                q.Other = pm.other;
+                // name change per cd q.Other = pm.other;
+                q.OtherHandlingInstr = pm.otherhandlinginstr;
                 q.NormalAppearence = pm.normalappearence;
                 q.RejectionCriterion = pm.rejectioncriterion;
                 q.Hood = pm.hood;
@@ -581,6 +708,8 @@ namespace MvcPhoenix.Controllers
                 q.SEAHAZMAT = pm.seahazmat;
                 q.SEAEMSNO = pm.seaemsno;
                 q.SEAMFAGNO = pm.seamfagno;
+                q.SpecificGravity = pm.specificgravity;
+                q.phValue = pm.phvalue;
 
                 db.SaveChanges();
             }
@@ -635,8 +764,22 @@ namespace MvcPhoenix.Controllers
             // Select * into  tblPMTemp from tblProductMaster where ProductMasterID=id
             // Insert into tblProductMasterArchive Select * from tblPMTemp;
             // If exists tblPmTemp Drop table tblPMTemp;
-
         }
 
+        public class dto_01
+        {
+            // small dto object to schuttle data thru json
+            // more complex task should use the full ViewModel object..
+            public string key { get; set; }
+            public string keyvalue { get; set; }
+        }
+
+        public ActionResult FillJsonTest(string testkey)
+        {
+            var q = new dto_01();
+            q.key = 99.ToString();
+            q.keyvalue = "phil";
+            return Json(q, JsonRequestBehavior.AllowGet);
+        }
     }
 }

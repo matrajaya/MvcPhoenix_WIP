@@ -43,7 +43,7 @@ namespace MvcPhoenix.EF
         public Nullable<bool> HeatPriorToFilling { get; set; }
         public Nullable<decimal> FlashPoint { get; set; }
         public string HeatingInstructions { get; set; }
-        public string Other { get; set; }
+        public string OtherHandlingInstr { get; set; }
         public string NormalAppearence { get; set; }
         public string RejectionCriterion { get; set; }
         public Nullable<bool> Hood { get; set; }
@@ -157,6 +157,9 @@ namespace MvcPhoenix.EF
         public string SEAHAZMAT { get; set; }
         public string SEAEMSNO { get; set; }
         public string SEAMFAGNO { get; set; }
+        public Nullable<decimal> SpecificGravity { get; set; }
+        public Nullable<decimal> phValue { get; set; }
+        public Nullable<System.DateTime> LastUpDate { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string Location_MDB { get; set; }

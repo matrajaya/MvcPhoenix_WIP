@@ -15,20 +15,80 @@ namespace MvcPhoenix.Models
     {
         // small class used by the landing page, built in the index view load
         public int searchclientid { get; set; }
-        
+
         [Display(Name = "ClientID")]
         public List<SelectListItem> ListOfClients { get; set; }
 
-        public int searchproductdetailid { get;set; }
+        public int searchproductdetailid { get; set; }
     }
 
-    
+    public class ProductNote
+    {
+        public int productnoteid { get; set; }
+        public int? productdetailid { get; set; }
+        public DateTime? notedate { get; set; }
+        public string notes { get; set; }
+        public string reasoncode { get; set; }
+    }
+
+    public class UN
+    {
+        public string unnumber { get; set; }
+        public string hazardclass { get; set; }
+        public string propershippingname { get; set; }
+        public string nosname { get; set; }
+        public string labelreq { get; set; }
+        public string subclass { get; set; }
+        public string subsidlabelreq { get; set; }
+        public string packinggroup { get; set; }
+    }
+
+
+    public class Cas
+    {
+        [Display(Name = "CASID")]
+        public int casid { get; set; }
+
+        [Display(Name = "ProductDetailID")]
+        public int? productdetailid { get; set; }
+
+        [Display(Name = "CasNumber")]
+        public string casnumber { get; set; }
+
+        [Display(Name = "ChemicalName")]
+        public string chemicalname { get; set; }
+
+        [Display(Name = "Percentage")]
+        public string percentage { get; set; }
+
+        [Display(Name = "RestrictedQty")]
+        public bool? restrictedqty { get; set; }
+
+        [Display(Name = "RestrictedAmount")]
+        public decimal? restrictedamount { get; set; }
+
+        [Display(Name = "PackOnReceipt")]
+        public bool? packonreceipt { get; set; }
+
+        [Display(Name = "ReportableQty")]
+        public bool? reportableqty { get; set; }
+
+        [Display(Name = "ReportableAmount")]
+        public decimal? reportableamount { get; set; }
+
+        [Display(Name = "LessThan")]
+        public bool? lessthan { get; set; }
+
+        [Display(Name = "ExcludeFromLabel")]
+        public bool? excludefromlabel { get; set; }
+
+    }
 
     public class ProductProfile
     {
-
-        // non table related properties
-        public List<ShelfMaster> ListOfShelfItems { get; set; }
+        public List<SelectListItem> ListOfPackageTypes { get; set; }
+        public List<ProductNote> ListOfProductNotes { get; set; }
+        public List<Cas> ListOfCasNumbers { get; set; }
 
         public DateTime masterlastupdate { get; set; }
         public DateTime detaillastupdate { get; set; }
@@ -40,11 +100,8 @@ namespace MvcPhoenix.Models
         [Display(Name = "ProductDetailID")]
         public int productdetailid { get; set; }
 
-        //[Display(Name = "FKProductMasterID")]
-        //public int? fkproductmasterid { get; set; }
-
-        //[Display(Name = "SGLegacyID")]
-        //public int? sglegacyid { get; set; }
+        // tblShelfMaster records
+        public List<ShelfMaster> ListOfShelfItems { get; set; }
 
         [Display(Name = "DivisionID")]
         public int? divisionid { get; set; }
@@ -70,8 +127,13 @@ namespace MvcPhoenix.Models
         [Display(Name = "HarmonizedCode")]
         public string harmonizedcode { get; set; }
 
+        public List<SelectListItem> ListOfHarmonizedCodes { get; set; }
+
         [Display(Name = "EndUse")]
         public string enduse { get; set; }
+
+        public List<SelectListItem> ListOfEndUsesForCustoms { get; set; }
+
 
         [Display(Name = "SGRevisionDate")]
         public DateTime? sgrevisiondate { get; set; }
@@ -89,7 +151,7 @@ namespace MvcPhoenix.Models
         public string labelnumber { get; set; }
 
         [Display(Name = "Product Checked")]
-        // table field iin JET s checked, changed to productchecked for SQL Server
+        // table field in JET is named [checked], changed to productchecked for SQL Server
         public bool? productchecked { get; set; }
 
         [Display(Name = "Checked By")]
@@ -116,14 +178,56 @@ namespace MvcPhoenix.Models
         [Display(Name = "Global Product")]
         public bool? globalproduct { get; set; }
 
-        
+        //pc 10/23/2015 new fields created by Iffy
+
+        public bool? polmerizationhazard { get; set; }
+
+        [Display(Name = "Accuracy Verified")]
+        public bool? accuracyverified { get; set; }
+
+        [Display(Name = "SDS Contact Name")]
+        public string sdscontactname { get; set; }
+
+        [Display(Name = "SDS Contact Phone")]
+        public string sdscontactphone { get; set; }
+
+        [Display(Name = "China Certification Date")]
+        public DateTime? chinacertificationdate { get; set; }
+
+        [Display(Name = "Label Contact Name")]
+        public string labelcontactname { get; set; }
+
+        [Display(Name = "Label Contact Phone")]
+        public string labelcontactphone { get; set; }
+
+        [Display(Name = "Technical Sheet")]
+        public bool? technicalsheet { get; set; }
+
+        [Display(Name = "Tech Sheet Rev Date")]
+        public DateTime? technicalsheetrevisondate { get; set; }
+
+        [Display(Name = "Emergency Contact Number")]
+        public string emergencycontactnumber { get; set; }
+
+        [Display(Name = "EPA Hazardous Waste")]
+        public bool? epahazardouswaste { get; set; }
+
+        [Display(Name = "Non RCRA Waste")]
+        public bool? nonrcrawaste { get; set; }
+
+        [Display(Name = "Waste Profile Number")]
+        public string wasteprofilenumber { get; set; }
+
         // **********************************************************************
         // tblProductMaster Fields
         // **********************************************************************
 
         public string logofilename { get; set; }
 
-        public List<String> ListOfEquivalents { get; set; }
+        [Display(Name = "Equivalents")]
+        public List<SelectListItem> ListOfEquivalents { get; set; }
+
+        public List<SelectListItem> ListOfProductCodesXRefs { get; set; }
 
         [Display(Name = "ProductMasterID")]
         public int? productmasterid { get; set; }
@@ -142,7 +246,8 @@ namespace MvcPhoenix.Models
         public int? masterdivisionid { get; set; }
 
         [Display(Name = "Business Unit/Division")]
-        public IEnumerable<SelectListItem> ListOfDivisions { get; set; }
+        //public IEnumerable<SelectListItem> ListOfDivisions { get; set; }
+        public List<SelectListItem> ListOfDivisions { get; set; }
 
         [Display(Name = "Discontinued")]
         public bool? discontinued { get; set; }
@@ -161,15 +266,14 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Restrictedamount")]
         public decimal? restrictedamount { get; set; }
-
-         // *********************************************************
+        
+        // *********************************************************
 
         //[Display(Name = "SUPPLYID")]
         public string supplyid { get; set; }
 
         [Display(Name = "SUPPLYID")]
         public List<SelectListItem> ListOfSupplyIDs { get; set; }
-
 
         [Display(Name = "NoReorder")]
         public bool? noreorder { get; set; }
@@ -231,8 +335,11 @@ namespace MvcPhoenix.Models
         [Display(Name = "HeatingInstructions")]
         public string heatinginstructions { get; set; }
 
-        [Display(Name = "Other")]
-        public string other { get; set; }
+        // 10/24/2015 per cd rename in migration
+        //[Display(Name = "Other")]
+        //public string other { get; set; }
+        [Display(Name = "Other Handling Instr")]
+        public string otherhandlinginstr { get; set; }
 
         [Display(Name = "NormalAppearence")]
         public string normalappearence { get; set; }
@@ -254,6 +361,8 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Gloves")]
         public bool? gloves { get; set; }
+
+        public List<SelectListItem> ListOfGloves { get; set; }
 
         [Display(Name = "GloveType")]
         public string glovetype { get; set; }
@@ -563,6 +672,11 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "SEAMFAGNO")]
         public string seamfagno { get; set; }
-        
+
+        [Display(Name = "S.G.")]
+        public decimal? specificgravity { get; set; }
+
+        [Display(Name = "pH")]
+        public decimal? phvalue { get; set; }
     }
 }
