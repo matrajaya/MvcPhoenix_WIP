@@ -52,7 +52,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2015 13:39:40</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll">
-      <publishTime>10/28/2015 10:20:51</publishTime>
+      <publishTime>10/29/2015 16:50:57</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll.config">
       <publishTime>10/08/2015 10:08:26</publishTime>
@@ -555,11 +555,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Orders/_TransEditModal.cshtml">
       <publishTime>07/31/2015 12:20:16</publishTime>
     </File>
+    <File Include="Views/Products/Create.cshtml">
+      <publishTime>10/29/2015 15:45:39</publishTime>
+    </File>
     <File Include="Views/Products/Edit.cshtml">
-      <publishTime>10/27/2015 17:10:56</publishTime>
+      <publishTime>10/29/2015 13:35:31</publishTime>
     </File>
     <File Include="Views/Products/Index.cshtml">
-      <publishTime>10/28/2015 10:02:21</publishTime>
+      <publishTime>10/29/2015 16:49:25</publishTime>
     </File>
     <File Include="Views/Products/Index2.cshtml">
       <publishTime>10/20/2015 10:09:20</publishTime>
@@ -568,7 +571,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/28/2015 16:45:27</publishTime>
     </File>
     <File Include="Views/Products/_AddEquivProductModal.cshtml">
-      <publishTime>10/19/2015 14:41:19</publishTime>
+      <publishTime>10/29/2015 14:03:17</publishTime>
     </File>
     <File Include="Views/Products/_AddProductModal.cshtml">
       <publishTime>10/14/2015 17:16:13</publishTime>
@@ -601,7 +604,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2015 09:08:04</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>07/31/2015 12:11:30</publishTime>
+      <publishTime>10/29/2015 13:28:53</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutNaked.cshtml">
       <publishTime>07/29/2015 14:43:44</publishTime>

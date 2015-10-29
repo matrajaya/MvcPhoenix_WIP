@@ -1,6 +1,6 @@
 ﻿@model MvcPhoenix.Models.ProductProfile
 @{
-    ViewBag.Title = "Product Profile:";
+    ViewBag.Title = "Create Product Profile";
 }
 
 <div class="container-fluid">
@@ -11,7 +11,7 @@
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
-                @ViewBag.Title  @Model.productcode
+                @ViewBag.Title
             </h1>
         </div>
     </div>
@@ -46,7 +46,7 @@
         <div class="form-group row">
             <div class="col-md-12">
                 <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products Index", "Index")
-                <span class="pull-right label label-info">Product ID: @Model.productdetailid</span>
+                @*<span class="pull-right label label-info">Product ID: @Model.productdetailid</span>*@
                 @*<span id="dvTopMessage" class="pull-right" style="">@Html.Raw(@Model.UpdateResult)</span>*@<!-- show message after save -->
                 @*<label id="discontinued" class="col-md-12 collapse form-control" style="background-color: red; color: white"> Discontinued Product</label>*@
             </div>
@@ -1112,8 +1112,8 @@
 
         <div class="form-group row center-block">
             @*<div class="col-md-12 text-center" id="dvspinner" style="display:none; font-weight:bold">
-                <img src="~/Content/images/ani-rebuild.gif" /> Saving Profile
-            </div>*@
+                    <img src="~/Content/images/ani-rebuild.gif" /> Saving Profile
+                </div>*@
 
             <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
                 <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Saving Profile...

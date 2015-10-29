@@ -63,44 +63,65 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult New(int id)
+        //[HttpGet]
+        //public ActionResult Create(int id)
+        //{
+        //    if (id == 0)
+        //    {
+        //        return View("~/Views/Products/Index.cshtml"); // cycle back
+        //    }
+        //    else
+        //    {
+        //        ProductProfile PP = new ProductProfile();
+        //        PP.clientid = id;
+        //        PP.productmasterid = -1;
+        //        PP.productdetailid = -1;
+        //        // no reason to go to DB - this is a new object
+        //        PP = fnFillOtherPMProps(PP);
+
+        //        return View(PP);
+        //    }
+        //}
+        [HttpPost]
+        public ActionResult Create(int clientid2)
         {
-            if (id == 0)
+            if (clientid2 == 0)
             {
-                return View("~/Views/Products/Index.cshtml"); // cycle back
+                //return View("~/Views/Products/Index.cshtml"); // cycle back
+                return RedirectToAction("Index", "Products");
             }
             else
             {
                 ProductProfile PP = new ProductProfile();
-                PP.clientid = id;
+                PP.clientid = clientid2;
                 PP.productmasterid = -1;
                 PP.productdetailid = -1;
-                // no reason to go to DB - this is a new object
+
                 PP = fnFillOtherPMProps(PP);
-                return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
+
+                return View(PP);
             }
         }
 
-        [HttpGet]
-        public ActionResult Equiv(int id)
+        [HttpPost]
+        public ActionResult Equiv(int productdetailid3)
         {
-            if (id == 0)
+            if (productdetailid3 == 0)
             {
-                return View("~/Views/Products/Index.cshtml"); // cycle back
+                //return View("~/Views/Products/Index.cshtml"); // cycle back
+                return RedirectToAction("Index", "Products");
             }
             else
             {
                 using (var db = new CMCSQL03Entities())
                 {
-                    var q = (from t in db.tblProductDetail where t.ProductDetailID == id select new { t.ProductMasterID }).FirstOrDefault();
+                    var q = (from t in db.tblProductDetail where t.ProductDetailID == productdetailid3 select new { t.ProductMasterID }).FirstOrDefault();
                     ProductProfile PP = new ProductProfile();
                     PP.productdetailid = -1;
                     PP.productmasterid = q.ProductMasterID;
                     PP = FillFromPM(PP);
-                    
                     PP = fnFillOtherPMProps(PP);
-                    return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
+                    return View("~/Views/Products/Create.cshtml", PP);
                 }
             }
         }

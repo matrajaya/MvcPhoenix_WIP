@@ -31,8 +31,9 @@
                     <div class="alert alert-success">
                         <label>Create Original Product Profile</label>
                         <p>This will create a product with a mastercode type attribute</p><br />
+
                         @*@using (Html.BeginForm("New", "Products", FormMethod.Post))*@
-                        @using (Html.BeginForm("SetUpProductProfileNew", "Products", FormMethod.Post))
+                        @using (Html.BeginForm("Create", "Products"))
                         {
                             <div class="input-group">
                                 @Html.DropDownList("clientid2", fnClientIDs(), new { @class = "form-control" })
@@ -49,7 +50,8 @@
                         <label>Create Equivalent Product Profile</label>
                         <p></p>
                         @*@using (Html.BeginForm("Equiv", "Products", FormMethod.Post))*@
-                        @using (Html.BeginForm("SetUpProductProfileEquiv", "Products", FormMethod.Post))
+                        @*@using (Html.BeginForm("SetUpProductProfileEquiv", "Products", FormMethod.Post))*@
+                        @using (Html.BeginForm("Equiv", "Products"))
                         {
                             <div class="form-group">
                                 @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
@@ -62,8 +64,10 @@
                                 </div>
                                 <span class="input-group-btn">
                                     <input type="submit" id="btnEquiv" value="Create" class="btn btn-success" />
-                                    @* Button below shows interactive modal for equivalent product. This will be implemmented later*@
-                                    @*<a href="#" class="" data-toggle="modal" data-target="#addequivprod"><input type="submit" class="btn btn-success" value="Create"></a>*@
+
+                                    @* Button below shows form modal for quick creation of equivalent product.
+                                       This will be implemmented later*@
+                                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#addequivprod">Quick Create</a>
                                 </span>
                             </div>
                         }
@@ -73,19 +77,20 @@
         </div>
     </div>
 
-
-    @*  Note:
+    @*
+        Note:
         Modal pop-up when equivalent product create button is clicked.
         After modal is filled and save button initiates creation of product.
         Move data from modal form to product object.
         Load newly created euivalent product in edit view with product master information filled in.
         --------------------------------------------------------------------------------------------
-        <div class="row">
-            <div class="form-group">
-                @Html.Partial("~/Views/Products/_AddEquivProductModal.cshtml")
-            </div>
-        </div>
     *@
+    <div class="row">
+        <div class="form-group">
+            @Html.Partial("~/Views/Products/_AddEquivProductModal.cshtml")
+        </div>
+    </div>
+
 
     <div class="row">
         <div class="col-md-6">
@@ -95,22 +100,24 @@
                 </div>
                 <div class="panel-body">
                     <label>Edit Product Profile</label>
-                    @*@using (Html.BeginForm("Edit", "Products", FormMethod.Post))*@
-                    @using (Html.BeginForm("SetUpProductProfileEdit", "Products", FormMethod.Post))
+                    @using (Html.BeginForm("Edit", "Products"))
                     {
                         <div class="form-group">
                             @Html.DropDownList("clientid1", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Edit')", @class = "form-control" })
                         </div>
                         <div class="input-group">
                             <div id="dvProductMasterIDs1">
-                                <select name="productdetailid1" id='productdetailid1' class='form-control'>
+                                <select name="productdetailid1" id='productdetailid1' class='form-control' onchange="getid(this)">
                                     <option value="0"></option>
                                 </select>
                             </div>
                             <span class="input-group-btn">
-                                <input type="submit" id="btnEdit" value="Edit Product" class="btn btn-success" />
+                                @*<input type="submit" id="btnEdit" value="Edit Product" class="btn btn-success" />*@
+                                @Html.ActionLink("Edit Product", "Edit", "Products", new { id = "submitEdit", @class = "btn btn-success" })
                             </span>
                         </div>
+                        @* Do not remove this div. JS gives Uncaught TypeError: Cannot read property 'value' of undefined on the getid() function*@
+                        <div id="selectedproductid" hidden>0</div> 
                     }
                 </div>
             </div>
@@ -164,6 +171,14 @@
         }
     }
 
+    function getid(sel) {
+        var prodid = sel.value;
+        // do not remove. js typeerrors come up. See note above by hidden div
+        document.getElementById("selectedproductid").innerHTML = prodid;
+        var editpath = '@Url.Content("~/Products/Edit")' + '/' + prodid;
+        document.getElementById("submitEdit").setAttribute("href", editpath);
+    }
+    
 </script>
 
 <!-- Local Razor -->
