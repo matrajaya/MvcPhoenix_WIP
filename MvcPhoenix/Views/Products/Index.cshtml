@@ -62,6 +62,7 @@
                                 </div>
                                 <span class="input-group-btn">
                                     <input type="submit" id="btnEquiv" value="Create" class="btn btn-success" />
+
                                     @* Button below shows interactive modal for equivalent product. This will be implemmented later*@
                                     @*<a href="#" class="" data-toggle="modal" data-target="#addequivprod"><input type="submit" class="btn btn-success" value="Create"></a>*@
                                 </span>
@@ -96,26 +97,24 @@
                 <div class="panel-body">
                     <label>Edit Product Profile</label>
                     @*@using (Html.BeginForm("Edit", "Products", FormMethod.Post))*@
-                    @using (Html.BeginForm("SetUpProductProfileEdit", "Products", FormMethod.Post))
+                    @*@using (Html.BeginForm("SetUpProductProfileEdit", "Products", FormMethod.Post))*@
+                    @using (Html.BeginForm("Edit", "Products"))
                     {
                         <div class="form-group">
                             @Html.DropDownList("clientid1", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Edit')", @class = "form-control" })
                         </div>
                         <div class="input-group">
                             <div id="dvProductMasterIDs1">
-                                <select name="productdetailid1" id='productdetailid1' class='form-control'>
+                                <select name="productdetailid1" id='productdetailid1' class='form-control' onchange="getid(this)">
                                     <option value="0"></option>
                                 </select>
                             </div>
                             <span class="input-group-btn">
-                                <input type="submit" id="btnEdit" value="Edit Product" class="btn btn-success" />
-                                @*
-                                    @Html.ActionLink("Edit", "Edit", "Products", new { id = "productdetailid" }, null)
-                                    this produces the desired url structure with <Products/Edit/productdetailid>
-                                    I need to find a way to extract the selected productdetailid value
-                                *@
+                                @*<input type="submit" id="btnEdit" value="Edit Product" class="btn btn-success" />*@
+                                @Html.ActionLink("Edit Product", "Edit", "Products", new { id = "submitEdit", @class = "btn btn-success" })
                             </span>
                         </div>
+                        @*<p id="selectedproductid">3</p>*@
                     }
                 </div>
             </div>
@@ -168,6 +167,20 @@
             $.get(myurl, { id: $('#clientid3').val(), divid: "productdetailid3" }, function (fromserver) { $('#dvProductMasterIDs3').html(fromserver); });
         }
     }
+
+    function getid(sel) {
+        var prodid = sel.value;
+        document.getElementById("selectedproductid").innerHTML = prodid;
+
+        var editpath = '@Url.Content("~/Products/Edit")' + '/' + prodid;
+        document.getElementById("submitEdit").setAttribute("href", editpath);
+    }
+
+    @*$('#submitEdit').click(function () {
+        var xxx = prodid;
+        var editpath = '@Url.Content("~/Products/Edit")' + '/33';
+        $this.attr("href", editpath);
+    })*@
 
 </script>
 

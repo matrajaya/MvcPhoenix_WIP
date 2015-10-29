@@ -28,8 +28,8 @@ namespace MvcPhoenix.Controllers
                        orderby t.ProductCode
                        select new { t.ProductDetailID, t.ProductCode, t.ProductName, t2.MasterCode });
 
-            // IMPORTANT: set the id and the name 
-            s = "<select name='" + divid + "' id='" + divid + "' class='form-control'>";
+            // IMPORTANT: set the id and the name and onchange js function
+            s = "<select name='" + divid + "' id='" + divid + "' class='form-control' onchange='getid(this)' >";
             s = s + "<option value='0' selected=true>Product Code</option>";
 
             foreach (var item in qry)

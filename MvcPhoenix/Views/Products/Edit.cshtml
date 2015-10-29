@@ -44,8 +44,9 @@
             </div>*@
 
         <div class="form-group row">
-            <div class="col-lg-12">
-                <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products", "Index")
+            <div class="col-md-12">
+                <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products Index", "Index")
+                <span class="pull-right label label-info">Product ID: @Model.productdetailid</span>
                 @*<span id="dvTopMessage" class="pull-right" style="">@Html.Raw(@Model.UpdateResult)</span>*@<!-- show message after save -->
                 @*<label id="discontinued" class="col-md-12 collapse form-control" style="background-color: red; color: white"> Discontinued Product</label>*@
             </div>
@@ -381,7 +382,8 @@
                         <p>@Html.CheckBox("safetyglasses", Model.safetyglasses != null && (bool)Model.safetyglasses) Safety Glasses</p>
                         <p>@Html.CheckBox("gloves", Model.gloves != null && (bool)Model.gloves) Gloves</p>
                         <p>
-                            @Html.TextBoxFor(m => m.glovetype, new { @class = "form-control" })
+                            @*@Html.TextBoxFor(m => m.glovetype, new { @class = "form-control" })*@
+                            @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
                             <!--#region DDL for Glove Types-->
                             @*<select class="form-control">
                                     <option>Glove Type</option>
@@ -730,68 +732,54 @@
                         <label>Technical Sheet</label>
                         <p>@Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet)</p>
                         @*<div class="radio">
-                        <label><input type="radio" name="optionsRadios" id="optionsRadios1" value="Yes">Yes</label>
-                        <label><input type="radio" name="optionsRadios" id="optionsRadios2" value="No">No</label>
-                    </div>*@
+                                <label><input type="radio" name="optionsRadios" id="optionsRadios1" value="Yes">Yes</label>
+                                <label><input type="radio" name="optionsRadios" id="optionsRadios2" value="No">No</label>
+                            </div>*@
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Technical Sheet Revision Date</label>
+                        @Html.TextBoxFor(m => m.technicalsheetrevisondate, new { @class = "form-control" })
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Technical Sheet Revision Date</label>
-                    @Html.TextBoxFor(m => m.technicalsheetrevisondate, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label>Return Location</label>
-                    @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Return Location</label>
+                        @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title" data-toggle="collapse" data-target="#shipping"><i class="fa fa-suitcase fa-fw"></i> Shipping Description</h3>
-        </div>
-        <div id="shipping" class="panel-body collapse">
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label>Emergency Contact Number</label>
-                    @Html.TextBoxFor(m => m.emergencycontactnumber, new { @class = "form-control" })
-                </div>
-                <div class="form-group col-md-6">
-                    <label>End Use - DDL*</label>
-                    @Html.TextBoxFor(m => m.enduse, new { @class = "form-control" })
-                    <!--#region DDL-->
-                    @*<select class="form-control">
-                            <option></option>
-                            <option>Printing</option>
-                            <option>Powder Coating</option>
-                            <option>Acid Cleaner</option>
-                            <option>...</option>
-                        </select>*@
-                        <!--#endregion-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#shipping"><i class="fa fa-suitcase fa-fw"></i> Shipping Description</h3>
+            </div>
+            <div id="shipping" class="panel-body collapse">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Emergency Contact Number</label>
+                        @Html.TextBoxFor(m => m.emergencycontactnumber, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>End Use</label>
+                        @Html.DropDownListFor(m => m.enduse, Model.ListOfEndUsesForCustoms, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-2">
-                        <label>Harmonized Code - DDL*</label>
-                        @Html.TextBoxFor(m => m.harmonizedcode, new { @class = "form-control" })
-                        <!--#region DDL-->
-                        @*<select class="form-control">
-                                <option></option>
-                                <option>1302.16.3400</option>
-                                <option>2342.20.1243</option>
-                                <option>1232.00.0928</option>
-                                <option>...</option>
-                            </select>*@<!--#endregion-->
+                        <label>Harmonized Code</label>
+                        @Html.DropDownListFor(m => m.harmonizedcode, Model.ListOfHarmonizedCodes, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-4">
                         <label>Chemical Name - Uncertain*</label>
+                        <!-- Note:
+                            Currently exists as labelinfo in NM DB will be created
+                            as shippingchemicalname going forward after model and DB update from Phil-->
                         @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Label Notes (EPA, etc) - Uncertain*</label>
-                        @Html.TextBoxFor(m => m.labelinfo, new { @class = "form-control" })
+                        <label>Label Notes (EPA, etc)</label>
+                        @Html.TextBoxFor(m => m.otherlabelnotes, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -1100,15 +1088,6 @@
 
 
         <div class="form-group row">
-            <div class="col-md-3" id="dvspinner" style="display:none;">
-                <img src="~/Content/images/ani-rebuild.gif" /> Saving Profile
-            </div>
-
-            <div id="dvSaveResult" class="col-md-4">
-            </div>
-        </div>
-
-        <div class="form-group row">
             <div class="col-md-6">
                 @*<button class="btn btn-success btn-block">Save Changes</button>*@
                 <input type="submit" class="btn btn-success btn-block" value="Save Changes" />
@@ -1128,6 +1107,19 @@
             <div class="col-lg-12">
                 <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>
                 <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+            </div>
+        </div>
+
+        <div class="form-group row center-block">
+            @*<div class="col-md-12 text-center" id="dvspinner" style="display:none; font-weight:bold">
+                <img src="~/Content/images/ani-rebuild.gif" /> Saving Profile
+            </div>*@
+
+            <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+                <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Saving Profile...
+            </div>
+
+            <div id="dvSaveResult" class="col-md-12 text-center" style="font-weight:bold">
             </div>
         </div>
     }
