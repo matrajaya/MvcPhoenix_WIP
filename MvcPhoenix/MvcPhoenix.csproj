@@ -204,6 +204,8 @@
     <Compile Include="Controllers\MiscController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ReceivingController.cs" />
+    <Compile Include="Controllers\ReplenishmentsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="EF\CMCEntities.Context.cs">
       <AutoGen>True</AutoGen>
@@ -391,6 +393,7 @@
     <Compile Include="Models\ProductMaster.cs" />
     <Compile Include="Models\ProductProfile.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\ReplenishmentViewModel.cs" />
     <Compile Include="Models\ShelfMaster.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -630,6 +633,20 @@
     <Content Include="Views\Products\_AddEquivProductModal.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Create.cshtml" />
+    <Content Include="Views\Receiving\Index.cshtml" />
+    <Content Include="Views\Replenishments\Index.cshtml" />
+    <Content Include="Views\Replenishments\Create.cshtml" />
+    <Content Include="Views\Replenishments\Edit.cshtml" />
+    <Content Include="Views\Replenishments\_BulkOrderItemEdit.cshtml" />
+    <Content Include="Views\Replenishments\_BulkOrderItems.cshtml" />
+    <Content Include="Views\Replenishments\_SearchResults.cshtml" />
+    <Content Include="Views\Replenishments\_SuggestedItemEdit.cshtml" />
+    <Content Include="Views\Replenishments\_SuggestedItems.cshtml" />
+    <Content Include="Views\Receiving\BulkContainerEdit.cshtml" />
+    <Content Include="Views\Receiving\_BulkContainerSearchResults.cshtml" />
+    <Content Include="Views\Receiving\BulkReceipt.cshtml" />
+    <Content Include="Views\Receiving\_BulkReceiptOpenOrderItems.cshtml" />
+    <Content Include="Views\Receiving\BulkReceiptUnKnown.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

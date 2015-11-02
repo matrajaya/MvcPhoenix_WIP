@@ -1,0 +1,105 @@
+﻿@{
+    // Landing page for Bulk Containers
+}
+
+<h4>Bulk Containers</h4>
+
+@using (Ajax.BeginForm("SearchBulkContainerUserCriteria", "Receiving",
+    new AjaxOptions
+    {
+        UpdateTargetId = "dvGridPlaceHolder",
+        InsertionMode = InsertionMode.Replace,
+        OnBegin = "document.getElementById('dvGridPlaceHolder').innerHTML = ''",
+        LoadingElementId = "dvspinner",
+    }))
+{
+    <div class="well well-sm" style="margin-bottom:8px;">
+        <p>User Search</p>
+        <div class="row">
+            <div class="col-md-12 form-group form-inline">
+                @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "clearResults()", @class = "form-control", @style = "width:30%;" })
+                Last <input type="number" id="rowcount" name="rowcount" value="10" class="form-control" style="width:12%;" /> containers in
+                @Html.DropDownList("warehouse", fnWareHouseList(), new { onchange = "clearResults()", @class = "form-control", @style = "width:10%;" })
+                <input id="btnsubmit" type="submit" value="Search" class="btn btn-primary btn-sm" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="well well-sm">
+    <p>Quick Search</p>
+
+    @Ajax.ActionLink("Rec'd Status Only", "SearchInReceiving", "Receiving", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "clearResults",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-primary btn-sm", data_toggle = "tooltip", title = "this is a tooltip" })
+
+    @Ajax.ActionLink("Non-Avail Status", "SearchNonAvailable", "Receiving", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "clearResults",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-primary btn-sm" })
+
+    @Ajax.ActionLink("Expired Only", "SearchExpired", "Receiving", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "clearResults",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-primary btn-sm" })
+</div>
+
+<div id="dvspinner" style="display:none;">
+    <img src="~/Content/images/ani-rebuild.gif" /> Searching Orders <img src="~/Content/images/ani-rebuild.gif" />
+</div>
+
+<div id="dvGridPlaceHolder" style="margin-top:10px;">
+    <!-- placeholder for partial -->
+    @Html.Partial("~/Views/Bulk/_BulkContainerSearchResults.cshtml")
+</div>
+
+<!-- Post page scripts -->
+<script type="text/javascript">
+    function clearResults()
+    {
+        document.getElementById("dvGridPlaceHolder").innerHTML = "";
+    }
+</script>
+
+@functions
+{
+    // these are local to this view cause this view not strongly typed
+
+    private static List<SelectListItem> fnClientIDs()
+    {
+        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+        {
+            List<SelectListItem> mylist = new List<SelectListItem>();
+            mylist = (from t in db.tblClient
+                      orderby t.ClientName
+                      select
+                          new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+            return mylist;
+        }
+    }
+
+    private List<SelectListItem> fnWareHouseList()
+    {
+        List<SelectListItem> mylist = new List<SelectListItem>();
+        mylist.Add(new SelectListItem { Value = "", Text = "" });
+        mylist.Add(new SelectListItem { Value = "AP", Text = "AP" });
+        mylist.Add(new SelectListItem { Value = "CT", Text = "CT" });
+        mylist.Add(new SelectListItem { Value = "CO", Text = "CO" });
+        mylist.Add(new SelectListItem { Value = "EU", Text = "EU" });
+        return mylist;
+    }
+}

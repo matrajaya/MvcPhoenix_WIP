@@ -1,0 +1,163 @@
+﻿@model MvcPhoenix.Models.BulkOrderHeader
+@{
+    ViewBag.Title = "Replenishment Order";
+}
+
+<h4>
+    Replenshment Order Number @Model.bulkorderid.ToString() | @Model.clientname
+    @*<a href="~/BulkOrders/Index" class="btn btn-primary btn-xs" style="margin-left:50px;">Back to Search</a>*@
+    <a href="~/Replenishments/Index" class="btn btn-primary btn-xs" style="margin-left:50px;">Back to Search</a>
+</h4>
+
+<div class="well well-sm">
+    <!-- ajax form to post changes back to controller -->
+    @*@using (Ajax.BeginForm("SaveBulkOrderHeader", "BulkOrders",*@
+    @using (Ajax.BeginForm("SaveBulkOrderHeader", "Replenishments",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "dvOrderSaveResult",
+        LoadingElementId = "dvspinner",
+        InsertionMode = InsertionMode.Replace,
+        OnBegin = "$('#dvOrderSaveResult').html('')"
+    }))
+    {
+    <!-- DO NOT REMOVE -->
+        <input type="hidden" id="clientid" name="clientid" value="@Model.clientid" />
+        <input type="hidden" id="bulkorderid" name="bulkorderid" value="@Model.bulkorderid" />
+        <input type="hidden" id="orderdate" name="orderdate" value="@Model.orderdate" />
+
+        <div class="row">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.orderdate)
+            </div>
+            <div class="col-md-10">
+                &nbsp; @fnDate(Model.orderdate)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.supplyid)
+            </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.supplyid, Model.ListOfOrderHeaderSupplyIDs, new { type = "text", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <a href="#" onclick="LookupEmail();">
+                    @Html.LabelFor(m => m.bulksupplieremail)
+                </a>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.bulksupplieremail, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.emailsent)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.emailsent, new { disabled = "disabled", type = "text", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.ordercomment)
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.ordercomment, new { maxlength = 1000, @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:5px;">
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input id="emailcheckbox" name="emailcheckbox" type="checkbox" />
+                @Ajax.ActionLink("Send Confirmation Email", null, null,
+                    new AjaxOptions { OnBegin = "SendEmail", Confirm = "Send Email?" },
+                        new { @class = "btn btn-warning" })
+
+                <span id="dvspinner" style="display:none;"><strong> Saving Order Header</strong></span>
+                <strong><span id="dvOrderSaveResult"></span></strong>
+
+            </div>
+        </div>
+
+    }
+</div>  <!-- well -->
+<!-- Create a new object and return partial view _BulkOrderItemEdit.cshtml into modal div -->
+<!-- OnSuccess event will show the modal -->
+@*@Ajax.ActionLink("Add item to order", "SetupBulkOrderItemInsert", "BulkOrders",*@
+@Ajax.ActionLink("Add item to order", "SetupBulkOrderItemInsert", "Replenishments",
+                   new { id = @Model.bulkorderid, clientid = @Model.clientid },
+                       new AjaxOptions { UpdateTargetId = "dvDetailEdit", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#modal01').modal('show')" },
+                   new { @class = "btn btn-primary btn-xs" })
+
+<div id="dvgrid" style="margin-top:5px;">
+    @*@Html.Partial("~/Views/BulkOrders/_BulkOrderItems.cshtml", Model)*@
+    @Html.Partial("~/Views/Replenishments/_BulkOrderItems.cshtml", Model)
+</div>
+
+<div id="modal01" role="dialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="dvDetailEdit">
+                    <!-- Placeholder for _BulkOrderItemEdit.cshtml -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Local Razor -->
+@functions
+{
+    private static string fnDate(DateTime? vDate)
+    { return (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date"; }
+}
+
+
+<!-- Local javascript -->
+<script type="text/javascript">
+
+    function LookupEmail() {
+        // pull email address from tblBulkSupplier and push into DOM email input tag
+        $('#bulksupplieremail').val("joeZee@chemicalmarketing.com");
+    }
+
+    function SendEmail() {
+        // call an action to timestamp the emailsent field, send a SMTP message, return the timestamp, update DOM
+
+        var isemailchecked = document.getElementById("emailcheckbox").checked;
+        if (isemailchecked == true)
+        { DoTheEmailWork(); }
+        else
+        { alert("Please check the box first..."); }
+    }
+
+    function DoTheEmailWork() {
+        $.ajax({
+            type: "POST",
+            @*url: '@Url.Action("SendConfirmationEmail", "BulkOrders")',*@
+            url: '@Url.Action("SendConfirmationEmail", "BulkOrders")',
+            data: { id: $("#bulkorderid").val() },
+            dataType: "text",
+            cache: false,
+            success: function (stringfromserver) {
+                $("#emailsent").val(stringfromserver);
+            },
+            error: function () { alert("error"); }
+        });
+    }
+</script>
