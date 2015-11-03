@@ -1,0 +1,131 @@
+﻿@{
+    // Landing page for Bulk Orders
+}
+<h4>
+    Replenishment Orders - Search/Edit/New
+    @Html.ActionLink("New Replenishment Order(s)", "Create", "Replenishments", null, new { @class = "btn btn-warning", @style = "margin-left:30px;" })
+</h4>
+
+<!-- AJAX form to POST search criteria to controller, return partial to #dvGridPlaceHolder -->
+@using (Ajax.BeginForm("SearchBulkOrdersUserCriteria", "Replenishments",
+    new AjaxOptions
+    {
+        UpdateTargetId = "dvGridPlaceHolder",
+        InsertionMode = InsertionMode.Replace,
+        OnBegin = "$('dvGridPlaceHolder').html('')",
+        LoadingElementId = "dvspinner"
+    }))
+{
+    <div class="well well-sm" style="margin-bottom:8px;">
+        <p>User Search</p>
+        <div class="row">
+            <div class="col-md-12 form-group form-inline">
+                @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "$('#dvGridPlaceHolder').html('')", @class = "form-control", @style = "width:35%;" })
+                Last <input type="number" id="ordercount" name="ordercount" value="10" class="form-control" style="width:12%;" /> orders
+                <input id="btnsubmit" type="submit" value="Search" class="btn btn-primary btn-sm" />
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="well well-sm">
+    <p>Quick Search</p>
+    @Ajax.ActionLink("Last 10 All CLients", "SearchLastTenBulkOrders", "Replenishments", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-primary btn-sm" })
+
+    @Ajax.ActionLink("Un-Confirmed Only", "SearchUnConfirmedBulkOrders", "Replenishments", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-primary btn-sm" })
+
+    @Ajax.ActionLink("Orders w/Open Items", "SearchOpenBulkOrders", "Replenishments", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-primary btn-sm" })
+
+    @Ajax.ActionLink("Quick Search 4", null, null, null, new { @class = "btn btn-info btn-sm" })
+    @Ajax.ActionLink("Quick Search 5", null, null, null, new { @class = "btn btn-info btn-sm" })
+    @Ajax.ActionLink("Quick Search 6", null, null, null, new { @class = "btn btn-info btn-sm" })
+    @Ajax.ActionLink("Quick Search 7", null, null, null, new { @class = "btn btn-info btn-sm" })
+
+
+</div>
+
+
+<div id="dvspinner" style="display:none;">
+    Searching For Orders ...
+</div>
+
+<div id="dvGridPlaceHolder" style="margin-top:8px;">
+    @Html.Partial("~/Views/Replenishments/_SearchResults.cshtml", fnDefaultSearchResults())
+</div>
+
+
+<!-- Local javascript -->
+<script type="text/javascript">
+
+</script>
+
+<!-- Local Razor -->
+@functions
+{
+    private static List<SelectListItem> fnClientIDs()
+    {
+        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+        {
+            List<SelectListItem> mylist = new List<SelectListItem>();
+            mylist = (from t in db.tblClient
+                      orderby t.ClientName
+                      select
+                        new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+            return mylist;
+        }
+
+    }
+
+
+    private List<MvcPhoenix.Models.BulkOrderSearchResults> fnDefaultSearchResults()
+    {
+        // default search results for initial load
+        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+        {
+            List<MvcPhoenix.Models.BulkOrderSearchResults> mylist = new List<MvcPhoenix.Models.BulkOrderSearchResults>();
+            mylist = (from t in db.tblBulkOrder
+                      join t2 in db.tblClient on t.ClientID equals t2.ClientID
+                      let itemscount = (from items in db.tblBulkOrderItem where items.BulkOrderID == t.BulkOrderID select items).Count()
+                      orderby t.BulkOrderID descending
+                      select new MvcPhoenix.Models.BulkOrderSearchResults
+                      {
+                          bulkorderid = t.BulkOrderID,
+                          clientid = t.ClientID,
+                          supplyid = t.SupplyID,
+                          orderdate = t.OrderDate,
+                          comment = t.Comment,
+                          bulksupplieremail = t.BulkSupplierEmail,
+                          emailsent = t.EmailSent,
+                          clientname = t2.ClientName,
+                          itemcount = itemscount
+                      }).Take(10).ToList();
+            db.Dispose();
+            return mylist;
+        }
+
+    }
+
+}

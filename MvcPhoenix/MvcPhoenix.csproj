@@ -642,11 +642,11 @@
     <Content Include="Views\Replenishments\_SearchResults.cshtml" />
     <Content Include="Views\Replenishments\_SuggestedItemEdit.cshtml" />
     <Content Include="Views\Replenishments\_SuggestedItems.cshtml" />
-    <Content Include="Views\Receiving\BulkContainerEdit.cshtml" />
-    <Content Include="Views\Receiving\_BulkContainerSearchResults.cshtml" />
-    <Content Include="Views\Receiving\BulkReceipt.cshtml" />
-    <Content Include="Views\Receiving\_BulkReceiptOpenOrderItems.cshtml" />
-    <Content Include="Views\Receiving\BulkReceiptUnKnown.cshtml" />
+    <Content Include="Views\Receiving\Edit.cshtml" />
+    <Content Include="Views\Receiving\_SearchResults.cshtml" />
+    <Content Include="Views\Receiving\Create.cshtml" />
+    <Content Include="Views\Receiving\CreateUnknown.cshtml" />
+    <Content Include="Views\Receiving\_OpenOrderItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

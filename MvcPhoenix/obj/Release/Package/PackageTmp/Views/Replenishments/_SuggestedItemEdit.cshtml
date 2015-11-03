@@ -1,0 +1,59 @@
+﻿@model MvcPhoenix.Models.SuggestedBulkOrderItem
+@*@using (Ajax.BeginForm("SaveSuggItem", "BulkOrders",*@
+@using (Ajax.BeginForm("SaveSuggItem", "Replenishments",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "dvupdateresult"
+    }))
+{
+    <!-- do not remove -->
+    @Html.HiddenFor(m => m.id)
+    @Html.HiddenFor(m => m.clientid)
+
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(m => m.productmasterid, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.productmasterid, Model.ListOfProductMasters, new { @class = "form-control", @style = "width:70%" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(m => m.reorderweight, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.reorderweight, new { @class = "form-control", type = "number", min = "0", max = "999" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(m => m.notes, new { @class = "control-label" })
+            @Html.TextAreaFor(m => m.notes, new { @class = "form-control", type = "text" })
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-12 form-group">
+            <input type="submit" value="Save Changes" class="btn btn-md btn-success" />
+            <div id="dvupdateresult">
+                <!-- Place holder for string returned from controller from Save operation -->
+            </div>
+        </div>
+    </div>
+
+}
+
+<div class="row text-center">
+    <!-- When user clicks Close in modal, update items partial -->
+    <input type="button" value="Close" class="btn btn-md btn-success" onclick="UpdateGrid()" />
+</div>
+
+
+<script type="text/javascript">
+    function UpdateGrid() {
+        // The target div is NOT in this View, its in the parent (I dont like this)
+        // no good IIS var URL = "/BulkOrders/UpdateGrid";
+        @*var URL = '@Url.Action("UpdateGrid", "BulkOrders")';*@
+        var URL = '@Url.Action("UpdateGrid", "Replenishments")';
+        $('#dvGridPlaceHolder').load(URL);
+        $('#modalouter').modal('hide')
+    }
+
+</script>

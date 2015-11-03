@@ -25,7 +25,6 @@
                     <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
                 </tr>
             </thead>
-
             <tbody>
                 @foreach (var item in Model)
                 {
@@ -53,19 +52,13 @@
         </table>
 </div>
 
-
-
-<div id="dvEditPlaceHolder">
-
-</div>
-
+<div id="dvEditPlaceHolder"></div>
 
 <script type="text/javascript">
     $(document).ready(function () {
         // nothing to do
     });
 </script>
-
 
 @functions {
     private static string fnDate(DateTime? vDate)

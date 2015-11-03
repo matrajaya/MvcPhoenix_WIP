@@ -1,0 +1,65 @@
+﻿@model MvcPhoenix.Models.BulkOrderHeader
+
+<!-- this div needed to cycle the partial back here after delete/save -->
+<div id="thisgrid">
+
+    <table class="table table-hover table-striped table-condensed" style="font-size:.8em;margin-bottom:5px;">
+        <tr>
+            <th><i class="fa fa-fw fa-trash-o"></i> </th>
+            <th>Master Code</th>
+            <th>Name</th>
+            <th>Weight</th>
+            <th>Status</th>
+            <th>ETA</th>
+            <th>Date Rec'd</th>
+            <th>Notes</th>
+            <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+        </tr>
+        @foreach (var item in Model.ListOfOrderItemsForDisplay)
+        {
+            <tr>
+                <td>
+                    @*@Ajax.ActionLink(" ", "DeleteBulkOrderItem", "BulkOrders",*@
+                    @Ajax.ActionLink(" ", "DeleteBulkOrderItem", "Replenishments",
+                    new { id = @item.bulkorderitemid },
+                    new AjaxOptions
+                    {
+                        UpdateTargetId = "thisgrid",
+                        InsertionMode = InsertionMode.Replace,
+                        Confirm = "Delete Item?",
+                        OnBegin = "document.getElementById('dvDetailEdit').innerHTML = ''"
+                    },
+                      new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" }
+                   )
+                </td>
+                <td>@item.mastercode</td>
+                <td>@item.mastername</td>
+                <td>@item.weight</td>
+                <td>@item.itemstatus</td>
+                <td>@fnDate(item.eta)</td>
+                <td>@fnDate(@item.datereceived)</td>
+                <td>@item.itemnotes</td>
+                <td>
+                    @*@Ajax.ActionLink("Edit", "SetupBulkOrderItemEdit", "BulkOrders",*@
+                    @Ajax.ActionLink("Edit", "SetupBulkOrderItemEdit", "Replenishments",
+                    new { id = @item.bulkorderitemid, clientid = @Model.clientid },
+                    new AjaxOptions { UpdateTargetId = "dvDetailEdit", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#modal01').modal('show')" },
+                 new { @class = "btn btn-primary btn-xs" }
+                   )
+                </td>
+            </tr>
+        }
+    </table>
+
+    <!-- Put edit modal here ??? -->
+    <!-- Local Razor -->
+    @functions
+{
+        private static string fnDate(DateTime? vDate)
+        {
+            string s = "";
+            s = (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "";
+            return s;
+        }
+    }
+</div>

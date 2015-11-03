@@ -9,9 +9,6 @@ namespace MvcPhoenix.Controllers
 {
     public class ReceivingController : Controller
     {
-        //
-        // GET: /Receiving/
-        //
         [HttpGet]
         public ActionResult Index()
         {
@@ -24,7 +21,20 @@ namespace MvcPhoenix.Controllers
             }
         }
 
+        [HttpGet]
+        //public ActionResult SetUpEdit(int id)
+        public ActionResult Edit(int id)
+        {
+            // Called with a parameter BulkID, build an obj and return edit view
+            ViewBag.SearchName = null;
+            BulkContainer obj = new BulkContainer();
+            obj = fnFillBulkContainer(id);
+            //return View("~/Views/Receiving/Edit.cshtml", obj);
+            return View(obj);
+        }
+
         #region Search Related Actions
+
         [HttpPost]
         public ActionResult SearchBulkContainerUserCriteria(FormCollection fc)
         {
@@ -66,8 +76,7 @@ namespace MvcPhoenix.Controllers
                 {
                     mylist = mylist.Where(x => x.warehouse == mywarehouse).ToList();
                 }
-
-                return PartialView("~/Views/Receiving/_BulkContainerSearchResults.cshtml", mylist);
+                return PartialView("~/Views/Receiving/_SearchResults.cshtml", mylist);
             }
         }
 
@@ -111,7 +120,7 @@ namespace MvcPhoenix.Controllers
             {
                 List<BulkContainerSearchResults> mylist = fnDefaultResults();
                 mylist = mylist.Where(x => x.bulkstatus == "RECD").ToList();
-                return PartialView("~/Views/Receiving/_BulkContainerSearchResults.cshtml", mylist);
+                return PartialView("~/Views/Receiving/_SearchResults.cshtml", mylist);
             }
         }
 
@@ -123,7 +132,7 @@ namespace MvcPhoenix.Controllers
             {
                 List<BulkContainerSearchResults> mylist = fnDefaultResults();
                 mylist = mylist.Where(x => x.bulkstatus != "AVAIL").ToList();
-                return PartialView("~/Views/Receiving/_BulkContainerSearchResults.cshtml", mylist);
+                return PartialView("~/Views/Receiving/_SearchResults.cshtml", mylist);
             }
         }
 
@@ -135,25 +144,17 @@ namespace MvcPhoenix.Controllers
             {
                 List<BulkContainerSearchResults> mylist = fnDefaultResults();
                 mylist = mylist.Where(x => x.expirationdate <= DateTime.Now).ToList();
-                return PartialView("~/Views/Receiving/_BulkContainerSearchResults.cshtml", mylist);
+                return PartialView("~/Views/Receiving/_SearchResults.cshtml", mylist);
             }
         }
-        #endregion
 
-        [HttpGet]
-        public ActionResult SetUpEdit(int id)
-        {
-            // Called with a parameter BulkID, build an obj and return edit view
-            ViewBag.SearchName = null;
-            BulkContainer obj = new BulkContainer();
-            obj = fnFillBulkContainer(id);
-            return View("~/Views/Receiving/BulkContainerEdit.cshtml", obj);
-        }
+        #endregion
 
         // *****************************************************************
         // Begin Bulk Container Edit Actions
         //
-        public ActionResult SetUpReceiptKnown()
+        //public ActionResult SetUpReceiptKnown()
+        public ActionResult Create()
         {
             // Called from Landing page, build new BulkContainer obj and return the view for drill down, data entry
             BulkContainer obj = new BulkContainer();
@@ -166,10 +167,12 @@ namespace MvcPhoenix.Controllers
             obj.ListOfProductMasters = fnProductMasterIDs(obj.clientid);
             obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
             obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
-            return View("~/Views/Receiving/BulkReceipt.cshtml", obj);
+            //return View("~/Views/Receiving/BulkReceipt.cshtml", obj);
+            return View(obj);
         }
 
-        public ActionResult SetUpReceiptUnKnown()
+        //public ActionResult SetUpReceiptUnKnown()
+        public ActionResult CreateUnknown()
         {
             // Called from Landing page, build new BulkContainer obj and return the view
             BulkContainer obj = new BulkContainer();
@@ -182,7 +185,8 @@ namespace MvcPhoenix.Controllers
             obj.ListOfProductMasters = fnProductMasterIDs(obj.clientid);
             obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
             obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
-            return View("~/Views/Receiving/BulkReceiptUnKnown.cshtml", obj);
+            //return View("~/Views/Receiving/BulkReceiptUnKnown.cshtml", obj);
+            return View(obj);
         }
 
         public string fnProductMasterDD(int clientid, string change)
@@ -240,11 +244,17 @@ namespace MvcPhoenix.Controllers
             }
             System.Diagnostics.Debug.WriteLine("Row Count= " + mylist.Count().ToString());
             if (mylist.Count() > 0)
-            { return PartialView("~/Views/Receiving/_BulkReceiptOpenOrderItems.cshtml", mylist); }
+            { 
+                //return PartialView("~/Views/Receiving/_BulkReceiptOpenOrderItems.cshtml", mylist);
+                return PartialView("~/Views/Receiving/_OpenOrderItems.cshtml", mylist);
+            }
             else
-            { return Content("&nbsp;&nbsp;No open orders found at  " + DateTime.Now.ToString()); }
+            { 
+                return Content("&nbsp;&nbsp;No open orders found at  " + DateTime.Now.ToString()); 
+            }
         }
 
+        #region Controller Services
         //
         // Begin Support Actions for this controller
         //
@@ -267,8 +277,6 @@ namespace MvcPhoenix.Controllers
             else
             { messageroot = "Container updated at "; }
 
-            // 
-
             if (fnSaveBulkContainer(incoming) == true)
             {
                 return Content(messageroot + DateTime.Now.ToString());
@@ -283,6 +291,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SavePostDataUnKnownMaterial(BulkContainer incoming)
         {
             string messageroot = "";
+
             if (incoming.bulkid == -1)
             { messageroot = "New Container created at "; }
             else
@@ -336,29 +345,19 @@ namespace MvcPhoenix.Controllers
                            carrier = t.Carrier,
                            receivedby = t.ReceivedBy,
                            enteredby = t.EnteredBy,
-
                            productmasterid = t.ProductMasterID,
                            receiveweight = t.ReceiveWeight,
-
                            lotnumber = t.LotNumber,
                            mfgdate = t.MfgDate,
                            expirationdate = t.ExpirationDate,
                            ceaseshipdate = t.CeaseShipDate,
                            bulkstatus = t.BulkStatus,
-
                            um = t.UM,
                            containercolor = t.ContainerColor,
                            bin = t.Bin,
                            containertype = t.ContainerType,
-
-                           //flammable=t.flammable, freezer=t.freezer, refrigerator = t.refrigerator, restrictedqty = t.RestrictedQty,
-                           //otherstorage=t.OtherStorage, restrictedamt=t.RestrictedAmt, packout=t.PackOut,
-
                            coaincluded = t.COAIncluded,
                            msdsincluded = t.MSDSIncluded,
-
-                           //percentsolids=t.PercentSolids,nco=t.NCO, tew=t.TEW, percentoh=t.PercentOH,
-
                            containernotes = t.ContainerNotes,
                            currentweight = t.CurrentWeight,
                            qcdate = t.QCDate,
@@ -367,7 +366,6 @@ namespace MvcPhoenix.Controllers
                            bulklabelnote = t.BulkLabelNote,
                            receivedascode = t.ReceivedAsCode,
                            receivedasname = t.ReceivedAsName
-
                        }).FirstOrDefault();
             // Have to fill list items after object is built  
 
@@ -398,22 +396,12 @@ namespace MvcPhoenix.Controllers
                     var qry = (from t in db.tblBulk where t.BulkID == pk select t).FirstOrDefault();
                     qry.Warehouse = incoming.warehouse; qry.ReceiveDate = incoming.receivedate; qry.Carrier = incoming.carrier;
                     qry.ReceivedBy = incoming.receivedby; qry.EnteredBy = incoming.enteredby;
-
                     qry.ProductMasterID = incoming.productmasterid; qry.ReceiveWeight = incoming.receiveweight;
-
                     qry.LotNumber = incoming.lotnumber; qry.MfgDate = incoming.mfgdate; qry.ExpirationDate = incoming.expirationdate;
                     qry.CeaseShipDate = incoming.ceaseshipdate; qry.BulkStatus = incoming.bulkstatus;
-
                     qry.UM = incoming.um; qry.ContainerColor = incoming.containercolor; qry.Bin = incoming.bin;
                     qry.ContainerType = incoming.containertype;
-
-                    //qry.flammable=incoming.flammable; qry.freezer=incoming.freezer;  qry.refrigerator=incoming.refrigerator;
-                    //qry.OtherStorage=incoming.otherstorage; qry.RestrictedQty=incoming.restrictedqty; qry.RestrictedAmt=incoming.restrictedamt; qry.PackOut=incoming.packout;        
-
                     qry.COAIncluded = incoming.coaincluded; qry.MSDSIncluded = incoming.msdsincluded;
-
-                    //qry.PercentSolids=incoming.percentsolids;qry.NCO=incoming.nco; qry.TEW = incoming.tew; qry.PercentOH = incoming.percentoh;
-
                     qry.ContainerNotes = incoming.containernotes; qry.CurrentWeight = incoming.currentweight; qry.QCDate = incoming.qcdate; qry.ReturnLocation = qry.ReturnLocation;
                     qry.NoticeDate = incoming.noticedate; qry.BulkLabelNote = incoming.bulklabelnote; qry.ReceivedAsCode = incoming.receivedascode; qry.ReceivedAsName = incoming.receivedasname;
 
@@ -427,7 +415,6 @@ namespace MvcPhoenix.Controllers
                     db.Database.ExecuteSqlCommand("Update tblBulkOrderItem set ToBeClosed=null where Status='CL' and ToBeClosed=1 and productmasterid=" + incoming.productmasterid);
                     retval = true;
                 }
-
             }
             catch
             {
@@ -487,6 +474,8 @@ namespace MvcPhoenix.Controllers
             }
             return retval;
         }
+
+        #endregion
 
         #region DDLs for Views
 

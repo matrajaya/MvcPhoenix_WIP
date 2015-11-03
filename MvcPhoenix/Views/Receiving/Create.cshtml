@@ -1,0 +1,358 @@
+﻿@model MvcPhoenix.Models.BulkContainer
+@{
+    ViewBag.Title = "Receiving";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title <small>Known Material</small>
+            </h1>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-12 row">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Receiving Main", "Index")
+        </div>
+    </div>
+    <!-- /.Page Heading -->
+    <h4>Receive New Container - Known Material</h4>
+    @using (Ajax.BeginForm("SavePostData", "Receiving", null,
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "dvSaveResult",
+        InsertionMode = InsertionMode.Replace,
+        OnSuccess = "OnSaveSuccess"
+    }))
+    {
+
+
+        <div class="well col-lg-12">
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.DropDownList("clientid", fnListOfClientIDs(), new { onchange = "clientid_onchange()", @class = "form-control" })
+                </div>
+                <div class="col-md-6">
+                    <div id="dvProductMasterDD"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dvGridPlaceHolder">
+            <!-- div placeholder for BulkReceiptOpenOrderItems.cshtml Partial -->
+        </div>
+
+    <!-- Button to show detail fields NOTE: Must be a button to avoid a form post-back-->
+        <input id="btnAdd" name="btnAdd" type="button" onclick="btnAdd_click()" value="Enter New Container" class="btn btn-primary hidden" />
+
+    <!-- div placeholder for detail fields (initially hidden) -->
+        <div id="dvDetail" class="hidden">
+
+            <!-- do not remove ( must be inside form tag )-->
+            @Html.HiddenFor(m => m.isknownmaterial)
+            @Html.HiddenFor(m => m.bulkid)
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Product Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label>Date Received</label>
+                            @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Client - DDL*</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Carrier - DDL*</label>
+                            @Html.TextBoxFor(m => m.carrier, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Warehouse</label>
+                            @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Current Weight</label>
+                            @Html.TextBoxFor(m => m.currentweight, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Receive Weight</label>
+                            @Html.TextBoxFor(m => m.receiveweight, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Entered By</label>
+                            @Html.TextBoxFor(m => m.enteredby, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Received By</label>
+                            @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Batch / Lot Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label>Lot Number</label>
+                            @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Date Of Manufacture</label>
+                            @Html.TextBoxFor(m => m.mfgdate, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Expiration Date</label>
+                            @Html.TextBoxFor(m => m.expirationdate, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>S.L. *</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Cease Ship Date</label>
+                            @Html.TextBoxFor(m => m.ceaseshipdate, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Bulk Status</label>
+                            @Html.DropDownListFor(m => m.bulkstatus, Model.ListOfBulkStatusIDs, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Notice Date</label>
+                            @Html.TextBoxFor(m => m.noticedate, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>QC Date</label>
+                            @Html.TextBoxFor(m => m.qcdate, new { @class = "form-control" })
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Container Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label>Container Note</label>
+                            @Html.TextAreaFor(m => m.containernotes, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Container Color</label>
+                            @Html.TextBoxFor(m => m.containercolor, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Bin</label>
+                            @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Location *</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Container Type</label>
+                            @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Other Information</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label>Flammable *</label>
+                            <input type="checkbox" class="checkbox" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Freezer *</label>
+                            <input type="checkbox" class="checkbox" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Refrigerated *</label>
+                            <input type="checkbox" class="checkbox" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Other *</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Packout On Receipt</label>
+                            @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Restricted Quantity *</label>
+                            <input type="checkbox" class="checkbox" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Restricted Amount *</label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Unit Of Measure</label>
+                            @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>COA Included?</label>
+                            @Html.CheckBox("coaincluded", Model.coaincluded != null && (bool)Model.coaincluded, new { @class = "checkbox" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>MSDS Included?</label>
+                            @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Return Location</label>
+                            @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Received As Code</label>
+                            @Html.TextBoxFor(m => m.receivedascode, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Received As Name</label>
+                            @Html.TextBoxFor(m => m.receivedasname, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Bulk Label Note</label>
+                            @Html.TextBoxFor(m => m.bulklabelnote, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*<input id="btnSave" type="submit" value="Save New Container Details" class="btn btn-success" />*@
+
+            <div class="form-group row">
+                <div class=" col-md-6">
+                    <input id="btnSave" type="submit" value="Save Entry" class="btn btn-success btn-block" />
+                </div>
+                <div class=" col-md-6">
+                    <input type="button" value="Cancel Entry" class="btn btn-danger btn-block" onclick="alert('Clear Form, Clear form and go back to Index')" />
+                </div>
+                <div class="clearfix"></div>
+                <br />
+                <div class="col-lg-12">
+                    <i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a>
+                    <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+                </div>
+            </div>
+
+            <div style="font-weight:bold">
+                <span id="dvSaveResult"></span>
+            </div>
+
+        </div>
+
+    }
+
+    <!-- modal success dialog -->
+    <div id="mymodalsuccess" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <br /><br /><br />
+                        <h3>New Container Created</h3>
+                        <br /><br /><br />
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                        <br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Javascript -->
+<script type="text/javascript">
+
+    function clientid_onchange() {
+        // reset controls
+        $("#dvGridPlaceHolder").empty();
+        $("#btnAdd").addClass("hidden");
+        $("#dvDetail").addClass("hidden");
+
+        // fill product DD
+        $.ajax({
+            url: '@Url.Action("fnProductMasterDD", "Receiving")',
+            type: 'GET',
+            dataType: 'html',
+            //contentType: 'application/json; charset=utf-8',
+            cache: false,
+            data: { clientid: $('#clientid').val(), change: "productmasterid_onchange" },
+            error: function () { generalerror() },
+            success: function (datafromcontroller) { $("#dvProductMasterDD").html(datafromcontroller); }
+        });
+    }
+
+    function productmasterid_onchange() {
+        // put partial in div (easier way?)
+        $.get('@Url.Action("fnFillBulkOpenOrderItems", "Receiving")',
+            { id: $('#productmasterid').val() }, function (datafromcontroller)
+            { $("#dvGridPlaceHolder").html(datafromcontroller); });
+
+        // reset controls
+        $("#btnAdd").removeClass("hidden");
+        $("#dvDetail").addClass("hidden");
+    }
+
+    function btnAdd_click() {
+        // reset controls
+        $("#dvGridPlaceHolder").addClass("hidden");
+        $("#btnAdd").addClass("hidden");
+        $("#dvDetail").removeClass("hidden");
+    }
+
+    function OnSaveSuccess() {
+        // disable controls to avoid confusion
+        $('#clientid').prop('disabled', true);
+        $('#productmasterid').prop('disabled', true);
+
+        // hide submit stuff to avoid double post
+        $('#btnSave').prop('disabled', true);
+        //alert("New Container Has Been Created");
+        $("#mymodalsuccess").modal('show');
+    }
+
+    function generalerror() {
+        alert("An error has occurred accessing the server");
+    }
+</script>
+
+<!-- razor functions -->
+@functions
+{
+    private static List<SelectListItem> fnListOfClientIDs()
+    {
+        MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+        List<SelectListItem> mylist = new List<SelectListItem>();
+        mylist = (from t in db.tblClient
+                  orderby t.ClientName
+                  select
+                      new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+        mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+        db.Dispose();
+        return mylist;
+    }
+}
