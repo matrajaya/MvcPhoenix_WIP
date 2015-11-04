@@ -1,13 +1,36 @@
 ﻿@{
-    // Landing page for Bulk Orders
+    ViewBag.Title = "Replenishments";
 }
-<h4>
-    Replenishment Orders - Search/Edit/New
-    @Html.ActionLink("New Replenishment Order(s)", "Create", "Replenishments", null, new { @class = "btn btn-warning", @style = "margin-left:30px;" })
-</h4>
 
-<!-- AJAX form to POST search criteria to controller, return partial to #dvGridPlaceHolder -->
-@using (Ajax.BeginForm("SearchBulkOrdersUserCriteria", "Replenishments",
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 form-group">
+            @Html.ActionLink("New Replenishment Order(s)", "Create", "Replenishments", null, new { @class = "btn btn-danger btn-block form-control" })
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Quick Search</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- AJAX form to POST search criteria to controller, return partial to #dvGridPlaceHolder -->
+                    @using (Ajax.BeginForm("SearchBulkOrdersUserCriteria", "Replenishments",
     new AjaxOptions
     {
         UpdateTargetId = "dvGridPlaceHolder",
@@ -15,72 +38,77 @@
         OnBegin = "$('dvGridPlaceHolder').html('')",
         LoadingElementId = "dvspinner"
     }))
-{
-    <div class="well well-sm" style="margin-bottom:8px;">
-        <p>User Search</p>
-        <div class="row">
-            <div class="col-md-12 form-group form-inline">
-                @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "$('#dvGridPlaceHolder').html('')", @class = "form-control", @style = "width:35%;" })
-                Last <input type="number" id="ordercount" name="ordercount" value="10" class="form-control" style="width:12%;" /> orders
-                <input id="btnsubmit" type="submit" value="Search" class="btn btn-primary btn-sm" />
+                {
+                <div class="form-group col-md-4">
+                    <label>Client</label>
+                    @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "$('#dvGridPlaceHolder').html('')", @class = "form-control" })
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Rows</label>
+                    <input type="number" id="ordercount" name="ordercount" value="10" class="form-control" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label>.</label>
+                    <input id="btnsubmit" type="submit" value="Search" class="btn btn-success form-control" />
+                </div>
+                }
+                </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Filter Search</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-md-4">
+                        <label>.</label>
+                        @Ajax.ActionLink("Last 10 Orders", "SearchLastTenBulkOrders", "Replenishments", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-info form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>.</label>
+                        @Ajax.ActionLink("Un-Confirmed", "SearchUnConfirmedBulkOrders", "Replenishments", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-info form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>.</label>
+                        @Ajax.ActionLink("Open Items", "SearchOpenBulkOrders", "Replenishments", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-info form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-}
 
-<div class="well well-sm">
-    <p>Quick Search</p>
-    @Ajax.ActionLink("Last 10 All CLients", "SearchLastTenBulkOrders", "Replenishments", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary btn-sm" })
+    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
+    </div>
 
-    @Ajax.ActionLink("Un-Confirmed Only", "SearchUnConfirmedBulkOrders", "Replenishments", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary btn-sm" })
-
-    @Ajax.ActionLink("Orders w/Open Items", "SearchOpenBulkOrders", "Replenishments", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary btn-sm" })
-
-    @Ajax.ActionLink("Quick Search 4", null, null, null, new { @class = "btn btn-info btn-sm" })
-    @Ajax.ActionLink("Quick Search 5", null, null, null, new { @class = "btn btn-info btn-sm" })
-    @Ajax.ActionLink("Quick Search 6", null, null, null, new { @class = "btn btn-info btn-sm" })
-    @Ajax.ActionLink("Quick Search 7", null, null, null, new { @class = "btn btn-info btn-sm" })
-
-
+    <div id="dvGridPlaceHolder" class="row">
+        @Html.Partial("~/Views/Replenishments/_SearchResults.cshtml", fnDefaultSearchResults())
+    </div>
 </div>
-
-
-<div id="dvspinner" style="display:none;">
-    Searching For Orders ...
-</div>
-
-<div id="dvGridPlaceHolder" style="margin-top:8px;">
-    @Html.Partial("~/Views/Replenishments/_SearchResults.cshtml", fnDefaultSearchResults())
-</div>
-
-
-<!-- Local javascript -->
-<script type="text/javascript">
-
-</script>
-
 <!-- Local Razor -->
 @functions
 {
@@ -98,7 +126,6 @@
         }
 
     }
-
 
     private List<MvcPhoenix.Models.BulkOrderSearchResults> fnDefaultSearchResults()
     {
@@ -125,7 +152,5 @@
             db.Dispose();
             return mylist;
         }
-
     }
-
 }

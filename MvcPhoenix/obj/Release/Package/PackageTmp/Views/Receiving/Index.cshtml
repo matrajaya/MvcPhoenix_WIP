@@ -1,10 +1,60 @@
 ﻿@{
-    // Landing page for Bulk Containers
+    ViewBag.Title = "Receiving";
 }
 
-<h4>Bulk Containers</h4>
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </div>
 
-@using (Ajax.BeginForm("SearchBulkContainerUserCriteria", "Receiving",
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Receive Known Material</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-md-6">
+                        <label>Client</label>
+                        <input class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Product Code</label>
+                        <input class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Receive Unknown Material</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-md-6">
+                        <label>Client</label>
+                        <input class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>.</label>
+                        <input type="button" value="Receive" class="form-control btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        @using (Ajax.BeginForm("SearchBulkContainerUserCriteria", "Receiving",
     new AjaxOptions
     {
         UpdateTargetId = "dvGridPlaceHolder",
@@ -12,65 +62,93 @@
         OnBegin = "document.getElementById('dvGridPlaceHolder').innerHTML = ''",
         LoadingElementId = "dvspinner",
     }))
-{
-    <div class="well well-sm" style="margin-bottom:8px;">
-        <p>User Search</p>
-        <div class="row">
-            <div class="col-md-12 form-group form-inline">
-                @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "clearResults()", @class = "form-control", @style = "width:30%;" })
-                Last <input type="number" id="rowcount" name="rowcount" value="10" class="form-control" style="width:12%;" /> containers in
-                @Html.DropDownList("warehouse", fnWareHouseList(), new { onchange = "clearResults()", @class = "form-control", @style = "width:10%;" })
-                <input id="btnsubmit" type="submit" value="Search" class="btn btn-primary btn-sm" />
+        {
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Filter Search</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group col-md-3">
+                            <label>Client</label>
+                            @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "clearResults()", @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Warehouse</label>
+                            @Html.DropDownList("warehouse", fnWareHouseList(), new { onchange = "clearResults()", @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Rows</label>
+                            <input type="number" id="rowcount" name="rowcount" value="10" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>.</label>
+                            <input id="btnsubmit" type="submit" value="Search" class="btn btn-success form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Quick Search</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group col-md-4">
+                        <label>.</label>
+                        @Ajax.ActionLink("Received Status", "SearchInReceiving", "Receiving", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "clearResults",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-info form-control", data_toggle = "tooltip", title = "this is a tooltip" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>.</label>
+                        @Ajax.ActionLink("Unavailable Status", "SearchNonAvailable", "Receiving", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "clearResults",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-info form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>.</label>
+                        @Ajax.ActionLink("Expired Only", "SearchExpired", "Receiving", null, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvGridPlaceHolder",
+                                 LoadingElementId = "dvspinner",
+                                 InsertionMode = InsertionMode.Replace,
+                                 OnBegin = "clearResults",
+                                 HttpMethod = "GET",
+                             }, new { @class = "btn btn-info form-control" })
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-}
 
-<div class="well well-sm">
-    <p>Quick Search</p>
+        <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+            <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
+        </div>
 
-    @Ajax.ActionLink("Rec'd Status Only", "SearchInReceiving", "Receiving", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "clearResults",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary btn-sm", data_toggle = "tooltip", title = "this is a tooltip" })
+        <div id="dvGridPlaceHolder" class="row">
+            @Html.Partial("~/Views/Receiving/_SearchResults.cshtml")
+        </div>
 
-    @Ajax.ActionLink("Non-Avail Status", "SearchNonAvailable", "Receiving", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "clearResults",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary btn-sm" })
 
-    @Ajax.ActionLink("Expired Only", "SearchExpired", "Receiving", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "clearResults",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary btn-sm" })
-</div>
-
-<div id="dvspinner" style="display:none;">
-    <img src="~/Content/images/ani-rebuild.gif" /> Searching Orders <img src="~/Content/images/ani-rebuild.gif" />
-</div>
-
-<div id="dvGridPlaceHolder" style="margin-top:10px;">
-    <!-- placeholder for partial -->
-    @Html.Partial("~/Views/Receiving/_SearchResults.cshtml")
-</div>
+    </div>
 
 <!-- Post page scripts -->
 <script type="text/javascript">
-    function clearResults()
-    {
+    function clearResults() {
         document.getElementById("dvGridPlaceHolder").innerHTML = "";
+        // loads when even is triggered after page load
     }
 </script>
 
