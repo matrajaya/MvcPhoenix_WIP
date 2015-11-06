@@ -3,122 +3,120 @@
     ViewBag.Title = "Replenishment Order";
 }
 
-<h4>
-    Replenshment Order Number @Model.bulkorderid.ToString() | @Model.clientname
-    @*<a href="~/BulkOrders/Index" class="btn btn-primary btn-xs" style="margin-left:50px;">Back to Search</a>*@
-    <a href="~/Replenishments/Index" class="btn btn-primary btn-xs" style="margin-left:50px;">Back to Search</a>
-</h4>
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="@Model.clientname">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">@ViewBag.Title : @Model.bulkorderid.ToString()</h1>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-12 row">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Replenishments Main", "Index")
+        </div>
+    </div>
 
-<div class="well well-sm">
-    <!-- ajax form to post changes back to controller -->
-    @*@using (Ajax.BeginForm("SaveBulkOrderHeader", "BulkOrders",*@
-    @using (Ajax.BeginForm("SaveBulkOrderHeader", "Replenishments",
-    new AjaxOptions
-    {
-        HttpMethod = "POST",
-        UpdateTargetId = "dvOrderSaveResult",
-        LoadingElementId = "dvspinner",
-        InsertionMode = InsertionMode.Replace,
-        OnBegin = "$('#dvOrderSaveResult').html('')"
-    }))
-    {
-    <!-- DO NOT REMOVE -->
-        <input type="hidden" id="clientid" name="clientid" value="@Model.clientid" />
-        <input type="hidden" id="bulkorderid" name="bulkorderid" value="@Model.bulkorderid" />
-        <input type="hidden" id="orderdate" name="orderdate" value="@Model.orderdate" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Order Header</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- ajax form to post changes back to controller -->
+                    @*@using (Ajax.BeginForm("SaveBulkOrderHeader", "BulkOrders",*@
+                    @using (Ajax.BeginForm("SaveBulkOrderHeader", "Replenishments", new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        UpdateTargetId = "dvOrderSaveResult",
+                        LoadingElementId = "dvspinner",
+                        InsertionMode = InsertionMode.Replace,
+                        OnBegin = "$('#dvOrderSaveResult').html('')"
+                    }))
+                    {
+                        <!-- DO NOT REMOVE -->
+                        <input type="hidden" id="clientid" name="clientid" value="@Model.clientid" />
+                        <input type="hidden" id="bulkorderid" name="bulkorderid" value="@Model.bulkorderid" />
+                        <input type="hidden" id="orderdate" name="orderdate" value="@Model.orderdate" />
 
-        <div class="row">
-            <div class="col-md-2">
-                @Html.LabelFor(m => m.orderdate)
-            </div>
-            <div class="col-md-10">
-                &nbsp; @fnDate(Model.orderdate)
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                @Html.LabelFor(m => m.orderdate)
+                                <label class="form-control">@fnDate(Model.orderdate)</label>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                @Html.LabelFor(m => m.supplyid)
+                                @Html.DropDownListFor(m => m.supplyid, Model.ListOfOrderHeaderSupplyIDs, new { type = "text", @class = "form-control" })
+                            </div>
+                            <div class="col-md-3 form-group">
+                                @Html.LabelFor(m => m.bulksupplieremail) <a href="#" onclick="LookupEmail();"><i class="fa fa-envelope-o fa-fw"></i><i class="fa fa-reply fa-fw"></i></a>
+                                @Html.TextBoxFor(m => m.bulksupplieremail, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3 form-group">
+                                @Html.LabelFor(m => m.emailsent)
+                                @Html.TextBoxFor(m => m.emailsent, new { disabled = "disabled", type = "text", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                @Html.LabelFor(m => m.ordercomment)
+                                @Html.TextAreaFor(m => m.ordercomment, new { maxlength = 1000, @class = "form-control" })
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label class="invisible">.</label>
+                                <input type="submit" value="Save" class="btn btn-primary btn-block" />
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <input id="emailcheckbox" name="emailcheckbox" type="checkbox" class="checkbox" />
+                                @Ajax.ActionLink("Send Confirmation Email", null, null, new AjaxOptions { OnBegin = "SendEmail", Confirm = "Send Email?" }, new { @class = "btn btn-warning btn-block form-control" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span id="dvspinner" style="display:none;"><strong> Saving Order Header</strong></span>
+                                <strong><span id="dvOrderSaveResult"></span></strong>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="col-md-2">
-                @Html.LabelFor(m => m.supplyid)
-            </div>
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.supplyid, Model.ListOfOrderHeaderSupplyIDs, new { type = "text", @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-2">
-                <a href="#" onclick="LookupEmail();">
-                    @Html.LabelFor(m => m.bulksupplieremail)
-                </a>
-            </div>
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.bulksupplieremail, new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-2">
-                @Html.LabelFor(m => m.emailsent)
-            </div>
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.emailsent, new { disabled = "disabled", type = "text", @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-2">
-                @Html.LabelFor(m => m.ordercomment)
-            </div>
-            <div class="col-md-10">
-                @Html.TextAreaFor(m => m.ordercomment, new { maxlength = 1000, @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="row" style="margin-top:5px;">
-            <div class="col-md-2">
-                &nbsp;
-            </div>
-            <div class="col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input id="emailcheckbox" name="emailcheckbox" type="checkbox" />
-                @Ajax.ActionLink("Send Confirmation Email", null, null,
-                    new AjaxOptions { OnBegin = "SendEmail", Confirm = "Send Email?" },
-                        new { @class = "btn btn-warning" })
-
-                <span id="dvspinner" style="display:none;"><strong> Saving Order Header</strong></span>
-                <strong><span id="dvOrderSaveResult"></span></strong>
-
-            </div>
-        </div>
-
-    }
-</div>  <!-- well -->
-<!-- Create a new object and return partial view _BulkOrderItemEdit.cshtml into modal div -->
-<!-- OnSuccess event will show the modal -->
-@*@Ajax.ActionLink("Add item to order", "SetupBulkOrderItemInsert", "BulkOrders",*@
-@Ajax.ActionLink("Add item to order", "SetupBulkOrderItemInsert", "Replenishments",
-                   new { id = @Model.bulkorderid, clientid = @Model.clientid },
+    <!-- Create a new object and return partial view _BulkOrderItemEdit.cshtml into modal div -->
+    <!-- OnSuccess event will show the modal -->
+    @*@Ajax.ActionLink("Add item to order", "SetupBulkOrderItemInsert", "BulkOrders",*@
+    <div class="row">
+        <div class="form-group col-md-3">
+            @Ajax.ActionLink("Add item to order", "SetupBulkOrderItemInsert", "Replenishments", new { id = @Model.bulkorderid, clientid = @Model.clientid },
                        new AjaxOptions { UpdateTargetId = "dvDetailEdit", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#modal01').modal('show')" },
-                   new { @class = "btn btn-primary btn-xs" })
+                   new { @class = "btn btn-primary btn-block form-control" })
+        </div>
+        <div class="clearfix"></div>
+    </div>
 
-<div id="dvgrid" style="margin-top:5px;">
-    @*@Html.Partial("~/Views/BulkOrders/_BulkOrderItems.cshtml", Model)*@
-    @Html.Partial("~/Views/Replenishments/_BulkOrderItems.cshtml", Model)
-</div>
+    <div class="row">
+        <div id="dvgrid">
+            @*@Html.Partial("~/Views/BulkOrders/_BulkOrderItems.cshtml", Model)*@
+            @Html.Partial("~/Views/Replenishments/_BulkOrderItems.cshtml", Model)
+        </div>
+    </div>
 
-<div id="modal01" role="dialog" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div id="dvDetailEdit">
-                    <!-- Placeholder for _BulkOrderItemEdit.cshtml -->
+    <div id="modal01" role="dialog" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="dvDetailEdit">
+                        <!-- Placeholder for _BulkOrderItemEdit.cshtml -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Local Razor -->
 @functions

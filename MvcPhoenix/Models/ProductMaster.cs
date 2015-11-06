@@ -66,7 +66,7 @@ namespace MvcPhoenix.Models
 
 
 
-        
+
         //[Display(Name = "SUPPLYID")]
         public string supplyid { get; set; }
 
@@ -266,7 +266,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "OtherEquipmentDescription")]
         public string otherequipmentdescription { get; set; }
 
-        
+
 
         [Display(Name = "Booties")]
         public bool? booties { get; set; }
@@ -310,7 +310,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "RETURNLOCATION")]
         public string returnlocation { get; set; }
 
-        
+
 
         [Display(Name = "SpecialBlend")]
         public bool? specialblend { get; set; }
@@ -482,12 +482,12 @@ namespace MvcPhoenix.Models
         public string location_mdb { get; set; }
 
 
-    
-    
+
+
     }
 
 
 
 
-    
+
 }

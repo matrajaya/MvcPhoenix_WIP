@@ -75,6 +75,7 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblStock> tblStock { get; set; }
         public virtual DbSet<tblSystem> tblSystem { get; set; }
         public virtual DbSet<tblUN> tblUN { get; set; }
+        public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
         public virtual DbSet<tblProductDetail> tblProductDetail { get; set; }
         public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
     }

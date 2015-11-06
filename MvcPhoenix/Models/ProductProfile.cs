@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-
-// pc add
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,16 +15,23 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "ClientID")]
         public List<SelectListItem> ListOfClients { get; set; }
-
         public int searchproductdetailid { get; set; }
     }
 
     public class ProductNote
     {
+        [Display(Name = "Product Note ID")]
         public int productnoteid { get; set; }
+
         public int? productdetailid { get; set; }
+
+        [Display(Name = "Note Date")]
         public DateTime? notedate { get; set; }
+
+        [Display(Name = "Notes")]
         public string notes { get; set; }
+
+        [Display(Name = "Reason Code")]
         public string reasoncode { get; set; }
     }
 
@@ -43,6 +47,22 @@ namespace MvcPhoenix.Models
         public string packinggroup { get; set; }
     }
 
+    public class WasteCode
+    {
+        [Display(Name = "Waste Code ID")]
+        public int wastecodeid { get; set; }
+
+        public int? productdetailid { get; set; }
+
+        [Display(Name = "Waste Code")]
+        public string wastecode { get; set; }
+
+        [Display(Name = "Profile Number")]
+        public string profilenumber { get; set; }
+
+        // ?? public List<WasteCode> ListOfWasteCodes { get; set; }
+
+    }
 
     public class Cas
     {
@@ -82,13 +102,17 @@ namespace MvcPhoenix.Models
         [Display(Name = "ExcludeFromLabel")]
         public bool? excludefromlabel { get; set; }
 
+
     }
 
     public class ProductProfile
     {
+
         public List<SelectListItem> ListOfPackageTypes { get; set; }
         public List<ProductNote> ListOfProductNotes { get; set; }
         public List<Cas> ListOfCasNumbers { get; set; }
+
+        public List<WasteCode> ListOfWasteCodes { get; set; }
 
         public DateTime masterlastupdate { get; set; }
         public DateTime detaillastupdate { get; set; }
@@ -102,6 +126,9 @@ namespace MvcPhoenix.Models
 
         // tblShelfMaster records
         public List<ShelfMaster> ListOfShelfItems { get; set; }
+
+        //[Display(Name = "SGLegacyID")]
+        //public int? sglegacyid { get; set; }
 
         [Display(Name = "DivisionID")]
         public int? divisionid { get; set; }
@@ -163,6 +190,15 @@ namespace MvcPhoenix.Models
         [Display(Name = "EPA Biocide")]
         public bool? epabiocide { get; set; }
 
+        //[Display(Name = "ShippingNotes")]
+        //public string shippingnotes { get; set; }
+
+        //[Display(Name = "OtherLabelNotes")]
+        //public string otherlabelnotes { get; set; }
+
+        //[Display(Name = "ProductDescription")]
+        //public string productdescription { get; set; }
+
         [Display(Name = "Label Info")]
         public string labelinfo { get; set; }
 
@@ -178,9 +214,18 @@ namespace MvcPhoenix.Models
         [Display(Name = "Global Product")]
         public bool? globalproduct { get; set; }
 
+        //[Display(Name = "Company_MDB")]
+        //public string company_mdb { get; set; }
+
+        //[Display(Name = "MasterCode_MDB")]
+        //public string mastercode_mdb { get; set; }
+
+        //[Display(Name = "Division_MDB")]
+        //public string division_mdb { get; set; }
+
         //pc 10/23/2015 new fields created by Iffy
 
-        public bool? polmerizationhazard { get; set; }
+        public bool? polymerizationhazard { get; set; }
 
         [Display(Name = "Accuracy Verified")]
         public bool? accuracyverified { get; set; }
@@ -218,6 +263,16 @@ namespace MvcPhoenix.Models
         [Display(Name = "Waste Profile Number")]
         public string wasteprofilenumber { get; set; }
 
+        //new field added by cd,ii on 10/28
+        [Display(Name = "Shipping Chemical Name")]
+        public string shippingchemicalname { get; set; }
+
+        //new field added by cd,ii on 10/28 (already in master??)
+        [Display(Name = "Label Notes (EPA, etc)")]
+        public string labelnotesepa { get; set; }
+
+
+
         // **********************************************************************
         // tblProductMaster Fields
         // **********************************************************************
@@ -227,6 +282,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Equivalents")]
         public List<SelectListItem> ListOfEquivalents { get; set; }
 
+        //public List<MvcPhoenix.EF.tblProductXRef> ListOfProductCodeXRefs { get; set; }
         public List<SelectListItem> ListOfProductCodesXRefs { get; set; }
 
         [Display(Name = "ProductMasterID")]
@@ -249,6 +305,7 @@ namespace MvcPhoenix.Models
         //public IEnumerable<SelectListItem> ListOfDivisions { get; set; }
         public List<SelectListItem> ListOfDivisions { get; set; }
 
+
         [Display(Name = "Discontinued")]
         public bool? discontinued { get; set; }
 
@@ -266,8 +323,8 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Restrictedamount")]
         public decimal? restrictedamount { get; set; }
-        
         // *********************************************************
+
 
         //[Display(Name = "SUPPLYID")]
         public string supplyid { get; set; }
@@ -340,6 +397,7 @@ namespace MvcPhoenix.Models
         //public string other { get; set; }
         [Display(Name = "Other Handling Instr")]
         public string otherhandlinginstr { get; set; }
+
 
         [Display(Name = "NormalAppearence")]
         public string normalappearence { get; set; }
@@ -513,7 +571,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "RETURNLOCATION")]
         public string returnlocation { get; set; }
-
+        
         [Display(Name = "SpecialBlend")]
         public bool? specialblend { get; set; }
 
@@ -582,7 +640,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "PeroxideFormer")]
         public bool? peroxideformer { get; set; }
-
         [Display(Name = "GRNSHIPNAME")]
         public string grnshipname { get; set; }
 
@@ -678,5 +735,9 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "pH")]
         public decimal? phvalue { get; set; }
+
+        [Display(Name = "Physical Toxic")]
+        public bool? physicaltoxic { get; set; }
+
     }
 }

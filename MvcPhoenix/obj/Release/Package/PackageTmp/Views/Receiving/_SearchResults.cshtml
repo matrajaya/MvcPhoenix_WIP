@@ -43,7 +43,8 @@
                     <td>@item.lotnumber</td>
                     <td>@item.um</td>
                     <td>@item.currentweight.ToString()</td>
-                    <td>@Html.ActionLink("Edit", "Edit", "Receiving", new { id = @item.bulkid }, new { @class = "btn btn-primary" })</td>
+                    @*<td>@Html.ActionLink("Edit", "Edit", "Receiving", new { id = @item.bulkid })</td>*@
+                    <td>@Html.ActionLink("Edit", "Edit", new { id = @item.bulkid })</td>
                 </tr>
             }
         </tbody>

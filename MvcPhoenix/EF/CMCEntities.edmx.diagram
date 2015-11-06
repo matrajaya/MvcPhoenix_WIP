@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="946d1b8cae2f47929e3f77b44ad3ef19" Name="Diagram1">
+      <Diagram DiagramId="946d1b8cae2f47929e3f77b44ad3ef19" Name="Diagram1" ZoomLevel="25">
         <EntityTypeShape EntityType="CMCSQL03Model.tblCarrier" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblClient" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblClientContact" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
@@ -40,6 +40,7 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblStock" Width="1.5" PointX="17.75" PointY="18.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblSystem" Width="1.5" PointX="19.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblUN" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblWasteCode" Width="1.5" PointX="20.375" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductDetail" Width="1.5" PointX="3.375" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductMaster" Width="1.5" PointX="5.375" PointY="19.75" />
       </Diagram>

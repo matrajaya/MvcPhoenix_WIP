@@ -1028,6 +1028,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="ProductDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductMasterID" Type="int" />
     <Property Name="SGLegacyID" Type="int" />
+    <Property Name="SDLegacyID" Type="int" />
     <Property Name="DivisionID" Type="int" />
     <Property Name="BusArea" Type="nvarchar" MaxLength="30" />
     <Property Name="ProductCode" Type="nvarchar" MaxLength="20" />
@@ -1052,7 +1053,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="CustomsValueUnit" Type="nvarchar" MaxLength="2" />
     <Property Name="GlobalProduct" Type="bit" />
     <Property Name="AccuracyVerified" Type="bit" />
-    <Property Name="PolmerizationHazard" Type="bit" />
+    <Property Name="PolymerizationHazard" Type="bit" />
     <Property Name="SDSContactName" Type="nvarchar" MaxLength="100" />
     <Property Name="SDSContactPhone" Type="nvarchar" MaxLength="50" />
     <Property Name="ChinaCertificationDate" Type="datetime" />
@@ -1064,6 +1065,38 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="EPAHazardousWaste" Type="bit" />
     <Property Name="NonRCRAWaste" Type="bit" />
     <Property Name="WasteProfileNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="ShippingChemicalName" Type="nvarchar(max)" />
+    <Property Name="LabelNotesEPA" Type="nvarchar(max)" />
+    <Property Name="GRNUNNUMBER" Type="nvarchar" MaxLength="7" />
+    <Property Name="GRNPKGRP" Type="nvarchar" MaxLength="4" />
+    <Property Name="GRNHAZSUBCL" Type="nvarchar" MaxLength="5" />
+    <Property Name="GRNLABEL" Type="nvarchar" MaxLength="25" />
+    <Property Name="GRNSUBLABEL" Type="nvarchar" MaxLength="25" />
+    <Property Name="GRNHAZCL" Type="nvarchar" MaxLength="4" />
+    <Property Name="GRNSHIPNAME" Type="nvarchar" MaxLength="75" />
+    <Property Name="GRNOSNAME" Type="nvarchar" MaxLength="200" />
+    <Property Name="GRNSHIPNAMED" Type="nvarchar" MaxLength="50" />
+    <Property Name="GRNTREMACARD" Type="nvarchar" MaxLength="15" />
+    <Property Name="AIRUNNUMBER" Type="nvarchar" MaxLength="7" />
+    <Property Name="AIRPKGRP" Type="nvarchar" MaxLength="4" />
+    <Property Name="AIRHAZSUBCL" Type="nvarchar" MaxLength="5" />
+    <Property Name="AIRLABEL" Type="nvarchar" MaxLength="4" />
+    <Property Name="AIRSUBLABEL" Type="nvarchar" MaxLength="25" />
+    <Property Name="AIRHAZCL" Type="nvarchar" MaxLength="4" />
+    <Property Name="AIRSHIPNAME" Type="nvarchar" MaxLength="75" />
+    <Property Name="AIRNOSNAME" Type="nvarchar" MaxLength="200" />
+    <Property Name="SEAUNNUM" Type="nvarchar" MaxLength="7" />
+    <Property Name="SEAPKGRP" Type="nvarchar" MaxLength="4" />
+    <Property Name="SEAHAZSUBCL" Type="nvarchar" MaxLength="8" />
+    <Property Name="SEALABEL" Type="nvarchar" MaxLength="25" />
+    <Property Name="SEASUBLABEL" Type="nvarchar" MaxLength="25" />
+    <Property Name="SEAHAZCL" Type="nvarchar" MaxLength="4" />
+    <Property Name="SEASHIPNAME" Type="nvarchar" MaxLength="199" />
+    <Property Name="SEANOSNAME" Type="nvarchar" MaxLength="200" />
+    <Property Name="SEASHIPNAMED" Type="nvarchar" MaxLength="75" />
+    <Property Name="SEAHAZMAT" Type="nvarchar" MaxLength="10" />
+    <Property Name="SEAEMSNO" Type="nvarchar" MaxLength="15" />
+    <Property Name="SEAMFAGNO" Type="nvarchar" MaxLength="15" />
     <Property Name="LastUpDate" Type="datetime" />
     <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
     <Property Name="MasterCode_MDB" Type="nvarchar" MaxLength="20" />
@@ -1186,39 +1219,10 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="OtherLabelNotes" Type="nvarchar" MaxLength="255" />
     <Property Name="ProductDescription" Type="nvarchar(max)" />
     <Property Name="PeroxideFormer" Type="bit" />
-    <Property Name="GRNSHIPNAME" Type="nvarchar" MaxLength="75" />
-    <Property Name="GRNSHIPNAMED" Type="nvarchar" MaxLength="50" />
-    <Property Name="GRNOSNAME" Type="nvarchar" MaxLength="200" />
-    <Property Name="GRNUNNUMBER" Type="nvarchar" MaxLength="7" />
-    <Property Name="GRNHAZCL" Type="nvarchar" MaxLength="4" />
-    <Property Name="GRNPKGRP" Type="nvarchar" MaxLength="4" />
-    <Property Name="GRNLABEL" Type="nvarchar" MaxLength="25" />
-    <Property Name="GRNSUBLABEL" Type="nvarchar" MaxLength="25" />
-    <Property Name="GRNTREMACARD" Type="nvarchar" MaxLength="15" />
-    <Property Name="AIRSHIPNAME" Type="nvarchar" MaxLength="75" />
-    <Property Name="AIRNOSNAME" Type="nvarchar" MaxLength="200" />
-    <Property Name="AIRUNNUMBER" Type="nvarchar" MaxLength="7" />
-    <Property Name="AIRHAZCL" Type="nvarchar" MaxLength="4" />
-    <Property Name="AIRPKGRP" Type="nvarchar" MaxLength="4" />
-    <Property Name="AIRLABEL" Type="nvarchar" MaxLength="4" />
-    <Property Name="AIRSUBLABEL" Type="nvarchar" MaxLength="25" />
-    <Property Name="AIRHAZSUBCL" Type="nvarchar" MaxLength="5" />
-    <Property Name="GRNHAZSUBCL" Type="nvarchar" MaxLength="5" />
-    <Property Name="SEASHIPNAME" Type="nvarchar" MaxLength="199" />
-    <Property Name="SEASHIPNAMED" Type="nvarchar" MaxLength="75" />
-    <Property Name="SEANOSNAME" Type="nvarchar" MaxLength="200" />
-    <Property Name="SEAUNNUM" Type="nvarchar" MaxLength="7" />
-    <Property Name="SEAPKGRP" Type="nvarchar" MaxLength="4" />
-    <Property Name="SEAHAZCL" Type="nvarchar" MaxLength="4" />
-    <Property Name="SEALABEL" Type="nvarchar" MaxLength="25" />
-    <Property Name="SEAHAZSUBCL" Type="nvarchar" MaxLength="8" />
-    <Property Name="SEASUBLABEL" Type="nvarchar" MaxLength="25" />
-    <Property Name="SEAHAZMAT" Type="nvarchar" MaxLength="10" />
-    <Property Name="SEAEMSNO" Type="nvarchar" MaxLength="15" />
-    <Property Name="SEAMFAGNO" Type="nvarchar" MaxLength="15" />
     <Property Name="SpecificGravity" Type="numeric" Precision="8" Scale="2" />
     <Property Name="phValue" Type="numeric" Precision="8" Scale="2" />
     <Property Name="LastUpDate" Type="datetime" />
+    <Property Name="PhysicalToxic" Type="bit" />
     <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
     <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
     <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -1535,6 +1539,18 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="Email" Type="nvarchar" MaxLength="100" />
     <Property Name="Phone" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="tblWasteCode">
+    <Key>
+      <PropertyRef Name="WasteCodeID" />
+    </Key>
+    <Property Name="WasteCodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductDetailID" Type="int" />
+    <Property Name="WasteCode" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProfileNumber" Type="nvarchar" MaxLength="25" />
+    <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProdCode_MDB" Type="nvarchar" MaxLength="25" />
+  </EntityType>
   <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -1618,6 +1634,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <EntitySet Name="tblTransType" EntityType="Self.tblTransType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblUN" EntityType="Self.tblUN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblWasteCode" EntityType="Self.tblWasteCode" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblOrderMasterArchive" EntityType="Self.tblOrderMasterArchive" store:Type="Tables" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [tblOrderMasterArchive].[ClientID] AS [ClientID], 

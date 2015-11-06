@@ -3,88 +3,67 @@
 @*@using (Ajax.BeginForm("ProcessBulkOrderItemUpdate", "BulkOrders", new AjaxOptions*@
 @using (Ajax.BeginForm("ProcessBulkOrderItemUpdate", "Replenishments", new AjaxOptions
 {
-        UpdateTargetId = "dvOrderSaveResultItem",
-        LoadingElementId="dvspinnerdetail",
-        InsertionMode = InsertionMode.Replace,
-        OnSuccess = "RefreshItemsGrid"
-    }))
+    UpdateTargetId = "dvOrderSaveResultItem",
+    LoadingElementId = "dvspinnerdetail",
+    InsertionMode = InsertionMode.Replace,
+    OnSuccess = "RefreshItemsGrid"
+}))
 {
 
-<!-- DO NOT REMOVE -->
-<input type="hidden" id="bulkorderitemid" name="bulkorderitemid" value="@Model.bulkorderitemid" />
-<input type="hidden" id="bulkorderid" name="bulkorderid" value="@Model.bulkorderid" />
-<div class="text-center"><h4>Replenishment Item Edit</h4></div>
+    <!-- DO NOT REMOVE -->
+    <input type="hidden" id="bulkorderitemid" name="bulkorderitemid" value="@Model.bulkorderitemid" />
+    <input type="hidden" id="bulkorderid" name="bulkorderid" value="@Model.bulkorderid" />
 
-<div class="row">
-    <div class="col-md-3">
-        @Html.LabelFor(m => m.productmasterid)
+    <div class="row">
+        <div class="col-md-12">
+            <h4>Replenishment Item Edit</h4>
+        </div>
     </div>
-    <div class="col-md-9">
-        @Html.DropDownListFor(m => m.productmasterid,Model.ListOfProductMasters, new { @class = "form-control", @style = "width:70%;" })
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-3">
-        @Html.LabelFor(m => m.weight)
-    </div>
-    <div class="col-md-9">
-        @Html.TextBoxFor(m => m.weight, new { type="number", @class = "form-control" })
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-3">
-        @Html.LabelFor(m => m.itemstatus)
-    </div>
-    <div class="col-md-9">
-        @Html.DropDownListFor(m => m.itemstatus,Model.ListOfItemStatusIDs, new { @class = "form-control"})
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-3">
-        @Html.LabelFor(m => m.eta)
-    </div>
-    <div class="col-md-9">
-        @Html.TextBoxFor(m => m.eta, new {type="date",@class = "form-control"})
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-3">
-        @Html.LabelFor(m => m.datereceived)
+    <div class="row">
+        <div class="col-md-6 form-group">
+            @Html.LabelFor(m => m.productmasterid)
+            @Html.DropDownListFor(m => m.productmasterid, Model.ListOfProductMasters, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3 form-group">
+            @Html.LabelFor(m => m.weight)
+            @Html.TextBoxFor(m => m.weight, new { type = "number", @class = "form-control" })
+        </div>
+        <div class="col-md-3 form-group">
+            @Html.LabelFor(m => m.itemstatus)
+            @Html.DropDownListFor(m => m.itemstatus, Model.ListOfItemStatusIDs, new { @class = "form-control" })
+        </div>
     </div>
-    <div class="col-md-9">
 
-        @Html.TextBoxFor(m => m.datereceived, new { @readonly="readonly", @class = "form-control" })
+    <div class="row">
+        <div class="col-md-6 form-group">
+            @Html.LabelFor(m => m.eta)
+            @Html.TextBoxFor(m => m.eta, new { type = "date", @class = "form-control" })
+        </div>
+        <div class="col-md-6 form-group">
+            @Html.LabelFor(m => m.datereceived)
+            @Html.TextBoxFor(m => m.datereceived, new { @readonly = "readonly", @class = "form-control" })
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-3">
-        @Html.LabelFor(m => m.itemnotes)
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(m => m.itemnotes)
+            @Html.TextAreaFor(m => m.itemnotes, new { maxlength = 150, @class = "form-control" })
+        </div>
     </div>
-    <div class="col-md-9">
-        @Html.TextAreaFor(m => m.itemnotes, new {maxlength=150, @class = "form-control"})
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-3">
-        &nbsp;
+    <div class="row">
+        <div class="col-md-6">
+            <input type="submit" value="Save" class="btn btn-success btn-block form-control" />
+            <span id="dvspinnerdetail" style="display:none;">Saving Item</span>
+            <span id="dvOrderSaveResultItem"><!-- placeholder for save results from controller --></span>
+        </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-danger btn-block form-control" data-dismiss="modal" onclick="RefreshItemsGrid()">Close</button>
+        </div>
     </div>
-    <div class="col-md-9 text-left">
-        <input type="submit" value="Save" class="btn btn-success" />
-        <span id="dvspinnerdetail" style="display:none;">Saving Item</span>
-        <span id="dvOrderSaveResultItem">
-            <!-- placeholder for save results from controller -->
-        </span>
-    </div>
-</div>
 
-<br />
-<div class="text-center">
-    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="RefreshItemsGrid()">Close</button>
-
-</div>
 }
 <script type="text/javascript">
     function RefreshItemsGrid() {

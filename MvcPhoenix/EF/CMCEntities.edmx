@@ -1033,6 +1033,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="ProductDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProductMasterID" Type="int" />
           <Property Name="SGLegacyID" Type="int" />
+          <Property Name="SDLegacyID" Type="int" />
           <Property Name="DivisionID" Type="int" />
           <Property Name="BusArea" Type="nvarchar" MaxLength="30" />
           <Property Name="ProductCode" Type="nvarchar" MaxLength="20" />
@@ -1057,7 +1058,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="CustomsValueUnit" Type="nvarchar" MaxLength="2" />
           <Property Name="GlobalProduct" Type="bit" />
           <Property Name="AccuracyVerified" Type="bit" />
-          <Property Name="PolmerizationHazard" Type="bit" />
+          <Property Name="PolymerizationHazard" Type="bit" />
           <Property Name="SDSContactName" Type="nvarchar" MaxLength="100" />
           <Property Name="SDSContactPhone" Type="nvarchar" MaxLength="50" />
           <Property Name="ChinaCertificationDate" Type="datetime" />
@@ -1069,6 +1070,38 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="EPAHazardousWaste" Type="bit" />
           <Property Name="NonRCRAWaste" Type="bit" />
           <Property Name="WasteProfileNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShippingChemicalName" Type="nvarchar(max)" />
+          <Property Name="LabelNotesEPA" Type="nvarchar(max)" />
+          <Property Name="GRNUNNUMBER" Type="nvarchar" MaxLength="7" />
+          <Property Name="GRNPKGRP" Type="nvarchar" MaxLength="4" />
+          <Property Name="GRNHAZSUBCL" Type="nvarchar" MaxLength="5" />
+          <Property Name="GRNLABEL" Type="nvarchar" MaxLength="25" />
+          <Property Name="GRNSUBLABEL" Type="nvarchar" MaxLength="25" />
+          <Property Name="GRNHAZCL" Type="nvarchar" MaxLength="4" />
+          <Property Name="GRNSHIPNAME" Type="nvarchar" MaxLength="75" />
+          <Property Name="GRNOSNAME" Type="nvarchar" MaxLength="200" />
+          <Property Name="GRNSHIPNAMED" Type="nvarchar" MaxLength="50" />
+          <Property Name="GRNTREMACARD" Type="nvarchar" MaxLength="15" />
+          <Property Name="AIRUNNUMBER" Type="nvarchar" MaxLength="7" />
+          <Property Name="AIRPKGRP" Type="nvarchar" MaxLength="4" />
+          <Property Name="AIRHAZSUBCL" Type="nvarchar" MaxLength="5" />
+          <Property Name="AIRLABEL" Type="nvarchar" MaxLength="4" />
+          <Property Name="AIRSUBLABEL" Type="nvarchar" MaxLength="25" />
+          <Property Name="AIRHAZCL" Type="nvarchar" MaxLength="4" />
+          <Property Name="AIRSHIPNAME" Type="nvarchar" MaxLength="75" />
+          <Property Name="AIRNOSNAME" Type="nvarchar" MaxLength="200" />
+          <Property Name="SEAUNNUM" Type="nvarchar" MaxLength="7" />
+          <Property Name="SEAPKGRP" Type="nvarchar" MaxLength="4" />
+          <Property Name="SEAHAZSUBCL" Type="nvarchar" MaxLength="8" />
+          <Property Name="SEALABEL" Type="nvarchar" MaxLength="25" />
+          <Property Name="SEASUBLABEL" Type="nvarchar" MaxLength="25" />
+          <Property Name="SEAHAZCL" Type="nvarchar" MaxLength="4" />
+          <Property Name="SEASHIPNAME" Type="nvarchar" MaxLength="199" />
+          <Property Name="SEANOSNAME" Type="nvarchar" MaxLength="200" />
+          <Property Name="SEASHIPNAMED" Type="nvarchar" MaxLength="75" />
+          <Property Name="SEAHAZMAT" Type="nvarchar" MaxLength="10" />
+          <Property Name="SEAEMSNO" Type="nvarchar" MaxLength="15" />
+          <Property Name="SEAMFAGNO" Type="nvarchar" MaxLength="15" />
           <Property Name="LastUpDate" Type="datetime" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="MasterCode_MDB" Type="nvarchar" MaxLength="20" />
@@ -1191,39 +1224,10 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="OtherLabelNotes" Type="nvarchar" MaxLength="255" />
           <Property Name="ProductDescription" Type="nvarchar(max)" />
           <Property Name="PeroxideFormer" Type="bit" />
-          <Property Name="GRNSHIPNAME" Type="nvarchar" MaxLength="75" />
-          <Property Name="GRNSHIPNAMED" Type="nvarchar" MaxLength="50" />
-          <Property Name="GRNOSNAME" Type="nvarchar" MaxLength="200" />
-          <Property Name="GRNUNNUMBER" Type="nvarchar" MaxLength="7" />
-          <Property Name="GRNHAZCL" Type="nvarchar" MaxLength="4" />
-          <Property Name="GRNPKGRP" Type="nvarchar" MaxLength="4" />
-          <Property Name="GRNLABEL" Type="nvarchar" MaxLength="25" />
-          <Property Name="GRNSUBLABEL" Type="nvarchar" MaxLength="25" />
-          <Property Name="GRNTREMACARD" Type="nvarchar" MaxLength="15" />
-          <Property Name="AIRSHIPNAME" Type="nvarchar" MaxLength="75" />
-          <Property Name="AIRNOSNAME" Type="nvarchar" MaxLength="200" />
-          <Property Name="AIRUNNUMBER" Type="nvarchar" MaxLength="7" />
-          <Property Name="AIRHAZCL" Type="nvarchar" MaxLength="4" />
-          <Property Name="AIRPKGRP" Type="nvarchar" MaxLength="4" />
-          <Property Name="AIRLABEL" Type="nvarchar" MaxLength="4" />
-          <Property Name="AIRSUBLABEL" Type="nvarchar" MaxLength="25" />
-          <Property Name="AIRHAZSUBCL" Type="nvarchar" MaxLength="5" />
-          <Property Name="GRNHAZSUBCL" Type="nvarchar" MaxLength="5" />
-          <Property Name="SEASHIPNAME" Type="nvarchar" MaxLength="199" />
-          <Property Name="SEASHIPNAMED" Type="nvarchar" MaxLength="75" />
-          <Property Name="SEANOSNAME" Type="nvarchar" MaxLength="200" />
-          <Property Name="SEAUNNUM" Type="nvarchar" MaxLength="7" />
-          <Property Name="SEAPKGRP" Type="nvarchar" MaxLength="4" />
-          <Property Name="SEAHAZCL" Type="nvarchar" MaxLength="4" />
-          <Property Name="SEALABEL" Type="nvarchar" MaxLength="25" />
-          <Property Name="SEAHAZSUBCL" Type="nvarchar" MaxLength="8" />
-          <Property Name="SEASUBLABEL" Type="nvarchar" MaxLength="25" />
-          <Property Name="SEAHAZMAT" Type="nvarchar" MaxLength="10" />
-          <Property Name="SEAEMSNO" Type="nvarchar" MaxLength="15" />
-          <Property Name="SEAMFAGNO" Type="nvarchar" MaxLength="15" />
           <Property Name="SpecificGravity" Type="numeric" Precision="8" Scale="2" />
           <Property Name="phValue" Type="numeric" Precision="8" Scale="2" />
           <Property Name="LastUpDate" Type="datetime" />
+          <Property Name="PhysicalToxic" Type="bit" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -1540,6 +1544,18 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="tblWasteCode">
+          <Key>
+            <PropertyRef Name="WasteCodeID" />
+          </Key>
+          <Property Name="WasteCodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductDetailID" Type="int" />
+          <Property Name="WasteCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProfileNumber" Type="nvarchar" MaxLength="25" />
+          <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+          <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProdCode_MDB" Type="nvarchar" MaxLength="25" />
+        </EntityType>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -1623,6 +1639,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <EntitySet Name="tblTransType" EntityType="Self.tblTransType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUN" EntityType="Self.tblUN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblWasteCode" EntityType="Self.tblWasteCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderMasterArchive" EntityType="Self.tblOrderMasterArchive" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tblOrderMasterArchive].[ClientID] AS [ClientID], 
@@ -1769,6 +1786,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
           <EntitySet Name="tblSystem" EntityType="CMCSQL03Model.tblSystem" />
           <EntitySet Name="tblUN" EntityType="CMCSQL03Model.tblUN" />
+          <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
           <EntitySet Name="tblProductDetail" EntityType="CMCSQL03Model.tblProductDetail" />
           <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
         </EntityContainer>
@@ -3103,6 +3121,18 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="SubSidLabelReq" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="PackingGroup" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="tblWasteCode">
+          <Key>
+            <PropertyRef Name="WasteCodeID" />
+          </Key>
+          <Property Name="WasteCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductDetailID" Type="Int32" />
+          <Property Name="WasteCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProfileNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProdCode_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="tblProductDetail">
           <Key>
             <PropertyRef Name="ProductDetailID" />
@@ -3110,6 +3140,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="ProductDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductMasterID" Type="Int32" />
           <Property Name="SGLegacyID" Type="Int32" />
+          <Property Name="SDLegacyID" Type="Int32" />
           <Property Name="DivisionID" Type="Int32" />
           <Property Name="BusArea" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="ProductCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -3134,7 +3165,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="CustomsValueUnit" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Name="GlobalProduct" Type="Boolean" />
           <Property Name="AccuracyVerified" Type="Boolean" />
-          <Property Name="PolmerizationHazard" Type="Boolean" />
+          <Property Name="PolymerizationHazard" Type="Boolean" />
           <Property Name="SDSContactName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="SDSContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ChinaCertificationDate" Type="DateTime" Precision="3" />
@@ -3146,6 +3177,38 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="EPAHazardousWaste" Type="Boolean" />
           <Property Name="NonRCRAWaste" Type="Boolean" />
           <Property Name="WasteProfileNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingChemicalName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LabelNotesEPA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GRNUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="GRNPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="GRNHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="GRNLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="GRNSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="GRNHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="GRNSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="GRNOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GRNSHIPNAMED" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GRNTREMACARD" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="AIRUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="AIRPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="AIRHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="AIRLABEL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="AIRSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="AIRHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="AIRSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="AIRNOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SEAUNNUM" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="SEAPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="SEAHAZSUBCL" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="SEALABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="SEASUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="SEAHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="SEASHIPNAME" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="SEANOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SEASHIPNAMED" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="SEAHAZMAT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SEAEMSNO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="SEAMFAGNO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="LastUpDate" Type="DateTime" Precision="3" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -3268,39 +3331,10 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="OtherLabelNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PeroxideFormer" Type="Boolean" />
-          <Property Name="GRNSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-          <Property Name="GRNSHIPNAMED" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="GRNOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="GRNUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-          <Property Name="GRNHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="GRNPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="GRNLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="GRNSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="GRNTREMACARD" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="AIRSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-          <Property Name="AIRNOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="AIRUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-          <Property Name="AIRHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="AIRPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="AIRLABEL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="AIRSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="AIRHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="GRNHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="SEASHIPNAME" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
-          <Property Name="SEASHIPNAMED" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-          <Property Name="SEANOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="SEAUNNUM" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-          <Property Name="SEAPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="SEAHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="SEALABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="SEAHAZSUBCL" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-          <Property Name="SEASUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="SEAHAZMAT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="SEAEMSNO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="SEAMFAGNO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="SpecificGravity" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="phValue" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="LastUpDate" Type="DateTime" Precision="3" />
+          <Property Name="PhysicalToxic" Type="Boolean" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
@@ -4692,6 +4726,19 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblWasteCode">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblWasteCode">
+              <MappingFragment StoreEntitySet="tblWasteCode">
+                <ScalarProperty Name="ProdCode_MDB" ColumnName="ProdCode_MDB" />
+                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="ProfileNumber" ColumnName="ProfileNumber" />
+                <ScalarProperty Name="WasteCode" ColumnName="WasteCode" />
+                <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
+                <ScalarProperty Name="WasteCodeID" ColumnName="WasteCodeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tblProductDetail">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductDetail">
               <MappingFragment StoreEntitySet="tblProductDetail">
@@ -4699,6 +4746,38 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
                 <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
                 <ScalarProperty Name="LastUpDate" ColumnName="LastUpDate" />
+                <ScalarProperty Name="SEAMFAGNO" ColumnName="SEAMFAGNO" />
+                <ScalarProperty Name="SEAEMSNO" ColumnName="SEAEMSNO" />
+                <ScalarProperty Name="SEAHAZMAT" ColumnName="SEAHAZMAT" />
+                <ScalarProperty Name="SEASHIPNAMED" ColumnName="SEASHIPNAMED" />
+                <ScalarProperty Name="SEANOSNAME" ColumnName="SEANOSNAME" />
+                <ScalarProperty Name="SEASHIPNAME" ColumnName="SEASHIPNAME" />
+                <ScalarProperty Name="SEAHAZCL" ColumnName="SEAHAZCL" />
+                <ScalarProperty Name="SEASUBLABEL" ColumnName="SEASUBLABEL" />
+                <ScalarProperty Name="SEALABEL" ColumnName="SEALABEL" />
+                <ScalarProperty Name="SEAHAZSUBCL" ColumnName="SEAHAZSUBCL" />
+                <ScalarProperty Name="SEAPKGRP" ColumnName="SEAPKGRP" />
+                <ScalarProperty Name="SEAUNNUM" ColumnName="SEAUNNUM" />
+                <ScalarProperty Name="AIRNOSNAME" ColumnName="AIRNOSNAME" />
+                <ScalarProperty Name="AIRSHIPNAME" ColumnName="AIRSHIPNAME" />
+                <ScalarProperty Name="AIRHAZCL" ColumnName="AIRHAZCL" />
+                <ScalarProperty Name="AIRSUBLABEL" ColumnName="AIRSUBLABEL" />
+                <ScalarProperty Name="AIRLABEL" ColumnName="AIRLABEL" />
+                <ScalarProperty Name="AIRHAZSUBCL" ColumnName="AIRHAZSUBCL" />
+                <ScalarProperty Name="AIRPKGRP" ColumnName="AIRPKGRP" />
+                <ScalarProperty Name="AIRUNNUMBER" ColumnName="AIRUNNUMBER" />
+                <ScalarProperty Name="GRNTREMACARD" ColumnName="GRNTREMACARD" />
+                <ScalarProperty Name="GRNSHIPNAMED" ColumnName="GRNSHIPNAMED" />
+                <ScalarProperty Name="GRNOSNAME" ColumnName="GRNOSNAME" />
+                <ScalarProperty Name="GRNSHIPNAME" ColumnName="GRNSHIPNAME" />
+                <ScalarProperty Name="GRNHAZCL" ColumnName="GRNHAZCL" />
+                <ScalarProperty Name="GRNSUBLABEL" ColumnName="GRNSUBLABEL" />
+                <ScalarProperty Name="GRNLABEL" ColumnName="GRNLABEL" />
+                <ScalarProperty Name="GRNHAZSUBCL" ColumnName="GRNHAZSUBCL" />
+                <ScalarProperty Name="GRNPKGRP" ColumnName="GRNPKGRP" />
+                <ScalarProperty Name="GRNUNNUMBER" ColumnName="GRNUNNUMBER" />
+                <ScalarProperty Name="LabelNotesEPA" ColumnName="LabelNotesEPA" />
+                <ScalarProperty Name="ShippingChemicalName" ColumnName="ShippingChemicalName" />
                 <ScalarProperty Name="WasteProfileNumber" ColumnName="WasteProfileNumber" />
                 <ScalarProperty Name="NonRCRAWaste" ColumnName="NonRCRAWaste" />
                 <ScalarProperty Name="EPAHazardousWaste" ColumnName="EPAHazardousWaste" />
@@ -4710,7 +4789,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
                 <ScalarProperty Name="ChinaCertificationDate" ColumnName="ChinaCertificationDate" />
                 <ScalarProperty Name="SDSContactPhone" ColumnName="SDSContactPhone" />
                 <ScalarProperty Name="SDSContactName" ColumnName="SDSContactName" />
-                <ScalarProperty Name="PolmerizationHazard" ColumnName="PolmerizationHazard" />
+                <ScalarProperty Name="PolymerizationHazard" ColumnName="PolymerizationHazard" />
                 <ScalarProperty Name="AccuracyVerified" ColumnName="AccuracyVerified" />
                 <ScalarProperty Name="GlobalProduct" ColumnName="GlobalProduct" />
                 <ScalarProperty Name="CustomsValueUnit" ColumnName="CustomsValueUnit" />
@@ -4735,6 +4814,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
                 <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
                 <ScalarProperty Name="BusArea" ColumnName="BusArea" />
                 <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+                <ScalarProperty Name="SDLegacyID" ColumnName="SDLegacyID" />
                 <ScalarProperty Name="SGLegacyID" ColumnName="SGLegacyID" />
                 <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
                 <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
@@ -4747,39 +4827,10 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
                 <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
                 <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="PhysicalToxic" ColumnName="PhysicalToxic" />
                 <ScalarProperty Name="LastUpDate" ColumnName="LastUpDate" />
                 <ScalarProperty Name="phValue" ColumnName="phValue" />
                 <ScalarProperty Name="SpecificGravity" ColumnName="SpecificGravity" />
-                <ScalarProperty Name="SEAMFAGNO" ColumnName="SEAMFAGNO" />
-                <ScalarProperty Name="SEAEMSNO" ColumnName="SEAEMSNO" />
-                <ScalarProperty Name="SEAHAZMAT" ColumnName="SEAHAZMAT" />
-                <ScalarProperty Name="SEASUBLABEL" ColumnName="SEASUBLABEL" />
-                <ScalarProperty Name="SEAHAZSUBCL" ColumnName="SEAHAZSUBCL" />
-                <ScalarProperty Name="SEALABEL" ColumnName="SEALABEL" />
-                <ScalarProperty Name="SEAHAZCL" ColumnName="SEAHAZCL" />
-                <ScalarProperty Name="SEAPKGRP" ColumnName="SEAPKGRP" />
-                <ScalarProperty Name="SEAUNNUM" ColumnName="SEAUNNUM" />
-                <ScalarProperty Name="SEANOSNAME" ColumnName="SEANOSNAME" />
-                <ScalarProperty Name="SEASHIPNAMED" ColumnName="SEASHIPNAMED" />
-                <ScalarProperty Name="SEASHIPNAME" ColumnName="SEASHIPNAME" />
-                <ScalarProperty Name="GRNHAZSUBCL" ColumnName="GRNHAZSUBCL" />
-                <ScalarProperty Name="AIRHAZSUBCL" ColumnName="AIRHAZSUBCL" />
-                <ScalarProperty Name="AIRSUBLABEL" ColumnName="AIRSUBLABEL" />
-                <ScalarProperty Name="AIRLABEL" ColumnName="AIRLABEL" />
-                <ScalarProperty Name="AIRPKGRP" ColumnName="AIRPKGRP" />
-                <ScalarProperty Name="AIRHAZCL" ColumnName="AIRHAZCL" />
-                <ScalarProperty Name="AIRUNNUMBER" ColumnName="AIRUNNUMBER" />
-                <ScalarProperty Name="AIRNOSNAME" ColumnName="AIRNOSNAME" />
-                <ScalarProperty Name="AIRSHIPNAME" ColumnName="AIRSHIPNAME" />
-                <ScalarProperty Name="GRNTREMACARD" ColumnName="GRNTREMACARD" />
-                <ScalarProperty Name="GRNSUBLABEL" ColumnName="GRNSUBLABEL" />
-                <ScalarProperty Name="GRNLABEL" ColumnName="GRNLABEL" />
-                <ScalarProperty Name="GRNPKGRP" ColumnName="GRNPKGRP" />
-                <ScalarProperty Name="GRNHAZCL" ColumnName="GRNHAZCL" />
-                <ScalarProperty Name="GRNUNNUMBER" ColumnName="GRNUNNUMBER" />
-                <ScalarProperty Name="GRNOSNAME" ColumnName="GRNOSNAME" />
-                <ScalarProperty Name="GRNSHIPNAMED" ColumnName="GRNSHIPNAMED" />
-                <ScalarProperty Name="GRNSHIPNAME" ColumnName="GRNSHIPNAME" />
                 <ScalarProperty Name="PeroxideFormer" ColumnName="PeroxideFormer" />
                 <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
                 <ScalarProperty Name="OtherLabelNotes" ColumnName="OtherLabelNotes" />

@@ -1382,6 +1382,19 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tblWasteCode">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblWasteCode">
+        <MappingFragment StoreEntitySet="tblWasteCode">
+          <ScalarProperty Name="ProdCode_MDB" ColumnName="ProdCode_MDB" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="ProfileNumber" ColumnName="ProfileNumber" />
+          <ScalarProperty Name="WasteCode" ColumnName="WasteCode" />
+          <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
+          <ScalarProperty Name="WasteCodeID" ColumnName="WasteCodeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tblProductDetail">
       <EntityTypeMapping TypeName="CMCSQL03Model.tblProductDetail">
         <MappingFragment StoreEntitySet="tblProductDetail">
@@ -1389,6 +1402,38 @@
           <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
           <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
           <ScalarProperty Name="LastUpDate" ColumnName="LastUpDate" />
+          <ScalarProperty Name="SEAMFAGNO" ColumnName="SEAMFAGNO" />
+          <ScalarProperty Name="SEAEMSNO" ColumnName="SEAEMSNO" />
+          <ScalarProperty Name="SEAHAZMAT" ColumnName="SEAHAZMAT" />
+          <ScalarProperty Name="SEASHIPNAMED" ColumnName="SEASHIPNAMED" />
+          <ScalarProperty Name="SEANOSNAME" ColumnName="SEANOSNAME" />
+          <ScalarProperty Name="SEASHIPNAME" ColumnName="SEASHIPNAME" />
+          <ScalarProperty Name="SEAHAZCL" ColumnName="SEAHAZCL" />
+          <ScalarProperty Name="SEASUBLABEL" ColumnName="SEASUBLABEL" />
+          <ScalarProperty Name="SEALABEL" ColumnName="SEALABEL" />
+          <ScalarProperty Name="SEAHAZSUBCL" ColumnName="SEAHAZSUBCL" />
+          <ScalarProperty Name="SEAPKGRP" ColumnName="SEAPKGRP" />
+          <ScalarProperty Name="SEAUNNUM" ColumnName="SEAUNNUM" />
+          <ScalarProperty Name="AIRNOSNAME" ColumnName="AIRNOSNAME" />
+          <ScalarProperty Name="AIRSHIPNAME" ColumnName="AIRSHIPNAME" />
+          <ScalarProperty Name="AIRHAZCL" ColumnName="AIRHAZCL" />
+          <ScalarProperty Name="AIRSUBLABEL" ColumnName="AIRSUBLABEL" />
+          <ScalarProperty Name="AIRLABEL" ColumnName="AIRLABEL" />
+          <ScalarProperty Name="AIRHAZSUBCL" ColumnName="AIRHAZSUBCL" />
+          <ScalarProperty Name="AIRPKGRP" ColumnName="AIRPKGRP" />
+          <ScalarProperty Name="AIRUNNUMBER" ColumnName="AIRUNNUMBER" />
+          <ScalarProperty Name="GRNTREMACARD" ColumnName="GRNTREMACARD" />
+          <ScalarProperty Name="GRNSHIPNAMED" ColumnName="GRNSHIPNAMED" />
+          <ScalarProperty Name="GRNOSNAME" ColumnName="GRNOSNAME" />
+          <ScalarProperty Name="GRNSHIPNAME" ColumnName="GRNSHIPNAME" />
+          <ScalarProperty Name="GRNHAZCL" ColumnName="GRNHAZCL" />
+          <ScalarProperty Name="GRNSUBLABEL" ColumnName="GRNSUBLABEL" />
+          <ScalarProperty Name="GRNLABEL" ColumnName="GRNLABEL" />
+          <ScalarProperty Name="GRNHAZSUBCL" ColumnName="GRNHAZSUBCL" />
+          <ScalarProperty Name="GRNPKGRP" ColumnName="GRNPKGRP" />
+          <ScalarProperty Name="GRNUNNUMBER" ColumnName="GRNUNNUMBER" />
+          <ScalarProperty Name="LabelNotesEPA" ColumnName="LabelNotesEPA" />
+          <ScalarProperty Name="ShippingChemicalName" ColumnName="ShippingChemicalName" />
           <ScalarProperty Name="WasteProfileNumber" ColumnName="WasteProfileNumber" />
           <ScalarProperty Name="NonRCRAWaste" ColumnName="NonRCRAWaste" />
           <ScalarProperty Name="EPAHazardousWaste" ColumnName="EPAHazardousWaste" />
@@ -1400,7 +1445,7 @@
           <ScalarProperty Name="ChinaCertificationDate" ColumnName="ChinaCertificationDate" />
           <ScalarProperty Name="SDSContactPhone" ColumnName="SDSContactPhone" />
           <ScalarProperty Name="SDSContactName" ColumnName="SDSContactName" />
-          <ScalarProperty Name="PolmerizationHazard" ColumnName="PolmerizationHazard" />
+          <ScalarProperty Name="PolymerizationHazard" ColumnName="PolymerizationHazard" />
           <ScalarProperty Name="AccuracyVerified" ColumnName="AccuracyVerified" />
           <ScalarProperty Name="GlobalProduct" ColumnName="GlobalProduct" />
           <ScalarProperty Name="CustomsValueUnit" ColumnName="CustomsValueUnit" />
@@ -1425,6 +1470,7 @@
           <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
           <ScalarProperty Name="BusArea" ColumnName="BusArea" />
           <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+          <ScalarProperty Name="SDLegacyID" ColumnName="SDLegacyID" />
           <ScalarProperty Name="SGLegacyID" ColumnName="SGLegacyID" />
           <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
           <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
@@ -1437,39 +1483,10 @@
           <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
           <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
           <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="PhysicalToxic" ColumnName="PhysicalToxic" />
           <ScalarProperty Name="LastUpDate" ColumnName="LastUpDate" />
           <ScalarProperty Name="phValue" ColumnName="phValue" />
           <ScalarProperty Name="SpecificGravity" ColumnName="SpecificGravity" />
-          <ScalarProperty Name="SEAMFAGNO" ColumnName="SEAMFAGNO" />
-          <ScalarProperty Name="SEAEMSNO" ColumnName="SEAEMSNO" />
-          <ScalarProperty Name="SEAHAZMAT" ColumnName="SEAHAZMAT" />
-          <ScalarProperty Name="SEASUBLABEL" ColumnName="SEASUBLABEL" />
-          <ScalarProperty Name="SEAHAZSUBCL" ColumnName="SEAHAZSUBCL" />
-          <ScalarProperty Name="SEALABEL" ColumnName="SEALABEL" />
-          <ScalarProperty Name="SEAHAZCL" ColumnName="SEAHAZCL" />
-          <ScalarProperty Name="SEAPKGRP" ColumnName="SEAPKGRP" />
-          <ScalarProperty Name="SEAUNNUM" ColumnName="SEAUNNUM" />
-          <ScalarProperty Name="SEANOSNAME" ColumnName="SEANOSNAME" />
-          <ScalarProperty Name="SEASHIPNAMED" ColumnName="SEASHIPNAMED" />
-          <ScalarProperty Name="SEASHIPNAME" ColumnName="SEASHIPNAME" />
-          <ScalarProperty Name="GRNHAZSUBCL" ColumnName="GRNHAZSUBCL" />
-          <ScalarProperty Name="AIRHAZSUBCL" ColumnName="AIRHAZSUBCL" />
-          <ScalarProperty Name="AIRSUBLABEL" ColumnName="AIRSUBLABEL" />
-          <ScalarProperty Name="AIRLABEL" ColumnName="AIRLABEL" />
-          <ScalarProperty Name="AIRPKGRP" ColumnName="AIRPKGRP" />
-          <ScalarProperty Name="AIRHAZCL" ColumnName="AIRHAZCL" />
-          <ScalarProperty Name="AIRUNNUMBER" ColumnName="AIRUNNUMBER" />
-          <ScalarProperty Name="AIRNOSNAME" ColumnName="AIRNOSNAME" />
-          <ScalarProperty Name="AIRSHIPNAME" ColumnName="AIRSHIPNAME" />
-          <ScalarProperty Name="GRNTREMACARD" ColumnName="GRNTREMACARD" />
-          <ScalarProperty Name="GRNSUBLABEL" ColumnName="GRNSUBLABEL" />
-          <ScalarProperty Name="GRNLABEL" ColumnName="GRNLABEL" />
-          <ScalarProperty Name="GRNPKGRP" ColumnName="GRNPKGRP" />
-          <ScalarProperty Name="GRNHAZCL" ColumnName="GRNHAZCL" />
-          <ScalarProperty Name="GRNUNNUMBER" ColumnName="GRNUNNUMBER" />
-          <ScalarProperty Name="GRNOSNAME" ColumnName="GRNOSNAME" />
-          <ScalarProperty Name="GRNSHIPNAMED" ColumnName="GRNSHIPNAMED" />
-          <ScalarProperty Name="GRNSHIPNAME" ColumnName="GRNSHIPNAME" />
           <ScalarProperty Name="PeroxideFormer" ColumnName="PeroxideFormer" />
           <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
           <ScalarProperty Name="OtherLabelNotes" ColumnName="OtherLabelNotes" />

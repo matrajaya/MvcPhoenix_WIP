@@ -51,6 +51,7 @@
     <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
     <EntitySet Name="tblSystem" EntityType="CMCSQL03Model.tblSystem" />
     <EntitySet Name="tblUN" EntityType="CMCSQL03Model.tblUN" />
+    <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
     <EntitySet Name="tblProductDetail" EntityType="CMCSQL03Model.tblProductDetail" />
     <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
   </EntityContainer>
@@ -1385,6 +1386,18 @@
     <Property Name="SubSidLabelReq" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
     <Property Name="PackingGroup" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
   </EntityType>
+  <EntityType Name="tblWasteCode">
+    <Key>
+      <PropertyRef Name="WasteCodeID" />
+    </Key>
+    <Property Name="WasteCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductDetailID" Type="Int32" />
+    <Property Name="WasteCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProfileNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProdCode_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+  </EntityType>
   <EntityType Name="tblProductDetail">
     <Key>
       <PropertyRef Name="ProductDetailID" />
@@ -1392,6 +1405,7 @@
     <Property Name="ProductDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ProductMasterID" Type="Int32" />
     <Property Name="SGLegacyID" Type="Int32" />
+    <Property Name="SDLegacyID" Type="Int32" />
     <Property Name="DivisionID" Type="Int32" />
     <Property Name="BusArea" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
     <Property Name="ProductCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -1416,7 +1430,7 @@
     <Property Name="CustomsValueUnit" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
     <Property Name="GlobalProduct" Type="Boolean" />
     <Property Name="AccuracyVerified" Type="Boolean" />
-    <Property Name="PolmerizationHazard" Type="Boolean" />
+    <Property Name="PolymerizationHazard" Type="Boolean" />
     <Property Name="SDSContactName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="SDSContactPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ChinaCertificationDate" Type="DateTime" Precision="3" />
@@ -1428,6 +1442,38 @@
     <Property Name="EPAHazardousWaste" Type="Boolean" />
     <Property Name="NonRCRAWaste" Type="Boolean" />
     <Property Name="WasteProfileNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ShippingChemicalName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LabelNotesEPA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="GRNUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+    <Property Name="GRNPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="GRNHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="GRNLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="GRNSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="GRNHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="GRNSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+    <Property Name="GRNOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="GRNSHIPNAMED" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GRNTREMACARD" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="AIRUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+    <Property Name="AIRPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="AIRHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="AIRLABEL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="AIRSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="AIRHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="AIRSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+    <Property Name="AIRNOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="SEAUNNUM" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+    <Property Name="SEAPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="SEAHAZSUBCL" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="SEALABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="SEASUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="SEAHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="SEASHIPNAME" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+    <Property Name="SEANOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="SEASHIPNAMED" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+    <Property Name="SEAHAZMAT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="SEAEMSNO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="SEAMFAGNO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
     <Property Name="LastUpDate" Type="DateTime" Precision="3" />
     <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -1550,39 +1596,10 @@
     <Property Name="OtherLabelNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="PeroxideFormer" Type="Boolean" />
-    <Property Name="GRNSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-    <Property Name="GRNSHIPNAMED" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="GRNOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="GRNUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-    <Property Name="GRNHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="GRNPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="GRNLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="GRNSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="GRNTREMACARD" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="AIRSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-    <Property Name="AIRNOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="AIRUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-    <Property Name="AIRHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="AIRPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="AIRLABEL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="AIRSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="AIRHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-    <Property Name="GRNHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-    <Property Name="SEASHIPNAME" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
-    <Property Name="SEASHIPNAMED" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-    <Property Name="SEANOSNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="SEAUNNUM" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
-    <Property Name="SEAPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="SEAHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-    <Property Name="SEALABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="SEAHAZSUBCL" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-    <Property Name="SEASUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="SEAHAZMAT" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="SEAEMSNO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="SEAMFAGNO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
     <Property Name="SpecificGravity" Type="Decimal" Precision="8" Scale="2" />
     <Property Name="phValue" Type="Decimal" Precision="8" Scale="2" />
     <Property Name="LastUpDate" Type="DateTime" Precision="3" />
+    <Property Name="PhysicalToxic" Type="Boolean" />
     <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />

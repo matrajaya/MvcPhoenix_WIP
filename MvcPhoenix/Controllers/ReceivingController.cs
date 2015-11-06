@@ -196,7 +196,7 @@ namespace MvcPhoenix.Controllers
                        where t.ClientID == clientid
                        orderby t.MasterCode, t.MasterName
                        select t);
-            string s = "<select onchange='$onchange$()' name='$name$' id='$id$' class='$class$' style='$style$' >";
+            string s = "<label>Master Code</label><select onchange='$onchange$()' name='$name$' id='$id$' class='form-control'>";
             s = s.Replace("$onchange$", change);
             s = s.Replace("$name$", "productmasterid");
             s = s.Replace("$id$", "productmasterid");
@@ -250,7 +250,7 @@ namespace MvcPhoenix.Controllers
             }
             else
             { 
-                return Content("&nbsp;&nbsp;No open orders found at  " + DateTime.Now.ToString()); 
+                return Content("No open orders found at  " + DateTime.Now.ToString()); 
             }
         }
 
@@ -433,9 +433,10 @@ namespace MvcPhoenix.Controllers
             {
                 using (var db = new EF.CMCSQL03Entities())
                 {
-                    var newitem = new EF.tblBulk
+                    var newitem = new EF.tblBulkUnKnown
                     {
-                        IsKnownMaterial = incoming.isknownmaterial,
+                        
+                        //IsKnownMaterial = incoming.isknownmaterial,
                         ProductMasterID = incoming.productmasterid,
                         Warehouse = incoming.warehouse,
                         ReceiveDate = incoming.receivedate,
@@ -463,7 +464,7 @@ namespace MvcPhoenix.Controllers
                         ReceivedAsCode = incoming.receivedascode,
                         ReceivedAsName = incoming.receivedasname
                     };
-                    db.tblBulk.Add(newitem);
+                    db.tblBulkUnKnown.Add(newitem);
                     db.SaveChanges();
                     retval = true;
                 }

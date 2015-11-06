@@ -16,109 +16,109 @@ namespace MvcPhoenix.Models
     //AccuracyVerified
 
 
-    
+
     // Maps to tblProductDetail
     public class ProductDetail
     {
 
         public ProductMaster PM { get; set; }
 
-        [Display(Name="ProductDetailID")]
+        [Display(Name = "ProductDetailID")]
         public int productdetailid { get; set; }
 
-        [Display(Name="ProductMasterID")]
+        [Display(Name = "ProductMasterID")]
         public int? productmasterid { get; set; }
 
-        [Display(Name="SGLegacyID")]
+        [Display(Name = "SGLegacyID")]
         public int? sglegacyid { get; set; }
 
-        [Display(Name="DivisionID")]
+        [Display(Name = "DivisionID")]
         public int? divisionid { get; set; }
 
-        [Display(Name="BusArea")]
+        [Display(Name = "BusArea")]
         public string busarea { get; set; }
 
-        [Display(Name="ProductCode")]
+        [Display(Name = "ProductCode")]
         public string productcode { get; set; }
 
-        [Display(Name="ProductName")]
+        [Display(Name = "ProductName")]
         public string productname { get; set; }
 
-        [Display(Name="CustCode")]
+        [Display(Name = "CustCode")]
         public string custcode { get; set; }
 
-        [Display(Name="MultiLotReq")]
+        [Display(Name = "MultiLotReq")]
         public bool? multilotreq { get; set; }
 
-        [Display(Name="ExtendableExpDt")]
+        [Display(Name = "ExtendableExpDt")]
         public bool? extendableexpdt { get; set; }
 
-        [Display(Name="HarmonizedCode")]
+        [Display(Name = "HarmonizedCode")]
         public string harmonizedcode { get; set; }
 
-        [Display(Name="EndUse")]
+        [Display(Name = "EndUse")]
         public string enduse { get; set; }
 
-        [Display(Name="SGRevisionDate")]
+        [Display(Name = "SGRevisionDate")]
         public DateTime? sgrevisiondate { get; set; }
 
-        [Display(Name="MSDSRevisionDate")]
+        [Display(Name = "MSDSRevisionDate")]
         public DateTime? msdsrevisiondate { get; set; }
 
-        [Display(Name="MSDSRevisionNumber")]
+        [Display(Name = "MSDSRevisionNumber")]
         public string msdsrevisionnumber { get; set; }
-    
-        [Display(Name="LabelRevisionDate")]
+
+        [Display(Name = "LabelRevisionDate")]
         public DateTime? labelrevisiondate { get; set; }
 
-        [Display(Name="LabelNumber")]
+        [Display(Name = "LabelNumber")]
         public string labelnumber { get; set; }
 
-        [Display(Name="Checked")]
+        [Display(Name = "Checked")]
         // table field is checked, should be changed
         public bool? invchecked { get; set; }
 
-        [Display(Name="CheckedBy")]
+        [Display(Name = "CheckedBy")]
         public string checkedby { get; set; }
 
-        [Display(Name="CheckedWhen")]
+        [Display(Name = "CheckedWhen")]
         public DateTime? checkedwhen { get; set; }
 
-        [Display(Name="EPABiocide")]
+        [Display(Name = "EPABiocide")]
         public bool? epabiocide { get; set; }
 
-        [Display(Name="ShippingNotes")]
+        [Display(Name = "ShippingNotes")]
         public string shippingnotes { get; set; }
 
-        [Display(Name="OtherLabelNotes")]
+        [Display(Name = "OtherLabelNotes")]
         public string otherlabelnotes { get; set; }
 
-        [Display(Name="ProductDescription")]
+        [Display(Name = "ProductDescription")]
         public string productdescription { get; set; }
 
-        [Display(Name="LabelInfo")]
+        [Display(Name = "LabelInfo")]
         public string labelinfo { get; set; }
 
-        [Display(Name="GHSReady")]
+        [Display(Name = "GHSReady")]
         public bool? ghsready { get; set; }
 
-        [Display(Name="CustomsValue")]
+        [Display(Name = "CustomsValue")]
         public decimal customsvalue { get; set; }
 
-        [Display(Name="CustomsValueUnit")]
+        [Display(Name = "CustomsValueUnit")]
         public string customsvalueunit { get; set; }
 
-        [Display(Name="GlobalProduct")]
+        [Display(Name = "GlobalProduct")]
         public bool? globalproduct { get; set; }
 
-        [Display(Name="Company_MDB")]
+        [Display(Name = "Company_MDB")]
         public string company_mdb { get; set; }
 
-        [Display(Name="MasterCode_MDB")]
+        [Display(Name = "MasterCode_MDB")]
         public string mastercode_mdb { get; set; }
 
-        [Display(Name="Division_MDB")]
+        [Display(Name = "Division_MDB")]
         public string division_mdb { get; set; }
-        
-}
+
+    }
 }

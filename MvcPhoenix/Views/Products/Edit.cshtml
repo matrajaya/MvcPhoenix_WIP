@@ -382,25 +382,7 @@
                         <p>@Html.CheckBox("safetyglasses", Model.safetyglasses != null && (bool)Model.safetyglasses) Safety Glasses</p>
                         <p>@Html.CheckBox("gloves", Model.gloves != null && (bool)Model.gloves) Gloves</p>
                         <p>
-                            @*@Html.TextBoxFor(m => m.glovetype, new { @class = "form-control" })*@
                             @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
-                            <!--#region DDL for Glove Types-->
-                            @*<select class="form-control">
-                                    <option>Glove Type</option>
-                                    <option>Butyl</option>
-                                    <option>Latex</option>
-                                    <option>Latex/Neoprene</option>
-                                    <option>Neoprene</option>
-                                    <option>Nitrile</option>
-                                    <option>Nitrile/Silver</option>
-                                    <option>Polyvinyl</option>
-                                    <option>Polyvinyl Alcohol</option>
-                                    <option>Silver 4H</option>
-                                    <option>Silver Shield</option>
-                                    <option>Special</option>
-                                    <option>Viton</option>
-                                </select>*@
-                            <!--#endregion-->
                         </p>
                         <p>@Html.CheckBox("booties", Model.booties != null && (bool)Model.booties) Booties</p>
                         <p>@Html.CheckBox("cleanroomequipment", Model.cleanroomequipment != null && (bool)Model.cleanroomequipment) Clean Room Equip</p>
@@ -438,7 +420,7 @@
                         <p>@Html.CheckBox("reactive", Model.reactive != null && (bool)Model.reactive) Reactive</p>
                         <p><input type="checkbox"> Toxic - (Physical Toxic) M*</p>
                         <p>@Html.CheckBox("peroxideformer", Model.peroxideformer != null && (bool)Model.peroxideformer) Peroxide Former</p>
-                        <p>@Html.CheckBox("polmerizationhazard", Model.polmerizationhazard != null && (bool)Model.polmerizationhazard) Polymerization Hazard</p>
+                        <p>@Html.CheckBox("polymerizationhazard", Model.polymerizationhazard != null && (bool)Model.polymerizationhazard) Polymerization Hazard</p>
                     </div>
                 </div>
                 <hr>
@@ -731,10 +713,6 @@
                     <div class="form-group col-md-3">
                         <label>Technical Sheet</label>
                         <p>@Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet)</p>
-                        @*<div class="radio">
-                                <label><input type="radio" name="optionsRadios" id="optionsRadios1" value="Yes">Yes</label>
-                                <label><input type="radio" name="optionsRadios" id="optionsRadios2" value="No">No</label>
-                            </div>*@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Technical Sheet Revision Date</label>

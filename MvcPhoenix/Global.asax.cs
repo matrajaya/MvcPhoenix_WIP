@@ -25,7 +25,16 @@ namespace MvcPhoenix
             AuthConfig.RegisterAuth();
 
            
-            
+        }
+        // pc 10/06/2015 Added following to stash sessionid
+        protected void Session_Start()
+        {
+            // Until we auth users, I may need a 'unique' id
+            Session["MySessionID"] = Session.SessionID;
+            // Consider using something from the asp.net ME object (netbios computer name?)
+
+            // Add additional Session vars to hold values from tblSystem
+
 
         }
     }

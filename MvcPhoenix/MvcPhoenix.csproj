@@ -378,6 +378,9 @@
     <Compile Include="EF\tblUser.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblWasteCode.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -647,6 +650,7 @@
     <Content Include="Views\Receiving\Create.cshtml" />
     <Content Include="Views\Receiving\CreateUnknown.cshtml" />
     <Content Include="Views\Receiving\_OpenOrderItems.cshtml" />
+    <Content Include="Views\Orders\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

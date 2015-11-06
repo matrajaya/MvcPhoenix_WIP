@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
-//pc add
 using MvcPhoenix.Models;
 using MvcPhoenix.EF;
-//using MvcPhoenix.Models.ProductProfileRepository;
 
 namespace MvcPhoenix.Controllers
 {
@@ -15,7 +12,8 @@ namespace MvcPhoenix.Controllers
     {
         public ActionResult Index()
         {
-            return View("~/Views/Products/Index.cshtml");
+            //return View("~/Views/Products/Index.cshtml");
+            return View();
         }
 
         public string ProductCodesDropDown(int id, string divid)
@@ -49,7 +47,8 @@ namespace MvcPhoenix.Controllers
         {
             if (id == 0)
             {
-                return View("~/Views/Products/Index.cshtml"); // cycle back
+                // return View("~/Views/Products/Index.cshtml"); // cycle back
+                return RedirectToAction("Index", "Products");
             }
             else
             {
@@ -63,26 +62,8 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        //[HttpGet]
-        //public ActionResult Create(int id)
-        //{
-        //    if (id == 0)
-        //    {
-        //        return View("~/Views/Products/Index.cshtml"); // cycle back
-        //    }
-        //    else
-        //    {
-        //        ProductProfile PP = new ProductProfile();
-        //        PP.clientid = id;
-        //        PP.productmasterid = -1;
-        //        PP.productdetailid = -1;
-        //        // no reason to go to DB - this is a new object
-        //        PP = fnFillOtherPMProps(PP);
-
-        //        return View(PP);
-        //    }
-        //}
         [HttpPost]
+        // public ActionResult New(int id)
         public ActionResult Create(int clientid2)
         {
             if (clientid2 == 0)
@@ -132,60 +113,32 @@ namespace MvcPhoenix.Controllers
         public ActionResult SetUpProductProfileEdit(int productdetailid1)
         {
             if (productdetailid1 == 0)
-            {
-                return View("~/Views/Products/Index.cshtml"); // cycle back
-            }
+            { return View("~/Views/Products/Index.cshtml"); }
             else
-            {
-                ProductProfile PP = new ProductProfile();
-                PP.productdetailid = productdetailid1;
-                PP = FillFromPD(PP);
-                PP = FillFromPM(PP);
-                PP = fnFillOtherPMProps(PP);
-                return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
-            }
+            { return RedirectToAction("Edit", new { id = productdetailid1 }); }
         }
 
         [HttpPost]
         public ActionResult SetUpProductProfileNew(int clientid2)
         {
             if (clientid2 == 0)
-            {
-                return View("~/Views/Products/Index.cshtml"); // cycle back
-            }
+            { return View("~/Views/Products/Index.cshtml"); }
             else
-            {
-                ProductProfile PP = new ProductProfile();
-                PP.clientid = clientid2;
-                PP.productmasterid = -1;
-                PP.productdetailid = -1;
-
-                // no reason to go to DB - this is a new object
-                PP = fnFillOtherPMProps(PP);
-                
-                return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
-            }
+            { return RedirectToAction("Edit", new { id = clientid2 }); }
         }
 
         [HttpPost]
         public ActionResult SetUpProductProfileEquiv(int productdetailid3)
         {
             if (productdetailid3 == 0)
-            {
-                return View("~/Views/Products/Index.cshtml"); // cycle back
-            }
+            { return View("~/Views/Products/Index.cshtml"); }
             else
             {
                 using (var db = new CMCSQL03Entities())
                 {
-                    var q = (from t in db.tblProductDetail where t.ProductDetailID == productdetailid3 select new { t.ProductMasterID }).FirstOrDefault();
-                    ProductProfile PP = new ProductProfile();
-                    PP.productdetailid = -1;
-                    PP.productmasterid = q.ProductMasterID;
-                    PP = FillFromPM(PP);
-                    PP = fnFillOtherPMProps(PP);
-                    return View("~/Views/Products/ProductProfileEdit.cshtml", PP);
+                    return RedirectToAction("Edit", new { id = productdetailid3 });
                 }
+
             }
         }
         #endregion
@@ -196,10 +149,19 @@ namespace MvcPhoenix.Controllers
         // ***********************************************************************
 
         // These can be moved to an external .cs file and referenced in from this controller...
+
         private ProductProfile fnFillOtherPMProps(ProductProfile PP)
         {
+
             using (var db = new EF.CMCSQL03Entities())
             {
+
+                //WasteCodes
+                PP.ListOfWasteCodes = (from t in db.tblWasteCode
+                                       where t.ProductDetailID == PP.productdetailid
+                                       select
+                                           new WasteCode { wastecodeid = t.WasteCodeID, wastecode = t.WasteCode, profilenumber = t.ProfileNumber }).ToList();
+
                 //GloveType
                 List<SelectListItem> gloves = new List<SelectListItem>();
                 gloves.Add(new SelectListItem { Value = "", Text = "" });
@@ -214,7 +176,9 @@ namespace MvcPhoenix.Controllers
 
                 // Equivs
                 PP.ListOfEquivalents = (from t in db.tblProductDetail where t.ProductMasterID == PP.productmasterid && t.ProductCode != PP.productcode select new SelectListItem { Value = t.ProductCode, Text = t.ProductCode }).ToList();
-                
+                //if(PP.ListOfEquivalents.Count()==0)
+                //{ PP.ListOfEquivalents.Add(new SelectListItem { Value = "0", Text = "No Equivalents" }); }
+
                 PP.ListOfEndUsesForCustoms = (from t in db.tblEndUseForCustoms orderby t.EndUse select new SelectListItem { Value = t.EndUse, Text = t.EndUse }).ToList();
 
                 PP.ListOfHarmonizedCodes = (from t in db.tblHSCode orderby t.HarmonizedCode select new SelectListItem { Value = t.HarmonizedCode, Text = t.HarmonizedCode }).ToList();
@@ -264,6 +228,7 @@ namespace MvcPhoenix.Controllers
                                            excludefromlabel = t.ExcludeFromLabel
                                        }).ToList();
 
+
                 // ShelfItems
                 var qshelf = (from t in db.tblShelfMaster
                               where t.ProductDetailID == PP.productdetailid
@@ -284,6 +249,7 @@ namespace MvcPhoenix.Controllers
                                   reorderqty = t.ReorderQty
                               }).ToList();
                 PP.ListOfShelfItems = qshelf;
+
             }
             return PP;
         }
@@ -296,7 +262,9 @@ namespace MvcPhoenix.Controllers
             {
                 var qd = (from t in db.tblProductDetail where t.ProductDetailID == PP.productdetailid select t).FirstOrDefault();
                 PP.productdetailid = qd.ProductDetailID;
+                //PP.fkproductmasterid = qd.ProductMasterID;
                 PP.productmasterid = qd.ProductMasterID;
+                //PP.sglegacyid = qd.SGLegacyID;
                 PP.divisionid = qd.DivisionID;
                 PP.busarea = qd.BusArea;
                 PP.productcode = qd.ProductCode;
@@ -320,7 +288,9 @@ namespace MvcPhoenix.Controllers
                 PP.customsvalue = qd.CustomsValue;
                 PP.customsvalueunit = qd.CustomsValueUnit;
                 PP.globalproduct = qd.GlobalProduct;
+                // added by II 10/23/2015
                 PP.accuracyverified = qd.AccuracyVerified;
+
                 PP.sdscontactname = qd.SDSContactName;
                 PP.sdscontactphone = qd.SDSContactPhone;
                 PP.chinacertificationdate = qd.ChinaCertificationDate;
@@ -335,7 +305,44 @@ namespace MvcPhoenix.Controllers
                 PP.nonrcrawaste = qd.NonRCRAWaste;
                 PP.wasteprofilenumber = qd.WasteProfileNumber;
 
-                PP.polmerizationhazard = qd.PolmerizationHazard;
+                PP.polymerizationhazard = qd.PolymerizationHazard;
+
+                // fields add by Iffy 10/28 (already in Master ???)
+                PP.shippingchemicalname = qd.ShippingChemicalName;
+                PP.labelnotesepa = qd.LabelNotesEPA;
+
+                PP.grnshipname = qd.GRNSHIPNAME;
+                PP.grnshipnamed = qd.GRNSHIPNAMED;
+                PP.grnosname = qd.GRNOSNAME;
+                PP.grnunnumber = qd.GRNUNNUMBER;
+                PP.grnhazcl = qd.GRNHAZCL;
+                PP.grnpkgrp = qd.GRNPKGRP;
+                PP.grnlabel = qd.GRNLABEL;
+                PP.grnsublabel = qd.GRNSUBLABEL;
+                PP.grntremacard = qd.GRNTREMACARD;
+                PP.airshipname = qd.AIRSHIPNAME;
+                PP.airnosname = qd.AIRNOSNAME;
+                PP.airunnumber = qd.AIRUNNUMBER;
+                PP.airhazcl = qd.AIRHAZCL;
+                PP.airpkgrp = qd.AIRPKGRP;
+                PP.airlabel = qd.AIRLABEL;
+                PP.airsublabel = qd.AIRSUBLABEL;
+                PP.airhazsubcl = qd.AIRHAZSUBCL;
+                PP.grnhazsubcl = qd.GRNHAZSUBCL;
+                PP.seashipname = qd.SEASHIPNAME;
+                PP.seashipnamed = qd.SEASHIPNAMED;
+                PP.seanosname = qd.SEANOSNAME;
+                PP.seaunnum = qd.SEAUNNUM;
+                PP.seapkgrp = qd.SEAPKGRP;
+                PP.seahazcl = qd.SEAHAZCL;
+                PP.sealabel = qd.SEALABEL;
+                PP.seahazsubcl = qd.SEAHAZSUBCL;
+                PP.seasublabel = qd.SEASUBLABEL;
+                PP.seahazmat = qd.SEAHAZMAT;
+                PP.seaemsno = qd.SEAEMSNO;
+                PP.seamfagno = qd.SEAMFAGNO;
+
+
                 return PP;
             }
         }
@@ -347,8 +354,11 @@ namespace MvcPhoenix.Controllers
             {
                 var q = (from t in db.tblProductMaster where t.ProductMasterID == PP.productmasterid select t).FirstOrDefault();
                 // we known the PD.id
+                //PP.productmasterid = qm.ProductMasterID;
                 PP.productmasterid = q.ProductMasterID;
                 PP.clientid = q.ClientID;
+                //PP.sglegacyid = q.SGLegacyID;
+                //PP.sdlegacyid = q.SDLegacyID;
                 PP.mastercode = q.MasterCode;
                 PP.mastername = q.MasterName;
                 PP.masterdivisionid = q.MasterDivisionID;
@@ -374,7 +384,12 @@ namespace MvcPhoenix.Controllers
                 PP.heatpriortofilling = q.HeatPriorToFilling;
                 PP.flashpoint = q.FlashPoint;
                 PP.heatinginstructions = q.HeatingInstructions;
+
+                //cd says rename to OtherHandlingInstr
+                //PP.other = q.Other; 
                 PP.otherhandlinginstr = q.OtherHandlingInstr;
+
+
                 PP.normalappearence = q.NormalAppearence;
                 PP.rejectioncriterion = q.RejectionCriterion;
                 PP.hood = q.Hood;
@@ -458,43 +473,24 @@ namespace MvcPhoenix.Controllers
                 PP.otherlabelnotes = q.OtherLabelNotes;
                 PP.productdescription = q.ProductDescription;
                 PP.peroxideformer = q.PeroxideFormer;
-                PP.grnshipname = q.GRNSHIPNAME;
-                PP.grnshipnamed = q.GRNSHIPNAMED;
-                PP.grnosname = q.GRNOSNAME;
-                PP.grnunnumber = q.GRNUNNUMBER;
-                PP.grnhazcl = q.GRNHAZCL;
-                PP.grnpkgrp = q.GRNPKGRP;
-                PP.grnlabel = q.GRNLABEL;
-                PP.grnsublabel = q.GRNSUBLABEL;
-                PP.grntremacard = q.GRNTREMACARD;
-                PP.airshipname = q.AIRSHIPNAME;
-                PP.airnosname = q.AIRNOSNAME;
-                PP.airunnumber = q.AIRUNNUMBER;
-                PP.airhazcl = q.AIRHAZCL;
-                PP.airpkgrp = q.AIRPKGRP;
-                PP.airlabel = q.AIRLABEL;
-                PP.airsublabel = q.AIRSUBLABEL;
-                PP.airhazsubcl = q.AIRHAZSUBCL;
-                PP.grnhazsubcl = q.GRNHAZSUBCL;
-                PP.seashipname = q.SEASHIPNAME;
-                PP.seashipnamed = q.SEASHIPNAMED;
-                PP.seanosname = q.SEANOSNAME;
-                PP.seaunnum = q.SEAUNNUM;
-                PP.seapkgrp = q.SEAPKGRP;
-                PP.seahazcl = q.SEAHAZCL;
-                PP.sealabel = q.SEALABEL;
-                PP.seahazsubcl = q.SEAHAZSUBCL;
-                PP.seasublabel = q.SEASUBLABEL;
-                PP.seahazmat = q.SEAHAZMAT;
-                PP.seaemsno = q.SEAEMSNO;
-                PP.seamfagno = q.SEAMFAGNO;
+
+
                 PP.specificgravity = q.SpecificGravity;
                 PP.phvalue = q.phValue;
-                
+
+                //new field added by II
+                PP.physicaltoxic = q.PhysicalToxic;
+
+                //PP.company_mdb = q.Company_MDB;
+                //PP.division_mdb = q.Division_MDB;
+                //PP.location_mdb = q.Location_MDB;
+
                 return PP;
             }
         }
 
+
+        // ************** Save to DB **********************************************
         [HttpPost]
         public ActionResult SaveProductProfile(ProductProfile PP)
         {
@@ -525,16 +521,16 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        // ************** Save to DB **********************************************
-
         public void SaveProductDetail(ProductProfile PP)
         {
             using (var db = new CMCSQL03Entities())
             {
+                //fnArchiveProductMaster(pm.productmasterid);
                 var q = (from t in db.tblProductDetail where t.ProductDetailID == PP.productdetailid select t).FirstOrDefault();
                 q.ProductCode = PP.productcode;
                 q.ProductDetailID = PP.productdetailid;
                 q.ProductMasterID = PP.productmasterid;
+                //q.SGLegacyID = pd.sglegacyid;
                 q.DivisionID = PP.divisionid;
                 q.BusArea = PP.busarea;
                 q.ProductCode = PP.productcode;
@@ -575,20 +571,61 @@ namespace MvcPhoenix.Controllers
                 q.NonRCRAWaste = PP.nonrcrawaste;
                 q.WasteProfileNumber = PP.wasteprofilenumber;
 
-                q.PolmerizationHazard = PP.polmerizationhazard;
+                q.PolymerizationHazard = PP.polymerizationhazard;
 
+                // fields add by Iffy 10/28 (already in Master ???)
+                q.ShippingChemicalName = PP.shippingchemicalname;
+                q.LabelNotesEPA = PP.labelnotesepa;
+
+                q.GRNSHIPNAME = PP.grnshipname;
+                q.GRNSHIPNAMED = PP.grnshipnamed;
+                q.GRNOSNAME = PP.grnosname;
+                q.GRNUNNUMBER = PP.grnunnumber;
+                q.GRNHAZCL = PP.grnhazcl;
+                q.GRNPKGRP = PP.grnpkgrp;
+                q.GRNLABEL = PP.grnlabel;
+                q.GRNSUBLABEL = PP.grnsublabel;
+                q.GRNTREMACARD = PP.grntremacard;
+                q.AIRSHIPNAME = PP.airshipname;
+                q.AIRNOSNAME = PP.airnosname;
+                q.AIRUNNUMBER = PP.airunnumber;
+                q.AIRHAZCL = PP.airhazcl;
+                q.AIRPKGRP = PP.airpkgrp;
+                q.AIRLABEL = PP.airlabel;
+                q.AIRSUBLABEL = PP.airsublabel;
+                q.AIRHAZSUBCL = PP.airhazsubcl;
+                q.GRNHAZSUBCL = PP.grnhazsubcl;
+                q.SEASHIPNAME = PP.seashipname;
+                q.SEASHIPNAMED = PP.seashipnamed;
+                q.SEANOSNAME = PP.seanosname;
+                q.SEAUNNUM = PP.seaunnum;
+                q.SEAPKGRP = PP.seapkgrp;
+                q.SEAHAZCL = PP.seahazcl;
+                q.SEALABEL = PP.sealabel;
+                q.SEAHAZSUBCL = PP.seahazsubcl;
+                q.SEASUBLABEL = PP.seasublabel;
+                q.SEAHAZMAT = PP.seahazmat;
+                q.SEAEMSNO = PP.seaemsno;
+                q.SEAMFAGNO = PP.seamfagno;
+
+                //q.Company_MDB = pd.company_mdb;
+                //q.MasterCode_MDB = pd.mastercode_mdb;
+                //q.Division_MDB = pd.division_mdb;
                 db.SaveChanges();
             }
         }
-
 
         public void SaveProductMaster(ProductProfile pm)
         {
             using (var db = new CMCSQL03Entities())
             {
+                //fnArchiveProductMaster(pm.productmasterid);
                 var q = (from t in db.tblProductMaster where t.ProductMasterID == pm.productmasterid select t).FirstOrDefault();
 
+                //q.ProductMasterID = pm.productmasterid;
                 q.ClientID = pm.clientid;
+                //q.SGLegacyID = pm.sglegacyid;
+                //q.SDLegacyID = pm.sdlegacyid;
                 q.MasterCode = pm.mastercode;
                 q.MasterName = pm.mastername;
                 q.MasterDivisionID = pm.masterdivisionid;
@@ -699,44 +736,21 @@ namespace MvcPhoenix.Controllers
                 q.OtherLabelNotes = pm.otherlabelnotes;
                 q.ProductDescription = pm.productdescription;
                 q.PeroxideFormer = pm.peroxideformer;
-                q.GRNSHIPNAME = pm.grnshipname;
-                q.GRNSHIPNAMED = pm.grnshipnamed;
-                q.GRNOSNAME = pm.grnosname;
-                q.GRNUNNUMBER = pm.grnunnumber;
-                q.GRNHAZCL = pm.grnhazcl;
-                q.GRNPKGRP = pm.grnpkgrp;
-                q.GRNLABEL = pm.grnlabel;
-                q.GRNSUBLABEL = pm.grnsublabel;
-                q.GRNTREMACARD = pm.grntremacard;
-                q.AIRSHIPNAME = pm.airshipname;
-                q.AIRNOSNAME = pm.airnosname;
-                q.AIRUNNUMBER = pm.airunnumber;
-                q.AIRHAZCL = pm.airhazcl;
-                q.AIRPKGRP = pm.airpkgrp;
-                q.AIRLABEL = pm.airlabel;
-                q.AIRSUBLABEL = pm.airsublabel;
-                q.AIRHAZSUBCL = pm.airhazsubcl;
-                q.GRNHAZSUBCL = pm.grnhazsubcl;
-                q.SEASHIPNAME = pm.seashipname;
-                q.SEASHIPNAMED = pm.seashipnamed;
-                q.SEANOSNAME = pm.seanosname;
-                q.SEAUNNUM = pm.seaunnum;
-                q.SEAPKGRP = pm.seapkgrp;
-                q.SEAHAZCL = pm.seahazcl;
-                q.SEALABEL = pm.sealabel;
-                q.SEAHAZSUBCL = pm.seahazsubcl;
-                q.SEASUBLABEL = pm.seasublabel;
-                q.SEAHAZMAT = pm.seahazmat;
-                q.SEAEMSNO = pm.seaemsno;
-                q.SEAMFAGNO = pm.seamfagno;
+
                 q.SpecificGravity = pm.specificgravity;
                 q.phValue = pm.phvalue;
+
+                q.PhysicalToxic = pm.physicaltoxic;
+
+                //q.Company_MDB = pm.company_mdb;
+                //q.Division_MDB = pm.division_mdb;
+                //q.Location_MDB = pm.location_mdb;
 
                 db.SaveChanges();
             }
 
         }
-
+        
         private int fnNewProductDetailID()
         {
             using (var db = new CMCSQL03Entities())
@@ -750,6 +764,7 @@ namespace MvcPhoenix.Controllers
                 return newpk;
             }
         }
+
 
         private int fnNewProductMasterID()
         {
@@ -778,6 +793,7 @@ namespace MvcPhoenix.Controllers
             }
         }
 
+
         private static void fnArchiveProductMaster(int id)
         {
             // Add logic to copy pm record to tblProductMasterArchive
@@ -785,6 +801,7 @@ namespace MvcPhoenix.Controllers
             // Select * into  tblPMTemp from tblProductMaster where ProductMasterID=id
             // Insert into tblProductMasterArchive Select * from tblPMTemp;
             // If exists tblPmTemp Drop table tblPMTemp;
+
         }
 
         public class dto_01
@@ -797,6 +814,15 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult FillJsonTest(string testkey)
         {
+            var q = new dto_01();
+            q.key = 99.ToString();
+            q.keyvalue = "phil";
+            return Json(q, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult LookupUNGround(string UN)
+        {
+            //string test="Group1";
             var q = new dto_01();
             q.key = 99.ToString();
             q.keyvalue = "phil";

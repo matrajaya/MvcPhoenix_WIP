@@ -16,7 +16,7 @@
 
     <div class="row">
         <div class="col-md-6 form-group">
-            @Html.ActionLink("New Replenishment Order(s)", "Create", "Replenishments", null, new { @class = "btn btn-danger btn-block form-control" })
+            @Html.ActionLink("New Replenishment Order(s)", "Create", "Replenishments", null, new { @class = "btn btn-success btn-block form-control" })
         </div>
         <div class="clearfix"></div>
     </div>
@@ -38,20 +38,22 @@
         OnBegin = "$('dvGridPlaceHolder').html('')",
         LoadingElementId = "dvspinner"
     }))
-                {
-                <div class="form-group col-md-4">
-                    <label>Client</label>
-                    @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "$('#dvGridPlaceHolder').html('')", @class = "form-control" })
-                </div>
-                <div class="form-group col-md-4">
-                    <label>Rows</label>
-                    <input type="number" id="ordercount" name="ordercount" value="10" class="form-control" />
-                </div>
-                <div class="form-group col-md-4">
-                    <label>.</label>
-                    <input id="btnsubmit" type="submit" value="Search" class="btn btn-success form-control" />
-                </div>
-                }
+                    {
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Client</label>
+                                @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "$('#dvGridPlaceHolder').html('')", @class = "form-control" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Rows</label>
+                                <input type="number" id="ordercount" name="ordercount" value="10" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="invisible">.</label>
+                                <input id="btnsubmit" type="submit" value="Search" class="btn btn-success form-control" />
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -61,9 +63,10 @@
                     <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Filter Search</h3>
                 </div>
                 <div class="panel-body">
-                    <div class="form-group col-md-4">
-                        <label>.</label>
-                        @Ajax.ActionLink("Last 10 Orders", "SearchLastTenBulkOrders", "Replenishments", null, new AjaxOptions
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label class="invisible">.</label>
+                            @Ajax.ActionLink("Last 10 Orders", "SearchLastTenBulkOrders", "Replenishments", null, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
                                  LoadingElementId = "dvspinner",
@@ -71,10 +74,10 @@
                                  OnBegin = "$('#dvGridPlaceHolder').html('')",
                                  HttpMethod = "GET",
                              }, new { @class = "btn btn-info form-control" })
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label>.</label>
-                        @Ajax.ActionLink("Un-Confirmed", "SearchUnConfirmedBulkOrders", "Replenishments", null, new AjaxOptions
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="invisible">.</label>
+                            @Ajax.ActionLink("Un-Confirmed", "SearchUnConfirmedBulkOrders", "Replenishments", null, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
                                  LoadingElementId = "dvspinner",
@@ -82,10 +85,10 @@
                                  OnBegin = "$('#dvGridPlaceHolder').html('')",
                                  HttpMethod = "GET",
                              }, new { @class = "btn btn-info form-control" })
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label>.</label>
-                        @Ajax.ActionLink("Open Items", "SearchOpenBulkOrders", "Replenishments", null, new AjaxOptions
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="invisible">.</label>
+                            @Ajax.ActionLink("Open Items", "SearchOpenBulkOrders", "Replenishments", null, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
                                  LoadingElementId = "dvspinner",
@@ -93,6 +96,7 @@
                                  OnBegin = "$('#dvGridPlaceHolder').html('')",
                                  HttpMethod = "GET",
                              }, new { @class = "btn btn-info form-control" })
+                        </div>
                     </div>
                 </div>
             </div>
