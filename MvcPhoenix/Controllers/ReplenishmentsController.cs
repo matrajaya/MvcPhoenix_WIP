@@ -44,7 +44,7 @@ namespace MvcPhoenix.Controllers
                        orderby t.Division, t.BusinessUnit
                        select t);
             // IMPORTANT: set the id and the name 
-            s = "<select name='DivisionID' id='DivisionID' class='form-control' style='width:40%;' >";
+            s = "<select name='DivisionID' id='DivisionID' class='form-control' >";
             s = s + "<option value='0' selected=true>All Divisions</option>";
             foreach (var item in qry)
             {
@@ -73,7 +73,7 @@ namespace MvcPhoenix.Controllers
                 }
                 else
                 {
-                    db.Dispose(); return Content("<br>No Order Recomendations as of " + DateTime.Now.ToString() + "<br>");
+                    db.Dispose(); return Content("<div class='col-md-6'><label>No Order Recomendations as of " + DateTime.Now.ToString() + "</label></div>");
                 }
             }
             else

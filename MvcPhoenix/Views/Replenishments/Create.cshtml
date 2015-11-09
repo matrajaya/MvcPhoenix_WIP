@@ -1,54 +1,107 @@
 ﻿@model MvcPhoenix.Models.SuggestedBulkOrder
-@{ ViewBag.Title = "Replenishment Order"; }
+@{
+    ViewBag.Title = "Create Replenishment Order";
+}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </div>
 
-<h4>Create Suggested Replenishment Order(s)</h4>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Replenishments Main", "Index")
+        </div>
+    </div>
 
-@*@using (Ajax.BeginForm("CreateSuggestedOrder", "BulkOrders",*@
-@using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments",
-    new AjaxOptions
+    @*@using (Ajax.BeginForm("CreateSuggestedOrder", "BulkOrders",*@
+    @using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments", new AjaxOptions
     {
         UpdateTargetId = "dvGridPlaceHolder",
         LoadingElementId = "dvspinner",
         OnBegin = "ClearGridAndAddButton()",
         OnSuccess = "ShowAddButton()"
     }))
-{
+    {
 
-    <div class="well well-sm">
-        @Html.DropDownListFor(m => m.clientid, Model.ListOfClients, new { onchange = "GetDivisions()", id = "ClientID", @class = "form-control", @style = "width:40%;margin-bottom:5px;" })
-        <div id="dvDivisions">
-            <select name="DivisionID" id='DivisionID' class='form-control' style='width:40%;'>
-                <option>Division</option>
-            </select>
-        </div>
-        <input id="btnsubmit" type="submit" value="Create Suggested Order" class="btn btn-primary btn-sm" style="margin-top:8px;display:none;" />
-    </div>
+        @*<div class="well well-sm">
+                @Html.DropDownListFor(m => m.clientid, Model.ListOfClients, new { onchange = "GetDivisions()", id = "ClientID", @class = "form-control", @style = "width:40%;margin-bottom:5px;" })
+                <div id="dvDivisions">
+                    <select name="DivisionID" id='DivisionID' class='form-control' style='width:40%;'>
+                        <option>Division</option>
+                    </select>
+                </div>
+                <input id="btnsubmit" type="submit" value="Create Suggested Order" class="btn btn-primary btn-sm" style="margin-top:8px;display:none;" />
+            </div>*@
 
-
-    <div id="dvspinner" style="display:none;">
-        <img src="~/Content/images/ani-rebuild.gif" /> Creating order <img src="~/Content/images/ani-rebuild.gif" />
-    </div>
-}
-
-<!-- set intial display:none and change in ajax event (move to partial?) -->
-<div id="dvAddButton" style="display:none;margin:auto;text-align:center;margin-bottom:5px;margin-top:5px;">
-    <button class="btn btn-warning btn-sm" onclick="SetupAddMode()">Add Product to Order</button>
-</div>
-
-<div id="dvGridPlaceHolder" style="height:400px;overflow-y:auto;">
-    <!-- Placeholder for _SuggestedItems.cshtml -->
-</div>
-
-<!-- this div is a bootstrap modal (ajax content MUST be pushed into the inner div) -->
-<div class="modal" id="modalouter" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div id="modalinner" style="background-color:white;">
-                    <!-- Placeholder for _SuggestedItemEdit.cshtml -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Generate Suggested Replenishment Order</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Client</label>
+                                @Html.DropDownListFor(m => m.clientid, Model.ListOfClients, new { onchange = "GetDivisions()", id = "ClientID", @class = "form-control" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="invisible">.</label>
+                                <div id="dvDivisions">
+                                    <select name="DivisionID" id='DivisionID' class='form-control'>
+                                        <option>Division</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label class="invisible">.</label>
+                                <input id="btnsubmit" type="submit" value="Create" class="btn btn-success btn-block form-control" style="display:none;" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
+        @*<div id="dvspinner" style="display:none;">
+                <img src="~/Content/images/ani-rebuild.gif" /> Creating order <img src="~/Content/images/ani-rebuild.gif" />
+            </div>*@
+
+        <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+            <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
+        </div>
+    }
+
+    <!-- set intial display:none and change in ajax event (move to partial?) -->
+    <div class="row">
+        <div id="dvAddButton" style="display:none" class="col-md-3 form-group">
+            <button class="btn btn-primary btn-block" onclick="SetupAddMode()">Add Product to Order</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    
+
+    <div id="dvGridPlaceHolder" class="row">
+        <!-- Placeholder for _SuggestedItems.cshtml -->
+    </div>
+
+    <!-- this div is a bootstrap modal (ajax content MUST be pushed into the inner div) -->
+    <div class="modal" id="modalouter" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="modalinner" style="background-color:white;">
+                        <!-- Placeholder for _SuggestedItemEdit.cshtml -->
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

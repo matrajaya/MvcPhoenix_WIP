@@ -40,10 +40,9 @@
 
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Product Information</h3>
+                    <h3 class="panel-title" data-toggle="collapse" data-target="#prodinfopan"><i class="fa fa-file-text-o fa-fw"></i> Product Information</h3>
                 </div>
-                <div class="panel-body">
-
+                <div id="prodinfopan" class="panel-body collapse in">
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Date Received</label>
@@ -78,16 +77,14 @@
                             @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
                         </div>
                     </div>
-
                 </div>
             </div>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Batch / Lot Information</h3>
+                    <h3 class="panel-title" data-toggle="collapse" data-target="#batchlotpan"><i class="fa fa-file-text-o fa-fw"></i> Batch / Lot Information</h3>
                 </div>
-                <div class="panel-body">
-
+                <div id="batchlotpan" class="panel-body collapse in">
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Lot Number</label>
@@ -123,15 +120,14 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
-
                 </div>
             </div>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Container Information</h3>
+                    <h3 class="panel-title" data-toggle="collapse" data-target="#containerinfopan"><i class="fa fa-file-text-o fa-fw"></i> Container Information</h3>
                 </div>
-                <div class="panel-body">
+                <div id="containerinfopan" class="panel-body collapse in">
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label>Container Note</label>
@@ -154,18 +150,15 @@
                             @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
                         </div>
                     </div>
-
                 </div>
             </div>
 
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Other Information</h3>
+                    <h3 class="panel-title" data-toggle="collapse" data-target="#otherinfopan"><i class="fa fa-file-text-o fa-fw"></i>Other Information</h3>
                 </div>
-                <div class="panel-body">
-
+                <div id="otherinfopan" class="panel-body collapse in">
                     <div class="row">
-
                         <div class="form-group col-md-3">
                             <label>Flammable *</label>
                             <input type="checkbox" class="checkbox" />
@@ -223,7 +216,6 @@
                             @Html.TextBoxFor(m => m.bulklabelnote, new { @class = "form-control" })
                         </div>
                     </div>
-
                 </div>
             </div>
 
