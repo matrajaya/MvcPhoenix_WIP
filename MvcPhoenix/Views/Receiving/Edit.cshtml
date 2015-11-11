@@ -53,8 +53,8 @@
                         @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Client - DDL*</label>
-                        @Html.TextBoxFor(m => m.clientname, new { @class = "form-control" })
+                        <label>Client</label>
+                        @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly"})
                     </div>
                     <div class="form-group col-md-3">
                         <label>Carrier - DDL*</label>
@@ -103,8 +103,8 @@
                         @Html.TextBoxFor(m => m.expirationdate, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>S.L. *</label>
-                        <input class="form-control" />
+                        <label>Shelf Life *</label>
+                        <input class="form-control" readonly="readonly" />
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cease Ship Date</label>
@@ -113,10 +113,6 @@
                     <div class="form-group col-md-3">
                         <label>Bulk Status</label>
                         @Html.DropDownListFor(m => m.bulkstatus, Model.ListOfBulkStatusIDs, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Notice Date</label>
-                        @Html.TextBoxFor(m => m.noticedate, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-3">
                         <label>QC Date</label>
@@ -165,19 +161,19 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Flammable *</label>
-                        <input type="checkbox" class="checkbox" />
+                        <input type="checkbox" class="checkbox" readonly="readonly" disabled />
                     </div>
                     <div class="form-group col-md-3">
                         <label>Freezer *</label>
-                        <input type="checkbox" class="checkbox" />
+                        <input type="checkbox" class="checkbox" readonly="readonly" disabled />
                     </div>
                     <div class="form-group col-md-3">
                         <label>Refrigerated *</label>
-                        <input type="checkbox" class="checkbox" />
+                        <input type="checkbox" class="checkbox" readonly="readonly" disabled />
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Other *</label>
-                        <input class="form-control" />
+                        <label>Other Storage *</label>
+                        <input class="form-control" readonly="readonly" disabled />
                     </div>
                     <div class="form-group col-md-3">
                         <label>Packout On Receipt</label>
@@ -185,11 +181,11 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Restricted Quantity *</label>
-                        <input type="checkbox" class="checkbox" />
+                        <input type="checkbox" class="checkbox" readonly="readonly" disabled />
                     </div>
                     <div class="form-group col-md-3">
                         <label>Restricted Amount *</label>
-                        <input class="form-control" />
+                        <input class="form-control" readonly="readonly" disabled />
                     </div>
                     <div class="form-group col-md-3">
                         <label>Unit Of Measure</label>
@@ -202,18 +198,6 @@
                     <div class="form-group col-md-3">
                         <label>MSDS Included?</label>
                         @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label>Return Location</label>
-                        @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Received As Code</label>
-                        @Html.TextBoxFor(m => m.receivedascode, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Received As Name</label>
-                        @Html.TextBoxFor(m => m.receivedasname, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-6">
                         <label>Bulk Label Note</label>

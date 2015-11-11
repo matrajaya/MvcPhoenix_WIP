@@ -32,16 +32,6 @@
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.productdetailid)
 
-        @*<div class="row">
-                <div class="form-group col-md-12">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-                        <input type="search" class="form-control" placeholder="Type Product Code...">
-                        <span class="input-group-btn"><input type="reset" class="btn btn-success" value="Search" /></span>
-                    </div>
-                    <hr />
-                </div>
-            </div>*@
 
         <div class="form-group row">
             <div class="col-md-12">
@@ -94,7 +84,7 @@
                         <label>MSDS Revision Date</label>
                         @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
                     </div>
-                    <div class="form-group  col-md-3">
+                    <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
                         @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control", @readonly = "readonly" })
                     </div>
@@ -145,68 +135,15 @@
                 <hr />
                 <div class="row">
                     <div class="col-md-12">
-                        <label><a href="#" onclick="alert('TODO Build, TODO')">+ Add Package Part Number</a></label>
+                        <label><a href="#" onclick="alert('TODO Build, TODO')">+ Add Shelf Size</a></label>
                     </div>
                     <div class="table-responsive col-md-12">
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th>Size</th>
                                     <th>Part Number</th>
-                                    <th>Size</th>
-                                    <th>Weight</th>
-                                    <th>Package</th>
-                                    <th>DOT Spec</th>
-                                    <th>UN Spec</th>
-                                    <th>Torque</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-                                    <td>CMC-84</td>
-                                    <td>QT</td>
-                                    <td></td>
-                                    <td>Plastic, Round, 38MM, Black Teflon Cap</td>
-                                    <td>2E</td>
-                                    <td>1H2/Y23/S</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-                                    <td>CMC-84</td>
-                                    <td>GAL</td>
-                                    <td></td>
-                                    <td>Plastic, Round, 38MM, Black Teflon Cap</td>
-                                    <td>2E</td>
-                                    <td>1H2/Y23/S</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-                                    <td>CMC-84</td>
-                                    <td>5GAL</td>
-                                    <td></td>
-                                    <td>Plastic, Round, 38MM, Black Teflon Cap</td>
-                                    <td>2E</td>
-                                    <td>1H2/Y23/S</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="col-md-12">
-                        <label><a href="#" onclick="alert('TODO Build, TODO')">+ Add Size Information</a></label>
-                    </div>
-                    <div class="table-responsive col-md-12">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Size</th>
                                     <th>Mnemonic</th>
                                     <th>BusArea</th>
                                     <th>Warehouse</th>
@@ -227,6 +164,7 @@
                                     <tr>
                                         <td><a href="#" onclick="alert('Build Object, Modal delete confirm')"><i class="fa fa-minus-circle fa-fw" style="color: red"></i></a></td>
                                         <td><strong>@item.size</strong></td>
+                                        <td></td>
                                         <td>@item.mnemonic</td>
                                         <td>@item.busarea</td>
                                         <td>@item.warehouse</td>
@@ -773,7 +711,12 @@
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>UN Number - DDL*</label>
-                                            @Html.TextBoxFor(m => m.grnunnumber, new { @class = "form-control" })
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.grnunnumber, new { @class = "form-control" })
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-secondary" type="button"><i class="fa fa-download"></i> Pull</button>
+                                                </span>
+                                            </div>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -819,7 +762,12 @@
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>UN Number - DDL*</label>
-                                            @Html.TextBoxFor(m => m.airunnumber, new { @class = "form-control" })
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.airunnumber, new { @class = "form-control" })
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-secondary" type="button"><i class="fa fa-download"></i> Pull</button>
+                                                </span>
+                                            </div>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -865,7 +813,12 @@
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>UN Number - DDL*</label>
-                                            @Html.TextBoxFor(m => m.seaunnum, new { @class = "form-control" })
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(m => m.seaunnum, new { @class = "form-control" })
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-secondary" type="button"><i class="fa fa-download"></i> Pull</button>
+                                                </span>
+                                            </div>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>

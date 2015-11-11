@@ -559,13 +559,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2015 12:20:16</publishTime>
     </File>
     <File Include="Views/Products/Create.cshtml">
-      <publishTime>11/09/2015 17:23:49</publishTime>
+      <publishTime>11/11/2015 15:46:48</publishTime>
     </File>
     <File Include="Views/Products/Edit.cshtml">
-      <publishTime>11/09/2015 17:20:56</publishTime>
+      <publishTime>11/11/2015 15:44:22</publishTime>
     </File>
     <File Include="Views/Products/Index.cshtml">
-      <publishTime>10/29/2015 16:49:25</publishTime>
+      <publishTime>11/11/2015 16:03:41</publishTime>
     </File>
     <File Include="Views/Products/Index2.cshtml">
       <publishTime>10/20/2015 10:09:20</publishTime>
@@ -601,16 +601,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/03/2015 15:54:49</publishTime>
     </File>
     <File Include="Views/Receiving/Create.cshtml">
-      <publishTime>11/09/2015 15:32:52</publishTime>
+      <publishTime>11/10/2015 17:10:35</publishTime>
     </File>
     <File Include="Views/Receiving/CreateUnknown - Copy.cshtml">
       <publishTime>11/03/2015 12:49:57</publishTime>
     </File>
     <File Include="Views/Receiving/CreateUnknown.cshtml">
-      <publishTime>11/09/2015 16:04:41</publishTime>
+      <publishTime>11/11/2015 10:17:12</publishTime>
     </File>
     <File Include="Views/Receiving/Edit.cshtml">
-      <publishTime>11/09/2015 16:06:51</publishTime>
+      <publishTime>11/10/2015 17:10:44</publishTime>
     </File>
     <File Include="Views/Receiving/Index - Copy.cshtml">
       <publishTime>11/05/2015 16:07:50</publishTime>

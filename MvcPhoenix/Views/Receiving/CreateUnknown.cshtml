@@ -76,6 +76,18 @@
                             <label>Received By</label>
                             @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
                         </div>
+                        <div class="form-group col-md-3">
+                            <label>Received As Code</label>
+                            @Html.TextBoxFor(m => m.receivedascode, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Received As Name</label>
+                            @Html.TextBoxFor(m => m.receivedasname, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Return Location</label>
+                            @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,18 +210,6 @@
                         <div class="form-group col-md-3">
                             <label>MSDS Included?</label>
                             @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label>Return Location</label>
-                            @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label>Received As Code</label>
-                            @Html.TextBoxFor(m => m.receivedascode, new { @class = "form-control" })
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label>Received As Name</label>
-                            @Html.TextBoxFor(m => m.receivedasname, new { @class = "form-control" })
                         </div>
                         <div class="form-group col-md-6">
                             <label>Bulk Label Note</label>
