@@ -282,5 +282,6 @@ C:\Users\Administrator.CMCADD1\Desktop\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPh
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll.config
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.pdb
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.csprojResolveAssemblyReference.cache
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.dll
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.pdb
