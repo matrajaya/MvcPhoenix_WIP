@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-// pc add
-using System.ComponentModel.DataAnnotations;
-
 namespace MvcPhoenix.Models
 {
-
     // Maps to tblShelfMaster
 
     public class ShelfMaster
@@ -94,29 +91,20 @@ namespace MvcPhoenix.Models
         [Display(Name = "Sort Order")]
         public int? sortorder { get; set; }
 
-        [Display(Name = "PackageID")]
-        public int? packageid { get; set; }
+        [Display(Name = "Package")]
+        public string package { get; set; }
 
-        //[Display(Name = "Package PartNumber")]
+        [Display(Name = "Package PartNumber")]
         public string packagepartnumber { get; set; }
 
-        //[Display(Name = "Package Weight")]
-        //public decimal? packageweight { get; set; }
+        [Display(Name = "Package Weight")]
+        public decimal? packageweight { get; set; }
 
-        //[Display(Name = "DOTSpec")]
-        //public string dotspec { get; set; }
+        [Display(Name = "DOTSpec")]
+        public string dotspec { get; set; }
 
-        //[Display(Name = "UNSpec")]
-        //public string unspec { get; set; }
-
-        //[Display(Name = "Company_MDB")]
-        //public string company_mdb { get; set; }
-
-        //[Display(Name = "Division_MDB")]
-        //public string division_mdb { get; set; }
-
-        //[Display(Name = "ProductCode_MDB")]
-        //public string productcode_mdb { get; set; }
+        [Display(Name = "UNSpec")]
+        public string unspec { get; set; }
 
         [Display(Name = "Bus Area")]
         public string busarea { get; set; }
@@ -141,15 +129,5 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "CustCode")]
         public string custcode { get; set; }
-
-        //[Display(Name = "MigrationNotes")]
-        //public string migrationnotes { get; set; }
-
-
-
-
-
     }
-
-
 }

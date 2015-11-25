@@ -203,10 +203,12 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MiscController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\ProductNotesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ReceivingController.cs" />
     <Compile Include="Controllers\ReplenishmentsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\WasteCodeController.cs" />
     <Compile Include="EF\CMCEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -221,9 +223,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CMCEntities.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="EF\sysdiagrams.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblBulk.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
@@ -400,9 +399,10 @@
     <Compile Include="Models\ShelfMaster.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\OrderService.cs" />
-    <Compile Include="Services\ProductService.cs" />
+    <Compile Include="Services\ProductsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Antlr3.Runtime.dll" />
@@ -419,8 +419,6 @@
     <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
     <Content Include="bin\Microsoft.Web.Mvc.FixedDisplayModes.dll" />
     <Content Include="bin\Microsoft.Web.WebPages.OAuth.dll" />
-    <Content Include="bin\MvcPhoenix.dll" />
-    <Content Include="bin\MvcPhoenix.pdb" />
     <Content Include="bin\Newtonsoft.Json.dll" />
     <Content Include="bin\System.Net.Http.dll" />
     <Content Include="bin\System.Net.Http.WebRequest.dll" />
@@ -527,7 +525,6 @@
     <Content Include="obj\Debug\edmxResourcesToEmbed\EF\CMCEntities.csdl" />
     <Content Include="obj\Debug\edmxResourcesToEmbed\EF\CMCEntities.msl" />
     <Content Include="obj\Debug\edmxResourcesToEmbed\EF\CMCEntities.ssdl" />
-    <Content Include="bin\MvcPhoenix.dll.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

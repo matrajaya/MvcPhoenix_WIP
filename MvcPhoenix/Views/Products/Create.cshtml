@@ -147,7 +147,6 @@
                                     <th>Min Qty</th>
                                     <th>Max Qty</th>
                                     <th>Re-order Qty</th>
-                                    <th>Package</th>
                                     <th>Gnd Haz</th>
                                     <th>Air Hzd</th>
                                     <th>Notes</th>
@@ -160,7 +159,7 @@
                                     <tr>
                                         <td><a href="#" onclick="alert('Build Object, Modal delete confirm')"><i class="fa fa-minus-circle fa-fw" style="color: red"></i></a></td>
                                         <td><strong>@item.size</strong></td>
-                                        <td></td>
+                                        <td>@item.packagepartnumber</td>
                                         <td>@item.mnemonic</td>
                                         <td>@item.busarea</td>
                                         <td>@item.warehouse</td>
@@ -168,7 +167,6 @@
                                         <td>@item.reordermin.ToString()</td>
                                         <td>@item.reordermax.ToString()</td>
                                         <td>@item.reorderqty.ToString()</td>
-                                        <td>@item.package</td>
                                         <td>@item.groundhazard</td>
                                         <td>@item.airhazard</td>
                                         <td>@item.notes</td>

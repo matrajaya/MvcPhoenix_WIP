@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CMCSQL03Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
   <EntityType Name="tblBulk">
     <Key>
       <PropertyRef Name="BulkID" />
@@ -222,6 +212,8 @@
     <Property Name="CMCLocation" Type="nvarchar" MaxLength="2" />
     <Property Name="CustomerReference" Type="nvarchar" MaxLength="4" />
     <Property Name="CMCLongCustomer" Type="nvarchar" MaxLength="50" />
+    <Property Name="ClientCurrency" Type="nvarchar" MaxLength="5" />
+    <Property Name="ClientUM" Type="nvarchar" MaxLength="4" />
     <Property Name="MSDS" Type="bit" />
     <Property Name="TDS" Type="bit" />
     <Property Name="COA" Type="bit" />
@@ -1223,6 +1215,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="phValue" Type="numeric" Precision="8" Scale="2" />
     <Property Name="LastUpDate" Type="datetime" />
     <Property Name="PhysicalToxic" Type="bit" />
+    <Property Name="WasteCode" Type="nvarchar" MaxLength="20" />
     <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
     <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
     <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -1357,11 +1350,8 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="InactiveSize" Type="bit" />
     <Property Name="WebOEInclude" Type="bit" />
     <Property Name="SortOrder" Type="int" />
-    <Property Name="Package" Type="nvarchar" MaxLength="120" />
-    <Property Name="PackagePartNumber" Type="nvarchar" MaxLength="8" />
-    <Property Name="PackageWeight" Type="decimal" Precision="12" Scale="4" />
-    <Property Name="DOTSpec" Type="nvarchar" MaxLength="10" />
-    <Property Name="UNSpec" Type="nvarchar" MaxLength="15" />
+    <Property Name="PackagePartNumber_MDB" Type="nvarchar" MaxLength="8" />
+    <Property Name="PackageID" Type="int" />
     <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
     <Property Name="Division_MDB" Type="nvarchar" MaxLength="35" />
     <Property Name="ProductCode_MDB" Type="nvarchar" MaxLength="20" />
@@ -1583,7 +1573,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
   </Function>
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="CMCSQL03ModelStoreContainer">
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblBulk" EntityType="Self.tblBulk" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblBulkOrder" EntityType="Self.tblBulkOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblBulkOrderItem" EntityType="Self.tblBulkOrderItem" Schema="dbo" store:Type="Tables" />

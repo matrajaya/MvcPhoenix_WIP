@@ -41,11 +41,8 @@ namespace MvcPhoenix.EF
         public Nullable<bool> InactiveSize { get; set; }
         public Nullable<bool> WebOEInclude { get; set; }
         public Nullable<int> SortOrder { get; set; }
-        public string Package { get; set; }
-        public string PackagePartNumber { get; set; }
-        public Nullable<decimal> PackageWeight { get; set; }
-        public string DOTSpec { get; set; }
-        public string UNSpec { get; set; }
+        public string PackagePartNumber_MDB { get; set; }
+        public Nullable<int> PackageID { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string ProductCode_MDB { get; set; }

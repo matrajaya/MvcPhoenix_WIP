@@ -22,6 +22,8 @@ namespace MvcPhoenix.EF
         public string CMCLocation { get; set; }
         public string CustomerReference { get; set; }
         public string CMCLongCustomer { get; set; }
+        public string ClientCurrency { get; set; }
+        public string ClientUM { get; set; }
         public Nullable<bool> MSDS { get; set; }
         public Nullable<bool> TDS { get; set; }
         public Nullable<bool> COA { get; set; }

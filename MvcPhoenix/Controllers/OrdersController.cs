@@ -47,7 +47,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult Edit(int id)
         {
             OrderMasterFull obj = new OrderMasterFull();
-            obj = MvcPhoenix.Services.OrderService.fillOrderMasterObject(id);
+            obj = OrderService.fillOrderMasterObject(id);
             return View(obj);
         }
 
@@ -87,7 +87,7 @@ namespace MvcPhoenix.Controllers
         {
             // Called from partial view to setup Item for edit
             OrderItem obj = new OrderItem();
-            obj = MvcPhoenix.Services.OrderService.fnFillOrderItem(ItemID);
+            obj = OrderService.fnFillOrderItem(ItemID);
             
             obj.PartialMode = "Edit";
             obj.StatusID = 0;
@@ -103,7 +103,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult DeleteItemFromOrder(int id)
         {
             System.Threading.Thread.Sleep(1500);
-            MvcPhoenix.Services.OrderService.fnDeleteOrderItem(id);
+            OrderService.fnDeleteOrderItem(id);
             OrderItem obj = new OrderItem();
             return PartialView("~/Views/Orders/_OrderItems.cshtml", obj);
         }
@@ -147,7 +147,7 @@ namespace MvcPhoenix.Controllers
                 return PartialView("~/Views/Orders/_ItemEditModal.cshtml", incoming);
             }
 
-            if (MvcPhoenix.Services.OrderService.IsValidOrderItem(incoming))
+            if (OrderService.IsValidOrderItem(incoming))
             {
                 // continue
             }
@@ -165,15 +165,15 @@ namespace MvcPhoenix.Controllers
                 return PartialView("~/Views/Orders/_ItemEditModal.cshtml", emptyobj);
             }
             else if (incoming.ItemID == -1)
-            { dbpk = MvcPhoenix.Services.OrderService.fnInsertOrderItem(incoming); }
+            { dbpk = OrderService.fnInsertOrderItem(incoming); }
             else
-            { dbpk = MvcPhoenix.Services.OrderService.fnUpdateOrderItem(incoming); }
+            { dbpk = OrderService.fnUpdateOrderItem(incoming); }
 
             // Check DB success
             if (dbpk > 0)
             {
                 OrderItem newobj = new OrderItem();
-                newobj = MvcPhoenix.Services.OrderService.fnFillOrderItem(dbpk);
+                newobj = OrderService.fnFillOrderItem(dbpk);
                 newobj.StatusID = 0;    // Force the Status DD to 0
                 newobj.PartialMode = "Edit";
                 newobj.UpdateResult = "Changes Saved at " + System.DateTime.Now.ToString();
@@ -373,7 +373,7 @@ namespace MvcPhoenix.Controllers
             if (qry == 1)
             {
                 OrderMasterFull obj = new OrderMasterFull();
-                obj = MvcPhoenix.Services.OrderService.fillOrderMasterObject(myint);
+                obj = OrderService.fillOrderMasterObject(myint);
                 return View("~/Views/Orders/Edit.cshtml", obj);
             }
             else
@@ -554,7 +554,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SetUpEditOrderTrans(int OrderTransID)
         {
             OrderTrans obj = new OrderTrans();
-            obj = MvcPhoenix.Services.OrderService.fnFillOrderTrans(OrderTransID);
+            obj = OrderService.fnFillOrderTrans(OrderTransID);
             obj.pagemode = "Edit Transaction";
             return PartialView("~/Views/Orders/_TransEditModal.cshtml", obj);
         }
@@ -571,18 +571,18 @@ namespace MvcPhoenix.Controllers
             if (incoming.ordertransid == -1)
             {
                 // New record
-                int newpk = MvcPhoenix.Services.OrderService.fnAddOrderTrans(incoming);
+                int newpk = OrderService.fnAddOrderTrans(incoming);
                 OrderTrans newobj = new OrderTrans();
-                newobj = MvcPhoenix.Services.OrderService.fnFillOrderTrans(newpk);
+                newobj = OrderService.fnFillOrderTrans(newpk);
                 newobj.pagemode = "";
                 newobj.updateresult = "New record added";
                 return PartialView("~/Views/Orders/_TransEditModal.cshtml", newobj);
             }
             else
             {
-                MvcPhoenix.Services.OrderService.fnUpdateOrderTrans(incoming);
+                OrderService.fnUpdateOrderTrans(incoming);
                 OrderTrans obj = new OrderTrans();
-                obj = MvcPhoenix.Services.OrderService.fnFillOrderTrans(incoming.ordertransid);
+                obj = OrderService.fnFillOrderTrans(incoming.ordertransid);
                 obj.pagemode = "Edit Transaction";
                 obj.updateresult = "Record updated at " + DateTime.Now.ToString();
                 return PartialView("~/Views/Orders/_TransEditModal.cshtml", obj);
@@ -605,9 +605,9 @@ namespace MvcPhoenix.Controllers
                 newobj.orderdate = DateTime.Now;
                 newobj.clientid = ClientID;
                 newobj.orderid = -1;    // important to do an insert
-                int newpk = MvcPhoenix.Services.OrderService.SaveOrderMaster(newobj);
+                int newpk = OrderService.SaveOrderMaster(newobj);
                 OrderMasterFull obj = new OrderMasterFull();
-                obj = MvcPhoenix.Services.OrderService.fillOrderMasterObject(newpk);
+                obj = OrderService.fillOrderMasterObject(newpk);
                 return View("~/Views/Orders/Edit.cshtml", obj);
             }
             else
@@ -628,12 +628,12 @@ namespace MvcPhoenix.Controllers
             if (TryUpdateModel(newobj))
             {
                 // At this point the model appears to be good, now lets try a DB update
-                int RecordSavedResult = MvcPhoenix.Services.OrderService.SaveOrderMaster(incoming);
+                int RecordSavedResult = OrderService.SaveOrderMaster(incoming);
                 if (RecordSavedResult == pk)    // Backend returned the same PK we sent it
                 {
                     // refill the object in case some work was done on the back end that may affect display values
                     OrderMasterFull obj = new OrderMasterFull();
-                    obj = MvcPhoenix.Services.OrderService.fillOrderMasterObject(pk);
+                    obj = OrderService.fillOrderMasterObject(pk);
                     obj.UpdateResult = "<span style='color:green;font-weight:bold;'>Order Information has been successfully updated at " + DateTime.Now + "</span>";
                     return View("Edit", obj);
                 }
@@ -658,7 +658,7 @@ namespace MvcPhoenix.Controllers
         {
             // The data view will need to more complicated
             OrderMasterFull obj = new OrderMasterFull();
-            obj = MvcPhoenix.Services.OrderService.fillOrderMasterObject(Convert.ToInt32(Session["OrderID"]));
+            obj = OrderService.fillOrderMasterObject(Convert.ToInt32(Session["OrderID"]));
             return View("PrintOrder", obj);
         }
 
@@ -666,7 +666,7 @@ namespace MvcPhoenix.Controllers
         {
             // The data view will need to more complicated
             OrderMasterFull obj = new OrderMasterFull();
-            obj = MvcPhoenix.Services.OrderService.fillOrderMasterObject(Convert.ToInt32(Session["OrderID"]));
+            obj = OrderService.fillOrderMasterObject(Convert.ToInt32(Session["OrderID"]));
             return View("Notification", obj);
         }
 

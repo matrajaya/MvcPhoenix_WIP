@@ -131,6 +131,7 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> phValue { get; set; }
         public Nullable<System.DateTime> LastUpDate { get; set; }
         public Nullable<bool> PhysicalToxic { get; set; }
+        public string WasteCode { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string Location_MDB { get; set; }
