@@ -52,7 +52,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2015 13:39:40</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll">
-      <publishTime>11/09/2015 14:18:21</publishTime>
+      <publishTime>11/25/2015 15:46:21</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll.config">
       <publishTime>10/08/2015 10:08:26</publishTime>
@@ -313,7 +313,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 14:32:20</publishTime>
     </File>
     <File Include="EF/CMCEntities.edmx.diagram">
-      <publishTime>11/05/2015 11:08:38</publishTime>
+      <publishTime>11/24/2015 16:45:34</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>05/12/2015 13:39:30</publishTime>
@@ -559,10 +559,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2015 12:20:16</publishTime>
     </File>
     <File Include="Views/Products/Create.cshtml">
-      <publishTime>11/11/2015 15:46:48</publishTime>
+      <publishTime>11/25/2015 16:20:01</publishTime>
     </File>
     <File Include="Views/Products/Edit.cshtml">
-      <publishTime>11/11/2015 15:44:22</publishTime>
+      <publishTime>11/25/2015 16:20:18</publishTime>
     </File>
     <File Include="Views/Products/Index.cshtml">
       <publishTime>11/11/2015 16:03:41</publishTime>
@@ -590,6 +590,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Products/_LogNotesModal.cshtml">
       <publishTime>10/21/2015 12:58:22</publishTime>
+    </File>
+    <File Include="Views/Products/_ShelfSize.cshtml">
+      <publishTime>11/25/2015 15:45:02</publishTime>
+    </File>
+    <File Include="Views/Products/_ShelfSizeModal.cshtml">
+      <publishTime>11/25/2015 15:58:37</publishTime>
     </File>
     <File Include="Views/Products/_WasteProfile.cshtml">
       <publishTime>10/21/2015 12:58:15</publishTime>

@@ -706,9 +706,5 @@ namespace MvcPhoenix.Models
             }
         }
 
-       
-
-
-
     }
 }

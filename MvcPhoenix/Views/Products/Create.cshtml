@@ -130,51 +130,10 @@
                 </div>
                 <hr />
                 <div class="row">
-                    <div class="col-md-12">
-                        <label><a href="#" onclick="alert('TODO Build, TODO')">+ Add Shelf Size</a></label>
-                    </div>
-                    <div class="table-responsive col-md-12">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Size</th>
-                                    <th>Part Number</th>
-                                    <th>Mnemonic</th>
-                                    <th>BusArea</th>
-                                    <th>Warehouse</th>
-                                    <th>Bin</th>
-                                    <th>Min Qty</th>
-                                    <th>Max Qty</th>
-                                    <th>Re-order Qty</th>
-                                    <th>Gnd Haz</th>
-                                    <th>Air Hzd</th>
-                                    <th>Notes</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.ListOfShelfItems)
-                                {
-                                    <tr>
-                                        <td><a href="#" onclick="alert('Build Object, Modal delete confirm')"><i class="fa fa-minus-circle fa-fw" style="color: red"></i></a></td>
-                                        <td><strong>@item.size</strong></td>
-                                        <td>@item.packagepartnumber</td>
-                                        <td>@item.mnemonic</td>
-                                        <td>@item.busarea</td>
-                                        <td>@item.warehouse</td>
-                                        <td>@item.bin</td>
-                                        <td>@item.reordermin.ToString()</td>
-                                        <td>@item.reordermax.ToString()</td>
-                                        <td>@item.reorderqty.ToString()</td>
-                                        <td>@item.groundhazard</td>
-                                        <td>@item.airhazard</td>
-                                        <td>@item.notes</td>
-                                        <td><a href="#" onclick="alert('Build object, Modal edit popup')">Edit</a></td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                    <div class="form-group col-md-12">
+                        <div id="">
+                            @Html.Partial("~/Views/Products/_ShelfSize.cshtml")
+                        </div>
                     </div>
                 </div>
             </div>
@@ -726,11 +685,11 @@
                                     <h3>Ground Shipping Description</h3>
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>UN Number - DDL*</label>
+                                            <label>UN Number</label>
                                             <div class="input-group">
-                                                @Html.TextBoxFor(m => m.grnunnumber, new { @class = "form-control" })
+                                                @Html.TextBoxFor(m => m.grnunnumber, new { @class = "form-control", @style = "text-transform:uppercase" })
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-secondary" type="button"><i class="fa fa-download"></i> Pull</button>
+                                                    <button class="btn btn-secondary" type="button" onclick="LookupUNGround()"><i class="fa fa-download"></i> Pull</button>
                                                 </span>
                                             </div>
                                         </div>
@@ -758,15 +717,15 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>Packing Group - DDL*</label>
+                                            <label>Packing Group</label>
                                             @Html.TextBoxFor(m => m.grnpkgrp, new { @class = "form-control" })
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Label Required - DDL*</label>
+                                            <label>Label Required</label>
                                             @Html.TextBoxFor(m => m.grnlabel, new { @class = "form-control" })
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Subsidiary Label Required - DDL*</label>
+                                            <label>Subsidiary Label Required</label>
                                             @Html.TextBoxFor(m => m.grnsublabel, new { @class = "form-control" })
                                         </div>
                                     </div>
@@ -777,11 +736,11 @@
                                     <h3>Air Freight Shipping Description</h3>
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>UN Number - DDL*</label>
+                                            <label>UN Number</label>
                                             <div class="input-group">
-                                                @Html.TextBoxFor(m => m.airunnumber, new { @class = "form-control" })
+                                                @Html.TextBoxFor(m => m.airunnumber, new { @class = "form-control", @style = "text-transform:uppercase" })
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-secondary" type="button"><i class="fa fa-download"></i> Pull</button>
+                                                    <button class="btn btn-secondary" type="button" onclick="LookupUNAir()"><i class="fa fa-download"></i> Pull</button>
                                                 </span>
                                             </div>
                                         </div>
@@ -809,15 +768,15 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>Packing Group - DDL*</label>
+                                            <label>Packing Group</label>
                                             @Html.TextBoxFor(m => m.airpkgrp, new { @class = "form-control" })
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Label Required - DDL*</label>
+                                            <label>Label Required</label>
                                             @Html.TextBoxFor(m => m.airlabel, new { @class = "form-control" })
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Subsidiary Label Required - DDL*</label>
+                                            <label>Subsidiary Label Required</label>
                                             @Html.TextBoxFor(m => m.airsublabel, new { @class = "form-control" })
                                         </div>
                                     </div>
@@ -828,11 +787,11 @@
                                     <h3>Sea Shipping Description</h3>
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>UN Number - DDL*</label>
+                                            <label>UN Number</label>
                                             <div class="input-group">
-                                                @Html.TextBoxFor(m => m.seaunnum, new { @class = "form-control" })
+                                                @Html.TextBoxFor(m => m.seaunnum, new { @class = "form-control", @style = "text-transform:uppercase" })
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-secondary" type="button"><i class="fa fa-download"></i> Pull</button>
+                                                    <button class="btn btn-secondary" type="button" onclick="LookupUNSea()"><i class="fa fa-download"></i> Pull</button>
                                                 </span>
                                             </div>
                                         </div>
@@ -860,15 +819,15 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
-                                            <label>Packing Group - DDL*</label>
+                                            <label>Packing Group</label>
                                             @Html.TextBoxFor(m => m.seapkgrp, new { @class = "form-control" })
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Label Required - DDL*</label>
+                                            <label>Label Required</label>
                                             @Html.TextBoxFor(m => m.sealabel, new { @class = "form-control" })
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label>Subsidiary Label Required - DDL*</label>
+                                            <label>Subsidiary Label Required</label>
                                             @Html.TextBoxFor(m => m.seasublabel, new { @class = "form-control" })
                                         </div>
                                     </div>
@@ -903,15 +862,21 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-md-9">
-                        <div id="">
-                            @Html.Partial("~/Views/Products/_WasteProfile.cshtml")
-                        </div>
+                    <div class="form-group col-md-3">
+                        <label>Waste Code</label>
+                        @Html.TextBoxFor(m => m.wastecode, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-3">
-                        <p>@Html.CheckBox("epahazardouswaste", Model.epahazardouswaste != null && (bool)Model.epahazardouswaste) <label>EPA Hazardous Waste</label></p>
-                        <p>@Html.CheckBox("nonrcrawaste", Model.nonrcrawaste != null && (bool)Model.nonrcrawaste) <label>Non-RCRA Waste</label></p>
-                        <p><label>Waste Profile Number</label> @Html.TextBoxFor(m => m.wasteprofilenumber, new { @class = "form-control" })</p>
+                        <label>EPA Hazardous Waste</label>
+                        @Html.CheckBox("epahazardouswaste", Model.epahazardouswaste != null && (bool)Model.epahazardouswaste, new { @class = "checkbox" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Non-RCRA Waste</label>
+                        @Html.CheckBox("nonrcrawaste", Model.nonrcrawaste != null && (bool)Model.nonrcrawaste, new { @class = "checkbox" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Waste Profile Number</label>
+                        @Html.TextBoxFor(m => m.wasteprofilenumber, new { @class = "form-control" })
                     </div>
                 </div>
 
@@ -956,6 +921,54 @@
         </div>
     }
 </div>
+
+<script type="text/javascript">
+    function LookupUNGround() {
+        var myurl = '@Url.Action("LookupUNGround", "Products")';
+        $.getJSON(myurl,
+                    { id: $("#grnunnumber").val() },
+                    function (jsonobj) {
+                        $("#grnpkgrp").val(jsonobj.packinggroup);
+                        $("#grnhazsubcl").val(jsonobj.subclass);
+                        $("#grnlabel").val(jsonobj.labelreq);
+                        $("#grnsublabel").val(jsonobj.subsidlabelreq);
+                        $("#grnhazcl").val(jsonobj.hazardclass);
+                        $("#grnshipname").val(jsonobj.propershippingname);
+                        $("#grnosname").val(jsonobj.nosname);
+                    });
+    }
+
+    function LookupUNAir() {
+        var myurl = '@Url.Action("LookupUNAir", "Products")';
+        $.getJSON(myurl,
+                    { id: $("#airunnumber").val() },
+                    function (jsonobj) {
+                        $("#airpkgrp").val(jsonobj.packinggroup);
+                        $("#airhazsubcl").val(jsonobj.subclass);
+                        $("#airlabel").val(jsonobj.labelreq);
+                        $("#airsublabel").val(jsonobj.subsidlabelreq);
+                        $("#airhazcl").val(jsonobj.hazardclass);
+                        $("#airshipname").val(jsonobj.propershippingname);
+                        $("#airosname").val(jsonobj.nosname);
+                    });
+    }
+
+    function LookupUNSea() {
+        var myurl = '@Url.Action("LookupUNSea", "Products")';
+        $.getJSON(myurl,
+                    { id: $("#seaunnum").val() },
+                    function (jsonobj) {
+                        $("#seapkgrp").val(jsonobj.packinggroup);
+                        $("#seahazsubcl").val(jsonobj.subclass);
+                        $("#sealabel").val(jsonobj.labelreq);
+                        $("#seasublabel").val(jsonobj.subsidlabelreq);
+                        $("#seahazcl").val(jsonobj.hazardclass);
+                        $("#seashipname").val(jsonobj.propershippingname);
+                        $("#seanosname").val(jsonobj.nosname);
+                    });
+    }
+</script>
+
 <!-- Local Razor -->
 @functions{
     private static string fnDate(DateTime? vDate)
