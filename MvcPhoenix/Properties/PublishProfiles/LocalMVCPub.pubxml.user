@@ -52,7 +52,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2015 13:39:40</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll">
-      <publishTime>11/25/2015 15:46:21</publishTime>
+      <publishTime>11/30/2015 14:50:06</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll.config">
       <publishTime>10/08/2015 10:08:26</publishTime>
@@ -384,6 +384,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/jquery.validate.min.js">
       <publishTime>05/12/2015 13:39:36</publishTime>
     </File>
+    <File Include="Scripts/jquery.validate.mvc.js">
+      <publishTime>11/30/2015 13:57:36</publishTime>
+    </File>
     <File Include="Scripts/jquery.validate.unobtrusive.js">
       <publishTime>05/12/2015 13:39:36</publishTime>
     </File>
@@ -559,13 +562,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2015 12:20:16</publishTime>
     </File>
     <File Include="Views/Products/Create.cshtml">
-      <publishTime>11/25/2015 16:20:01</publishTime>
+      <publishTime>11/30/2015 14:42:03</publishTime>
     </File>
     <File Include="Views/Products/Edit.cshtml">
-      <publishTime>11/25/2015 16:20:18</publishTime>
+      <publishTime>11/30/2015 14:36:03</publishTime>
     </File>
     <File Include="Views/Products/Index.cshtml">
-      <publishTime>11/11/2015 16:03:41</publishTime>
+      <publishTime>11/30/2015 10:30:24</publishTime>
     </File>
     <File Include="Views/Products/Index2.cshtml">
       <publishTime>10/20/2015 10:09:20</publishTime>
@@ -592,7 +595,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/21/2015 12:58:22</publishTime>
     </File>
     <File Include="Views/Products/_ShelfSize.cshtml">
-      <publishTime>11/25/2015 15:45:02</publishTime>
+      <publishTime>11/30/2015 09:29:25</publishTime>
     </File>
     <File Include="Views/Products/_ShelfSizeModal.cshtml">
       <publishTime>11/25/2015 15:58:37</publishTime>
@@ -664,7 +667,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2015 09:08:04</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/29/2015 13:28:53</publishTime>
+      <publishTime>11/30/2015 11:47:14</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutNaked.cshtml">
       <publishTime>07/29/2015 14:43:44</publishTime>

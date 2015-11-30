@@ -51,6 +51,7 @@
                     <div class="form-group col-md-6">
                         <label>Business Unit / Division</label>
                         @Html.DropDownListFor(m => m.masterdivisionid, Model.ListOfDivisions, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.masterdivisionid)
                     </div>
                 </div>
                 <div class="row">
@@ -80,7 +81,7 @@
                         <label>MSDS Revision Date</label>
                         @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
                     </div>
-                    <div class="form-group  col-md-3">
+                    <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
                         @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control", @readonly = "readonly" })
                     </div>
@@ -89,43 +90,51 @@
                         <label>@Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified) Accuracy Verified</label><br />
                         <!--Todo: Creat condition at target if dicontinued is true then show-->
                         @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
-                        <label data-toggle="collapse" data-target="#discontinued">Discontinued</label>
+                        <label>Discontinued</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Product Code</label>
                         @Html.TextBoxFor(m => m.productcode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.productcode)
                     </div>
                     <div class="form-group col-md-6">
                         <label>Product Name</label>
                         @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.productname)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-2">
                         <label>Shelf Life</label>
                         @Html.TextBoxFor(m => m.shlflife, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.shlflife)
                     </div>
                     <div class="form-group col-md-2">
                         <label>Hazard Class</label>
                         @Html.TextBoxFor(m => m.hazardclassground_sg, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.hazardclassground_sg)
                     </div>
                     <div class="form-group col-md-2">
                         <label>S.G.</label>
                         @Html.TextBoxFor(m => m.specificgravity, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.specificgravity)
                     </div>
                     <div class="form-group col-md-2">
                         <label>Density LBS/GAL</label>
                         @Html.TextBoxFor(m => m.density, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.density)
                     </div>
                     <div class="form-group col-md-2">
                         <label>pH</label>
                         @Html.TextBoxFor(m => m.phvalue, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.phvalue)
                     </div>
                     <div class="form-group col-md-2">
                         <label>Restricted Qty (lbs)</label>
                         @Html.TextBoxFor(m => m.restrictedamount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.restrictedamount)
                     </div>
                 </div>
                 <hr />
@@ -155,10 +164,16 @@
                         <p>@Html.CheckBox("mixwell", Model.mixwell != null && (bool)Model.mixwell) Mix Well</p>
                         <p>@Html.CheckBox("donotpackabove60", Model.donotpackabove60 != null && (bool)Model.donotpackabove60) Don't Pack Above 60% RH</p>
                         <p>@Html.CheckBox("flammableground", Model.flammableground != null && (bool)Model.flammableground) Flammable Ground</p>
-                        <p>Torque: @Html.TextBoxFor(m => m.torquerequirements)</p>
+                        <p>
+                            Torque: @Html.TextBoxFor(m => m.torquerequirements)
+                            @Html.ValidationMessageFor(m => m.torquerequirements)
+                        </p>
                     </div>
                     <div class="form-group col-md-3">
-                        <p>Flash Point: @Html.TextBoxFor(m => m.flashpoint)</p>
+                        <p>
+                            Flash Point: @Html.TextBoxFor(m => m.flashpoint)
+                            @Html.ValidationMessageFor(m => m.flashpoint)
+                        </p>
                         <p>@Html.CheckBox("specialblend", Model.specialblend != null && (bool)Model.specialblend) Special Blend</p>
                         <p>@Html.CheckBox("heatpriortofilling", Model.heatpriortofilling != null && (bool)Model.heatpriortofilling) Heat Prior to Filing</p>
                         <p>@Html.CheckBox("freezerstorage", Model.freezerstorage != null && (bool)Model.freezerstorage) Freezer Storage</p>
@@ -171,37 +186,46 @@
                             Client @Html.CheckBox("clientreq", Model.clientreq != null && (bool)Model.clientreq)
                             CMC @Html.CheckBox("cmcreq", Model.cmcreq != null && (bool)Model.cmcreq)
                         </p>
-                        <p>Other: @Html.TextBoxFor(m => m.otherpkg)</p>
+                        <p>
+                            Other: @Html.TextBoxFor(m => m.otherpkg)
+                            @Html.ValidationMessageFor(m => m.otherpkg)
+                        </p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Heating Instructions</label>
                         @Html.TextBoxFor(m => m.heatinginstructions, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.heatinginstructions)
                     </div>
                     <div class="form-group col-md-6">
                         <label>Mixing Instructions</label>
                         @Html.TextBoxFor(m => m.mixinginstructions, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.mixinginstructions)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Other Instructions</label>
                         @Html.TextBoxFor(m => m.otherhandlinginstr, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.otherhandlinginstr)
                     </div>
                     <div class="form-group col-md-6">
                         <label>Shipping SOP</label>
                         @Html.TextBoxFor(m => m.shippingnotes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.shippingnotes)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Normal Appearance</label>
                         @Html.TextBoxFor(m => m.normalappearence, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.normalappearence)
                     </div>
                     <div class="form-group col-md-6">
                         <label>Rejection Criterion</label>
                         @Html.TextBoxFor(m => m.rejectioncriterion, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.rejectioncriterion)
                     </div>
                 </div>
                 <div class="row">
@@ -273,25 +297,7 @@
                         <p>@Html.CheckBox("safetyglasses", Model.safetyglasses != null && (bool)Model.safetyglasses) Safety Glasses</p>
                         <p>@Html.CheckBox("gloves", Model.gloves != null && (bool)Model.gloves) Gloves</p>
                         <p>
-                            @*@Html.TextBoxFor(m => m.glovetype, new { @class = "form-control" })*@
                             @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
-                            <!--#region DDL for Glove Types-->
-                            @*<select class="form-control">
-                                    <option>Glove Type</option>
-                                    <option>Butyl</option>
-                                    <option>Latex</option>
-                                    <option>Latex/Neoprene</option>
-                                    <option>Neoprene</option>
-                                    <option>Nitrile</option>
-                                    <option>Nitrile/Silver</option>
-                                    <option>Polyvinyl</option>
-                                    <option>Polyvinyl Alcohol</option>
-                                    <option>Silver 4H</option>
-                                    <option>Silver Shield</option>
-                                    <option>Special</option>
-                                    <option>Viton</option>
-                                </select>*@
-                            <!--#endregion-->
                         </p>
                         <p>@Html.CheckBox("booties", Model.booties != null && (bool)Model.booties) Booties</p>
                         <p>@Html.CheckBox("cleanroomequipment", Model.cleanroomequipment != null && (bool)Model.cleanroomequipment) Clean Room Equip</p>
@@ -339,15 +345,15 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th style="background-color: blue; color: white">Health</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.health, new { @maxlength = "1", style = "border: 0px solid transparent; width: 15px;" })</th>
+                                <th style="text-align: center">@Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
                             </tr>
                             <tr>
                                 <th style="background-color: red; color: white">Flammability</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", style = "border: 0px solid transparent; width: 15px;" })</th>
+                                <th style="text-align: center">@Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
                             </tr>
                             <tr>
                                 <th style="background-color: yellow; color: gray">Reactivity</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", style = "border: 0px solid transparent; width: 15px;" })</th>
+                                <th style="text-align: center">@Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
                             </tr>
                         </table>
                     </div>
@@ -575,10 +581,12 @@
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Number</label>
                         @Html.TextBoxFor(m => m.msdsrevisionnumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.msdsrevisionnumber)
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Other Number</label>
                         @Html.TextBoxFor(m => m.msdsothernumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.msdsothernumber)
                     </div>
                     <div class="form-group col-md-3">
                         <label style="color: white">.</label>
@@ -589,24 +597,29 @@
                     <div class="form-group col-md-6">
                         <label>SDS Contact Name</label>
                         @Html.TextBoxFor(m => m.sdscontactname, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.sdscontactname)
                     </div>
                     <div class="form-group col-md-6">
                         <label>SDS Contact Phone</label>
                         @Html.TextBoxFor(m => m.sdscontactphone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.sdscontactphone)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
                         @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.labelrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Label Number</label>
                         @Html.TextBoxFor(m => m.labelnumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.labelnumber)
                     </div>
                     <div class="form-group col-md-3">
                         <label>China Test Certification Date</label>
                         @Html.TextBoxFor(m => m.chinacertificationdate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.chinacertificationdate)
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -614,30 +627,32 @@
                     <div class="form-group col-md-3">
                         <label>Label Contact Name</label>
                         @Html.TextBoxFor(m => m.labelcontactname, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.labelcontactname)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Label Contact Phone</label>
                         @Html.TextBoxFor(m => m.labelcontactphone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.labelcontactphone)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Technical Sheet</label>
                         <p>@Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet)</p>
-                        @*<div class="radio">
-                                <label><input type="radio" name="optionsRadios" id="optionsRadios1" value="Yes">Yes</label>
-                                <label><input type="radio" name="optionsRadios" id="optionsRadios2" value="No">No</label>
-                            </div>*@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Technical Sheet Revision Date</label>
                         @Html.TextBoxFor(m => m.technicalsheetrevisondate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.technicalsheetrevisondate)
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label>Return Location</label>
-                        @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
-                    </div>
-                </div>
+                @*Kim comfirms that this field is currently not used by the product coordinators.
+                    We may consider removing it from the model if EU find it useless*@
+                @*<div class="row">
+                        <div class="form-group col-md-12">
+                            <label>Return Location - Not Used Per Kim C</label>
+                            @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
+                        </div>
+                    </div>*@
+
             </div>
         </div>
 
@@ -650,24 +665,29 @@
                     <div class="form-group col-md-6">
                         <label>Emergency Contact Number</label>
                         @Html.TextBoxFor(m => m.emergencycontactnumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.emergencycontactnumber)
                     </div>
                     <div class="form-group col-md-6">
                         <label>End Use</label>
                         @Html.DropDownListFor(m => m.enduse, Model.ListOfEndUsesForCustoms, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.enduse)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-2">
                         <label>Harmonized Code</label>
                         @Html.DropDownListFor(m => m.harmonizedcode, Model.ListOfHarmonizedCodes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.harmonizedcode)
                     </div>
                     <div class="form-group col-md-4">
                         <label>Chemical Name</label>
                         @Html.TextBoxFor(m => m.shippingchemicalname, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.shippingchemicalname)
                     </div>
                     <div class="form-group col-md-6">
                         <label>Label Notes (EPA, etc)</label>
                         @Html.TextBoxFor(m => m.otherlabelnotes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.otherlabelnotes)
                     </div>
                 </div>
                 <div class="row">
@@ -692,6 +712,7 @@
                                                     <button class="btn btn-secondary" type="button" onclick="LookupUNGround()"><i class="fa fa-download"></i> Pull</button>
                                                 </span>
                                             </div>
+                                            @Html.ValidationMessageFor(m => m.grnunnumber)
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -699,34 +720,41 @@
                                         <div class="form-group col-md-12">
                                             <label>Proper Shipping Name</label>
                                             @Html.TextBoxFor(m => m.grnshipname, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.grnshipname)
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>NOS Name</label>
                                             @Html.TextBoxFor(m => m.grnosname, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.grnosname)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Hazard Class</label>
                                             @Html.TextBoxFor(m => m.grnhazcl, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.grnhazcl)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Hazard Sub Class</label>
                                             @Html.TextBoxFor(m => m.grnhazsubcl, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.grnhazsubcl)
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>Packing Group</label>
                                             @Html.TextBoxFor(m => m.grnpkgrp, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.grnpkgrp)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Label Required</label>
                                             @Html.TextBoxFor(m => m.grnlabel, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.grnlabel)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Subsidiary Label Required</label>
                                             @Html.TextBoxFor(m => m.grnsublabel, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.grnsublabel)
                                         </div>
                                     </div>
                                 </div>
@@ -743,6 +771,7 @@
                                                     <button class="btn btn-secondary" type="button" onclick="LookupUNAir()"><i class="fa fa-download"></i> Pull</button>
                                                 </span>
                                             </div>
+                                            @Html.ValidationMessageFor(m => m.airunnumber)
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -750,34 +779,41 @@
                                         <div class="form-group col-md-12">
                                             <label>Proper Shipping Name</label>
                                             @Html.TextBoxFor(m => m.airshipname, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.airshipname)
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>NOS Name</label>
                                             @Html.TextBoxFor(m => m.airnosname, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.airnosname)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Hazard Class</label>
                                             @Html.TextBoxFor(m => m.airhazcl, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.airhazcl)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Hazard Sub Class</label>
                                             @Html.TextBoxFor(m => m.airhazsubcl, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.airhazsubcl)
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>Packing Group</label>
                                             @Html.TextBoxFor(m => m.airpkgrp, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.airpkgrp)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Label Required</label>
                                             @Html.TextBoxFor(m => m.airlabel, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.airlabel)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Subsidiary Label Required</label>
                                             @Html.TextBoxFor(m => m.airsublabel, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.airsublabel)
                                         </div>
                                     </div>
                                 </div>
@@ -794,6 +830,7 @@
                                                     <button class="btn btn-secondary" type="button" onclick="LookupUNSea()"><i class="fa fa-download"></i> Pull</button>
                                                 </span>
                                             </div>
+                                            @Html.ValidationMessageFor(m => m.seaunnum)
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -801,34 +838,41 @@
                                         <div class="form-group col-md-12">
                                             <label>Proper Shipping Name</label>
                                             @Html.TextBoxFor(m => m.seashipname, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.seashipname)
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>NOS Name</label>
                                             @Html.TextBoxFor(m => m.seanosname, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.seanosname)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Hazard Class</label>
                                             @Html.TextBoxFor(m => m.seahazcl, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.seahazcl)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Hazard Sub Class</label>
                                             @Html.TextBoxFor(m => m.seahazsubcl, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.seahazsubcl)
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-4">
                                             <label>Packing Group</label>
                                             @Html.TextBoxFor(m => m.seapkgrp, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.seapkgrp)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Label Required</label>
                                             @Html.TextBoxFor(m => m.sealabel, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.sealabel)
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label>Subsidiary Label Required</label>
                                             @Html.TextBoxFor(m => m.seasublabel, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.seasublabel)
                                         </div>
                                     </div>
                                 </div>
@@ -860,11 +904,11 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Waste Code</label>
                         @Html.TextBoxFor(m => m.wastecode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.wastecode)
                     </div>
                     <div class="form-group col-md-3">
                         <label>EPA Hazardous Waste</label>
@@ -877,6 +921,7 @@
                     <div class="form-group col-md-3">
                         <label>Waste Profile Number</label>
                         @Html.TextBoxFor(m => m.wasteprofilenumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.wasteprofilenumber)
                     </div>
                 </div>
 
@@ -886,18 +931,10 @@
 
         <div class="form-group row">
             <div class="col-md-6">
-                @*<button class="btn btn-success btn-block">Save Changes</button>*@
                 <input type="submit" class="btn btn-success btn-block" value="Save Changes" />
             </div>
             <div class="col-md-6">
-                @*<button class="btn btn-danger btn-block">De-Activate</button>*@
-                @Ajax.ActionLink("De-Activate", "DeActivateProductMaster", "Products", new { id = Model.productmasterid }, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvSaveResult",
-                                 InsertionMode = InsertionMode.Replace,
-                                 HttpMethod = "GET",
-                                 OnSuccess = "$('#discontinued').prop('checked',true)"
-                             }, new { @class = "btn btn-danger btn-block" })
+                <input type="button" class="btn btn-danger btn-block" onclick="location.href = 'javascript:history.back()';" value="Cancel Setup" />
             </div>
             <div class="clearfix"></div>
             <br />
@@ -908,19 +945,27 @@
         </div>
 
         <div class="form-group row center-block">
-            @*<div class="col-md-12 text-center" id="dvspinner" style="display:none; font-weight:bold">
-                    <img src="~/Content/images/ani-rebuild.gif" /> Saving Profile
-                </div>*@
-
             <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
                 <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Saving Profile...
             </div>
-
-            <div id="dvSaveResult" class="col-md-12 text-center" style="font-weight:bold">
-            </div>
+            <div id="dvSaveResult" class="col-md-12 text-center" style="font-weight:bold"> </div>
         </div>
     }
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $("form input").tooltipValidation({
+                placement: "top"
+            });
+            $("form select").tooltipValidation({
+                placement: "top"
+            });
+        });
+    </script>
+}
 
 <script type="text/javascript">
     function LookupUNGround() {

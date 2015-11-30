@@ -120,6 +120,7 @@ namespace MvcPhoenix.Models
         // **********************************************************************
         
         [Display(Name = "ProductDetailID")]
+        [Required]
         public int productdetailid { get; set; }
 
         [Display(Name = "DivisionID")]
@@ -129,9 +130,11 @@ namespace MvcPhoenix.Models
         public string busarea { get; set; }
 
         [Display(Name = "ProductCode")]
+        [Required]
         public string productcode { get; set; }
 
         [Display(Name = "ProductName")]
+        [Required]
         public string productname { get; set; }
 
         [Display(Name = "CustCode")]
@@ -261,8 +264,10 @@ namespace MvcPhoenix.Models
         // **********************************************************************
         
         [Display(Name = "ProductMasterID")]
+        [Required]
         public int? productmasterid { get; set; }
 
+        [Required]
         public int? clientid { get; set; }
 
         [Display(Name = "ClientID")]
@@ -272,6 +277,8 @@ namespace MvcPhoenix.Models
         public string clientname { get; set; }
 
         [Display(Name = "Business Unit/Division")]
+        [Required]
+        [Range(1, 99, ErrorMessage = "Business Unit/Division is required.")]
         public int? masterdivisionid { get; set; }
         
         [Display(Name = "Discontinued")]
