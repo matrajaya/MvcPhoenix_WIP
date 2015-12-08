@@ -6,8 +6,9 @@
     <title>@ViewBag.Title - Phoenix/CMC SiMPLE</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     @Styles.Render("~/bundles/css")
-    @Scripts.Render("~/bundles/modernizr")
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    @Scripts.Render("~/bundles/modernizr")>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
     <div id="wrapper">
@@ -125,7 +126,6 @@
                 @Session["MyMenu"]
             </div>
             <!-- End Sidebar Menu Items -->
-
         </div>
         <!--End: Top-banner and Navigation-->
         <!-- Begin: Generate View Content -->
@@ -143,18 +143,19 @@
             </div>
         </div>
         <!-- End: Generate View Content -->
-
     </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryval")
-    @RenderSection("scripts", required: false)
 
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
     <script type="text/javascript">
         $(function () {
-            $('.datepicker').datepicker();
-        });
+            $('.date-picker').datepicker();
+        })
     </script>
+    @RenderSection("scripts", required: false)
+
 
 </body>
 </html>

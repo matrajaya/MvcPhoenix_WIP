@@ -341,3 +341,22 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("form input").tooltipValidation({
+                placement: "top"
+            });
+            $("form select").tooltipValidation({
+                placement: "top"
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
+}

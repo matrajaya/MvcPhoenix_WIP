@@ -113,6 +113,26 @@
         @Html.Partial("~/Views/Replenishments/_SearchResults.cshtml", fnDefaultSearchResults())
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("form input").tooltipValidation({
+                placement: "top"
+            });
+            $("form select").tooltipValidation({
+                placement: "top"
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
+}
+
 <!-- Local Razor -->
 @functions
 {

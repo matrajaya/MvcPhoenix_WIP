@@ -4,62 +4,69 @@
     Model.orderid = Convert.ToInt32(Session["OrderID"]);
 }
     
-<input id="widget001_OrderTransID" name="widget001_OrderTransID" type="hidden" value="@Model.ordertransid" />
-<input id="widget001_ClientID" name="widget001_ClientID" type="hidden" value="@Model.clientid" />
-<input id="widget001_OrderID" name="widget001_OrderID" type="hidden" value="@Model.orderid" />
 
-<div class="col-md-12 text-center">
-    @if (Model.pagemode == "")
-    {
-        <h3>Changes Made</h3>
-    }
-    else
-    {
-        <h3>@Model.pagemode</h3>
-    }
-    <hr />
-</div>
+<div id="OrderTransaction">
+    <input id="widget001_OrderTransID" name="widget001_OrderTransID" type="hidden" value="@Model.ordertransid" />
+    <input id="widget001_ClientID" name="widget001_ClientID" type="hidden" value="@Model.clientid" />
+    <input id="widget001_OrderID" name="widget001_OrderID" type="hidden" value="@Model.orderid" />
 
-<div class="row">
-    <div class="col-md-6 form-group">
-        @Html.LabelFor(m => m.transtype, new { @class = "control-label" })
-        @Html.DropDownListFor(m => m.transtype, fnListOfOrderTransTypes(), new { @class = "form-control", id = "widget001_TransType" })
-        @Html.ValidationMessageFor(m => m.transtype)
-    </div>
-    <div class="col-md-6 form-group">
-        @Html.LabelFor(m => m.transdate, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.transdate, new { @class = "form-control datepicker", id = "widget001_TransDate", disabled = "disabled" })
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6 form-group">
-        @Html.LabelFor(m => m.orderitemid, new { @class = "control-label" })
-        @Html.DropDownListFor(m => m.orderitemid, fnListOfOrderItemIDs(Convert.ToInt32(Model.orderid)), new { @class = "form-control", id = "widget001_OrderItemID" })
-    </div>
-    <div class="col-md-3 form-group">
-        @Html.LabelFor(m => m.transqty, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.transqty, new { @class = "form-control", id = "widget001_TransQty" })
-    </div>
-    <div class="col-md-3 form-group">
-        @Html.LabelFor(m => m.transamount, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.transamount, new { @class = "form-control", id = "widget001_TransAmount" })
+    <div class="col-md-12 text-center">
+        @if (Model.pagemode == "")
+        {
+            <h3>Changes Made</h3>
+        }
+        else
+        {
+            <h3>@Model.pagemode</h3>
+        }
+        <hr />
     </div>
 
-</div>
-<div class="row">
-    <div class="col-md-12 form-group">
-        @Html.LabelFor(m => m.comments, new { @class = "control-label" })
-        @Html.TextAreaFor(m => m.comments, new { @class = "form-control", id = "widget001_TransComments" })
+    <div class="row">
+        <div class="col-md-6 form-group">
+            @Html.LabelFor(m => m.transtype, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.transtype, fnListOfOrderTransTypes(), new { @class = "form-control", id = "widget001_TransType" })
+            @Html.ValidationMessageFor(m => m.transtype)
+        </div>
+        <div class="col-md-6 form-group">
+            @Html.LabelFor(m => m.transdate, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.transdate, new { @class = "form-control datepicker", id = "widget001_TransDate", disabled = "disabled" })
+            @Html.ValidationMessageFor(m => m.transdate)
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12 form-group">
-        <span>
-            <input type="button" value="Save" onclick="widget001_SaveOrderTrans()" class="btn btn-md btn-success" />
-        </span>
-        <span class="pull-right">
-            @*Refresh the HTML table AND close the modal*@
-            @Ajax.ActionLink("Close", "RefreshTransView", "Orders", null,
+    <div class="row">
+        <div class="col-md-6 form-group">
+            @Html.LabelFor(m => m.orderitemid, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.orderitemid, fnListOfOrderItemIDs(Convert.ToInt32(Model.orderid)), new { @class = "form-control", id = "widget001_OrderItemID" })
+            @Html.ValidationMessageFor(m => m.orderitemid)
+        </div>
+        <div class="col-md-3 form-group">
+            @Html.LabelFor(m => m.transqty, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.transqty, new { @class = "form-control", id = "widget001_TransQty" })
+            @Html.ValidationMessageFor(m => m.transqty)
+        </div>
+        <div class="col-md-3 form-group">
+            @Html.LabelFor(m => m.transamount, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.transamount, new { @class = "form-control", id = "widget001_TransAmount" })
+            @Html.ValidationMessageFor(m => m.transamount)
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @Html.LabelFor(m => m.comments, new { @class = "control-label" })
+            @Html.TextAreaFor(m => m.comments, new { @class = "form-control", id = "widget001_TransComments" })
+            @Html.ValidationMessageFor(m => m.comments)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <span>
+                <input type="button" value="Save" onclick="widget001_SaveOrderTrans()" class="btn btn-md btn-success" />
+            </span>
+            <span class="pull-right">
+                @*Refresh the HTML table AND close the modal*@
+                @Ajax.ActionLink("Close", "RefreshTransView", "Orders", null,
                     new AjaxOptions
                     {
                         UpdateTargetId = "widget001",
@@ -67,14 +74,35 @@
                         HttpMethod = "GET",
                         OnBegin = " $('#transmodal').modal('hide');"
                     }, new { @class = "btn btn-danger" })
-        </span>
-    </div>
-    <div class="col-lg-12">
-        <span>
-            @Html.DisplayFor(m => m.updateresult)
-        </span>
+            </span>
+        </div>
+        <div class="col-lg-12">
+            <span>
+                @Html.DisplayFor(m => m.updateresult)
+            </span>
+        </div>
     </div>
 </div>
+
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("form input").tooltipValidation({
+                placement: "top"
+            });
+            $("form select").tooltipValidation({
+                placement: "top"
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
+}
 
 <script type="text/javascript">
     function widget001_SaveOrderTrans() {

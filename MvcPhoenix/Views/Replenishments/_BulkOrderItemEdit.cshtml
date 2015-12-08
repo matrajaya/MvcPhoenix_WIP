@@ -24,14 +24,17 @@
         <div class="col-md-6 form-group">
             @Html.LabelFor(m => m.productmasterid)
             @Html.DropDownListFor(m => m.productmasterid, Model.ListOfProductMasters, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m=>m.productmasterid)
         </div>
         <div class="col-md-3 form-group">
             @Html.LabelFor(m => m.weight)
             @Html.TextBoxFor(m => m.weight, new { type = "number", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.weight)
         </div>
         <div class="col-md-3 form-group">
             @Html.LabelFor(m => m.itemstatus)
             @Html.DropDownListFor(m => m.itemstatus, Model.ListOfItemStatusIDs, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.itemstatus)
         </div>
     </div>
 
@@ -39,10 +42,12 @@
         <div class="col-md-6 form-group">
             @Html.LabelFor(m => m.eta)
             @Html.TextBoxFor(m => m.eta, new { type = "date", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.eta)
         </div>
         <div class="col-md-6 form-group">
             @Html.LabelFor(m => m.datereceived)
             @Html.TextBoxFor(m => m.datereceived, new { @readonly = "readonly", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.datereceived)
         </div>
     </div>
 
@@ -50,6 +55,7 @@
         <div class="col-md-12 form-group">
             @Html.LabelFor(m => m.itemnotes)
             @Html.TextAreaFor(m => m.itemnotes, new { maxlength = 150, @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.itemnotes)
         </div>
     </div>
 
@@ -68,7 +74,7 @@
 <script type="text/javascript">
     function RefreshItemsGrid() {
         // need to pass the BulkOrderID so the partial obj can be rebuilt
-        //url = '@Url.Action("RefreshItemsGrid/" + @Model.bulkorderid, "BulkOrders")';
+        @*url = '@Url.Action("RefreshItemsGrid/" + @Model.bulkorderid, "BulkOrders")';*@
         url = '@Url.Action("RefreshItemsGrid/" + @Model.bulkorderid, "Replenishments")';
         $("#thisgrid").load(url);
     }

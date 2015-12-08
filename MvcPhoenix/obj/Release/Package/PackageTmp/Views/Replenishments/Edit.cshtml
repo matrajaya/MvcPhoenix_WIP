@@ -50,20 +50,24 @@
                             <div class="col-md-3 form-group">
                                 @Html.LabelFor(m => m.supplyid)
                                 @Html.DropDownListFor(m => m.supplyid, Model.ListOfOrderHeaderSupplyIDs, new { type = "text", @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.supplyid)
                             </div>
                             <div class="col-md-3 form-group">
                                 @Html.LabelFor(m => m.bulksupplieremail) <a href="#" onclick="LookupEmail();"><i class="fa fa-envelope-o fa-fw"></i><i class="fa fa-reply fa-fw"></i></a>
                                 @Html.TextBoxFor(m => m.bulksupplieremail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.bulksupplieremail)
                             </div>
                             <div class="col-md-3 form-group">
                                 @Html.LabelFor(m => m.emailsent)
                                 @Html.TextBoxFor(m => m.emailsent, new { disabled = "disabled", type = "text", @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.emailsent)
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 @Html.LabelFor(m => m.ordercomment)
                                 @Html.TextAreaFor(m => m.ordercomment, new { maxlength = 1000, @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ordercomment)
                             </div>
                             <div class="col-md-3 form-group">
                                 <label class="invisible">.</label>
@@ -118,44 +122,61 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        $(function () {
+            $("form input").tooltipValidation({
+                placement: "top"
+            });
+            $("form select").tooltipValidation({
+                placement: "top"
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        function LookupEmail() {
+            // pull email address from tblBulkSupplier and push into DOM email input tag
+            $('#bulksupplieremail').val("joeZee@chemicalmarketing.com");
+        }
+
+        function SendEmail() {
+            // call an action to timestamp the emailsent field, send a SMTP message, return the timestamp, update DOM
+
+            var isemailchecked = document.getElementById("emailcheckbox").checked;
+            if (isemailchecked == true)
+            { DoTheEmailWork(); }
+            else
+            { alert("Please check the box first..."); }
+        }
+
+        function DoTheEmailWork() {
+            $.ajax({
+                type: "POST",
+                @*url: '@Url.Action("SendConfirmationEmail", "BulkOrders")',*@
+                url: '@Url.Action("SendConfirmationEmail", "BulkOrders")',
+                data: { id: $("#bulkorderid").val() },
+                dataType: "text",
+                cache: false,
+                success: function (stringfromserver) {
+                    $("#emailsent").val(stringfromserver);
+                },
+                error: function () { alert("error"); }
+            });
+        }
+    </script>
+}
+
 <!-- Local Razor -->
 @functions
 {
     private static string fnDate(DateTime? vDate)
     { return (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date"; }
 }
-
-
-<!-- Local javascript -->
-<script type="text/javascript">
-
-    function LookupEmail() {
-        // pull email address from tblBulkSupplier and push into DOM email input tag
-        $('#bulksupplieremail').val("joeZee@chemicalmarketing.com");
-    }
-
-    function SendEmail() {
-        // call an action to timestamp the emailsent field, send a SMTP message, return the timestamp, update DOM
-
-        var isemailchecked = document.getElementById("emailcheckbox").checked;
-        if (isemailchecked == true)
-        { DoTheEmailWork(); }
-        else
-        { alert("Please check the box first..."); }
-    }
-
-    function DoTheEmailWork() {
-        $.ajax({
-            type: "POST",
-            @*url: '@Url.Action("SendConfirmationEmail", "BulkOrders")',*@
-            url: '@Url.Action("SendConfirmationEmail", "BulkOrders")',
-            data: { id: $("#bulkorderid").val() },
-            dataType: "text",
-            cache: false,
-            success: function (stringfromserver) {
-                $("#emailsent").val(stringfromserver);
-            },
-            error: function () { alert("error"); }
-        });
-    }
-</script>

@@ -75,15 +75,18 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Profile Revision Date</label>
-                        @Html.TextBoxFor(m => m.sgrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.sgrevisiondate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.sgrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.msdsrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
-                        @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.labelrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct) Global Product</label><br />
@@ -345,15 +348,24 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th style="background-color: blue; color: white">Health</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                                <th style="text-align: center">
+                                    @Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
+                                    @Html.ValidationMessageFor(m => m.health)
+                            </th>
                             </tr>
                             <tr>
                                 <th style="background-color: red; color: white">Flammability</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                                <th style="text-align: center">
+                                    @Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
+                                    @Html.ValidationMessageFor(m => m.flammability)
+                            </th>
                             </tr>
                             <tr>
                                 <th style="background-color: yellow; color: gray">Reactivity</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                                <th style="text-align: center">
+                                    @Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
+                                    @Html.ValidationMessageFor(m => m.reactivity)
+                            </th>
                             </tr>
                         </table>
                     </div>
@@ -576,7 +588,8 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.msdsrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Number</label>
@@ -954,7 +967,6 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(function () {
             $("form input").tooltipValidation({
@@ -963,6 +975,12 @@
             $("form select").tooltipValidation({
                 placement: "top"
             });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
         });
     </script>
 }

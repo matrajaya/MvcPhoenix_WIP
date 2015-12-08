@@ -17,16 +17,19 @@
         <div class="col-md-6 form-group">
             <label>Master Code</label>
             @Html.DropDownListFor(m => m.productmasterid, Model.ListOfProductMasters, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.productmasterid)
         </div>
         <div class="col-md-6 form-group">
             <label>Re-Order Weight</label>
             @Html.TextBoxFor(m => m.reorderweight, new { @class = "form-control", type = "number", min = "0", max = "999" })
+            @Html.ValidationMessageFor(m => m.reorderweight)
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 form-group">
             <label>Item Notes</label>
             @Html.TextAreaFor(m => m.notes, new { @class = "form-control"})
+            @Html.ValidationMessageFor(m => m.notes)
         </div>
     </div>
     <div class="row">
@@ -42,12 +45,6 @@
     </div>
 }
 
-@*<div class="row text-center">
-    <!-- When user clicks Close in modal, update items partial -->
-    
-</div>*@
-
-
 <script type="text/javascript">
     function UpdateGrid() {
         // The target div is NOT in this View, its in the parent (I dont like this)
@@ -57,5 +54,4 @@
         $('#dvGridPlaceHolder').load(URL);
         $('#modalouter').modal('hide')
     }
-
 </script>

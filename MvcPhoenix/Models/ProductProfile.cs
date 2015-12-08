@@ -226,9 +226,10 @@ namespace MvcPhoenix.Models
         [Display(Name = "SDS Contact Phone")]
         public string  sdscontactphone { get; set; }
 
+        [DataType(DataType.Date)]
         [Display(Name = "China Certification Date")]
-        public DateTime? chinacertificationdate { get; set; }        
-
+        public DateTime? chinacertificationdate { get; set; }
+        
         [Display(Name = "Label Contact Name")]
         public string labelcontactname { get; set; }
 
@@ -278,7 +279,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Business Unit/Division")]
         [Required]
-        [Range(1, 99, ErrorMessage = "Business Unit/Division is required.")]
         public int? masterdivisionid { get; set; }
         
         [Display(Name = "Discontinued")]

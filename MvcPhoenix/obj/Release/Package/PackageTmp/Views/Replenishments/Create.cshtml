@@ -50,6 +50,7 @@
                             <div class="form-group col-md-4">
                                 <label>Client</label>
                                 @Html.DropDownListFor(m => m.clientid, Model.ListOfClients, new { onchange = "GetDivisions()", id = "ClientID", @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.clientid)
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="invisible">.</label>
@@ -106,46 +107,63 @@
     </div>
 </div>
 
-<!-- Local javascript -->
-<script type="text/javascript">
-    function GetDivisions() {
-        // temporarily hide the add button
-        $('#dvAddButton').css({ 'display': 'none' });
+@section Scripts {
+    <script>
+        $(function () {
+            $("form input").tooltipValidation({
+                placement: "top"
+            });
+            $("form select").tooltipValidation({
+                placement: "top"
+            });
+        });
+    </script>
 
-        // empty the placeholder (visual only)
-        document.getElementById("dvGridPlaceHolder").innerHTML = "";
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
 
-        // if client is selected do the work
-        if ($("#ClientID").val() > 0) {
-            // show the button
-            $('#btnsubmit').css({ 'display': 'inline-block' })
-            // go get the data
+    <script type="text/javascript">
+        function GetDivisions() {
+            // temporarily hide the add button
+            $('#dvAddButton').css({ 'display': 'none' });
 
-            //  will not work in IIS var URL = "/BulkOrders/BuildDivisionDropDown/" + $("#ClientID").val();
-            @*var URL = '@Url.Action("BuildDivisionDropDown", "BulkOrders", new { id = "-1" })';*@
-            var URL = '@Url.Action("BuildDivisionDropDown", "Replenishments", new { id = "-1" })';
-            URL = URL.replace('-1', $('#ClientID').val());
+            // empty the placeholder (visual only)
+            document.getElementById("dvGridPlaceHolder").innerHTML = "";
 
-            $('#dvDivisions').load(URL);
+            // if client is selected do the work
+            if ($("#ClientID").val() > 0) {
+                // show the button
+                $('#btnsubmit').css({ 'display': 'inline-block' })
+                // go get the data
+
+                //  will not work in IIS var URL = "/BulkOrders/BuildDivisionDropDown/" + $("#ClientID").val();
+                @*var URL = '@Url.Action("BuildDivisionDropDown", "BulkOrders", new { id = "-1" })';*@
+                var URL = '@Url.Action("BuildDivisionDropDown", "Replenishments", new { id = "-1" })';
+                URL = URL.replace('-1', $('#ClientID').val());
+
+                $('#dvDivisions').load(URL);
+            }
         }
-    }
 
-    function ShowAddButton() {
-        $('#dvAddButton').css({ 'display': 'inline-block' });
-    }
+        function ShowAddButton() {
+            $('#dvAddButton').css({ 'display': 'inline-block' });
+        }
 
-    function ClearGridAndAddButton() {
-        $('#dvAddButton').css({ 'display': 'none' });
-        document.getElementById("dvGridPlaceHolder").innerHTML = "";
-    }
+        function ClearGridAndAddButton() {
+            $('#dvAddButton').css({ 'display': 'none' });
+            document.getElementById("dvGridPlaceHolder").innerHTML = "";
+        }
 
-    function SetupAddMode() {
-        // build a new obj and show modal (have to replace cause action params are static)
-        @*var URL = '@Url.Action("SetupNewItem", "BulkOrders", new { clientid = "-1" })';*@
-        var URL = '@Url.Action("SetupNewItem", "Replenishments", new { clientid = "-1" })';
-        URL = URL.replace('-1', $('#ClientID').val());
-        $('#modalinner').load(URL);
-        $('#modalouter').modal('show')
-    }
-
-</script>
+        function SetupAddMode() {
+            // build a new obj and show modal (have to replace cause action params are static)
+            @*var URL = '@Url.Action("SetupNewItem", "BulkOrders", new { clientid = "-1" })';*@
+            var URL = '@Url.Action("SetupNewItem", "Replenishments", new { clientid = "-1" })';
+            URL = URL.replace('-1', $('#ClientID').val());
+            $('#modalinner').load(URL);
+            $('#modalouter').modal('show')
+        }
+    </script>
+}

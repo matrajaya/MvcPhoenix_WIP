@@ -47,6 +47,7 @@
                         <div class="form-group col-md-3">
                             <label>Date Received</label>
                             @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.receivedate)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Client - DDL*</label>
@@ -55,38 +56,47 @@
                         <div class="form-group col-md-3">
                             <label>Carrier - DDL*</label>
                             @Html.TextBoxFor(m => m.carrier, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.carrier)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Warehouse</label>
                             @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.warehouse)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Current Weight</label>
                             @Html.TextBoxFor(m => m.currentweight, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.currentweight)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Receive Weight</label>
                             @Html.TextBoxFor(m => m.receiveweight, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.receiveweight)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Entered By</label>
                             @Html.TextBoxFor(m => m.enteredby, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.enteredby)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Received By</label>
                             @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.receivedby)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Received As Code</label>
                             @Html.TextBoxFor(m => m.receivedascode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.receivedascode)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Received As Name</label>
                             @Html.TextBoxFor(m => m.receivedasname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.receivedasname)
                         </div>
                         <div class="form-group col-md-6">
                             <label>Return Location</label>
                             @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.returnlocation)
                         </div>
                     </div>
                 </div>
@@ -101,14 +111,17 @@
                         <div class="form-group col-md-3">
                             <label>Lot Number</label>
                             @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.lotnumber)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Date Of Manufacture</label>
                             @Html.TextBoxFor(m => m.mfgdate, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.mfgdate)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Expiration Date</label>
                             @Html.TextBoxFor(m => m.expirationdate, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.expirationdate)
                         </div>
                         <div class="form-group col-md-3">
                             <label>S.L. *</label>
@@ -117,18 +130,22 @@
                         <div class="form-group col-md-3">
                             <label>Cease Ship Date</label>
                             @Html.TextBoxFor(m => m.ceaseshipdate, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ceaseshipdate)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Bulk Status</label>
                             @Html.DropDownListFor(m => m.bulkstatus, Model.ListOfBulkStatusIDs, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.bulkstatus)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Notice Date</label>
                             @Html.TextBoxFor(m => m.noticedate, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.noticedate)
                         </div>
                         <div class="form-group col-md-3">
                             <label>QC Date</label>
                             @Html.TextBoxFor(m => m.qcdate, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.qcdate)
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -144,14 +161,17 @@
                         <div class="form-group col-md-12">
                             <label>Container Note</label>
                             @Html.TextAreaFor(m => m.containernotes, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.containernotes)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Container Color</label>
                             @Html.TextBoxFor(m => m.containercolor, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.containercolor)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Bin</label>
                             @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.bin)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Location *</label>
@@ -160,6 +180,7 @@
                         <div class="form-group col-md-3">
                             <label>Container Type</label>
                             @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.containertype)
                         </div>
                     </div>
                 </div>
@@ -202,6 +223,7 @@
                         <div class="form-group col-md-3">
                             <label>Unit Of Measure</label>
                             @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.um)
                         </div>
                         <div class="form-group col-md-3">
                             <label>COA Included?</label>
@@ -214,6 +236,7 @@
                         <div class="form-group col-md-6">
                             <label>Bulk Label Note</label>
                             @Html.TextBoxFor(m => m.bulklabelnote, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.bulklabelnote)
                         </div>
                     </div>
                 </div>
@@ -247,9 +270,28 @@
 </div>
 
 <!-- Javascript -->
-<script type="text/javascript">
-    function OnSaveSuccess() {
-        // hide submit stuff to avoid double post
-        $('#btnSave').prop('disabled', true);
-    }
-</script>
+@section Scripts {
+    <script>
+        $(function () {
+            $("form input").tooltipValidation({
+                placement: "top"
+            });
+            $("form select").tooltipValidation({
+                placement: "top"
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.datepicker').datepicker();
+        });
+    </script>
+
+    <script type="text/javascript">
+        function OnSaveSuccess() {
+            // hide submit stuff to avoid double post
+            $('#btnSave').prop('disabled', true);
+        }
+    </script>
+}
