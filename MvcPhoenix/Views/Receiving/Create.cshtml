@@ -74,7 +74,7 @@
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Date Received</label>
-                            @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                             @Html.ValidationMessageFor(m => m.receivedate)
                         </div>
                         <div class="form-group col-md-3">
@@ -129,12 +129,12 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label>Date Of Manufacture</label>
-                            @Html.TextBoxFor(m => m.mfgdate, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                             @Html.ValidationMessageFor(m => m.mfgdate)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Expiration Date</label>
-                            @Html.TextBoxFor(m => m.expirationdate, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                             @Html.ValidationMessageFor(m => m.expirationdate)
                         </div>
                         <div class="form-group col-md-3">
@@ -143,7 +143,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label>Cease Ship Date</label>
-                            @Html.TextBoxFor(m => m.ceaseshipdate, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                             @Html.ValidationMessageFor(m => m.ceaseshipdate)
                         </div>
                         <div class="form-group col-md-3">
@@ -153,7 +153,7 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label>QC Date</label>
-                            @Html.TextBoxFor(m => m.qcdate, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                             @Html.ValidationMessageFor(m => m.qcdate)
                         </div>
                         <div class="clearfix"></div>
@@ -307,13 +307,7 @@
             });
         });
     </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker').datepicker();
-        });
-    </script>
-
+    
     <script type="text/javascript">
 
         function clientid_onchange() {

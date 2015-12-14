@@ -4,6 +4,7 @@ Orders
  - Allocation
  - Packout Orders
  - Queue system		- Prerequisite User Management
+ - Extract service functions from _TransEditModal.cshtml
 
 Order Import
  - SSIS packages 	- activate listener on web upload folder
@@ -20,18 +21,17 @@ Invoice
 
 Products
  - Product Identification
-	- Add Package Part Number
-	- Add SIze Information
+	- Add Shelf Size Information
  - GHS Information
+	- TBD
+	- Redesign and streamline current tables
  - MSDS Information
 	- SDS PDF View/Upload (Basic Document Management)
  - Shipping Description
-	- UN Number DDL fuction to populate fields in GRN,AIR&SHP Descriptions
-	- DDLs for Packing Group, Label Required, Subsidiary Label Required
+	- UN Number search and populate needs exception handled
  - Miscellaneous
 	- Notes
 	- CAS
-	- Waste Profile
 
 Inventory
  - Entire module. Basic Functions View and Edit Stock levels

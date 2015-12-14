@@ -77,23 +77,23 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Profile Revision Date</label>
-                        @Html.TextBoxFor(m => m.sgrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.sgrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.msdsrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
-                        @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.labelrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.labelrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct) Global Product</label><br />
                         <label>@Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified) Accuracy Verified</label><br />
-                        <!--Todo: Creat condition at target if dicontinued is true then show-->
+                        <!--Todo: Create condition at target if discontinued is true then show-->
                         @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
                         <label>Discontinued</label>
                     </div>
@@ -593,7 +593,7 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.msdsrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
@@ -626,7 +626,7 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
-                        @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.labelrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.labelrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
@@ -659,7 +659,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Technical Sheet Revision Date</label>
-                        @Html.TextBoxFor(m => m.technicalsheetrevisondate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.technicalsheetrevisondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.technicalsheetrevisondate)
                     </div>
                 </div>
@@ -970,21 +970,7 @@
     }
 </div>
 
-@section Scripts {
-    <script type="text/javascript">
-        $(function () {
-            $("form input").tooltipValidation({
-                placement: "top"
-            });
-            $("form select").tooltipValidation({
-                placement: "top"
-            });
-        });
-    </script>
-}
-
-
-@*JSON UN Lookups*@
+@* JSON UN Lookups *@
 <script type="text/javascript">
     function LookupUNGround() {
         var myurl = '@Url.Action("LookupUNGround", "Products")';

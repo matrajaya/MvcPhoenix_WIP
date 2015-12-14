@@ -57,15 +57,7 @@
     function UpdateControl(data) {
         { $('#closelist').val(data) }
     }
-
 </script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        // post load tasks here
-    });
-</script>
-
 
 @functions
 {
@@ -77,8 +69,8 @@
 
     private static string fnDate(DateTime? vDate)
     {
-        string s = ""; s = (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date"; return s;
+        string s = ""; 
+        s = (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date"; 
+        return s;
     }
-
-
 }

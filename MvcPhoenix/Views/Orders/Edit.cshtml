@@ -255,7 +255,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         @Html.LabelFor(m => m.approvaldate, new { @class = "control-label" })
-                        @Html.TextBoxFor(m => m.approvaldate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.approvaldate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor( m => m.approvaldate )
                     </div>
                 </div>
@@ -367,22 +367,3 @@
     }
 
 </div>
-
-@section Scripts {
-    <script>
-        $(function () {
-            $("form input").tooltipValidation({
-                placement: "top"
-            });
-            $("form select").tooltipValidation({
-                placement: "top"
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker').datepicker();
-        });
-    </script>
-}

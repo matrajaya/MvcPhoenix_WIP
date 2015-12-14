@@ -41,12 +41,12 @@
     <div class="row">
         <div class="col-md-6 form-group">
             @Html.LabelFor(m => m.eta)
-            @Html.TextBoxFor(m => m.eta, new { type = "date", @class = "form-control" })
+            @Html.TextBoxFor(m => m.eta, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
             @Html.ValidationMessageFor(m => m.eta)
         </div>
         <div class="col-md-6 form-group">
             @Html.LabelFor(m => m.datereceived)
-            @Html.TextBoxFor(m => m.datereceived, new { @readonly = "readonly", @class = "form-control" })
+            @Html.TextBoxFor(m => m.datereceived, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
             @Html.ValidationMessageFor(m => m.datereceived)
         </div>
     </div>

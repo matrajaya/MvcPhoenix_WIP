@@ -28,17 +28,6 @@
         OnSuccess = "ShowAddButton()"
     }))
     {
-
-        @*<div class="well well-sm">
-                @Html.DropDownListFor(m => m.clientid, Model.ListOfClients, new { onchange = "GetDivisions()", id = "ClientID", @class = "form-control", @style = "width:40%;margin-bottom:5px;" })
-                <div id="dvDivisions">
-                    <select name="DivisionID" id='DivisionID' class='form-control' style='width:40%;'>
-                        <option>Division</option>
-                    </select>
-                </div>
-                <input id="btnsubmit" type="submit" value="Create Suggested Order" class="btn btn-primary btn-sm" style="margin-top:8px;display:none;" />
-            </div>*@
-
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
@@ -70,10 +59,6 @@
             </div>
         </div>
 
-        @*<div id="dvspinner" style="display:none;">
-                <img src="~/Content/images/ani-rebuild.gif" /> Creating order <img src="~/Content/images/ani-rebuild.gif" />
-            </div>*@
-
         <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
             <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
         </div>
@@ -101,29 +86,12 @@
                         <!-- Placeholder for _SuggestedItemEdit.cshtml -->
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script>
-        $(function () {
-            $("form input").tooltipValidation({
-                placement: "top"
-            });
-            $("form select").tooltipValidation({
-                placement: "top"
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker').datepicker();
-        });
-    </script>
 
     <script type="text/javascript">
         function GetDivisions() {

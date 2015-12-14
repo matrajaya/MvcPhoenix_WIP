@@ -529,7 +529,8 @@ namespace MvcPhoenix.Controllers
             obj.orderitemid = 0;
             obj.transtype = null;
             obj.transqty = 1;
-            obj.transdate = DateTime.Today;
+            //obj.transdate = DateTime.Today; -- Iffy
+            obj.transdate = DateTime.Now;
             obj.transamount = 0;
             obj.comments = "";
             obj.pagemode = "New Transaction";

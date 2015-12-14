@@ -149,13 +149,47 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
+
+    @* Abstract to external src file when the chance permits *@
     <script type="text/javascript">
         $(function () {
-            $('.date-picker').datepicker();
-        })
-    </script>
-    @RenderSection("scripts", required: false)
+            $("form input").tooltipValidation({
+                placement: "top"
+            });
+            $("form select").tooltipValidation({
+                placement: "top"
+            });
+        });
 
+        $(function () {
+            $('.date-picker').datepicker({
+                dateFormat: 'dd-MM-yy'
+            });
+        });
+
+        $(function () {
+            $('.datetime-picker').datepicker({
+                dateFormat: 'dd-MM-yy',
+                onSelect: function (datetext) {
+                    var d = new Date(); // for now
+                    datetext = datetext + " " + ('0' + d.getHours()).slice(-2) + ": " + ('0' + d.getMinutes()).slice(-2) + ": " + ('0' + d.getSeconds()).slice(-2);
+                    $(this).val(datetext);
+                }
+            });
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
 
 </body>
 </html>
+
+<!-- Local Razor - Moved from Product Views - Consider usefulness -->
+@*@functions{
+        private static string fnDate(DateTime? vDate)
+        {
+            string s = "";
+            s = (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "No Date";
+            return s;
+        }
+    }*@

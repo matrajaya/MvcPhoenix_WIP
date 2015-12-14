@@ -26,7 +26,7 @@ namespace MvcPhoenix.Models
                 //sb = sb + string.Format("<select name='{0}' id='{1}' class='{2}'  >", divid, divid, "form-control"); - Iffy
                 sb = sb + string.Format("<select name='{0}' id='{1}' class='{2}' onchange='getid(this)' >", divid, divid, "form-control");
                 
-                //sb = sb + string.Format("<option value='{0}' selected=true >{1}</option>","0","Product Code");
+                sb = sb + string.Format("<option value='{0}' selected=true >{1}</option>","0","Select Product Code");
                 foreach (var item in qry)
                 {
                     sb = sb + string.Format("<option value={0}> {1} - {2} - {3} </option>", item.ProductDetailID.ToString(), item.ProductCode, item.MasterCode, item.ProductName);
