@@ -1,62 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="CMCSQL03ModelStoreContainer" CdmEntityContainer="CMCSQL03Entities">
-    <EntitySetMapping Name="tblBulk">
-      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulk">
-        <MappingFragment StoreEntitySet="tblBulk">
-          <ScalarProperty Name="MigrationNotes" ColumnName="MigrationNotes" />
-          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-          <ScalarProperty Name="ProductName_MDB" ColumnName="ProductName_MDB" />
-          <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
-          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
-          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-          <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
-          <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
-          <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
-          <ScalarProperty Name="refrigerator" ColumnName="refrigerator" />
-          <ScalarProperty Name="freezer" ColumnName="freezer" />
-          <ScalarProperty Name="flammable" ColumnName="flammable" />
-          <ScalarProperty Name="ReceivedAsName" ColumnName="ReceivedAsName" />
-          <ScalarProperty Name="ReceivedAsCode" ColumnName="ReceivedAsCode" />
-          <ScalarProperty Name="LogRecordStatus" ColumnName="LogRecordStatus" />
-          <ScalarProperty Name="PercentOH" ColumnName="PercentOH" />
-          <ScalarProperty Name="TEW" ColumnName="TEW" />
-          <ScalarProperty Name="NCO" ColumnName="NCO" />
-          <ScalarProperty Name="PercentSolids" ColumnName="PercentSolids" />
-          <ScalarProperty Name="MSDSIncluded" ColumnName="MSDSIncluded" />
-          <ScalarProperty Name="COAIncluded" ColumnName="COAIncluded" />
-          <ScalarProperty Name="ContainerType" ColumnName="ContainerType" />
-          <ScalarProperty Name="LogNotes" ColumnName="LogNotes" />
-          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
-          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
-          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
-          <ScalarProperty Name="BulkLabelNote" ColumnName="BulkLabelNote" />
-          <ScalarProperty Name="ContainerNotes" ColumnName="ContainerNotes" />
-          <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
-          <ScalarProperty Name="ContainerColor" ColumnName="ContainerColor" />
-          <ScalarProperty Name="NoticeDate" ColumnName="NoticeDate" />
-          <ScalarProperty Name="ReturnLocation" ColumnName="ReturnLocation" />
-          <ScalarProperty Name="PackOut" ColumnName="PackOut" />
-          <ScalarProperty Name="QCDate" ColumnName="QCDate" />
-          <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
-          <ScalarProperty Name="BulkStatus" ColumnName="BulkStatus" />
-          <ScalarProperty Name="MfgDate" ColumnName="MfgDate" />
-          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
-          <ScalarProperty Name="CurrentWeight" ColumnName="CurrentWeight" />
-          <ScalarProperty Name="ReceiveWeight" ColumnName="ReceiveWeight" />
-          <ScalarProperty Name="Qty" ColumnName="Qty" />
-          <ScalarProperty Name="UM" ColumnName="UM" />
-          <ScalarProperty Name="Bin" ColumnName="Bin" />
-          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
-          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
-          <ScalarProperty Name="IsKnownMaterial" ColumnName="IsKnownMaterial" />
-          <ScalarProperty Name="LegacyBulkStockID" ColumnName="LegacyBulkStockID" />
-          <ScalarProperty Name="LegacyLogID" ColumnName="LegacyLogID" />
-          <ScalarProperty Name="BulkID" ColumnName="BulkID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tblBulkOrder">
       <EntityTypeMapping TypeName="CMCSQL03Model.tblBulkOrder">
         <MappingFragment StoreEntitySet="tblBulkOrder">
@@ -127,53 +71,6 @@
           <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
           <ScalarProperty Name="ClientID" ColumnName="ClientID" />
           <ScalarProperty Name="BulkSupplierID" ColumnName="BulkSupplierID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tblBulkUnKnown">
-      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulkUnKnown">
-        <MappingFragment StoreEntitySet="tblBulkUnKnown">
-          <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
-          <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
-          <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
-          <ScalarProperty Name="refrigerator" ColumnName="refrigerator" />
-          <ScalarProperty Name="freezer" ColumnName="freezer" />
-          <ScalarProperty Name="flammable" ColumnName="flammable" />
-          <ScalarProperty Name="ReceivedAsName" ColumnName="ReceivedAsName" />
-          <ScalarProperty Name="ReceivedAsCode" ColumnName="ReceivedAsCode" />
-          <ScalarProperty Name="LogRecordStatus" ColumnName="LogRecordStatus" />
-          <ScalarProperty Name="PercentOH" ColumnName="PercentOH" />
-          <ScalarProperty Name="TEW" ColumnName="TEW" />
-          <ScalarProperty Name="NCO" ColumnName="NCO" />
-          <ScalarProperty Name="PercentSolids" ColumnName="PercentSolids" />
-          <ScalarProperty Name="MSDSIncluded" ColumnName="MSDSIncluded" />
-          <ScalarProperty Name="COAIncluded" ColumnName="COAIncluded" />
-          <ScalarProperty Name="ContainerType" ColumnName="ContainerType" />
-          <ScalarProperty Name="LogNotes" ColumnName="LogNotes" />
-          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
-          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
-          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
-          <ScalarProperty Name="BulkLabelNote" ColumnName="BulkLabelNote" />
-          <ScalarProperty Name="ContainerNotes" ColumnName="ContainerNotes" />
-          <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
-          <ScalarProperty Name="ContainerColor" ColumnName="ContainerColor" />
-          <ScalarProperty Name="NoticeDate" ColumnName="NoticeDate" />
-          <ScalarProperty Name="ReturnLocation" ColumnName="ReturnLocation" />
-          <ScalarProperty Name="PackOut" ColumnName="PackOut" />
-          <ScalarProperty Name="QCDate" ColumnName="QCDate" />
-          <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
-          <ScalarProperty Name="BulkStatus" ColumnName="BulkStatus" />
-          <ScalarProperty Name="MfgDate" ColumnName="MfgDate" />
-          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
-          <ScalarProperty Name="CurrentWeight" ColumnName="CurrentWeight" />
-          <ScalarProperty Name="ReceiveWeight" ColumnName="ReceiveWeight" />
-          <ScalarProperty Name="Qty" ColumnName="Qty" />
-          <ScalarProperty Name="UM" ColumnName="UM" />
-          <ScalarProperty Name="Bin" ColumnName="Bin" />
-          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
-          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
-          <ScalarProperty Name="BulkID" ColumnName="BulkID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1589,6 +1486,117 @@
           <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
           <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
           <ScalarProperty Name="ShelfID" ColumnName="ShelfID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblReasonCode">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblReasonCode">
+        <MappingFragment StoreEntitySet="tblReasonCode">
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="ReasonCodeID" ColumnName="ReasonCodeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblBulk">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulk">
+        <MappingFragment StoreEntitySet="tblBulk">
+          <ScalarProperty Name="MigrationNotes" ColumnName="MigrationNotes" />
+          <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+          <ScalarProperty Name="ProductName_MDB" ColumnName="ProductName_MDB" />
+          <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
+          <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+          <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+          <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
+          <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
+          <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
+          <ScalarProperty Name="refrigerator" ColumnName="refrigerator" />
+          <ScalarProperty Name="freezer" ColumnName="freezer" />
+          <ScalarProperty Name="flammable" ColumnName="flammable" />
+          <ScalarProperty Name="ReceivedAsName" ColumnName="ReceivedAsName" />
+          <ScalarProperty Name="ReceivedAsCode" ColumnName="ReceivedAsCode" />
+          <ScalarProperty Name="LogRecordStatus" ColumnName="LogRecordStatus" />
+          <ScalarProperty Name="PercentOH" ColumnName="PercentOH" />
+          <ScalarProperty Name="TEW" ColumnName="TEW" />
+          <ScalarProperty Name="NCO" ColumnName="NCO" />
+          <ScalarProperty Name="PercentSolids" ColumnName="PercentSolids" />
+          <ScalarProperty Name="MSDSIncluded" ColumnName="MSDSIncluded" />
+          <ScalarProperty Name="COAIncluded" ColumnName="COAIncluded" />
+          <ScalarProperty Name="ContainerType" ColumnName="ContainerType" />
+          <ScalarProperty Name="LogNotes" ColumnName="LogNotes" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
+          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+          <ScalarProperty Name="BulkLabelNote" ColumnName="BulkLabelNote" />
+          <ScalarProperty Name="ContainerNotes" ColumnName="ContainerNotes" />
+          <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
+          <ScalarProperty Name="ContainerColor" ColumnName="ContainerColor" />
+          <ScalarProperty Name="NoticeDate" ColumnName="NoticeDate" />
+          <ScalarProperty Name="ReturnLocation" ColumnName="ReturnLocation" />
+          <ScalarProperty Name="PackOut" ColumnName="PackOut" />
+          <ScalarProperty Name="QCDate" ColumnName="QCDate" />
+          <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
+          <ScalarProperty Name="BulkStatus" ColumnName="BulkStatus" />
+          <ScalarProperty Name="MfgDate" ColumnName="MfgDate" />
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="CurrentWeight" ColumnName="CurrentWeight" />
+          <ScalarProperty Name="ReceiveWeight" ColumnName="ReceiveWeight" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UM" ColumnName="UM" />
+          <ScalarProperty Name="Bin" ColumnName="Bin" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+          <ScalarProperty Name="LegacyBulkStockID" ColumnName="LegacyBulkStockID" />
+          <ScalarProperty Name="LegacyLogID" ColumnName="LegacyLogID" />
+          <ScalarProperty Name="BulkID" ColumnName="BulkID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblBulkUnKnown">
+      <EntityTypeMapping TypeName="CMCSQL03Model.tblBulkUnKnown">
+        <MappingFragment StoreEntitySet="tblBulkUnKnown">
+          <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
+          <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
+          <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
+          <ScalarProperty Name="refrigerator" ColumnName="refrigerator" />
+          <ScalarProperty Name="freezer" ColumnName="freezer" />
+          <ScalarProperty Name="flammable" ColumnName="flammable" />
+          <ScalarProperty Name="ReceivedAsName" ColumnName="ReceivedAsName" />
+          <ScalarProperty Name="ReceivedAsCode" ColumnName="ReceivedAsCode" />
+          <ScalarProperty Name="LogRecordStatus" ColumnName="LogRecordStatus" />
+          <ScalarProperty Name="PercentOH" ColumnName="PercentOH" />
+          <ScalarProperty Name="TEW" ColumnName="TEW" />
+          <ScalarProperty Name="NCO" ColumnName="NCO" />
+          <ScalarProperty Name="PercentSolids" ColumnName="PercentSolids" />
+          <ScalarProperty Name="MSDSIncluded" ColumnName="MSDSIncluded" />
+          <ScalarProperty Name="COAIncluded" ColumnName="COAIncluded" />
+          <ScalarProperty Name="ContainerType" ColumnName="ContainerType" />
+          <ScalarProperty Name="LogNotes" ColumnName="LogNotes" />
+          <ScalarProperty Name="Carrier" ColumnName="Carrier" />
+          <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
+          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+          <ScalarProperty Name="BulkLabelNote" ColumnName="BulkLabelNote" />
+          <ScalarProperty Name="ContainerNotes" ColumnName="ContainerNotes" />
+          <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
+          <ScalarProperty Name="ContainerColor" ColumnName="ContainerColor" />
+          <ScalarProperty Name="NoticeDate" ColumnName="NoticeDate" />
+          <ScalarProperty Name="ReturnLocation" ColumnName="ReturnLocation" />
+          <ScalarProperty Name="PackOut" ColumnName="PackOut" />
+          <ScalarProperty Name="QCDate" ColumnName="QCDate" />
+          <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
+          <ScalarProperty Name="BulkStatus" ColumnName="BulkStatus" />
+          <ScalarProperty Name="MfgDate" ColumnName="MfgDate" />
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="CurrentWeight" ColumnName="CurrentWeight" />
+          <ScalarProperty Name="ReceiveWeight" ColumnName="ReceiveWeight" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="UM" ColumnName="UM" />
+          <ScalarProperty Name="Bin" ColumnName="Bin" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+          <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+          <ScalarProperty Name="BulkID" ColumnName="BulkID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

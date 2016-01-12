@@ -7,7 +7,6 @@
     <Property Name="BulkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LegacyLogID" Type="int" />
     <Property Name="LegacyBulkStockID" Type="int" />
-    <Property Name="IsKnownMaterial" Type="bit" />
     <Property Name="Warehouse" Type="nvarchar" MaxLength="2" />
     <Property Name="ProductMasterID" Type="int" />
     <Property Name="LotNumber" Type="nvarchar" MaxLength="25" />
@@ -1273,6 +1272,14 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
     <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
   </EntityType>
+  <EntityType Name="tblReasonCode">
+    <Key>
+      <PropertyRef Name="ReasonCodeID" />
+    </Key>
+    <Property Name="ReasonCodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Reason" Type="nvarchar" MaxLength="25" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="255" />
+  </EntityType>
   <EntityType Name="tblReportCriteria">
     <Key>
       <PropertyRef Name="ReportCriteriaID" />
@@ -1609,6 +1616,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <EntitySet Name="tblProductNotes" EntityType="Self.tblProductNotes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProductXRef" EntityType="Self.tblProductXRef" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblProfile" EntityType="Self.tblProfile" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblReasonCode" EntityType="Self.tblReasonCode" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblReportCriteria" EntityType="Self.tblReportCriteria" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblSampSize" EntityType="Self.tblSampSize" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblShelfMaster" EntityType="Self.tblShelfMaster" Schema="dbo" store:Type="Tables" />

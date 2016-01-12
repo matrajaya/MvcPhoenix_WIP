@@ -52,7 +52,7 @@ namespace MvcPhoenix.Models
 
      }
 
-        public static string GetTemplateFromFile(string FileName)
+     public static string GetTemplateFromFile(string FileName)
          {
          // Easy way to use a .HTML file as an email template
          string sFileName = HttpContext.Current.Server.MapPath("/Templates/" + FileName);

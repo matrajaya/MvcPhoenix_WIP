@@ -77,20 +77,23 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Profile Revision Date</label>
-                        @Html.TextBoxFor(m => m.sgrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.sgrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.msdsrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
-                        @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.labelrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.labelrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>@Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct) Global Product</label><br />
                         <label>@Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified) Accuracy Verified</label><br />
-                        <!--Todo: Creat condition at target if dicontinued is true then show-->
+                        <!--Todo: Create condition at target if discontinued is true then show-->
                         @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
                         <label>Discontinued</label>
                     </div>
@@ -309,7 +312,10 @@
                         <p>@Html.CheckBox("fullfacerespirator", Model.fullfacerespirator != null && (bool)Model.fullfacerespirator) Full Face Resp</p>
                         <p>@Html.CheckBox("fullsuit", Model.fullsuit != null && (bool)Model.fullsuit) Full Suit</p>
                         <p>@Html.CheckBox("otherequipment", Model.otherequipment != null && (bool)Model.otherequipment) Other Equipment</p>
-                        <p>@Html.TextBoxFor(m => m.otherequipmentdescription, new { @class = "form-control" })</p>
+                        <p>
+                            @Html.TextBoxFor(m => m.otherequipmentdescription, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.otherequipmentdescription)
+                        </p>
                     </div>
                     <div class="form-group col-md-3">
                         <label>Health Hazards</label>
@@ -347,15 +353,24 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th style="background-color: blue; color: white">Health</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                                <th style="text-align: center">
+                                    @Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
+                                    @Html.ValidationMessageFor(m => m.health)
+                            </th>
                             </tr>
                             <tr>
                                 <th style="background-color: red; color: white">Flammability</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                                <th style="text-align: center">
+                                    @Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
+                                    @Html.ValidationMessageFor(m => m.flammability)
+                            </th>
                             </tr>
                             <tr>
                                 <th style="background-color: yellow; color: gray">Reactivity</th>
-                                <th style="text-align: center">@Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                                <th style="text-align: center">
+                                    @Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
+                                    @Html.ValidationMessageFor(m => m.reactivity)
+                            </th>
                             </tr>
                         </table>
                     </div>
@@ -578,7 +593,8 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.msdsrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Number</label>
@@ -610,7 +626,7 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
-                        @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.labelrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.labelrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
@@ -620,9 +636,10 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>China Test Certification Date</label>
-                        @Html.TextBoxFor(m => m.chinacertificationdate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.chinacertificationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.chinacertificationdate)
                     </div>
+                    
                     <div class="clearfix"></div>
                 </div>
                 <div class="row">
@@ -642,19 +659,10 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Technical Sheet Revision Date</label>
-                        @Html.TextBoxFor(m => m.technicalsheetrevisondate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.technicalsheetrevisondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.technicalsheetrevisondate)
                     </div>
                 </div>
-                @*Kim comfirms that this field is currently not used by the product coordinators.
-                    We may consider removing it from the model if EU find it useless*@
-                @*<div class="row">
-                        <div class="form-group col-md-12">
-                            <label>Return Location - Not Used Per Kim C</label>
-                            @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
-                        </div>
-                    </div>*@
-
             </div>
         </div>
 
@@ -893,10 +901,8 @@
 
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <div>
-                            <span id="dvLogNotes">
-                                @{Html.RenderAction("LogNotesList", "ProductNotes", new { id = @Model.productdetailid });}
-                            </span>
+                        <div id="">
+                            @Html.Partial("~/Views/Products/_LogNotes.cshtml")
                         </div>
                     </div>
                 </div>
@@ -904,11 +910,8 @@
                 <div class="row">
                     <div class="form-group col-md-12">
                         <div id="">
-                            <span id="dvCas">
-                                @*@Html.Partial("~/Views/Products/_Cas.cshtml")*@
-                                @{Html.RenderAction("CasList", "Cas", new { id = @Model.productdetailid });}
-                                </span>
-                </div>
+                            @Html.Partial("~/Views/Products/_Cas.cshtml")
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -938,11 +941,9 @@
 
         <div class="form-group row">
             <div class="col-md-6">
-                @*<button class="btn btn-success btn-block">Save Changes</button>*@
                 <input type="submit" class="btn btn-success btn-block" value="Save Changes" />
             </div>
             <div class="col-md-6">
-                @*<button class="btn btn-danger btn-block">De-Activate</button>*@
                 @Ajax.ActionLink("De-Activate", "DeActivateProductMaster", "Products", new { id = Model.productmasterid }, new AjaxOptions
                              {
                                  UpdateTargetId = "dvSaveResult",
@@ -969,61 +970,7 @@
     }
 </div>
 
-<!-- Begin a new Form section -->
-<div id="dvLogNotesEditModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
-                <h4 class="modal-title">Product Log Note</h4>
-            </div>
-            <div id="dvLogNotesModalBody" class="modal-body">
-                <!-- placeholder for ~/Views/Products/_LogNotesModal.cshtml -->
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div id="dvCasEditModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
-                <h4 class="modal-title">CAS Item</h4>
-            </div>
-            <div id="dvCasModalBody" class="modal-body">
-                <!-- placeholder for ~/Views/Products/_Cas.cshtml -->
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-@section Scripts {
-    <script>
-        $(function () {
-            $("form input").tooltipValidation({
-                placement: "top"
-            });
-            $("form select").tooltipValidation({
-                placement: "top"
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker').datepicker();
-        });
-    </script>
-}
-
+@* JSON UN Lookups *@
 <script type="text/javascript">
     function LookupUNGround() {
         var myurl = '@Url.Action("LookupUNGround", "Products")';
@@ -1070,13 +1017,3 @@
                     });
     }
 </script>
-
-<!-- Local Razor -->
-@functions{
-    private static string fnDate(DateTime? vDate)
-    {
-        string s = "";
-        s = (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date";
-        return s;
-    }
-}

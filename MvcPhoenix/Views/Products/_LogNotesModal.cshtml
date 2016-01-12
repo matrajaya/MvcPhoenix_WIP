@@ -1,45 +1,65 @@
-﻿
-@using MvcPhoenix.Models
-@{}
+﻿@model MvcPhoenix.Models.ProductNote
+@{
+       
+    AjaxOptions AJaxOptionsForSave = new AjaxOptions()
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "dvLogNotesModalBody",
+        InsertionMode = InsertionMode.Replace
+    };
+    
+    // Close action ProductNotes/LogNotesList - update list in Edit.cshtml, close the modal
+    // If we want to close the modal after Save, Add OnSuccess= to above
+    AjaxOptions AjaxOptionsForClose = new AjaxOptions()
+    {
+        HttpMethod = "GET",
+        UpdateTargetId = "dvLogNotes",
+        OnSuccess = "$('#dvLogNotesEditModal').modal('hide')"
+    };
+ }
+
+<div id="dvLogNotesModal01">
+    @using (Ajax.BeginForm("Save", "ProductNotes", AJaxOptionsForSave))
+    {
+        @Html.HiddenFor(m => m.productnoteid)
+        @Html.HiddenFor(m => m.productdetailid)
+        <div class="row">
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(m => m.notedate)
+                @Html.TextBoxFor(m => m.notedate, "{0:dd MMM yyy}", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(m => m.notes)
+                @Html.TextAreaFor(m => m.notes, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(m => m.reasoncode)
+                @Html.DropDownListFor(m => m.reasoncode, Model.ListOfReasonCodes, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <input type="submit" value="Save" class="btn btn-success btn-block" />
+            </div>
+            <div class="col-md-6 form-group">
+                <!-- The Close just needs to refresh the partial that shows the grid data, then close the modal -->
+                @Ajax.ActionLink("Close", "LogNotesList", "ProductNotes", new { id = @Model.productdetailid },
+                                 AjaxOptionsForClose, new { @class = "btn btn-danger btn-block" })
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <span id="dvProductNoteSaveResult">
+                    @TempData["SaveResult"]
+                </span>
+            </div>
+        </div>
 
 
-
-<div class="row">
-    <div class="col-md-6 form-group">
-        <label>Date</label>
-        <input class="form-control" type="date">
-    </div>
-    <div class="col-md-6 form-group">
-        <label>Product Code</label>
-        <input class="form-control" value="0123987">
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12 form-group">
-        <label>Reason Code</label>
-        <select class="form-control">
-            <option></option>
-            <option>Change Client</option>
-            <option>Change Division</option>
-            <option>Change Handling</option>
-            <option>...</option>
-        </select>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12 form-group">
-        <label>Notes</label>
-        <textarea class="form-control"></textarea>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6 form-group">
-        <input class="btn btn-success btn-block" type="button" value="Save" />
-    </div>
-    <div class="col-md-6 form-group">
-        <input class="btn btn-danger btn-block" type="button" data-dismiss="modal" value="Close" />
-    </div>
+    }
 </div>

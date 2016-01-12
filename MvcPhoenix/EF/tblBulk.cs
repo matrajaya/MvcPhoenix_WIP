@@ -17,7 +17,6 @@ namespace MvcPhoenix.EF
         public int BulkID { get; set; }
         public Nullable<int> LegacyLogID { get; set; }
         public Nullable<int> LegacyBulkStockID { get; set; }
-        public Nullable<bool> IsKnownMaterial { get; set; }
         public string Warehouse { get; set; }
         public Nullable<int> ProductMasterID { get; set; }
         public string LotNumber { get; set; }

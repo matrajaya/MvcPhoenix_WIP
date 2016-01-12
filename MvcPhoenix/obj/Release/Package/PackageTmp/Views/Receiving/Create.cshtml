@@ -1,10 +1,11 @@
 ﻿@model MvcPhoenix.Models.BulkContainer
 @{
+    
+    // pc 12/8/2015 - ClientID DD changed to use Model Property
+
     ViewBag.Title = "Receiving";
 }
-
 <div class="container-fluid">
-
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
@@ -41,7 +42,8 @@
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Client</label>
-                                @Html.DropDownList("clientid", fnListOfClientIDs(), new { onchange = "clientid_onchange()", @class = "form-control" })
+                                <!-- pc 12/8 changed to use Model list -->
+                                @Html.DropDownListFor(m=>m.clientid,Model.ListOfClients, new { onchange = "clientid_onchange()", @class = "form-control" })
                             </div>
                             <div class="form-group col-md-4">
                                 <div id="dvProductMasterDD"></div>
@@ -74,43 +76,35 @@
                     <div class="row">
                         <div class="form-group col-md-3">
                             <label>Date Received</label>
-                            @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                            @Html.ValidationMessageFor(m => m.receivedate)
+                            @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
                         </div>
                         <div class="form-group col-md-3">
                             <label>Client</label>
                             @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly" })
-                            @Html.ValidationMessageFor(m => m.clientname)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Carrier - DDL*</label>
                             @Html.TextBoxFor(m => m.carrier, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.carrier)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Warehouse</label>
                             @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.warehouse)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Current Weight</label>
                             @Html.TextBoxFor(m => m.currentweight, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.currentweight)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Receive Weight</label>
                             @Html.TextBoxFor(m => m.receiveweight, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.receiveweight)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Entered By</label>
                             @Html.TextBoxFor(m => m.enteredby, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.enteredby)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Received By</label>
                             @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.receivedby)
                         </div>
                     </div>
                 </div>
@@ -125,17 +119,14 @@
                         <div class="form-group col-md-3">
                             <label>Lot Number</label>
                             @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.lotnumber)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Date Of Manufacture</label>
-                            @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                            @Html.ValidationMessageFor(m => m.mfgdate)
+                            @Html.TextBoxFor(m => m.mfgdate, new { @class = "form-control" })
                         </div>
                         <div class="form-group col-md-3">
                             <label>Expiration Date</label>
-                            @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                            @Html.ValidationMessageFor(m => m.expirationdate)
+                            @Html.TextBoxFor(m => m.expirationdate, new { @class = "form-control" })
                         </div>
                         <div class="form-group col-md-3">
                             <label>Shelf Life *</label>
@@ -143,18 +134,15 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label>Cease Ship Date</label>
-                            @Html.TextBoxFor(m => m.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                            @Html.ValidationMessageFor(m => m.ceaseshipdate)
+                            @Html.TextBoxFor(m => m.ceaseshipdate, new { @class = "form-control" })
                         </div>
                         <div class="form-group col-md-3">
                             <label>Bulk Status</label>
                             @Html.DropDownListFor(m => m.bulkstatus, Model.ListOfBulkStatusIDs, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.bulkstatus)
                         </div>
                         <div class="form-group col-md-3">
                             <label>QC Date</label>
-                            @Html.TextBoxFor(m => m.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                            @Html.ValidationMessageFor(m => m.qcdate)
+                            @Html.TextBoxFor(m => m.qcdate, new { @class = "form-control" })
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -170,17 +158,14 @@
                         <div class="form-group col-md-12">
                             <label>Container Note</label>
                             @Html.TextAreaFor(m => m.containernotes, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.containernotes)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Container Color</label>
                             @Html.TextBoxFor(m => m.containercolor, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.containercolor)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Bin</label>
                             @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.bin)
                         </div>
                         <div class="form-group col-md-3">
                             <label>Location *</label>
@@ -189,7 +174,6 @@
                         <div class="form-group col-md-3">
                             <label>Container Type</label>
                             @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.containertype)
                         </div>
                     </div>
                 </div>
@@ -232,7 +216,6 @@
                         <div class="form-group col-md-3">
                             <label>Unit Of Measure</label>
                             @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.um)
                         </div>
                         <div class="form-group col-md-3">
                             <label>COA Included?</label>
@@ -245,7 +228,6 @@
                         <div class="form-group col-md-6">
                             <label>Bulk Label Note</label>
                             @Html.TextBoxFor(m => m.bulklabelnote, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.bulklabelnote)
                         </div>
                     </div>
                 </div>
@@ -295,88 +277,57 @@
 </div>
 
 <!-- Javascript -->
+<script type="text/javascript">
 
-@section Scripts {
-    <script>
-        $(function () {
-            $("form input").tooltipValidation({
-                placement: "top"
-            });
-            $("form select").tooltipValidation({
-                placement: "top"
-            });
+    function clientid_onchange() {
+        // reset controls
+        $("#dvGridPlaceHolder").empty();
+        $("#btnAdd").addClass("hidden");
+        $("#dvDetail").addClass("hidden");
+
+        // fill product DD
+        $.ajax({
+            url: '@Url.Action("fnProductMasterDD", "Receiving")',
+            type: 'GET',
+            dataType: 'html',
+            cache: false,
+            data: { clientid: $('#clientid').val(), change: "productmasterid_onchange" },
+            error: function () { generalerror() },
+            success: function (datafromcontroller) { $("#dvProductMasterDD").html(datafromcontroller); }
         });
-    </script>
-    
-    <script type="text/javascript">
-
-        function clientid_onchange() {
-            // reset controls
-            $("#dvGridPlaceHolder").empty();
-            $("#btnAdd").addClass("hidden");
-            $("#dvDetail").addClass("hidden");
-
-            // fill product DD
-            $.ajax({
-                url: '@Url.Action("fnProductMasterDD", "Receiving")',
-                type: 'GET',
-                dataType: 'html',
-                cache: false,
-                data: { clientid: $('#clientid').val(), change: "productmasterid_onchange" },
-                error: function () { generalerror() },
-                success: function (datafromcontroller) { $("#dvProductMasterDD").html(datafromcontroller); }
-            });
-        }
-
-        function productmasterid_onchange() {
-            // put partial in div (easier way?)
-            $.get('@Url.Action("fnFillBulkOpenOrderItems", "Receiving")',
-                { id: $('#productmasterid').val() }, function (datafromcontroller)
-                { $("#dvGridPlaceHolder").html(datafromcontroller); });
-
-            // reset controls
-            $("#btnAdd").removeClass("hidden");
-            $("#dvDetail").addClass("hidden");
-        }
-
-        function btnAdd_click() {
-            // reset controls
-            $("#dvGridPlaceHolder").addClass("hidden");
-            $("#btnAdd").addClass("hidden");
-            $("#dvDetail").removeClass("hidden");
-        }
-
-        function OnSaveSuccess() {
-            // disable controls to avoid confusion
-            $('#clientid').prop('disabled', true);
-            $('#productmasterid').prop('disabled', true);
-
-            // hide submit stuff to avoid double post
-            $('#btnSave').prop('disabled', true);
-            //alert("New Container Has Been Created");
-            $("#mymodalsuccess").modal('show');
-        }
-
-        function generalerror() {
-            alert("An error occurred while accessing the server");
-        }
-    </script>
-
-}
-
-<!-- razor functions -->
-@functions
-{
-    private static List<SelectListItem> fnListOfClientIDs()
-    {
-        MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-        List<SelectListItem> mylist = new List<SelectListItem>();
-        mylist = (from t in db.tblClient
-                  orderby t.ClientName
-                  select
-                      new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-        mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-        db.Dispose();
-        return mylist;
     }
-}
+
+    function productmasterid_onchange() {
+        // put partial in div (easier way?)
+        $.get('@Url.Action("fnFillBulkOpenOrderItems", "Receiving")',
+            { id: $('#productmasterid').val() }, function (datafromcontroller)
+            { $("#dvGridPlaceHolder").html(datafromcontroller); });
+
+        // reset controls
+        $("#btnAdd").removeClass("hidden");
+        $("#dvDetail").addClass("hidden");
+    }
+
+    function btnAdd_click() {
+        // reset controls
+        $("#dvGridPlaceHolder").addClass("hidden");
+        $("#btnAdd").addClass("hidden");
+        $("#dvDetail").removeClass("hidden");
+    }
+
+    function OnSaveSuccess() {
+        // disable controls to avoid confusion
+        $('#clientid').prop('disabled', true);
+        $('#productmasterid').prop('disabled', true);
+
+        // hide submit stuff to avoid double post
+        $('#btnSave').prop('disabled', true);
+        //alert("New Container Has Been Created");
+        $("#mymodalsuccess").modal('show');
+    }
+
+    function generalerror() {
+        alert("An error occurred while accessing the server");
+    }
+</script>
+

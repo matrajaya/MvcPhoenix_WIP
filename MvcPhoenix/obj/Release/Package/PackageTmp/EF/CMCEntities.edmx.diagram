@@ -43,6 +43,9 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblUser" Width="1.5" PointX="4.75" PointY="20.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblWasteCode" Width="1.5" PointX="6.75" PointY="20.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblShelfMaster" Width="1.5" PointX="9.375" PointY="20.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblReasonCode" Width="1.5" PointX="11.375" PointY="20.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblBulk" Width="1.5" PointX="21.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblBulkUnKnown" Width="1.5" PointX="21.375" PointY="18.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

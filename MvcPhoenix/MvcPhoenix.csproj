@@ -196,6 +196,7 @@
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\CasController.cs" />
     <Compile Include="Controllers\ClientDetailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
@@ -335,6 +336,9 @@
     <Compile Include="EF\tblProfile.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblReasonCode.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblReportCriteria.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -403,6 +407,7 @@
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\ProductsService.cs" />
+    <Compile Include="Services\ReceivingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Antlr3.Runtime.dll" />

@@ -52,7 +52,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2015 13:39:40</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll">
-      <publishTime>12/10/2015 17:03:42</publishTime>
+      <publishTime>12/17/2015 14:32:09</publishTime>
     </File>
     <File Include="bin/MvcPhoenix.dll.config">
       <publishTime>10/08/2015 10:08:26</publishTime>
@@ -340,7 +340,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/29/2015 14:32:20</publishTime>
     </File>
     <File Include="EF/CMCEntities.edmx.diagram">
-      <publishTime>11/24/2015 16:45:34</publishTime>
+      <publishTime>12/15/2015 11:22:53</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>05/12/2015 13:39:30</publishTime>
@@ -610,7 +610,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/10/2015 10:40:50</publishTime>
     </File>
     <File Include="Views/Products/Edit.cshtml">
-      <publishTime>12/10/2015 15:38:11</publishTime>
+      <publishTime>12/14/2015 19:15:07</publishTime>
     </File>
     <File Include="Views/Products/Index.cshtml">
       <publishTime>11/30/2015 10:30:24</publishTime>
@@ -628,16 +628,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/14/2015 17:16:13</publishTime>
     </File>
     <File Include="Views/Products/_Cas.cshtml">
-      <publishTime>10/21/2015 12:58:44</publishTime>
+      <publishTime>12/14/2015 21:19:50</publishTime>
     </File>
     <File Include="Views/Products/_CasModal.cshtml">
-      <publishTime>10/21/2015 12:58:38</publishTime>
+      <publishTime>12/15/2015 11:56:53</publishTime>
     </File>
     <File Include="Views/Products/_LogNotes.cshtml">
-      <publishTime>10/21/2015 12:58:29</publishTime>
+      <publishTime>12/14/2015 16:49:09</publishTime>
     </File>
     <File Include="Views/Products/_LogNotesModal.cshtml">
-      <publishTime>10/21/2015 12:58:22</publishTime>
+      <publishTime>12/14/2015 22:17:50</publishTime>
     </File>
     <File Include="Views/Products/_ShelfSize.cshtml">
       <publishTime>11/30/2015 09:29:25</publishTime>
@@ -655,13 +655,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/03/2015 15:54:49</publishTime>
     </File>
     <File Include="Views/Receiving/Create.cshtml">
-      <publishTime>12/10/2015 16:38:55</publishTime>
+      <publishTime>12/09/2015 15:38:03</publishTime>
     </File>
     <File Include="Views/Receiving/CreateUnknown - Copy.cshtml">
       <publishTime>11/03/2015 12:49:57</publishTime>
     </File>
     <File Include="Views/Receiving/CreateUnknown.cshtml">
-      <publishTime>12/10/2015 16:08:22</publishTime>
+      <publishTime>11/11/2015 10:17:12</publishTime>
     </File>
     <File Include="Views/Receiving/Edit.cshtml">
       <publishTime>12/10/2015 16:05:40</publishTime>

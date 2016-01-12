@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CMCSQL03Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="CMCSQL03Entities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="tblBulk" EntityType="CMCSQL03Model.tblBulk" />
     <EntitySet Name="tblBulkOrder" EntityType="CMCSQL03Model.tblBulkOrder" />
     <EntitySet Name="tblBulkOrderItem" EntityType="CMCSQL03Model.tblBulkOrderItem" />
     <EntitySet Name="tblBulkSupplier" EntityType="CMCSQL03Model.tblBulkSupplier" />
-    <EntitySet Name="tblBulkUnKnown" EntityType="CMCSQL03Model.tblBulkUnKnown" />
     <EntitySet Name="tblInvLog" EntityType="CMCSQL03Model.tblInvLog" />
     <EntitySet Name="tblInvTrans" EntityType="CMCSQL03Model.tblInvTrans" />
     <EntitySet Name="tblOrderImport" EntityType="CMCSQL03Model.tblOrderImport" />
@@ -53,62 +51,10 @@
     <EntitySet Name="tblUser" EntityType="CMCSQL03Model.tblUser" />
     <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
     <EntitySet Name="tblShelfMaster" EntityType="CMCSQL03Model.tblShelfMaster" />
+    <EntitySet Name="tblReasonCode" EntityType="CMCSQL03Model.tblReasonCode" />
+    <EntitySet Name="tblBulk" EntityType="CMCSQL03Model.tblBulk" />
+    <EntitySet Name="tblBulkUnKnown" EntityType="CMCSQL03Model.tblBulkUnKnown" />
   </EntityContainer>
-  <EntityType Name="tblBulk">
-    <Key>
-      <PropertyRef Name="BulkID" />
-    </Key>
-    <Property Name="BulkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="LegacyLogID" Type="Int32" />
-    <Property Name="LegacyBulkStockID" Type="Int32" />
-    <Property Name="IsKnownMaterial" Type="Boolean" />
-    <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="ProductMasterID" Type="Int32" />
-    <Property Name="LotNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="Bin" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="UM" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="Qty" Type="Int32" />
-    <Property Name="ReceiveWeight" Type="Decimal" Precision="12" Scale="4" />
-    <Property Name="CurrentWeight" Type="Decimal" Precision="12" Scale="4" />
-    <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
-    <Property Name="MfgDate" Type="DateTime" Precision="3" />
-    <Property Name="BulkStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-    <Property Name="ReceiveDate" Type="DateTime" Precision="3" />
-    <Property Name="QCDate" Type="DateTime" Precision="3" />
-    <Property Name="PackOut" Type="Boolean" />
-    <Property Name="ReturnLocation" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="NoticeDate" Type="DateTime" Precision="3" />
-    <Property Name="ContainerColor" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
-    <Property Name="ContainerNotes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="BulkLabelNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="ReceivedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="EnteredBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="Carrier" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-    <Property Name="LogNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="ContainerType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="COAIncluded" Type="Boolean" />
-    <Property Name="MSDSIncluded" Type="Boolean" />
-    <Property Name="PercentSolids" Type="Int32" />
-    <Property Name="NCO" Type="Int32" />
-    <Property Name="TEW" Type="Decimal" Precision="10" Scale="2" />
-    <Property Name="PercentOH" Type="Int32" />
-    <Property Name="LogRecordStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="ReceivedAsCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="ReceivedAsName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="flammable" Type="Boolean" />
-    <Property Name="freezer" Type="Boolean" />
-    <Property Name="refrigerator" Type="Boolean" />
-    <Property Name="OtherStorage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="RestrictedQty" Type="Boolean" />
-    <Property Name="RestrictedAmt" Type="Decimal" Precision="10" Scale="2" />
-    <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-    <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="ProductName_MDB" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
-    <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="MigrationNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-  </EntityType>
   <EntityType Name="tblBulkOrder">
     <Key>
       <PropertyRef Name="BulkOrderID" />
@@ -178,52 +124,6 @@
     <Property Name="ShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="tblBulkUnKnown">
-    <Key>
-      <PropertyRef Name="BulkID" />
-    </Key>
-    <Property Name="BulkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-    <Property Name="ProductMasterID" Type="Int32" />
-    <Property Name="LotNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="Bin" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="UM" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="Qty" Type="Int32" />
-    <Property Name="ReceiveWeight" Type="Decimal" Precision="12" Scale="4" />
-    <Property Name="CurrentWeight" Type="Decimal" Precision="12" Scale="4" />
-    <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
-    <Property Name="MfgDate" Type="DateTime" Precision="3" />
-    <Property Name="BulkStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-    <Property Name="ReceiveDate" Type="DateTime" Precision="3" />
-    <Property Name="QCDate" Type="DateTime" Precision="3" />
-    <Property Name="PackOut" Type="Boolean" />
-    <Property Name="ReturnLocation" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="NoticeDate" Type="DateTime" Precision="3" />
-    <Property Name="ContainerColor" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-    <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
-    <Property Name="ContainerNotes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="BulkLabelNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="ReceivedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="EnteredBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="Carrier" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-    <Property Name="LogNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="ContainerType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="COAIncluded" Type="Boolean" />
-    <Property Name="MSDSIncluded" Type="Boolean" />
-    <Property Name="PercentSolids" Type="Int32" />
-    <Property Name="NCO" Type="Int32" />
-    <Property Name="TEW" Type="Decimal" Precision="10" Scale="2" />
-    <Property Name="PercentOH" Type="Int32" />
-    <Property Name="LogRecordStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-    <Property Name="ReceivedAsCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="ReceivedAsName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-    <Property Name="flammable" Type="Boolean" />
-    <Property Name="freezer" Type="Boolean" />
-    <Property Name="refrigerator" Type="Boolean" />
-    <Property Name="OtherStorage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="RestrictedQty" Type="Boolean" />
-    <Property Name="RestrictedAmt" Type="Decimal" Precision="10" Scale="2" />
   </EntityType>
   <EntityType Name="tblInvLog">
     <Key>
@@ -1592,5 +1492,113 @@
     <Property Name="Alert" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="CustCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="MigrationNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblReasonCode">
+    <Key>
+      <PropertyRef Name="ReasonCodeID" />
+    </Key>
+    <Property Name="ReasonCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Reason" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblBulk">
+    <Key>
+      <PropertyRef Name="BulkID" />
+    </Key>
+    <Property Name="BulkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LegacyLogID" Type="Int32" />
+    <Property Name="LegacyBulkStockID" Type="Int32" />
+    <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ProductMasterID" Type="Int32" />
+    <Property Name="LotNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="Bin" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="UM" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Qty" Type="Int32" />
+    <Property Name="ReceiveWeight" Type="Decimal" Precision="12" Scale="4" />
+    <Property Name="CurrentWeight" Type="Decimal" Precision="12" Scale="4" />
+    <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+    <Property Name="MfgDate" Type="DateTime" Precision="3" />
+    <Property Name="BulkStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+    <Property Name="ReceiveDate" Type="DateTime" Precision="3" />
+    <Property Name="QCDate" Type="DateTime" Precision="3" />
+    <Property Name="PackOut" Type="Boolean" />
+    <Property Name="ReturnLocation" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="NoticeDate" Type="DateTime" Precision="3" />
+    <Property Name="ContainerColor" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
+    <Property Name="ContainerNotes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="BulkLabelNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ReceivedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="EnteredBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Carrier" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Name="LogNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ContainerType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="COAIncluded" Type="Boolean" />
+    <Property Name="MSDSIncluded" Type="Boolean" />
+    <Property Name="PercentSolids" Type="Int32" />
+    <Property Name="NCO" Type="Int32" />
+    <Property Name="TEW" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="PercentOH" Type="Int32" />
+    <Property Name="LogRecordStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="ReceivedAsCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ReceivedAsName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="flammable" Type="Boolean" />
+    <Property Name="freezer" Type="Boolean" />
+    <Property Name="refrigerator" Type="Boolean" />
+    <Property Name="OtherStorage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RestrictedQty" Type="Boolean" />
+    <Property Name="RestrictedAmt" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+    <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ProductName_MDB" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="MigrationNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblBulkUnKnown">
+    <Key>
+      <PropertyRef Name="BulkID" />
+    </Key>
+    <Property Name="BulkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="ProductMasterID" Type="Int32" />
+    <Property Name="LotNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="Bin" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="UM" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Qty" Type="Int32" />
+    <Property Name="ReceiveWeight" Type="Decimal" Precision="12" Scale="4" />
+    <Property Name="CurrentWeight" Type="Decimal" Precision="12" Scale="4" />
+    <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
+    <Property Name="MfgDate" Type="DateTime" Precision="3" />
+    <Property Name="BulkStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+    <Property Name="ReceiveDate" Type="DateTime" Precision="3" />
+    <Property Name="QCDate" Type="DateTime" Precision="3" />
+    <Property Name="PackOut" Type="Boolean" />
+    <Property Name="ReturnLocation" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="NoticeDate" Type="DateTime" Precision="3" />
+    <Property Name="ContainerColor" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
+    <Property Name="ContainerNotes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="BulkLabelNote" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ReceivedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="EnteredBy" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Carrier" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Name="LogNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ContainerType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="COAIncluded" Type="Boolean" />
+    <Property Name="MSDSIncluded" Type="Boolean" />
+    <Property Name="PercentSolids" Type="Int32" />
+    <Property Name="NCO" Type="Int32" />
+    <Property Name="TEW" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="PercentOH" Type="Int32" />
+    <Property Name="LogRecordStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+    <Property Name="ReceivedAsCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ReceivedAsName" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="flammable" Type="Boolean" />
+    <Property Name="freezer" Type="Boolean" />
+    <Property Name="refrigerator" Type="Boolean" />
+    <Property Name="OtherStorage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RestrictedQty" Type="Boolean" />
+    <Property Name="RestrictedAmt" Type="Decimal" Precision="10" Scale="2" />
   </EntityType>
 </Schema>

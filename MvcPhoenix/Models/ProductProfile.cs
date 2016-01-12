@@ -42,6 +42,7 @@ namespace MvcPhoenix.Models
         public int productnoteid { get; set; }
         
         public int? productdetailid { get; set; }
+        public List<SelectListItem> fnListOfProductCodes { get; set; }
 
         [Display(Name = "Note Date")]
         public DateTime? notedate { get; set; }
@@ -51,6 +52,9 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Reason Code")]
         public string reasoncode { get; set; }
+
+        public List<SelectListItem> ListOfReasonCodes { get; set; }
+
      }
 
     
@@ -226,10 +230,9 @@ namespace MvcPhoenix.Models
         [Display(Name = "SDS Contact Phone")]
         public string  sdscontactphone { get; set; }
 
-        [DataType(DataType.Date)]
         [Display(Name = "China Certification Date")]
-        public DateTime? chinacertificationdate { get; set; }
-        
+        public DateTime? chinacertificationdate { get; set; }        
+
         [Display(Name = "Label Contact Name")]
         public string labelcontactname { get; set; }
 
@@ -279,6 +282,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Business Unit/Division")]
         [Required]
+        [Range(1, 99, ErrorMessage = "Business Unit/Division is required.")]
         public int? masterdivisionid { get; set; }
         
         [Display(Name = "Discontinued")]

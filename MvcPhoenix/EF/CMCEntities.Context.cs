@@ -25,11 +25,9 @@ namespace MvcPhoenix.EF
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<tblBulk> tblBulk { get; set; }
         public virtual DbSet<tblBulkOrder> tblBulkOrder { get; set; }
         public virtual DbSet<tblBulkOrderItem> tblBulkOrderItem { get; set; }
         public virtual DbSet<tblBulkSupplier> tblBulkSupplier { get; set; }
-        public virtual DbSet<tblBulkUnKnown> tblBulkUnKnown { get; set; }
         public virtual DbSet<tblInvLog> tblInvLog { get; set; }
         public virtual DbSet<tblInvTrans> tblInvTrans { get; set; }
         public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
@@ -77,5 +75,8 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
         public virtual DbSet<tblShelfMaster> tblShelfMaster { get; set; }
+        public virtual DbSet<tblReasonCode> tblReasonCode { get; set; }
+        public virtual DbSet<tblBulk> tblBulk { get; set; }
+        public virtual DbSet<tblBulkUnKnown> tblBulkUnKnown { get; set; }
     }
 }

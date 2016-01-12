@@ -1,55 +1,106 @@
-﻿
-@using MvcPhoenix.Models
-@{}
+﻿@model MvcPhoenix.Models.Cas
+@{
+        
+    AjaxOptions AJaxOptionsForSave = new AjaxOptions()
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "dvCasModalBody",
+        InsertionMode = InsertionMode.Replace,
+        OnSuccess = "$('#dvCasEditModal').modal('hide')"
+    };
 
-<div class="row">
-    <div class="col-md-6 form-group">
-        <label>CAS Number</label>
-        <input class="form-control">
-    </div>
-    <div class="col-md-6 form-group">
-        <label>Chemical Name</label>
-        <input class="form-control">
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-3 form-group">
-        <label>Less Than</label>
-        <input type="checkbox" class="checkbox">
-    </div>
-    <div class="col-md-3 form-group">
-        <label>Percentage</label>
-        <input class="form-control">
-    </div>
-    <div class="col-md-3 form-group">
-        <label>Restricted Amt</label>
-        <input class="form-control">
-    </div>
-    <div class="col-md-3 form-group">
-        <label>Reportable Amt</label>
-        <input class="form-control">
-    </div>
-</div>
+    
+    // Update the List and close the modal
+    AjaxOptions AjaxOptionsForClose = new AjaxOptions()
+    {
+        HttpMethod = "GET",
+        UpdateTargetId = "dvCas",
+        OnSuccess = "$('#dvCasEditModal').modal('hide')",
+        OnFailure="alert('AJAX Error')"
+    };
+}
 
-<div class="row">
-    <div class="col-md-4 form-group">
-        <label>Pack on Receipt</label>
-        <input type="checkbox" class="checkbox">
+<div id="dvCasModal01">
+
+    @using (Ajax.BeginForm("Save", "Cas", AJaxOptionsForSave))
+    {
+
+    @Html.HiddenFor(m => m.casid)
+    @Html.HiddenFor(m => m.productdetailid)
+
+                <div class="row">
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(m => m.casnumber)
+                @Html.TextBoxFor(m => m.casnumber, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-group">
+                @Html.LabelFor(m => m.chemicalname)
+                @Html.TextBoxFor(m => m.chemicalname, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 form-group">
+                @Html.LabelFor(m => m.percentage)
+                @Html.TextBoxFor(m => m.percentage, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.LabelFor(m => m.restrictedqty)
+                @Html.CheckBox("restrictedqty", Model.restrictedqty != null && (bool)Model.restrictedqty)
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.LabelFor(m => m.restrictedamount)
+                @Html.TextBoxFor(m => m.restrictedamount, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.LabelFor(m => m.packonreceipt)
+                @Html.CheckBox("packonreceipt", Model.packonreceipt != null && (bool)Model.packonreceipt)
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-3 form-group">
+                @Html.LabelFor(m => m.reportableqty)
+                @Html.CheckBox("reportableqty", Model.reportableqty != null && (bool)Model.reportableqty)
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.LabelFor(m => m.reportableamount)
+                @Html.TextBoxFor(m => m.reportableamount, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.LabelFor(m => m.lessthan)
+                @Html.CheckBox("lessthan", Model.lessthan != null && (bool)Model.lessthan)
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.LabelFor(m => m.excludefromlabel)
+                @Html.CheckBox("excludefromlabel", Model.excludefromlabel != null && (bool)Model.excludefromlabel)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <input class="btn btn-success btn-block" type="submit" value="Save" />
+            </div>
+            <div class="col-md-6 form-group">
+                @Ajax.ActionLink("Close", "CasList", "Cas", new { id = @Model.productdetailid },
+                                 AjaxOptionsForClose,
+                                 new { @class = "btn btn-danger btn-block" })
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <span id="dvCasSaveResult">
+                @TempData["SaveResult"]
+            </span>
+        </div>
     </div>
-    <div class="col-md-4 form-group">
-        <label>Reportable Qty</label>
-        <input type="checkbox" class="checkbox">
-    </div>
-    <div class="col-md-4 form-group">
-        <label>Exclude From Label</label>
-        <input type="checkbox" class="checkbox">
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6 form-group">
-        <input class="btn btn-success btn-block" type="button" value="Save" />
-    </div>
-    <div class="col-md-6 form-group">
-        <input class="btn btn-danger btn-block" type="button" data-dismiss="modal" value="Close" />
-    </div>
+
+
+    }
+
+
 </div>
