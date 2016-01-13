@@ -1,52 +1,73 @@
 ﻿@model List<MvcPhoenix.Models.Cas>
-@{
-    
-    AjaxOptions AjaxOptionsForDetail = new AjaxOptions()
-    {
-        HttpMethod = "GET",
-        UpdateTargetId = "dvCasModalBody",
-        OnSuccess = "$('#dvCasEditModal').modal('show')"
-    };
-    
-}
-<label>CAS | </label>
-@Ajax.ActionLink("+ Add New Cas", "Create", "Cas", new { id = -1 }, AjaxOptionsForDetail)
 
-<div class="form-group table-responsive">
-    <table class="table table-striped">
-        <tr>
-            <th></th>
-            <th>CAS Number</th>
-            <th>Chemical Name</th>
-            <th>Less Than</th>
-            <th>Percentage</th>
-            <th>Restricted Qty</th>
-            <th>Restricted Amt</th>
-            <th>Pack on Receipt</th>
-            <th>Reportable Qty</th>
-            <th>Exclude From Label</th>
-            <th>Reportable Amt</th>
-            <th>Action</th>
-        </tr>
+<div id="dvCasList">
 
-        @foreach(var item in Model)
+    <label>CAS | </label>
+    @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = Model[0].productdetailid }, new AjaxOptions
         {
-        <tr>
-            <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-            <td>@item.casnumber</td>
-            <td>@item.chemicalname</td>
-            <td><input type="checkbox" checked="@item.lessthan" disabled="disabled"></td>
-            <td>@item.percentage</td>
-            <td><input type="checkbox" checked="@item.restrictedqty" disabled="disabled"></td>
-            <td>@item.restrictedamount</td>
-            <td><input type="checkbox" checked="@item.packonreceipt" disabled="disabled"></td>
-            <td><input type="checkbox" checked="@item.reportableqty" disabled="disabled"></td>
-            <td><input type="checkbox" checked="@item.excludefromlabel" disabled="disabled"></td>
-            <td>@item.reportableamount</td>
-            <td>
-                @Ajax.ActionLink("Edit", "Edit", "Cas", new { id = @item.casid }, AjaxOptionsForDetail)
-            </td>
-        </tr>
-        }
-    </table>
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "GET",
+            UpdateTargetId = "dialogPlaceholder",
+            OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+        })
+
+    <div class="form-group table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th></th>
+                <th>CAS Number</th>
+                <th>Chemical Name</th>
+                <th>Less Than</th>
+                <th>Percentage</th>
+                <th>Restricted Qty</th>
+                <th>Restricted Amt</th>
+                <th>Pack on Receipt</th>
+                <th>Reportable Qty</th>
+                <th>Exclude From Label</th>
+                <th>Reportable Amt</th>
+                <th>Action</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Ajax.ActionLink(" ", "DeleteCAS", "Products", new { id = @item.casid },
+                             new AjaxOptions
+                             {
+                                 Confirm = "Delete This Product Note?",
+                                 HttpMethod = "GET",
+                                 OnSuccess = "UpdateCasList"
+                             }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                    </td>
+                    <td>@item.casnumber</td>
+                    <td>@item.chemicalname</td>
+                    <td><input type="checkbox" checked="@item.lessthan" disabled="disabled"></td>
+                    <td>@item.percentage</td>
+                    <td><input type="checkbox" checked="@item.restrictedqty" disabled="disabled"></td>
+                    <td>@item.restrictedamount</td>
+                    <td><input type="checkbox" checked="@item.packonreceipt" disabled="disabled"></td>
+                    <td><input type="checkbox" checked="@item.reportableqty" disabled="disabled"></td>
+                    <td><input type="checkbox" checked="@item.excludefromlabel" disabled="disabled"></td>
+                    <td>@item.reportableamount</td>
+                    <td>
+                        @Ajax.ActionLink("Edit", "EditCAS", "Products", new { id = @item.casid }, new AjaxOptions
+                   {
+                       InsertionMode = InsertionMode.Replace,
+                       HttpMethod = "GET",
+                       UpdateTargetId = "dialogPlaceholder",
+                       OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                   })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+
 </div>
+<script type="text/javascript">
+    function UpdateCasList() {
+        $("#dvCasList").load('@Url.Action("CasList","Products",new {id=@Model[0].productdetailid})');
+    }
+</script>

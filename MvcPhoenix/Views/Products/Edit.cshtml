@@ -895,7 +895,7 @@
                     <div class="form-group col-md-12">
                         <div>
                             <span id="dvLogNotes">
-                                @{Html.RenderAction("LogNotesList", "ProductNotes", new { id = @Model.productdetailid });}
+                                @{Html.RenderAction("LogNotesList", "Products", new { id = @Model.productdetailid });}
                             </span>
                         </div>
                     </div>
@@ -906,7 +906,7 @@
                         <div id="">
                             <span id="dvCas">
                                 @*@Html.Partial("~/Views/Products/_Cas.cshtml")*@
-                                @{Html.RenderAction("CasList", "Cas", new { id = @Model.productdetailid });}
+                                @{Html.RenderAction("CasList", "Products", new { id = @Model.productdetailid });}
                                 </span>
                 </div>
                     </div>

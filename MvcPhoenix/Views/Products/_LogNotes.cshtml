@@ -1,39 +1,62 @@
 ﻿@model List<MvcPhoenix.Models.ProductNote>
-    @{
-        // The target container that holds the modal CRUD has to be in the parent view not in this view
-        // dvLogNotesModalBody is in Edit.cshtml
-        // dvLogNotesEditModal is in Edit.cshtml
-        
-        AjaxOptions AjaxOptionsForDetail = new AjaxOptions()
-        {
-            HttpMethod = "GET",
-            UpdateTargetId = "dvLogNotesModalBody",
-            OnSuccess = "$('#dvLogNotesEditModal').modal('show')"
-        };
-           
-    }
+
+<div id="dvLogNotes">
 
     <label>Notes | </label>
-    @Ajax.ActionLink("+ Add New Note", "Create", "ProductNotes", new { id = -1 }, AjaxOptionsForDetail)
+    @Ajax.ActionLink("+ Add New Note", "CreateProductNote", "Products", new { id = @Model[0].productdetailid }, new AjaxOptions
+    {
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "GET",
+    UpdateTargetId = "dialogPlaceholder",
+    OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+    })
     <div class="form-group table-responsive">
         <table class="table table-striped">
             <tr>
-                <th>&nbsp;</th><th>Date</th><th>Notes</th><th>Reason Code</th><th>Action</th>
+                <th>&nbsp;</th>
+                <th>Date</th>
+                <th>Notes</th>
+                <th>Reason Code</th>
+                <th>Action</th>
             </tr>
-
             @foreach (var item in Model)
             {
                 <tr>
-                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-                    <td>@String.Format("{0:dd MMM yyy}", @item.notedate)</td>
+                    <td>
+                            @Ajax.ActionLink(" ", "DeleteProductNote", "Products", new { id = @item.productnoteid, ParentID = Model[0].productdetailid },
+                             new AjaxOptions
+                             {   Confirm = "Delete This Product Note?",
+                                 HttpMethod = "GET",
+                                 OnSuccess = "UpdateProductNotesList"
+                             }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                        
+                    </td>
+                    <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
                     <td>@item.notes</td>
                     <td>@item.reasoncode</td>
                     <td>
-                        @Ajax.ActionLink("Edit", "Edit", "ProductNotes", new { id = @item.productnoteid }, AjaxOptionsForDetail)
+                        @Ajax.ActionLink("Edit", "EditProductNote", "Products", new { id = @item.productnoteid }, new AjaxOptions
+                   {
+                       InsertionMode = InsertionMode.Replace,
+                       HttpMethod = "GET",
+                       UpdateTargetId = "dialogPlaceholder",
+                       OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                   })
                     </td>
                 </tr>
             }
         </table>
     </div>
+</div>
+
+<script type="text/javascript">
+    function UpdateProductNotesList() {
+        $("#dvLogNotes").load('@Url.Action("LogNotesList","Products",new{id=@Model[0].productdetailid})');
+    }
+</script>
+
+
+
+
 
 

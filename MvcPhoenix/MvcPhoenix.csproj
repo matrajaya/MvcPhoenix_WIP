@@ -196,7 +196,6 @@
     <Compile Include="Controllers\AccountController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controllers\CasController.cs" />
     <Compile Include="Controllers\ClientDetailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
@@ -204,7 +203,6 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MiscController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
-    <Compile Include="Controllers\ProductNotesController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ReceivingController.cs" />
     <Compile Include="Controllers\ReplenishmentsController.cs" />

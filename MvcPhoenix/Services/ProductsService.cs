@@ -25,8 +25,8 @@ namespace MvcPhoenix.Models
                 string sb = "";
                 //sb = sb + string.Format("<select name='{0}' id='{1}' class='{2}'  >", divid, divid, "form-control"); - Iffy
                 sb = sb + string.Format("<select name='{0}' id='{1}' class='{2}' onchange='getid(this)' >", divid, divid, "form-control");
-                
-                sb = sb + string.Format("<option value='{0}' selected=true >{1}</option>","0","Product Code");
+
+                sb = sb + string.Format("<option value='{0}' selected=true >{1}</option>", "0", "Product Code");
                 foreach (var item in qry)
                 {
                     sb = sb + string.Format("<option value={0}> {1} - {2} - {3} </option>", item.ProductDetailID.ToString(), item.ProductCode, item.MasterCode, item.ProductName);
@@ -56,9 +56,9 @@ namespace MvcPhoenix.Models
                 gloves.Add(new SelectListItem { Value = "NITRILE", Text = "NITRILE" });
                 PP.ListOfGloves = gloves;
 
-                
+
                 PP.ListOfEquivalents = (from t in db.tblProductDetail where t.ProductMasterID == PP.productmasterid && t.ProductCode != PP.productcode select new SelectListItem { Value = t.ProductCode, Text = t.ProductCode }).ToList();
-                
+
                 PP.ListOfEndUsesForCustoms = (from t in db.tblEndUseForCustoms orderby t.EndUse select new SelectListItem { Value = t.EndUse, Text = t.EndUse }).ToList();
                 PP.ListOfEndUsesForCustoms.Insert(0, new SelectListItem { Value = "0", Text = "" });
 
@@ -108,18 +108,18 @@ namespace MvcPhoenix.Models
                                        }).ToList();
 
                 // example of a left outer join with concept of Flattening the join (convert to use a SQL View later)
-                var qshelf= (from t in db.tblShelfMaster
-                             join p in db.tblPackage on t.PackageID equals p.PackageID into temp
-                             from m in temp.DefaultIfEmpty()
-                             where t.ProductDetailID == PP.productdetailid
+                var qshelf = (from t in db.tblShelfMaster
+                              join p in db.tblPackage on t.PackageID equals p.PackageID into temp
+                              from m in temp.DefaultIfEmpty()
+                              where t.ProductDetailID == PP.productdetailid
                               select new ShelfMaster
                               {
                                   shelfid = t.ShelfID,
                                   warehouse = t.Warehouse,
                                   size = t.Size,
                                   bin = t.Bin,
-                                  packageid=t.PackageID,
-                                  packagepartnumber=m.PartNumber,
+                                  packageid = t.PackageID,
+                                  packagepartnumber = m.PartNumber,
                                   groundhazard = t.GroundHazard,
                                   airhazard = t.AirHazard,
                                   notes = t.Notes,
@@ -130,15 +130,13 @@ namespace MvcPhoenix.Models
                                   reorderqty = t.ReorderQty
                               }).ToList();
 
-                
+
                 PP.ListOfShelfItems = qshelf;
 
             }
             return PP;
         }
 
-
-        // Pass a PP, return original plus tblProductDetail properties
         public static ProductProfile FillFromPD(ProductProfile PP)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -233,7 +231,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-        // Pass a PP, return original plus tblProductMaster properties
         public static ProductProfile FillFromPM(ProductProfile PP)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -372,7 +369,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-
         public static int fnProductMasterID(int id)
         {
             // return MasterID of a Detail
@@ -398,7 +394,6 @@ namespace MvcPhoenix.Models
                 return false;
             }
         }
-
 
         public static void SaveProductDetail(ProductProfile PP)
         {
@@ -462,7 +457,7 @@ namespace MvcPhoenix.Models
                 q.GRNOSNAME = PP.grnosname;
                 q.GRNSHIPNAMED = PP.grnshipnamed;
                 q.GRNTREMACARD = PP.grntremacard;
-                
+
                 q.AIRUNNUMBER = PP.airunnumber;
                 q.AIRPKGRP = PP.airpkgrp;
                 q.AIRHAZSUBCL = PP.airhazsubcl;
@@ -485,7 +480,7 @@ namespace MvcPhoenix.Models
                 q.SEAHAZMAT = PP.seahazmat;
                 q.SEAEMSNO = PP.seaemsno;
                 q.SEAMFAGNO = PP.seamfagno;
-                
+
                 q.LastUpDate = DateTime.Now;
 
                 //q.Company_MDB = pd.company_mdb;
@@ -497,7 +492,6 @@ namespace MvcPhoenix.Models
 
 
         }
-
 
         public static void SaveProductMaster(ProductProfile pm)
         {
@@ -650,7 +644,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-
         private static void fnArchiveProductMaster(int id)
         {
             // Add logic to copy pm record to tblProductMasterArchive
@@ -685,13 +678,12 @@ namespace MvcPhoenix.Models
             }
         }
 
-
         public static UN fnGetUN(string id)
         {
             // fill a json object for View use
             using (var db = new EF.CMCSQL03Entities())
             {
-                UN obj = new UN(); 
+                UN obj = new UN();
                 var q = (from t in db.tblUN orderby t.UNID descending where t.UNNumber == id select t).FirstOrDefault();
                 obj.unid = q.UNID;
                 obj.unnumber = q.UNNumber;
@@ -706,5 +698,147 @@ namespace MvcPhoenix.Models
             }
         }
 
+
+        // -----------------------------------------------
+        #region ProductNotes Methods
+        public static ProductNote fnCreateProductNote(int id)
+        {
+            ProductNote PN = new ProductNote();
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                PN.productnoteid = -1;
+                PN.productdetailid = id;  // important 
+                PN.reasoncode = null;
+                PN.notedate = DateTime.Now;
+                PN.notes = null;
+                PN.ListOfReasonCodes = (from t in db.tblReasonCode orderby t.Reason select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
+                PN.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
+            }
+            return PN;
+        }
+
+        public static ProductNote fnGetProductNote(int id)
+        {
+            ProductNote PN = new ProductNote();
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var q = (from t in db.tblProductNotes where t.ProductNoteID == id select t).FirstOrDefault();
+                PN.productnoteid = q.ProductNoteID;
+                PN.productdetailid = q.ProductDetailID;
+                PN.reasoncode = q.ReasonCode;
+                PN.notedate = q.NoteDate;
+                PN.notes = q.Notes;
+                PN.ListOfReasonCodes = (from t in db.tblReasonCode orderby t.Reason select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
+                PN.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
+            }
+            return PN;
+        }
+
+        public static int fnSaveProductNoteToDB(ProductNote PN)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                if (PN.productnoteid == -1)
+                {
+                    var newrec = new EF.tblProductNotes();
+                    db.tblProductNotes.Add(newrec);
+                    db.SaveChanges();
+                    PN.productnoteid = newrec.ProductNoteID;
+                }
+                var q = (from t in db.tblProductNotes where t.ProductNoteID == PN.productnoteid select t).FirstOrDefault();
+                q.ProductDetailID = PN.productdetailid;
+                q.NoteDate = PN.notedate;
+                q.Notes = PN.notes;
+                q.ReasonCode = PN.reasoncode;
+                db.SaveChanges();
+                return q.ProductNoteID;
+            }
+        }
+
+        public static int fnDeleteProductNote(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                db.Database.ExecuteSqlCommand("Delete from tblProductNotes Where ProductNoteID=" + id);
+            }
+            return id;
+        }
+        #endregion
+        // -----------------------------------------------
+
+
+        // -----------------------------------------------
+        #region CAS Methods
+        public static Cas fnCreateCAS(int id)
+        {
+            Cas CS = new Cas();
+            CS.casid = -1;
+            CS.productdetailid = id;
+            return CS;
+        }
+
+        public static Cas fnGetCAS(int id)
+        {
+            Cas CS = new Cas();
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var q = (from t in db.tblCAS where t.CASID == id select t).FirstOrDefault();
+                CS.casid = q.CASID;
+                CS.productdetailid = q.ProductDetailID;
+                CS.casnumber = q.CasNumber;
+                CS.chemicalname = q.ChemicalName;
+                CS.percentage = q.Percentage;
+                CS.restrictedqty = q.RestrictedQty;
+                CS.restrictedamount = q.RestrictedAmount;
+                CS.packonreceipt = q.PackOnReceipt;
+                CS.reportableqty = q.ReportableQty;
+                CS.reportableamount = q.ReportableAmount;
+                CS.lessthan = q.LessThan;
+                CS.excludefromlabel = q.ExcludeFromLabel;
+                return CS;
+            }
+        }
+
+        public static int fnSaveCASToDB(Cas CS)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                if (CS.casid == -1)
+                {
+                    var newrec = new EF.tblCAS();
+                    db.tblCAS.Add(newrec);
+                    db.SaveChanges();
+                    CS.casid = newrec.CASID;
+                }
+                var q = (from t in db.tblCAS where t.CASID == CS.casid select t).FirstOrDefault();
+                q.ProductDetailID = CS.productdetailid;
+                q.CasNumber = CS.casnumber;
+                q.ChemicalName = CS.chemicalname;
+                q.Percentage = CS.percentage;
+                q.RestrictedQty = CS.restrictedqty;
+                q.RestrictedAmount = CS.restrictedamount;
+                q.PackOnReceipt = CS.packonreceipt;
+                q.ReportableQty = CS.reportableqty;
+                q.ReportableAmount = CS.reportableamount;
+                q.LessThan = CS.lessthan;
+                q.ExcludeFromLabel = CS.excludefromlabel;
+                db.SaveChanges();
+                return q.CASID;
+            }
+        }
+                       
+        public static int fnDeleteCAS(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                db.Database.ExecuteSqlCommand("Delete from tblCAS Where CASID=" + id);
+            }
+            return id;
+        }
+
+        #endregion
+        // -----------------------------------------------
+
     }
 }
+

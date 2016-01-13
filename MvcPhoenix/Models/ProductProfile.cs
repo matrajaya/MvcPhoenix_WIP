@@ -40,7 +40,7 @@ namespace MvcPhoenix.Models
     {
         [Display(Name = "Product Note ID")]
         public int productnoteid { get; set; }
-        
+
         public int? productdetailid { get; set; }
         public List<SelectListItem> fnListOfProductCodes { get; set; }
 
@@ -55,7 +55,12 @@ namespace MvcPhoenix.Models
 
         public List<SelectListItem> ListOfReasonCodes { get; set; }
 
-     }
+        // List prop  - This should actually point to an SQL View !!
+        //public List<EF.tblProductNotes> ListOfProductNotes { get; set; }
+
+        //public List<ProductNote> ListOfProductNotesA { get; set; }
+
+    }
 
     
 

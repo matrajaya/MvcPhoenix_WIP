@@ -122,6 +122,121 @@ namespace MvcPhoenix.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
+        #region LogNotes - ProductNotes
+        public ActionResult LogNotesList(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var obj = (from t in db.tblProductNotes
+                           where t.ProductDetailID == id
+                           select new ProductNote{
+                productnoteid = t.ProductNoteID,
+                productdetailid = t.ProductDetailID,
+                notedate =t.NoteDate,
+                notes = t.Notes,
+                reasoncode = t.ReasonCode,
+                ListOfReasonCodes = (from r in db.tblReasonCode orderby r.Reason select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                }).ToList();
+                return PartialView("~/Views/Products/_LogNotes.cshtml", obj);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CreateProductNote(int id)
+        {
+            // id=ProductDetailID as the FK
+            var PN = ProductsService.fnCreateProductNote(id);
+            return PartialView("~/Views/Products/_LogNotesModal.cshtml", PN);
+        }
+
+        [HttpGet]
+        public ActionResult EditProductNote(int id)
+        {
+            // id=ProductNoteID as the PK
+            var PN = ProductsService.fnGetProductNote(id);
+            return PartialView("~/Views/Products/_LogNotesModal.cshtml", PN);
+        }
+
+        [HttpPost]
+        public ActionResult SaveProductNote(ProductNote PN)
+        {
+            int pk = ProductsService.fnSaveProductNoteToDB(PN);
+            return Content("Data Updated at " + DateTime.Now);
+
+        }
+
+        [HttpGet]
+        public ActionResult DeleteProductNote(int id, int ParentID)
+        {
+            int pk = ProductsService.fnDeleteProductNote(id);
+            return null;
+        }
+        #endregion
+
+        #region CAS
+
+        [HttpGet]
+        public ActionResult CasList(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var obj = (from t in db.tblCAS
+                           where t.ProductDetailID == id
+                           select new Cas
+                           {
+                               casid = t.CASID,
+                               productdetailid = t.ProductDetailID,
+                               casnumber = t.CasNumber,
+                               chemicalname = t.ChemicalName,
+                               percentage = t.Percentage,
+                               restrictedqty = t.RestrictedQty,
+                               restrictedamount = t.RestrictedAmount,
+                               packonreceipt = t.PackOnReceipt,
+                               reportableqty = t.ReportableQty,
+                               reportableamount = t.ReportableAmount,
+                               lessthan = t.LessThan,
+                               excludefromlabel = t.ExcludeFromLabel
+                           }).ToList();
+                return PartialView("~/Views/Products/_Cas.cshtml", obj);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CreateCAS(int id)
+        {
+            // id = ProductDetailID
+            var CS = ProductsService.fnCreateCAS(id);
+            return PartialView("~/Views/Products/_CasModal.cshtml", CS);
+        }
+
+        [HttpGet]
+        public ActionResult EditCAS(int id)
+        {
+            // id= CASID
+            var CS = ProductsService.fnGetCAS(id);
+            return PartialView("~/Views/Products/_CasModal.cshtml", CS);
+        }
+
+        [HttpPost]
+        public ActionResult SaveCAS(Cas CS)
+        {
+            int pk = ProductsService.fnSaveCASToDB(CS);
+            return Content("Data Updated at " + DateTime.Now);
+        }
+
+        public ActionResult DeleteCAS(int id)
+        {
+            int pk = ProductsService.fnDeleteCAS(id);
+            return null;
+        }
+
+
+
+
+        #endregion
+
+
+
 
         #region PC Testing
 
