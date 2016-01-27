@@ -397,6 +397,7 @@
     <Compile Include="Models\ProductMaster.cs" />
     <Compile Include="Models\ProductProfile.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\ReceivingViewModels.cs" />
     <Compile Include="Models\ReplenishmentViewModel.cs" />
     <Compile Include="Models\ShelfMaster.cs" />
     <Compile Include="Models\UserModels.cs" />
@@ -655,6 +656,10 @@
     <Content Include="Views\Receiving\_OpenOrderItems.cshtml" />
     <Content Include="Views\Products\_ShelfSizeModal.cshtml" />
     <Content Include="Views\Products\_ShelfSize.cshtml" />
+    <Content Include="Views\Receiving\EnterPrePack.cshtml" />
+    <Content Include="Views\Receiving\SelectPrePack.cshtml" />
+    <Content Include="Views\Receiving\SelectProduct.cshtml" />
+    <Content Include="Views\Products\Edit_Previous.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -42,20 +42,20 @@ namespace MvcPhoenix.Controllers
         {
             // Called with a parameter BulkID, build an obj and return edit view
             ViewBag.SearchName = null;
-            BulkContainer obj = new BulkContainer();
+            BulkContainerViewModel obj = new BulkContainerViewModel();
             obj = fnFillBulkContainer(id);
             return View(obj);
         }
 
 
-        private BulkContainer fnFillBulkContainer(int id)
+        private BulkContainerViewModel fnFillBulkContainer(int id)
         {
             MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
             var qry = (from t in db.tblBulk
                        join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
                        let cname = (from c in db.tblClient where c.ClientID == t2.ClientID select c.ClientName).FirstOrDefault()
                        where t.BulkID == id
-                       select new BulkContainer
+                       select new BulkContainerViewModel
                        {
                            clientid = t2.ClientID,
                            clientname = cname,

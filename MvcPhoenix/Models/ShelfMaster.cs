@@ -19,6 +19,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "ProductDetailID")]
         public int productdetailid { get; set; }
 
+
         [Display(Name = "Warehouse")]
         public string warehouse { get; set; }
 

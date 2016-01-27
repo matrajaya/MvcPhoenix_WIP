@@ -893,21 +893,23 @@
             </div>
             <div id="misc" class="panel-body collapse">
 
-                <div class="row">
+                @*<div class="row">
                     <div class="form-group col-md-12">
                         <div id="">
                             @Html.Partial("~/Views/Products/_LogNotes.cshtml")
+                            @{Html.RenderAction("LogNotesList", "Products", new { id = @Model.productdetailid });}
                         </div>
                     </div>
-                </div>
+                </div>*@
 
-                <div class="row">
+                @*<div class="row">
                     <div class="form-group col-md-12">
                         <div id="">
                             @Html.Partial("~/Views/Products/_Cas.cshtml")
+                            @{Html.RenderAction("CasList", "Products", new { id = @Model.productdetailid });}
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Waste Code</label>
