@@ -73,7 +73,8 @@ namespace MvcPhoenix.Controllers
                 }
                 else
                 {
-                    db.Dispose(); return Content("<div class='col-md-6'><label>No Order Recomendations as of " + DateTime.Now.ToString() + "</label></div>");
+                    db.Dispose(); 
+                    return Content("<div class='col-md-6'><label>No Order Recomendations as of " + DateTime.Now.ToString() + "</label></div>");
                 }
             }
             else

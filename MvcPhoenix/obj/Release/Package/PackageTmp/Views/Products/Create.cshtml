@@ -16,15 +16,7 @@
         </div>
     </div>
     <!-- /.Page Heading -->
-    @using (Ajax.BeginForm("SaveProductProfile", "Products",
-    new AjaxOptions
-    {
-        OnBegin = "$('#dvSaveResult').html('')",
-        HttpMethod = "POST",
-        UpdateTargetId = "dvSaveResult",
-        LoadingElementId = "dvspinner",
-        InsertionMode = InsertionMode.Replace
-    }))
+    @using (Html.BeginForm("SaveProductProfile","Products"))
     {
 
     <!-- do not remove -->
@@ -51,7 +43,7 @@
                     <div class="form-group col-md-6">
                         <label>Business Unit / Division</label>
                         @Html.DropDownListFor(m => m.masterdivisionid, Model.ListOfDivisions, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.masterdivisionid)
+                        @*@Html.ValidationMessageFor(m => m.masterdivisionid)*@
                     </div>
                 </div>
                 <div class="row">
@@ -143,8 +135,8 @@
                 <hr />
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <div id="">
-                            @Html.Partial("~/Views/Products/_ShelfSize.cshtml")
+                        <div>
+                            <label>Note: You can add shelf sizes after Product is saved.</label>
                         </div>
                     </div>
                 </div>
@@ -350,7 +342,7 @@
                                 <th style="background-color: blue; color: white">Health</th>
                                 <th style="text-align: center">
                                     @Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
-                                    @Html.ValidationMessageFor(m => m.health)
+                                @Html.ValidationMessageFor(m => m.health)
                             </th>
                             </tr>
                             <tr>
@@ -365,7 +357,7 @@
                                 <th style="text-align: center">
                                     @Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
                                     @Html.ValidationMessageFor(m => m.reactivity)
-                            </th>
+                                </th>
                             </tr>
                         </table>
                     </div>
@@ -895,16 +887,16 @@
 
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <div id="">
-                            @Html.Partial("~/Views/Products/_LogNotes.cshtml")
+                        <div>
+                            <label>Note: Product Notes can be added after you save the Profile</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <div id="">
-                            @Html.Partial("~/Views/Products/_Cas.cshtml")
+                        <div>
+                            <label>Note: CAS can be added after you save the Profile</label>
                         </div>
                     </div>
                 </div>

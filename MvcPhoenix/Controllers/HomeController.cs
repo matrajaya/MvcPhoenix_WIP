@@ -6,28 +6,13 @@ using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
+        //[AllowAnonymous]
         public ActionResult Index()
         {
-            ViewBag.Message = "Work In Progress";
-
             return View();
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your app description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
 }

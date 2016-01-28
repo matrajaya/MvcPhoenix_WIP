@@ -61,7 +61,6 @@ namespace MvcPhoenix.Controllers
             PP.productmasterid = ProductsService.fnProductMasterID(productdetailid3);
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
-            //return View("~/Views/Products/ProductProfileEdit.cshtml", PP);  - Iffy
             return View("~/Views/Products/Create.cshtml", PP);
         }
 
@@ -69,27 +68,12 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveProductProfile(ProductProfile PPVM)
         {
-            System.Threading.Thread.Sleep(1000);    // dev
-            ProductProfile obj = new ProductProfile();
-
-            if (TryUpdateModel(obj))
-            {
-                if (ProductsService.fnSaveProductProfile(obj)==true)
-                {
-                    return Content("Profile Updated At " + DateTime.Now.ToString());
-                }
-                else
-                {
-                    return Content("DB Backend Error At " + DateTime.Now.ToString());
-                }
-            }
-            else
-            {
-                return Content("Model Invalid At " + DateTime.Now.ToString());
-            }
+            System.Threading.Thread.Sleep(500);    // dev, remove later
+            // the call to the service always returns a ProductDetailID
+            int pk = ProductsService.fnSaveProductProfile(PPVM);
+            return RedirectToAction("Edit", new { id = pk });
         }
-        
-
+                
         [HttpGet]
         public ActionResult DeActivateProductMaster(int id)
         {
@@ -137,6 +121,7 @@ namespace MvcPhoenix.Controllers
                 reasoncode = t.ReasonCode,
                 ListOfReasonCodes = (from r in db.tblReasonCode orderby r.Reason select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
                 }).ToList();
+                ViewBag.ParentKey = id;
                 return PartialView("~/Views/Products/_LogNotes.cshtml", obj);
             }
         }
@@ -197,6 +182,7 @@ namespace MvcPhoenix.Controllers
                                lessthan = t.LessThan,
                                excludefromlabel = t.ExcludeFromLabel
                            }).ToList();
+                ViewBag.ParentKey = id;
                 return PartialView("~/Views/Products/_Cas.cshtml", obj);
             }
         }

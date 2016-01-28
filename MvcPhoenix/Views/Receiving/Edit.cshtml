@@ -1,9 +1,11 @@
 ﻿@model MvcPhoenix.Models.BulkContainerViewModel
+
 @{
     // View to hold and post a BulkContainerViewModel
     if (Model.bulkid == -1)
     {
-        ViewBag.Title = "New Receipt - Bulk Container";
+        ViewBag.Title = "Receive Bulk Container";
+        ViewBag.BulkNew = "New";
     }
     else
     {
@@ -19,24 +21,24 @@
             <img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
         </div>
         <div class="col-lg-12">
-            <h3 class="page-header">
-                @ViewBag.Title | @Model.clientname <small> ( BulkID: @Model.bulkid.ToString() )</small>
-            </h3>
+            <h1 class="page-header">
+                @ViewBag.Title <small>@ViewBag.BulkNew</small>
+            </h1>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-lg-12 row">
+    <div class="form-group row">
+        <div class="col-lg-12 ">
             <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Receiving Main", "Index", "Receiving")
+            <span class="pull-right label label-info">Bulk Id: @Model.bulkid.ToString()</span>
         </div>
     </div>
     <!-- /.Page Heading -->
+
     @using (Html.BeginForm("SaveContainer", "Receiving"))
     {
-
     <!-- do not remove -->
         @Html.HiddenFor(m => m.isknownmaterial)
         @Html.HiddenFor(m => m.bulkid)
-        @Html.HiddenFor(m => m.clientid)
 
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -47,35 +49,47 @@
                     <div class="form-group col-md-12">
                         <label>Master Code - Name</label>
                         @Html.DropDownListFor(m => m.productmasterid, Model.ListOfProductMasters, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.productmasterid)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Date Received</label>
-                        @Html.TextBoxFor(m => m.receivedate, new { @class = "date-picker form-control" })
+                        @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.receivedate)
                     </div>
-
+                    <div class="form-group col-md-3">
+                        <label>Client</label>
+                        @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.clientname)
+                    </div>
                     <div class="form-group col-md-3">
                         <label>Carrier</label>
                         @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.carrier)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Warehouse</label>
                         @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.warehouse)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Current Weight</label>
-                        @Html.TextBoxFor(m => m.currentweight, new { @class = "form-control", disabled = "disabled" })
+                        @Html.TextBoxFor(m => m.currentweight, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.currentweight)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Receive Weight</label>
                         @Html.TextBoxFor(m => m.receiveweight, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.receiveweight)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Entered By</label>
                         @Html.TextBoxFor(m => m.enteredby, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.enteredby)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Received By</label>
                         @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.receivedby)
                     </div>
                 </div>
             </div>
@@ -90,28 +104,34 @@
                     <div class="form-group col-md-3">
                         <label>Lot Number</label>
                         @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.lotnumber)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Date Of Manufacture</label>
-                        @Html.TextBoxFor(m => m.mfgdate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.mfgdate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Expiration Date</label>
-                        @Html.TextBoxFor(m => m.expirationdate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = " date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.expirationdate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cease Ship Date</label>
-                        @Html.TextBoxFor(m => m.ceaseshipdate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.ceaseshipdate)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>QC Date</label>
-                        @Html.TextBoxFor(m => m.qcdate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.qcdate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Bulk Status</label>
-                        @Model.bulkstatus
+                        @Html.TextBoxFor(m => m.bulkstatus, new { @class = "form-control", @readonly = "readonly" })
+                        @*@Model.bulkstatus*@
                         @Html.HiddenFor(m => m.bulkstatus)
                     </div>
                     <div class="clearfix"></div>
@@ -128,14 +148,17 @@
                     <div class="form-group col-md-12">
                         <label>Container Note</label>
                         @Html.TextAreaFor(m => m.containernotes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.containernotes)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Container Color</label>
                         @Html.TextBoxFor(m => m.containercolor, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.containercolor)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Bin</label>
                         @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.bin)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Return Location</label>
@@ -145,42 +168,15 @@
                     <div class="form-group col-md-3">
                         <label>Container Type</label>
                         @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.containertype)
                     </div>
                 </div>
-
-
-                <div class="row">
-                    <div class="form-group col-md-3">
-                        <label>Unit Of Measure</label>
-                        @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>COA Included?</label>
-                        @Html.CheckBox("coaincluded", Model.coaincluded != null && (bool)Model.coaincluded, new { @class = "checkbox" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>MSDS Included?</label>
-                        @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Other Storage</label>
-                        @Html.TextBoxFor(m => m.otherstorage, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label>Bulk Label Note</label>
-                        @Html.TextBoxFor(m => m.bulklabelnote, new { @class = "form-control" })
-                    </div>
-
-                </div>
-
             </div>
         </div>
-
+        
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#otherinfopan"><i class="fa fa-file-text-o fa-fw"></i> Product Profile Information <small>R/O</small></h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#otherinfopan"><i class="fa fa-file-text-o fa-fw"></i>Other Information</h3>
             </div>
             <div id="otherinfopan" class="panel-body collapse in">
                 <div class="row">
@@ -200,8 +196,24 @@
                         <label>Packout On Receipt</label>
                         @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox", disabled = "disabled" })
                     </div>
-
-
+                    <div class="form-group col-md-3">
+                        <label>COA Included?</label>
+                        @Html.CheckBox("coaincluded", Model.coaincluded != null && (bool)Model.coaincluded, new { @class = "checkbox" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>MSDS Included?</label>
+                        @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Unit Of Measure</label>
+                        @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.um)
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Bulk Label Note</label>
+                        @Html.TextBoxFor(m => m.bulklabelnote, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.bulklabelnote)
+                    </div>
                 </div>
             </div>
         </div>
@@ -227,17 +239,3 @@
         </div>
     }
 </div>
-
-
-<script type="text/javascript">
-
-
-    $(document).ready(function () {
-        $("button").click(function () {
-            $('.date-picker').datepicker();
-        });
-    });
-
-
-
-</script>

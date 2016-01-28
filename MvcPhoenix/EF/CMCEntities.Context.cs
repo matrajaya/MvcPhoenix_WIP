@@ -25,18 +25,12 @@ namespace MvcPhoenix.EF
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<tblBulk> tblBulk { get; set; }
         public virtual DbSet<tblBulkOrder> tblBulkOrder { get; set; }
         public virtual DbSet<tblBulkOrderItem> tblBulkOrderItem { get; set; }
         public virtual DbSet<tblBulkSupplier> tblBulkSupplier { get; set; }
-        public virtual DbSet<tblInvLog> tblInvLog { get; set; }
-        public virtual DbSet<tblInvTrans> tblInvTrans { get; set; }
-        public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
-        public virtual DbSet<tblOrderItemArchive> tblOrderItemArchive { get; set; }
-        public virtual DbSet<tblPMNote> tblPMNote { get; set; }
-        public virtual DbSet<tblReportCriteria> tblReportCriteria { get; set; }
-        public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }
-        public virtual DbSet<tblTransType> tblTransType { get; set; }
-        public virtual DbSet<tblOrderMasterArchive> tblOrderMasterArchive { get; set; }
+        public virtual DbSet<tblBulkUnKnown> tblBulkUnKnown { get; set; }
         public virtual DbSet<tblCarrier> tblCarrier { get; set; }
         public virtual DbSet<tblCAS> tblCAS { get; set; }
         public virtual DbSet<tblClient> tblClient { get; set; }
@@ -50,33 +44,40 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblEndUse> tblEndUse { get; set; }
         public virtual DbSet<tblEndUseForCustoms> tblEndUseForCustoms { get; set; }
         public virtual DbSet<tblHSCode> tblHSCode { get; set; }
+        public virtual DbSet<tblInvLog> tblInvLog { get; set; }
+        public virtual DbSet<tblInvTrans> tblInvTrans { get; set; }
+        public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
         public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
+        public virtual DbSet<tblOrderItemArchive> tblOrderItemArchive { get; set; }
         public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
         public virtual DbSet<tblOrderSource> tblOrderSource { get; set; }
         public virtual DbSet<tblOrderTrans> tblOrderTrans { get; set; }
         public virtual DbSet<tblOrderType> tblOrderType { get; set; }
         public virtual DbSet<tblPackage> tblPackage { get; set; }
         public virtual DbSet<tblPackageType> tblPackageType { get; set; }
+        public virtual DbSet<tblPMNote> tblPMNote { get; set; }
         public virtual DbSet<tblPreferredCarrierList> tblPreferredCarrierList { get; set; }
         public virtual DbSet<tblProductDetail> tblProductDetail { get; set; }
         public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblProductNotes> tblProductNotes { get; set; }
         public virtual DbSet<tblProductXRef> tblProductXRef { get; set; }
         public virtual DbSet<tblProfile> tblProfile { get; set; }
+        public virtual DbSet<tblReasonCode> tblReasonCode { get; set; }
+        public virtual DbSet<tblReportCriteria> tblReportCriteria { get; set; }
         public virtual DbSet<tblSampSize> tblSampSize { get; set; }
+        public virtual DbSet<tblShelfMaster> tblShelfMaster { get; set; }
         public virtual DbSet<tblSQlTable> tblSQlTable { get; set; }
         public virtual DbSet<tblState> tblState { get; set; }
         public virtual DbSet<tblStatusNotes> tblStatusNotes { get; set; }
         public virtual DbSet<tblStock> tblStock { get; set; }
+        public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }
         public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
         public virtual DbSet<tblSystem> tblSystem { get; set; }
         public virtual DbSet<tblTier> tblTier { get; set; }
+        public virtual DbSet<tblTransType> tblTransType { get; set; }
         public virtual DbSet<tblUN> tblUN { get; set; }
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
-        public virtual DbSet<tblShelfMaster> tblShelfMaster { get; set; }
-        public virtual DbSet<tblReasonCode> tblReasonCode { get; set; }
-        public virtual DbSet<tblBulk> tblBulk { get; set; }
-        public virtual DbSet<tblBulkUnKnown> tblBulkUnKnown { get; set; }
+        public virtual DbSet<tblOrderMasterArchive> tblOrderMasterArchive { get; set; }
     }
 }

@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
-                <h4 class="modal-title">Product Note</h4>
+                <h4 class="modal-title">CAS Entry</h4>
             </div>
             <div id="dialogPlaceholderBody" class="modal-body">
 
@@ -23,13 +23,15 @@
 
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            @Html.LabelFor(m => m.casnumber)
+                            @*@Html.LabelFor(m => m.casnumber)*@
+                            <label>CAS Number</label>
                             @Html.TextBoxFor(m => m.casnumber, new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            @Html.LabelFor(m => m.chemicalname)
+                            @*@Html.LabelFor(m => m.chemicalname)*@
+                            <label>Chemical Name</label>
                             @Html.TextBoxFor(m => m.chemicalname, new { @class = "form-control" })
                         </div>
                     </div>
@@ -40,15 +42,18 @@
                             @Html.TextBoxFor(m => m.percentage, new { @class = "form-control" })
                         </div>
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.restrictedqty)
+                            @*@Html.LabelFor(m => m.restrictedqty)*@
+                            <label>Restricted Qty</label>
                             @Html.CheckBox("restrictedqty", Model.restrictedqty != null && (bool)Model.restrictedqty)
                         </div>
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.restrictedamount)
+                            @*@Html.LabelFor(m => m.restrictedamount)*@
+                            <label>Restricted Amt</label>
                             @Html.TextBoxFor(m => m.restrictedamount, new { @class = "form-control" })
                         </div>
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.packonreceipt)
+                            @*@Html.LabelFor(m => m.packonreceipt)*@
+                            <label>PO On Receipt</label>
                             @Html.CheckBox("packonreceipt", Model.packonreceipt != null && (bool)Model.packonreceipt)
                         </div>
                     </div>
@@ -56,19 +61,23 @@
                     <div class="row">
 
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.reportableqty)
+                            @*@Html.LabelFor(m => m.reportableqty)*@
+                            <label>Reportable Qty</label>
                             @Html.CheckBox("reportableqty", Model.reportableqty != null && (bool)Model.reportableqty)
                         </div>
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.reportableamount)
+                            @*@Html.LabelFor(m => m.reportableamount)*@
+                            <label>Reportable Amt</label>
                             @Html.TextBoxFor(m => m.reportableamount, new { @class = "form-control" })
                         </div>
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.lessthan)
+                            @*@Html.LabelFor(m => m.lessthan)*@
+                            <label>Less Than</label><br />
                             @Html.CheckBox("lessthan", Model.lessthan != null && (bool)Model.lessthan)
                         </div>
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.excludefromlabel)
+                            @*@Html.LabelFor(m => m.excludefromlabel)*@
+                            <label>Excl From Label</label>
                             @Html.CheckBox("excludefromlabel", Model.excludefromlabel != null && (bool)Model.excludefromlabel)
                         </div>
                     </div>

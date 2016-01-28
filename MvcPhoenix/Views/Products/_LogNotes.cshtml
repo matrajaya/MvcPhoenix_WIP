@@ -3,7 +3,7 @@
 <div id="dvLogNotes">
 
     <label>Notes | </label>
-    @Ajax.ActionLink("+ Add New Note", "CreateProductNote", "Products", new { id = @Model[0].productdetailid }, new AjaxOptions
+    @Ajax.ActionLink("+ Add New Note", "CreateProductNote", "Products", new { id = @ViewBag.ParentKey }, new AjaxOptions
     {
     InsertionMode = InsertionMode.Replace,
     HttpMethod = "GET",
@@ -51,7 +51,7 @@
 
 <script type="text/javascript">
     function UpdateProductNotesList() {
-        $("#dvLogNotes").load('@Url.Action("LogNotesList","Products",new{id=@Model[0].productdetailid})');
+        $("#dvLogNotes").load('@Url.Action("LogNotesList", "Products", new { id = @ViewBag.ParentKey })');
     }
 </script>
 

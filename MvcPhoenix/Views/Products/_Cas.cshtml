@@ -3,7 +3,7 @@
 <div id="dvCasList">
 
     <label>CAS | </label>
-    @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = Model[0].productdetailid }, new AjaxOptions
+    @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = ViewBag.ParentKey }, new AjaxOptions
         {
             InsertionMode = InsertionMode.Replace,
             HttpMethod = "GET",
@@ -68,6 +68,6 @@
 </div>
 <script type="text/javascript">
     function UpdateCasList() {
-        $("#dvCasList").load('@Url.Action("CasList","Products",new {id=@Model[0].productdetailid})');
+        $("#dvCasList").load('@Url.Action("CasList", "Products", new { id = @ViewBag.ParentKey })');
     }
 </script>

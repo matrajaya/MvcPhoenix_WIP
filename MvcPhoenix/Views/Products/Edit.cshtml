@@ -21,9 +21,7 @@
     {
         OnBegin = "$('#dvSaveResult').html('')",
         HttpMethod = "POST",
-        UpdateTargetId = "dvSaveResult",
-        LoadingElementId = "dvspinner",
-        InsertionMode = InsertionMode.Replace
+        LoadingElementId = "dvspinner"
     }))
     {
 
@@ -53,7 +51,7 @@
                     <div class="form-group col-md-6">
                         <label>Business Unit / Division</label>
                         @Html.DropDownListFor(m => m.masterdivisionid, Model.ListOfDivisions, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.masterdivisionid)
+                        @*@Html.ValidationMessageFor(m => m.masterdivisionid)*@
                     </div>
                 </div>
                 <div class="row">
@@ -894,9 +892,9 @@
                 <div class="row">
                     <div class="form-group col-md-12">
                         <div>
-                            <span id="dvLogNotes">
+                            
                                 @{Html.RenderAction("LogNotesList", "Products", new { id = @Model.productdetailid });}
-                            </span>
+                            
                         </div>
                     </div>
                 </div>
@@ -905,7 +903,6 @@
                     <div class="form-group col-md-12">
                         <div id="">
                             <span id="dvCas">
-                                @*@Html.Partial("~/Views/Products/_Cas.cshtml")*@
                                 @{Html.RenderAction("CasList", "Products", new { id = @Model.productdetailid });}
                                 </span>
                 </div>
@@ -961,7 +958,7 @@
 
         <div class="form-group row center-block">
             <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-                <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Saving Profile...
+                <i class="fa fa-circle-o-notch fa-3x fa-spin"></i> Saving Profile...
             </div>
 
             <div id="dvSaveResult" class="col-md-12 text-center" style="font-weight:bold"></div>
@@ -969,60 +966,7 @@
     }
 </div>
 
-<!-- Begin a new Form section -->
-<div id="dvLogNotesEditModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
-                <h4 class="modal-title">Product Log Note</h4>
-            </div>
-            <div id="dvLogNotesModalBody" class="modal-body">
-                <!-- placeholder for ~/Views/Products/_LogNotesModal.cshtml -->
-            </div>
-        </div>
-    </div>
-</div>
 
-
-<div id="dvCasEditModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
-                <h4 class="modal-title">CAS Item</h4>
-            </div>
-            <div id="dvCasModalBody" class="modal-body">
-                <!-- placeholder for ~/Views/Products/_Cas.cshtml -->
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-@section Scripts {
-    <script>
-        $(function () {
-            $("form input").tooltipValidation({
-                placement: "top"
-            });
-            $("form select").tooltipValidation({
-                placement: "top"
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker').datepicker();
-        });
-    </script>
-}
 
 <script type="text/javascript">
     function LookupUNGround() {
@@ -1070,13 +1014,3 @@
                     });
     }
 </script>
-
-<!-- Local Razor -->
-@functions{
-    private static string fnDate(DateTime? vDate)
-    {
-        string s = "";
-        s = (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date";
-        return s;
-    }
-}

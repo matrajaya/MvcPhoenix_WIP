@@ -381,18 +381,26 @@ namespace MvcPhoenix.Models
 
         }
 
-        public static bool fnSaveProductProfile(ProductProfile PPVM)
+        public static int fnSaveProductProfile(ProductProfile PPVM)
         {
-            try
-            {
+                // Take a VM and insert/update records
+                // return the ProductDetailID
+                int pkProductMaster = Convert.ToInt32(PPVM.productmasterid);
+                if (pkProductMaster == -1)
+                {
+                    PPVM.productmasterid = fnNewProductMasterID();
+                }
                 ProductsService.SaveProductMaster(PPVM);
+                            
+                int pkProductDetail = Convert.ToInt32(PPVM.productdetailid);
+                if (pkProductDetail==-1)
+                {
+                    PPVM.productdetailid = fnNewProductDetailID();
+                }
                 ProductsService.SaveProductDetail(PPVM);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+
+                return PPVM.productdetailid;
+
         }
 
         public static void SaveProductDetail(ProductProfile PP)
@@ -400,7 +408,8 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 //fnArchiveProductMaster(pm.productmasterid);
-                var q = (from t in db.tblProductDetail where t.ProductDetailID == PP.productdetailid select t).FirstOrDefault();
+                //var q = (from t in db.tblProductDetail where t.ProductDetailID == PP.productdetailid select t).FirstOrDefault();
+                var q = db.tblProductDetail.Find(PP.productdetailid);
                 q.ProductCode = PP.productcode;
                 q.ProductDetailID = PP.productdetailid;
                 q.ProductMasterID = PP.productmasterid;
@@ -498,7 +507,8 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 //fnArchiveProductMaster(pm.productmasterid);
-                var q = (from t in db.tblProductMaster where t.ProductMasterID == pm.productmasterid select t).FirstOrDefault();
+                //var q = (from t in db.tblProductMaster where t.ProductMasterID == pm.productmasterid select t).FirstOrDefault();
+                var q = db.tblProductMaster.Find(pm.productmasterid);
                 //q.ProductMasterID = pm.productmasterid;
                 q.ClientID = pm.clientid;
                 //q.SGLegacyID = pm.sglegacyid;

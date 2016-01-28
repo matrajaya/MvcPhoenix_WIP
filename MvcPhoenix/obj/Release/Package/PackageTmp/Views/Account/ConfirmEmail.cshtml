@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Email Confirmed";
+    Layout = "~/Views/Shared/_LayoutNaked.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="row">
+            <h2>@ViewBag.Title.</h2>
+            <hr />
+        </div>
+
+        <div class="row">
+            <p>
+                Redirecting to login screen...
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function(){
+       window.location='Login';
+    }, 3000);
+</script>

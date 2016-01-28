@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<MvcPhoenix.Models.BulkContainerViewModel>
+@{
     ViewBag.Title = "Receiving";
 }
 
@@ -6,164 +7,85 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
-        </div>
+                <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
+            </div>
         <div class="col-lg-12">
             <h1 class="page-header">@ViewBag.Title</h1>
         </div>
     </div>
 
     <div class="row">
-        
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Receive Client Stock</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-group col-md-12">
-                            <a href="~/Receiving/Create"><input type="button" value="Receive Bulk Stock" class="form-control btn btn-warning btn-block" /></a>
+                        <div class="form-group  col-md-4">
+                            <a href='@Url.Action("SetUpReceiveKnown", "Receiving")' class="form-control btn btn-warning btn-block">Receive Bulk Stock</a>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <a href="~/Receiving/Create"><input type="button" value="Receive Prepacked Stock" class="form-control btn btn-success btn-block" onclick="alert('ToDO')"/></a>
+                        <div class="form-group col-md-4">
+                            <a href='@Url.Action("SetUpReceivePrePack", "Receiving")' class="form-control btn btn-success btn-block">Receive Prepacked Stock</a>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <a href="~/Receiving/CreateUnknown"><input type="button" value="Receive Unknown Stock" class="form-control btn btn-danger btn-block" /></a>
+                        <div class="form-group col-md-4">
+                            <a href='@Url.Action("SetupReceiveUnKnown", "Receiving")' class="form-control btn btn-danger btn-block">Receive Unknown Bulk Stock</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-6">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-search fa-fw"></i><i class="fa fa-filter fa-fw"></i>Search Bulk Stock</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        @using (Ajax.BeginForm("SearchBulkContainerUserCriteria", "Receiving", new AjaxOptions
-                    {
-                        UpdateTargetId = "dvGridPlaceHolder",
-                        InsertionMode = InsertionMode.Replace,
-                        OnBegin = "document.getElementById('dvGridPlaceHolder').innerHTML = ''",
-                        LoadingElementId = "dvspinner",
-                    }))
-                        {
-
-                            <div class="form-group col-md-3">
-                                <label>Client</label>
-                                @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "clearResults()", @class = "form-control" })
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Warehouse</label>
-                                @Html.DropDownList("warehouse", fnWareHouseList(), new { onchange = "clearResults()", @class = "form-control" })
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Rows</label>
-                                <input type="number" id="rowcount" name="rowcount" value="10" class="form-control" />
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="invisible">.</label>
-                                <input id="btnsubmit" type="submit" value="Search" class="btn btn-success form-control" />
-                            </div>
-                        }
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12"><label>Quick Search</label></div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="form-group col-md-4">
-                            @Ajax.ActionLink("In Receiving", "SearchInReceiving", "Receiving", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "clearResults",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary form-control", data_toggle = "tooltip", title = "this is a tooltip" })
-                        </div>
-                        <div class="form-group col-md-4">
-                            @Ajax.ActionLink("Unavailable", "SearchNonAvailable", "Receiving", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "clearResults",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary form-control" })
-                        </div>
-                        <div class="form-group col-md-4">
-                            @Ajax.ActionLink("Expired", "SearchExpired", "Receiving", null, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
-                                 InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "clearResults",
-                                 HttpMethod = "GET",
-                             }, new { @class = "btn btn-primary form-control" })
-                        </div>
-                    </div>
-                   
-                </div>
-            </div>
-        </div>
-        
     </div>
-
-
-    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
-    </div>
-
-    <div id="dvGridPlaceHolder" class="row">
-        @Html.Partial("~/Views/Receiving/_SearchResults.cshtml")
-    </div>
-
-
+    <div class="clearfix"></div>
 </div>
 
-<!-- Post page scripts -->
-<script type="text/javascript">
-    function clearResults() {
-        document.getElementById("dvGridPlaceHolder").innerHTML = "";
-        // loads when even is triggered after page load
-    }
-</script>
+<div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+    <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
+</div>
 
-@functions
-{
-    // these are local to this view cause this view not strongly typed
-
-    private static List<SelectListItem> fnClientIDs()
-    {
-        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblClient
-                      orderby t.ClientName
-                      select
-                          new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-            return mylist;
-        }
-    }
-
-    private List<SelectListItem> fnWareHouseList()
-    {
-        List<SelectListItem> mylist = new List<SelectListItem>();
-        mylist.Add(new SelectListItem { Value = "", Text = "" });
-        mylist.Add(new SelectListItem { Value = "AP", Text = "AP" });
-        mylist.Add(new SelectListItem { Value = "CT", Text = "CT" });
-        mylist.Add(new SelectListItem { Value = "CO", Text = "CO" });
-        mylist.Add(new SelectListItem { Value = "EU", Text = "EU" });
-        return mylist;
-    }
-}
+<div id="dvGridPlaceHolder" class="row">
+    <div class="table-responsive col-md-12">
+        <table id="myTable" class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th colspan="13" style="text-align:center;">Bulk Containers Currently in Receiving</th>
+                </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Client</th>
+                    <th>Rec'd</th>
+                    <th>Expiry</th>
+                    <th>Warehouse</th>
+                    <th>Carrier</th>
+                    <th>Master Code</th>
+                    <th>Name</th>
+                    <th>Lot</th>
+                    <th>UM</th>
+                    <th>WT</th>
+                    <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.bulkid.ToString()</td>
+                        <td>@item.bulkstatus</td>
+                        <td>@item.clientname</td>
+                        <td>@String.Format("{0:dd MMM yyyy}", @item.receivedate)</td>
+                        <td>@String.Format("{0:dd MMM yyyy}", @item.expirationdate)</td>
+                        <td>@item.warehouse</td>
+                        <td>@item.carrier</td>
+                        <td>@item.MasterCode</td>
+                        <td>@item.MasterName</td>
+                        <td>@item.lotnumber</td>
+                        <td>@item.um</td>
+                        <td>@item.receiveweight.ToString()</td>
+                        <td>@Html.ActionLink("Edit", "EditContainerReceipt", new { id = @item.bulkid })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

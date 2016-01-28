@@ -1,39 +1,41 @@
-﻿@model MvcPhoenix.Models.BulkContainer
-@{
-    ViewBag.Title = "Bulk Stock Edit";
-}
+﻿@model MvcPhoenix.Models.BulkContainerViewModel
 
+@{
+    // View to hold and post a BulkContainerViewModel
+    if (Model.bulkid == -1)
+    {
+        ViewBag.Title = "Receive Bulk Container";
+        ViewBag.BulkNew = "New";
+    }
+    else
+    {
+        ViewBag.Title = "Edit Bulk Container";
+    }
+}
 
 <div class="container-fluid">
 
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+            <img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
-                @ViewBag.Title <small>Container Id: @Model.bulkid.ToString()</small>
+                @ViewBag.Title <small>@ViewBag.BulkNew</small>
             </h1>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-lg-12 row">
-            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Receiving Main", "Index")
+    <div class="form-group row">
+        <div class="col-lg-12 ">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Receiving Main", "Index", "Receiving")
+            <span class="pull-right label label-info">Bulk Id: @Model.bulkid.ToString()</span>
         </div>
     </div>
     <!-- /.Page Heading -->
-    
-    <!-- use an ajax form to post back to an Action to save the object and return save result to dvSaveResult -->
-    @using (Ajax.BeginForm("SavePostData", "Receiving",
-    new AjaxOptions
-    {
-        HttpMethod = "POST",
-        UpdateTargetId = "dvSaveResult",
-        InsertionMode = InsertionMode.Replace
-    }))
-    {
 
+    @using (Html.BeginForm("SaveContainer", "Receiving"))
+    {
     <!-- do not remove -->
         @Html.HiddenFor(m => m.isknownmaterial)
         @Html.HiddenFor(m => m.bulkid)
@@ -45,7 +47,7 @@
             <div id="prodinfopan" class="panel-body collapse in">
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label>Product Code</label>
+                        <label>Master Code - Name</label>
                         @Html.DropDownListFor(m => m.productmasterid, Model.ListOfProductMasters, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.productmasterid)
                     </div>
@@ -56,12 +58,12 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Client</label>
-                        @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly"})
+                        @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.clientname)
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Carrier - DDL*</label>
-                        @Html.TextBoxFor(m => m.carrier, new { @class = "form-control" })
+                        <label>Carrier</label>
+                        @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.carrier)
                     </div>
                     <div class="form-group col-md-3">
@@ -111,27 +113,26 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Expiration Date</label>
-                        @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = " date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.expirationdate)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Shelf Life *</label>
-                        <input class="form-control" readonly="readonly" />
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cease Ship Date</label>
                         @Html.TextBoxFor(m => m.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.ceaseshipdate)
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>Bulk Status</label>
-                        @Html.DropDownListFor(m => m.bulkstatus, Model.ListOfBulkStatusIDs, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.bulkstatus)
-                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-md-3">
                         <label>QC Date</label>
                         @Html.TextBoxFor(m => m.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.qcdate)
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Bulk Status</label>
+                        @Html.TextBoxFor(m => m.bulkstatus, new { @class = "form-control", @readonly = "readonly" })
+                        @*@Model.bulkstatus*@
+                        @Html.HiddenFor(m => m.bulkstatus)
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -160,8 +161,9 @@
                         @Html.ValidationMessageFor(m => m.bin)
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Location *</label>
-                        <input class="form-control" />
+                        <label>Return Location</label>
+                        @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.returnlocation)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Container Type</label>
@@ -171,7 +173,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#otherinfopan"><i class="fa fa-file-text-o fa-fw"></i>Other Information</h3>
@@ -179,37 +181,20 @@
             <div id="otherinfopan" class="panel-body collapse in">
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label>Flammable *</label>
-                        <input type="checkbox" class="checkbox" readonly="readonly" disabled />
+                        <label>Flammable</label>
+                        @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox", disabled = "disabled" })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Freezer *</label>
-                        <input type="checkbox" class="checkbox" readonly="readonly" disabled />
+                        <label>Freezer</label>
+                        @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox", disabled = "disabled" })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Refrigerated *</label>
-                        <input type="checkbox" class="checkbox" readonly="readonly" disabled />
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Other Storage *</label>
-                        <input class="form-control" readonly="readonly" disabled />
+                        <label>Refrigerate</label>
+                        @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox", disabled = "disabled" })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Packout On Receipt</label>
-                        @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Restricted Quantity *</label>
-                        <input type="checkbox" class="checkbox" readonly="readonly" disabled />
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Restricted Amount *</label>
-                        <input class="form-control" readonly="readonly" disabled />
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Unit Of Measure</label>
-                        @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.um)
+                        @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox", disabled = "disabled" })
                     </div>
                     <div class="form-group col-md-3">
                         <label>COA Included?</label>
@@ -219,7 +204,12 @@
                         <label>MSDS Included?</label>
                         @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-3">
+                        <label>Unit Of Measure</label>
+                        @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.um)
+                    </div>
+                    <div class="form-group col-md-3">
                         <label>Bulk Label Note</label>
                         @Html.TextBoxFor(m => m.bulklabelnote, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.bulklabelnote)
@@ -228,17 +218,13 @@
             </div>
         </div>
 
-        @*
-            <input id="btnSave" type="submit" value="Save New Container Details" class="btn btn-success" />
-            <input type="submit" value="Save" class="btn btn-success" />
-        *@
 
         <div class="form-group row">
             <div class=" col-md-6">
                 <input id="btnSave" type="submit" value="Save Changes" class="btn btn-success btn-block" />
             </div>
             <div class=" col-md-6">
-                <input type="button" value="Cancel Changes" class="btn btn-danger btn-block" onclick="alert('Clear form and go back to Index')" />
+                @Html.ActionLink("Cancel", "Index", "Receiving", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel This Process?')" })
             </div>
             <div class="clearfix"></div>
             <br />
@@ -248,8 +234,8 @@
             </div>
         </div>
 
-        <div style="font-weight:bold">
+        <div>
             <span id="dvSaveResult"></span>
         </div>
     }
-    </div>
+</div>

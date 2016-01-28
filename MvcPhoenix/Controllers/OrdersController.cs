@@ -10,7 +10,6 @@ using System.IO;
 
 namespace MvcPhoenix.Controllers
 {
-    [Authorize]
     public class OrdersController : Controller
     {
         private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
@@ -42,7 +41,7 @@ namespace MvcPhoenix.Controllers
         }
 
         // Edit Order Content
-        #region
+        #region Edit Order Content
 
         public ActionResult Edit(int id)
         {
@@ -203,7 +202,7 @@ namespace MvcPhoenix.Controllers
         #endregion
 
         // Index Search Actions 
-        #region 
+        #region Index Search Actions
 
         [HttpGet]
         public ActionResult OrdersToday()
@@ -519,7 +518,7 @@ namespace MvcPhoenix.Controllers
         #endregion
 
         // Order Transaction Actions
-        #region
+        #region Order Transaction Actions
 
         public ActionResult SetUpNewOrderTrans()
         {
@@ -593,7 +592,7 @@ namespace MvcPhoenix.Controllers
         #endregion
 
         // New Order Actions
-        #region
+        #region New Order Actions
 
         [HttpPost]
         public ActionResult SetupNewOrder(FormCollection fc)
@@ -677,7 +676,7 @@ namespace MvcPhoenix.Controllers
         }
 
         // Order Import Action
-        #region
+        #region Order Import Action
 
         [HttpGet]
         public ActionResult OrderImport()
@@ -747,7 +746,9 @@ namespace MvcPhoenix.Controllers
                     break;
                 default:
                     TempData["message"] = "Please select a client from the dropdown list";
-                    return RedirectToAction("OrderImport");
+
+                    return RedirectToAction("Index");
+                    //return RedirectToAction("OrderImport");
             }
 
             try
@@ -767,7 +768,8 @@ namespace MvcPhoenix.Controllers
             {
                 TempData["message"] = "Please make sure you browse and select atleast a file";
             }
-            return RedirectToAction("OrderImport");
+            return RedirectToAction("Index");
+            //return RedirectToAction("OrderImport");
         }
 
         // Return a list of clients that send files and have folders in Content/OrderImport
