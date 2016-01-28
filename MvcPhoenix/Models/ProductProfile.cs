@@ -286,8 +286,7 @@ namespace MvcPhoenix.Models
         public string clientname { get; set; }
 
         [Display(Name = "Business Unit/Division")]
-        [Required]
-        [Range(1, 99, ErrorMessage = "Business Unit/Division is required.")]
+        [Required(ErrorMessage = "Business Unit/Division is required.")]
         public int? masterdivisionid { get; set; }
         
         [Display(Name = "Discontinued")]

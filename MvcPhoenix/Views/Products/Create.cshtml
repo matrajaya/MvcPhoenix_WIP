@@ -43,7 +43,7 @@
                     <div class="form-group col-md-6">
                         <label>Business Unit / Division</label>
                         @Html.DropDownListFor(m => m.masterdivisionid, Model.ListOfDivisions, new { @class = "form-control" })
-                        @*@Html.ValidationMessageFor(m => m.masterdivisionid)*@
+                        @Html.ValidationMessageFor(m => m.masterdivisionid)
                     </div>
                 </div>
                 <div class="row">

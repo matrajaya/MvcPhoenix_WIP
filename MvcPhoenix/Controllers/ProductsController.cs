@@ -31,7 +31,6 @@ namespace MvcPhoenix.Controllers
             PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
-            //return View("~/Views/Products/ProductProfileEdit.cshtml", PP);  - Iffy
             return View(PP);
         }
 
@@ -41,23 +40,18 @@ namespace MvcPhoenix.Controllers
         public ActionResult Create(int clientid2)
         {
             ProductProfile PP = new ProductProfile();
-            //PP.clientid = id; - Iffy
             PP.clientid = clientid2;
             PP.productmasterid = -1;
             PP.productdetailid = -1;
             PP = ProductsService.fnFillOtherPMProps(PP);
-            //return View("~/Views/Products/ProductProfileEdit.cshtml", PP);  - Iffy
             return View(PP);
         }
         
-        //[HttpGet]
-        //public ActionResult Equiv(int id) - Iffy
         [HttpPost]
         public ActionResult Equiv(int productdetailid3)
         {
             ProductProfile PP = new ProductProfile();
             PP.productdetailid = -1;
-            //PP.productmasterid = ProductsService.fnProductMasterID(id);  - Iffy
             PP.productmasterid = ProductsService.fnProductMasterID(productdetailid3);
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
