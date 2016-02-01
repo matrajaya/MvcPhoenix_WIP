@@ -28,8 +28,6 @@ namespace MvcPhoenix.Migrations
 
             string name = "ifeanyiigbo@gmail.com";
             string password = "password#1";
-            //string name = "johnsmith@cmc.com";
-            //string password = "123456789";
             string firstName = "Administrator";
             string roleName = "Admin";
 
@@ -57,18 +55,6 @@ namespace MvcPhoenix.Migrations
                 var result = userManager.AddToRole(user.Id, role.Name);
             }
 
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
         }
     }
 }

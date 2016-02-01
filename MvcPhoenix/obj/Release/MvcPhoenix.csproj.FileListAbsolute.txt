@@ -66,3 +66,6 @@ C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MasterDetail.dll
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MasterDetail.pdb
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.csprojResolveAssemblyReference.cache
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.Migrations.FieldLengths.resources
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Elmah.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Elmah.Mvc.dll

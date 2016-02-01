@@ -25,7 +25,14 @@ $(function () {
     });
 });
 
-// Order Import JS helper for file upload
+// Order/Index
+//--------------------------------------------------
+// Modal Search
+$("#advancedsearch").on('hidden.bs.modal', function () {
+    $(this).data('bs.modal', null);
+});
+
+// Order Import File Upload
 function handleFileSelect(evt) {
     var Files = evt.target.files; // FileList object
 

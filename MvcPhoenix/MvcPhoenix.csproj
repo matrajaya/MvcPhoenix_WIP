@@ -23,6 +23,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>44d4a1f4</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,6 +89,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elmah, Version=1.2.13605.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -451,6 +460,10 @@
     <Compile Include="Migrations\201601182204328_RemoveAllButUsersRoles.Designer.cs">
       <DependentUpon>201601182204328_RemoveAllButUsersRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601291957209_FieldLengths.cs" />
+    <Compile Include="Migrations\201601291957209_FieldLengths.Designer.cs">
+      <DependentUpon>201601291957209_FieldLengths.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationRole.cs" />
@@ -678,7 +691,6 @@
     <Content Include="Views\Products\_LogNotesModal.cshtml" />
     <Content Include="Views\Products\_ShelfSize.cshtml" />
     <Content Include="Views\Products\_ShelfSizeModal.cshtml" />
-    <Content Include="Views\Receiving\Create.cshtml" />
     <Content Include="Views\Receiving\Index.cshtml" />
     <Content Include="Views\Receiving\_OpenOrderItems.cshtml" />
     <Content Include="Views\Receiving\_SearchResults.cshtml" />
@@ -741,6 +753,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601182204328_RemoveAllButUsersRoles.resx">
       <DependentUpon>201601182204328_RemoveAllButUsersRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601291957209_FieldLengths.resx">
+      <DependentUpon>201601291957209_FieldLengths.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

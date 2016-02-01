@@ -169,7 +169,7 @@ namespace MvcPhoenix.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
-                    FaxNumber=model.FaxNumber,
+                    FaxNumber= model.FaxNumber,
                     Address = model.Address,
                     City = model.City,
                     State = model.State,
