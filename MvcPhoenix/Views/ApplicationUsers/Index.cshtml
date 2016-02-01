@@ -39,11 +39,11 @@
             <table class="table table-hover table-striped">
                 <tr>
                     <th>
-                        @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>
                     </th>
                     <th>Email</th>
                     <th>
-                        @Html.ActionLink("Lock Out Until (UTC)", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+                        @Html.ActionLink("Lock Out Until (UTC)", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>
                     </th>
                     <th>Failed Tries</th>
                     <th></th>
