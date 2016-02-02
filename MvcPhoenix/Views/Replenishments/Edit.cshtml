@@ -1,4 +1,4 @@
-﻿@model MvcPhoenix.Models.BulkOrderHeader
+﻿@model MvcPhoenix.Models.BulkOrder
 @{
     ViewBag.Title = "Replenishment Order";
 }
@@ -7,10 +7,10 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="@Model.clientname">
+            <img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
         </div>
         <div class="col-lg-12">
-            <h1 class="page-header">@ViewBag.Title : @Model.bulkorderid.ToString()</h1>
+            <h3 class="page-header">@ViewBag.Title : @Model.bulkorderid.ToString()</h3>
         </div>
     </div>
     <div class="form-group">
@@ -26,63 +26,56 @@
                     <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Order Header</h3>
                 </div>
                 <div class="panel-body">
-                    <!-- ajax form to post changes back to controller -->
-                    @*@using (Ajax.BeginForm("SaveBulkOrderHeader", "BulkOrders",*@
-                    @using (Ajax.BeginForm("SaveBulkOrderHeader", "Replenishments", new AjaxOptions
-                    {
-                        HttpMethod = "POST",
-                        UpdateTargetId = "dvOrderSaveResult",
-                        LoadingElementId = "dvspinner",
-                        InsertionMode = InsertionMode.Replace,
-                        OnBegin = "$('#dvOrderSaveResult').html('')"
-                    }))
+                    @using(Html.BeginForm("Save","Replenishments"))
                     {
                         <!-- DO NOT REMOVE -->
                         <input type="hidden" id="clientid" name="clientid" value="@Model.clientid" />
                         <input type="hidden" id="bulkorderid" name="bulkorderid" value="@Model.bulkorderid" />
-                        <input type="hidden" id="orderdate" name="orderdate" value="@Model.orderdate" />
 
                         <div class="row">
                             <div class="col-md-3 form-group">
                                 @Html.LabelFor(m => m.orderdate)
-                                <label class="form-control">@fnDate(Model.orderdate)</label>
+                                <label class="form-control">@String.Format("{0:dd MMM yyyy}", @Model.orderdate)</label>
                             </div>
                             <div class="col-md-3 form-group">
                                 @Html.LabelFor(m => m.supplyid)
-                                @Html.DropDownListFor(m => m.supplyid, Model.ListOfOrderHeaderSupplyIDs, new { type = "text", @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.supplyid)
+                                @Html.DropDownListFor(m => m.supplyid, Model.ListOfSupplyIDs, new { onchange = "GetSupplyIDEmail()", @class = "form-control" })
                             </div>
                             <div class="col-md-3 form-group">
-                                @Html.LabelFor(m => m.bulksupplieremail) <a href="#" onclick="LookupEmail();"><i class="fa fa-envelope-o fa-fw"></i><i class="fa fa-reply fa-fw"></i></a>
+                                @Html.LabelFor(m => m.bulksupplieremail)
                                 @Html.TextBoxFor(m => m.bulksupplieremail, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.bulksupplieremail)
                             </div>
                             <div class="col-md-3 form-group">
                                 @Html.LabelFor(m => m.emailsent)
-                                @Html.TextBoxFor(m => m.emailsent, new { disabled = "disabled", type = "text", @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.emailsent)
+                                @Html.TextBoxFor(m => m.emailsent, "{0:dd MMM yyyy HH:mm:ss}", new { disabled = "disabled", type = "text", @class = "form-control" })
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 form-group">
+                            <div class="col-md-12 form-group">
                                 @Html.LabelFor(m => m.ordercomment)
-                                @Html.TextAreaFor(m => m.ordercomment, new { maxlength = 1000, @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.ordercomment)
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label class="invisible">.</label>
-                                <input type="submit" value="Save" class="btn btn-primary btn-block" />
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <input id="emailcheckbox" name="emailcheckbox" type="checkbox" class="checkbox" />
-                                @Ajax.ActionLink("Send Confirmation Email", null, null, new AjaxOptions { OnBegin = "SendEmail", Confirm = "Send Email?" }, new { @class = "btn btn-warning btn-block form-control" })
+                                @Html.TextAreaFor(m => m.ordercomment, new { rows = "4", maxlength = 1000, @class = "form-control", placeholder = "Enter any order level comments here; 1000 chars max" })
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <span id="dvspinner" style="display:none;"><strong> Saving Order Header</strong></span>
-                                <strong><span id="dvOrderSaveResult"></span></strong>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <input id="btnSave" name="btnSave" type="submit" value="Save Changes" class="btn btn-success btn-block" />
                             </div>
+                            <div class="col-md-4">
+                                <input id="btnSaveAndEmail" name="btnSave" type="submit" value="Send Email" class="btn btn-info btn-block" />
+                            </div>
+                            <div class="col-md-4">
+                                @Html.ActionLink("Cancel", "Index", "Replenishments", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel?')" })
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="col-md-12 text-center" id="dvspinner" style="display:none;">
+                            <i class="fa fa-circle-o-notch fa-1x fa-spin"></i> Saving...
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <strong><span id="dvOrderSaveResult">
+                                        @TempData["SaveResult"]
+                                </span></strong>
                         </div>
                     }
                 </div>
@@ -90,77 +83,24 @@
         </div>
     </div>
 
-    <!-- Create a new object and return partial view _BulkOrderItemEdit.cshtml into modal div -->
-    <!-- OnSuccess event will show the modal -->
-    @*@Ajax.ActionLink("Add item to order", "SetupBulkOrderItemInsert", "BulkOrders",*@
-    <div class="row">
-        <div class="form-group col-md-3">
-            @Ajax.ActionLink("Add item to order", "SetupBulkOrderItemInsert", "Replenishments", new { id = @Model.bulkorderid, clientid = @Model.clientid },
-                       new AjaxOptions { UpdateTargetId = "dvDetailEdit", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#modal01').modal('show')" },
-                   new { @class = "btn btn-primary btn-block form-control" })
-        </div>
-        <div class="clearfix"></div>
-    </div>
 
     <div class="row">
-        <div id="dvgrid">
-            @*@Html.Partial("~/Views/BulkOrders/_BulkOrderItems.cshtml", Model)*@
-            @Html.Partial("~/Views/Replenishments/_BulkOrderItems.cshtml", Model)
+        <div class="form-group col-md-12">
+            <div class="clearfix"></div>
+            @{Html.RenderAction("ItemsList","Replenishments", new { id = @Model.bulkorderid});}
+            <div class="clearfix"></div>
         </div>
     </div>
-
-    <div id="modal01" role="dialog" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div id="dvDetailEdit">
-                        <!-- Placeholder for _BulkOrderItemEdit.cshtml -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
-@section Scripts {
-    
-    <script type="text/javascript">
 
-        function LookupEmail() {
-            // pull email address from tblBulkSupplier and push into DOM email input tag
-            $('#bulksupplieremail').val("joeZee@chemicalmarketing.com");
-        }
+<script type="text/javascript">
 
-        function SendEmail() {
-            // call an action to timestamp the emailsent field, send a SMTP message, return the timestamp, update DOM
+    function GetSupplyIDEmail() {
+        // pull email address from tblBulkSupplier
+        var myurl = '@Url.Action("GetSupplyIDEmail", "Replenishments")';
+        $.get(myurl, { clientid: $("#clientid").val(), supplyid: $("#supplyid").val() }, function (result) { $("#bulksupplieremail").val(result) });
+    }
 
-            var isemailchecked = document.getElementById("emailcheckbox").checked;
-            if (isemailchecked == true)
-            { DoTheEmailWork(); }
-            else
-            { alert("Please check the box first..."); }
-        }
-
-        function DoTheEmailWork() {
-            $.ajax({
-                type: "POST",
-                @*url: '@Url.Action("SendConfirmationEmail", "BulkOrders")',*@
-                url: '@Url.Action("SendConfirmationEmail", "BulkOrders")',
-                data: { id: $("#bulkorderid").val() },
-                dataType: "text",
-                cache: false,
-                success: function (stringfromserver) {
-                    $("#emailsent").val(stringfromserver);
-                },
-                error: function () { alert("error"); }
-            });
-        }
-    </script>
-}
-
-<!-- Local Razor -->
-@functions
-{
-    private static string fnDate(DateTime? vDate)
-    { return (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date"; }
-}
+</script>

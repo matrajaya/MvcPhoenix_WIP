@@ -1,15 +1,15 @@
-﻿@model MvcPhoenix.Models.SuggestedBulkOrder
-@{
+﻿@{
     ViewBag.Title = "Create Replenishment Order";
 }
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+            @*<img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">*@
         </div>
         <div class="col-lg-12">
-            <h1 class="page-header">@ViewBag.Title</h1>
+            <h4 class="page-header">@ViewBag.Title</h4>
         </div>
     </div>
 
@@ -19,15 +19,15 @@
         </div>
     </div>
 
-    @*@using (Ajax.BeginForm("CreateSuggestedOrder", "BulkOrders",*@
     @using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments", new AjaxOptions
     {
         UpdateTargetId = "dvGridPlaceHolder",
         LoadingElementId = "dvspinner",
-        OnBegin = "ClearGridAndAddButton()",
-        OnSuccess = "ShowAddButton()"
+        OnSuccess = "itemsCreated()",
+        OnFailure="alert('ajax error')"
     }))
     {
+
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary">
@@ -38,20 +38,21 @@
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label>Client</label>
-                                @Html.DropDownListFor(m => m.clientid, Model.ListOfClients, new { onchange = "GetDivisions()", id = "ClientID", @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.clientid)
+                                @Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="invisible">.</label>
-                                <div id="dvDivisions">
-                                    <select name="DivisionID" id='DivisionID' class='form-control'>
-                                        <option>Division</option>
+                                <div id="dvPlaceholderDivision">
+                                    <select name="divisionid" id='divisionid' class='form-control'>
+                                        <!-- Placeholder for option values -->
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group col-md-2">
                                 <label class="invisible">.</label>
-                                <input id="btnsubmit" type="submit" value="Create" class="btn btn-success btn-block form-control" style="display:none;" />
+                                <span id="dvPlaceholderContinue" class="hidden">
+                                    <input id="btnsubmit" type="submit" value="Create" class="btn btn-success btn-block form-control" />
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -59,79 +60,35 @@
             </div>
         </div>
 
-        <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-            <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
+        <div class="col-md-12 text-center" id="dvspinner" style="display:none;">
+            <i class="fa fa-circle-o-notch fa-2x fa-spin"></i> Processing...
         </div>
     }
 
-    <!-- set intial display:none and change in ajax event (move to partial?) -->
-    <div class="row">
-        <div id="dvAddButton" style="display:none" class="col-md-3 form-group">
-            <button class="btn btn-primary btn-block" onclick="SetupAddMode()">Add Product to Order</button>
-        </div>
-        <div class="clearfix"></div>
-    </div>
-    
 
     <div id="dvGridPlaceHolder" class="row">
-        <!-- Placeholder for _SuggestedItems.cshtml -->
-    </div>
-
-    <!-- this div is a bootstrap modal (ajax content MUST be pushed into the inner div) -->
-    <div class="modal" id="modalouter" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div id="modalinner" style="background-color:white;">
-                        <!-- Placeholder for _SuggestedItemEdit.cshtml -->
-                    </div>
-                </div>
-            </div>
+        <div class="form-group col-md-12">
+            <!-- Placeholder for _SuggestedItems.cshtml -->
         </div>
     </div>
+
 </div>
 
-@section Scripts {
+<!-- Local javascript -->
+<script type="text/javascript">
 
-    <script type="text/javascript">
-        function GetDivisions() {
-            // temporarily hide the add button
-            $('#dvAddButton').css({ 'display': 'none' });
+    function OnChangeClientID()
+    {
+        var myurl = '@Url.Action("BuildDivisionDropDown", "Replenishments")';
+        var data = $('#clientid').val();
+        $("#divisionid").load(myurl, { id: data });
+        $("#dvPlaceholderContinue").removeClass("hidden");
+        // add update the logofile img
+    }
 
-            // empty the placeholder (visual only)
-            document.getElementById("dvGridPlaceHolder").innerHTML = "";
-
-            // if client is selected do the work
-            if ($("#ClientID").val() > 0) {
-                // show the button
-                $('#btnsubmit').css({ 'display': 'inline-block' })
-                // go get the data
-
-                //  will not work in IIS var URL = "/BulkOrders/BuildDivisionDropDown/" + $("#ClientID").val();
-                @*var URL = '@Url.Action("BuildDivisionDropDown", "BulkOrders", new { id = "-1" })';*@
-                var URL = '@Url.Action("BuildDivisionDropDown", "Replenishments", new { id = "-1" })';
-                URL = URL.replace('-1', $('#ClientID').val());
-
-                $('#dvDivisions').load(URL);
-            }
-        }
-
-        function ShowAddButton() {
-            $('#dvAddButton').css({ 'display': 'inline-block' });
-        }
-
-        function ClearGridAndAddButton() {
-            $('#dvAddButton').css({ 'display': 'none' });
-            document.getElementById("dvGridPlaceHolder").innerHTML = "";
-        }
-
-        function SetupAddMode() {
-            // build a new obj and show modal (have to replace cause action params are static)
-            @*var URL = '@Url.Action("SetupNewItem", "BulkOrders", new { clientid = "-1" })';*@
-            var URL = '@Url.Action("SetupNewItem", "Replenishments", new { clientid = "-1" })';
-            URL = URL.replace('-1', $('#ClientID').val());
-            $('#modalinner').load(URL);
-            $('#modalouter').modal('show')
-        }
-    </script>
-}
+    function itemsCreated()
+    {
+        $("#dvPlaceholderContinue").removeClass("hidden");
+    }
+    
+</script>

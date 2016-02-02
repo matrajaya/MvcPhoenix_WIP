@@ -1,49 +1,37 @@
 ﻿@model List<MvcPhoenix.Models.BulkOrderSearchResults>
 
-<div class="col-md-12">
-    <h3>@Model.Count results</h3>
+<div class="col-md-12" style="margin-top:-10px;">
+    <p>@Model.Count results </p>
 </div>
 
 <div class="table-responsive col-md-12">
-    <table class="table table-hover table-striped">
+    <table class="table table-hover table-striped table-condensed" style="font-size:.85em;">
         <tr>
             <th>Client</th>
             <th>Order ID</th>
             <th>SupplyID</th>
             <th>Order Date</th>
-            <th>Item Cnt</th>
+            <th class="text-center">Item Cnt</th>
+            <th class="text-center">Open Cnt</th>
             <th>Comments</th>
-            <th>Email Address</th>
             <th>Email Sent</th>
             <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in @Model)
         {
             <tr>
                 <td>@item.clientname</td>
                 <td>@item.bulkorderid.ToString()</td>
                 <td>@item.supplyid</td>
-                <td>@fnDate(@item.orderdate)</td>
-                <td>@item.itemcount</td>
+                <td>@String.Format("{0:dd MMM yyyy}", @item.orderdate)</td>
+                <td class="text-center">@item.itemcount</td>
+                <td class="text-center">@item.opencount</td>
                 <td>@item.comment</td>
-                <th>@item.bulksupplieremail</th>
                 <td>@item.emailsent</td>
-                @*<td>@Html.ActionLink("Edit", "LoadBulkOrderEdit", new { id = @item.bulkorderid })</td>*@
                 <td>@Html.ActionLink("Edit", "Edit", new { id = @item.bulkorderid })</td>
             </tr>
         }
     </table>
 </div>
 
-
- <!-- Local Razor -->     
-@functions
-{
-        private static string fnDate(DateTime? vDate)
-        {
-            string s = "";
-            s = (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date";
-            return s;
-        }
-    }

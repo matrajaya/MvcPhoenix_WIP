@@ -2,15 +2,14 @@
     ViewBag.Title = "Replenishments";
 }
 
-
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
         </div>
         <div class="col-lg-12">
-            <h1 class="page-header">@ViewBag.Title</h1>
+            <h3 class="page-header">@ViewBag.Title</h3>
         </div>
     </div>
 
@@ -20,7 +19,6 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    
 
     <div class="row">
         <div class="col-md-6">
@@ -29,31 +27,33 @@
                     <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Quick Search</h3>
                 </div>
                 <div class="panel-body">
-                    <!-- AJAX form to POST search criteria to controller, return partial to #dvGridPlaceHolder -->
-                    @using (Ajax.BeginForm("SearchBulkOrdersUserCriteria", "Replenishments",
-    new AjaxOptions
-    {
-        UpdateTargetId = "dvGridPlaceHolder",
-        InsertionMode = InsertionMode.Replace,
-        OnBegin = "$('dvGridPlaceHolder').html('')",
-        LoadingElementId = "dvspinner"
-    }))
+                    @using (Ajax.BeginForm("SearchResultsUserCriteria", "Replenishments", new {mode="User"},
+                    new AjaxOptions
+                    {
+                        UpdateTargetId = "dvGridPlaceHolder",
+                        InsertionMode = InsertionMode.Replace,
+                        OnBegin = "$('dvGridPlaceHolder').empty()",
+                        LoadingElementId = "dvspinner",
+                     HttpMethod="POST"
+                     }))
                     {
                         <div class="row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Client</label>
-                                @Html.DropDownList("clientid", fnClientIDs(), new { onchange = "$('#dvGridPlaceHolder').html('')", @class = "form-control" })
+                                @Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "$('#dvGridPlaceHolder').html('')", @class = "form-control" })
+
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label>Rows</label>
                                 <input type="number" id="ordercount" name="ordercount" value="10" class="form-control" />
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label class="invisible">.</label>
                                 <input id="btnsubmit" type="submit" value="Search" class="btn btn-success form-control" />
                             </div>
                         </div>
-                    }
+                        
+        }
                 </div>
             </div>
         </div>
@@ -66,34 +66,34 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label class="invisible">.</label>
-                            @Ajax.ActionLink("Last 10 Orders", "SearchLastTenBulkOrders", "Replenishments", null, new AjaxOptions
+                            @Ajax.ActionLink("Last 10 Orders", "SearchResults", "Replenishments",new { mode="LastTen" }, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
                                  LoadingElementId = "dvspinner",
                                  InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 OnBegin = "$('#dvGridPlaceHolder').empty()",
                                  HttpMethod = "GET",
                              }, new { @class = "btn btn-info form-control" })
                         </div>
                         <div class="form-group col-md-4">
                             <label class="invisible">.</label>
-                            @Ajax.ActionLink("Un-Confirmed", "SearchUnConfirmedBulkOrders", "Replenishments", null, new AjaxOptions
+                            @Ajax.ActionLink("Un-Confirmed", "SearchResults", "Replenishments", new { mode = "UnConfirmed" }, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
                                  LoadingElementId = "dvspinner",
                                  InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 OnBegin = "$('#dvGridPlaceHolder').empty()",
                                  HttpMethod = "GET",
                              }, new { @class = "btn btn-info form-control" })
                         </div>
                         <div class="form-group col-md-4">
                             <label class="invisible">.</label>
-                            @Ajax.ActionLink("Open Items", "SearchOpenBulkOrders", "Replenishments", null, new AjaxOptions
+                            @Ajax.ActionLink("Open Items", "SearchResults", "Replenishments", new { mode = "OpenOnly" }, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
                                  LoadingElementId = "dvspinner",
                                  InsertionMode = InsertionMode.Replace,
-                                 OnBegin = "$('#dvGridPlaceHolder').html('')",
+                                 OnBegin = "$('#dvGridPlaceHolder').empty()",
                                  HttpMethod = "GET",
                              }, new { @class = "btn btn-info form-control" })
                         </div>
@@ -104,58 +104,12 @@
 
     </div>
 
-
-    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
+    <div class="col-md-12 text-center" id="dvspinner" style="display:none;">
+        <i class="fa fa-circle-o-notch fa-1x fa-spin"></i> Processing...
     </div>
 
     <div id="dvGridPlaceHolder" class="row">
-        @Html.Partial("~/Views/Replenishments/_SearchResults.cshtml", fnDefaultSearchResults())
+        @{Html.RenderAction("SearchResults", "Replenishments", new { mode = "Initial" });}
     </div>
+
 </div>
-
-<!-- Local Razor -->
-@functions
-{
-    private static List<SelectListItem> fnClientIDs()
-    {
-        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblClient
-                      orderby t.ClientName
-                      select
-                        new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-            return mylist;
-        }
-
-    }
-
-    private List<MvcPhoenix.Models.BulkOrderSearchResults> fnDefaultSearchResults()
-    {
-        // default search results for initial load
-        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-        {
-            List<MvcPhoenix.Models.BulkOrderSearchResults> mylist = new List<MvcPhoenix.Models.BulkOrderSearchResults>();
-            mylist = (from t in db.tblBulkOrder
-                      join t2 in db.tblClient on t.ClientID equals t2.ClientID
-                      let itemscount = (from items in db.tblBulkOrderItem where items.BulkOrderID == t.BulkOrderID select items).Count()
-                      orderby t.BulkOrderID descending
-                      select new MvcPhoenix.Models.BulkOrderSearchResults
-                      {
-                          bulkorderid = t.BulkOrderID,
-                          clientid = t.ClientID,
-                          supplyid = t.SupplyID,
-                          orderdate = t.OrderDate,
-                          comment = t.Comment,
-                          bulksupplieremail = t.BulkSupplierEmail,
-                          emailsent = t.EmailSent,
-                          clientname = t2.ClientName,
-                          itemcount = itemscount
-                      }).Take(10).ToList();
-            db.Dispose();
-            return mylist;
-        }
-    }
-}

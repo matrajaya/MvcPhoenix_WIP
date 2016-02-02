@@ -237,6 +237,7 @@
     <Compile Include="Controllers\ApplicationRolesController.cs" />
     <Compile Include="Controllers\ApplicationUsersController.cs" />
     <Compile Include="Controllers\ClientDetailController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
@@ -489,6 +490,7 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\ReceivingService.cs" />
+    <Compile Include="Services\ReplenishmentsService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -713,13 +715,17 @@
     <Content Include="Views\ClientDetail\_SuppliersModal.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Orders\z__OrderImport.cshtml" />
     <Content Include="Views\Receiving\SelectProduct.cshtml" />
     <Content Include="Views\Receiving\SelectPrePack.cshtml" />
     <Content Include="Views\Receiving\EnterPrePack.cshtml" />
     <Content Include="Views\Receiving\Edit.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Replenishments\_SuggestedItemModal.cshtml" />
+    <Content Include="Views\Replenishments\_BulkOrderItemModal.cshtml" />
+    <Content Include="Views\Replenishments\Email.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -32,19 +32,24 @@ $("#advancedsearch").on('hidden.bs.modal', function () {
     $(this).data('bs.modal', null);
 });
 
-// Order Import File Upload
-function handleFileSelect(evt) {
-    var Files = evt.target.files; // FileList object
+//// Order Import File Upload
+//function handleFileSelect(evt) {
+//    var Files = evt.target.files; // FileList object
 
-    // files is a FileList of File objects. List some properties.
-    var output = [];
-    for (var i = 0, f; f = Files[i]; i++) {
-        output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                    f.size, ' bytes, last modified: ',
-                    f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                    '</li>');
-    }
-    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+//    // files is a FileList of File objects. List some properties.
+//    var output = [];
+//    for (var i = 0, f; f = Files[i]; i++) {
+//        output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+//                    f.size, ' bytes, last modified: ',
+//                    f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+//                    '</li>');
+//    }
+//    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+//}
+
+//document.getElementById('Files').addEventListener('change', handleFileSelect, false);
+
+// General Helpers
+function goBack() {
+    window.history.back();
 }
-
-document.getElementById('Files').addEventListener('change', handleFileSelect, false);

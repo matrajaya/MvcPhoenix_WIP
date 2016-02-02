@@ -1,12 +1,17 @@
-﻿@model MvcPhoenix.Models.SuggestedBulkOrder
-@{
-    // build list for this partial
-    List<MvcPhoenix.Models.SuggestedBulkOrderItems> mylist = fnSuggestedBulkOrderItems();
-}
+﻿@model List<MvcPhoenix.Models.SuggestedBulkOrderItem>
 
-<div id="suggestedbulkorder">
-    <div class="table-responsive col-md-12">
-        <table class="table table-hover table-striped">
+<div id="dvItemsList">
+    <label>Suggested Items | </label>
+    @Ajax.ActionLink("+ Add Item", "CreateSuggestedItem", "Replenishments", new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        UpdateTargetId = "dialogPlaceholder",
+        OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+    })
+
+    <div class="table-responsive">
+        <table class="table table-striped table-condensed" style="font-size:.85em;">
             <tr>
                 <th class="text-center"><i class="fa fa-fw fa-trash-o"></i></th>
                 <th>#</th>
@@ -23,18 +28,17 @@
                 <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
             </tr>
             <tbody>
-                @*@foreach (var item in qry)*@
-                @foreach (var item in mylist)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td>
-                            <a title="Delete" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-confirm="Are You Sure You Want To DELETE Master Code: @item.mastercode From This Order?"
-                               data-ajax-update="#suggestedbulkorder" href="~/Replenishments/DeleteItemFromSuggestedOrder/@item.id">
-                                <i class="fa fa-fw fa-minus-circle" style="color:red"></i>
-                            </a>
+                            @Ajax.ActionLink(" ", "DeleteSuggestedItem", "Replenishments", new { id = @item.id },
+                                new AjaxOptions { UpdateTargetId="dvItemsList", Confirm = "Delete Item?",
+                                                    HttpMethod = "GET",
+                                                  OnSuccess = "updateItemsList"
+                                                }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
                         </td>
-                        @*<td>@(qry.IndexOf(item) + 1)</td>*@
-                        <td>@(mylist.IndexOf(item) + 1)</td>
+                        <td>@(Model.IndexOf(item) + 1)</td>
                         <td>@item.mastercode</td>
                         <td>@item.division</td>
                         <td>@item.mastername</td>
@@ -46,57 +50,37 @@
                         <td>@item.reorderweight</td>
                         <td>@item.reordernotes</td>
                         <td>
-                            <a title="Edit" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
-                               data-ajax-success="$('#modalouter').modal('show')" data-ajax-update="#modalinner" href="~/Replenishments/SetupEditItem/@item.id">
-                                <i class="fa fa-fw fa-pencil"></i>
-                            </a>
+                         @Ajax.ActionLink("Edit", "EditSuggestedItem", "Replenishments", new { id = @item.id },
+                                new AjaxOptions { UpdateTargetId = "dialogPlaceholder",
+                                                    InsertionMode = InsertionMode.Replace, 
+                                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show')" })
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-        
-
+    
     <!-- conditionally show this -->
-        @if (mylist.Count > 0)
+    <div class="row">
+        <div class="col-md-12">
+        @if (Model.Count == 0)
         {
-            @*@Html.ActionLink("Create Replenishment Orders(s)", "CreateBulkOrders", "BulkOrders",null,*@
-            @Html.ActionLink("Create Replenishment Orders(s)", "CreateBulkOrders", "Replenishments",null,
-                new { @class = "btn btn-xs btn-primary", onclick = "return confirm('Create Order(s)?')" })
+            <label>No Order Recommendations at @System.DateTime.Now.ToString()</label>        
         }
+        @if (Model.Count > 0)
+        {
+            <br />
+            @Html.ActionLink("Create Replenishment Orders(s)", "CreateBulkOrders", "Replenishments", null,
+                new { @class = "btn btn-sm btn-primary", onclick = "return confirm('Create Order(s)?')" })
+        }
+        </div>
+    </div>
 </div>
 
-<!-- Local Razor -->
-@functions
-{
-     private static List<MvcPhoenix.Models.SuggestedBulkOrderItems> fnSuggestedBulkOrderItems()
-        {
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-            {
-                var mylist = (from t in db.tblSuggestedBulk
-                              join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
-                              join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
-                              orderby t2.MasterCode, t2.SUPPLYID
-                              select new MvcPhoenix.Models.SuggestedBulkOrderItems
-                              {
-                                  id = t.id,
-                                  productmasterid = t.ProductMasterID,
-                                  masterdivisionid = t.MasterDivisionID,
-                                  division = t3.Division,
-                                  supplyid = t.SupplyID,
-                                  mastercode = t2.MasterCode,
-                                  mastername = t2.MasterName,
-                                  bulkshippedperday = t.BulkShippedPerDay,
-                                  shelfshippedperday = t.ShelfShippedPerDay,
-                                  usethisdaystilexpiration = t.UseThisDaysTilExpiration,
-                                  averageleadtime = t.AverageLeadTime,
-                                  reorderweight = t.ReorderWeight,
-                                  reordernotes = t.ReorderNotes
-                              }).ToList();
-                
-                return mylist;
-            }              
-     }
-}
-
+<script type="text/javascript">
+    function updateItemsList()
+    {
+        $("#dvItemsList").load('@Url.Action("SuggestedItemsList", "Replenishments")');
+    }
+</script>
