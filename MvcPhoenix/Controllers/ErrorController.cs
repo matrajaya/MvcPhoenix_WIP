@@ -23,8 +23,10 @@ namespace MvcPhoenix.Controllers
             //in the global.asax.cs code we handle the error. maybe we can send it to an email.
 
             //return a status code for proper seo
-            //Response.StatusCode = 500; change to 404 so that ELMAH can log error.
-            Response.StatusCode = 404;
+            //Response.StatusCode = 500; 
+            
+            //change to 404 so that ELMAH can log error.
+            //Response.StatusCode = 404;
 
             return View();
         }

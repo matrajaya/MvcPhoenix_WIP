@@ -19,6 +19,7 @@ namespace MvcPhoenix
                         "~/Scripts/modernizr-*"
                         ));
 
+            #region close comments
             // bundle all-in-one
             //bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
             //            "~/Scripts/jquery-{version}.js",
@@ -34,6 +35,7 @@ namespace MvcPhoenix
 
             //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
             //            "~/Scripts/modernizr-*"));
+            #endregion
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         "~/Content/bootstrap.css",
