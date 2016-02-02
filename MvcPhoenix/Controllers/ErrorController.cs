@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MasterDetail.Controllers
+namespace MvcPhoenix.Controllers
 {
     public class ErrorController : Controller
     {

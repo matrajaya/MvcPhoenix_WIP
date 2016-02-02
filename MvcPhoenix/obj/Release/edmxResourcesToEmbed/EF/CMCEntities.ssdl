@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CMCSQL03Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
   <EntityType Name="tblBulk">
     <Key>
       <PropertyRef Name="BulkID" />
@@ -1559,7 +1549,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="ProdCode_MDB" Type="nvarchar" MaxLength="25" />
   </EntityType>
   <EntityContainer Name="CMCSQL03ModelStoreContainer">
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblBulk" EntityType="Self.tblBulk" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblBulkOrder" EntityType="Self.tblBulkOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblBulkOrderItem" EntityType="Self.tblBulkOrderItem" Schema="dbo" store:Type="Tables" />

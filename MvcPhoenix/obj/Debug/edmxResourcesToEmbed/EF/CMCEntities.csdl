@@ -1,15 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="CMCSQL03Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-  </EntityType>
+  <EntityContainer Name="CMCSQL03Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tblBulk" EntityType="CMCSQL03Model.tblBulk" />
+    <EntitySet Name="tblBulkOrder" EntityType="CMCSQL03Model.tblBulkOrder" />
+    <EntitySet Name="tblBulkOrderItem" EntityType="CMCSQL03Model.tblBulkOrderItem" />
+    <EntitySet Name="tblBulkSupplier" EntityType="CMCSQL03Model.tblBulkSupplier" />
+    <EntitySet Name="tblBulkUnKnown" EntityType="CMCSQL03Model.tblBulkUnKnown" />
+    <EntitySet Name="tblCarrier" EntityType="CMCSQL03Model.tblCarrier" />
+    <EntitySet Name="tblCAS" EntityType="CMCSQL03Model.tblCAS" />
+    <EntitySet Name="tblClient" EntityType="CMCSQL03Model.tblClient" />
+    <EntitySet Name="tblClientContact" EntityType="CMCSQL03Model.tblClientContact" />
+    <EntitySet Name="tblClientIncidentalRate" EntityType="CMCSQL03Model.tblClientIncidentalRate" />
+    <EntitySet Name="tblClientInvoiceTrans" EntityType="CMCSQL03Model.tblClientInvoiceTrans" />
+    <EntitySet Name="tblCountry" EntityType="CMCSQL03Model.tblCountry" />
+    <EntitySet Name="tblCustomer" EntityType="CMCSQL03Model.tblCustomer" />
+    <EntitySet Name="tblDhRate" EntityType="CMCSQL03Model.tblDhRate" />
+    <EntitySet Name="tblDivision" EntityType="CMCSQL03Model.tblDivision" />
+    <EntitySet Name="tblEndUse" EntityType="CMCSQL03Model.tblEndUse" />
+    <EntitySet Name="tblEndUseForCustoms" EntityType="CMCSQL03Model.tblEndUseForCustoms" />
+    <EntitySet Name="tblHSCode" EntityType="CMCSQL03Model.tblHSCode" />
+    <EntitySet Name="tblInvLog" EntityType="CMCSQL03Model.tblInvLog" />
+    <EntitySet Name="tblInvTrans" EntityType="CMCSQL03Model.tblInvTrans" />
+    <EntitySet Name="tblOrderImport" EntityType="CMCSQL03Model.tblOrderImport" />
+    <EntitySet Name="tblOrderItem" EntityType="CMCSQL03Model.tblOrderItem" />
+    <EntitySet Name="tblOrderItemArchive" EntityType="CMCSQL03Model.tblOrderItemArchive" />
+    <EntitySet Name="tblOrderMaster" EntityType="CMCSQL03Model.tblOrderMaster" />
+    <EntitySet Name="tblOrderSource" EntityType="CMCSQL03Model.tblOrderSource" />
+    <EntitySet Name="tblOrderTrans" EntityType="CMCSQL03Model.tblOrderTrans" />
+    <EntitySet Name="tblOrderType" EntityType="CMCSQL03Model.tblOrderType" />
+    <EntitySet Name="tblPackage" EntityType="CMCSQL03Model.tblPackage" />
+    <EntitySet Name="tblPackageType" EntityType="CMCSQL03Model.tblPackageType" />
+    <EntitySet Name="tblPMNote" EntityType="CMCSQL03Model.tblPMNote" />
+    <EntitySet Name="tblPreferredCarrierList" EntityType="CMCSQL03Model.tblPreferredCarrierList" />
+    <EntitySet Name="tblProductDetail" EntityType="CMCSQL03Model.tblProductDetail" />
+    <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
+    <EntitySet Name="tblProductNotes" EntityType="CMCSQL03Model.tblProductNotes" />
+    <EntitySet Name="tblProductXRef" EntityType="CMCSQL03Model.tblProductXRef" />
+    <EntitySet Name="tblProfile" EntityType="CMCSQL03Model.tblProfile" />
+    <EntitySet Name="tblReasonCode" EntityType="CMCSQL03Model.tblReasonCode" />
+    <EntitySet Name="tblReportCriteria" EntityType="CMCSQL03Model.tblReportCriteria" />
+    <EntitySet Name="tblSampSize" EntityType="CMCSQL03Model.tblSampSize" />
+    <EntitySet Name="tblShelfMaster" EntityType="CMCSQL03Model.tblShelfMaster" />
+    <EntitySet Name="tblSQlTable" EntityType="CMCSQL03Model.tblSQlTable" />
+    <EntitySet Name="tblState" EntityType="CMCSQL03Model.tblState" />
+    <EntitySet Name="tblStatusNotes" EntityType="CMCSQL03Model.tblStatusNotes" />
+    <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
+    <EntitySet Name="tblSuggestedBulk" EntityType="CMCSQL03Model.tblSuggestedBulk" />
+    <EntitySet Name="tblSurcharge" EntityType="CMCSQL03Model.tblSurcharge" />
+    <EntitySet Name="tblSystem" EntityType="CMCSQL03Model.tblSystem" />
+    <EntitySet Name="tblTier" EntityType="CMCSQL03Model.tblTier" />
+    <EntitySet Name="tblTransType" EntityType="CMCSQL03Model.tblTransType" />
+    <EntitySet Name="tblUN" EntityType="CMCSQL03Model.tblUN" />
+    <EntitySet Name="tblUser" EntityType="CMCSQL03Model.tblUser" />
+    <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
+    <EntitySet Name="tblOrderMasterArchive" EntityType="CMCSQL03Model.tblOrderMasterArchive" />
+  </EntityContainer>
   <EntityType Name="tblBulk">
     <Key>
       <PropertyRef Name="BulkID" />
@@ -1556,60 +1601,4 @@
     <Property Name="OrderID" Type="Int32" />
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
   </EntityType>
-  <EntityContainer Name="CMCSQL03Entities1" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-    <EntitySet Name="tblBulk" EntityType="Self.tblBulk" />
-    <EntitySet Name="tblBulkOrder" EntityType="Self.tblBulkOrder" />
-    <EntitySet Name="tblBulkOrderItem" EntityType="Self.tblBulkOrderItem" />
-    <EntitySet Name="tblBulkSupplier" EntityType="Self.tblBulkSupplier" />
-    <EntitySet Name="tblBulkUnKnown" EntityType="Self.tblBulkUnKnown" />
-    <EntitySet Name="tblCarrier" EntityType="Self.tblCarrier" />
-    <EntitySet Name="tblCAS" EntityType="Self.tblCAS" />
-    <EntitySet Name="tblClient" EntityType="Self.tblClient" />
-    <EntitySet Name="tblClientContact" EntityType="Self.tblClientContact" />
-    <EntitySet Name="tblClientIncidentalRate" EntityType="Self.tblClientIncidentalRate" />
-    <EntitySet Name="tblClientInvoiceTrans" EntityType="Self.tblClientInvoiceTrans" />
-    <EntitySet Name="tblCountry" EntityType="Self.tblCountry" />
-    <EntitySet Name="tblCustomer" EntityType="Self.tblCustomer" />
-    <EntitySet Name="tblDhRate" EntityType="Self.tblDhRate" />
-    <EntitySet Name="tblDivision" EntityType="Self.tblDivision" />
-    <EntitySet Name="tblEndUse" EntityType="Self.tblEndUse" />
-    <EntitySet Name="tblEndUseForCustoms" EntityType="Self.tblEndUseForCustoms" />
-    <EntitySet Name="tblHSCode" EntityType="Self.tblHSCode" />
-    <EntitySet Name="tblInvLog" EntityType="Self.tblInvLog" />
-    <EntitySet Name="tblInvTrans" EntityType="Self.tblInvTrans" />
-    <EntitySet Name="tblOrderImport" EntityType="Self.tblOrderImport" />
-    <EntitySet Name="tblOrderItem" EntityType="Self.tblOrderItem" />
-    <EntitySet Name="tblOrderItemArchive" EntityType="Self.tblOrderItemArchive" />
-    <EntitySet Name="tblOrderMaster" EntityType="Self.tblOrderMaster" />
-    <EntitySet Name="tblOrderSource" EntityType="Self.tblOrderSource" />
-    <EntitySet Name="tblOrderTrans" EntityType="Self.tblOrderTrans" />
-    <EntitySet Name="tblOrderType" EntityType="Self.tblOrderType" />
-    <EntitySet Name="tblPackage" EntityType="Self.tblPackage" />
-    <EntitySet Name="tblPackageType" EntityType="Self.tblPackageType" />
-    <EntitySet Name="tblPMNote" EntityType="Self.tblPMNote" />
-    <EntitySet Name="tblPreferredCarrierList" EntityType="Self.tblPreferredCarrierList" />
-    <EntitySet Name="tblProductDetail" EntityType="Self.tblProductDetail" />
-    <EntitySet Name="tblProductMaster" EntityType="Self.tblProductMaster" />
-    <EntitySet Name="tblProductNotes" EntityType="Self.tblProductNotes" />
-    <EntitySet Name="tblProductXRef" EntityType="Self.tblProductXRef" />
-    <EntitySet Name="tblProfile" EntityType="Self.tblProfile" />
-    <EntitySet Name="tblReasonCode" EntityType="Self.tblReasonCode" />
-    <EntitySet Name="tblReportCriteria" EntityType="Self.tblReportCriteria" />
-    <EntitySet Name="tblSampSize" EntityType="Self.tblSampSize" />
-    <EntitySet Name="tblShelfMaster" EntityType="Self.tblShelfMaster" />
-    <EntitySet Name="tblSQlTable" EntityType="Self.tblSQlTable" />
-    <EntitySet Name="tblState" EntityType="Self.tblState" />
-    <EntitySet Name="tblStatusNotes" EntityType="Self.tblStatusNotes" />
-    <EntitySet Name="tblStock" EntityType="Self.tblStock" />
-    <EntitySet Name="tblSuggestedBulk" EntityType="Self.tblSuggestedBulk" />
-    <EntitySet Name="tblSurcharge" EntityType="Self.tblSurcharge" />
-    <EntitySet Name="tblSystem" EntityType="Self.tblSystem" />
-    <EntitySet Name="tblTier" EntityType="Self.tblTier" />
-    <EntitySet Name="tblTransType" EntityType="Self.tblTransType" />
-    <EntitySet Name="tblUN" EntityType="Self.tblUN" />
-    <EntitySet Name="tblUser" EntityType="Self.tblUser" />
-    <EntitySet Name="tblWasteCode" EntityType="Self.tblWasteCode" />
-    <EntitySet Name="tblOrderMasterArchive" EntityType="Self.tblOrderMasterArchive" />
-  </EntityContainer>
 </Schema>

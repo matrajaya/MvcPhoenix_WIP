@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MasterDetail</RootNamespace>
-    <AssemblyName>MasterDetail</AssemblyName>
+    <RootNamespace>MvcPhoenix</RootNamespace>
+    <AssemblyName>MvcPhoenix</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -40,34 +40,6 @@
           <Object Type="DbFullSql">
             <PreSource Path="Data Source=%28LocalDb%29\v11.0%3bAttachDbFilename=|DataDirectory|\PhoenixAuth.mdf%3bInitial Catalog=PhoenixAuth%3bIntegrated Security=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
             <Source Path="obj\Debug\AutoScripts\AuthConnection-Deployment_SchemaOnly.sql" Transacted="True" />
-          </Object>
-        </ObjectGroup>
-        <ObjectGroup Name="tbd_DefaultConnection-Deployment" Order="2">
-          <Destination Path="" />
-          <Object Type="DbFullSql">
-            <PreSource Path="Data Source=%28LocalDb%29\v11.0%3bAttachDbFilename=|DataDirectory|\aspnet-MvcPhoenix-20150512133927.mdf%3bInitial Catalog=aspnet-MvcPhoenix-20150512133927%3bIntegrated Security=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
-            <Source Path="obj\Debug\AutoScripts\tbd_DefaultConnection-Deployment_SchemaOnly.sql" Transacted="True" />
-          </Object>
-        </ObjectGroup>
-        <ObjectGroup Name="FL_ADOConnectionString-Deployment" Order="3" Enabled="True">
-          <Destination Path="" />
-          <Object Type="DbFullSql">
-            <PreSource Path="Data Source=.\sqlexpress%3bInitial Catalog=CMCSQL03%3bIntegrated Security=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
-            <Source Path="obj\Debug\AutoScripts\FL_ADOConnectionString-Deployment_SchemaOnly.sql" Transacted="True" />
-          </Object>
-        </ObjectGroup>
-        <ObjectGroup Name="ADOConnectionString-Deployment" Order="4">
-          <Destination Path="" />
-          <Object Type="DbFullSql">
-            <PreSource Path="Data Source=192.168.0.27%3bInitial Catalog=CMCSQL03%3bPersist Security Info=True%3bUser ID=sa%3bPassword=panicbutton" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
-            <Source Path="obj\Debug\AutoScripts\ADOConnectionString-Deployment_SchemaOnly.sql" Transacted="True" />
-          </Object>
-        </ObjectGroup>
-        <ObjectGroup Name="FL_CMCSQL03Entities-Deployment" Order="5" Enabled="True">
-          <Destination Path="" />
-          <Object Type="DbFullSql">
-            <PreSource Path="Data Source=SX%3bInitial Catalog=CMCSQL03%3bIntegrated Security=True%3bApplication Name=EntityFramework" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
-            <Source Path="obj\Debug\AutoScripts\FL_CMCSQL03Entities-Deployment_SchemaOnly.sql" Transacted="True" />
           </Object>
         </ObjectGroup>
         <ObjectGroup Name="CMCSQL03Entities-Deployment" Order="6">
@@ -263,9 +235,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CMCEntities.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="EF\sysdiagrams.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblBulk.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>

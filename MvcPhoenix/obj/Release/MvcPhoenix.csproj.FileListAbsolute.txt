@@ -1,6 +1,3 @@
-C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MasterDetail.dll.config
-C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MasterDetail.dll
-C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MasterDetail.pdb
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Antlr3.Runtime.dll
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\EntityFramework.dll
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\EntityFramework.SqlServer.dll
@@ -63,9 +60,12 @@ C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.Migrations.UpdateFields.resources
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.Migrations.RemoveAllButUsersRoles.resources
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.csproj.GenerateResource.Cache
-C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MasterDetail.dll
-C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MasterDetail.pdb
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.csprojResolveAssemblyReference.cache
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.Migrations.FieldLengths.resources
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Elmah.dll
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Elmah.Mvc.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll.config
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.pdb
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.pdb
