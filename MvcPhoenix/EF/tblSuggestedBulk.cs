@@ -45,5 +45,6 @@ namespace MvcPhoenix.EF
         public string ReorderNotes { get; set; }
         public Nullable<bool> IsAddOn { get; set; }
         public string SessionID { get; set; }
+        public string UserName { get; set; }
     }
 }

@@ -155,6 +155,7 @@ namespace MvcPhoenix.Models
         public string reordernotes { get; set; }
 
         public string mysessionid { get; set; }
+        public string username { get; set; }
 
         // add fields to reire above class
         public string  mastercode { get; set; }

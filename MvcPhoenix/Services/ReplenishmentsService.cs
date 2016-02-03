@@ -386,23 +386,32 @@ namespace MvcPhoenix.Services
         {
             // return the number of items created
             //System.Diagnostics.Debug.WriteLine(s);
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+            //MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
             int itemscount = 0;
-            try
+
+            // change this later to user the identity prop
+            string username = "philc";
+
+            using (var db = new CMCSQL03Entities())
             {
                 string s;
                 string fnTempTable = "tblSuggestedBulk";
-                string sSessionID = HttpContext.Current.Session["MySessionID"].ToString();
+                //string sSessionID = HttpContext.Current.Session["MySessionID"].ToString();
+                string sSessionID = "Iffy"; ///HttpContext.Current.Session.SessionID.ToString();
 
-                s = "Delete from " + fnTempTable;
-                //s = "Delete from " + fnTempTable + " where SessionID='" + sSessionID + "'";
+                //s = "Delete from " + fnTempTable;
+                s = "Delete from " + fnTempTable + " where UserName='" + username + "'";
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Insert into " + fnTempTable + "(ClientID, ProductMasterID,SUPPLYID, ShelfLife, CreateDate)";
-                s = s + " SELECT ClientID, ProductMasterID,SUPPLYID,ShlfLife,CreateDate from tblProductMaster";
+                s = "Insert into " + fnTempTable + "(ClientID, ProductMasterID,SUPPLYID, ShelfLife, CreateDate,MasterDivisionID)";
+                s = s + " SELECT ClientID, ProductMasterID,SUPPLYID,ShlfLife,CreateDate,MasterDivisionID from tblProductMaster";
                 s = s + " Where ClientID=" + obj.clientid;
+
                 if (obj.divisionid > 0)
                 { s = s + " and MasterDivisionID='" + obj.divisionid + "'"; }
+                db.Database.ExecuteSqlCommand(s);
+
+                s = "Update " + fnTempTable + " Set UserName='" + username + "'";
                 db.Database.ExecuteSqlCommand(s);
 
                 s = "Update " + fnTempTable + " Set SessionID='" + sSessionID + "'";
@@ -526,25 +535,22 @@ namespace MvcPhoenix.Services
                 db.Database.ExecuteSqlCommand(s);
 
                 itemscount = db.tblSuggestedBulk.Count();
+                return itemscount;
             }
-            catch
-            {
-                //result = false;
-                itemscount = 0;
-            }
-            finally
-            {
-                db.Dispose();
-            }
-
-            return itemscount;
+            
+            
         }
         
         public static List<SuggestedBulkOrderItem> fnSuggestedItemsList()
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
+                // *****************************************************
+                // NOTE
+                string username = "philc"; // replace later with identity
+
                 var mylist = (from t in db.tblSuggestedBulk
+                              where t.UserName==username
                               join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
                               join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
                               join c in db.tblClient on t.ClientID equals c.ClientID
@@ -552,6 +558,7 @@ namespace MvcPhoenix.Services
                               select new SuggestedBulkOrderItem
                               {
                                   id = t.id,
+                                  username=t.UserName,
                                   clientid = t.ClientID,
                                   clientname = c.ClientName,
                                   logofilename = c.LogoFileName,
@@ -591,6 +598,7 @@ namespace MvcPhoenix.Services
                      orderby t.ProductMasterID
                      select new SuggestedBulkOrderItem {
                                   id = t.id,
+                                  username=t.UserName,
                                   clientid=t.ClientID,
                                   productmasterid = t.ProductMasterID,
                                   //mastercode = t2.MasterCode,
@@ -614,6 +622,7 @@ namespace MvcPhoenix.Services
         {
             SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
             obj.id = -1;    // important
+            obj.username = "philc";    // replace later with identity string 
             obj.clientid = Convert.ToInt32(HttpContext.Current.Session["SuggestedBulkOrderItemClientID"]);
             obj.ListOfProductMasters = ReplenishmentsService.fnProductMasterIDs(obj.clientid);
             return obj;
@@ -630,6 +639,7 @@ namespace MvcPhoenix.Services
                     obj.id = fnNewSuggestedOrderItemID();
                 }
                 var dbrow = db.tblSuggestedBulk.Find(obj.id);
+                dbrow.UserName = obj.username;
                 dbrow.ClientID = obj.clientid;
                 dbrow.ProductMasterID = obj.productmasterid;
                 var dbMaster = db.tblProductMaster.Find(obj.productmasterid);
@@ -656,16 +666,22 @@ namespace MvcPhoenix.Services
 
          public static int fnCreateBulkOrders()
          {
-             // Create a new tblBulkOrder from tblSuggestedBulk for each distinct ClientID-SupplyID
-             // TODO: Modify to allow multiuser use by adding a userid to tblSuggestedBulk
+             
+             //TODO using
+             //TODO add username filter
+             
+             // convert to identity
+             string username = "philc";
 
              string s;
              string fnTempTable = "tblSuggestedBulk";
              MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
              s = "Update " + fnTempTable + " set SupplyID='n/a' where Supplyid is null";
+             s = s + " and UserName='" + username + "'";
              db.Database.ExecuteSqlCommand(s);
-             // how do I pass fnTempTable into the LINQ query?
+
              var qry = (from t in db.tblSuggestedBulk
+                        where t.UserName==username
                         select new { t.ClientID, t.SupplyID }).Distinct();
              int SupplyIDCount = qry.Count();
              DateTime myOrderDate = DateTime.Now;
@@ -696,18 +712,14 @@ namespace MvcPhoenix.Services
                  db1.Database.ExecuteSqlCommand(s);
              }
              int OrdersCount = qry.Count();
-             db1.Database.ExecuteSqlCommand("Delete From tblSuggestedBulk");
+             db1.Database.ExecuteSqlCommand("Delete From tblSuggestedBulk where UserName='" + username + "'");
              db1.Dispose();
              db.Dispose();
              return OrdersCount;
-             
          }
 
 
-
-
         #endregion --------------------------------------------------------------------------------------
-
 
 
 
@@ -731,60 +743,61 @@ namespace MvcPhoenix.Services
         
      private static List<SelectListItem> fnListOfSupplyIDs(int? clientid)
      {
-         MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-         List<SelectListItem> mylist = new List<SelectListItem>();
-         mylist = (from t in db.tblProductMaster
-                   where t.ClientID == clientid
-                   orderby t.SUPPLYID
-                   select
-                   new SelectListItem { Value = t.SUPPLYID, Text = t.SUPPLYID }).Distinct().ToList();
-         db.Dispose();
-         return mylist;
+         using (var db = new CMCSQL03Entities())
+         {
+             List<SelectListItem> mylist = new List<SelectListItem>();
+             mylist = (from t in db.tblProductMaster
+                       where t.ClientID == clientid
+                       orderby t.SUPPLYID
+                       select
+                       new SelectListItem { Value = t.SUPPLYID, Text = t.SUPPLYID }).Distinct().ToList();
+              mylist.Insert(0, new SelectListItem { Value = "0", Text = "" });
+              return mylist;
+         }
      }
 
      public static List<SelectListItem> fnProductMasterIDs(int? clientid)
      {
-         MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-         List<SelectListItem> mylist = new List<SelectListItem>();
-         mylist = (from t in db.tblProductMaster
-                   where t.ClientID == clientid
-                   orderby t.MasterCode
-                   select
-                       new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
 
-         mylist.Insert(0, new SelectListItem { Value = "0", Text = "Master Code" });
-         db.Dispose();
-         return mylist;
+         using (var db = new CMCSQL03Entities())
+         {
+             List<SelectListItem> mylist = new List<SelectListItem>();
+             mylist = (from t in db.tblProductMaster
+                       where t.ClientID == clientid
+                       orderby t.MasterCode
+                       select
+                           new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
+
+             mylist.Insert(0, new SelectListItem { Value = "0", Text = "Master Code" });
+             return mylist;
+         }
      }
      
      private static List<SelectListItem> fnOrderItemStatusIDs()
      {
-         MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
          List<SelectListItem> mylist = new List<SelectListItem>();
-         //mylist = (from t in db.tblBulkOrderItem
-         //          orderby t.Status
-         //          select
-         //          new SelectListItem { Value = t.Status, Text = t.Status }).Distinct().ToList();
          mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
          mylist.Insert(1, new SelectListItem { Value = "CL", Text = "Closed" });
          mylist.Insert(2, new SelectListItem { Value = "OP", Text = "Open" });
          mylist.Insert(3, new SelectListItem { Value = "CN", Text = "Cancelled" });
-         db.Dispose();
          return mylist;
      }
 
 
      public static List<SelectListItem> fnDivisionIDs(int clientid)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from c in db.tblDivision where c.ClientID == clientid select new SelectListItem { Value = c.DivisionID.ToString(), Text = c.Division }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Division" });
-            db.Dispose();
-            return mylist;
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from c in db.tblDivision where c.ClientID == clientid select new SelectListItem { Value = c.DivisionID.ToString(), Text = c.Division }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Division" });
+                return mylist;
+            }
         }
 
 
-    }
 
+
+
+    }
 }

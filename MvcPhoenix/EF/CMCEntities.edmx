@@ -1462,6 +1462,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="ReorderNotes" Type="nvarchar" MaxLength="255" />
           <Property Name="IsAddOn" Type="bit" />
           <Property Name="SessionID" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="tblSurcharge">
           <Key>
@@ -3120,6 +3121,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="ReorderNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="IsAddOn" Type="Boolean" />
           <Property Name="SessionID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblSurcharge">
           <Key>
@@ -3302,7 +3304,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <Property Name="OrderID" Type="Int32" />
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -4684,6 +4686,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
           <EntitySetMapping Name="tblSuggestedBulk">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblSuggestedBulk">
               <MappingFragment StoreEntitySet="tblSuggestedBulk">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="SessionID" ColumnName="SessionID" />
                 <ScalarProperty Name="IsAddOn" ColumnName="IsAddOn" />
                 <ScalarProperty Name="ReorderNotes" ColumnName="ReorderNotes" />

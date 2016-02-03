@@ -1419,6 +1419,7 @@
     <Property Name="ReorderNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="IsAddOn" Type="Boolean" />
     <Property Name="SessionID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="tblSurcharge">
     <Key>

@@ -1377,6 +1377,7 @@
     <EntitySetMapping Name="tblSuggestedBulk">
       <EntityTypeMapping TypeName="CMCSQL03Model.tblSuggestedBulk">
         <MappingFragment StoreEntitySet="tblSuggestedBulk">
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
           <ScalarProperty Name="SessionID" ColumnName="SessionID" />
           <ScalarProperty Name="IsAddOn" ColumnName="IsAddOn" />
           <ScalarProperty Name="ReorderNotes" ColumnName="ReorderNotes" />

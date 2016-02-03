@@ -20,7 +20,7 @@ namespace MvcPhoenix
 
         protected void Application_Error(object sender, EventArgs e)
         {
-            //handle exceptions, send them via email, whatever
+            //handle exceptions, send them via email or write to DB
             var exception = Server.GetLastError();
         }
     }

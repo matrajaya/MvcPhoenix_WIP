@@ -1457,6 +1457,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.tblOrderMasterArchive' does not have 
     <Property Name="ReorderNotes" Type="nvarchar" MaxLength="255" />
     <Property Name="IsAddOn" Type="bit" />
     <Property Name="SessionID" Type="nvarchar" MaxLength="255" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="tblSurcharge">
     <Key>

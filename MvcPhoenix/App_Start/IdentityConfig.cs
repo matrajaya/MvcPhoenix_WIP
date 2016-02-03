@@ -19,7 +19,8 @@ namespace MvcPhoenix
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        //public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
             // Using SendGrid email service
             const string userName = "ifeanyiigbo";
@@ -37,20 +38,54 @@ namespace MvcPhoenix
             mailMessage.Subject = message.Subject;
             mailMessage.Body = message.Body;
 
-            return smtpClient.SendMailAsync(mailMessage);
+            //return smtpClient.SendMailAsync(mailMessage);
+            await smtpClient.SendMailAsync(mailMessage);
         }
+
+        //public async Task SendAsync(IdentityMessage message)
+        //{
+        //    // Credentials:
+        //    string smtpServer = "secure.emailsrvr.com";
+        //    int smtpPort = 465;
+        //    bool enableSsl = true;
+        //    string smtpUsername = ConfigurationManager.AppSettings["EmailSmtpUsername"];
+        //    string smtpPassword = ConfigurationManager.AppSettings["EmailSmtpPassword"];
+        //    string sentFrom = ConfigurationManager.AppSettings["EmailSentFrom"];
+
+        //    // Configure the client:
+        //    var client = new SmtpClient(smtpServer, Convert.ToInt32(587));
+
+        //    client.Port = smtpPort;
+        //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+        //    client.UseDefaultCredentials = false;
+        //    client.EnableSsl = enableSsl;
+
+        //    // Create the credentials:
+        //    var credentials = new NetworkCredential(smtpUsername, smtpPassword);
+        //    client.Credentials = credentials;
+
+        //    // Create the message:
+        //    var mail = new System.Net.Mail.MailMessage(sentFrom, message.Destination);
+
+        //    mail.Subject = message.Subject;
+        //    mail.Body = message.Body;
+
+        //    // Send:
+        //    await client.SendMailAsync(mail);
+        //}
     }
 
-    public class SmsService : IIdentityMessageService
-    {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // Plug in your SMS service here to send a text message.
-            return Task.FromResult(0);
-        }
-    }
+    //public class SmsService : IIdentityMessageService
+    //{
+    //    public Task SendAsync(IdentityMessage message)
+    //    {
+    //        // Plug in your SMS service here to send a text message.
+    //        return Task.FromResult(0);
+    //    }
+    //}
 
-    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
+    // Configure the application user manager used in this application. 
+    // UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -85,20 +120,20 @@ namespace MvcPhoenix
 
             // Register two factor authentication providers. 
             // We can use two-factor authentication using Phone and Emails for user verification but Email will be fine for now.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
-            {
-                MessageFormat = "Your security code is {0}"
-            });
+            //manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
+            //{
+            //    MessageFormat = "Your security code is {0}"
+            //});
 
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
-            {
-                Subject = "Security Code",
-                BodyFormat = "Your security code is {0}"
-            });
+            //manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
+            //{
+            //    Subject = "Security Code",
+            //    BodyFormat = "Your security code is {0}"
+            //});
             
+            //manager.SmsService = new SmsService();
+
             manager.EmailService = new EmailService();
-            
-            manager.SmsService = new SmsService();
             
             var dataProtectionProvider = options.DataProtectionProvider;
 
