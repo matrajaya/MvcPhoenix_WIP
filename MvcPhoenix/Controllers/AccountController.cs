@@ -262,12 +262,11 @@ namespace MvcPhoenix.Controllers
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
 
-                if (user == null || (await UserManager.IsEmailConfirmedAsync(user.Id)))
-                //if (user == null)
+                //if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
+                    // Don't reveal that the user does not exist, or is not confirmed
                     return View("CheckYourEmail");
-                    //return View("ForgotPasswordConfirmation");
                 }
 
                 // Send an email with this link
@@ -276,11 +275,9 @@ namespace MvcPhoenix.Controllers
                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                 return View("CheckYourEmail");
-                //return RedirectToAction("CheckYourEmail", "Account");
-                //return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
-            // If we got this far, something failed, redisplay form
+            // Something's wrong, redisplay form
             return View(model);
         }
 

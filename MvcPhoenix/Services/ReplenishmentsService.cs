@@ -397,7 +397,8 @@ namespace MvcPhoenix.Services
                 string s;
                 string fnTempTable = "tblSuggestedBulk";
                 //string sSessionID = HttpContext.Current.Session["MySessionID"].ToString();
-                string sSessionID = "Iffy"; ///HttpContext.Current.Session.SessionID.ToString();
+                //string sSessionID = HttpContext.Current.Session.SessionID.ToString();
+                //string sSessionID = "hello";
 
                 //s = "Delete from " + fnTempTable;
                 s = "Delete from " + fnTempTable + " where UserName='" + username + "'";
@@ -414,8 +415,8 @@ namespace MvcPhoenix.Services
                 s = "Update " + fnTempTable + " Set UserName='" + username + "'";
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set SessionID='" + sSessionID + "'";
-                db.Database.ExecuteSqlCommand(s);
+                //s = "Update " + fnTempTable + " Set SessionID='" + sSessionID + "'";
+                //db.Database.ExecuteSqlCommand(s);
 
                 s = "Update " + fnTempTable + " Set BulkOnOrder=0";
                 db.Database.ExecuteSqlCommand(s);
@@ -541,7 +542,7 @@ namespace MvcPhoenix.Services
             
         }
         
-        public static List<SuggestedBulkOrderItem> fnSuggestedItemsList()
+        public static List<SuggestedBulkOrderItem> Org_fnSuggestedItemsList()
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
@@ -578,6 +579,59 @@ namespace MvcPhoenix.Services
             }
         }
 
+
+        public static List<SuggestedBulkOrderItem> fnSuggestedItemsList()
+        {
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            {
+                // *****************************************************
+                // NOTE
+                string username = "philc"; // replace later with identity
+
+                var mylist = (from t in db.tblSuggestedBulk
+                              join c in db.tblClient on t.ClientID equals c.ClientID
+                              join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                              where t.UserName == username
+                              select new SuggestedBulkOrderItem
+                              {
+                                  id = t.id,
+                                  clientid = t.ClientID,
+                                  productmasterid = t.ProductMasterID,
+                                  masterdivisionid=t.MasterDivisionID,
+                                  supplyid = t.SupplyID,
+                                  reorderweight = t.ReorderWeight,
+                                  reordernotes = t.ReorderNotes,
+                                  bulkshippedperday = t.BulkShippedPerDay,
+                                  shelfshippedperday = t.ShelfShippedPerDay,
+                                  usethisdaystilexpiration = t.UseThisDaysTilExpiration,
+                                  averageleadtime = t.AverageLeadTime,
+                                  username = t.UserName,
+                                  clientname = c.ClientName,
+                                  logofilename = c.LogoFileName,
+                                  mastercode = pm.MasterCode,
+                                  mastername = pm.MasterName,
+                                  division = "No Division"
+                              }).ToList();
+                foreach(var item in mylist)
+                {
+                    var dbDivision = (from t in db.tblDivision where t.DivisionID == item.masterdivisionid select t).FirstOrDefault();
+                    if (dbDivision == null)
+                    {
+
+                    }
+                    else
+                    {
+                        item.division = dbDivision.Division;
+                    }
+                }
+                mylist = (from t in mylist orderby t.mastercode, t.supplyid select t).ToList();
+                return mylist;
+            }
+        }
+
+
+        
+        
         public static void fnDeleteSuggestedItem(int id)
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
@@ -592,20 +646,20 @@ namespace MvcPhoenix.Services
             {
                 SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
                 obj = (from t in db.tblSuggestedBulk
-                              join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
-                              join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
+                              //join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
+                              //join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
                      where t.id == id
                      orderby t.ProductMasterID
                      select new SuggestedBulkOrderItem {
                                   id = t.id,
-                                  username=t.UserName,
-                                  clientid=t.ClientID,
+                                  clientid = t.ClientID,
                                   productmasterid = t.ProductMasterID,
+                                  supplyid = t.SupplyID,
+                                  reorderweight = t.ReorderWeight,
+                                  //username=t.UserName,
                                   //mastercode = t2.MasterCode,
                                   //division = t3.Division,
                                   //mastername = t2.MasterName,
-                                  supplyid = t.SupplyID,
-                                  reorderweight = t.ReorderWeight,
                                   //bulkshippedperday = t.BulkShippedPerDay,
                                   //shelfshippedperday = t.ShelfShippedPerDay,
                                   //usethisdaystilexpiration = t.UseThisDaysTilExpiration,
@@ -613,17 +667,18 @@ namespace MvcPhoenix.Services
                                   reordernotes = t.ReorderNotes
                               }).FirstOrDefault();
                 obj.ListOfProductMasters = fnProductMasterIDs(Convert.ToInt32(obj.clientid));
-                obj.ListOfSupplyIDs = fnListOfSupplyIDs(obj.clientid);
+                //obj.ListOfSupplyIDs = fnListOfSupplyIDs(obj.clientid);
                 return obj;
             }
         }
 
-        public static SuggestedBulkOrderItem fnCreateSuggestedBulkOrderItem()
+        public static SuggestedBulkOrderItem fnCreateSuggestedBulkOrderItem(int ClientID)
         {
+            // a new suggested item needs the client id to get started
             SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
             obj.id = -1;    // important
-            obj.username = "philc";    // replace later with identity string 
-            obj.clientid = Convert.ToInt32(HttpContext.Current.Session["SuggestedBulkOrderItemClientID"]);
+            obj.clientid = ClientID;
+            //obj.username = "philc";    // replace later with identity string 
             obj.ListOfProductMasters = ReplenishmentsService.fnProductMasterIDs(obj.clientid);
             return obj;
         }
@@ -639,13 +694,24 @@ namespace MvcPhoenix.Services
                     obj.id = fnNewSuggestedOrderItemID();
                 }
                 var dbrow = db.tblSuggestedBulk.Find(obj.id);
-                dbrow.UserName = obj.username;
                 dbrow.ClientID = obj.clientid;
                 dbrow.ProductMasterID = obj.productmasterid;
+                dbrow.ReorderWeight = obj.reorderweight;
+                dbrow.ReorderNotes = obj.reordernotes;
+
                 var dbMaster = db.tblProductMaster.Find(obj.productmasterid);
                 dbrow.SupplyID = dbMaster.SUPPLYID;
-                dbrow.ReorderWeight=obj.reorderweight;
-                dbrow.ReorderNotes=obj.reordernotes;
+
+                var dbDivision = db.tblDivision.Find(dbMaster.MasterDivisionID);
+                if (dbDivision == null)
+                { }
+                else
+                { dbrow.MasterDivisionID = dbDivision.DivisionID; }
+
+                //TODO change later
+                // always overwrite
+                dbrow.UserName = "philc";
+
                 db.SaveChanges();
                 return obj.id;
                  }

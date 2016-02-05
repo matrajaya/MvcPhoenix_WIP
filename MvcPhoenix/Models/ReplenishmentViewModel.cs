@@ -143,6 +143,8 @@ namespace MvcPhoenix.Models
         [Display(Name = "Mastercode")]
         public int? productmasterid { get; set; }
 
+        public int? masterdivisionid { get; set; }
+
         public List<SelectListItem> ListOfProductMasters { get; set; }
 
         public string supplyid { get; set; }

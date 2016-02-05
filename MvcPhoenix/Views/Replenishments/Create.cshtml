@@ -21,10 +21,8 @@
 
     @using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments", new AjaxOptions
     {
-        UpdateTargetId = "dvGridPlaceHolder",
-        LoadingElementId = "dvspinner",
-        OnSuccess = "itemsCreated()",
-        OnFailure="alert('ajax error')"
+        LoadingElementId = "dvspinnercreate",
+        OnSuccess = "UpdateItemsPartial"
     }))
     {
 
@@ -60,16 +58,14 @@
             </div>
         </div>
 
-        <div class="col-md-12 text-center" id="dvspinner" style="display:none;">
-            <i class="fa fa-circle-o-notch fa-2x fa-spin"></i> Processing...
-        </div>
+    <div class="col-md-12 text-center" id="dvspinnercreate" style="display:none;">
+        <i class="fa fa-circle-o-notch fa-2x fa-spin"></i> Processing...
+    </div>
+
     }
 
 
     <div id="dvGridPlaceHolder" class="row">
-        <div class="form-group col-md-12">
-            <!-- Placeholder for _SuggestedItems.cshtml -->
-        </div>
     </div>
 
 </div>
@@ -77,8 +73,7 @@
 <!-- Local javascript -->
 <script type="text/javascript">
 
-    function OnChangeClientID()
-    {
+    function OnChangeClientID() {
         var myurl = '@Url.Action("BuildDivisionDropDown", "Replenishments")';
         var data = $('#clientid').val();
         $("#divisionid").load(myurl, { id: data });
@@ -86,9 +81,13 @@
         // add update the logofile img
     }
 
-    function itemsCreated()
+    function UpdateItemsPartial()
     {
-        $("#dvPlaceholderContinue").removeClass("hidden");
+        // load/update the partial
+        var myurl = '@Url.Action("SuggestedItemsList", "Replenishments")';
+        
+        $("#dvGridPlaceHolder").load(myurl);
     }
-    
+
+
 </script>

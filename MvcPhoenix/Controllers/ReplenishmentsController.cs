@@ -171,10 +171,10 @@ namespace MvcPhoenix.Controllers
         }
         
         [HttpGet]
-        public ActionResult CreateSuggestedItem()
+        public ActionResult CreateSuggestedItem(int ClientID)
         {
             SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
-            obj = ReplenishmentsService.fnCreateSuggestedBulkOrderItem();
+            obj = ReplenishmentsService.fnCreateSuggestedBulkOrderItem(ClientID);
             return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", obj);
         }
 
