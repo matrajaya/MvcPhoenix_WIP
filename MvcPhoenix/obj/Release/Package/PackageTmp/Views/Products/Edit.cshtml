@@ -56,8 +56,8 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label>Equivalence</label><br />
-                        <textarea rows="5" class="form-control" readonly="readonly">
+                        <label>Equivalents</label><br />
+                        <textarea rows="3" class="form-control" readonly="readonly">
                             @for (int i = 0; i < Model.ListOfEquivalents.Count(); i++)
                             {
                                 @Model.ListOfEquivalents[i];
@@ -66,7 +66,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cross Reference List</label><br />
-                        <textarea rows="5" class="form-control" readonly="readonly">
+                        <textarea rows="3" class="form-control" readonly="readonly">
                             @for (int i = 0; i < Model.ListOfProductCodesXRefs.Count(); i++)
                             {
                                 @Model.ListOfProductCodesXRefs[i];
@@ -75,22 +75,28 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Profile Revision Date</label>
-                        @Html.TextBoxFor(m => m.sgrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.sgrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>Label Revision Date</label>
-                        @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control", @readonly = "readonly" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>@Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct) Global Product</label><br />
-                        <label>@Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified) Accuracy Verified</label><br />
-                        <!--Todo: Creat condition at target if dicontinued is true then show-->
-                        @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
-                        <label>Discontinued</label>
+                    <div class="form-group col-md-6">
+                        <ul class="list-unstyled list-3-col">
+                            <li>
+                                @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct, new { @class = "checkbox-inline" })
+                                <label class="control-label">Global Product</label>
+                            </li>
+                            <li>
+                                @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline" })
+                                <label class="control-label">Accuracy Verified</label>
+                            </li>
+                            <li>
+                                @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
+                                <label class="control-label">Discontinued</label>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row">
@@ -576,7 +582,8 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.msdsrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Number</label>
@@ -892,9 +899,9 @@
                 <div class="row">
                     <div class="form-group col-md-12">
                         <div>
-                            
-                                @{Html.RenderAction("LogNotesList", "Products", new { id = @Model.productdetailid });}
-                            
+
+                            @{Html.RenderAction("LogNotesList", "Products", new { id = @Model.productdetailid });}
+
                         </div>
                     </div>
                 </div>
@@ -904,8 +911,8 @@
                         <div id="">
                             <span id="dvCas">
                                 @{Html.RenderAction("CasList", "Products", new { id = @Model.productdetailid });}
-                                </span>
-                </div>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

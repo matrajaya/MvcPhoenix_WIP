@@ -250,3 +250,12 @@ ul.alert-dropdown {
     -webkit-column-count:2;
     column-count:2;
 }
+
+.vertical-line {    
+    position: absolute;
+    border-right: 1px solid black;
+    /*height: 85px;*/
+    top: 0;
+    bottom: 0;
+    align-items: center;
+}

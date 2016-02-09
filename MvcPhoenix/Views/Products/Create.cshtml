@@ -16,7 +16,7 @@
         </div>
     </div>
     <!-- /.Page Heading -->
-    @using (Html.BeginForm("SaveProductProfile","Products"))
+    @using (Html.BeginForm("SaveProductProfile", "Products"))
     {
 
     <!-- do not remove -->
@@ -48,7 +48,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label>Equivalence</label><br />
+                        <label>Equivalents</label><br />
                         <textarea rows="5" class="form-control" readonly="readonly">
                             @for (int i = 0; i < Model.ListOfEquivalents.Count(); i++)
                             {
@@ -67,25 +67,27 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Profile Revision Date</label>
-                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                        @Html.ValidationMessageFor(m => m.sgrevisiondate)
+                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                     </div>
                     <div class="form-group col-md-3">
                         <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                        @Html.ValidationMessageFor(m => m.msdsrevisiondate)
+                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>Label Revision Date</label>
-                        @Html.TextBoxFor(m => m.labelrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                        @Html.ValidationMessageFor(m => m.labelrevisiondate)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>@Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct) Global Product</label><br />
-                        <label>@Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified) Accuracy Verified</label><br />
-                        <!--Todo: Creat condition at target if dicontinued is true then show-->
-                        @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
-                        <label>Discontinued</label>
+                    <div class="form-group col-md-6">
+                        <ul class="list-unstyled list-3-col">
+                            <li>
+                                @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct, new { @class = "checkbox-inline" })
+                                <label class="control-label">Global Product</label>
+                            </li>
+                            <li>
+                                @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline" })
+                                <label class="control-label">Accuracy Verified</label>
+                            </li>
+                            <li>
+                                @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
+                                <label class="control-label">Discontinued</label>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row">
@@ -342,15 +344,15 @@
                                 <th style="background-color: blue; color: white">Health</th>
                                 <th style="text-align: center">
                                     @Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
-                                @Html.ValidationMessageFor(m => m.health)
-                            </th>
+                                    @Html.ValidationMessageFor(m => m.health)
+                                </th>
                             </tr>
                             <tr>
                                 <th style="background-color: red; color: white">Flammability</th>
                                 <th style="text-align: center">
                                     @Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })
                                     @Html.ValidationMessageFor(m => m.flammability)
-                            </th>
+                                </th>
                             </tr>
                             <tr>
                                 <th style="background-color: yellow; color: gray">Reactivity</th>
