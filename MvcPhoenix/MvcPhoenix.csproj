@@ -696,6 +696,7 @@
     <Content Include="Views\Replenishments\_SuggestedItemModal.cshtml" />
     <Content Include="Views\Replenishments\_BulkOrderItemModal.cshtml" />
     <Content Include="Views\Replenishments\Email.cshtml" />
+    <Content Include="Views\Products\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -4,8 +4,10 @@
 packages/
 MvcPhoenixPC.sln
 MvcPhoenix/bin/
+bin/
 MvcPhoenix/Logs/
 MvcPhoenix/Migrations/
-MvcPhoenix/obj/
+MvcPhoenix/obj/*
+obj/
 MvcPhoenix/Properties/
 MvcPhoenix/App_Start/IdentityConfig.cs

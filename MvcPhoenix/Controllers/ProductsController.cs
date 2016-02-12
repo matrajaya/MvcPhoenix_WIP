@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using MvcPhoenix.Models;
 using MvcPhoenix.Services;
+using System.Threading.Tasks;
 
 namespace MvcPhoenix.Controllers
 {
@@ -14,6 +15,23 @@ namespace MvcPhoenix.Controllers
         public ActionResult Index()
         {
             return View("~/Views/Products/Index.cshtml");
+        }
+
+        public async Task<ActionResult> Search(string searchString)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var productCodes = from p in db.tblProductDetail select p;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    productCodes = productCodes.Where(p => p.ProductCode.Contains(searchString));
+                    productCodes = productCodes.OrderBy(p => p.ProductCode);
+                    return View(productCodes.ToList());
+                }
+
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpGet]
@@ -34,8 +52,6 @@ namespace MvcPhoenix.Controllers
             return View(PP);
         }
 
-        //[HttpGet]
-        //public ActionResult New(int id) - Iffy
         [HttpPost]
         public ActionResult Create(int clientid2)
         {
@@ -101,6 +117,7 @@ namespace MvcPhoenix.Controllers
         }
 
         #region LogNotes - ProductNotes
+
         public ActionResult LogNotesList(int id)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -150,6 +167,7 @@ namespace MvcPhoenix.Controllers
             int pk = ProductsService.fnDeleteProductNote(id);
             return null;
         }
+
         #endregion
 
         #region CAS
@@ -210,35 +228,29 @@ namespace MvcPhoenix.Controllers
             return null;
         }
 
-
-
-
         #endregion
-
-
-
 
         #region PC Testing
 
         // *******************************************************************
         // Older POST versions - used by pc for testing 
-        [HttpPost]
-        public ActionResult SetUpProductProfileEdit(int productdetailid1)
-        {
-            return RedirectToAction("Edit", new { id = productdetailid1 });
-        }
+        //[HttpPost]
+        //public ActionResult SetUpProductProfileEdit(int productdetailid1)
+        //{
+        //    return RedirectToAction("Edit", new { id = productdetailid1 });
+        //}
 
-        [HttpPost]
-        public ActionResult SetUpProductProfileNew(int clientid2)
-        {
-            return RedirectToAction("Edit", new { id = clientid2 });
-        }
+        //[HttpPost]
+        //public ActionResult SetUpProductProfileNew(int clientid2)
+        //{
+        //    return RedirectToAction("Edit", new { id = clientid2 });
+        //}
 
-        [HttpPost]
-        public ActionResult SetUpProductProfileEquiv(int productdetailid3)
-        {
-            return RedirectToAction("Equiv", new { id = productdetailid3 });
-        }
+        //[HttpPost]
+        //public ActionResult SetUpProductProfileEquiv(int productdetailid3)
+        //{
+        //    return RedirectToAction("Equiv", new { id = productdetailid3 });
+        //}
         // *******************************************************************
 
         #endregion
