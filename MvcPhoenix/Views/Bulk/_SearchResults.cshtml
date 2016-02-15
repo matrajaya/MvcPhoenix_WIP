@@ -1,29 +1,33 @@
 ﻿@model List<MvcPhoenix.Models.BulkContainerViewModel>
 
-<table class="table table-hover table-striped table-condensed" style="font-size:.9em;">
-            <tr>
-                <th>ID</th>
-                <th>Client</th>
-                <th>Warehouse</th>
-                <th>Bin</th>
-                <th>Status</th>
-                <th>Master Code</th>
-                <th>Master Name</th>
-                <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
-            </tr>
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Warehouse</th>
+            <th>Bin</th>
+            <th>Status</th>
+            <th>Master Code</th>
+            <th>Master Name</th>
+            <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+        </tr>
 
-            @foreach (var item in @Model)
-            {
-                <tr>
-                    <td>@item.bulkid</td>
-                    <td>@item.clientname</td>
-                    <td>@item.warehouse</td>
-                    <td>@item.bin</td>
-                    <td>@item.bulkstatus</td>
-                    <td>@item.MasterCode</td>
-                    <td>@item.MasterName</td>
-                    <td>@Html.ActionLink("Edit", "Edit", new { id = @item.bulkid })</td>
-                </tr>
-            }
-</table>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>@item.bulkid</td>
+                <td>@item.clientname</td>
+                <td>@item.warehouse</td>
+                <td>@item.bin</td>
+                <td>@item.bulkstatus</td>
+                <td>@item.MasterCode</td>
+                <td>@item.MasterName</td>
+                <td>@Html.ActionLink("Edit", "Edit", new { id = @item.bulkid })</td>
+            </tr>
+        }
+    </table>
+
+</div>
+
 

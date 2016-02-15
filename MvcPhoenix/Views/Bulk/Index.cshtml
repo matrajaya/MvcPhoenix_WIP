@@ -8,16 +8,11 @@
             <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
         </div>
         <div class="col-lg-12">
-            <h4 class="page-header">
+            <h1 class="page-header">
                 @ViewBag.Title
-            </h4>
+            </h1>
         </div>
     </div>
-    @*<div class="form-group">
-            <div class="col-lg-12 row">
-                <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Receiving Main", "Index","Home")
-            </div>
-        </div>*@
     <!-- Page Heading -->
 
 
@@ -25,7 +20,7 @@
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Search Client/MasterCode</h3>
+                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Search Client/Master Code</h3>
                 </div>
                 <div class="panel-body">
 
@@ -36,24 +31,21 @@
                         HttpMethod = "POST",
                     }))
                     {
-
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <label>Client</label>
-                                @Html.DropDownList("ClientID", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control", @style = "width:50%;" })
+                                @Html.DropDownList("ClientID", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <label>Mastercode</label>
-                                <select name='productmasterid' id='productmasterid' class='form-control' style='width:90%;'>
-                                    <!-- Placeholder for options values  -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row text-center" style="padding-top:4px;">
-                            <div class="col-md-12">
-                                <input id="btnsubmit" type="submit" value="Search" class="btn btn-success btn-sm" />
+                                <div class="input-group">
+                                    <select name='productmasterid' id='productmasterid' class='form-control'>
+                                        <!-- Placeholder for options values  -->
+                                    </select>
+                                    <span class="input-group-btn">
+                                        <input id="btnsubmit" type="submit" value="Search" class="btn btn-success" />
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     }
@@ -77,73 +69,38 @@
                         }))
                     {
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label>Bulk Status</label>
-                                @Html.DropDownList("BulkStatus", (List<SelectListItem>)ViewBag.ListOfBulkStatus, new { @class = "form-control", @style = "width:35%;" })
+                                @Html.DropDownList("BulkStatus", (List<SelectListItem>)ViewBag.ListOfBulkStatus, new { @class = "form-control" })
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label>Warehouse</label>
-                                @Html.DropDownList("Warehouse", (List<SelectListItem>)ViewBag.ListOfWarehouses, new { @class = "form-control", @style = "width:35%;" })
+                                <div class="input-group">
+                                    @Html.DropDownList("Warehouse", (List<SelectListItem>)ViewBag.ListOfWarehouses, new { @class = "form-control" })
+                                    <span class="input-group-btn">
+                                        <input id="btnsubmit" type="submit" value="Search" class="btn btn-success" />
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="row text-center" style="padding-top:4px;">
-                            <div class="col-md-12">
-                                <input id="btnsubmit" type="submit" value="Search" class="btn btn-success btn-sm" />
-                            </div>
-                        </div>
-
-
                     }
                 </div>
             </div>
         </div>
-
-
     </div>
 
     <div class="col-md-12 text-center" id="dvspinner" style="display:none;">
         <i class="fa fa-circle-o-notch fa-2x fa-spin"></i> Processing...
     </div>
 
-    <div id="dvSearchResults">
-
-    </div>
-
+    <div id="dvSearchResults"></div>
 </div>
 
 <script type="text/javascript">
     function OnChangeClientID() {
-        // hide/show controls
-        //$("#dvPlaceholderMasterCode").removeClass("hidden");
-        //$("#dvPlaceholderCheckOrdersButton").addClass("hidden");
-        //$("#dvPlaceholderOpenOrderItems").empty();
-        //$("#dvPlaceholderNew").addClass("hidden");
-
         // call action that returns DD of Mastercodes
         var url = '@Url.Action("BuildProductMasterDropDown", "Bulk")';
         var data = $('#ClientID').val()
         $("#productmasterid").load(url, { id: data });
-
-    }
-
-    function OnChangeMasterCode() {
-        // show the button to check for open order items
-        //$("#dvPlaceholderOpenOrderItems").empty();
-        //$("#dvPlaceholderCheckOrdersButton").removeClass("hidden");
-        //$("#dvPlaceholderNew").addClass("hidden");
-    }
-
-    function OnClickCheckOrders() {
-        // $("#dvPlaceholderOpenOrderItems").empty();
-        //$("#dvPlaceholderNew").removeClass("hidden");
-
-        // build the New url to include the productmasterid
-        //var myid=$("#productmasterid").val();
-        //var url = '@Url.Action("CreateContainerReceipt", "Receiving")';
-        //url = url + "/" + myid;
-        //$("#aNewContainer").prop("href", url);
-
     }
 </script>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using System.Threading.Tasks;
+using PagedList;
 
 namespace MvcPhoenix.Controllers
 {
@@ -17,20 +18,51 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Products/Index.cshtml");
         }
 
-        public async Task<ActionResult> Search(string searchString)
+        public async Task<ActionResult> Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
+                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else { searchString = currentFilter; }
+
+                ViewBag.CurrentFilter = searchString;
+                ViewBag.SearchString = searchString;
+
                 var productCodes = from p in db.tblProductDetail select p;
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    productCodes = productCodes.Where(p => p.ProductCode.Contains(searchString));
-                    productCodes = productCodes.OrderBy(p => p.ProductCode);
-                    return View(productCodes.ToList());
+                    productCodes = productCodes.Where(p => p.ProductCode.Contains(searchString)
+                        || p.ProductName.Contains(searchString));                    
                 }
 
-                return RedirectToAction("Index");
+                switch (sortOrder)
+                {
+                    case "name":
+                        productCodes = productCodes.OrderBy(p => p.ProductName);
+                        break;
+                    case "name_desc":
+                        productCodes = productCodes.OrderByDescending(p => p.ProductName);
+                        break;
+                    case "code_desc":
+                        productCodes = productCodes.OrderByDescending(p => p.ProductCode);
+                        break;
+                    default: 
+                        productCodes = productCodes.OrderBy(p => p.ProductCode);
+                        break;
+                }
+
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+
+                return View(productCodes.ToPagedList(pageNumber, pageSize));
             }
         }
 

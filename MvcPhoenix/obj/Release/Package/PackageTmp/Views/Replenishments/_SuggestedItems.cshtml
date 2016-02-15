@@ -1,20 +1,22 @@
 ﻿@model List<MvcPhoenix.Models.SuggestedBulkOrderItem>
 @{
     int ParentID = Convert.ToInt32(Session["SuggestedBulkOrderItemClientID"]);
-    
+
 }
 <div id="dvItemsList">
-    <label>Suggested Items | </label>
-    @Ajax.ActionLink("+ Add Item", "CreateSuggestedItem", "Replenishments",new{ ClientID = @ParentID }, new AjaxOptions
+    <div class="col-md-12">
+        <label>Suggested Items | </label>
+        @Ajax.ActionLink("+ Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
     {
         InsertionMode = InsertionMode.Replace,
         HttpMethod = "GET",
         UpdateTargetId = "dialogPlaceholder",
         OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
     })
+    </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-condensed" style="font-size:.85em;">
+    <div class="col-md-12 table-responsive">
+        <table class="table table-striped">
             <tr>
                 <th class="text-center"><i class="fa fa-fw fa-trash-o"></i></th>
                 <th>#</th>
@@ -33,43 +35,49 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Ajax.ActionLink(" ", "DeleteSuggestedItem", "Replenishments", new { id = @item.id },
-                                new AjaxOptions { UpdateTargetId="dvItemsList", Confirm = "Delete Item?",
-                                                    HttpMethod = "GET",
-                                                  OnSuccess = "updateItemsList"
-                                                }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
-                        </td>
-                        <td>@(Model.IndexOf(item) + 1)</td>
-                        <td>@item.mastercode</td>
-                        <td>@item.division</td>
-                        <td>@item.mastername</td>
-                        <td>@item.supplyid</td>
-                        <td>@item.bulkshippedperday</td>
-                        <td>@item.shelfshippedperday</td>
-                        <td>@item.usethisdaystilexpiration</td>
-                        <td>@item.averageleadtime</td>
-                        <td>@item.reorderweight</td>
-                        <td>@item.reordernotes</td>
-                        <td>
-                         @Ajax.ActionLink("Edit", "EditSuggestedItem", "Replenishments", new { id = @item.id },
-                                new AjaxOptions { UpdateTargetId = "dialogPlaceholder",
-                                                    InsertionMode = InsertionMode.Replace, 
-                                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show')" })
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Ajax.ActionLink(" ", "DeleteSuggestedItem", "Replenishments", new { id = @item.id },
+                                new AjaxOptions
+                                {
+                                    UpdateTargetId = "dvItemsList",
+                                    Confirm = "Delete Item?",
+                                    HttpMethod = "GET",
+                                    OnSuccess = "updateItemsList"
+                                }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                    </td>
+                    <td>@(Model.IndexOf(item) + 1)</td>
+                    <td>@item.mastercode</td>
+                    <td>@item.division</td>
+                    <td>@item.mastername</td>
+                    <td>@item.supplyid</td>
+                    <td>@item.bulkshippedperday</td>
+                    <td>@item.shelfshippedperday</td>
+                    <td>@item.usethisdaystilexpiration</td>
+                    <td>@item.averageleadtime</td>
+                    <td>@item.reorderweight</td>
+                    <td>@item.reordernotes</td>
+                    <td>
+                        @Ajax.ActionLink("Edit", "EditSuggestedItem", "Replenishments", new { id = @item.id },
+                                new AjaxOptions
+                                {
+                                    UpdateTargetId = "dialogPlaceholder",
+                                    InsertionMode = InsertionMode.Replace,
+                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                                })
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
     </div>
-    
+
     <!-- conditionally show this -->
-    <div class="row">
-        <div class="col-md-12">
+
+    <div class="col-md-12">
         @if (Model.Count == 0)
         {
-            <label>No Order Recommendations at @System.DateTime.Now.ToString()</label>        
+            <label>No Order Recommendations at @System.DateTime.Now.ToString()</label>
         }
         @if (Model.Count > 0)
         {
@@ -77,13 +85,11 @@
             @Html.ActionLink("Create Replenishment Orders(s)", "CreateBulkOrders", "Replenishments", null,
                 new { @class = "btn btn-sm btn-primary", onclick = "return confirm('Create Order(s)?')" })
         }
-        </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    function updateItemsList()
-    {
+    function updateItemsList() {
         $("#dvItemsList").load('@Url.Action("SuggestedItemsList", "Replenishments")');
     }
 </script>
