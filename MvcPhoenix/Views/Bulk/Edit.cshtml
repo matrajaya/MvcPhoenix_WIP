@@ -1,6 +1,6 @@
 ﻿@model MvcPhoenix.Models.BulkContainerViewModel
 @{
-    ViewBag.Title = "Bulk Container";
+    ViewBag.Title = "Edit Bulk Container";
 }
 
 <div class="container-fluid">
@@ -11,13 +11,14 @@
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
-                @ViewBag.Title : @Model.bulkid.ToString()
+                @ViewBag.Title
             </h1>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-lg-12 row">
+    <div class="form-group row">
+        <div class="col-lg-12">
             <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Bulk Main", "Index", "Bulk")
+            <span class="pull-right label label-info">Bulk Id: @Model.bulkid.ToString()</span>
         </div>
     </div>
     <div>
@@ -39,7 +40,9 @@
                 <div class="row">
                     <div class="form-group col-md-9">
                         <label>Master Code - Name</label>
-                        @Html.DisplayFor(m => m.MasterCode, new { @class = "form-control" }) - @Html.DisplayFor(m => m.MasterName, new { @class = "form-control" })
+                        <p class="lead">
+                            @Html.DisplayFor(m => m.MasterCode, new { @class = "form-control" }) - @Html.DisplayFor(m => m.MasterName, new { @class = "form-control" })
+                        </p>
                     </div>
                     <div class="form-group col-md-3">
                         <label>Bulk Status</label>
@@ -47,15 +50,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-6">
                         <label>Client</label>
                         @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.clientname)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Master Code - Name</label>
-                        @Html.DropDownListFor(m => m.productmasterid, Model.ListOfProductMasters, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.productmasterid)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Date Received</label>
@@ -201,15 +199,15 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <div class=" col-md-6">
+        <div class="row">
+            <div class="form-group col-md-6">
                 <input id="btnSave" type="submit" value="Save Changes" class="btn btn-success btn-block" />
             </div>
-            <div class=" col-md-6">
+            <div class="form-group col-md-6">
                 @Html.ActionLink("Cancel", "Index", "Bulk", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel This Process?')" })
             </div>
-            <div class="clearfix"></div>
-            <br />
+        </div>
+        <div class="row">
             <div class="col-lg-12">
                 <i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a>
                 <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
