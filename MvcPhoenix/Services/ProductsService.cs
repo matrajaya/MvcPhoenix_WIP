@@ -12,6 +12,7 @@ namespace MvcPhoenix.Models
 {
     public class ProductsService
     {
+        private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
 
         public static string fnProductCodesDropDown(int id, string divid)
         {
@@ -112,14 +113,14 @@ namespace MvcPhoenix.Models
                               join p in db.tblPackage on t.PackageID equals p.PackageID into temp
                               from m in temp.DefaultIfEmpty()
                               where t.ProductDetailID == PP.productdetailid
-                              select new ShelfMaster
+                              select new ShelfMasterViewModel
                               {
                                   shelfid = t.ShelfID,
-                                  warehouse = t.Warehouse,
+                                  //warehouse = t.Warehouse,
                                   size = t.Size,
                                   bin = t.Bin,
                                   packageid = t.PackageID,
-                                  packagepartnumber = m.PartNumber,
+                                  //packagepartnumber = m.PartNumber,
                                   groundhazard = t.GroundHazard,
                                   airhazard = t.AirHazard,
                                   notes = t.Notes,
@@ -708,6 +709,8 @@ namespace MvcPhoenix.Models
             }
         }
 
+
+       
 
         // -----------------------------------------------
         #region ProductNotes Methods

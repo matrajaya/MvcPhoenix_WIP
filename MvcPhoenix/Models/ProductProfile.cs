@@ -112,7 +112,7 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfPackagePartNumbers { get; set; }
         public List<ProductNote> ListOfProductNotes { get; set; }
         public List<Cas> ListOfCasNumbers { get;set; }
-        public List<ShelfMaster> ListOfShelfItems { get; set; }
+        public List<MvcPhoenix.Models.ShelfMasterViewModel> ListOfShelfItems { get; set; }
         public List<SelectListItem> ListOfHarmonizedCodes { get; set; }
         public List<SelectListItem> ListOfEndUsesForCustoms { get; set; }
         public List<SelectListItem> ListOfEquivalents { get; set; }
@@ -286,7 +286,8 @@ namespace MvcPhoenix.Models
         public string clientname { get; set; }
 
         [Display(Name = "Business Unit/Division")]
-        [Required(ErrorMessage = "Business Unit/Division is required.")]
+        //[Required]
+        //[Range(1, 99, ErrorMessage = "Business Unit/Division is required.")]
         public int? masterdivisionid { get; set; }
         
         [Display(Name = "Discontinued")]
@@ -732,4 +733,9 @@ namespace MvcPhoenix.Models
 
 
     }
+
+    
+
+
+
 }
