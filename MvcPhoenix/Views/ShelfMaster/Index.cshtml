@@ -1,111 +1,115 @@
 ﻿@model List<MvcPhoenix.Models.ShelfMasterViewModel>
 @{
-    ViewBag.Title = "Shelf Sizes";
+    ViewBag.Title = "Shelf Management";
 }
 
 <div class="container-fluid">
+    <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
             <img src="@Model[0].logofilename" style="width: auto; height: 73px; float: right" alt="@Model[0].clientname logo">
         </div>
         <div class="col-lg-12">
-            <h4 class="page-header">
-                Shelf Sizes for ProductCode @Model[0].productcode - @Model[0].productname
-            </h4>
+            <h1 class="page-header">
+                @ViewBag.Title <small>@Model[0].productcode - @Model[0].productname</small>
+            </h1>
+        </div>
+    </div>
+    <!-- /.Page Heading -->
+
+    <div class="form-group row">
+        <div class="col-md-12">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Product Edit", "Edit", "Products", new { id = Model[0].productdetailid }, null)
         </div>
     </div>
 
-    <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Product Edit", "Edit","Products" ,new { id = Model[0].productdetailid },null)
-    |
-
-    @Ajax.ActionLink("+ Add Shelf Size", "Create", "ShelfMaster", new { id = Model[0].productdetailid }, new AjaxOptions
-        {
-            InsertionMode = InsertionMode.Replace,
-            HttpMethod = "GET",
-            UpdateTargetId = "dvEditPlaceholder",
-            OnFailure = "alert('error')"
-        })
-
-    <div class="well well-sm">
-        <div class="table-responsive">
-            <table class="table table-hover table-striped" style="font-size:.85em;">
-                <thead>
-                    <tr><td colspan="23" class="text-center"><strong>Available Sizes</strong></td></tr>
-                    <tr>
-                        
-                        <th>Size</th>
-                        <th>Pkg</th>
-                        <th>WH</th>
-                        <th>Bin</th>
-                        <th>Min</th>
-                        <th>Max</th>
-                        <th>Order</th>
-                        <th>Haz</th>
-                        <th>Flam</th>
-                        <th>Heat</th>
-                        <th>Refr</th>
-                        <th>Freez</th>
-                        <th>Clean</th>
-                        <th>Blend</th>
-                        <th>Nalg</th>
-                        <th>Nitro</th>
-                        <th>Bioc</th>
-                        <th>Kosh</th>
-                        <th>Label</th>
-                        <th>Other</th>
-                      
-                        <th colspan="2" class="text-center">Actions</th>
-                  
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Available Sizes</h3>
+        </div>
+        <div id="" class="panel-body">
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    @Ajax.ActionLink("+ Add Shelf Size", "Create", "ShelfMaster", new { id = Model[0].productdetailid }, new AjaxOptions
                     {
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "GET",
+                        UpdateTargetId = "dvEditPlaceholder",
+                        OnFailure = "alert('error')"
+                    })
+
+                    <span class="pull-right">Total: @Model.Count() Sizes</span>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-condensed">
+                    <thead>
                         <tr>
-                            
-                            <td><strong>@item.size</strong></td>
-                            <td>@item.packagepartnumber</td>
-              
-                            <td>@item.warehouse</td>
-                            <td>@item.bin</td>
-                            <td>@item.reordermin.ToString()</td>
-                            <td>@item.reordermax.ToString()</td>
-                            <td>@{if (item.reorderqty == null) { item.reorderqty = 0; } @item.reorderqty.ToString();}</td>
-
-                            <td><input type="checkbox" checked=@item.hazardsurcharge disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.flammablesurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.heatsurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.refrigsurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.freezersurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.cleansurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.blendsurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.nalgenesurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.nitrogensurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.biocidesurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.koshersurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.labelsurcharge" disabled="disabled"></td>
-                            <td><input type="checkbox" checked="@item.othersurcharge" disabled="disabled"></td>
-
-                            @*<td>@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new {onclick="return confirm('Copy this Size?');" })</td>*@
-                            <td class="text-center">
-                                @Ajax.ActionLink("Edit", "Edit", "ShelfMaster", new { id = @item.shelfid }, new AjaxOptions
+                            <th>Size</th>
+                            <th>Pkg</th>
+                            <th>WH</th>
+                            <th>Bin</th>
+                            <th>Min</th>
+                            <th>Max</th>
+                            <th>Order</th>
+                            <th>Haz</th>
+                            <th>Flam</th>
+                            <th>Heat</th>
+                            <th>Refr</th>
+                            <th>Freez</th>
+                            <th>Clean</th>
+                            <th>Blend</th>
+                            <th>Nalg</th>
+                            <th>Nitro</th>
+                            <th>Bioc</th>
+                            <th>Kosh</th>
+                            <th>Label</th>
+                            <th>Other</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><strong>@item.size</strong></td>
+                                <td>@item.packagepartnumber</td>
+                                <td>@item.warehouse</td>
+                                <td>@item.bin</td>
+                                <td>@item.reordermin.ToString()</td>
+                                <td>@item.reordermax.ToString()</td>
+                                <td>@{if (item.reorderqty == null) { item.reorderqty = 0; } @item.reorderqty.ToString();}</td>
+                                <td><input type="checkbox" checked=@item.hazardsurcharge disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.flammablesurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.heatsurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.refrigsurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.freezersurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.cleansurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.blendsurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.nalgenesurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.nitrogensurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.biocidesurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.koshersurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.labelsurcharge" disabled="disabled"></td>
+                                <td><input type="checkbox" checked="@item.othersurcharge" disabled="disabled"></td>
+                                @*<td>@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new {onclick="return confirm('Copy this Size?');" })</td>*@
+                                <td class="text-center">
+                                    @Ajax.ActionLink("Edit", "Edit", "ShelfMaster", new { id = @item.shelfid }, new AjaxOptions
                            {
                                InsertionMode = InsertionMode.Replace,
                                HttpMethod = "GET",
                                UpdateTargetId = "dvEditPlaceholder",
                            })
-                            </td>
-                  
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <div id="dvEditPlaceholder">
         <!-- Placeholder for edit partial -->
-        @Model.Count() Sizes
     </div>
-
 </div>

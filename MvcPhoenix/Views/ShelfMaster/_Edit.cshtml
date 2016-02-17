@@ -6,193 +6,176 @@
     @Html.HiddenFor(m => m.productdetailid)
 
     <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title" data-toggle="collapse" data-target="#prodinfopan"><i class="fa fa-file-text-o fa-fw"></i> Shelf Master Information for Selected Size</h3>
-        </div>
         <div class="panel-body">
             @Html.ValidationSummary()
 
             <div class="row">
-                <div class="col-md-4 form-group">
+                <div class="col-md-3 form-group">
                     <label>Size</label>
-                    @Html.DropDownListFor(m => m.size,Model.ListOfTierSizes,new {onchange = "OnChangeSize()", @class = "form-control" })
-                    @Html.ValidationMessageFor(m=>m.size)
+                    @Html.DropDownListFor(m => m.size, Model.ListOfTierSizes, new { onchange = "OnChangeSize()", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.size)
                 </div>
-                <div class="col-md-4 form-group">
+                <div class="col-md-3 form-group">
                     <label>Unit Wt</label>
                     @Html.TextBoxFor(m => m.unitweight, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.unitweight)
                 </div>
-                <div class="col-md-4 form-group">
-                    &nbsp;
-                    @*<label>Mnemonic</label>
-                    @Html.TextBoxFor(m => m.mnemonic, new { @class = "form-control" })*@
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 form-group">
-                    <label>Package</label>
-                    <div id="dvPlaceholderPackageInitial">
-                        @Html.DropDownListFor(m => m.packageid, Model.ListOfPackages, new { @class = "form-control", @style = "font-size:.8em;" })
-                    </div>
-                     <div id="dvPlaceholderPackageUpdated" class="hidden">
-                            <select name="packageid" id='packageid' class='form-control'></select>
-                        </div>
-                    </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label>Business Area</label>
-                    @Html.TextBoxFor(m => m.busarea, new { @class = "form-control" })
-                </div>
-                <div class="col-md-4 form-group">
+                <div class="col-md-3 form-group">
                     <label>Warehouse</label>
                     @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
-                    </div>
-                <div class="col-md-4 form-group">
+                    @Html.ValidationMessageFor(m => m.warehouse)
+                </div>
+                <div class="col-md-3 form-group">
                     <label>Bin</label>
                     @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.bin)
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-md-4 form-group">
+                <div class="col-md-3 form-group">
+                    <label>Package</label>
+                    <div id="dvPlaceholderPackageInitial">
+                        @Html.DropDownListFor(m => m.packageid, Model.ListOfPackages, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.packageid)
+                    </div>
+                    <div id="dvPlaceholderPackageUpdated" class="hidden">
+                        <select name="packageid" id='packageid' class='form-control'></select>
+                    </div>
+                </div>
+                <div class="col-md-3 form-group">
                     <label>Min Qty</label>
                     @Html.TextBoxFor(m => m.reordermin, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.reordermin)
                 </div>
-                <div class="col-md-4 form-group">
+                <div class="col-md-3 form-group">
                     <label>Max Qty</label>
                     @Html.TextBoxFor(m => m.reordermax, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.reordermax)
                 </div>
-                <div class="col-md-4 form-group">
+                <div class="col-md-3 form-group">
                     <label>Re-Order Qty</label>
                     @Html.TextBoxFor(m => m.reorderqty, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.reorderqty)
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-md-12 form-group">
-                    <label>Notes</label>
-                    @Html.TextAreaFor(m => m.notes, new { @class = "form-control" })
+                <div class="col-md-6">
+                    <label>Surcharges</label>
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+                            <ul class="list-unstyled list-3-col">
+                                <li>
+                                    @Html.CheckBox("hazardsurcharge", Model.hazardsurcharge != null && (bool)Model.hazardsurcharge, new { @class = "checkbox-inline" })
+                                    <label>Hazard</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("flammablesurcharge", Model.flammablesurcharge != null && (bool)Model.flammablesurcharge, new { @class = "checkbox-inline" })
+                                    <label>Flammable</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("heatsurcharge", Model.heatsurcharge != null && (bool)Model.heatsurcharge, new { @class = "checkbox-inline" })
+                                    <label>Heat</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("refrigsurcharge", Model.refrigsurcharge != null && (bool)Model.refrigsurcharge, new { @class = "checkbox-inline" })
+                                    <label>Refrig</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("freezersurcharge", Model.freezersurcharge != null && (bool)Model.freezersurcharge, new { @class = "checkbox-inline" })
+                                    <label>Freezer</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("cleansurcharge", Model.cleansurcharge != null && (bool)Model.cleansurcharge, new { @class = "checkbox-inline" })
+                                    <label>Clean</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("blendsurcharge", Model.blendsurcharge != null && (bool)Model.blendsurcharge, new { @class = "checkbox-inline" })
+                                    <label>Blend</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("nalgenesurcharge", Model.nalgenesurcharge != null && (bool)Model.nalgenesurcharge, new { @class = "checkbox-inline" })
+                                    <label>Nalgene</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("nitrogensurcharge", Model.nitrogensurcharge != null && (bool)Model.nitrogensurcharge, new { @class = "checkbox-inline" })
+                                    <label>Nitrogen</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("biocidesurcharge", Model.biocidesurcharge != null && (bool)Model.biocidesurcharge, new { @class = "checkbox-inline" })
+                                    <label>Biocede</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("koshersurcharge", Model.koshersurcharge != null && (bool)Model.koshersurcharge, new { @class = "checkbox-inline" })
+                                    <label>Kosher</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("labelsurcharge", Model.labelsurcharge != null && (bool)Model.labelsurcharge, new { @class = "checkbox-inline" })
+                                    <label>Label</label>
+                                </li>
+                            </ul>
+                            <label>Other Surcharge Amt: </label>
+                            @Html.TextBoxFor(m => m.othersurchargeamt)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Notes</label>
+                        @Html.TextAreaFor(m => m.notes, new { @class = "form-control", @rows = 6 })
+                    </div>
+                    <ul class="list-unstyled list-3-col">
+                        <li>
+                            @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
+                            <label>Discontinued</label>
+                        </li>
+                        <li>
+                            @Html.CheckBox("inactivesize", Model.inactivesize != null && (bool)Model.inactivesize, new { @class = "checkbox-inline" })
+                            <label>Inactive Size</label>
+                        </li>
+                        <li>
+                            @Html.CheckBox("weboeinclude", Model.weboeinclude != null && (bool)Model.weboeinclude, new { @class = "checkbox-inline" })
+                            <label>WebOE Include</label>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label>Hazard Surcharge</label>
-                    @Html.CheckBox("hazardsurcharge", Model.hazardsurcharge != null && (bool)Model.hazardsurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Flammable Surcharge</label>
-                    @Html.CheckBox("flammablesurcharge", Model.flammablesurcharge != null && (bool)Model.flammablesurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Heat Surcharge</label>
-                    @Html.CheckBox("heatsurcharge", Model.heatsurcharge != null && (bool)Model.heatsurcharge)
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label>Refrig Surcharge</label>
-                    @Html.CheckBox("refrigsurcharge", Model.refrigsurcharge != null && (bool)Model.refrigsurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Freezer Surcharge</label>
-                    @Html.CheckBox("freezersurcharge", Model.freezersurcharge != null && (bool)Model.freezersurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Clean Surcharge</label>
-                    @Html.CheckBox("cleansurcharge", Model.cleansurcharge != null && (bool)Model.cleansurcharge)
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label>Blend Surcharge</label>
-                    @Html.CheckBox("blendsurcharge", Model.blendsurcharge != null && (bool)Model.blendsurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Nalgene Surcharge</label>
-                    @Html.CheckBox("nalgenesurcharge", Model.nalgenesurcharge != null && (bool)Model.nalgenesurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Nitrogen Surcharge</label>
-                    @Html.CheckBox("nitrogensurcharge", Model.nitrogensurcharge != null && (bool)Model.nitrogensurcharge)
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label>Biocede Surcharge</label>
-                    @Html.CheckBox("biocidesurcharge", Model.biocidesurcharge != null && (bool)Model.biocidesurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Kosher Surcharge</label>
-                    @Html.CheckBox("koshersurcharge", Model.koshersurcharge != null && (bool)Model.koshersurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Label Surcharge</label>
-                    @Html.CheckBox("labelsurcharge", Model.labelsurcharge != null && (bool)Model.labelsurcharge)
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label>Other Surcharge</label>
-                    @Html.CheckBox("othersurcharge", Model.othersurcharge != null && (bool)Model.othersurcharge)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Other Amount</label>
-                    @Html.TextBoxFor(m => m.othersurchargeamt, new { @class = "form-control" })
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>...</label>
-                    &nbsp;
-                </div>
-            </div>
+
             <div class="row">
                 <div class="col-md-4 form-group">
                     <label>Sort Order</label>
                     @Html.TextBoxFor(m => m.sortorder, new { @class = "form-control" })
                 </div>
                 <div class="col-md-4 form-group">
-                    <label>Discontinued</label>
-                    @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>CustCode</label>
+                    <label>Customer Code</label>
                     @Html.TextBoxFor(m => m.custcode, new { @class = "form-control" })
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-4 form-group">
                     <label>New Item</label>
                     @Html.TextBoxFor(m => m.newitem, new { @class = "form-control" })
                 </div>
-                <div class="col-md-4 form-group">
-                    <label>Inactive Size</label>
-                    @Html.CheckBox("inactivesize", Model.inactivesize != null && (bool)Model.inactivesize)
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>WebOE Include</label>
-                    @Html.CheckBox("weboeinclude", Model.weboeinclude != null && (bool)Model.weboeinclude)
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <input name="submitbutton" type="submit" class="btn btn-success btn-block" value="Save" />
-                </div>
-                <div class="col-md-4 form-group">
-                    <input name="submitbutton" type="submit" class="btn btn-danger btn-block" value="Delete" disabled="disabled" />
-                </div>
-                <div class="col-md-4 form-group">
-                    <input name="submitbutton" type="submit" class="btn btn-info btn-block" value="Cancel" />
-                </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <input name="submitbutton" type="submit" class="btn btn-success btn-block" value="Save" />
+                </div>
+                @*<div class="col-md-4 form-group">
+                        <input name="submitbutton" type="submit" class="btn btn-danger btn-block" value="Delete" disabled="disabled" />
+                    </div>*@
+                <div class="col-md-6 form-group">
+                    <input name="submitbutton" type="submit" class="btn btn-warning btn-block" value="Cancel" />
+                </div>
+            </div>
             <div id="dvupdateresult">
                 <!-- Place holder for any ajax returned from controller -->
             </div>
-            </div>
         </div>
-    
-   }
+    </div>
+}
 
 <script type="text/javascript">
-
     function OnChangeSize() {
         var myurl = '@Url.Action("BuildShelfMasterPackagesDropDown", "ShelfMaster")';
         var data = $('#size').val();
@@ -202,11 +185,4 @@
 
         $("#packageid").load(myurl, { id: data });
     }
-
-
-
 </script>
-
-
-
-
