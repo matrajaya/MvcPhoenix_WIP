@@ -69,3 +69,7 @@ C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.pdb
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.dll
 C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Release\MvcPhoenix.pdb
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Data.SQLite.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Data.SQLite.EF6.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Data.SQLite.Linq.dll
+C:\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Data.SQLite.xml
