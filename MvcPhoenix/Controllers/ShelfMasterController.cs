@@ -17,6 +17,7 @@ namespace MvcPhoenix.Controllers
             // build the landing page for shelf masters belonging to a productdetailid
             ShelfMasterViewModel obj = new ShelfMasterViewModel();
             var mylist = ShelfMasterService.fnListOfShelfMasters(id);
+            FillIndexViewBag(id);
             return View("~/Views/ShelfMaster/Index.cshtml", mylist);
         }
 
@@ -24,8 +25,27 @@ namespace MvcPhoenix.Controllers
         {
             // for the partial in Products Edit
             var mylist = ShelfMasterService.fnListOfShelfMasters(id);
+            ViewBag.ParentID = id;
             return PartialView("~/Views/Products/_ShelfSize.cshtml", mylist);
         }
+
+        public ActionResult FillIndexViewBag(int id)
+        {
+            // This will change later (after some DB changes)
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var dbProductDetail = db.tblProductDetail.Find(id);
+                var dbProductMaster = db.tblProductMaster.Find(dbProductDetail.ProductMasterID);
+                var dbClient = db.tblClient.Find(dbProductMaster.ClientID);
+                ViewBag.ParentID = id;
+                ViewBag.logofilename = "http://www.mysamplecenter.com/Logos/" + dbClient.LogoFileName;
+                ViewBag.ProductCode = dbProductDetail.ProductCode;
+                ViewBag.ProductName = dbProductDetail.ProductName;
+                return null;
+            }
+        }
+
+
 
 
         [HttpGet]
@@ -72,15 +92,7 @@ namespace MvcPhoenix.Controllers
             }
             if (UserChoice == "Save")
             {
-                //if(ShelfMasterService.isValidShelfMaster(obj))
-                //{
                     ShelfMasterService.fnSaveShelfMaster(obj);
-                //}
-                //else
-                //{
-                //    return Content("dede");
-                //}
-                
             }
             if (UserChoice == "Delete")
             {
@@ -89,8 +101,6 @@ namespace MvcPhoenix.Controllers
             }
             return RedirectToAction("Index", new { id = obj.productdetailid });
         }
-
-
 
 
 

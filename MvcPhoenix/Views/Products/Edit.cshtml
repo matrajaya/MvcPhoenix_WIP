@@ -380,7 +380,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#ghs"><i class="fa fa-suitcase fa-fw"></i> GHS Information</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#ghs"><i class="fa fa-suitcase fa-fw"></i> GHS Information*- Work In Progress</h3>
             </div>
             <div id="ghs" class="panel-body collapse">
                 <div class="row">
@@ -615,7 +615,7 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Label Revision Date</label>
-                        @Html.TextBoxFor(m => m.labelrevisiondate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.labelrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.labelrevisiondate)
                     </div>
                     <div class="form-group col-md-3">
@@ -625,7 +625,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>China Test Certification Date</label>
-                        @Html.TextBoxFor(m => m.chinacertificationdate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.chinacertificationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.chinacertificationdate)
                     </div>
                     <div class="clearfix"></div>
@@ -647,7 +647,7 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Technical Sheet Revision Date</label>
-                        @Html.TextBoxFor(m => m.technicalsheetrevisondate, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.technicalsheetrevisondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.technicalsheetrevisondate)
                     </div>
                 </div>

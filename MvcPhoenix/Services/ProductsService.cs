@@ -116,7 +116,7 @@ namespace MvcPhoenix.Models
                               select new ShelfMasterViewModel
                               {
                                   shelfid = t.ShelfID,
-                                  //warehouse = t.Warehouse,
+                                  warehouse = t.Warehouse,
                                   size = t.Size,
                                   bin = t.Bin,
                                   packageid = t.PackageID,
