@@ -46,6 +46,7 @@
                     <thead>
                         <tr>
                             <th>Size</th>
+                            <th>Unit Wt</th>
                             <th>Pkg</th>
                             <th>WH</th>
                             <th>Bin</th>
@@ -62,7 +63,7 @@
                             <th>Nalg</th>
                             <th>Nitro</th>
                             <th>Bioc</th>
-                            <th>Kosh</th>
+                            @*<th>Kosh</th>*@
                             <th>Label</th>
                             <th>Other</th>
                             <th></th>
@@ -73,6 +74,7 @@
                         {
                             <tr>
                                 <td><strong>@item.size</strong></td>
+                                <td>@item.unitweight</td>
                                 <td>@item.packagepartnumber</td>
                                 <td>@item.warehouse</td>
                                 <td>@item.bin</td>
@@ -89,7 +91,7 @@
                                 <td><input type="checkbox" checked="@item.nalgenesurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.nitrogensurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.biocidesurcharge" disabled="disabled"></td>
-                                <td><input type="checkbox" checked="@item.koshersurcharge" disabled="disabled"></td>
+                                @*<td><input type="checkbox" checked="@item.koshersurcharge" disabled="disabled"></td>*@
                                 <td><input type="checkbox" checked="@item.labelsurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.othersurcharge" disabled="disabled"></td>
                                 @*<td>@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new {onclick="return confirm('Copy this Size?');" })</td>*@

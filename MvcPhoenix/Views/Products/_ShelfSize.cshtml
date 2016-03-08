@@ -9,11 +9,12 @@
             <thead>
                 <tr>
                     <th>Size</th>
+                    <th>Unit Wt</th>
                     <th>Part #</th>
                     <th>WH</th>
-                    <th>Bin</th>
-                    <th>Min Qty</th>
-                    <th>Max Qty</th>
+                    <th>Bin/Location</th>
+                    @*<th>Min Qty</th>
+                    <th>Max Qty</th>*@
                     <th>Notes</th>
                 </tr>
             </thead>
@@ -22,12 +23,11 @@
                 {
                     <tr>
                         <td><strong>@item.size</strong></td>
+                        <td>@item.unitweight</td>
                         <td>@item.packageid</td>
                         <td>@item.warehouse</td>
                         <td>@item.bin</td>
-                        <td>@item.reordermin.ToString()</td>
-                        <td>@item.reordermax.ToString()</td>
-                        <td style="width: 50%;">@item.notes</td>
+                        <td style="width: 60%;">@item.notes</td>
                     </tr>
                 }
             </tbody>

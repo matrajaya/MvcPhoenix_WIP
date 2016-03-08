@@ -26,14 +26,14 @@
                     @Html.ValidationMessageFor(m => m.warehouse)
                 </div>
                 <div class="col-md-3 form-group">
-                    <label>Bin</label>
+                    <label>Bin/Location</label>
                     @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.bin)
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-3 form-group">
+                <div class="col-md-12 form-group">
                     <label>Package</label>
                     <div id="dvPlaceholderPackageInitial">
                         @Html.DropDownListFor(m => m.packageid, Model.ListOfPackages, new { @class = "form-control" })
@@ -43,7 +43,7 @@
                         <select name="packageid" id='packageid' class='form-control'></select>
                     </div>
                 </div>
-                <div class="col-md-3 form-group">
+                @*<div class="col-md-3 form-group">
                     <label>Min Qty</label>
                     @Html.TextBoxFor(m => m.reordermin, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.reordermin)
@@ -57,7 +57,7 @@
                     <label>Re-Order Qty</label>
                     @Html.TextBoxFor(m => m.reorderqty, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.reorderqty)
-                </div>
+                </div>*@
             </div>
 
             <div class="row">
@@ -106,10 +106,10 @@
                                     @Html.CheckBox("biocidesurcharge", Model.biocidesurcharge != null && (bool)Model.biocidesurcharge, new { @class = "checkbox-inline" })
                                     <label>Biocede</label>
                                 </li>
-                                <li>
+                                @*<li>
                                     @Html.CheckBox("koshersurcharge", Model.koshersurcharge != null && (bool)Model.koshersurcharge, new { @class = "checkbox-inline" })
                                     <label>Kosher</label>
-                                </li>
+                                </li>*@
                                 <li>
                                     @Html.CheckBox("labelsurcharge", Model.labelsurcharge != null && (bool)Model.labelsurcharge, new { @class = "checkbox-inline" })
                                     <label>Label</label>
@@ -125,11 +125,11 @@
                         <label>Notes</label>
                         @Html.TextAreaFor(m => m.notes, new { @class = "form-control", @rows = 6 })
                     </div>
-                    <ul class="list-unstyled list-3-col">
-                        <li>
+                    <ul class="list-unstyled list-2-col">
+                        @*<li>
                             @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
                             <label>Discontinued</label>
-                        </li>
+                        </li>*@
                         <li>
                             @Html.CheckBox("inactivesize", Model.inactivesize != null && (bool)Model.inactivesize, new { @class = "checkbox-inline" })
                             <label>Inactive Size</label>

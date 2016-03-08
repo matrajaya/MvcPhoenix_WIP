@@ -22,65 +22,57 @@
                     @Html.HiddenFor(m => m.productdetailid)
 
                     <div class="row">
-                        <div class="col-md-12 form-group">
-                            @*@Html.LabelFor(m => m.casnumber)*@
+                        <div class="col-md-9 form-group">
                             <label>CAS Number</label>
                             @Html.TextBoxFor(m => m.casnumber, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Excl From Label</label>
+                            @Html.CheckBox("excludefromlabel", Model.excludefromlabel != null && (bool)Model.excludefromlabel)
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            @*@Html.LabelFor(m => m.chemicalname)*@
                             <label>Chemical Name</label>
                             @Html.TextBoxFor(m => m.chemicalname, new { @class = "form-control" })
                         </div>
                     </div>
 
                     <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Less Than</label>
+                            @Html.CheckBox("lessthan", Model.lessthan != null && (bool)Model.lessthan)
+                        </div>
                         <div class="col-md-3 form-group">
                             @Html.LabelFor(m => m.percentage)
                             @Html.TextBoxFor(m => m.percentage, new { @class = "form-control" })
                         </div>
-                        <div class="col-md-3 form-group">
-                            @*@Html.LabelFor(m => m.restrictedqty)*@
-                            <label>Restricted Qty</label>
-                            @Html.CheckBox("restrictedqty", Model.restrictedqty != null && (bool)Model.restrictedqty)
-                        </div>
-                        <div class="col-md-3 form-group">
-                            @*@Html.LabelFor(m => m.restrictedamount)*@
-                            <label>Restricted Amt</label>
-                            @Html.TextBoxFor(m => m.restrictedamount, new { @class = "form-control" })
-                        </div>
-                        <div class="col-md-3 form-group">
-                            @*@Html.LabelFor(m => m.packonreceipt)*@
-                            <label>PO On Receipt</label>
-                            @Html.CheckBox("packonreceipt", Model.packonreceipt != null && (bool)Model.packonreceipt)
-                        </div>
                     </div>
-
                     <div class="row">
-
-                        <div class="col-md-3 form-group">
-                            @*@Html.LabelFor(m => m.reportableqty)*@
+                        <div class="col-md-6 form-group">
                             <label>Reportable Qty</label>
                             @Html.CheckBox("reportableqty", Model.reportableqty != null && (bool)Model.reportableqty)
                         </div>
                         <div class="col-md-3 form-group">
-                            @*@Html.LabelFor(m => m.reportableamount)*@
                             <label>Reportable Amt</label>
                             @Html.TextBoxFor(m => m.reportableamount, new { @class = "form-control" })
                         </div>
                         <div class="col-md-3 form-group">
-                            @*@Html.LabelFor(m => m.lessthan)*@
-                            <label>Less Than</label><br />
-                            @Html.CheckBox("lessthan", Model.lessthan != null && (bool)Model.lessthan)
-                        </div>
-                        <div class="col-md-3 form-group">
-                            @*@Html.LabelFor(m => m.excludefromlabel)*@
-                            <label>Excl From Label</label>
-                            @Html.CheckBox("excludefromlabel", Model.excludefromlabel != null && (bool)Model.excludefromlabel)
+                            <label>PO On Receipt</label>
+                            @Html.CheckBox("packonreceipt", Model.packonreceipt != null && (bool)Model.packonreceipt)
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Restricted Qty</label>
+                            @Html.CheckBox("restrictedqty", Model.restrictedqty != null && (bool)Model.restrictedqty)
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Restricted Amt</label>
+                            @Html.TextBoxFor(m => m.restrictedamount, new { @class = "form-control" })
+                        </div>
+                    </div>
+
 
                     <div class="row">
                         <div class="col-md-6 form-group">
@@ -89,7 +81,8 @@
                         <div class="col-md-6 form-group">
                             @Ajax.ActionLink("Close", "CasList", "Products", new { id = @Model.productdetailid },
                               new AjaxOptions
-                         {   HttpMethod = "GET",
+                         {
+                             HttpMethod = "GET",
                              OnComplete = "$('#dialogPlaceholderModal').modal('hide')"
                          },
                                  new { @class = "btn btn-danger btn-block" })
@@ -113,8 +106,7 @@
 </div>
 
 <script type="text/javascript">
-    function UpdateCasList()
-    {
+    function UpdateCasList() {
         // Update the list
         $("#dvCasList").load('@Url.Action("CasList","Products",new{id=@Model.productdetailid})');
 
