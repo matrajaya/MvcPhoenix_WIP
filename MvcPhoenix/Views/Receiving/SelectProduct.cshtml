@@ -56,7 +56,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="row">
             <div class="col-md-12">
                 <span id="dvSpinner" style="display:none;">
@@ -67,9 +66,7 @@
                 </div>
             </div>
         </div>
-
     }
-
 </div>
 
 <script type="text/javascript">
@@ -79,12 +76,10 @@
         $("#dvPlaceholderCheckOrdersButton").addClass("hidden");
         $("#dvPlaceholderOpenOrderItems").empty();
         $("#dvPlaceholderNew").addClass("hidden");
-
         // call action that returns DD of Mastercodes
         var url = '@Url.Action("BuildProductMasterDropDown", "Receiving")';
         var data = $('#ClientID').val()
         $("#productmasterid").load(url, { id: data });
-
     }
 
     function OnChangeMasterCode() {
@@ -97,12 +92,10 @@
     function OnClickCheckOrders() {
         $("#dvPlaceholderOpenOrderItems").empty();
         $("#dvPlaceholderNew").removeClass("hidden");
-
         // build the New url to include the productmasterid
         var myid = $("#productmasterid").val();
         var url = '@Url.Action("CreateContainerReceipt", "Receiving")';
         url = url + "/" + myid;
         $("#aNewContainer").prop("href", url);
-
     }
 </script>

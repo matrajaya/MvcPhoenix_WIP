@@ -43,21 +43,6 @@
                         <select name="packageid" id='packageid' class='form-control'></select>
                     </div>
                 </div>
-                @*<div class="col-md-3 form-group">
-                    <label>Min Qty</label>
-                    @Html.TextBoxFor(m => m.reordermin, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.reordermin)
-                </div>
-                <div class="col-md-3 form-group">
-                    <label>Max Qty</label>
-                    @Html.TextBoxFor(m => m.reordermax, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.reordermax)
-                </div>
-                <div class="col-md-3 form-group">
-                    <label>Re-Order Qty</label>
-                    @Html.TextBoxFor(m => m.reorderqty, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.reorderqty)
-                </div>*@
             </div>
 
             <div class="row">
@@ -106,10 +91,6 @@
                                     @Html.CheckBox("biocidesurcharge", Model.biocidesurcharge != null && (bool)Model.biocidesurcharge, new { @class = "checkbox-inline" })
                                     <label>Biocede</label>
                                 </li>
-                                @*<li>
-                                    @Html.CheckBox("koshersurcharge", Model.koshersurcharge != null && (bool)Model.koshersurcharge, new { @class = "checkbox-inline" })
-                                    <label>Kosher</label>
-                                </li>*@
                                 <li>
                                     @Html.CheckBox("labelsurcharge", Model.labelsurcharge != null && (bool)Model.labelsurcharge, new { @class = "checkbox-inline" })
                                     <label>Label</label>
@@ -126,10 +107,6 @@
                         @Html.TextAreaFor(m => m.notes, new { @class = "form-control", @rows = 6 })
                     </div>
                     <ul class="list-unstyled list-2-col">
-                        @*<li>
-                            @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
-                            <label>Discontinued</label>
-                        </li>*@
                         <li>
                             @Html.CheckBox("inactivesize", Model.inactivesize != null && (bool)Model.inactivesize, new { @class = "checkbox-inline" })
                             <label>Inactive Size</label>
@@ -161,9 +138,6 @@
                 <div class="col-md-6 form-group">
                     <input name="submitbutton" type="submit" class="btn btn-success btn-block" value="Save" />
                 </div>
-                @*<div class="col-md-4 form-group">
-                        <input name="submitbutton" type="submit" class="btn btn-danger btn-block" value="Delete" disabled="disabled" />
-                    </div>*@
                 <div class="col-md-6 form-group">
                     <input name="submitbutton" type="submit" class="btn btn-warning btn-block" value="Cancel" />
                 </div>

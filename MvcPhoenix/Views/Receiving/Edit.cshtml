@@ -179,25 +179,21 @@
                         @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.containertype)
                     </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="form-group col-md-3">
-                                <label>Flammable</label>
-                                @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox", disabled = "disabled" })
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Freezer</label>
-                                @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox", disabled = "disabled" })
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Refrigerate</label>
-                                @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox", disabled = "disabled" })
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label>Packout On Receipt</label>
-                                @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox", disabled = "disabled" })
-                            </div>
-                        </div>
+                    <div class="col-md-3">
+                        <ul class="list-unstyled list-2-col">
+                            <li><label>Flammable</label></li>
+                            <li>@Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox", disabled = "disabled" })</li>
+                            <li><label>Freezer</label></li>
+                            <li>@Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox", disabled = "disabled" })</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <ul class="list-unstyled list-2-col">
+                            <li><label>Refrigerate</label></li>
+                            <li>@Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox", disabled = "disabled" })</li>
+                            <li><label>Packout</label></li>
+                            <li>@Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox", disabled = "disabled" })</li>
+                        </ul>
                     </div>
                 </div>
             </div>
