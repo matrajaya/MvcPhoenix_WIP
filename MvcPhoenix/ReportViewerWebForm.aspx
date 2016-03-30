@@ -8,16 +8,16 @@
 <head runat="server">
     <title></title>
 </head>
-<body style="margin: 0px; padding: 0px;">
-    <form id="form1" runat="server">
-        <div>
+<body>
+    <div style="width:auto">
+        <form id="form1" runat="server" style="width:100%;height:100%;">
             <asp:ScriptManager ID="ScriptManager1" runat="server">
                 <Scripts>
                     <asp:ScriptReference Assembly="ReportViewerForMvc" Name="ReportViewerForMvc.Scripts.PostMessage.js" />
                 </Scripts>
             </asp:ScriptManager>
-            <rsweb:ReportViewer ID="ReportViewer1" runat="server"></rsweb:ReportViewer>
-        </div>
-    </form>
+            <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Height="100%" AsyncRendering="false" SizeToReportContent="true" ZoomMode="PageWidth"></rsweb:ReportViewer>
+        </form>
+    </div>
 </body>
 </html>
