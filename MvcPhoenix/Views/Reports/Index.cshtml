@@ -1,0 +1,21 @@
+﻿@using ReportViewerForMvc;
+
+@{
+    ViewBag.Title = "Reports";
+}
+
+<div class="row">
+    <h2>Products Reports Home</h2>
+    <div class="col-md-8 col-md-offset-2">
+        <ul class="list-unstyled list-2-col">
+            <li>@Html.ActionLink("Run CAS Report", "Cas")</li>
+            <li>@Html.ActionLink("Run Client Harmonized Report", "ClientHarmonized")</li>
+            <li>@Html.ActionLink("Run Client MSDS Date Report", "ClientMSDSDate")</li>
+            <li>@Html.ActionLink("Run Client Packages Report", "ClientPackages")</li>
+            <li>@Html.ActionLink("Run Client Products List Report", "ClientProductsList")</li>
+            <li>@Html.ActionLink("Run Hazard List Report", "HazardList")</li>
+            <li>@Html.ActionLink("Run Sample Guide Info Report", "SampleGuideInfo")</li>
+            <li>@Html.ActionLink("Run Sample Guide Revision Date Report", "SGRevDate")</li>
+        </ul>
+    </div>
+</div>

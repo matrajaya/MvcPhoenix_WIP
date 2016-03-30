@@ -1,0 +1,12 @@
+﻿@using ReportViewerForMvc;
+
+@{
+    ViewBag.Title = "Hazard List";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h2>Report</h2>
+        @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "no" })
+    </div>
+</div>
