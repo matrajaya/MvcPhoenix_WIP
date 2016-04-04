@@ -34,6 +34,7 @@
         <div class="form-group row">
             <div class="col-md-12">
                 <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products Index", "Index")
+                <span class="text-center">@Html.ActionLink("Print Document", "PrintProfile", new { id = @Model.productdetailid }, new { target = "_blank" })</span>
                 <span class="pull-right label label-info">Product ID: @Model.productdetailid</span>
             </div>
         </div>

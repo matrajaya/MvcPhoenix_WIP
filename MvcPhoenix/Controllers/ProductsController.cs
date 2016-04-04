@@ -7,6 +7,7 @@ using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using System.Threading.Tasks;
 using PagedList;
+using Rotativa;
 
 namespace MvcPhoenix.Controllers
 {
@@ -82,6 +83,17 @@ namespace MvcPhoenix.Controllers
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
             return View(PP);
+        }
+
+        
+        public ActionResult PrintProfile(int id)
+        {
+            ProductProfile PP = new ProductProfile();
+            PP.productdetailid = id;
+            PP = ProductsService.FillFromPD(PP);
+            PP = ProductsService.FillFromPM(PP);
+            PP = ProductsService.fnFillOtherPMProps(PP);
+            return new ViewAsPdf(PP);
         }
 
         [HttpPost]
