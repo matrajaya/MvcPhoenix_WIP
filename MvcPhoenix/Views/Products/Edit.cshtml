@@ -30,18 +30,24 @@
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.productdetailid)
 
-
         <div class="form-group row">
             <div class="col-md-12">
                 <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products Index", "Index")
-                <span class="text-center">@Html.ActionLink("Print Document", "PrintProfile", new { id = @Model.productdetailid }, new { target = "_blank" })</span>
                 <span class="pull-right label label-info">Product ID: @Model.productdetailid</span>
+            </div>
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank">Print View <i class="fa fa-file-pdf-o fa-lg fa-pull-right fa-border"></i></a>
+                    @*@Html.ActionLink("Print Document", "PrintProfile", new { id = @Model.productdetailid }, new { target = "_blank" })*@
+                </div>
             </div>
         </div>
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#prodid"><i class="fa fa-suitcase fa-fw"></i> Product Identification</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#prodid">
+                    <i class="fa fa-suitcase fa-fw"></i> Product Identification
+                </h3>
             </div>
             <div id="prodid" class="panel-body collapse in">
                 <div class="row">
@@ -606,7 +612,7 @@
                         @Html.ValidationMessageFor(m => m.restrictedamount)
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 <div class="row">
                     <div class="col-md-12">
                         <label>Protective Equipment</label>
@@ -621,10 +627,12 @@
                             <li><input type="checkbox" /> Dustfilter*</li>
                             <li>@Html.CheckBox("cleanroomequipment", Model.cleanroomequipment != null && (bool)Model.cleanroomequipment) Clean Room Equip</li>
                             <li>@Html.CheckBox("booties", Model.booties != null && (bool)Model.booties) Booties</li>
-                            <li>Glove Type
+                            <li>
+                                Glove Type
                                 @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
                             </li>
-                            <li>Other Equipment
+                            <li>
+                                Other Equipment
                                 @Html.TextBoxFor(m => m.otherequipmentdescription, new { @class = "form-control", @placeholder = "Other Equipment" })
                             </li>
                         </ul>

@@ -1,0 +1,31 @@
+﻿<html>
+<head>
+    <title>@ViewBag.Title - Phoenix/CMC SiMPLE</title>
+    <style>
+        label{
+            font-weight:bold;
+        }
+        table {
+            width:100%;
+            border-collapse:collapse;
+            text-align:left;
+        }
+
+        th, td {
+            padding:10px;
+            vertical-align:text-top;
+        }
+
+        .form-control {
+            border-width:0;
+            border-color:transparent;
+        }
+        .noprint, #noprint, a, div.alert, header, .group-media, .btn, .footer, form, #comments, .nav, ul.links.list-inline, ul.action-links {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

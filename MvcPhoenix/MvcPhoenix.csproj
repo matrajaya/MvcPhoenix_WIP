@@ -744,6 +744,7 @@
     <Content Include="Views\Reports\SampleGuideInfo.cshtml" />
     <Content Include="Views\Reports\SGRevDate.cshtml" />
     <Content Include="Views\Products\PrintProfile.cshtml" />
+    <Content Include="Views\Shared\_LayoutPrint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

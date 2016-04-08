@@ -2,7 +2,7 @@
 
 <div id="dvCasList">
 
-    <label>CAS | </label>
+    <label id="noprint">CAS | </label>
     @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = ViewBag.ParentKey }, new AjaxOptions
         {
             InsertionMode = InsertionMode.Replace,
@@ -25,7 +25,7 @@
                 <th>Reportable Qty</th>
                 <th>Exclude From Label</th>
                 <th>Reportable Amt</th>
-                <th>Action</th>
+                <th id="noprint">Action</th>
             </tr>
 
             @foreach (var item in Model)
@@ -50,7 +50,7 @@
                     <td><input type="checkbox" checked="@item.reportableqty" disabled="disabled"></td>
                     <td><input type="checkbox" checked="@item.excludefromlabel" disabled="disabled"></td>
                     <td>@item.reportableamount</td>
-                    <td>
+                    <td id="noprint">
                         @Ajax.ActionLink("Edit", "EditCAS", "Products", new { id = @item.casid }, new AjaxOptions
                    {
                        InsertionMode = InsertionMode.Replace,
