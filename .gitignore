@@ -17,6 +17,7 @@ MvcPhoenix/Migrations/*/*
 MvcPhoenix/obj*/*
 MvcPhoenix/Properties*/*
 MvcPhoenix/App_Start/IdentityConfig.cs
+MvcPhoenix/Web.config
 
 #ignore thumbnails created by windows
 Thumbs.db
