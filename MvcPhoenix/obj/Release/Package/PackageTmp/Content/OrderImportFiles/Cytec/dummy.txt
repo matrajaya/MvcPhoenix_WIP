@@ -1,1 +1,0 @@
-THis is a dummy text file to make IIS create this folder during publication.
