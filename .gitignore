@@ -9,12 +9,12 @@
 
 packages*/*
 MvcPhoenixPC.sln
-**/[Bb]in*/*
+MvcPhoenix/[Bb]in*/*
 **/[Dd]ebug*/*
 **/[Rr]elease*/*
-**/Logs*/*
-**/Migrations*/*
-**/obj*/*
+MvcPhoenix/Logs*/*
+MvcPhoenix/Migrations/*/*
+MvcPhoenix/obj*/*
 MvcPhoenix/Properties*/*
 MvcPhoenix/App_Start/IdentityConfig.cs
 
