@@ -1,0 +1,59 @@
+﻿@model List<MvcPhoenix.Models.BulkOrderItem>
+
+<div id="dvItemsList">
+    <label>Items | </label>
+        
+    @Ajax.ActionLink("+ Add Item", "CreateItem", "Replenishments", new { id = @ViewBag.ParentKey }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        UpdateTargetId = "dialogPlaceholder",
+        OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+    })
+    
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th>&nbsp;</th>
+                <th>Master Code</th>
+                <th>Name</th>
+                <th class="text-right">Weight</th>
+                <th class="text-center">Status</th>
+                <th>ETA</th>
+                <th>Date Rec'd</th>
+                <th>Notes</th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Ajax.ActionLink(" ", "DeleteItem", "Replenishments", new { id = @item.bulkorderitemid },
+                    new AjaxOptions
+                    {
+                        Confirm = "Delete Item?",
+                        HttpMethod = "GET",
+                        OnSuccess = "UpdateItemsList"
+                    },
+                      new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                    </td>
+                    <td>@item.mastercode</td>
+                    <td>@item.mastername</td>
+                    <td class="text-right">@item.weight</td>
+                    <td class="text-center">@item.itemstatus</td>
+                    <td>@String.Format("{0:dd MMM yyyy}", @item.eta)</td>
+                    <td>@String.Format("{0:dd MMM yyyy}", @item.datereceived)</td>
+                    <td>@item.itemnotes</td>
+                    <td>@Ajax.ActionLink("Edit", "EditItem", "Replenishments", new { id = @item.bulkorderitemid }, new AjaxOptions { UpdateTargetId = "dialogPlaceholder", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#dialogPlaceholderModal').modal('show')" })</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function UpdateItemsList() {
+        $("#dvItemsList").load('@Url.Action("ItemsList", "Replenishments", new { id = @ViewBag.ParentKey })');
+    }
+</script>

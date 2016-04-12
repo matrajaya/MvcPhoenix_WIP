@@ -7,16 +7,15 @@
 *.cache
 *.log
 
-packages/
+packages*/*
 MvcPhoenixPC.sln
-MvcPhoenix/bin/
-[Bb]in/
-[Dd]ebug*/
-[Rr]elease*/
-Logs/
-Migrations/
-obj*/
-MvcPhoenix/Properties/
+**/[Bb]in*/*
+**/[Dd]ebug*/*
+**/[Rr]elease*/*
+**/Logs*/*
+**/Migrations*/*
+**/obj*/*
+MvcPhoenix/Properties*/*
 MvcPhoenix/App_Start/IdentityConfig.cs
 
 #ignore thumbnails created by windows

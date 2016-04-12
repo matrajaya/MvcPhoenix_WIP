@@ -1,0 +1,186 @@
+﻿@model MvcPhoenix.Models.PrePackViewModel
+@{
+    ViewBag.Title = "Pre-Pack Details";
+}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="cmc logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">@ViewBag.Title <small>@Model.productcode - @Model.productname</small></h1>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-12 row">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Receiving Main", "Index")
+        </div>
+    </div>
+    <!-- Page Heading -->
+    @using (Ajax.BeginForm("SavePrePack", "Receiving", new AjaxOptions
+    {
+        UpdateTargetId = "dvSaveResult",
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "POST",
+        Confirm = "Save PrePacks?",
+        OnSuccess = "PostSuccess"
+    }))
+    {
+
+        @Html.HiddenFor(m => m.productmasterid)
+        @Html.HiddenFor(m => m.isknownmaterial)
+        @Html.HiddenFor(m => m.bulkid)
+
+    <!-- very important -->
+        @Html.HiddenFor(m => m.ItemsCount)
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#prodinfopan"><i class="fa fa-file-text-o fa-fw"></i> Pre-Pack Information</h3>
+            </div>
+            <div id="prodinfopan" class="panel-body collapse in">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Date Received</label>
+                        @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.receivedate)
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Carrier - DDL</label>
+                        @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Warehouse</label>
+                        @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Entered By</label>
+                        @Html.TextBoxFor(m => m.enteredby, new { @class = "form-control" })
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Lot Number</label>
+                        @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Received By</label>
+                        @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Date Of Manufacture</label>
+                        @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Expiration Date</label>
+                        @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Cease Ship Date</label>
+                        @Html.TextBoxFor(m => m.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>QC Date</label>
+                        @Html.TextBoxFor(m => m.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>COA Included?</label>
+                        @Html.CheckBox("coaincluded", Model.coaincluded != null && (bool)Model.coaincluded, new { @class = "checkbox" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>MSDS Included?</label>
+                        @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <label class="lead">Enter Received Items Below</label>
+                    </div>
+                    <div class="table-responsive col-md-12">
+                        <table id="myTable" class="table table-hover display">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Shelf ID</th>
+                                    <th>Bin</th>
+                                    <th>Size</th>
+                                    <th style="text-align:center;">Qty Received</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.ListOfShelfMasters.Count(); i++)
+                                {
+                                    <tr>
+                                        <td>@(i + 1)</td>
+                                        <td><input type="text" readonly="readonly" name='@fnRowKey(@i+1)' value="@Model.ListOfShelfMasters[i].shelfid" style="width:35px;text-align:center;border:none;"></td>
+                                        <td>@Model.ListOfShelfMasters[i].bin</td>
+                                        <td>@Model.ListOfShelfMasters[i].size</td>
+                                        <td style="text-align:center;"><input type="text" required name='@fnRowQty(@i+1)' style="width:55px;text-align:center;" /></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div id="SaveCancel" class="row">
+            <div class=" col-md-6">
+                <input type="submit" value="Save Changes" class="btn btn-success btn-block" />
+            </div>
+            <div class="col-md-6">
+                @Html.ActionLink("Cancel", "Index", "Receiving", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel This Process?')" })
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <div class="form-group">
+                <label id="dvSaveResult"></label>
+            </div>
+        </div>
+
+        <div id="ReturnToIndex" class="row text-center hidden">
+            <div class="col-md-6 col-md-offset-3">
+                @Html.ActionLink("Return to Receiving Main", "Index", "Receiving", null, new { @class = "btn btn-success btn-block" })
+            </div>
+        </div>
+    }
+
+</div>
+
+<script type="text/javascript">
+    function PostSuccess() {
+        $("#SaveCancel").addClass("hidden");
+        $("#ReturnToIndex").removeClass("hidden");
+    }
+</script>
+
+@functions
+{
+    private static string fnRowKey(int id)
+    {
+        string s = "";
+        s = "Key" + id.ToString();
+        return s;
+    }
+
+    private static string fnRowQty(int id)
+    {
+        string s = "";
+        s = "Value" + id.ToString();
+        return s;
+    }
+}
+

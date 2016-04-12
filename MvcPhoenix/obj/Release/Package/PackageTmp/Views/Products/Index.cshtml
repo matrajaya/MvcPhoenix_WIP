@@ -1,0 +1,217 @@
+﻿@model MvcPhoenix.Models.ProductProfileLanding
+@{
+    ViewBag.Title = "Product Profile";
+
+    if (Model == null)
+    { }
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+    <!-- /.Page Heading -->
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Create</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="alert alert-success">
+                        <label>Create Original Product Profile</label>
+                        <p>This will create a product with a mastercode type attribute</p><br />
+
+                        @*@using (Html.BeginForm("New", "Products", FormMethod.Post))*@
+                        @using (Html.BeginForm("Create", "Products"))
+                        {
+                            <div class="input-group">
+                                @Html.DropDownList("clientid2", fnClientIDs(), new { @class = "form-control" })
+                                <span class="input-group-btn">
+                                    <input type="submit" id="btnNew" value="Create" class="btn btn-success" />
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="alert alert-warning">
+                        <label>Create Equivalent Product Profile</label>
+                        <p></p>
+                        @*@using (Html.BeginForm("Equiv", "Products", FormMethod.Post))*@
+                        @*@using (Html.BeginForm("SetUpProductProfileEquiv", "Products", FormMethod.Post))*@
+                        @using (Html.BeginForm("Equiv", "Products"))
+                        {
+                            <div class="form-group">
+                                @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
+                            </div>
+                            <div class="input-group">
+                                <div id="dvProductMasterIDs3">
+                                    <select name="productdetailid3" id='productdetailid3' class='form-control'>
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+                                <span class="input-group-btn">
+                                    <input type="submit" id="btnEquiv" value="Create" class="btn btn-success" />
+                                    @* Button below shows form modal for quick creation of equivalent product.
+                                        This will be implemmented later*@
+                                    @*<a href="#" class="btn btn-success" data-toggle="modal" data-target="#addequivprod">Quick Create</a>*@
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*
+        Note:
+        Modal pop-up when equivalent product create button is clicked.
+        After modal is filled and save button initiates creation of product.
+        Move data from modal form to product object.
+        Load newly created euivalent product in edit view with product master information filled in.
+        --------------------------------------------------------------------------------------------
+    *@
+    <div class="row">
+        <div class="form-group">
+            @Html.Partial("~/Views/Products/_AddEquivProductModal.cshtml")
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Edit</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row col-md-12">
+                        <label>Edit Product Profile</label>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            @using (Html.BeginForm("Search", "Products"))
+                            {
+                                <div class="form-group">
+                                    @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Product Code", @required = "required"})
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="vertical-line" style="height: 85px;">&nbsp;</div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            @using (Html.BeginForm("Edit", "Products"))
+                            {
+                                <div class="form-group">
+                                    @Html.DropDownList("clientid1", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Edit')", @class = "form-control" })
+                                </div>
+                                <div class="input-group">
+                                    <div id="dvProductMasterIDs1">
+                                        <select name="productdetailid1" id='productdetailid1' class='form-control' onchange="getid(this)">
+                                            <option value="0"></option>
+                                        </select>
+                                    </div>
+                                    <span class="input-group-btn">
+                                        @Html.ActionLink("Edit Product", "Edit", "Products", new { id = "submitEdit", @class = "btn btn-success" })
+                                    </span>
+                                </div>
+                                @* Do not remove this div. JS gives Uncaught TypeError: Cannot read property 'value' of undefined on the getid() function*@
+                                <div id="selectedproductid" hidden>0</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Review</h3>
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <label>Open In Read Only Mode</label>
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>-- Select Client --</option>
+                                <option>...</option>
+                                <option>...</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <select class="form-control">
+                                <option>-- Select Product Code --</option>
+                                <option>...</option>
+                                <option>...</option>
+                            </select>
+                            <span class="input-group-btn"><input type="button" class="btn btn-success" value="Review" onclick="alert('TODO Build, TODO')" /></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Local javascript -->
+<script type="text/javascript">
+    function BuildProductCodesDropDown(vParam) {
+        //alert(vParam);
+        var myurl = '@Url.Action("ProductCodesDropDown", "Products")';
+
+        if (vParam == "Edit") {
+            $.get(myurl, { id: $('#clientid1').val(), divid: "productdetailid1" }, function (fromserver) { $('#dvProductMasterIDs1').html(fromserver); });
+        }
+
+        if (vParam == "Equiv") {
+            $.get(myurl, { id: $('#clientid3').val(), divid: "productdetailid3" }, function (fromserver) { $('#dvProductMasterIDs3').html(fromserver); });
+        }
+    }
+
+    function getid(sel) {
+        var prodid = sel.value;
+        // do not remove. js typeerrors come up. See note above by hidden div
+        document.getElementById("selectedproductid").innerHTML = prodid;
+        var editpath = '@Url.Content("~/Products/Edit")' + '/' + prodid;
+        document.getElementById("submitEdit").setAttribute("href", editpath);
+    }
+</script>
+
+<!-- Local Razor -->
+@functions
+{
+    private static List<SelectListItem> fnClientIDs()
+    {
+        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+        {
+            List<SelectListItem> mylist = new List<SelectListItem>();
+            mylist = (from t in db.tblClient
+                      orderby t.ClientName
+                      select
+                        new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+            return mylist;
+        }
+    }
+}

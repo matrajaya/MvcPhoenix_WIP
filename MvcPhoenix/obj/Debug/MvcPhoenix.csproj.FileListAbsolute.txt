@@ -1,0 +1,210 @@
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\MasterDetail.dll.config
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\MasterDetail.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\MasterDetail.pdb
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Antlr3.Runtime.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\EntityFramework.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\EntityFramework.SqlServer.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Facebook.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Google.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Twitter.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Newtonsoft.Json.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Owin.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\PagedList.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\PagedList.Mvc.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Helpers.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Mvc.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Optimization.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Razor.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.Deployment.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.Razor.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\WebGrease.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\EntityFramework.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\EntityFramework.SqlServer.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\PagedList.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\PagedList.Mvc.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Helpers.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Mvc.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Optimization.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Razor.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.Deployment.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.Razor.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Antlr3.Runtime.pdb
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Newtonsoft.Json.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Facebook.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.OAuth.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Google.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Twitter.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.csprojResolveAssemblyReference.cache
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.Migrations.Initial.resources
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.Migrations.Identity.resources
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.Migrations.UserAddress.resources
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.Migrations.IntegratedModel.resources
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.Migrations.Cascading.resources
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.Migrations.UserProfile.resources
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.Migrations.UpdateFields.resources
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.Migrations.RemoveAllButUsersRoles.resources
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.csproj.GenerateResource.Cache
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.dll
+C:\Users\iigbo.CMCADD1\Desktop\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.pdb
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\MasterDetail.dll.config
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\MasterDetail.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\MasterDetail.pdb
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Antlr3.Runtime.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\EntityFramework.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\EntityFramework.SqlServer.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Facebook.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Google.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Twitter.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Newtonsoft.Json.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Owin.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\PagedList.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\PagedList.Mvc.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Helpers.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Mvc.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Optimization.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Razor.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.Deployment.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.Razor.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\WebGrease.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\EntityFramework.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\EntityFramework.SqlServer.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Newtonsoft.Json.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\PagedList.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\PagedList.Mvc.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Helpers.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Mvc.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Razor.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.Deployment.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.WebPages.Razor.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\System.Web.Optimization.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Antlr3.Runtime.pdb
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Facebook.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.OAuth.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Google.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.Twitter.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.Initial.resources
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.Identity.resources
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.UserAddress.resources
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.IntegratedModel.resources
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.Cascading.resources
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.UserProfile.resources
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.UpdateFields.resources
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.RemoveAllButUsersRoles.resources
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MvcPhoenix.csproj.GenerateResource.Cache
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.dll
+C:\Users\iigbo.CMCADD1\Desktop\sandbox\MvcPhoenix\MvcPhoenix\MvcPhoenix\obj\Debug\MasterDetail.pdb
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll.config
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\MvcPhoenix.pdb
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Antlr3.Runtime.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Elmah.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Elmah.Mvc.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\EntityFramework.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\EntityFramework.SqlServer.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.AspNet.Identity.Core.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.AspNet.Identity.Owin.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Host.SystemWeb.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.Cookies.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.Facebook.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.Google.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.OAuth.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.Twitter.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Web.Infrastructure.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Newtonsoft.Json.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Owin.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\PagedList.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\PagedList.Mvc.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Data.SQLite.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Data.SQLite.EF6.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Data.SQLite.Linq.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Helpers.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Mvc.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Optimization.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Razor.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.WebPages.Deployment.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.WebPages.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.WebPages.Razor.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\WebGrease.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\EntityFramework.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\EntityFramework.SqlServer.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Host.SystemWeb.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Newtonsoft.Json.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\PagedList.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\PagedList.Mvc.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Data.SQLite.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Helpers.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Mvc.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Razor.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.WebPages.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.WebPages.Deployment.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.WebPages.Razor.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\System.Web.Optimization.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Antlr3.Runtime.pdb
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.AspNet.Identity.Core.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.AspNet.Identity.Owin.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.Facebook.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.Cookies.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.OAuth.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.Google.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.Twitter.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.csprojResolveAssemblyReference.cache
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.Initial.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.Identity.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.UserAddress.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.IntegratedModel.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.Cascading.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.UserProfile.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.UpdateFields.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.RemoveAllButUsersRoles.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.Migrations.FieldLengths.resources
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.csproj.GenerateResource.Cache
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.dll
+\\dev_serv\Users\Administrator.CMCADD1\Documents\Visual Studio 2013\Projects\MvcPhoenix_WIP\MvcPhoenix\obj\Debug\MvcPhoenix.pdb

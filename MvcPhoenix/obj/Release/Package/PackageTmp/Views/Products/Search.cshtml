@@ -1,0 +1,106 @@
+﻿@model PagedList.IPagedList<MvcPhoenix.EF.tblProductDetail>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Product Search";
+}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                @ViewBag.Title
+            </h1>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-lg-12 row">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products Main", "Index", "Products")
+        </div>
+    </div>
+    <!-- /.Page Heading -->
+
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @using (Html.BeginForm("Search", "Products"))
+            {
+                <div class="input-group">
+                    @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Product Code", @required = "required" })
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
+                    </span>
+                </div>
+            }
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        @{
+            if (Model.Count == 0 || @ViewBag.CurrentFilter == null)
+            {
+                <div class="col-md-12">
+                    <h3>No products found. Try again.</h3>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <h3>Search results for "@ViewBag.CurrentFilter"</h3>
+                </div>
+                <div class="col-md-12 table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Product ID</th>
+                                <th>
+                                    @Html.ActionLink("Product Code", "Search", new { sortOrder = ViewBag.CodeSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>
+                                    @*Product Code*@
+                                </th>
+                                <th>
+                                    @Html.ActionLink("Product Name", "Search", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>
+                                    @*Product Name*@
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td data-label="Client">
+                                @Html.DisplayFor(modelItem => item.Company_MDB)
+                            </td>
+                            <td data-label="Product ID">
+                                @Html.DisplayFor(modelItem => item.ProductDetailID)
+                            </td>
+                            <td data-label="Product Code">
+                                @Html.DisplayFor(modelItem => item.ProductCode)
+                            </td>
+                            <td data-label="Product Name">
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </td>
+                            <td data-label="">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ProductDetailID })
+                            </td>
+                        </tr>
+                        }
+                    </table>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</label>
+                    @Html.PagedListPager(Model, page => Url.Action("Search", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                </div>
+                <div class="col-lg-12">
+                    <i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a>
+                    <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,369 @@
+﻿@model MvcPhoenix.Models.OrderMasterFull
+@{
+    ViewBag.Title = "Edit Order: " + Model.orderid;
+    ViewData["LastMessage"] = Session["LastMessage"];
+    ViewData["strOrderID"] = Model.orderid == -1 ? "New" : Model.orderid.ToString();
+    ViewData["OrderID"] = Model.orderid;
+    Session["OrderID"] = Model.orderid;
+    MvcPhoenix.Models.Client objClient = new MvcPhoenix.Models.Client();
+    objClient = MvcPhoenix.Models.Client.fnFillClient(Convert.ToInt32(Model.clientid));
+
+}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="@objClient.LogoFileName" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Orders", "Index")
+            <span id="dvTopMessage" class="pull-right" style="">@Html.Raw(@Model.UpdateResult)</span><!-- show message after save -->
+        </div>
+    </div>
+
+        <div class="well col-lg-12">
+            <div class="row">
+                <div class="col-md-3"><b>Client:</b><div>@Model.ClientName</div></div>
+                <div class="col-md-3"><b>Order ID:</b><div>@ViewData["strOrderID"]</div></div>
+                <div class="col-md-3"><b>Creation Date:</b><div>@Model.orderdate</div></div>
+                <div class="col-md-3"><b>Ship To:</b><div>@Model.company</div></div>
+            </div>
+        </div>
+    
+    @using (Html.BeginForm("SavePostData", "Orders", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.orderid)
+        <input type="hidden" value="@Model.clientid" name="hiddenclientid" id="hiddenclientid" />
+
+        <!--Start: Client Information Section-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#clientpan"><i class="fa fa-file-text-o fa-fw"></i> Client Order Information</h3>
+            </div>
+            <div id="clientpan" class="panel-body collapse in">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Name</label>
+                        @Html.TextBoxFor(m => m.ClientName, new { @class = "form-control", disabled = "true" })
+                        @Html.ValidationMessageFor(m => m.ClientName)
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Market Segment</label>
+                        @Html.TextBoxFor(m => m.busarea, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.busarea)
+                    </div>
+                    <div class="col-md-3 form-group">
+                        @Html.LabelFor(m => m.division, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.division, MvcPhoenix.Services.OrderService.fnListOfDivisions(Model.clientid), new { onchange = "ChangeDivision();return false();", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.division)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Client Reference</label>
+                        @Html.TextBoxFor(m => m.custrefnum, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.custrefnum )
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Client Order Number</label>
+                        @Html.TextBoxFor(m => m.custordnum, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.custordnum )
+                    </div>
+                    <div class="col-md-3 form-group">
+                        @Html.LabelFor(m => m.ordertype, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.ordertype, MvcPhoenix.Services.OrderService.fnListOfOrderTypes(), new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.ordertype )
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Order Source</label>
+                        @Html.DropDownListFor(m => m.source, MvcPhoenix.Services.OrderService.fnListOfOrderSources(), new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.source )
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End: Client Information Section-->
+        <!--Start: ShipTo Information Section-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#shiptopan"><i class="fa fa-file-text-o fa-fw"></i> Ship To Details</h3>
+            </div>
+            <div id="shiptopan" class="panel-body collapse in">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Name</label>
+                        @Html.TextBoxFor(m => m.company, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.company )
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.attention, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.attention, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.attention )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.email, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.email )
+                    </div>
+                    <div class="form-group col-md-3">
+                        @Html.LabelFor(m => m.phone, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.phone )
+                    </div>
+                    <div class="form-group col-md-3">
+                        @Html.LabelFor(m => m.fax, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.fax, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.fax )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Address 1</label>
+                        @Html.TextBoxFor(m => m.street, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.street )
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Address 2</label>
+                        @Html.TextBoxFor(m => m.street2, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.street2 )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Address 3</label>
+                        @Html.TextBoxFor(m => m.street3, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.street3 )
+                    </div>
+                    <div class="form-group col-md-3">
+                        @Html.LabelFor(m => m.city, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.city )
+                    </div>
+                    <div class="form-group col-md-3">
+                        @Html.LabelFor(m => m.Zip, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Zip, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.Zip )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.state, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.state, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.state )
+                    </div>
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(m => m.country, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.country, MvcPhoenix.Services.OrderService.fnListOfCountries(), new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.country )
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End: ShipTo Information Section-->
+        <!--Start: Requestor Information Section-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#requestorpan"><i class="fa fa-file-text-o fa-fw"></i> Requestor's Details</h3>
+            </div>
+            <div id="requestorpan" class="panel-body collapse in">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Requestor's Name</label>
+                        @Html.TextBoxFor(m => m.req, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.req )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Requestor's Email</label>
+                        @Html.TextBoxFor(m => m.reqemail, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.reqemail )
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Requestor's Phone</label>
+                        @Html.TextBoxFor(m => m.reqphone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.reqphone )
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Requestor's Fax</label>
+                        @Html.TextBoxFor(m => m.reqfax, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.reqfax )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Sales Rep's Name</label>
+                        @Html.TextBoxFor(m => m.salesrep, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.salesrep )
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Sales Rep's Email</label>
+                        @Html.TextBoxFor(m => m.sales_email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.sales_email )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Sales Rep's Phone</label>
+                        @Html.TextBoxFor(m => m.salesrepphone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.salesrepphone )
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Sales Rep's Territory</label>
+                        @Html.TextBoxFor(m => m.salesrepterritory, new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.salesrepterritory )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Marketing Rep's Name</label>
+                        @Html.TextBoxFor(m => m.marketingrep, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.marketingrep)
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Marketing Rep's Email</label>
+                        @Html.TextBoxFor(m => m.marketingrepemail, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.marketingrepemail)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        @Html.LabelFor(m => m.distributor, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.distributor, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.distributor)
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label">End Use</label>
+                        @Html.DropDownListFor(m => m.enduse, MvcPhoenix.Services.OrderService.fnListOfEndUses(Model.clientid), new { @class = "form-control" })
+                        @Html.ValidationMessageFor( m => m.enduse )
+                    </div>
+                    <div class="form-group col-md-3">
+                        @Html.LabelFor(m => m.approvalneeded, new { @class = "control-label" })
+                        @Html.CheckBoxFor(m => m.approvalneeded, new { @class = "checkbox" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        @Html.LabelFor(m => m.approvaldate, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.approvaldate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor( m => m.approvaldate )
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!--End: Requestor Information Section-->
+        <!--Start: Product Item Selection Section-->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#prodselectpan"><i class="fa fa-file-text-o fa-fw"></i> Product Items</h3>
+        </div>
+        <div id="prodselectpan" class="panel-body collapse in">
+            <div id="dvItems">
+                @Html.Partial("~/Views/Orders/_OrderItems.cshtml", new MvcPhoenix.Models.OrderItem())
+            </div>
+        </div>
+    </div>
+        <!--End: Product Item Selection Section -->
+
+        <!--Start: Transaction Log Notes Section-->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#translogpan"><i class="fa fa-file-text-o fa-fw"></i> Transaction Charges &amp; Log Notes</h3>
+        </div>
+        <div id="translogpan" class="panel-body collapse in">
+            <div id="dvOrderTransWidgetParent">
+                @Html.Partial("~/Views/Orders/_OrderTrans.cshtml", new MvcPhoenix.Models.OrderTrans())
+            </div>
+        </div>
+    </div>
+        <!--End: Transaction Log Notes Section -->
+
+        <!--Start: Shipments Section-->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#shipmentspan"><i class="fa fa-file-text-o fa-fw"></i> Shipments</h3>
+        </div>
+        <div id="shipmentspan" class="panel-body collapse in">
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label class="control-label">Ship Via</label>
+                    @Html.DropDownListFor(m => m.shipvia, MvcPhoenix.Services.OrderService.fnListOfShipVias(), new { @class = "form-control" })
+                    @Html.ValidationMessageFor( m => m.shipvia )
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="control-label">Shipping Account</label>
+                    @Html.TextBoxFor(m => m.shipacct, new { @class = "form-control" })
+                    @Html.ValidationMessageFor( m => m.shipacct )
+                </div>
+                <div class="col-md-4 form-group">
+                    <label class="control-label">Preferred Carrier</label>
+                    @Html.TextBoxFor(m => m.preferredcarrier, new { @class = "form-control" })
+                    @Html.ValidationMessageFor( m => m.preferredcarrier )
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    @Html.LabelFor(m => m.timing, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.timing, new { @class = "form-control" })
+                    @Html.ValidationMessageFor( m => m.timing )
+                </div>
+                <div class="col-md-4 form-group">
+                    @Html.LabelFor(m => m.spsfreightcost, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.spsfreightcost, new { @class = "form-control" })
+                    @Html.ValidationMessageFor( m => m.spsfreightcost )
+                </div>
+                <div class="col-md-4 form-group">
+                    @Html.LabelFor(m => m.spsshippedwt, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.spsshippedwt, new { @class = "form-control" })
+                    @Html.ValidationMessageFor( m => m.spsshippedwt )
+                </div>
+            </div>
+        </div>
+    </div>
+        <!--End: Shipments Selection Section -->
+        
+        <!--Start: Special Instructions Section-->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#specialinstrpan"><i class="fa fa-file-text-o fa-fw"></i> Special Instructions</h3>
+            </div>
+            <div id="specialinstrpan" class="panel-body collapse in">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Special Instructions</label>
+                        @Html.TextAreaFor(m => m.special, new { @class = "form-control", @rows = 10 })
+                        @Html.ValidationMessageFor( m => m.special )
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End: Special Instructions Section -->
+        
+        <div class="form-group row">
+            <div class=" col-md-6">
+                <input type="submit" value="Save Order" class="btn btn-success btn-block" />
+            </div>
+            <div class=" col-md-6">
+                @Html.ActionLink("Print Order", "PrintOrder", "Orders", null, new { @class = "btn btn-primary btn-block" })
+            </div>
+                <div class="clearfix"></div>
+                <br />
+                <div class="col-lg-12">
+                    <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Orders", "Index")
+                    <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+                </div>
+            </div>
+    }
+
+</div>

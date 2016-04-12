@@ -1,0 +1,83 @@
+﻿@model List<MvcPhoenix.Models.OpenBulkOrderItems>
+
+
+<table id="myTable" class="table table-hover table-striped table-condensed display" style="font-size:.85em;width:85%;">
+    <thead>
+        <tr style="background-color:aliceblue;">
+            <td colspan="9" style="text-align:center;">Open Bulk Orders for Selected MasterCode</td>
+        </tr>
+        <tr>
+            <th>ID</th>
+            <th>OrderID</th>
+            <th>Order Date</th>
+            <th>Weight</th>
+            <th>Status</th>
+            <th>ETA</th>
+            <th>Supplyid</th>
+            <th>Notes</th>
+            <th class="text-center">Close This Item</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.bulkorderitemid</td>
+                <td>@item.bulkorderid</td>
+                <td>@fnDate(@item.orderdate)</td>
+                <td>@item.weight</td>
+                <td>@item.status</td>
+                <td>@item.eta</td>
+                <td>@item.supplyid</td>
+                <td>@item.itemnotes</td>
+                <td class="text-center">
+                    <input type="checkbox" name='@fnID(@item.bulkorderitemid)' id='@fnID(@item.bulkorderitemid)' onchange="TagItemToBeClosed(this)">
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<input id="rowcount" name="rowcount" type="hidden" value="@Model.Count()" readonly="readonly" style="width:20px;" />
+
+<!-- Javascript -->
+<script type="text/javascript">
+    function TagItemToBeClosed(cb) {
+        // ajax call to tag the orderitem to be close later when we save a new container
+        var myurl = '@Url.Action("TagItemToBeClosed", "Receiving")';
+        $.ajax({
+            url: myurl,
+            type: "GET",
+            dataType: 'text',
+            cache: false,
+            data: { id: cb.name, ischecked: cb.checked }
+        });
+    }
+
+    //function UpdateControl(data) {
+    //    { $('#closelist').val(data) }
+    //}
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // post load tasks here
+    });
+</script>
+
+
+@functions
+{
+    private string fnID(int id)
+    {
+        //return "Item"+ id.ToString().Trim();
+        return id.ToString().Trim();
+    }
+
+    private static string fnDate(DateTime? vDate)
+    {
+        string s = ""; s = (vDate.HasValue) ? vDate.Value.ToString("dd MMM yyyy") : "no date"; return s;
+    }
+}

@@ -1,0 +1,45 @@
+﻿@model MvcPhoenix.Models.Inventory
+@using MvcPhoenix.Models
+@{}
+
+<div class="row" style="padding-bottom:20px;">
+    <div class="col-md-3">
+        <input type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#replenishmodal" value="Enter Order Details" />
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<div id="replenishmodal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                @Html.Partial("~/Views/Inventory/_ReplenishOrdersModal.cshtml")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <tr>
+            <th>Order Date</th>
+            <th>Order Number</th>
+            <th>Supplyid</th>
+            <th>Quantity</th>
+            <th>Size</th>
+            <th>Status</th>
+            <th>ETA</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+</div>

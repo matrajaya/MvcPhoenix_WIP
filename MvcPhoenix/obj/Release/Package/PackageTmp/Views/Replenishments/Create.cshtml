@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Create Replenishment Order";
+}
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+            @*<img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">*@
+        </div>
+        <div class="col-lg-12">
+            <h1 class="page-header">@ViewBag.Title</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Replenishments Main", "Index")
+        </div>
+    </div>
+
+    @using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments", new AjaxOptions
+    {
+        LoadingElementId = "dvspinnercreate",
+        OnSuccess = "UpdateItemsPartial"
+    }))
+    {
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Generate Suggested Replenishment Order</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Client</label>
+                                @Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="invisible">.</label>
+                                <div id="dvPlaceholderDivision">
+                                    <select name="divisionid" id='divisionid' class='form-control'>
+                                        <!-- Placeholder for option values -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label class="invisible">.</label>
+                                <span id="dvPlaceholderContinue" class="hidden">
+                                    <input id="btnsubmit" type="submit" value="Create" class="btn btn-success btn-block form-control" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="col-md-12 text-center" id="dvspinnercreate" style="display:none;">
+        <i class="fa fa-circle-o-notch fa-2x fa-spin"></i> Processing...
+    </div>
+
+    }
+
+
+    <div id="dvGridPlaceHolder" class="row">
+    </div>
+
+</div>
+
+<!-- Local javascript -->
+<script type="text/javascript">
+
+    function OnChangeClientID() {
+        var myurl = '@Url.Action("BuildDivisionDropDown", "Replenishments")';
+        var data = $('#clientid').val();
+        $("#divisionid").load(myurl, { id: data });
+        $("#dvPlaceholderContinue").removeClass("hidden");
+        // add update the logofile img
+    }
+
+    function UpdateItemsPartial()
+    {
+        // load/update the partial
+        var myurl = '@Url.Action("SuggestedItemsList", "Replenishments")';
+        
+        $("#dvGridPlaceHolder").load(myurl);
+    }
+
+
+</script>

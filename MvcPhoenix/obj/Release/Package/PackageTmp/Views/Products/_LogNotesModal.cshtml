@@ -1,0 +1,78 @@
+﻿@model MvcPhoenix.Models.ProductNote
+
+<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Product Note</h4>
+            </div>
+            <div id="dialogPlaceholderBody" class="modal-body">
+
+                @using (Ajax.BeginForm("SaveProductNote", "Products", new AjaxOptions
+                {
+                HttpMethod = "POST",
+                UpdateTargetId = "dialogResult",
+                OnSuccess = "UpdateProductNotesList",
+                InsertionMode = InsertionMode.Replace
+                
+                }))
+                {
+                    @Html.HiddenFor(m => m.productnoteid)
+                    @Html.HiddenFor(m => m.productdetailid)
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            @Html.LabelFor(m => m.notedate)
+                            @Html.TextBoxFor(m => m.notedate, "{0:dd MMM yyy}", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            @Html.LabelFor(m => m.notes)
+                            @Html.TextAreaFor(m => m.notes, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            @Html.LabelFor(m => m.reasoncode)
+                            @Html.DropDownListFor(m => m.reasoncode, Model.ListOfReasonCodes, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <input type="submit" value="Save" class="btn btn-success btn-block" />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            @Ajax.ActionLink("Close", null, null, new AjaxOptions
+                            {   HttpMethod = "GET",
+                                OnComplete = "$('#dialogPlaceholderModal').modal('hide')"
+                            },   new { @class = "btn btn-danger btn-block" })
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <span id="dialogResult">
+                                <!-- Placeholder for message from controller -->
+                            </span>
+                        </div>
+                    </div>
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function UpdateProductNotesList()
+    {
+        // Update the list
+        $("#dvLogNotes").load('@Url.Action("LogNotesList","Products",new{id=@Model.productdetailid})');
+
+        // Activate to hide the modal after list update
+        // $("#dialogPlaceholderModal").modal('hide');
+    }
+
+
+</script>
