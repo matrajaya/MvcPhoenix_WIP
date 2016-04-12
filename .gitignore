@@ -1,13 +1,23 @@
 #Exclude Files and Folders
 
 *.suo
+*.user
+*.aps
+*.bak
+*.cache
+*.log
+
 packages/
 MvcPhoenixPC.sln
 MvcPhoenix/bin/
-bin/
-MvcPhoenix/Logs/
-MvcPhoenix/Migrations/
-MvcPhoenix/obj/*
-obj/
+[Bb]in/
+[Dd]ebug*/
+[Rr]elease*/
+Logs/
+Migrations/
+obj*/
 MvcPhoenix/Properties/
 MvcPhoenix/App_Start/IdentityConfig.cs
+
+#ignore thumbnails created by windows
+Thumbs.db

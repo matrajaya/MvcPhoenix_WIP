@@ -8,6 +8,7 @@ using MvcPhoenix.Services;
 using System.Threading.Tasks;
 using PagedList;
 using Rotativa;
+using Rotativa.Options;
 
 namespace MvcPhoenix.Controllers
 {
@@ -88,12 +89,18 @@ namespace MvcPhoenix.Controllers
         
         public ActionResult PrintProfile(int id)
         {
+            string footer = "--footer-left \"Printed on: " + 
+                DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + 
+                "                                                                                                                                    " +
+                " Page: [page]/[toPage]\"" + 
+                " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+
             ProductProfile PP = new ProductProfile();
             PP.productdetailid = id;
             PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
-            return new ViewAsPdf(PP);
+            return new ViewAsPdf(PP) { CustomSwitches = footer };
         }
 
         [HttpPost]

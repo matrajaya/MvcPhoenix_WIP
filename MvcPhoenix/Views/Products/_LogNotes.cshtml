@@ -13,8 +13,8 @@
     <div class="form-group table-responsive">
         <table class="table table-striped">
             <tr>
-                <th>&nbsp;</th>
-                <th>Date</th>
+                <th id="noprint">&nbsp;</th>
+                <th width="15%">Date</th>
                 <th>Notes</th>
                 <th>Reason Code</th>
                 <th id="noprint">Action</th>
@@ -22,7 +22,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td id="noprint">
                             @Ajax.ActionLink(" ", "DeleteProductNote", "Products", new { id = @item.productnoteid, ParentID = Model[0].productdetailid },
                              new AjaxOptions
                              {   Confirm = "Delete This Product Note?",

@@ -14,7 +14,7 @@
     <div class="form-group table-responsive">
         <table class="table table-striped">
             <tr>
-                <th></th>
+                <th id="noprint"></th>
                 <th>CAS Number</th>
                 <th>Chemical Name</th>
                 <th>Less Than</th>
@@ -31,7 +31,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td id="noprint">
                         @Ajax.ActionLink(" ", "DeleteCAS", "Products", new { id = @item.casid },
                              new AjaxOptions
                              {
