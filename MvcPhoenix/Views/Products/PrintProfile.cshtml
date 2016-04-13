@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_LayoutPrint.cshtml";
 }
 
+<div id="bcTarget"></div>
+
 <img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
 <h1 class="page-header">
     @ViewBag.Title <small>@Model.productcode - @Model.productname</small>
@@ -503,3 +505,5 @@
     <h3>Notes</h3>
     @{Html.RenderAction("LogNotesList", "Products", new { id = @Model.productdetailid });}
 </div>
+
+<script type="text/javascript">$("#bcTarget").barcode("", "");</script>

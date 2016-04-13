@@ -13,6 +13,7 @@ namespace MvcPhoenix
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*",
                         "~/Scripts/jquery-ui-{version}.js",
+                        "~/Scripts/jquery-barcode.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/respond.js",
                         "~/Scripts/site.js",

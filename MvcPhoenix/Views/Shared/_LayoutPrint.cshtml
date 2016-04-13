@@ -52,8 +52,11 @@
     </style>
 </head>
 
-<body>
+<body onload='$("#bcTarget").barcode("@Model.productdetailid ~ @Model.productcode ~ @Model.productname", "datamatrix", { moduleSize: 2, showHRI: false });'>
     @RenderBody()
+
+    @Scripts.Render("~/bundles/js")
+    @RenderSection("scripts", required: false)
 </body>
 
 </html>
