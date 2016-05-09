@@ -57,13 +57,14 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Division</label>
-                        @Html.DropDownListFor(m => m.masterdivisionid, Model.ListOfDivisions, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.masterdivisionid)
+                        @Html.DropDownListFor(m => m.divisionid, Model.ListOfDivisions, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.divisionid)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Business Unit</label>
-                        @Html.TextBoxFor(m => m.busarea, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.busarea)
+                        <input type="text" class="form-control" placeholder="bound on division table"/>
+                        @*@Html.TextBoxFor(m => m.busarea, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.busarea)*@
                     </div>
                 </div>
                 <div class="row">

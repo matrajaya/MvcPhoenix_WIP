@@ -20,13 +20,11 @@ namespace MvcPhoenix.EF
         public Nullable<int> SDLegacyID { get; set; }
         public string MasterCode { get; set; }
         public string MasterName { get; set; }
-        public Nullable<int> MasterDivisionID { get; set; }
         public string SUPPLYID { get; set; }
         public Nullable<bool> Discontinued { get; set; }
         public Nullable<bool> NoReorder { get; set; }
         public Nullable<bool> PackOutOnReceipt { get; set; }
         public Nullable<decimal> RestrictedToAmount { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
         public string MasterNotes { get; set; }
         public Nullable<bool> MasterNotesAlert { get; set; }
         public Nullable<int> ReOrderAdjustmentDays { get; set; }
@@ -132,6 +130,13 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> LastUpDate { get; set; }
         public Nullable<bool> PhysicalToxic { get; set; }
         public string WasteCode { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
+        public string CountryOfOrigin { get; set; }
+        public Nullable<int> LeadTime { get; set; }
+        public Nullable<bool> DustFilter { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string Location_MDB { get; set; }

@@ -19,7 +19,7 @@ namespace MvcPhoenix.EF
         public Nullable<int> SGLegacyID { get; set; }
         public Nullable<int> SDLegacyID { get; set; }
         public Nullable<int> DivisionID { get; set; }
-        public string BusArea { get; set; }
+        public string BusArea_MDB { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string CustCode { get; set; }
@@ -42,6 +42,7 @@ namespace MvcPhoenix.EF
         public string CustomsValueUnit { get; set; }
         public Nullable<bool> GlobalProduct { get; set; }
         public Nullable<bool> AccuracyVerified { get; set; }
+        public string AccuracyVerifiedBy { get; set; }
         public Nullable<bool> PolymerizationHazard { get; set; }
         public string SDSContactName { get; set; }
         public string SDSContactPhone { get; set; }
@@ -86,7 +87,22 @@ namespace MvcPhoenix.EF
         public string SEAHAZMAT { get; set; }
         public string SEAEMSNO { get; set; }
         public string SEAMFAGNO { get; set; }
-        public Nullable<System.DateTime> LastUpDate { get; set; }
+        public string RCRAUNNumber { get; set; }
+        public string RCRAPKGRP { get; set; }
+        public string RCRAHAZSUBCL { get; set; }
+        public string RCRALABEL { get; set; }
+        public string RCRASUBLABEL { get; set; }
+        public string RCRAHAZCL { get; set; }
+        public string RCRASHIPNAME { get; set; }
+        public string RCRANOSNAME { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
+        public string AlertNotesShipping { get; set; }
+        public string AlertNotesReceiving { get; set; }
+        public string AlertNotesPackout { get; set; }
+        public string AlertNotesOrderEntry { get; set; }
         public string Company_MDB { get; set; }
         public string MasterCode_MDB { get; set; }
         public string Division_MDB { get; set; }

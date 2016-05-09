@@ -66,8 +66,8 @@ namespace MvcPhoenix.EF
         public Nullable<bool> SampleRack { get; set; }
         public string CMCUser { get; set; }
         public string CustomerReference { get; set; }
-        public string Division { get; set; }
-        public string BusArea { get; set; }
+        public string Division_MDB { get; set; }
+        public string BillingGroup { get; set; }
         public Nullable<int> TotalOrderWeight { get; set; }
         public string SPSTaxID { get; set; }
         public string SPSCurrency { get; set; }
@@ -98,6 +98,10 @@ namespace MvcPhoenix.EF
         public string Distributor { get; set; }
         public string PreferredCarrier { get; set; }
         public Nullable<bool> ApprovalNeeded { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
         public Nullable<int> LegacyID { get; set; }
     }
 }

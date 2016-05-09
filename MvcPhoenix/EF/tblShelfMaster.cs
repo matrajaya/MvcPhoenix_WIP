@@ -41,15 +41,16 @@ namespace MvcPhoenix.EF
         public Nullable<bool> InactiveSize { get; set; }
         public Nullable<bool> WebOEInclude { get; set; }
         public Nullable<int> SortOrder { get; set; }
-        public string PackagePartNumber_MDB { get; set; }
         public Nullable<int> PackageID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
+        public string PackagePartNumber_MDB { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string ProductCode_MDB { get; set; }
-        public string BusArea { get; set; }
-        public string Mnemonic { get; set; }
-        public string GroundHazard { get; set; }
-        public string AirHazard { get; set; }
+        public string BusArea_MDB { get; set; }
         public string Notes { get; set; }
         public Nullable<bool> Discontinued { get; set; }
         public string Alert { get; set; }

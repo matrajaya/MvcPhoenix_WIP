@@ -13,6 +13,8 @@ namespace MvcPhoenix.Services
         private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
 
 
+
+
         public static List<ShelfMasterViewModel> fnListOfShelfMasters(int id)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -34,7 +36,7 @@ namespace MvcPhoenix.Services
                                   productname = pd.ProductName,
                                   size = t.Size,
                                   packageid = t.PackageID,
-                                  busarea = t.BusArea,
+                                  // ii busarea = t.BusArea,
                                   warehouse=t.Warehouse,
                                   bin = t.Bin,
                                   reordermin = t.ReorderMin,
@@ -164,7 +166,7 @@ namespace MvcPhoenix.Services
                 SM.weboeinclude = dbSM.WebOEInclude;
                 SM.sortorder = dbSM.SortOrder;
                 SM.packageid = dbSM.PackageID;
-                SM.busarea = dbSM.BusArea;
+                //SM.busarea = dbSM.BusArea;
                 //SM.mnemonic = dbSM.Mnemonic;
                 //SM.groundhazard = dbSM.GroundHazard;
                 //SM.airhazard = dbSM.AirHazard;
@@ -216,7 +218,7 @@ namespace MvcPhoenix.Services
                 dbSM.WebOEInclude = obj.weboeinclude;
                 dbSM.SortOrder = obj.sortorder;
                 dbSM.PackageID = obj.packageid;
-                dbSM.BusArea = obj.busarea;
+                //dbSM.BusArea = obj.busarea;
                 //dbSM.Mnemonic = obj.mnemonic;
                 //dbSM.GroundHazard = obj.groundhazard;
                 //dbSM.AirHazard = obj.airhazard;

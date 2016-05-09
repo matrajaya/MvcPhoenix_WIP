@@ -23,12 +23,16 @@ namespace MvcPhoenix.Models
         [Display(Name = "Order Item")]
         public int? orderitemid { get; set; }
 
-        [Display(Name = "UserID")]
-        public int? userid { get; set; }
+        public string productcode { get; set; }
+
+        //[Display(Name = "UserID")]
+        //public int? userid { get; set; }
 
         [Required(ErrorMessage="Select Transaction Type")]
         [Display(Name = "Type")]
         public string transtype { get; set; }
+
+        public List<SelectListItem> ListOfOrderTransTypes { get; set; }
 
         [Display(Name = "Date")]
         [DataType(DataType.DateTime)]
@@ -41,13 +45,29 @@ namespace MvcPhoenix.Models
         [DataType(DataType.Currency)]
         public decimal? transamount { get; set; }
 
+        [Display(Name = "Charge Date")]
+        [DataType(DataType.DateTime)]
+        public DateTime? chargedate { get; set; }
+
         [Display(Name = "Comments")]
         public string comments { get; set; }
 
-        public string updateresult { get; set; }
+        public DateTime? createdate { get; set; }
+        public string createuser { get; set; }
+        public DateTime? updatedate { get; set; }
+        public string updateuser { get; set; }
 
-        public string qryfilter { get; set; }
+        //public string updateresult { get; set; }
 
-        public OrderTrans(){}
+        //public string qryfilter { get; set; }
+
+        
+        //constructor
+        public OrderTrans()
+        
+        {
+        
+        
+        }
     }
 }

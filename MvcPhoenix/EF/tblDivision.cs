@@ -17,8 +17,6 @@ namespace MvcPhoenix.EF
         public int DivisionID { get; set; }
         public Nullable<int> ClientID { get; set; }
         public string Division { get; set; }
-        public string BillingGroup { get; set; }
-        public string BillingCode { get; set; }
         public string BusinessUnit { get; set; }
         public string Abbr { get; set; }
         public Nullable<decimal> WasteRate_OffSpec { get; set; }

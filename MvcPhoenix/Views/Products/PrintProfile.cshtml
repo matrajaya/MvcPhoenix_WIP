@@ -21,11 +21,12 @@
             </td>
             <td width="25%">
                 <label>Division:</label><br />
-                @Html.DropDownListFor(m => m.masterdivisionid, Model.ListOfDivisions, new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.divisionid, Model.ListOfDivisions, new { @class = "form-control" })
             </td>
             <td width="25%">
                 <label>Business Unit:</label><br />
-                @Html.TextBoxFor(m => m.busarea, new { @class = "form-control" })
+                <input type="text" class="form-control" placeholder="bound to division table" />
+                @*@Html.TextBoxFor(m => m.busarea, new { @class = "form-control" })*@
             </td>
             <td width="25%">
                 <label>Product ID:</label><br />
@@ -128,7 +129,8 @@
             </td>
             <td>
                 <label>Other Instructions:</label>
-                @Html.TextBoxFor(m => m.otherhandlinginstr, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.otherhandlinginstr, new { @class = "form-control" })
+                @*@Html.TextBoxFor(m => m.otherhandlinginstr, new { @class = "form-control" })*@
             </td>
             <td>
                 <label>Harmonized Code:</label>

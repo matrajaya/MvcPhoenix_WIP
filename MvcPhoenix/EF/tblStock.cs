@@ -18,7 +18,6 @@ namespace MvcPhoenix.EF
         public Nullable<int> LegacyID { get; set; }
         public Nullable<int> ShelfID { get; set; }
         public Nullable<int> BulkID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
         public string Warehouse { get; set; }
         public Nullable<int> QtyOnHand { get; set; }
         public Nullable<int> QtyAllocated { get; set; }
@@ -30,6 +29,10 @@ namespace MvcPhoenix.EF
         public string UM_MDB { get; set; }
         public string LotNumber_MDB { get; set; }
         public string MasterCode_MDB { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
         public string MigrationNotes { get; set; }
     }
 }

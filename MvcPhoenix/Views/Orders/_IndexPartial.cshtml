@@ -1,34 +1,35 @@
-﻿@model List<MvcPhoenix.Models.OrdersListForLandingPage>
+﻿@model List<MvcPhoenix.Models.OrderMasterFull>
+
 @{
-  // widget005
-  // Partial view showing query results table on Orders/Index
+    // Do not include Model.Customer field; thats actually CMCLongCustomer
+    
 }
 
-<h3>@ViewData["SearchResultsMessage"]</h3>
-<table class="table table-hover table-striped">
+<h4>@TempData["SearchResultsMessage"]</h4>
+<table class="table table-hover table-striped" style="font-size:.9em;">
     <tr> 
         <th>Client</th>
         <th>Order Date</th>
         <th>Ship To</th>
         <th>Order ID</th>
         <th>Type</th>
-        <th>User</th>
+        <th>CreatedBy</th>
         <th>Items</th>
         <th><i class="fa fa-fw fa-file-text-o"></i></th>
     </tr>
     @foreach (var item in Model)
     {
     <tr>
-        <td>@item.ClientName</td>
-        <td>@item.OrderDate.ToString()</td>
-        <td>@item.Company</td>
-        <td>@item.OrderID.ToString()</td>
-        <td>@item.OrderType</td>
-        <td>John Smith</td>
-        <td>@item.ItemsCount</td>
+        <td>@item.clientname</td>
+        <td>@item.orderdate.ToString()</td>
+        <td>@item.company</td>
+        <td>@item.orderid.ToString()</td>
+        <td>@item.ordertype</td>
+        <td>@item.CreateUser</td>
+        <td>@item.itemscount</td>
         <td>
             @*@Html.ActionLink("Edit", "Edit", "Orders", new { id = item.OrderID }, null)*@
-            <a class="btn btn-xs btn-primary" title="Edit" href="~/Orders/Edit/@item.OrderID"><i class="fa fa-fw fa-pencil"></i></a>
+            <a class="btn btn-xs btn-primary" title="Edit" href="~/Orders/Edit/@item.orderid"><i class="fa fa-fw fa-pencil"></i></a>
     </td>
     </tr>
     }

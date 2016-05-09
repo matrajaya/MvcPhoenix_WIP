@@ -1,0 +1,256 @@
+﻿@model MvcPhoenix.Models.OrderItem
+@{
+
+}
+<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Order Item</h4>
+            </div>
+            <div id="dialogPlaceholderBody" class="modal-body">
+                <!-- The save post updates the db and refreshes the underlying div in the prent view -->
+                @using (Ajax.BeginForm("SaveItem", "Orders", new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "dialogResult",
+                    OnSuccess = "UpdateItemsList",
+                    InsertionMode = InsertionMode.Replace,
+                    OnFailure = "alert('FAILURE')"
+                }))
+                {
+                    @Html.HiddenFor(m => m.ItemID)
+                    @Html.HiddenFor(m => m.OrderID)
+                    @Html.HiddenFor(m => m.ClientID)
+
+                    @Html.HiddenFor(m => m.ShipDate)
+                    @Html.HiddenFor(m => m.AllocateStatus)
+                    @Html.HiddenFor(m => m.CreateDate)
+                    @Html.HiddenFor(m => m.CreateUser)
+                    @Html.HiddenFor(m => m.UpdateDate)
+                    @Html.HiddenFor(m => m.UpdateUser)
+
+
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Product Code</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            @if (@Model.CrudMode == "RO")
+                            {
+                                @Html.DisplayFor(m => m.ProductCode) <span> | </span> @Html.DisplayFor(m => m.ProductName)
+                                @Html.HiddenFor(m => m.ProductDetailID)
+                            }
+                            @if (@Model.CrudMode == "RW")
+                            {
+                                @Html.DropDownListFor(m => m.ProductDetailID, Model.ListOfProductDetailIDs, new { onchange = "fnGetSizes()", @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ProductDetailID)
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-7 form-group">
+                            <label>Size</label>
+                            @if (@Model.CrudMode == "RO")
+                            {
+                                @Html.DisplayFor(m => m.Size)
+                                @Html.HiddenFor(m => m.ShelfID)
+                            }
+
+                            @if (@Model.CrudMode == "RW" && @Model.ShelfID > 0)
+                            {
+                                <span id="FirstShelfID">
+                                    @Html.DropDownListFor(m => m.ShelfID, Model.ListOfShelfIDs, new { @class = "form-control" })
+                                </span>
+                            }
+                            else
+                            {
+                                <div id="dvPlaceholderSize">
+                                    <select name="ShelfID" id="ShelfID" class="form-control hidden">
+                                        <!-- Placeholder for option values -->
+                                    </select>
+                                </div>
+                            }
+
+
+                        </div>
+                        <div class="col-md-3 form-group">
+                            @Html.LabelFor(m => m.SRSize, new { @class = "control-label" })
+                            @if (@Model.CrudMode == "RW")
+                            {
+                                @Html.TextBoxFor(m => m.SRSize, Model.SRSize, new { @class = "form-control", @style = "width:100px;" })
+                                @Html.ValidationMessageFor(m => m.SRSize)
+
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(m => m.SRSize)
+                                @Html.HiddenFor(m => m.SRSize)
+                            }
+                        </div>
+
+                        <div class="col-md-2 form-group">
+                            @Html.LabelFor(m => m.Qty, new { @class = "control-label" })
+                            @if (@Model.CrudMode == "RW")
+                            {
+                                @Html.TextBoxFor(m => m.Qty, new { @class = "form-control", min = "1" })
+                                @Html.ValidationMessageFor(m => m.Qty)
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(m => m.Qty)
+                                @Html.HiddenFor(m => m.Qty)
+                            }
+
+
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            @Html.LabelFor(m => m.LotNumber, new { @class = "control-label" })
+                            @if (@Model.CrudMode == "RW")
+                            {
+                                @Html.TextBoxFor(m => m.LotNumber, Model.LotNumber, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.LotNumber)
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(m => m.LotNumber)
+                                @Html.HiddenFor(m => m.LotNumber)
+                            }
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            @Html.LabelFor(m => m.NonCMCDelay, new { @class = "control-label" })
+                            @Html.CheckBox("NonCMCDelay", Model.NonCMCDelay != null && (bool)Model.NonCMCDelay, new { @class = "checkbox" })
+                        </div>
+                        <div class="col-md-6 form-group">
+                            @Html.LabelFor(m => m.CarrierInvoiceRcvd, new { @class = "control-label" })
+                            @Html.CheckBox("CarrierInvoiceRcvd", Model.CarrierInvoiceRcvd != null && (bool)Model.CarrierInvoiceRcvd, new { @class = "checkbox" })
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-11 form-group">
+                            <label class="control-label">Add a Status to Notes</label>
+                            @Html.DropDownListFor(m => m.StatusID, Model.ListOfStatusNotesIDs, new {onchange="AddStatusIDToStatus()", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.StatusID)
+                        </div>
+                        <div class="col-md-11 form-group">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            @Html.LabelFor(m=>m.Status)
+                            @Html.TextAreaFor(m => m.Status, new {rows="4",@style="width:500px;"})
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <span class="pull-left">
+                                <input type="submit" value="Save" class="btn btn-md btn-success" />
+                            </span>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+
+                            @if (@Model.CrudMode == "RW")
+                            {
+                                <span>
+                                    @Ajax.ActionLink("Delete Item", "DeleteItem", "Orders", new { id = Model.ItemID }, new AjaxOptions
+                               {
+                                   HttpMethod = "GET",
+                                   UpdateTargetId = "dialogResult",
+                                   InsertionMode = InsertionMode.Replace,
+                                   OnSuccess = "UpdateItemsList",
+                                   Confirm = "Are you sure you want to delete this item?"
+                               }, new { @class = "btn btn-danger" })
+                                </span>
+                            }
+                            else
+                            {                            <span>
+                                &nbsp;
+                            </span>
+                            }
+
+
+
+                        </div>
+
+                        <div class="col-md-4 form-group pull-right">
+                            <span class="pull-right">
+                                <input type="button" value="Close" onclick="$('#dialogPlaceholderModal').modal('hide')" class="btn btn-primary" />
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <span id="dialogResult" class="text-center" style="font-weight:bold;">
+
+                            </span>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function fnGetSizes() {
+        // empty the dd then rebuild it
+        $('#FirstShelfID').empty();
+        $('#ShelfID').removeClass('hidden');
+        var myurl = '@Url.Action("BuildSizeDropDown", "Orders")';
+        var data = $('#ProductDetailID').val();
+        $("#ShelfID").load(myurl, { id: data });
+    }
+
+    function UpdateItemsList() {
+        $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { id = @Model.OrderID })');
+
+               
+        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.OrderID })');
+        
+
+    }
+
+
+    function AddStatusIDToStatus()
+    {
+        // read the DD, read the Notes, append the status DD .text to the StatusNOtes
+        var currentstatus = $('#Status').val();
+        var addstatus = $('#StatusID').val();
+        if (currentstatus != '')
+        {
+            $('#Status').val(currentstatus + '\r\n' + addstatus);
+        }
+        else
+        {
+          $('#Status').val(addstatus);
+        }
+    }
+
+</script>
+

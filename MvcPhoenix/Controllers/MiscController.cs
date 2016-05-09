@@ -15,19 +15,19 @@ namespace MvcPhoenix.Controllers
     public class MiscController : Controller
     {
 
-      public ActionResult SetSizes(int myprofileid)
-    {
-        MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-        List<SelectListItem> mylist = new List<SelectListItem>();
-        mylist = (from t in db.tblSampSize
-                      where t.ProfileID == myprofileid
-                      orderby t.ProductCode
-                      select new SelectListItem { Value = t.Size, Text = t.Size }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            ViewData["DDSize"] = mylist;
-            return View("~Views/Orders/OrderItemGrid03.cshtml");
-      }
+    //  public ActionResult SetSizes(int myprofileid)
+    //{
+    //    MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+    //    List<SelectListItem> mylist = new List<SelectListItem>();
+    //    mylist = (from t in db.tblSampSize
+    //                  where t.ProfileID == myprofileid
+    //                  orderby t.ProductCode
+    //                  select new SelectListItem { Value = t.Size, Text = t.Size }).ToList();
+    //        mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+    //        db.Dispose();
+    //        ViewData["DDSize"] = mylist;
+    //        return View("~Views/Orders/OrderItemGrid03.cshtml");
+    //  }
 
 
 

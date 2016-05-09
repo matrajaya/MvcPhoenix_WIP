@@ -10,27 +10,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MvcPhoenix.Models
 {
 
-    //public class ShelfMaster
-    //{
-    //    // For backward compatibility with II Product Profile Edit/Create partial
-    //    // Needs to be retired
-    //    public int shelfid { get; set; }
-    //    public int? productdetailid { get; set; }
-    //    public string size { get; set; }
-    //    public decimal? unitweight { get; set; }
-    //    public decimal? reordermin { get; set; }
-    //    public decimal? reordermax { get; set; }
-    //    public decimal? reorderqty { get; set; }
-    //    public string bin { get; set; }
-    //    public int? packageid { get; set; }
-    //    public string busarea { get; set; }
-    //    public string mnemonic { get; set; }
-    //    public string groundhazard { get; set; }
-    //    public string airhazard { get; set; }
-    //    public string notes { get; set; }
-
-    //}
-
+   
 
     public class ShelfMasterViewModel
     {
@@ -135,17 +115,17 @@ namespace MvcPhoenix.Models
 
         public string packagepartnumber { get; set; }
                
-        [Display(Name = "Bus Area")]
-        public string busarea { get; set; }
+        //[Display(Name = "Bus Area")]
+       // public string busarea { get; set; }
 
-        [Display(Name = "Mnemonic")]
-        public string mnemonic { get; set; }
+        //[Display(Name = "Mnemonic")]
+        //public string mnemonic { get; set; }
 
-        [Display(Name = "Ground Hazard")]
-        public string groundhazard { get; set; }
+        //[Display(Name = "Ground Hazard")]
+        //public string groundhazard { get; set; }
 
-        [Display(Name = "Air Hazard")]
-        public string airhazard { get; set; }
+        //[Display(Name = "Air Hazard")]
+        //public string airhazard { get; set; }
 
         [Display(Name = "Notes")]
         public string notes { get; set; }

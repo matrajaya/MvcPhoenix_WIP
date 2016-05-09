@@ -27,6 +27,10 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> TransAmount { get; set; }
         public Nullable<System.DateTime> ChargeDate { get; set; }
         public string Comments { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
         public Nullable<int> CMCOrder_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string BusinessUnit_MDB { get; set; }

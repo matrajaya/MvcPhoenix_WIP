@@ -7,57 +7,83 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcPhoenix.Models
 {
-    public class OrdersListForLandingPage
-    {
-        public int OrderID { get; set; }
 
-        public string Customer { get; set; }
+    // retire this after ann orders search are updated
+    //public class OrdersListForLandingPage
+    //{
+    //    public int Client { get; set; }
+    //    public int OrderID { get; set; }
+    //    public string Customer { get; set; }
+    //    public string ClientName { get; set; }
+    //    public string OrderType { get; set; }
+    //    public DateTime? OrderDate { get; set; }
+    //    public string Company { get; set; }
+    //    public string CMCUser { get; set; }
+    //    public int ItemsCount { get; set; }
+    //    //public List<SelectListItem> ListOfClientIDs { get; set; }
+    //}
 
-        public string ClientName { get; set; }
-
-        public string OrderType { get; set; }
-
-        public DateTime? OrderDate { get; set; }
-
-        public string Company { get; set; }
-
-        public string CMCUser { get; set; }
-
-        public int ItemsCount { get; set; }
-    }
 
     public class OrderMasterFull
     {
-        public string ClientName
-        {
-            get {
-                return MvcPhoenix.Services.OrderService.ClientNameForDisplay(clientid);
-            }
-        }
+        //public string ClientName
+        //{
+        //    get {
+        //        return MvcPhoenix.Services.OrderService.ClientNameForDisplay(clientid);
+        //    }
+        //}
 
-        public string UpdateResult { get; set; }
+        
+        // remove this when removed from View ???
+        //public string UpdateResult { get; set; }
 
-        public string RecordStatus { get; set; }
+        // remove this when removed from View
+        //public string RecordStatus { get; set; }
+
+        // add 04/24/16 by pc so this vm can be used on the ORders Index
+        // public List<SelectListItem> ListOfClientsIDs { get; set; }
+
+        public List<SelectListItem> ListOfDivisions { get; set; }
+        public List<SelectListItem> ListOfOrderTypes { get; set; }
+        public List<SelectListItem> ListOfSalesReps { get; set; }
+        public List<SelectListItem> ListOfOrderSources { get; set; }
+        public List<SelectListItem> ListOfCountries { get; set; }
+        public List<SelectListItem> ListOfEndUses { get; set; }
+        public List<SelectListItem> ListOfShipVias { get; set; }
+
+        // pc 04/28/16 new dd bound per cd, ii
+        public List<SelectListItem> ListOfBillingGroups { get; set; }
+
+
+        public int itemscount { get; set; }
+        public int transcount { get; set; }
 
         [Display(Name = "Order ID")]
         public int orderid { get; set; }
 
         [Display(Name = "Client")]
         public int? clientid { get; set; }
-
+        
+        public string clientname { get; set; }
+        public string logofilename { get; set; }
+        
         [Display(Name = "Ord Status")]
         public string orderstatus { get; set; }
 
         [Display(Name = "Customer")]
         public string customer { get; set; }
 
-        [Display(Name = "CMC Order No.")]
+        // Legacy
+        // remove later
+        //[Display(Name = "CMC Order No.")]
         public int cmcorder { get; set; }
 
         [Display(Name = "Web Order ID")]
         public int weborderid { get; set; }
 
-        [Display(Name = "CMC Legacy Number")]
+        // Legacy
+        // remove later
+        //[Display(Name = "CMC Legacy Number")]
         public string cmclegacynumber { get; set; }
 
         [Display(Name = "Cust Order No.")]
@@ -107,7 +133,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Sales Rep")]
         public string salesrep { get; set; }
-        public List<SelectListItem> ListOfSalesReps { get; set; }
+        
 
         [Display(Name = "Sales Email")]
         public string sales_email { get; set; }
@@ -142,6 +168,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Fax")]
         public string fax { get; set; }
 
+        // Legacy Only
         [Display(Name = "Tracking")]
         public string tracking { get; set; }
 
@@ -193,12 +220,15 @@ namespace MvcPhoenix.Models
         [Display(Name = "Customer Ref")]
         public string customerreference { get; set; }
 
-        [Display(Name = "Division")]
-        public string division { get; set; }
-        public List<SelectListItem> ListOfDivisions { get; set; }
+        //[Display(Name = "Division")]
+        //public string division { get; set; }
 
-        [Display(Name = "Bus Area")]
-        public string busarea { get; set; }
+        //[Display(Name = "Bus Area")]
+        //public string busarea { get; set; }
+
+        // 04/28/2016 Above fields replaced with new field / per cd, ii
+        [Display(Name = "Billing Group")]
+        public string billinggroup { get; set; }
 
         [Display(Name = "Total Order Weight")]
         public int? totalorderweight { get; set; }
@@ -292,25 +322,33 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Approval Needed")]
         public bool approvalneeded { get; set; }
-        
-        public OrderMasterFull()
-        {
-            approvalneeded = false;
-            samplerack = false;
-            coa = false;
-            tds = false;
-            lit = false;
-        }
 
-        public OrderMasterFull(int ClientID)
-        {
-            customer = MvcPhoenix.Services.OrderService.ClientNameForDisplay(ClientID);
-            approvalneeded = false;
-            samplerack = false;
-            coa = false;
-            tds = false;
-            lit = false;
-        }
+        public DateTime? CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
+
+      
+
+
+        //public OrderMasterFull()
+        //{
+        //    approvalneeded = false;
+        //    samplerack = false;
+        //    coa = false;
+        //    tds = false;
+        //    lit = false;
+        //}
+
+        //public OrderMasterFull(int ClientID)
+        //{
+        //    customer = MvcPhoenix.Services.OrderService.ClientNameForDisplay(ClientID);
+        //    approvalneeded = false;
+        //    samplerack = false;
+        //    coa = false;
+        //    tds = false;
+        //    lit = false;
+        //}
     }
 
     public class OrderImportFile

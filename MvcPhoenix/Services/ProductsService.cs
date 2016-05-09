@@ -43,6 +43,9 @@ namespace MvcPhoenix.Models
 
             using (var db = new EF.CMCSQL03Entities())
             {
+                // Countries
+                PP.ListOfCountries = (from t in db.tblCountry orderby t.Country select new SelectListItem { Value = t.Country, Text = t.Country}).ToList();
+                PP.ListOfCountries.Insert(0, new SelectListItem { Value = "0", Text = "" });
 
                 //PackagePartNumbers
                 PP.ListOfPackagePartNumbers = (from t in db.tblPackage orderby t.Size select new SelectListItem { Value = t.PackageID.ToString(), Text = t.Size + " " + t.PartNumber + " " + t.Description }).ToList();
@@ -116,16 +119,16 @@ namespace MvcPhoenix.Models
                               select new ShelfMasterViewModel
                               {
                                   shelfid = t.ShelfID,
-                                  warehouse = t.Warehouse,
+                                  //warehouse = t.Warehouse,
                                   size = t.Size,
                                   bin = t.Bin,
                                   packageid = t.PackageID,
                                   //packagepartnumber = m.PartNumber,
-                                  groundhazard = t.GroundHazard,
-                                  airhazard = t.AirHazard,
+                                  // ii groundhazard = t.GroundHazard,
+                                  // ii airhazard = t.AirHazard,
                                   notes = t.Notes,
-                                  busarea = t.BusArea,
-                                  mnemonic = t.Mnemonic,
+                                  // ii busarea = t.BusArea,
+                                  // ii mnemonic = t.Mnemonic,
                                   reordermin = t.ReorderMin,
                                   reordermax = t.ReorderMax,
                                   reorderqty = t.ReorderQty
@@ -147,7 +150,7 @@ namespace MvcPhoenix.Models
                 PP.productmasterid = qd.ProductMasterID;
                 //PP.sglegacyid = qd.SGLegacyID;
                 PP.divisionid = qd.DivisionID;
-                PP.busarea = qd.BusArea;
+                //PP.busarea = qd.BusArea;
                 PP.productcode = qd.ProductCode;
                 PP.productname = qd.ProductName;
                 PP.custcode = qd.CustCode;
@@ -227,7 +230,23 @@ namespace MvcPhoenix.Models
                 PP.seaemsno = qd.SEAEMSNO;
                 PP.seamfagno = qd.SEAMFAGNO;
 
-                PP.detaillastupdate = qd.LastUpDate;
+                //PP.detaillastupdate = qd.LastUpDate;
+
+                // ------------------------- pc fields added 3/16/2016
+                PP.alertnotesshipping = qd.AlertNotesShipping;
+                PP.alertnotesreceiving = qd.AlertNotesReceiving;
+                PP.alertnotespackout = qd.AlertNotesPackout;
+                PP.alertnotesorderentry = qd.AlertNotesOrderEntry;
+                PP.accuracyverifiedby = qd.AccuracyVerifiedBy;
+                PP.rcraunnumber = qd.RCRAUNNumber;
+                PP.rcrapkgrp = qd.RCRAPKGRP;
+                PP.rcrahazsubcl = qd.RCRAHAZSUBCL;
+                PP.rcralabel = qd.RCRALABEL;
+                PP.rcrasublabel = qd.RCRASUBLABEL;
+                PP.rcrahazcl = qd.RCRAHAZCL;
+                PP.rcrashipname = qd.RCRASHIPNAME;
+                PP.rcranosname = qd.RCRANOSNAME;
+                
                 return PP;
             }
         }
@@ -243,7 +262,7 @@ namespace MvcPhoenix.Models
                 //PP.sdlegacyid = q.SDLegacyID;
                 PP.mastercode = q.MasterCode;
                 PP.mastername = q.MasterName;
-                PP.masterdivisionid = q.MasterDivisionID;
+                //PP.masterdivisionid = q.MasterDivisionID;
                 PP.supplyid = q.SUPPLYID;
                 PP.discontinued = q.Discontinued;
                 PP.noreorder = q.NoReorder;
@@ -366,6 +385,11 @@ namespace MvcPhoenix.Models
                 //PP.division_mdb = q.Division_MDB;
                 //PP.location_mdb = q.Location_MDB;
 
+                // ------------------------- pc fields added 3/16/2016
+                PP.countryoforigin = q.CountryOfOrigin;
+                PP.leadtime = q.LeadTime;
+                PP.dustfilter = q.DustFilter;
+
                 return PP;
             }
         }
@@ -416,7 +440,7 @@ namespace MvcPhoenix.Models
                 q.ProductMasterID = PP.productmasterid;
                 //q.SGLegacyID = pd.sglegacyid;
                 q.DivisionID = PP.divisionid;
-                q.BusArea = PP.busarea;
+                //q.BusArea = PP.busarea;
                 q.ProductCode = PP.productcode;
                 q.ProductName = PP.productname;
                 q.CustCode = PP.custcode;
@@ -491,11 +515,27 @@ namespace MvcPhoenix.Models
                 q.SEAEMSNO = PP.seaemsno;
                 q.SEAMFAGNO = PP.seamfagno;
 
-                q.LastUpDate = DateTime.Now;
+                //q.LastUpDate = DateTime.Now;
 
                 //q.Company_MDB = pd.company_mdb;
                 //q.MasterCode_MDB = pd.mastercode_mdb;
                 //q.Division_MDB = pd.division_mdb;
+
+                // ------------------------- pc fields added 3/16/2016
+                q.AlertNotesShipping = PP.alertnotesshipping;
+                q.AlertNotesReceiving = PP.alertnotesreceiving;
+                q.AlertNotesPackout = PP.alertnotespackout;
+                q.AlertNotesOrderEntry= PP.alertnotesorderentry;
+                q.AccuracyVerifiedBy = PP.accuracyverifiedby;
+                q.RCRAUNNumber = PP.rcraunnumber;
+                q.RCRAPKGRP = PP.rcrapkgrp;
+                q.RCRAHAZSUBCL = PP.rcrahazsubcl;
+                q.RCRALABEL = PP.rcralabel;
+                q.RCRASUBLABEL =PP.rcrasublabel;
+                q.RCRAHAZCL = PP.rcrahazcl;
+                q.RCRASHIPNAME =PP.rcrashipname;
+                q.RCRANOSNAME =PP.rcranosname;
+
                 db.SaveChanges();
 
             }
@@ -516,7 +556,7 @@ namespace MvcPhoenix.Models
                 //q.SDLegacyID = pm.sdlegacyid;
                 q.MasterCode = pm.mastercode;
                 q.MasterName = pm.mastername;
-                q.MasterDivisionID = pm.masterdivisionid;
+                //q.MasterDivisionID = pm.masterdivisionid;
                 q.SUPPLYID = pm.supplyid;
                 q.Discontinued = pm.discontinued;
                 q.NoReorder = pm.noreorder;
@@ -636,6 +676,12 @@ namespace MvcPhoenix.Models
                 //q.Company_MDB = pm.company_mdb;
                 //q.Division_MDB = pm.division_mdb;
                 //q.Location_MDB = pm.location_mdb;
+
+                // ------------------------- pc fields added 3/16/2016
+                q.CountryOfOrigin = pm.countryoforigin;
+                q.LeadTime = pm.leadtime;
+                q.DustFilter = pm.dustfilter;
+
                 db.SaveChanges();
             }
 

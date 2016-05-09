@@ -29,6 +29,10 @@ namespace MvcPhoenix.EF
         public string BulkSupplierEmail { get; set; }
         public string EmailSent { get; set; }
         public string SessionID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
         public string Location_MDB { get; set; }
         public string MigrationNotes { get; set; }
     }

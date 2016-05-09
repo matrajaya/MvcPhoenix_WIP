@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-
-// pc add
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -123,9 +120,61 @@ namespace MvcPhoenix.Models
 
         public string logofilename { get; set; }
 
+        // retire these 2 later
         public DateTime? masterlastupdate { get; set; }
         public DateTime? detaillastupdate { get; set; }
 
+        // ------------------------------------------- pc Fields added 03/15/2016
+        [Display(Name = "Alert Notes - Shipping")]
+        public string alertnotesshipping { get; set; }
+        
+        [Display(Name = "Alert Notes - Receiving")]
+        public string alertnotesreceiving { get; set; }
+        
+        [Display(Name = "Alert Notes - Packout")]
+        public string alertnotespackout { get; set; }
+
+        [Display(Name = "Alert Notes - Order Entry")]
+        public string alertnotesorderentry { get; set; }
+        
+        public string countryoforigin { get; set; }
+        public List<SelectListItem> ListOfCountries { get; set; }
+
+        public string accuracyverifiedby { get; set; }
+
+        [Display(Name = "Lead Time")]
+        public int? leadtime { get; set; }
+
+        [Display(Name = "Dust Filter")]
+        public bool? dustfilter { get; set; }
+
+        [Display(Name = "RCRAUNNUMBER")]
+        public string rcraunnumber { get; set; }
+
+        [Display(Name = "RCRAPKGRP")]
+        public string rcrapkgrp { get; set; }
+
+        [Display(Name = "RCRAHAZSUBCL")]
+        public string rcrahazsubcl { get; set; }
+
+        [Display(Name = "RCRALABEL")]
+        public string rcralabel { get; set; }
+
+        [Display(Name = "RCRASUBLABEL")]
+        public string rcrasublabel { get; set; }
+
+        [Display(Name = "RCRAHAZCL")]
+        public string rcrahazcl { get; set; }
+
+        [Display(Name = "RCRASHIPNAME")]
+        public string rcrashipname { get; set; }
+
+        [Display(Name = "RCRAOSNAME")]
+        public string rcranosname { get; set; }
+        // ------------------------------------------- pc Fields added 03/15/2016
+
+
+        
         // **********************************************************************
         
         [Display(Name = "ProductDetailID")]
@@ -135,8 +184,9 @@ namespace MvcPhoenix.Models
         [Display(Name = "DivisionID")]
         public int? divisionid { get; set; }
 
-        [Display(Name = "BusArea")]
-        public string busarea { get; set; }
+        // pc 03/15/2016 removed per cd,ii
+        //[Display(Name = "BusArea")]
+        //public string busarea { get; set; }
 
         [Display(Name = "ProductCode")]
         [Required]
@@ -285,10 +335,9 @@ namespace MvcPhoenix.Models
         [Display(Name = "Client")]
         public string clientname { get; set; }
 
-        [Display(Name = "Business Unit/Division")]
-        //[Required]
-        //[Range(1, 99, ErrorMessage = "Business Unit/Division is required.")]
-        public int? masterdivisionid { get; set; }
+        // pc 04/28/16 retired use of MasterDivisionID
+        //[Display(Name = "Business Unit/Division")]
+        //public int? masterdivisionid { get; set; }
         
         [Display(Name = "Discontinued")]
         public bool? discontinued { get; set; }

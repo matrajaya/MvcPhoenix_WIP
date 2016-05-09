@@ -14,7 +14,7 @@ namespace MvcPhoenix.Controllers
 {
     public class ProductsController : Controller
     {
-        
+
         public ActionResult Index()
         {
             return View("~/Views/Products/Index.cshtml");
@@ -42,7 +42,7 @@ namespace MvcPhoenix.Controllers
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     productCodes = productCodes.Where(p => p.ProductCode.Contains(searchString)
-                        || p.ProductName.Contains(searchString));                    
+                        || p.ProductName.Contains(searchString));
                 }
 
                 switch (sortOrder)
@@ -56,7 +56,7 @@ namespace MvcPhoenix.Controllers
                     case "code_desc":
                         productCodes = productCodes.OrderByDescending(p => p.ProductCode);
                         break;
-                    default: 
+                    default:
                         productCodes = productCodes.OrderBy(p => p.ProductCode);
                         break;
                 }
@@ -69,10 +69,10 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProductCodesDropDown(int id,string divid)
+        public ActionResult ProductCodesDropDown(int id, string divid)
         {
             // AJAX call to return a <select> tag string into a <div>
-            return Content(ProductsService.fnProductCodesDropDown(id, divid));            
+            return Content(ProductsService.fnProductCodesDropDown(id, divid));
         }
 
         [HttpGet]
@@ -86,13 +86,13 @@ namespace MvcPhoenix.Controllers
             return View(PP);
         }
 
-        
+
         public ActionResult PrintProfile(int id)
         {
-            string footer = "--footer-left \"Printed on: " + 
-                DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") + 
+            string footer = "--footer-left \"Printed on: " +
+                DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") +
                 "                                                                                                                                    " +
-                " Page: [page]/[toPage]\"" + 
+                " Page: [page]/[toPage]\"" +
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
 
             ProductProfile PP = new ProductProfile();
@@ -113,7 +113,7 @@ namespace MvcPhoenix.Controllers
             PP = ProductsService.fnFillOtherPMProps(PP);
             return View(PP);
         }
-        
+
         [HttpPost]
         public ActionResult Equiv(int productdetailid3)
         {
@@ -134,14 +134,14 @@ namespace MvcPhoenix.Controllers
             int pk = ProductsService.fnSaveProductProfile(PPVM);
             return RedirectToAction("Edit", new { id = pk });
         }
-                
+
         [HttpGet]
         public ActionResult DeActivateProductMaster(int id)
         {
             ProductsService.fnDeActivateProductMaster(id);
             // The returned string can be pushed into a message <div>
             return Content("Product De-Activated");
-            }
+        }
 
         [HttpGet]
         public ActionResult LookupUNGround(string id)
@@ -175,14 +175,15 @@ namespace MvcPhoenix.Controllers
             {
                 var obj = (from t in db.tblProductNotes
                            where t.ProductDetailID == id
-                           select new ProductNote{
-                productnoteid = t.ProductNoteID,
-                productdetailid = t.ProductDetailID,
-                notedate =t.NoteDate,
-                notes = t.Notes,
-                reasoncode = t.ReasonCode,
-                ListOfReasonCodes = (from r in db.tblReasonCode orderby r.Reason select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
-                }).ToList();
+                           select new ProductNote
+                           {
+                               productnoteid = t.ProductNoteID,
+                               productdetailid = t.ProductDetailID,
+                               notedate = t.NoteDate,
+                               notes = t.Notes,
+                               reasoncode = t.ReasonCode,
+                               ListOfReasonCodes = (from r in db.tblReasonCode orderby r.Reason select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                           }).ToList();
                 ViewBag.ParentKey = id;
                 return PartialView("~/Views/Products/_LogNotes.cshtml", obj);
             }

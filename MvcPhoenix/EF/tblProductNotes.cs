@@ -19,6 +19,10 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> NoteDate { get; set; }
         public string Notes { get; set; }
         public string ReasonCode { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string ProdCode_MDB { get; set; }

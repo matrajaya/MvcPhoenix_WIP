@@ -37,9 +37,7 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblClientIncidentalRate> tblClientIncidentalRate { get; set; }
         public virtual DbSet<tblClientInvoiceTrans> tblClientInvoiceTrans { get; set; }
         public virtual DbSet<tblCountry> tblCountry { get; set; }
-        public virtual DbSet<tblCustomer> tblCustomer { get; set; }
         public virtual DbSet<tblDhRate> tblDhRate { get; set; }
-        public virtual DbSet<tblDivision> tblDivision { get; set; }
         public virtual DbSet<tblEndUse> tblEndUse { get; set; }
         public virtual DbSet<tblEndUseForCustoms> tblEndUseForCustoms { get; set; }
         public virtual DbSet<tblHSCode> tblHSCode { get; set; }
@@ -47,8 +45,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblInvTrans> tblInvTrans { get; set; }
         public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
         public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
-        public virtual DbSet<tblOrderItemArchive> tblOrderItemArchive { get; set; }
-        public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
         public virtual DbSet<tblOrderSource> tblOrderSource { get; set; }
         public virtual DbSet<tblOrderTrans> tblOrderTrans { get; set; }
         public virtual DbSet<tblOrderType> tblOrderType { get; set; }
@@ -57,13 +53,10 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblPMNote> tblPMNote { get; set; }
         public virtual DbSet<tblPreferredCarrierList> tblPreferredCarrierList { get; set; }
         public virtual DbSet<tblProductDetail> tblProductDetail { get; set; }
-        public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblProductNotes> tblProductNotes { get; set; }
         public virtual DbSet<tblProductXRef> tblProductXRef { get; set; }
-        public virtual DbSet<tblProfile> tblProfile { get; set; }
         public virtual DbSet<tblReasonCode> tblReasonCode { get; set; }
         public virtual DbSet<tblReportCriteria> tblReportCriteria { get; set; }
-        public virtual DbSet<tblSampSize> tblSampSize { get; set; }
         public virtual DbSet<tblShelfMaster> tblShelfMaster { get; set; }
         public virtual DbSet<tblSQlTable> tblSQlTable { get; set; }
         public virtual DbSet<tblState> tblState { get; set; }
@@ -77,6 +70,9 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblUN> tblUN { get; set; }
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
-        public virtual DbSet<tblOrderMasterArchive> tblOrderMasterArchive { get; set; }
+        public virtual DbSet<tblDivision> tblDivision { get; set; }
+        public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
+        public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
+        public virtual DbSet<tblCustomer> tblCustomer { get; set; }
     }
 }

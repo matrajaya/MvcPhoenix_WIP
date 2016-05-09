@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
 
+// add
+using MvcPhoenix.Services;
+
 namespace MvcPhoenix.Controllers
 {
     public class OrdersController : Controller
@@ -16,348 +19,308 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Index()
         {
-            // Index returns last 10 orders for the Landing Page
-            // build order list and return to view
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          CMCUser = t.CMCUser,
-                          ItemsCount = count
-                      }).Take(10).ToList();
-            ViewData["SearchResultsMessage"] = "Last 10 Orders";
-            return View(mylist);
+            var orderslist = fnOrdersSearchResults();  // default query for search results
+            orderslist = (from t in orderslist orderby t.orderdate descending select t).Take(10).ToList();  // refine for here
+            TempData["SearchResultsMessage"] = "Last 10 Orders";
+            List<SelectListItem> clientlist = new List<SelectListItem>();
+            clientlist = OrderService.fnListOfClientIDs();
+            ViewBag.NewClientID = clientlist;
+            return View("~/Views/Orders/Index.cshtml", orderslist);
         }
 
-        // Edit Order Content
-        #region Edit Order Content
-
+        [HttpPost]
+        public ActionResult Create(FormCollection fc)
+        {
+            int ClientID = Convert.ToInt32(fc["NewClientID"]);
+            var vm = OrderService.fnCreateOrder(ClientID);
+            vm.orderid = -1;
+            return View("~/Views/Orders/Edit.cshtml", vm);
+        }
+        
+        [HttpGet]
         public ActionResult Edit(int id)
         {
-            OrderMasterFull obj = new OrderMasterFull();
-            obj = OrderService.fillOrderMasterObject(id);
-            return View(obj);
+            var vm = OrderService.fnFillOrder(id);
+            return View("~/Views/Orders/Edit.cshtml", vm);
         }
 
-        public string GetSomeContent(int id)
+        [HttpPost]
+        public ActionResult Save(OrderMasterFull vm)
         {
-            string s = "<select>";
-            var qry = (from t in db.tblClient where t.ClientID == id orderby t.ClientName select t);
-            foreach (var item in qry)
+            int pk = OrderService.fnSaveOrder(vm);
+            TempData["SaveResult"] = "Order Information updated at " + DateTime.Now;
+            return RedirectToAction("Edit", new { id = pk });
+        }
+
+        public List<OrderMasterFull> fnOrdersSearchResults()
+        {
+            // default query join for the index_partial ORDERS search results, also used by all the search requests as the starting point
+            List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+            orderslist = (from t in db.tblOrderMaster
+                          join clt in db.tblClient on t.ClientID equals clt.ClientID
+                          let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
+                          select new OrderMasterFull
+                          {   orderid = t.OrderID,
+                              customer = t.Customer,
+                              clientname = clt.ClientName,
+                              ordertype = t.OrderType,
+                              orderdate = t.OrderDate,
+                              company = t.Company,
+                              CreateUser = t.CreateUser,
+                              itemscount = count
+                          }).ToList();
+            return orderslist;
+        }
+
+        [HttpGet]
+        public ActionResult fnOrderItemsList(int id)
+        {
+            // list of items for a given order
+            using (db)
             {
-                s = s + "<option>" + item.ClientName + "</option>";
+                var qry = (from t in db.tblOrderItem
+                           where t.OrderID == id
+                           select new MvcPhoenix.Models.OrderItem
+                           { OrderID=t.OrderID,
+                           ItemID=t.ItemID,
+                           ProductDetailID=t.ProductDetailID,
+                           ProductCode=t.ProductCode,
+                           Mnemonic=t.Mnemonic,
+                           ProductName=t.ProductName,
+                           Size=t.Size,
+                           LotNumber=t.LotNumber,
+                           Qty=t.Qty,
+                           ShipDate=t.ShipDate,
+                           BackOrdered=t.BackOrdered,
+                           AllocateStatus=t.AllocateStatus,
+                           QtyAvailable=(from q in db.tblStock where q.ShelfID==t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL" select q).Count()
+                           }).ToList();
+                if(qry.Count>0)
+                { return PartialView("~/Views/Orders/_OrderItems.cshtml", qry); }
+                return null;
+                
+                
             }
-            s = s + "</select>";
-            return s;
         }
+
 
         [HttpGet]
-        public ActionResult SetUpNewItem(int ItemID, string Mode, int myOrderID)
+        public ActionResult CreateItem(int id)
         {
-            // Called from partial view to setup Item for insert
-            OrderItem obj = new OrderItem();
-            obj.OrderID = myOrderID;
-            obj.ItemID = -1;
-            obj.ProfileID = 0;
-            obj.PartialMode = "Add";
-            obj.Size = "";
-            obj.SRSize = "";
-            obj.Qty = 0;
-            obj.LotNumber = "";
-            obj.NonCMCDelay = false; obj.CarrierInvoiceRcvd = false;
-            obj.StatusID = 0;
-            obj.Status = "";
-            return PartialView("~/Views/Orders/_ItemEditModal.cshtml", obj);
+            // id=orderid
+            var vm = OrderService.fnCreateItem(id);
+            return PartialView("~/Views/Orders/_OrderItemModal.cshtml",vm);
         }
+
+        
+        public ActionResult BuildSizeDropDown(int id)
+        {
+            // id=clientid / return a <select> for <div>
+            return Content(OrderService.fnBuildSizeDropDown(id));
+        }
+
 
         [HttpGet]
-        public ActionResult SetUpEditItem(int ItemID, string Mode)
+        public ActionResult EditItem(int id)
         {
-            // Called from partial view to setup Item for edit
-            OrderItem obj = new OrderItem();
-            obj = OrderService.fnFillOrderItem(ItemID);
-            
-            obj.PartialMode = "Edit";
-            obj.StatusID = 0;
-            return PartialView("~/Views/Orders/_ItemEditModal.cshtml", obj);
+            OrderItem vm = new OrderItem();
+            vm = OrderService.fnFillOrderItem(id);
+            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
+            //return Content("Return Edit Item Modal");
         }
 
-        [HttpGet]
-        public string GrabString(int ItemID)
+        [HttpPost]
+        public ActionResult SaveItem(OrderItem incoming)
         {
-            return "<br>Build the U/I for ItemID=" + ItemID.ToString();
+            int pk = OrderService.fnSaveItem(incoming);
+            return Content("Item Saved at " + System.DateTime.Now.ToString());
         }
 
-        public ActionResult DeleteItemFromOrder(int id)
+       
+        public ActionResult DeleteItem(int id)
         {
-            System.Threading.Thread.Sleep(1500);
             OrderService.fnDeleteOrderItem(id);
-            OrderItem obj = new OrderItem();
-            return PartialView("~/Views/Orders/_OrderItems.cshtml", obj);
+            return Content("Item Deleted at " + System.DateTime.Now.ToString());
+        }
+
+        public ActionResult AllocateItem(int id)
+        {
+            // the ajax call in the view will call a js function to update the orderslist partial
+            int ParentID = OrderService.fnAllocateItem(id);
+            return null;
+        }
+     
+
+
+        [HttpGet]
+        public ActionResult fnOrderTransList(int id)
+        {
+            // id=orderid
+            var qry = (from t in db.tblOrderTrans
+                       join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
+                       from qry2 in a.DefaultIfEmpty()
+                       where t.OrderID == id
+                       orderby t.TransType
+                       select new OrderTrans
+                       {
+                           ordertransid=t.OrderTransID,
+                           orderid=t.OrderID,
+                           orderitemid=t.OrderItemID,
+                           productcode=qry2.ProductCode,
+                                   clientid=t.ClientID,
+                           transdate=t.TransDate,
+                           transtype=t.TransType,
+                           transqty=t.TransQty,
+                           transamount=t.TransAmount,
+                           comments=t.Comments,
+                       }).ToList();
+            return PartialView("~/Views/Orders/_OrderTrans.cshtml", qry);
+        }
+
+        //[HttpGet]
+        //public ActionResult z_fnOrderTransList(int id)
+        //{
+        //    // id=orderid
+        //    var qry = (from t in db.tblOrderTrans
+        //               join items in db.tblOrderItem on t.OrderItemID equals items.ItemID
+        //               //let pc = (from p in db.tblOrderItem where p.ItemID == t.OrderItemID select p).FirstOrDefault()
+        //               where t.OrderID == id
+        //               orderby t.TransDate
+        //               select new OrderTrans
+        //               {
+        //                   ordertransid = t.OrderTransID,
+        //                   orderid = t.OrderID,
+        //                   orderitemid = t.OrderItemID,
+        //                   productcode = 
+        //                   clientid = t.ClientID,
+        //                   transdate = t.TransDate,
+        //                   transtype = t.TransType,
+        //                   transqty = t.TransQty,
+        //                   transamount = t.TransAmount,
+        //                   comments = t.Comments,
+        //               }).ToList();
+        //    return PartialView("~/Views/Orders/_OrderTrans.cshtml", qry);
+        //}
+
+
+
+        [HttpGet]
+        public ActionResult CreateTrans(int id)
+        {
+            var vm = OrderService.fnCreateTrans(id);
+            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
+        }
+
+        [HttpGet]
+        public ActionResult EditTrans(int id)
+        {
+            var vm = OrderService.fnFillTrans(id);
+            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
         }
 
         [HttpPost]
-        public ActionResult GetSizesForProfileID(OrderItem incoming)
+        public ActionResult SaveTrans(OrderTrans vm)
         {
-            // Take an orderitem and rebuild it with a different ProfileID
-            // so that the DD renders sizes
-            OrderItem obj = new OrderItem();
-            obj.ClientID = incoming.ClientID;
-            obj.OrderID = incoming.OrderID;
-            obj.ItemID = incoming.ItemID;
-            obj.PartialMode = incoming.PartialMode;
-            obj.ProfileID = incoming.ProfileID;
-            obj.Size = incoming.Size;
-            obj.SRSize = incoming.Size;
-            obj.Qty = incoming.Qty;
-            obj.LotNumber = incoming.LotNumber;
-            obj.NonCMCDelay = incoming.NonCMCDelay;
-            obj.CarrierInvoiceRcvd = incoming.CarrierInvoiceRcvd;
-            obj.Status = incoming.Status;
-            return PartialView("~/Views/Orders/_ItemEditModal.cshtml", obj);
-        }
+            int pk = OrderService.fnSaveTrans(vm);
+            return Content("Trans Saved at " + System.DateTime.Now.ToString());
+         }
 
-        public ActionResult RefreshItemsTable()
-        {
-            return PartialView("~/Views/Orders/_OrderItems.cshtml");
-        }
-
-        [HttpPost]
-        public ActionResult UpdateOrderItemJson(OrderItem incoming)
-        {
-            int myid = incoming.ItemID;
-            int dbpk = 0;
-
-            OrderItem validateagainst = new OrderItem();
-            if (TryUpdateModel(validateagainst) == false)
-            {
-                incoming.UpdateResult = "Validation error - Update failed";
-                return PartialView("~/Views/Orders/_ItemEditModal.cshtml", incoming);
-            }
-
-            if (OrderService.IsValidOrderItem(incoming))
-            {
-                // continue
-            }
-            else
-            {
-                incoming.UpdateResult = "Data Entry error - Item NOT added";
-                return PartialView("~/Views/Orders/_ItemEditModal.cshtml", incoming);
-            }
-
-            if (incoming.ItemID == 0)
-            {
-                OrderItem emptyobj = new OrderItem();
-                emptyobj.PartialMode = "Add";
-                emptyobj.UpdateResult = "No item selected - No work was done..";
-                return PartialView("~/Views/Orders/_ItemEditModal.cshtml", emptyobj);
-            }
-            else if (incoming.ItemID == -1)
-            { dbpk = OrderService.fnInsertOrderItem(incoming); }
-            else
-            { dbpk = OrderService.fnUpdateOrderItem(incoming); }
-
-            // Check DB success
-            if (dbpk > 0)
-            {
-                OrderItem newobj = new OrderItem();
-                newobj = OrderService.fnFillOrderItem(dbpk);
-                newobj.StatusID = 0;    // Force the Status DD to 0
-                newobj.PartialMode = "Edit";
-                newobj.UpdateResult = "Changes Saved at " + System.DateTime.Now.ToString();
-                return PartialView("~/Views/Orders/_ItemEditModal.cshtml", newobj);
-            }
-            else
-            {
-                incoming.UpdateResult = "DB ERROR - Update failed at " + System.DateTime.Now.ToString();
-                return PartialView("~/Views/Orders/_ItemEditModal.cshtml", incoming);
-            }
-        }
-
-        public ActionResult RefreshTransView()
-        {
-            return PartialView("~/Views/Orders/_OrderTrans.cshtml", new MvcPhoenix.Models.OrderTrans());
-        }
-
-        public ActionResult QuickDeleteOrderTrans(int OrderTransID)
-        {
-            string s = @"Delete from tblOrderTrans Where OrderTransID=" + OrderTransID;
-            db.Database.ExecuteSqlCommand(s);
-            db.Dispose();
-            OrderTrans obj = new OrderTrans();
-            return PartialView("~/Views/Orders/_OrderTrans.cshtml", obj);
-        }
-
-        #endregion
-
-        // Index Search Actions 
-        #region Index Search Actions
 
         [HttpGet]
         public ActionResult OrdersToday()
         {
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
             DateTime datToday = DateTime.Today.AddDays(0);
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      where t.OrderDate == datToday
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          CMCUser = t.CMCUser,
-                          ItemsCount = count
-                      }).ToList();
-
-            ViewData["SearchResultsMessage"] = "Showing Orders Created Today";
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+            List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+            orderslist = fnOrdersSearchResults();
+            orderslist = (from t in orderslist 
+                          orderby t.orderid descending
+                          where t.orderdate == datToday
+                          select t).ToList();
+            TempData["SearchResultsMessage"] = "Showing Orders Created Today";
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
+        [HttpGet]
         public ActionResult OrdersYesterday()
         {
-            // TODO: fix to be previous business day
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
-
-            DateTime datYesterday = DateTime.Today.AddDays(-1);
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      where t.OrderDate == datYesterday
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          CMCUser = t.CMCUser,
-                          ItemsCount = count
-                      }).ToList();
-
-            ViewData["SearchResultsMessage"] = "Showing Orders Created Yesterday";
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+            DateTime datToday = DateTime.Today.AddDays(-1);
+            List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+            orderslist = fnOrdersSearchResults();
+            orderslist = (from t in orderslist
+                          orderby t.orderid descending
+                          where t.orderdate == datToday
+                          select t).ToList();
+            TempData["SearchResultsMessage"] = "Showing Orders Created Yesterday";
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
         [HttpGet]
         public ActionResult OrdersLastTen()
         {
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          CMCUser = t.CMCUser,
-                          ItemsCount = count
-                      }).Take(10).ToList();
-
-            ViewData["SearchResultsMessage"] = "Showing Last 10 Orders";
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+           List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+           orderslist = fnOrdersSearchResults();
+           orderslist = (from t in orderslist
+                          orderby t.orderid descending
+                          select t).Take(10).ToList();
+            TempData["SearchResultsMessage"] = "Showing Orders Created Yesterday";
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
         [HttpGet]
         public ActionResult OrdersMineLastTen()
         {
-            string myusername = "JBrok";  // bogus value
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      where t.CMCUser == myusername
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          //CMCUser = t.CMCUser,
-                          CMCUser = "John Smith",
-                          ItemsCount = count
-                      }).Take(10).ToList();
-            ViewData["SearchResultsMessage"] = "Showing Last 10 Orders For " + "John Smith";
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+            List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+            orderslist = fnOrdersSearchResults();
+            orderslist = (from t in orderslist
+                          where t.UpdateUser == User.Identity.Name
+                          orderby t.orderid descending
+                          select t).Take(10).ToList();
+            TempData["SearchResultsMessage"] = "My Last 10 Orders";
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
         [HttpGet]
         public ActionResult OrdersProblems()
         {
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          CMCUser = t.CMCUser,
-                          ItemsCount = count
-                      }).Take(10).ToList();
-
-
-            ViewData["SearchResultsMessage"] = " Orders With Problems";
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+            // pc - not implemented; the idea is to try and locate orders with 'issues'
+            List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+            orderslist = fnOrdersSearchResults();
+            // TODO  Refine below to find bad orders
+            orderslist = (from t in orderslist
+                          where t.UpdateUser == User.Identity.Name
+                          orderby t.orderid descending
+                          select t).Take(10).ToList();
+            TempData["SearchResultsMessage"] = "Orders with possible issues";
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
-        [HttpPost]
-        public ActionResult LookupClientID(FormCollection fc)
-        {
-            int myint = Convert.ToInt32(fc["DDClientID"]);
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      where t.ClientID == myint
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          CMCUser = t.CMCUser,
-                          ItemsCount = count
-                      }).Take(20).ToList();
 
-            var qClientName = mylist.Select(x => x.ClientName).FirstOrDefault();
-            ViewData["SearchResultsMessage"] = "Showing Last 20 Orders For " + qClientName;
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
-        }
+        //[HttpPost]
+        //public ActionResult LookupClientID(FormCollection fc)
+        //{
+        //    int myint = Convert.ToInt32(fc["DDClientID"]);
+        //    List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
+        //    mylist = (from t in db.tblOrderMaster
+        //              orderby t.OrderID descending
+        //              where t.ClientID == myint
+        //              let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
+        //              let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
+        //              select new OrdersListForLandingPage
+        //              {
+        //                  OrderID = t.OrderID,
+        //                  Customer = t.Customer,
+        //                  ClientName = clientname,
+        //                  OrderDate = t.OrderDate,
+        //                  Company = t.Company,
+        //                  OrderType = t.OrderType,
+        //                  CMCUser = t.CMCUser,
+        //                  ItemsCount = count
+        //              }).Take(20).ToList();
+
+        //    var qClientName = mylist.Select(x => x.ClientName).FirstOrDefault();
+        //    ViewData["SearchResultsMessage"] = "Showing Last 20 Orders For " + qClientName;
+        //    return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+        //}
 
         [HttpPost]
         public ActionResult LookupOrderID(FormCollection fc)
@@ -372,7 +335,7 @@ namespace MvcPhoenix.Controllers
             if (qry == 1)
             {
                 OrderMasterFull obj = new OrderMasterFull();
-                obj = OrderService.fillOrderMasterObject(myint);
+                obj = OrderService.fnFillOrder(myint);
                 return View("~/Views/Orders/Edit.cshtml", obj);
             }
             else
@@ -382,92 +345,92 @@ namespace MvcPhoenix.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult LookupOrderDate(FormCollection fc)
-        {
-            DateTime mydate = Convert.ToDateTime(fc["searchorderdate"]);
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
+        //[HttpPost]
+        //public ActionResult LookupOrderDate(FormCollection fc)
+        //{
+        //    DateTime mydate = Convert.ToDateTime(fc["searchorderdate"]);
+        //    List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
 
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      where t.OrderDate == mydate
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          CMCUser = t.CMCUser,
-                          ItemsCount = count
-                      }).ToList();
+        //    mylist = (from t in db.tblOrderMaster
+        //              orderby t.OrderID descending
+        //              where t.OrderDate == mydate
+        //              let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
+        //              let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
+        //              select new OrdersListForLandingPage
+        //              {
+        //                  OrderID = t.OrderID,
+        //                  Customer = t.Customer,
+        //                  ClientName = clientname,
+        //                  OrderDate = t.OrderDate,
+        //                  Company = t.Company,
+        //                  OrderType = t.OrderType,
+        //                  CMCUser = t.CMCUser,
+        //                  ItemsCount = count
+        //              }).ToList();
 
-            ViewData["SearchResultsMessage"] = "Showing Orders Created On " + mydate.ToShortDateString();
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
-        }
+        //    ViewData["SearchResultsMessage"] = "Showing Orders Created On " + mydate.ToShortDateString();
+        //    return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+        //}
 
-        [HttpPost]
-        public ActionResult LookupCompany(FormCollection fc)
-        {
-            List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
-            string mycompany = fc["searchcompany"];
-            //var qry =
-            //(from t in db.tblOrderMaster
-            // orderby t.Company
-            // where t.Company.Contains(mycompany)
-            // select t).ToList();
-            var intcount = (from t in db.tblOrderMaster
-                            orderby t.Company
-                            where t.Company.Contains(mycompany)
-                            select t).Count();
+        //[HttpPost]
+        //public ActionResult LookupCompany(FormCollection fc)
+        //{
+        //    List<OrdersListForLandingPage> mylist = new List<OrdersListForLandingPage>();
+        //    string mycompany = fc["searchcompany"];
+        //    //var qry =
+        //    //(from t in db.tblOrderMaster
+        //    // orderby t.Company
+        //    // where t.Company.Contains(mycompany)
+        //    // select t).ToList();
+        //    var intcount = (from t in db.tblOrderMaster
+        //                    orderby t.Company
+        //                    where t.Company.Contains(mycompany)
+        //                    select t).Count();
 
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      where t.Company.Contains(mycompany)
-                      let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                      let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                      select new OrdersListForLandingPage
-                      {
-                          OrderID = t.OrderID,
-                          Customer = t.Customer,
-                          ClientName = clientname,
-                          OrderDate = t.OrderDate,
-                          Company = t.Company,
-                          OrderType = t.OrderType,
-                          CMCUser = t.CMCUser,
-                          ItemsCount = count
-                      }).ToList();
+        //    mylist = (from t in db.tblOrderMaster
+        //              orderby t.OrderID descending
+        //              where t.Company.Contains(mycompany)
+        //              let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
+        //              let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
+        //              select new OrdersListForLandingPage
+        //              {
+        //                  OrderID = t.OrderID,
+        //                  Customer = t.Customer,
+        //                  ClientName = clientname,
+        //                  OrderDate = t.OrderDate,
+        //                  Company = t.Company,
+        //                  OrderType = t.OrderType,
+        //                  CMCUser = t.CMCUser,
+        //                  ItemsCount = count
+        //              }).ToList();
 
-            if (intcount <= 100)
-            {
-                ViewData["SearchResultsMessage"] = "Showing Orders " + mycompany;
-                return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
-            }
-            else
-            {
-                // mylist back to default
-                mylist = (from t in db.tblOrderMaster
-                          orderby t.OrderID descending
-                          where t.OrderDate == DateTime.Today
-                          let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                          let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
-                          select new OrdersListForLandingPage
-                          {
-                              OrderID = t.OrderID,
-                              Customer = t.Customer,
-                              ClientName = clientname,
-                              OrderDate = t.OrderDate,
-                              Company = t.Company,
-                              OrderType = t.OrderType,
-                              CMCUser = t.CMCUser,
-                              ItemsCount = count
-                          }).ToList();
-                return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
-            }
-        }
+        //    if (intcount <= 100)
+        //    {
+        //        ViewData["SearchResultsMessage"] = "Showing Orders " + mycompany;
+        //        return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+        //    }
+        //    else
+        //    {
+        //        // mylist back to default
+        //        mylist = (from t in db.tblOrderMaster
+        //                  orderby t.OrderID descending
+        //                  where t.OrderDate == DateTime.Today
+        //                  let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
+        //                  let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
+        //                  select new OrdersListForLandingPage
+        //                  {
+        //                      OrderID = t.OrderID,
+        //                      Customer = t.Customer,
+        //                      ClientName = clientname,
+        //                      OrderDate = t.OrderDate,
+        //                      Company = t.Company,
+        //                      OrderType = t.OrderType,
+        //                      CMCUser = t.CMCUser,
+        //                      ItemsCount = count
+        //                  }).ToList();
+        //        return PartialView("~/Views/Orders/_IndexPartial.cshtml", mylist);
+        //    }
+        //}
 
         [HttpPost]
         public ActionResult LookupMisc(FormCollection fc)
@@ -515,160 +478,109 @@ namespace MvcPhoenix.Controllers
             }
             return PartialView("~/Views/Orders/_IndexPartial.cshtml");
         }
-        #endregion
 
-        // Order Transaction Actions
-        #region Order Transaction Actions
 
-        public ActionResult SetUpNewOrderTrans()
-        {
-            OrderTrans obj = new OrderTrans();
-            // Default values:
-            obj.ordertransid = -1;
-            obj.orderitemid = 0;
-            obj.transtype = null;
-            obj.transqty = 1;
-            //obj.transdate = DateTime.Today; -- Iffy
-            obj.transdate = DateTime.Now;
-            obj.transamount = 0;
-            obj.comments = "";
-            obj.pagemode = "New Transaction";
-            return PartialView("~/Views/Orders/_TransEditModal.cshtml", obj);
-        }
+        //public ActionResult SetUpNewOrderTrans()
+        //{
+        //    OrderTrans obj = new OrderTrans();
+        //    // Default values:
+        //    obj.ordertransid = -1;
+        //    obj.orderitemid = 0;
+        //    obj.transtype = null;
+        //    obj.transqty = 1;
+        //    //obj.transdate = DateTime.Today; -- Iffy
+        //    obj.transdate = DateTime.Now;
+        //    obj.transamount = 0;
+        //    obj.comments = "";
+        //    obj.pagemode = "New Transaction";
+        //    return PartialView("~/Views/Orders/_TransEditModal.cshtml", obj);
+        //}
 
-        [HttpGet]
-        public ActionResult SetTransFilter(int intfilter)
-        {
-            OrderTrans obj = new OrderTrans();
-            if (intfilter == 1)
-            {
-                obj.qryfilter = "All";
-            }
-            else if (intfilter == 2)
-            {
-                obj.qryfilter = "OrderOnly";
-            }
-            return PartialView("~/Views/Orders/_OrderTrans.cshtml", obj);
-        }
+        //[HttpGet]
+        //public ActionResult SetTransFilter(int intfilter)
+        //{
+        //    OrderTrans obj = new OrderTrans();
+        //    if (intfilter == 1)
+        //    {
+        //        obj.qryfilter = "All";
+        //    }
+        //    else if (intfilter == 2)
+        //    {
+        //        obj.qryfilter = "OrderOnly";
+        //    }
+        //    return PartialView("~/Views/Orders/_OrderTrans.cshtml", obj);
+        //}
 
-        public ActionResult SetUpEditOrderTrans(int OrderTransID)
-        {
-            OrderTrans obj = new OrderTrans();
-            obj = OrderService.fnFillOrderTrans(OrderTransID);
-            obj.pagemode = "Edit Transaction";
-            return PartialView("~/Views/Orders/_TransEditModal.cshtml", obj);
-        }
+        
 
-        public ActionResult SaveOrderTrans(OrderTrans incoming)
-        {
-            if (incoming.ordertransid == 0 || incoming.transqty == 0)
-            {
-                OrderTrans emptyobj = new OrderTrans();
-                emptyobj.pagemode = "";
-                emptyobj.updateresult = "Please Enter Quantity";
-                return PartialView("~/Views/Orders/_TransEditModal.cshtml", emptyobj);
-            }
-            if (incoming.ordertransid == -1)
-            {
-                // New record
-                int newpk = OrderService.fnAddOrderTrans(incoming);
-                OrderTrans newobj = new OrderTrans();
-                newobj = OrderService.fnFillOrderTrans(newpk);
-                newobj.pagemode = "";
-                newobj.updateresult = "New record added";
-                return PartialView("~/Views/Orders/_TransEditModal.cshtml", newobj);
-            }
-            else
-            {
-                OrderService.fnUpdateOrderTrans(incoming);
-                OrderTrans obj = new OrderTrans();
-                obj = OrderService.fnFillOrderTrans(incoming.ordertransid);
-                obj.pagemode = "Edit Transaction";
-                obj.updateresult = "Record updated at " + DateTime.Now.ToString();
-                return PartialView("~/Views/Orders/_TransEditModal.cshtml", obj);
-            }
-        }
+        //public ActionResult SaveOrderTrans(OrderTrans incoming)
+        //{
+        //    if (incoming.ordertransid == 0 || incoming.transqty == 0)
+        //    {
+        //        OrderTrans emptyobj = new OrderTrans();
+        //        emptyobj.pagemode = "";
+        //        emptyobj.updateresult = "Please Enter Quantity";
+        //        return PartialView("~/Views/Orders/_TransEditModal.cshtml", emptyobj);
+        //    }
+        //    if (incoming.ordertransid == -1)
+        //    {
+        //        // New record
+        //        int newpk = OrderService.fnAddOrderTrans(incoming);
+        //        OrderTrans newobj = new OrderTrans();
+        //        newobj = OrderService.fnFillOrderTrans(newpk);
+        //        newobj.pagemode = "";
+        //        newobj.updateresult = "New record added";
+        //        return PartialView("~/Views/Orders/_TransEditModal.cshtml", newobj);
+        //    }
+        //    else
+        //    {
+        //        OrderService.fnUpdateOrderTrans(incoming);
+        //        OrderTrans obj = new OrderTrans();
+        //        obj = OrderService.fnFillOrderTrans(incoming.ordertransid);
+        //        obj.pagemode = "Edit Transaction";
+        //        obj.updateresult = "Record updated at " + DateTime.Now.ToString();
+        //        return PartialView("~/Views/Orders/_TransEditModal.cshtml", obj);
+        //    }
+        //}
 
-        #endregion
+        //public ActionResult NewIndex()
+        //{
+        //    List<OrderMasterFull> mylist = new List<OrderMasterFull>();
+        //    mylist = (from t in db.tblOrderMaster
+        //              orderby t.OrderID descending
+        //              let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
+        //              let clientname = (from c in db.tblClient where c.ClientID == t.ClientID select c.ClientName).FirstOrDefault()
+        //              select new OrderMasterFull
+        //              {
+        //                  orderid = t.OrderID,
+        //                  customer = t.Customer,
+        //                  clientname = clientname,
+        //                  orderdate = t.OrderDate,
+        //                  company = t.Company,
+        //                  ordertype = t.OrderType,
+        //                  itemscount = count
+        //              }).Take(10).ToList();
+        //              ViewData["SearchResultsMessage"] = "Last 10 Orders";
+        //             return View(mylist);
+        //}
 
-        // New Order Actions
-        #region New Order Actions
 
-        [HttpPost]
-        public ActionResult SetupNewOrder(FormCollection fc)
-        {
-            int ClientID = Convert.ToInt32(fc["NewClientID"]);
-            // Build a barebones order and flip to edit mode
-            if (ClientID > 0)
-            {
-                OrderMasterFull newobj = new OrderMasterFull(ClientID); // constructor can set initial values
-                newobj.orderdate = DateTime.Now;
-                newobj.clientid = ClientID;
-                newobj.orderid = -1;    // important to do an insert
-                int newpk = OrderService.SaveOrderMaster(newobj);
-                OrderMasterFull obj = new OrderMasterFull();
-                obj = OrderService.fillOrderMasterObject(newpk);
-                return View("~/Views/Orders/Edit.cshtml", obj);
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
-        }
-
-        [HttpPost]
-        public ActionResult SavePostData(OrderMasterFull incoming)
-        {
-            int pk = incoming.orderid;
-            int myclientid = Convert.ToInt32(Request.Form["hiddenclientid"]);
-            incoming.clientid = myclientid;
-            OrderMasterFull newobj = new OrderMasterFull();
-
-            // The following statement attempts to bind the incoming object to a new model object
-            if (TryUpdateModel(newobj))
-            {
-                // At this point the model appears to be good, now lets try a DB update
-                int RecordSavedResult = OrderService.SaveOrderMaster(incoming);
-                if (RecordSavedResult == pk)    // Backend returned the same PK we sent it
-                {
-                    // refill the object in case some work was done on the back end that may affect display values
-                    OrderMasterFull obj = new OrderMasterFull();
-                    obj = OrderService.fillOrderMasterObject(pk);
-                    obj.UpdateResult = "<span style='color:green;font-weight:bold;'>Order Information has been successfully updated at " + DateTime.Now + "</span>";
-                    return View("Edit", obj);
-                }
-                else
-                {
-                    // return incoming for corrections
-                    incoming.UpdateResult = "<span style='color:red;font-size:1.5em;font-weight:bold;'>Database ERROR: Unable to update order</span>";
-                    return View("Edit", incoming);
-                }
-            }
-            else
-            {
-                // return incoming for corrections
-                incoming.UpdateResult = "<span style='color:red;font-size:1.5em;font-weight:bold;'>Model Validation Failed</span>";
-                return View("Edit", incoming);
-            }
-        }
-
-        #endregion
 
         public ActionResult PrintOrder()
         {
             // The data view will need to more complicated
             OrderMasterFull obj = new OrderMasterFull();
-            obj = OrderService.fillOrderMasterObject(Convert.ToInt32(Session["OrderID"]));
+            obj = OrderService.fnFillOrder(Convert.ToInt32(Session["OrderID"]));
             return View("PrintOrder", obj);
         }
 
-        public ActionResult Notification()
-        {
-            // The data view will need to more complicated
-            OrderMasterFull obj = new OrderMasterFull();
-            obj = OrderService.fillOrderMasterObject(Convert.ToInt32(Session["OrderID"]));
-            return View("Notification", obj);
-        }
+        //public ActionResult Notification()
+        //{
+        //    // The data view will need to more complicated
+        //    OrderMasterFull obj = new OrderMasterFull();
+        //    obj = OrderService.fnFillOrder(Convert.ToInt32(Session["OrderID"]));
+        //    return View("Notification", obj);
+        //}
 
         public ActionResult Import()
         {

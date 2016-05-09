@@ -25,12 +25,7 @@ namespace MvcPhoenix.EF
         public string PostCode { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
-        public string Fax { get; set; }
-        public Nullable<bool> Restricted { get; set; }
-        public string RestrictNote1 { get; set; }
-        public string RestrictNote2 { get; set; }
         public string CustAcct { get; set; }
-        public string Acode { get; set; }
         public Nullable<int> LegacyID { get; set; }
         public string Company_MDB { get; set; }
         public string Location_MDB { get; set; }

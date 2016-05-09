@@ -6,781 +6,1294 @@ using System.Web.Mvc;
 using System.Data.SqlClient;
 using MvcPhoenix.Models;
 
+//using Microsoft.AspNet.Identity;
+
 namespace MvcPhoenix.Services
 {
     public class OrderService
     {
-        public static OrderTrans fnFillOrderTrans(int pk)
+        private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
+        //private static string connstring = System.Configuration.ConfigurationManager.ConnectionStrings["ADOConnectionString"].ConnectionString;
+
+
+        public static OrderMasterFull fnCreateOrder(int id)
         {
-            OrderTrans obj = new OrderTrans();
+            // id=clientid
             using (var db = new EF.CMCSQL03Entities())
             {
-                var qry = (from t in db.tblOrderTrans
-                           where t.OrderTransID == pk
-                           select t).FirstOrDefault();
-                obj.pagemode = "";
-                obj.ordertransid = qry.OrderTransID;
-                obj.clientid = qry.ClientID;
-                obj.orderid = qry.OrderID;
-                obj.orderitemid = qry.OrderItemID;
-                obj.userid = qry.UserID;
-                obj.transtype = qry.TransType;
-                obj.transdate = qry.TransDate;
-                obj.transqty = qry.TransQty;
-                obj.transamount = qry.TransAmount;
-                obj.comments = qry.Comments;
+                // populate the minimum fields needed for the View
+                OrderMasterFull vm = new OrderMasterFull();
+                vm.orderid = -1;
+                vm.clientid = id;
+                var cl = db.tblClient.Find(vm.clientid);
+                vm.clientname = cl.ClientName;
+                vm.logofilename = PathToLogos + cl.LogoFileName;
+                vm.orderstatus = "z";
+                vm.orderdate = System.DateTime.Now;
+                //vm.ListOfDivisions = fnListOfDivisions(id);
+                vm.ListOfOrderTypes = fnListOfOrderTypes();
+                vm.ListOfSalesReps = fnListOfSalesReps(id);
+                vm.ListOfOrderSources = fnListOfOrderSources();
+                vm.ListOfCountries = fnListOfCountries();
+                vm.ListOfEndUses = fnListOfEndUses(id);
+                vm.ListOfShipVias = fnListOfShipVias();
+                vm.ListOfBillingGroups = fnListOfBillingGroups(id);
+                vm.CreateUser = HttpContext.Current.User.Identity.Name;
+                vm.CreateDate = System.DateTime.Now;
+                return vm;
             }
-
-            return obj;
         }
 
-        public static int fnAddOrderTrans(OrderTrans o)
+        public static OrderMasterFull fnFillOrder(int id)
         {
-            // take a populated obj and insert into table
             using (var db = new EF.CMCSQL03Entities())
             {
-                // instance of the EF object NOT the business/Model View object
-                var newtrans = new EF.tblOrderTrans
+                OrderMasterFull o = new OrderMasterFull();
+                var q = (from t in db.tblOrderMaster
+                         where t.OrderID == id
+                         select t).FirstOrDefault();
+
+                o.itemscount = (from t in db.tblOrderItem where t.OrderID == id select t).Count();
+                o.transcount = (from t in db.tblOrderTrans where t.OrderID == id select t).Count();
+
+                var cl = db.tblClient.Find(q.ClientID);
+                o.clientname = cl.ClientName;
+                o.logofilename = PathToLogos + cl.LogoFileName;
+
+                // Fill lists buried in object
+                //o.ListOfDivisions = fnListOfDivisions(q.ClientID);
+                o.ListOfOrderTypes = fnListOfOrderTypes();
+                o.ListOfSalesReps = fnListOfSalesReps(o.clientid);
+                o.ListOfOrderSources = fnListOfOrderSources();
+                o.ListOfCountries = fnListOfCountries();
+                o.ListOfEndUses = fnListOfEndUses(o.clientid);
+                o.ListOfShipVias = fnListOfShipVias();
+                o.ListOfBillingGroups = fnListOfBillingGroups(cl.ClientID);
+
+                o.orderid = q.OrderID;
+                o.clientid = q.ClientID;
+                o.orderstatus = q.OrderStatus;
+                o.customer = q.Customer;
+                o.cmcorder = Convert.ToInt32(q.CMCOrder);
+                o.weborderid = Convert.ToInt32(q.WebOrderID);
+                o.cmclegacynumber = q.CMCLegacyNum;
+                o.custordnum = q.CustOrdNum;
+                o.custsapnum = q.CustSapNum;
+                o.custrefnum = q.CustRefNum;
+                o.ordertype = q.OrderType;
+
+                o.orderdate = q.OrderDate;
+                //if (q.OrderDate.HasValue)
+                //{ o.orderdate = Convert.ToDateTime(q.OrderDate); }
+                //else
+                //{ o.orderdate = null; }
+
+                o.company = q.Company;
+                o.street = q.Street; o.street2 = q.Street2; o.street3 = q.Street3; o.city = q.City; o.state = q.State; o.Zip = q.Zip;
+                o.country = q.Country; o.attention = q.Attention; o.email = q.Email; o.salesrep = q.SalesRep; o.sales_email = q.SalesEmail;
+                o.req = q.Req; o.reqphone = q.ReqPhone; o.reqfax = q.ReqFax; o.reqemail = q.ReqEmail; o.enduse = q.EndUse; o.shipvia = q.ShipVia;
+                o.shipacct = q.ShipAcct; o.phone = q.Phone; o.source = q.Source; o.fax = q.Fax; o.tracking = q.Tracking; o.special = q.Special;
+                o.specialinternal = q.SpecialInternal; o.lit = Convert.ToBoolean(q.Lit); o.region = q.Region; o.coa = Convert.ToBoolean(q.COA);
+                o.tds = Convert.ToBoolean(q.TDS); o.cid = q.CID; o.custacct = q.CustAcct; o.acode = q.ACode;
+                o.importfile = q.ImportFile;
+
+                if (q.ImportDateLine.HasValue)
                 {
-                    OrderTransID = o.ordertransid,
-                    ClientID = o.clientid,
-                    OrderID = o.orderid,
-                    OrderItemID = o.orderitemid,
-                    UserID = o.userid,
-                    TransType = o.transtype,
-                    TransDate = o.transdate,
-                    TransQty = o.transqty,
-                    TransAmount = o.transamount,
-                    Comments = o.comments
-                };
-                db.tblOrderTrans.Add(newtrans);
+                    o.importdateline = Convert.ToDateTime(q.ImportDateLine);
+                }
+                else
+                {
+                    o.importdateline = null;
+                }
+
+                o.timing = q.Timing; o.volume = q.Volume; o.samplerack = Convert.ToBoolean(q.SampleRack); o.cmcuser = q.CMCUser;
+                o.customerreference = q.CustomerReference;
+                //o.division = q.Division;
+                //o.busarea = q.BusArea;
+                o.totalorderweight = q.TotalOrderWeight;
+                o.spstaxid = q.SPSTaxID; o.spscurrency = q.SPSCurrency; o.spsshippedwt = q.SPSShippedWt; o.spsfreightcost = q.SPSFreightCost;
+                o.invoicecompany = q.InvoiceCompany; o.invoicetitle = q.InvoiceTitle; o.invoicefirstname = q.InvoiceFirstName; o.invoicelastname = q.InvoiceLastName;
+                o.invoiceaddress1 = q.InvoiceAddress1; o.invoiceaddress2 = q.InvoiceAddress2; o.invoiceaddress3 = q.InvoiceAddress3; o.invoicecity = q.InvoiceCity;
+                o.invoicestateprov = q.InvoiceStateProv; o.invoicepostalcode = q.InvoicePostalCode; o.invoicecountry = q.InvoiceCountry; o.invoicephone = q.InvoicePhone;
+                o.custordertype = q.CustOrderType;
+
+                o.custrequestdate = null;
+                if (q.CustRequestDate.HasValue)
+                { o.custrequestdate = q.CustRequestDate; }
+
+                o.approvaldate = null;
+                if (q.ApprovalDate.HasValue)
+                { o.approvaldate = q.ApprovalDate; }
+
+                o.requesteddeliverydate = null;
+                if (q.RequestedDeliveryDate.HasValue)
+                { o.requesteddeliverydate = q.RequestedDeliveryDate; }
+
+                o.custtotalitems = Convert.ToInt32(q.CustTotalItems);
+                o.custrequestedcarrier = q.CustRequestedCarrier;
+                o.legacyid = Convert.ToInt32(q.LegacyID);
+                o.salesrepphone = q.SalesRepPhone;
+                o.salesrepterritory = q.SalesRepTerritory;
+                o.marketingrep = q.MarketingRep;
+                o.marketingrepemail = q.MarketingRepEmail;
+                o.distributor = q.Distributor;
+                o.preferredcarrier = q.PreferredCarrier;
+                o.approvalneeded = Convert.ToBoolean(q.ApprovalNeeded);
+
+                o.CreateUser = q.CreateUser;
+                o.CreateDate = q.CreateDate;
+                o.UpdateUser = q.UpdateUser;
+                o.UpdateDate = q.UpdateDate;
+
+                // pc 04/28/2016 add per cd, ii
+                o.billinggroup = q.BillingGroup;
+
+
+                return o;
+            }
+
+        }
+        public static int fnNewOrderID()
+        {
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            {
+                MvcPhoenix.EF.tblOrderMaster newrec = new MvcPhoenix.EF.tblOrderMaster();
+                db.tblOrderMaster.Add(newrec);
                 db.SaveChanges();
-                // Stash the new PK
-                int newpk = newtrans.OrderTransID;
-                return newpk;
+                return newrec.OrderID;
+                //    string sSQL = @"Insert into tblOrderMaster (ClientID,OrderDate) VALUES (@clientid,@orderdate)";
+                //    db.Database.ExecuteSqlCommand(sSQL,
+                //    new SqlParameter("clientid", o.clientid),
+                //    new SqlParameter("orderdate", o.orderdate)
+                //    );
             }
         }
 
-        public static void fnUpdateOrderTrans(OrderTrans o)
+        public static int fnSaveOrder(OrderMasterFull vm)
         {
-            // take a populated obj and insert into table
+            fnArchiveOrderMaster(vm.orderid);
+
+            // Take a ViewModel and Insert/Update DB / Return the PK
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            {
+                if (vm.orderid == -1)
+                {
+                    vm.orderid = fnNewOrderID();
+                    vm.CreateDate = System.DateTime.Now;
+                    vm.CreateUser = HttpContext.Current.User.Identity.Name;
+                }
+                var q = (from t in db.tblOrderMaster where t.OrderID == vm.orderid select t).FirstOrDefault();
+
+                q.OrderDate = vm.orderdate;
+                q.ClientID = vm.clientid;
+                q.Customer = vm.customer;
+                q.CMCOrder = vm.cmcorder;
+                q.WebOrderID = vm.weborderid;
+                q.CMCLegacyNum = vm.cmclegacynumber;
+                q.CustOrdNum = vm.custordnum;
+                q.CustSapNum = vm.custsapnum;
+                q.CustRefNum = vm.custrefnum;
+                q.OrderType = vm.ordertype;
+                q.OrderDate = vm.orderdate;
+                q.Company = vm.company;
+                q.Street = vm.street;
+                q.Street2 = vm.street2;
+                q.Street3 = vm.street3;
+                q.City = vm.city;
+                q.State = vm.state;
+                q.Zip = vm.Zip;
+                q.Country = vm.country;
+                q.Attention = vm.attention;
+                q.Email = vm.email;
+                q.SalesRep = vm.salesrep;
+                q.SalesEmail = vm.sales_email;
+                q.Req = vm.req;
+                q.ReqPhone = vm.reqphone;
+                q.ReqFax = vm.reqfax;
+                q.ReqEmail = vm.reqemail;
+                q.EndUse = vm.enduse;
+                q.ShipVia = vm.shipvia;
+                q.ShipAcct = vm.shipacct;
+                q.Phone = vm.phone;
+                q.Source = vm.source;
+                q.Fax = vm.fax;
+                q.Tracking = vm.tracking;
+                q.Special = vm.special;
+                q.SpecialInternal = vm.specialinternal;
+                q.Lit = Convert.ToBoolean(vm.lit);
+                q.Region = vm.region;
+                q.COA = vm.coa;
+                q.TDS = vm.tds;
+                q.CID = vm.cid;
+                q.CustAcct = vm.custacct;
+                q.ACode = vm.acode;
+                q.ImportFile = vm.importfile;
+                q.ImportDateLine = vm.importdateline;
+                q.Timing = vm.timing;
+                q.Volume = vm.volume;
+                q.SampleRack = Convert.ToBoolean(vm.samplerack);
+                q.CMCUser = vm.cmcuser;
+                q.CustomerReference = vm.customerreference;
+                //q.Division = vm.division;
+                //q.BusArea = vm.busarea;
+                q.TotalOrderWeight = (vm.totalorderweight);
+                q.SPSTaxID = vm.spstaxid;
+                q.SPSCurrency = vm.spscurrency;
+                q.SPSShippedWt = vm.spsshippedwt;
+                q.SPSFreightCost = vm.spsfreightcost;
+                q.InvoiceCompany = vm.invoicecompany;
+                q.InvoiceTitle = vm.invoicetitle;
+                q.InvoiceFirstName = vm.invoicefirstname;
+                q.InvoiceLastName = vm.invoicelastname;
+                q.InvoiceAddress1 = vm.invoiceaddress1;
+                q.InvoiceAddress2 = vm.invoiceaddress2;
+                q.InvoiceAddress3 = vm.invoiceaddress3;
+                q.InvoiceCity = vm.invoicecity;
+                q.InvoiceStateProv = vm.invoicestateprov;
+                q.InvoicePostalCode = vm.invoicepostalcode;
+                q.InvoiceCountry = vm.invoicecountry;
+                q.InvoicePhone = vm.invoicephone;
+                q.CustOrderType = vm.custordertype;
+                q.CustRequestDate = vm.custrequestdate;
+                q.ApprovalDate = vm.approvaldate;
+                q.RequestedDeliveryDate = vm.requesteddeliverydate;
+                q.CustTotalItems = vm.custtotalitems;
+                q.CustRequestedCarrier = vm.custrequestedcarrier;
+                q.LegacyID = (vm.legacyid);
+                q.SalesRepPhone = vm.salesrepphone;
+                q.SalesRepTerritory = vm.salesrepterritory;
+                q.MarketingRep = vm.marketingrep;
+                q.MarketingRepEmail = vm.marketingrepemail;
+                q.Distributor = vm.distributor;
+                q.PreferredCarrier = vm.preferredcarrier;
+                q.ApprovalNeeded = vm.approvalneeded;
+
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
+                q.UpdateDate = System.DateTime.Now;
+
+                q.BillingGroup = vm.billinggroup;
+
+                db.SaveChanges();
+                return vm.orderid;
+            }
+        }
+
+
+        public static OrderItem fnCreateItem(int id)
+        {
+            // id=OrderID
+            // populate the minimum fields needed for the modal View
+            using(var db = new EF.CMCSQL03Entities())
+            {
+            OrderItem obj = new OrderItem();
+            obj.CrudMode = "RW";
+            obj.ItemID = -1;
+            obj.OrderID = id;
+            var dbOrder = db.tblOrderMaster.Find(id);
+            obj.ClientID = dbOrder.ClientID;
+            obj.ProductDetailID = -1;
+            obj.ListOfProductDetailIDs = fnListOfProductCodes(obj.ClientID);
+            obj.ShelfID = -1;
+
+                // on edit, the shelf ids DD needs to be filled based on the current produ
+            //obj.ListOfShelfIDs = filled by a ajax call to return a <select> tag
+            obj.LotNumber = null;
+            obj.Qty = 1;
+            obj.SRSize = null;
+            obj.NonCMCDelay = false;
+            obj.CarrierInvoiceRcvd = false;
+            obj.StatusID = -1;
+            obj.ListOfStatusNotesIDs = fnListOfStatusNotesIDs();
+            obj.CreateUser = HttpContext.Current.User.Identity.Name;
+            obj.CreateDate = System.DateTime.Now;
+            return obj;
+            }
+        }
+
+        public static string fnBuildSizeDropDown(int id)
+        {
+            // id=productdetailid
             using (var db = new EF.CMCSQL03Entities())
             {
-                var qry = (from t in db.tblOrderTrans
-                           where t.OrderTransID == o.ordertransid
-                           select t).FirstOrDefault();
-                //OrderTransID = o.OrderTransID,
-                qry.ClientID = o.clientid;
-                qry.OrderID = o.orderid;
-                qry.OrderItemID = o.orderitemid;
-                qry.UserID = o.userid;
-                qry.TransType = o.transtype;
-                qry.TransDate = o.transdate;
-                qry.TransQty = o.transqty;
-                qry.TransAmount = o.transamount;
-                qry.Comments = o.comments;
+                var qry = (from t in db.tblShelfMaster where t.ProductDetailID == id orderby t.Size select t);
+                string s = "<option value='0' selected=true>Select Size</option>";
+                if (qry.Count() > 0)
+                {
+                    foreach (var item in qry)
+                    {
+                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size +  "</option>";
+                    }
+                }
+                else
+                {
+                    s = s + "<option value='0'>No Sizes Found</option>";
+                }
+                s = s + "<option value='SR'>Special Request</option>";
+                //s = s + "</select>";
+                return s;
+            }
+
+        }
+
+        public static int fnNewItemID()
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                EF.tblOrderItem newrec = new EF.tblOrderItem();
+                db.tblOrderItem.Add(newrec);
                 db.SaveChanges();
+                return newrec.ItemID;
             }
+
         }
 
-        public static void fnCreateItemCharges(int pk)
+
+        public static int fnSaveItem(OrderItem vm)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            string s = "";
-            var qryItem = (from t in db.tblOrderItem where t.ItemID == pk select t).FirstOrDefault();
-            var qryOrder = (from t in db.tblOrderMaster where t.OrderID == qryItem.OrderID select t).FirstOrDefault();
-            var qryTier = (from t in db.tblTier where t.ClientID == qryOrder.ClientID && t.Size == qryItem.Size && t.Tier == "1" select t).FirstOrDefault();
+            fnArchiveOrderItem(vm.ItemID);
 
-            OrderTrans obj = new OrderTrans();
-            // set common values
-            obj.clientid = qryOrder.ClientID;
-            obj.orderid = qryOrder.OrderID;
-            obj.orderitemid = qryItem.ItemID;
-            obj.userid = null;
-            obj.transdate = DateTime.Now;
-            obj.comments = null;
-
-            // Sample charge
-            s = "Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype IN('SAMP')";
-            ExecuteADOSQL(s);
-            obj.transtype = "SAMP";
-            obj.transqty = qryItem.Qty;
-
-            try
+            using (var db = new EF.CMCSQL03Entities())
             {
-                obj.transamount = qryTier.Price;
-            }
-            catch
-            {
-                obj.transamount = 0;
-                obj.comments = "Missing Tier Record";
-            }
+                if (vm.ItemID == -1)
+                {
+                    vm.ItemID = fnNewItemID();
+                    vm.CreateDate = System.DateTime.Now;
+                    vm.CreateUser = HttpContext.Current.User.Identity.Name;
+                }
+                var q = (from t in db.tblOrderItem where t.ItemID == vm.ItemID select t).FirstOrDefault();
 
-            fnAddOrderTrans(obj);
+                // update fields
+                // q.ItemID = oi.ItemID;
+                // no clientid in table, only in vm
+                q.OrderID = vm.OrderID;
+                q.ShelfID = vm.ShelfID;
+                q.ProductDetailID = vm.ProductDetailID;
+                //q.AllocatedBulkID = null;
+                //q.AllocatedStockID = null;
+                //q.ImportItemID = vm.ImportItemID;
 
-            // surcharges
-            var qrySurcharges = (from t in db.tblSurcharge where t.ClientID == qryOrder.ClientID select t).FirstOrDefault();
-            var qrySampSize = (from t in db.tblSampSize where t.ProfileID == qryItem.ProfileID && t.Size == qryItem.Size select t).FirstOrDefault();
+                // Lookups
+                var dbPD = (from t in db.tblProductDetail where t.ProductDetailID == vm.ProductDetailID select t).FirstOrDefault();
+                var dbSM = (from t in db.tblShelfMaster where t.ShelfID == vm.ShelfID select t).FirstOrDefault();
+                q.ProductCode = dbPD.ProductCode;
+                q.ProductName = dbPD.ProductName;
+                //
+                q.LotNumber = vm.LotNumber;
+                q.Qty = vm.Qty;
+                if (vm.Size=="SR")
+                {
+                    vm.Size = vm.SRSize;
+                }
+                else
+                {
+                    q.Size = dbSM.Size;
+                }
+                q.ShipDate = vm.ShipDate;
+                q.NonCMCDelay = vm.NonCMCDelay;
+                //q.DelayReason = vm.DelayReason;
+                //q.BackOrdered = vm.BackOrdered;
+                q.Status = vm.Status;
+                q.AllocateStatus = vm.AllocateStatus;
+                //q.CSAllocate = vm.CSAllocate;
+                //q.Bin = vm.Bin;
+                //q.CustProdCode = vm.CustProdCode;
+                //q.CustProdName = vm.CustProdName;
+                //q.CustSize = vm.CustSize;
+                //q.EmailSent = vm.EmailSent;
+                //q.BackorderEmailSent = vm.BackorderEmailSent;
+                //q.Weight = vm.Weight;
+                //q.Warehouse = vm.Warehouse;
+                //q.LineItem = vm.LineItem;
+                //q.PackID = vm.PackID;
+                //q.SPSCharge = vm.SPSCharge;
+                q.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
+                //q.GrnUnNumber = vm.GrnUnNumber;
+                //q.GrnPkGroup = vm.GrnPkGroup;
+                //q.AirUnNumber = vm.AirUnNumber;
+                //q.AirPkGroup = vm.AirPkGroup;
+                //q.Via = vm.Via;
+                //q.ShipWt = vm.ShipWt;
+                //q.ShipDimWt = vm.ShipDimWt;
+                q.CreateDate = vm.CreateDate;
+                q.CreateUser = vm.CreateUser;
+                q.UpdateDate = System.DateTime.Now;
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
+               
+                db.SaveChanges();
+                
+                // Go do the Order Trans work....
+                fnGenerateOrderTransactions(vm.ItemID);
 
-            if (qrySampSize.HazardSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='HAZD'");
-                obj.transtype = "HAZD";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySurcharges.Haz ?? 0;
-                fnAddOrderTrans(obj);
-            }
-
-            if (qrySampSize.FlammableSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='FLAM'");
-                obj.transtype = "FLAM";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySurcharges.Flam;
-                fnAddOrderTrans(obj);
-            }
-
-            if (qrySampSize.CleanSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='CLEN'");
-                obj.transtype = "CLEN";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySurcharges.Clean ?? 0;
-                fnAddOrderTrans(obj);
-            }
-
-            if (qrySampSize.HeatSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='HEAT'");
-                obj.transtype = "HEAT";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySurcharges.Heat ?? 0;
-                fnAddOrderTrans(obj);
-            }
-
-            if (qrySampSize.RefrigeratorSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='REFR'");
-                obj.transtype = "REFR";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySurcharges.Refrig ?? 0;
-                fnAddOrderTrans(obj);
-            }
-            if (qrySampSize.FreezerSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='FREZ'");
-                obj.transtype = "FREZ";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySurcharges.Freezer ?? 0;
-                fnAddOrderTrans(obj);
-            }
-
-            if (qrySampSize.NalgeneSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='NALG'");
-                obj.transtype = "NALG";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySurcharges.Nalgene ?? 0;
-                fnAddOrderTrans(obj);
-            }
-
-            if (qrySampSize.LabelSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='LABL'");
-                obj.transtype = "LABL";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySurcharges.LabelFee ?? 0;
-                fnAddOrderTrans(obj);
-            }
-
-            if (qrySampSize.OtherSurcharge == true)
-            {
-                ExecuteADOSQL("Delete from tblOrderTrans where OrderItemID=" + pk + " and Transtype='MISC'");
-                obj.transtype = "MISC";
-                obj.transqty = qryItem.Qty;
-                obj.transamount = qrySampSize.OtherSurchargeAmt ?? 0;
-                fnAddOrderTrans(obj);
-            }
-
-            db.Dispose();
-        }
-
-        public static void fnDeleteOrderItem(int ItemID)
-        {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            // archive the record, then delete it
-            string s = @"Delete from tblOrderItem where ItemID=" + ItemID.ToString();
-            db.Database.ExecuteSqlCommand(s);
-            db.Dispose();
-        }
-
-        public static Boolean IsValidOrderItem(OrderItem incoming)
-        {
-            bool retval = true;
-            if (incoming.ProfileID == 0) { retval = false; }
-            if (incoming.Size == "Size") { retval = false; }
-            if (incoming.Size == "0") { retval = false; }
-            if (incoming.Qty == 0) { retval = false; }
-            return retval;
-        }
-
-        public static int fnInsertOrderItem(OrderItem incoming)
-        {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            int pk = incoming.ItemID;
-            int retval = 0;
-
-            var qryProfile = (from t in db.tblProfile
-                              where t.ProfileID == incoming.ProfileID
-                              select t).FirstOrDefault();
-
-            var newitem = new EF.tblOrderItem
-            {
-                ProductCode = qryProfile.ProductCode,
-                ProductName = qryProfile.ProductName,
-                OrderID = incoming.OrderID,
-                ProfileID = incoming.ProfileID,
-                Size = incoming.Size,
-                SRSize = incoming.SRSize,
-                Qty = incoming.Qty,
-                LotNumber = incoming.LotNumber,
-                NonCMCDelay = incoming.NonCMCDelay,
-                CarrierInvoiceRcvd = incoming.CarrierInvoiceRcvd,
-                Status = incoming.Status
-            };
-            db.tblOrderItem.Add(newitem);
-            db.SaveChanges();
-            retval = newitem.ItemID;
-            db.Dispose();
-            fnAddToItemStatus(retval, Convert.ToInt32(incoming.StatusID));
-            MvcPhoenix.Services.OrderService.fnCreateItemCharges(retval);
-            return retval;
-        }
-
-        public static int fnUpdateOrderItem(OrderItem incoming)
-        {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            int pk = incoming.ItemID;
-
-            var qryProfile = (from t in db.tblProfile
-                              where t.ProfileID == incoming.ProfileID
-                              select t).FirstOrDefault();
-
-            var qry = (from t in db.tblOrderItem where t.ItemID == pk select t).FirstOrDefault();
-            qry.ProductCode = qryProfile.ProductCode; qry.ProductName = qryProfile.ProductName;
-            qry.OrderID = incoming.OrderID; qry.ProfileID = incoming.ProfileID; qry.Size = incoming.Size;
-            qry.SRSize = incoming.SRSize; qry.Qty = incoming.Qty; qry.LotNumber = incoming.LotNumber;
-            qry.NonCMCDelay = incoming.NonCMCDelay; qry.CarrierInvoiceRcvd = incoming.CarrierInvoiceRcvd;
-            qry.Status = incoming.Status;
-            db.SaveChanges();
-            fnAddToItemStatus(pk, Convert.ToInt32(incoming.StatusID));
-            MvcPhoenix.Services.OrderService.fnCreateItemCharges(pk);
-            return pk;
-        }
-
-        public static void fnAddToItemStatus(int pk, int StatusID)
-        {
-            // Take a value from tblStatusNotes and append to tblOrderItem record
-            if (StatusID > 0)
-            {
-                MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-                var qryLookup = (from t in db.tblStatusNotes
-                                 where t.StatusNotesID == StatusID
-                                 select t).FirstOrDefault();
-                var qry = (from t in db.tblOrderItem
-                           where t.ItemID == pk
-                           select t).FirstOrDefault();
-                string s = "";
-                s = "Update tblOrderItem set Status = Cast( ISNULL(Status,'') as nvarchar(1000))";
-                s = s + " + '\r' + ";
-                s = s + " cast('" + qryLookup.Note + "'" + " as varchar(1000))";
-                s = s + " Where ItemID=" + pk;
-                System.Diagnostics.Debug.WriteLine(s);
-                ExecuteADOSQL(s);
+                return  vm.ItemID;
             }
         }
+
+
 
         public static OrderItem fnFillOrderItem(int id)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            OrderItem o = new OrderItem();
-            var q = (from t in db.tblOrderItem
-                     where t.ItemID == id
-                     select t).FirstOrDefault();
-
-            // Primary fields ***********************
-            o.OrderID = q.OrderID;
-            o.ItemID = q.ItemID;
-            o.OrderID = q.OrderID;
-            o.ProfileID = q.ProfileID;
-            o.Size = q.Size;
-            o.SRSize = q.SRSize;
-            o.Qty = q.Qty;
-            o.LotNumber = q.LotNumber;
-            o.NonCMCDelay = Convert.ToBoolean(q.NonCMCDelay);
-            o.CarrierInvoiceRcvd = Convert.ToBoolean(q.CarrierInvoiceRcvd);
-            o.Status = q.Status;
-
-            return o;
-        }
-
-        public static void fnArchiveOrderMaster(int pk)
-        {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            string s = "Insert Into tblOrderMasterArchive(";
-            s = s + "[ClientID],[OrderID],[Customer],[CMCORDER],[WebOrderID],[CMCLEGACYNUM],[CUSTORDNUM],[CUSTSAPNUM],[CUSTREFNUM],[ShipRef],[ORDERTYPE],[ORDERDATE],[COMPANY]";
-            s = s + ",[STREET],[STREET2],[STREET3],[CITY],[STATE],[ZIP],[country],[ATTENTION],[EMAIL],[SALESREP],[SALESEmail],[REQ],[REQPHONE],[REQfax]";
-            s = s + ",[REQemail],[EndUse],[ShipVia],[ShipAcct],[Phone],[Source],[Fax],[Tracking],[Special],[SpecialInternal],[Lit],[Region],[COA],[TDS]";
-            s = s + ",[CID],[CustACCT],[ACode],[ImportFile],[Importdateline],[Timing],[Volume],[SampleRack],[CMCUser],[CustomerReference],[DIVISION]";
-            s = s + ",[BusARea],[TotalOrderWeight],[SPSTaxID],[SPSCurrency],[SPSShippedWt],[SPSFreightCost],[InvoiceCompany],[InvoiceTitle]";
-            s = s + ",[InvoiceFirstName],[InvoiceLastName],[InvoiceAddress1],[InvoiceAddress2],[InvoiceAddress3],[InvoiceCity],[InvoiceStateProv]";
-            s = s + ",[InvoicePostalCode],[InvoiceCountry],[InvoicePhone],[CustOrderType],[LegacyID]";
-            s = s + ",[CustRequestDate],[ApprovalDate],[RequestedDeliveryDate],[CustTotalItems],[CustRequestedCarrier])";
-            s = s + "Select ";
-            s = s + "[ClientID],[OrderID],[Customer],[CMCORDER],[WebOrderID],[CMCLEGACYNUM],[CUSTORDNUM],[CUSTSAPNUM],[CUSTREFNUM],[ShipRef],[ORDERTYPE],[ORDERDATE],[COMPANY]";
-            s = s + ",[STREET],[STREET2],[STREET3],[CITY],[STATE],[ZIP],[country],[ATTENTION],[EMAIL],[SALESREP],[SALESEmail],[REQ],[REQPHONE],[REQfax]";
-            s = s + ",[REQemail],[EndUse],[ShipVia],[ShipAcct],[Phone],[Source],[Fax],[Tracking],[Special],[SpecialInternal],[Lit],[Region],[COA],[TDS]";
-            s = s + ",[CID],[CustACCT],[ACode],[ImportFile],[Importdateline],[Timing],[Volume],[SampleRack],[CMCUser],[CustomerReference],[DIVISION]";
-            s = s + ",[BusARea],[TotalOrderWeight],[SPSTaxID],[SPSCurrency],[SPSShippedWt],[SPSFreightCost],[InvoiceCompany],[InvoiceTitle]";
-            s = s + ",[InvoiceFirstName],[InvoiceLastName],[InvoiceAddress1],[InvoiceAddress2],[InvoiceAddress3],[InvoiceCity],[InvoiceStateProv]";
-            s = s + ",[InvoicePostalCode],[InvoiceCountry],[InvoicePhone],[CustOrderType],[LegacyID]";
-            s = s + ",[CustRequestDate],[ApprovalDate],[RequestedDeliveryDate],[CustTotalItems],[CustRequestedCarrier]";
-            s = s + " From tblOrderMaster Where OrderID=" + pk;
-
-            try
+            // id=itemid
+            // Fill all the fields from the tblOrderItem record
+            using (var db = new EF.CMCSQL03Entities())
             {
-                db.Database.ExecuteSqlCommand(s);
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                db.Dispose();
-            }
-        }
-
-        public static int SaveOrderMaster(OrderMasterFull o)
-        {
-            // DB Update success returns PK, Fail returns 0
-            // Calling controller will deal with it
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            int pk = 0;
-
-            if (o.orderid == -1)
-            {
-                string s = @"Insert into tblOrderMaster (ClientID,OrderDate) VALUES (@clientid,@orderdate)";
-                db.Database.ExecuteSqlCommand(s,
-                new SqlParameter("clientid", o.clientid),
-                new SqlParameter("orderdate", o.orderdate)
-                );
-                int newpk = (from t in db.tblOrderMaster
-                             select t.OrderID).Max();
-                pk = newpk;
-            }
-            else
-            {
-                pk = o.orderid;
-            }
-
-            int retvalue;
-
-            try
-            {
-                var q = (from t in db.tblOrderMaster
-                         where t.OrderID == pk
+                OrderItem obj = new OrderItem();
+                var q = (from t in db.tblOrderItem
+                         where t.ItemID == id
                          select t).FirstOrDefault();
+                var cl = db.tblOrderMaster.Find(q.OrderID);
 
-                q.OrderDate = q.OrderDate;
-                q.ClientID = o.clientid; q.Customer = o.customer; q.CMCOrder = o.cmcorder; q.WebOrderID = o.weborderid;
-                q.CMCLegacyNum = o.cmclegacynumber; q.CustOrdNum = o.custordnum; q.CustSapNum = o.custsapnum; q.CustRefNum = o.custrefnum;
-                q.OrderType = o.ordertype; q.Company = o.company; q.Street = o.street; q.Street2 = o.street2;
-                q.Street3 = o.street3; q.City = o.city; q.State = o.state; q.Zip = o.Zip; q.Country = o.country; q.Attention = o.attention;
-                q.Email = o.email; q.SalesRep = o.salesrep; q.SalesEmail = o.sales_email; q.Req = o.req; q.ReqPhone = o.reqphone; q.ReqFax = o.reqfax;
-                q.ReqEmail = o.reqemail; q.EndUse = o.enduse; q.ShipVia = o.shipvia; q.ShipAcct = o.shipacct; q.Phone = o.phone; q.Source = o.source;
-                q.Fax = o.fax; q.Tracking = o.tracking; q.Special = o.special; q.SpecialInternal = o.specialinternal; q.Lit = Convert.ToBoolean(o.lit);
-                q.Region = o.region; q.COA = o.coa; q.TDS = o.tds; q.CID = o.cid; q.CustAcct = o.custacct; q.ACode = o.acode; q.ImportFile = o.importfile;
-                q.ImportDateLine = o.importdateline; q.Timing = o.timing; q.Volume = o.volume; q.SampleRack = Convert.ToBoolean(o.samplerack); q.CMCUser = o.cmcuser;
-                q.CustomerReference = o.customerreference; q.Division = o.division; q.BusArea = o.busarea; q.TotalOrderWeight = (o.totalorderweight); q.SPSTaxID = o.spstaxid;
-                q.SPSCurrency = o.spscurrency; q.SPSShippedWt = o.spsshippedwt; q.SPSFreightCost = o.spsfreightcost; q.InvoiceCompany = o.invoicecompany;
-                q.InvoiceTitle = o.invoicetitle; q.InvoiceFirstName = o.invoicefirstname; q.InvoiceLastName = o.invoicelastname; q.InvoiceAddress1 = o.invoiceaddress1;
-                q.InvoiceAddress2 = o.invoiceaddress2; q.InvoiceAddress3 = o.invoiceaddress3; q.InvoiceCity = o.invoicecity; q.InvoiceStateProv = o.invoicestateprov;
-                q.InvoicePostalCode = o.invoicepostalcode; q.InvoiceCountry = o.invoicecountry; q.InvoicePhone = o.invoicephone; q.CustOrderType = o.custordertype;
-                q.CustRequestDate = o.custrequestdate; q.ApprovalDate = o.approvaldate; q.RequestedDeliveryDate = o.requesteddeliverydate; q.CustTotalItems = o.custtotalitems;
-                q.CustRequestedCarrier = o.custrequestedcarrier; q.LegacyID = (o.legacyid);
-                q.SalesRepPhone = o.salesrepphone; q.SalesRepTerritory = o.salesrepterritory; q.MarketingRep = o.marketingrep; q.MarketingRepEmail = o.marketingrepemail;
-                q.Distributor = o.distributor; q.PreferredCarrier = o.preferredcarrier; q.ApprovalNeeded = o.approvalneeded;
+                // Hidden fields to persist for postback
+                obj.ItemID = q.ItemID;
+                obj.OrderID = q.OrderID;
+                obj.ClientID = Convert.ToInt32(cl.ClientID);
+                obj.CrudMode = "RW";    // default value
 
+                obj.ShelfID = q.ShelfID;
+                obj.ProductDetailID = q.ProductDetailID;
+                obj.ListOfProductDetailIDs = fnListOfProductCodes(obj.ClientID);
+                obj.ListOfShelfIDs = fnProductCodeSizes(Convert.ToInt32(obj.ProductDetailID));
+                //obj.AllocatedBulkID = q.AllocatedBulkID;
+                //obj.AllocatedStockID = q.AllocatedStockID;
+                //obj.ImportItemID = q.ImportItemID;
+                // read ProductCode and Size from the tblOrderItem record for display purposes if R/O (handled by view)
+                obj.ProductCode = q.ProductCode;
+                obj.ProductName = q.ProductName;
+                // retired field ???? obj.Mnemonic = q.Mnemonic;
+                obj.LotNumber = q.LotNumber;
+                obj.Qty = q.Qty;
+                obj.Size = q.Size;
+                //obj.SRSize = q.SRSize;
+                obj.ShipDate = q.ShipDate;
+                obj.NonCMCDelay = q.NonCMCDelay;
+                //obj.DelayReason = q.DelayReason;
+                //obj.BackOrdered = q.BackOrdered;
+                obj.Status = q.Status;
+                obj.AllocateStatus = q.AllocateStatus;
+                obj.CSAllocate = q.CSAllocate;
+                //obj.Bin = q.Bin;
+                //obj.CustProdCode = q.CustProdCode;
+                //obj.CustProdName = q.CustProdName;
+                //obj.CustSize = q.CustSize;
+                //obj.EmailSent = q.EmailSent;
+                //obj.BackorderEmailSent = q.BackorderEmailSent;
+                //obj.Weight = q.Weight;
+                //obj.Warehouse = q.Warehouse;
+                //obj.LineItem = q.LineItem;
+                //obj.PackID = q.PackID;
+                //obj.SPSCharge = q.SPSCharge;
+                obj.CarrierInvoiceRcvd = q.CarrierInvoiceRcvd;
+                //obj.GrnUnNumber = q.GrnUnNumber;
+                //obj.GrnPkGroup = q.GrnPkGroup;
+                //obj.AirUnNumber = q.AirUnNumber;
+                //obj.AirPkGroup = q.AirPkGroup;
+                //obj.Via = q.Via;
+                //obj.ShipWt = q.ShipWt;
+                //obj.ShipDimWt = q.ShipDimWt;
+                obj.CreateDate = q.CreateDate;
+                obj.CreateUser = q.CreateUser;
+                obj.UpdateDate = q.UpdateDate;
+                obj.UpdateUser = q.UpdateUser;
+                                
+                obj.StatusID = null;
+                obj.ListOfStatusNotesIDs = fnListOfStatusNotesIDs();
+
+                // Look for a reason to set the item R/O
+                if (q.ShipDate != null)
+                {
+                    obj.CrudMode = "RO";
+                }
+                
+                return obj;
+            }
+        }
+
+        public static void fnDeleteOrderItem(int id)
+        {
+            System.Threading.Thread.Sleep(1000);
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var qry = (from t in db.tblOrderItem where t.ItemID == id select t).FirstOrDefault();
+                
+                if(qry != null)
+                {
+                    string s = @"Delete from tblOrderItem where ItemID=" + id.ToString();
+                    db.Database.ExecuteSqlCommand(s);
+                }
+            }
+        }
+
+        public static int fnAllocateItem(int id)
+        {
+            // id= ItemId, but return the orderid
+            // TOSO refine the logic
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var dbitem = (from t in db.tblOrderItem where t.ItemID == id select t).FirstOrDefault();
+                // if not already allocated
+                if (!String.IsNullOrEmpty(dbitem.AllocateStatus))
+                {
+                    var dbstock = (from t in db.tblStock where t.ShelfID == dbitem.ShelfID && (t.QtyOnHand - t.QtyAllocated >= dbitem.Qty) && t.ShelfStatus == "AVAIL" select t).FirstOrDefault();
+                    if (dbstock != null)
+                    {
+                        dbstock.QtyAllocated = dbstock.QtyAllocated + dbitem.Qty;
+                        dbitem.AllocatedStockID = dbstock.StockID;
+                        dbitem.AllocateStatus = "A";
+                        db.SaveChanges();
+                    }
+                }
+                return Convert.ToInt32(dbitem.OrderID);
+            }
+        }
+
+
+        public static OrderTrans fnCreateTrans(int id)
+        {
+            // id=orderid
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var vm = new OrderTrans();
+                vm.ordertransid = -1;
+                vm.orderid = id;
+                var cl = (from t in db.tblOrderMaster where t.OrderID == id select t).FirstOrDefault();
+                vm.clientid = cl.ClientID;
+                vm.ListOfOrderTransTypes = fnListOfOrderTransTypes();
+                return vm;
+            }
+        }
+
+
+        public static int fnSaveTrans(OrderTrans vm)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+
+                if (vm.ordertransid == -1)
+                {
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    db.tblOrderTrans.Add(newrec);
+                    vm.createdate = System.DateTime.Now;
+                    vm.createuser = HttpContext.Current.User.Identity.Name;
+                    db.SaveChanges();
+                    vm.ordertransid = newrec.OrderTransID;
+                }
+                vm.updatedate = System.DateTime.Now;
+                vm.updateuser = HttpContext.Current.User.Identity.Name;
+
+                var d = (from t in db.tblOrderTrans where t.OrderTransID == vm.ordertransid select t).FirstOrDefault();
+                //d.ordertransid = qry.OrderTransID;
+                d.OrderID = vm.orderid;
+                d.OrderItemID = vm.orderitemid;
+                d.ClientID = vm.clientid;
+                d.TransDate = vm.transdate;
+                d.TransType = vm.transtype;
+                d.TransQty = vm.transqty;
+                d.TransAmount = vm.transamount;
+                d.Comments = vm.comments;
+                d.CreateDate = vm.createdate;
+                d.CreateUser = vm.createuser;
+                d.UpdateDate = vm.updatedate;
+                d.UpdateUser = vm.updateuser;
                 db.SaveChanges();
-                db.Dispose();
-                retvalue = pk;
-            }
-            catch
-            {
-                retvalue = 0;
-            }
-            finally
-            {
-                db.Dispose();
-            }
 
-            return retvalue;
+                return vm.ordertransid;
+             }
+
         }
 
-        private void fnClientID1() { }
-        private void fnClientID2() { }
-        private void fnClientID3() { }
 
-        private void fnAddOrderTaskToQueue()
+        public static OrderTrans fnFillTrans(int id)
         {
-            // parameters to be determined...
-            // Call from a SaveOrder method
+            OrderTrans vm = new OrderTrans();
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var qry = (from t in db.tblOrderTrans
+                           where t.OrderTransID == id
+                           select t).FirstOrDefault();
+                vm.ordertransid = qry.OrderTransID;
+                vm.orderid = qry.OrderID;
+                vm.orderitemid = qry.OrderItemID;
+                vm.clientid = qry.ClientID;
+                vm.transdate = qry.TransDate;       
+                vm.transtype = qry.TransType;
+                vm.transqty = qry.TransQty;
+                vm.transamount = qry.TransAmount;
+                vm.comments = qry.Comments;
+                vm.createdate=qry.CreateDate;
+                vm.createuser=qry.CreateUser;
+                vm.updatedate=qry.UpdateDate;
+                vm.updateuser=qry.UpdateUser;
+
+                vm.ListOfOrderTransTypes = fnListOfOrderTransTypes();
+                return vm;
+            }
+
         }
 
-        public static OrderMasterFull fillOrderMasterObject(int id)
+        //public static void fnSaveSystemTransaction(OrderTrans vm)
+        //{
+        //    using (var db = new EF.CMCSQL03Entities())
+        //    {
+        //        EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+        //        newrec.OrderItemID = vm.orderitemid;
+        //        newrec.OrderID = vm.orderid;
+        //        newrec.ClientID = vm.clientid;
+        //        newrec.CreateUser = "System";
+        //        newrec.CreateDate = System.DateTime.Now;
+        //        newrec.TransType = vm.transtype;
+        //        newrec.TransQty = vm.transqty;
+        //        newrec.TransAmount = vm.transamount;
+        //        db.tblOrderTrans.Add(newrec);
+        //        db.SaveChanges();
+        //    }
+
+        
+        //}
+
+
+        public static void fnGenerateOrderTransactions(int id)
         {
-            // Take an int and return an OrderMaster object for your pleasure
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-
-            OrderMasterFull o = new OrderMasterFull();
-            var q = (from t in db.tblOrderMaster
-                     where t.OrderID == id
-                     select t).FirstOrDefault();
-
-            // Fill lists buried in object
-            o.ListOfDivisions = fnListOfDivisions(q.ClientID);
-
-            o.orderid = q.OrderID;
-            o.clientid = q.ClientID;
-            o.customer = q.Customer;
-            o.cmcorder = Convert.ToInt32(q.CMCOrder);
-            o.weborderid = Convert.ToInt32(q.WebOrderID);
-            o.cmclegacynumber = q.CMCLegacyNum;
-            o.custordnum = q.CustOrdNum;
-            o.custsapnum = q.CustSapNum;
-            o.custrefnum = q.CustRefNum;
-            o.ordertype = q.OrderType;
-
-            if (q.OrderDate.HasValue)
-            { o.orderdate = Convert.ToDateTime(q.OrderDate); }
-            else
-            { o.orderdate = null; }
-
-            o.company = q.Company;
-            o.street = q.Street; o.street2 = q.Street2; o.street3 = q.Street3; o.city = q.City; o.state = q.State; o.Zip = q.Zip;
-            o.country = q.Country; o.attention = q.Attention; o.email = q.Email; o.salesrep = q.SalesRep; o.sales_email = q.SalesEmail;
-            o.req = q.Req; o.reqphone = q.ReqPhone; o.reqfax = q.ReqFax; o.reqemail = q.ReqEmail; o.enduse = q.EndUse; o.shipvia = q.ShipVia;
-            o.shipacct = q.ShipAcct; o.phone = q.Phone; o.source = q.Source; o.fax = q.Fax; o.tracking = q.Tracking; o.special = q.Special;
-            o.specialinternal = q.SpecialInternal; o.lit = Convert.ToBoolean(q.Lit); o.region = q.Region; o.coa = Convert.ToBoolean(q.COA);
-            o.tds = Convert.ToBoolean(q.TDS); o.cid = q.CID; o.custacct = q.CustAcct; o.acode = q.ACode;
-            o.importfile = q.ImportFile;
-
-            if (q.ImportDateLine.HasValue)
+            //id=tblOrderItem.Itemid
+            using (var db = new EF.CMCSQL03Entities())
             {
-                o.importdateline = Convert.ToDateTime(q.ImportDateLine);
+                var oi = (from t in db.tblOrderItem where t.ItemID == id select t).FirstOrDefault();
+                var o = (from t in db.tblOrderMaster where t.OrderID == oi.OrderID select t).FirstOrDefault();
+                var clt = (from t in db.tblClient where t.ClientID == o.ClientID select t).FirstOrDefault();
+                string s = "";
+
+                // Tier 1 sample charge
+                s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'SAMP' And CreateUser='System'";
+                db.Database.ExecuteSqlCommand(s);
+                var tier = (from t in db.tblTier where t.ClientID == o.ClientID && t.Size==oi.Size && t.Tier=="1" select t).FirstOrDefault();
+                if (tier != null)
+                {
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransType = "SAMP";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = tier.Price;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransType = "SAMP";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = tier.Price;
+                    newrec.Comments = "No Tier 1 price found";
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                // Other charges from shelfmaster
+                var sm = (from t in db.tblShelfMaster where t.ShelfID == oi.ShelfID select t).FirstOrDefault();
+                var qrySurcharges = (from t in db.tblSurcharge where t.ClientID == o.ClientID select t).FirstOrDefault();
+
+                if(sm.HazardSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'HAZD' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "HAZD";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = qrySurcharges.Haz;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.FlammableSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'FLAM' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "FLAM";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = qrySurcharges.Flam;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.HeatSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'HEAT' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "HEAT";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = qrySurcharges.Heat;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+                
+                if(sm.RefrigSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'REFR' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "REFR";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = qrySurcharges.Refrig;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+      
+                if(sm.FreezerSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'FREZ' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "FREZ";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = qrySurcharges.Freezer;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.CleanSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'CLEN' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "CLEN";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = qrySurcharges.Clean;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.BlendSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'BLND' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "BLND";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = 0;
+                    newrec.Comments = "Missing tblSurcharge record for BLND";
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.NalgeneSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'NALG' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "NALG";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = qrySurcharges.Nalgene;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.NitrogenSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'NITR' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "NITR";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = 0;
+                    newrec.Comments = "Missing tblSurcharge record for NITR";
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+                
+                if(sm.BiocideSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'BIOC' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "BIOC";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = 0;
+                    newrec.Comments = "Missing tblSurcharge record for BIOC";
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.KosherSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'KOSH' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "KOSH";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = 0;
+                    newrec.Comments = "Missing tblSurcharge record for KOSH";
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.LabelSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'LABL' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "LABL";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = qrySurcharges.LabelFee;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                if(sm.OtherSurcharge==true)
+                {
+                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'OTHR' And CreateUser='System'";
+                    db.Database.ExecuteSqlCommand(s);
+                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.OrderItemID = oi.ItemID;
+                    newrec.OrderID = oi.OrderID;
+                    newrec.ClientID = o.ClientID;
+                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransType = "OTHR";
+                    newrec.TransQty = oi.Qty;
+                    newrec.TransAmount = sm.OtherSurchargeAmt;
+                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateUser = "System";
+                    db.tblOrderTrans.Add(newrec);
+                    db.SaveChanges();
+                }
+
             }
-            else
-            {
-                o.importdateline = null;
-            }
-
-            o.timing = q.Timing; o.volume = q.Volume; o.samplerack = Convert.ToBoolean(q.SampleRack); o.cmcuser = q.CMCUser;
-            o.customerreference = q.CustomerReference; o.division = q.Division; o.busarea = q.BusArea; o.totalorderweight = q.TotalOrderWeight;
-            o.spstaxid = q.SPSTaxID; o.spscurrency = q.SPSCurrency; o.spsshippedwt = q.SPSShippedWt; o.spsfreightcost = q.SPSFreightCost;
-            o.invoicecompany = q.InvoiceCompany; o.invoicetitle = q.InvoiceTitle; o.invoicefirstname = q.InvoiceFirstName; o.invoicelastname = q.InvoiceLastName;
-            o.invoiceaddress1 = q.InvoiceAddress1; o.invoiceaddress2 = q.InvoiceAddress2; o.invoiceaddress3 = q.InvoiceAddress3; o.invoicecity = q.InvoiceCity;
-            o.invoicestateprov = q.InvoiceStateProv; o.invoicepostalcode = q.InvoicePostalCode; o.invoicecountry = q.InvoiceCountry; o.invoicephone = q.InvoicePhone;
-            o.custordertype = q.CustOrderType;
-
-            o.custrequestdate = null;
-
-            if (q.CustRequestDate.HasValue)
-            {
-                o.custrequestdate = q.CustRequestDate;
-            }
-
-            o.approvaldate = null;
-
-            if (q.ApprovalDate.HasValue)
-            {
-                o.approvaldate = q.ApprovalDate;
-            }
-
-            o.requesteddeliverydate = null;
-
-            if (q.RequestedDeliveryDate.HasValue)
-            {
-                o.requesteddeliverydate = q.RequestedDeliveryDate;
-            }
-
-            o.custtotalitems = Convert.ToInt32(q.CustTotalItems);
-            o.custrequestedcarrier = q.CustRequestedCarrier;
-            o.legacyid = Convert.ToInt32(q.LegacyID);
-            o.salesrepphone = q.SalesRepPhone;
-            o.salesrepterritory = q.SalesRepTerritory;
-            o.marketingrep = q.MarketingRep;
-            o.marketingrepemail = q.MarketingRepEmail;
-            o.distributor = q.Distributor;
-            o.preferredcarrier = q.PreferredCarrier;
-            o.approvalneeded = Convert.ToBoolean(q.ApprovalNeeded);
-
-            return o;
+            
         }
 
-        private static MvcPhoenix.EF.CMCSQL03Entities dbnew = new MvcPhoenix.EF.CMCSQL03Entities();
 
-        private static string connstring()
+        public static void fnArchiveOrderMaster(int id)
         {
-            string s = System.Configuration.ConfigurationManager.ConnectionStrings["ADOConnectionString"].ConnectionString;
-            return s;
+
+            // stash a copy before update
         }
 
-        public static int NewPK(string sql)
+        public static void fnArchiveOrderItem(int id)
         {
-            int recs = 0;
-            sql = sql + ";SELECT SCOPE_IDENTITY();";
-            System.Data.SqlClient.SqlConnection conn = new System.Data.SqlClient.SqlConnection();
-            conn.ConnectionString = connstring();
-            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sql, conn);
-            conn.Open();
-            recs = Convert.ToInt32(cmd.ExecuteScalar());
-            conn.Close();
-            return recs;
+            // stash a copy before update
+
         }
+
+
+
+
+
+        // ****************************************************
+        // Service utility methods
+        // ****************************************************
+
+        public static List<SelectListItem> fnListOfClientIDs()
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblClient
+                          orderby t.ClientName
+                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+                return mylist;
+            }
+        }
+        
+        //private static string AppKey(string sAppKey)
+        //{
+        //    string s = "System.Configuration.ConfigurationManager.AppSettings['" + sAppKey + "'].ConnectionString";
+        //    return s;
+        //}
+
+
+        //public static int NewPK(string sql)
+        //{
+        //    int recs = 0;
+        //    sql = sql + ";SELECT SCOPE_IDENTITY();";
+        //    System.Data.SqlClient.SqlConnection conn = new System.Data.SqlClient.SqlConnection();
+        //    conn.ConnectionString = connstring();
+        //    System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sql, conn);
+        //    conn.Open();
+        //    recs = Convert.ToInt32(cmd.ExecuteScalar());
+        //    conn.Close();
+        //    return recs;
+        //}
 
         public static int ExecuteADOSQL(string sql)
         {
-            dbnew.Database.ExecuteSqlCommand(sql);
-            return 1;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                db.Database.ExecuteSqlCommand(sql);
+                return 1;
+            }
         }
 
-        public static string ClientNameForDisplay(int? id)
+
+        private static List<SelectListItem> fnListOfOrderTransTypes()
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            string s = (from t in db.tblClient
-                        where t.ClientID == id
-                        select t.ClientName).FirstOrDefault();
-            db.Dispose();
-            return s;
+            List<SelectListItem> mylist = new List<SelectListItem>();
+            mylist.Add(new SelectListItem { Text = "BIOC", Value = "BIOC" });
+            mylist.Add(new SelectListItem { Text = "BLND", Value = "BLND" });
+            mylist.Add(new SelectListItem { Text = "CLEN", Value = "CLEN" });
+            mylist.Add(new SelectListItem { Text = "FLAM", Value = "FLAM" });
+            mylist.Add(new SelectListItem { Text = "FREZ", Value = "FREZ" });
+            mylist.Add(new SelectListItem { Text = "HAZD", Value = "HAZD" });
+            mylist.Add(new SelectListItem { Text = "HEAT", Value = "HEAT" });
+            mylist.Add(new SelectListItem { Text = "KOSH", Value = "KOSH" });
+            mylist.Add(new SelectListItem { Text = "LABL", Value = "LABL" });
+            mylist.Add(new SelectListItem { Text = "MISC", Value = "MISC" });
+            mylist.Add(new SelectListItem { Text = "MEMO", Value = "MEMO" });
+            mylist.Add(new SelectListItem { Text = "NALG", Value = "NALG" });
+            mylist.Add(new SelectListItem { Text = "NITR", Value = "NITR" });
+            mylist.Add(new SelectListItem { Text = "REFR", Value = "REFR" });
+            mylist.Add(new SelectListItem { Text = "SAMP", Value = "SAMP" });
+            mylist.Add(new SelectListItem { Text = "OTHR", Value = "OTHR" });
+            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Type" });
+            return mylist;
         }
+
+
+
+        //fnListOfBillingGroups
+        public static List<SelectListItem> fnListOfBillingGroups(int? id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblDivision
+                              where t.ClientID == id
+                           orderby t.Division
+                           select new SelectListItem{Value=t.Division,Text=t.Division}).Distinct().ToList();
+                           mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
+                return mylist;
+            }
+        }
+
+        
+
+        //public static string ClientNameForDisplay(int? id)
+        //{
+        //    using (var db = new EF.CMCSQL03Entities())
+        //    {
+        //        string s = (from t in db.tblClient
+        //                    where t.ClientID == id
+        //                    select t.ClientName).FirstOrDefault();
+        //        return s;
+        //    }
+        //}
 
         public static List<OrderItem> fnListOfOrderItemsForOrderID(long OrderID)
         {
-            List<OrderItem> mylist = new List<OrderItem>();
-            var qry = (from t in dbnew.tblOrderItem
-                       where t.OrderID == OrderID
-                       select t).ToList();
-            dbnew.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<OrderItem> mylist = new List<OrderItem>();
+                var qry = (from t in db.tblOrderItem
+                           where t.OrderID == OrderID
+                           select t).ToList();
+                return mylist;
+            }
         }
 
-        public static List<SelectListItem> fnProductCodeSizes(int myprofileid)
+        public static List<SelectListItem> fnProductCodeSizes(int id)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-
-            mylist = (from t in db.tblSampSize
-                      where t.ProfileID == myprofileid
-                      orderby t.ProductCode
-                      select
-                        new SelectListItem { Value = t.Size, Text = t.Size }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = " -- Size --" });
-            db.Dispose();
-            return mylist;
-
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblShelfMaster
+                          where t.ProductDetailID == id
+                          select new SelectListItem { Value = t.ShelfID.ToString(), Text = t.Size }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = " -- Size --" });
+                return mylist;
+            }
         }
 
-        public static List<SelectListItem> fnProductCodeXref(int? clientid)
+        public static List<SelectListItem> fnProductCodeXref(int? id)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
 
-            mylist = (from t in db.tblProductXRef
-                      where t.ClientID == clientid
-                      orderby t.CustProductCode
-                      select
-                      new SelectListItem { Value = t.CustProductCode, Text = t.CustProductCode + " : " + t.CMCProductCode }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = " -- Cust Product Code -- " });
-            db.Dispose();
-            return mylist;
-
+                mylist = (from t in db.tblProductXRef
+                          where t.ClientID == id
+                          orderby t.CustProductCode
+                          select new SelectListItem { Value = t.CustProductCode, Text = t.CustProductCode + " : " + t.CMCProductCode }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = " -- Cust Product Code -- " });
+                return mylist;
+            }
         }
 
         public static List<SelectListItem> fnListOfOrderIDs()
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            // How do you do a top 30 select ?????
-            List<SelectListItem> mylist = new List<SelectListItem>();
-
-            mylist = (from t in db.tblOrderMaster
-                      orderby t.OrderID descending
-                      select
-                          new SelectListItem { Value = t.OrderID.ToString(), Text = t.OrderID.ToString() }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblOrderMaster
+                          orderby t.OrderID descending
+                          select new SelectListItem { Value = t.OrderID.ToString(), Text = t.OrderID.ToString() }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
-        public static List<SelectListItem> fnListOfClientIDs()
-        {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblClient
-                      orderby t.ClientName
-                      select
-                          new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-            db.Dispose();
-            return mylist;
-        }
 
         public static List<SelectListItem> fnListOfOrderTypes()
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblOrderType
-                      orderby t.OrderType
-                      select
-                          new SelectListItem { Value = t.OrderType, Text = t.OrderType }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblOrderType
+                          orderby t.OrderType
+                          select new SelectListItem { Value = t.OrderType, Text = t.OrderType }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
         public static List<SelectListItem> fnListOfCountries()
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblCountry
-                      orderby t.Country
-                      select
-                          new SelectListItem { Value = t.Country, Text = t.Country }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblCountry
+                          orderby t.Country
+                          select new SelectListItem { Value = t.Country, Text = t.Country }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                db.Dispose();
+                return mylist;
+            }
         }
 
-        public static List<SelectListItem> fnListOfSalesReps(int myclientid)
+        public static List<SelectListItem> fnListOfSalesReps(int? id)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblClientContact
-                      where t.ContactType == "SalesRep"
-                      where t.ClientID.Equals(myclientid)
-                      orderby t.FullName
-                      select
-                          new SelectListItem { Value = t.FullName, Text = t.FullName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblClientContact
+                          where t.ContactType == "SalesRep"
+                          where t.ClientID == id
+                          orderby t.FullName
+                          select new SelectListItem { Value = t.FullName, Text = t.FullName }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
-        public static List<SelectListItem> fnListOfRequestors(int myclientid)
+        public static List<SelectListItem> fnListOfRequestors(int id)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblClientContact
-                      where t.ContactType == "Requestor"
-                      where t.ClientID == myclientid
-                      orderby t.FullName
-                      select
-                          new SelectListItem { Value = t.FullName, Text = t.FullName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblClientContact
+                          where t.ContactType == "Requestor"
+                          where t.ClientID == id
+                          orderby t.FullName
+                          select new SelectListItem { Value = t.FullName, Text = t.FullName }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
-        public static List<SelectListItem> fnListOfEndUses(int? myclientid)
+        public static List<SelectListItem> fnListOfEndUses(int? id)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblEndUse
-                      where t.ClientID == myclientid
-                      orderby t.EndUse
-                      select
-                          new SelectListItem { Value = t.EndUse, Text = t.EndUse }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblEndUse
+                          where t.ClientID == id
+                          orderby t.EndUse
+                          select new SelectListItem { Value = t.EndUse, Text = t.EndUse }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
         public static List<SelectListItem> fnListOfShipVias()
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblCarrier
-                      orderby t.CarrierName
-                      select
-                          new SelectListItem { Value = t.CarrierName, Text = t.CarrierName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblCarrier
+                          orderby t.CarrierName
+                          select new SelectListItem { Value = t.CarrierName, Text = t.CarrierName }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
         public static List<SelectListItem> fnListOfOrderSources()
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblOrderSource
-                      orderby t.Source
-                      select
-                          new SelectListItem { Value = t.Source, Text = t.Source }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblOrderSource
+                          orderby t.Source
+                          select new SelectListItem { Value = t.Source, Text = t.Source }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
-        public static List<SelectListItem> fnListOfDivisions(int? myclientid)
+        public static List<SelectListItem> fnListOfDivisions(int? id)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblDivision
-                      where t.ClientID == myclientid
-                      orderby t.Division
-                      select
-                          new SelectListItem { Value = t.Division, Text = t.Division }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblDivision
+                          where t.ClientID == id
+                          orderby t.Division
+                          select new SelectListItem { Value = t.Division, Text = t.Division }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
-        public static List<SelectListItem> fnListOfProductCodes(int myclientid)
+        public static List<SelectListItem> fnListOfProductCodes(int? id)
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
             List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblProfile
-                      where t.ClientID == myclientid
-                      orderby t.ProductCode
-                      select
-                          new SelectListItem { Value = t.ProductCode, Text = t.ProductCode + " " + t.ProductName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                mylist = (from t in db.tblProductDetail
+                          join m in db.tblProductMaster on t.ProductMasterID equals m.ProductMasterID
+                          where m.ClientID==id 
+                          orderby t.ProductCode
+                          select new SelectListItem { Value = t.ProductDetailID.ToString(), Text = t.ProductCode + " " + t.ProductName }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
         public static List<SelectListItem> fnListOfShipViasItemLevel()
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblCarrier
-                      orderby t.CarrierName
-                      select
-                      new SelectListItem { Value = t.CarrierName, Text = t.CarrierName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            db.Dispose();
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblCarrier
+                          orderby t.CarrierName
+                          select new SelectListItem { Value = t.CarrierName, Text = t.CarrierName }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
 
         public static List<SelectListItem> fnListOfStatuses()
         {
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist.Add(new SelectListItem { Value = "S1", Text = "S1" });
-            mylist.Add(new SelectListItem { Value = "S2", Text = "S2" });
-            mylist.Add(new SelectListItem { Value = "S3", Text = "S3" });
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            return mylist;
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist.Add(new SelectListItem { Value = "S1", Text = "S1" });
+                mylist.Add(new SelectListItem { Value = "S2", Text = "S2" });
+                mylist.Add(new SelectListItem { Value = "S3", Text = "S3" });
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
         }
+
+
+        public static List<SelectListItem> fnListOfStatusNotesIDs()
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                //mylist = (from t in db.tblStatusNotes orderby t.Note select new SelectListItem { Value = t.StatusNotesID.ToString(), Text = t.Note }).ToList();
+                mylist = (from t in db.tblStatusNotes orderby t.Note select new SelectListItem { Value = t.Note, Text = t.Note }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                return mylist;
+            }
+        }
+
+
+
+    
+    
     }
 }
