@@ -1,108 +1,83 @@
-﻿@using MvcPhoenix.Models
+﻿@model List<MvcPhoenix.Models.OrderItem>
+@{
+    ViewBag.Title = "Order Items";
+    
+}
 
-<div id="w004" name="w004">
-    @{
-        MvcPhoenix.EF.CMCSQL03Entities w004_db = new MvcPhoenix.EF.CMCSQL03Entities();
-        int iOrderID = Convert.ToInt32(Session["OrderID"]);
-        // List for grid
-        var qryitems =
-            (from t in w004_db.tblOrderItem
-             where t.OrderID == iOrderID
-             orderby t.ProductCode, t.ShipDate descending
-             select t).ToList();
-        w004_db.Dispose();
-    }
-
-    <!-- Modal placeholder for edit interface in partial -->
-    <!-- IMPORTANT: add a <div> into the modal-body and use that as AJAX targetid  -->
-    <div class="modal" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div id="modal99" style="background-color:white;">
-                        @Html.Partial("~/Views/Orders/_ItemEditModal.cshtml", new MvcPhoenix.Models.OrderItem())
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <span class="pull-left" style="padding-bottom: 20px;">
-            @Ajax.ActionLink("Add an item to this order", "SetUpNewItem", "Orders", new { ItemID = -1, Mode = "Add", myOrderID = iOrderID },
-                    new AjaxOptions
-                    {
-                        UpdateTargetId = "modal99",
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        OnSuccess = "$('#myModal').modal('show');"
-                    }, new { @class = "btn btn-primary" })
-        </span>
-        <span class="pull-right">
-            <b>Item Count:</b> @qryitems.Count
-        </span>
-    </div>
-    <div class="clearfix"></div>
-
-    <div class="table-responsive">
-        <table id="mytable" class="table table-hover table-striped" style="font-size:.85em;">
-            <tr>
-                <th class="text-center"><i class="fa fa-fw fa-trash-o"></i></th>
-                <th>#</th>
-                <th>ID</th>
-                <th>Product Code</th>
-                <th>Mnemonic</th>
-                <th>Name</th>
-                <th>Size</th>
-                <th>SR Size</th>
-                <th>Lot#</th>
-                <th>Qty</th>
-                <th>Ship Date</th>
-                <th class="text-center">BO</th>
-                <th class="text-center">Delay</th>
-                @*<th class="text-center">Invoice</th>*@
-                <th class="text-center">A-Status</th>
-                @*<th class="text-center">CS-Status</th>*@
-                <th class="text-center"><i class="fa fa-fw fa-send-o"></i></th>
-                <th class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
-            </tr>
-            <tbody>
-                @foreach (var item in qryitems)
-                {
-                    <tr>
-                        <td class="text-center">
-                            <a title="Delete" data-ajax="true" data-ajax-confirm="Are You Sure You Want To DELETE Product Code: @item.ProductCode From This Order?"
-                               data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#w004" href="~/Orders/DeleteItemFromOrder/@item.ItemID"><i class="fa fa-fw fa-minus-circle" style="color:red"></i></a>
-                        </td>
-                        <td>@(qryitems.IndexOf(item) + 1)</td>
-                        <td>@item.ItemID</td>
-                        <td>@item.ProductCode</td>
-                        <td>@item.Mnemonic</td>
-                        <td>@item.ProductName</td>
-                        <td>@item.Size</td>
-                        <td>@item.SRSize</td>
-                        <td>@item.LotNumber</td>
-                        <td>@item.Qty</td>
-                        <td>@item.ShipDate</td>
-                        <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
-                        <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" disabled="disabled" /></td>
-                        @*<td class="text-center"><input type="checkbox" checked="@item.CarrierInvoiceRcvd" readonly="readonly" onclick="return false" /></td>*@
-                        <td class="text-center"><input type="checkbox" checked="@item.CSAllocate" readonly="readonly" onclick="return false" /></td>
-                        @*<td class="text-center"><input type="checkbox" checked="@item.CustStatus" readonly="readonly" onclick="return false" /></td>*@
-                        <td class="text-center"><a title="Allocate" class="btn btn-xs btn-warning" onclick="alert('Allocation Feature Is Currently Under Development. \n\nCheck Back Later.')"><i class="fa fa-fw fa-briefcase"></i></a></td>
-                        <td class="text-center">
-                            @Ajax.ActionLink("Edit", "SetUpEditItem", "Orders", new { ItemID = @item.ItemID, Mode = "Edit" }, new AjaxOptions
+<div class="table-responsive">
+    <table id="mytable" class="table table-hover table-striped" style="font-size:.85em;">
+        <tr>
+            @*<th class="text-center"><i class="fa fa-fw fa-trash-o"></i></th>*@
+            <th>#</th>
+            @*<th>ItemID</th>*@
+            @*<th>PD ID</th>*@
+            <th>Product Code</th>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Lot#</th>
+            <th>Qty</th>
+            <th>Ship Date</th>
+            <th class="text-center">BO</th>
+            <th class="text-center">Delay</th>
+            <th class="text-center">Avail</th>
+            <th class="text-center">A-Status</th>
+            <th class="text-center"><i class="fa fa-fw fa-send-o"></i></th>
+            <th class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
+        </tr>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td class="text-center">
+                    <a title="Delete" data-ajax="true" data-ajax-confirm="Are You Sure You Want To DELETE Product Code: @item.ProductCode From This Order?"
+                           data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#w004" href="~/Orders/XXXXXXXXXX/@item.ItemID"><i class="fa fa-fw fa-minus-circle" style="color:red"></i></a>
+                    </td>*@
+                    <td>@(Model.IndexOf(item) + 1)</td>
+                    @*<td>@item.ItemID</td>*@
+                    @*<td>@item.ProductDetailID</td>*@
+                    <td>@item.ProductCode</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Size</td>
+                    <td>@item.LotNumber</td>
+                    <td class="text-center">@item.Qty</td>
+                    <td>@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
+                    <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
+                    <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" disabled="disabled" /></td>
+                    <td class="text-center">@item.QtyAvailable.ToString()</td>
+                    <td class="text-center">@item.AllocateStatus</td>
+                    <td class="text-center">
+                        <!-- call allocate, update the orderitems partial -->
+                            @Ajax.ActionLink(" ", "AllocateItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
                              {
-                                 UpdateTargetId = "modal99",
+                                 UpdateTargetId = "dvOrderItemsList",
                                  InsertionMode = InsertionMode.Replace,
                                  HttpMethod = "GET",
-                                 OnSuccess = "$('#myModal').modal('show');"
-                             }, new { @class = "btn btn-xs btn-primary" })
+                                 OnFailure="alert('failed to allocate')",
+                                 OnSuccess="UpdateItemsList"
+                             }, new { @class = "btn btn-xs btn-warning fa fa-fw fa-briefcase" })
 
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                    </td>
+
+                    <td class="text-center">
+                        @Ajax.ActionLink("Edit", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
+                             {
+                                 UpdateTargetId = "dialogPlaceholder",
+                                 InsertionMode = InsertionMode.Replace,
+                                 HttpMethod = "GET",
+                                 OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                             }, new { @class = "btn btn-xs btn-primary" })
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
+<script type="text/javascript">
+
+    function UpdateItemsList() {
+        $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { id = @Model[0].OrderID })');
+    }
+
+</script>
