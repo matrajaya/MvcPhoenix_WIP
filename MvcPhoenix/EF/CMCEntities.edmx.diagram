@@ -54,6 +54,7 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderMaster" Width="1.5" PointX="5.375" PointY="24.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductMaster" Width="1.5" PointX="7.375" PointY="24.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblCustomer" Width="1.5" PointX="15.375" PointY="25.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblClient2" Width="1.5" PointX="25.375" PointY="25.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

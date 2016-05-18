@@ -254,6 +254,80 @@
           <Property Name="BOLComment" Type="nvarchar" MaxLength="4000" />
           <Property Name="LogoFileName" Type="nvarchar" MaxLength="150" />
         </EntityType>
+        <EntityType Name="tblClient2">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="LegacyID" Type="int" />
+          <Property Name="GlobalClientID" Type="int" />
+          <Property Name="ClientCode" Type="nvarchar(max)" />
+          <Property Name="ClientName" Type="nvarchar(max)" />
+          <Property Name="CMCLocation" Type="nvarchar(max)" />
+          <Property Name="ClientReference" Type="nvarchar(max)" />
+          <Property Name="ClientEntityName" Type="nvarchar(max)" />
+          <Property Name="ClientCurrency" Type="nvarchar(max)" />
+          <Property Name="ClientUM" Type="nvarchar(max)" />
+          <Property Name="MSDS" Type="bit" />
+          <Property Name="MSDSFileDir" Type="nvarchar(max)" />
+          <Property Name="TDS" Type="bit" />
+          <Property Name="TDSFileDir" Type="nvarchar(max)" />
+          <Property Name="COA" Type="bit" />
+          <Property Name="COAFileDir" Type="nvarchar(max)" />
+          <Property Name="BOLComment" Type="nvarchar(max)" />
+          <Property Name="LogoFileDir" Type="nvarchar(max)" />
+          <Property Name="InvoiceAddress" Type="nvarchar(max)" />
+          <Property Name="InvoiceEmailTo" Type="nvarchar(max)" />
+          <Property Name="KeyContactDir" Type="nvarchar(max)" />
+          <Property Name="ClientContact" Type="nvarchar(max)" />
+          <Property Name="CMCContact" Type="nvarchar(max)" />
+          <Property Name="ClientUrl" Type="nvarchar(max)" />
+          <Property Name="ProductSetupDetails" Type="nvarchar(max)" />
+          <Property Name="SDSLanguage" Type="nvarchar(max)" />
+          <Property Name="SDSUpdateMethod" Type="nvarchar(max)" />
+          <Property Name="LabelLanguage" Type="nvarchar(max)" />
+          <Property Name="SDSRequired" Type="bit" />
+          <Property Name="COARequired" Type="bit" />
+          <Property Name="TDSRequired" Type="bit" />
+          <Property Name="CoverLetterRequired" Type="nvarchar(max)" />
+          <Property Name="InventoryReports" Type="nvarchar(max)" />
+          <Property Name="CeaseShipPeriod" Type="nvarchar(max)" />
+          <Property Name="ReplenishmentLeadDays" Type="nvarchar(max)" />
+          <Property Name="ExpDateOnLabel" Type="bit" />
+          <Property Name="ExpDateRules" Type="nvarchar(max)" />
+          <Property Name="WasteProcedure" Type="nvarchar(max)" />
+          <Property Name="InventoryBusinessRules" Type="nvarchar(max)" />
+          <Property Name="SpecialReqAllowed" Type="nvarchar(max)" />
+          <Property Name="CommercialInvoiceValue" Type="nvarchar(max)" />
+          <Property Name="FreezableProcedure" Type="nvarchar(max)" />
+          <Property Name="SurveyUsed" Type="bit" />
+          <Property Name="CSBusinessRules" Type="nvarchar(max)" />
+          <Property Name="ShipConfirmEmail" Type="nvarchar(max)" />
+          <Property Name="InvoiceSegregation" Type="nvarchar(max)" />
+          <Property Name="ChargesSummary" Type="nvarchar(max)" />
+          <Property Name="PartialDeliveryAllowed" Type="nvarchar(max)" />
+          <Property Name="ClientStatus" Type="nvarchar(max)" />
+          <Property Name="ActiveDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="SurchageHazard" Type="int" />
+          <Property Name="SurchargeFlammable" Type="int" />
+          <Property Name="SurchargeHeat" Type="int" />
+          <Property Name="SurchargeRefrigerate" Type="int" />
+          <Property Name="SurchargeFreeze" Type="int" />
+          <Property Name="SurchargeClean" Type="int" />
+          <Property Name="SurchargeNalgene" Type="int" />
+          <Property Name="SurchargeNitrogen" Type="int" />
+          <Property Name="SurchargeBiocide" Type="int" />
+          <Property Name="SurchargeBlend" Type="int" />
+          <Property Name="SurchargeKosher" Type="int" />
+          <Property Name="HazDHServLvl1" Type="int" />
+          <Property Name="HazDHServLvl2" Type="int" />
+          <Property Name="HazDHServLvl3" Type="int" />
+          <Property Name="HazDHServLvl4" Type="int" />
+          <Property Name="NonHazDHServLvl1" Type="int" />
+          <Property Name="NonHazDHServLvl2" Type="int" />
+          <Property Name="NonHazDHServLvl3" Type="int" />
+          <Property Name="NonHazDHServLvl4" Type="int" />
+        </EntityType>
         <EntityType Name="tblClientContact">
           <Key>
             <PropertyRef Name="ClientContactID" />
@@ -1407,6 +1481,7 @@
           <EntitySet Name="tblCarrier" EntityType="Self.tblCarrier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCAS" EntityType="Self.tblCAS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblClient2" EntityType="Self.tblClient2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClientContact" EntityType="Self.tblClientContact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClientIncidentalRate" EntityType="Self.tblClientIncidentalRate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClientInvoiceTrans" EntityType="Self.tblClientInvoiceTrans" Schema="dbo" store:Type="Tables" />
@@ -1503,6 +1578,7 @@
           <EntitySet Name="tblOrderMaster" EntityType="CMCSQL03Model.tblOrderMaster" />
           <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
           <EntitySet Name="tblCustomer" EntityType="CMCSQL03Model.tblCustomer" />
+          <EntitySet Name="tblClient2" EntityType="CMCSQL03Model.tblClient2" />
         </EntityContainer>
         <EntityType Name="tblBulk">
           <Key>
@@ -2896,6 +2972,80 @@
           <Property Name="LegacyID" Type="Int32" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblClient2">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="GlobalClientID" Type="Int32" />
+          <Property Name="ClientCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CMCLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientReference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientEntityName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientCurrency" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientUM" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MSDS" Type="Boolean" />
+          <Property Name="MSDSFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TDS" Type="Boolean" />
+          <Property Name="TDSFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="COA" Type="Boolean" />
+          <Property Name="COAFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BOLComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogoFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceEmailTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="KeyContactDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientContact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CMCContact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSetupDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDSLanguage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDSUpdateMethod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LabelLanguage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDSRequired" Type="Boolean" />
+          <Property Name="COARequired" Type="Boolean" />
+          <Property Name="TDSRequired" Type="Boolean" />
+          <Property Name="CoverLetterRequired" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InventoryReports" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CeaseShipPeriod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReplenishmentLeadDays" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExpDateOnLabel" Type="Boolean" />
+          <Property Name="ExpDateRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WasteProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InventoryBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SpecialReqAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CommercialInvoiceValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FreezableProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SurveyUsed" Type="Boolean" />
+          <Property Name="CSBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShipConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceSegregation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChargesSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PartialDeliveryAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActiveDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="SurchageHazard" Type="Int32" />
+          <Property Name="SurchargeFlammable" Type="Int32" />
+          <Property Name="SurchargeHeat" Type="Int32" />
+          <Property Name="SurchargeRefrigerate" Type="Int32" />
+          <Property Name="SurchargeFreeze" Type="Int32" />
+          <Property Name="SurchargeClean" Type="Int32" />
+          <Property Name="SurchargeNalgene" Type="Int32" />
+          <Property Name="SurchargeNitrogen" Type="Int32" />
+          <Property Name="SurchargeBiocide" Type="Int32" />
+          <Property Name="SurchargeBlend" Type="Int32" />
+          <Property Name="SurchargeKosher" Type="Int32" />
+          <Property Name="HazDHServLvl1" Type="Int32" />
+          <Property Name="HazDHServLvl2" Type="Int32" />
+          <Property Name="HazDHServLvl3" Type="Int32" />
+          <Property Name="HazDHServLvl4" Type="Int32" />
+          <Property Name="NonHazDHServLvl1" Type="Int32" />
+          <Property Name="NonHazDHServLvl2" Type="Int32" />
+          <Property Name="NonHazDHServLvl3" Type="Int32" />
+          <Property Name="NonHazDHServLvl4" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -4342,6 +4492,81 @@
                 <ScalarProperty Name="ShipToCompany" ColumnName="ShipToCompany" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblClient2">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblClient2">
+              <MappingFragment StoreEntitySet="tblClient2">
+                <ScalarProperty Name="NonHazDHServLvl4" ColumnName="NonHazDHServLvl4" />
+                <ScalarProperty Name="NonHazDHServLvl3" ColumnName="NonHazDHServLvl3" />
+                <ScalarProperty Name="NonHazDHServLvl2" ColumnName="NonHazDHServLvl2" />
+                <ScalarProperty Name="NonHazDHServLvl1" ColumnName="NonHazDHServLvl1" />
+                <ScalarProperty Name="HazDHServLvl4" ColumnName="HazDHServLvl4" />
+                <ScalarProperty Name="HazDHServLvl3" ColumnName="HazDHServLvl3" />
+                <ScalarProperty Name="HazDHServLvl2" ColumnName="HazDHServLvl2" />
+                <ScalarProperty Name="HazDHServLvl1" ColumnName="HazDHServLvl1" />
+                <ScalarProperty Name="SurchargeKosher" ColumnName="SurchargeKosher" />
+                <ScalarProperty Name="SurchargeBlend" ColumnName="SurchargeBlend" />
+                <ScalarProperty Name="SurchargeBiocide" ColumnName="SurchargeBiocide" />
+                <ScalarProperty Name="SurchargeNitrogen" ColumnName="SurchargeNitrogen" />
+                <ScalarProperty Name="SurchargeNalgene" ColumnName="SurchargeNalgene" />
+                <ScalarProperty Name="SurchargeClean" ColumnName="SurchargeClean" />
+                <ScalarProperty Name="SurchargeFreeze" ColumnName="SurchargeFreeze" />
+                <ScalarProperty Name="SurchargeRefrigerate" ColumnName="SurchargeRefrigerate" />
+                <ScalarProperty Name="SurchargeHeat" ColumnName="SurchargeHeat" />
+                <ScalarProperty Name="SurchargeFlammable" ColumnName="SurchargeFlammable" />
+                <ScalarProperty Name="SurchageHazard" ColumnName="SurchageHazard" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="ClientStatus" ColumnName="ClientStatus" />
+                <ScalarProperty Name="PartialDeliveryAllowed" ColumnName="PartialDeliveryAllowed" />
+                <ScalarProperty Name="ChargesSummary" ColumnName="ChargesSummary" />
+                <ScalarProperty Name="InvoiceSegregation" ColumnName="InvoiceSegregation" />
+                <ScalarProperty Name="ShipConfirmEmail" ColumnName="ShipConfirmEmail" />
+                <ScalarProperty Name="CSBusinessRules" ColumnName="CSBusinessRules" />
+                <ScalarProperty Name="SurveyUsed" ColumnName="SurveyUsed" />
+                <ScalarProperty Name="FreezableProcedure" ColumnName="FreezableProcedure" />
+                <ScalarProperty Name="CommercialInvoiceValue" ColumnName="CommercialInvoiceValue" />
+                <ScalarProperty Name="SpecialReqAllowed" ColumnName="SpecialReqAllowed" />
+                <ScalarProperty Name="InventoryBusinessRules" ColumnName="InventoryBusinessRules" />
+                <ScalarProperty Name="WasteProcedure" ColumnName="WasteProcedure" />
+                <ScalarProperty Name="ExpDateRules" ColumnName="ExpDateRules" />
+                <ScalarProperty Name="ExpDateOnLabel" ColumnName="ExpDateOnLabel" />
+                <ScalarProperty Name="ReplenishmentLeadDays" ColumnName="ReplenishmentLeadDays" />
+                <ScalarProperty Name="CeaseShipPeriod" ColumnName="CeaseShipPeriod" />
+                <ScalarProperty Name="InventoryReports" ColumnName="InventoryReports" />
+                <ScalarProperty Name="CoverLetterRequired" ColumnName="CoverLetterRequired" />
+                <ScalarProperty Name="TDSRequired" ColumnName="TDSRequired" />
+                <ScalarProperty Name="COARequired" ColumnName="COARequired" />
+                <ScalarProperty Name="SDSRequired" ColumnName="SDSRequired" />
+                <ScalarProperty Name="LabelLanguage" ColumnName="LabelLanguage" />
+                <ScalarProperty Name="SDSUpdateMethod" ColumnName="SDSUpdateMethod" />
+                <ScalarProperty Name="SDSLanguage" ColumnName="SDSLanguage" />
+                <ScalarProperty Name="ProductSetupDetails" ColumnName="ProductSetupDetails" />
+                <ScalarProperty Name="ClientUrl" ColumnName="ClientUrl" />
+                <ScalarProperty Name="CMCContact" ColumnName="CMCContact" />
+                <ScalarProperty Name="ClientContact" ColumnName="ClientContact" />
+                <ScalarProperty Name="KeyContactDir" ColumnName="KeyContactDir" />
+                <ScalarProperty Name="InvoiceEmailTo" ColumnName="InvoiceEmailTo" />
+                <ScalarProperty Name="InvoiceAddress" ColumnName="InvoiceAddress" />
+                <ScalarProperty Name="LogoFileDir" ColumnName="LogoFileDir" />
+                <ScalarProperty Name="BOLComment" ColumnName="BOLComment" />
+                <ScalarProperty Name="COAFileDir" ColumnName="COAFileDir" />
+                <ScalarProperty Name="COA" ColumnName="COA" />
+                <ScalarProperty Name="TDSFileDir" ColumnName="TDSFileDir" />
+                <ScalarProperty Name="TDS" ColumnName="TDS" />
+                <ScalarProperty Name="MSDSFileDir" ColumnName="MSDSFileDir" />
+                <ScalarProperty Name="MSDS" ColumnName="MSDS" />
+                <ScalarProperty Name="ClientUM" ColumnName="ClientUM" />
+                <ScalarProperty Name="ClientCurrency" ColumnName="ClientCurrency" />
+                <ScalarProperty Name="ClientEntityName" ColumnName="ClientEntityName" />
+                <ScalarProperty Name="ClientReference" ColumnName="ClientReference" />
+                <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="ClientCode" ColumnName="ClientCode" />
+                <ScalarProperty Name="GlobalClientID" ColumnName="GlobalClientID" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

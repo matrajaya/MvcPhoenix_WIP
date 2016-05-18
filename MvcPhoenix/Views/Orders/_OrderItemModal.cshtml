@@ -179,19 +179,16 @@
                                    HttpMethod = "GET",
                                    UpdateTargetId = "dialogResult",
                                    InsertionMode = InsertionMode.Replace,
+                                   OnBegin="$('#dialogPlaceholderModal').modal('hide')",
                                    OnSuccess = "UpdateItemsList",
                                    Confirm = "Are you sure you want to delete this item?"
                                }, new { @class = "btn btn-danger" })
                                 </span>
                             }
                             else
-                            {                            <span>
-                                &nbsp;
-                            </span>
+                            { <span>&nbsp;</span>
                             }
-
-
-
+                            
                         </div>
 
                         <div class="col-md-4 form-group pull-right">

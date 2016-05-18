@@ -2,9 +2,6 @@
 @{
     ViewBag.Title = "Orders";
     ViewBag.TodayLink = "NewToday";
-    //List<SelectListItem> NewClientID = new List<SelectListItem>();
-    //NewClientID = MvcPhoenix.Services.OrderService.fnListOfClientIDs();
-    //ViewBag.ListOfClientIDs = MvcPhoenix.Services.OrderService.fnListOfClientIDs();
 }
 
 <div class="container-fluid">
@@ -56,7 +53,15 @@
                             }
                         </div>
                         <div class="col-md-12">
-                            <p><a href="#" class="" data-toggle="modal" data-target="#advancedsearch">+ Advanced Search Options</a></p>
+                            @Ajax.ActionLink("Advanced Search Options", "AdvancedSearch", "Orders", new AjaxOptions
+                             {
+                                 UpdateTargetId = "dialogPlaceholder",
+                                 InsertionMode = InsertionMode.Replace,
+                                 HttpMethod = "GET",
+                                 OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                             }, new { @class = "btn btn-xs btn-primary" })
+
+
                         </div>
                     </div>
                 </div>

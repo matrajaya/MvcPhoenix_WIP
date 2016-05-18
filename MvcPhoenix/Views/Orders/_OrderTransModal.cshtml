@@ -9,7 +9,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Order Transaction</h4>
+                <h4 class="modal-title">Order Transaction <small>@Model.ordertransid</small></h4>
             </div>
             <div id="dialogPlaceholderBody" class="modal-body">
 
@@ -22,20 +22,13 @@
                     OnFailure = "alert('SAVE FAILURE')"
                 }))
                 {
-                    @Html.TextBoxFor(m => m.ordertransid)
-                    @Html.TextBoxFor(m => m.orderid)
-                    @Html.TextBoxFor(m => m.clientid)
+                    @Html.HiddenFor(m => m.ordertransid)
+                    @Html.HiddenFor(m => m.orderid)
+                    @Html.HiddenFor(m => m.clientid)
 
+                    @Html.HiddenFor(m=>m.createdate)
+                    @Html.HiddenFor(m => m.createuser)
 
-                    <span>Edit ordertrans @Model.ordertransid</span>
-
-                    <div class="row">
-
-                    </div>
-
-                    <div class="row">
-
-                    </div>
 
 
                     <div class="row">
@@ -91,8 +84,9 @@
                                            HttpMethod = "GET",
                                            UpdateTargetId = "dialogResult",
                                            InsertionMode = InsertionMode.Replace,
-                                           OnSuccess = "UpdateTransList",
-                                           Confirm = "Are you sure you want to delete this item?"
+                                           OnSuccess = "UpdateAndClose",
+                                           Confirm = "Are you sure you want to delete this item?",
+                                           OnFailure="alert('delete fail')"
                                        }, new { @class = "btn btn-danger" })
                         </div>
                         <div class="col-md-4 form-group pull-right">
@@ -120,6 +114,12 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    function UpdateAndClose()
+    {
+        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.orderid })');
+        $('#dialogPlaceholderModal').modal('hide')
+    }
 
     function UpdateTransList()
     {

@@ -23,28 +23,34 @@
         </div>
     </div>
 
-        <div class="well col-lg-12">
-            <div class="row">
-                <div class="col-md-3"><b>Created:</b></div>
-                <div class="col-md-3"><b>Created By:</b></div>
-                <div class="col-md-3"><b>Updated:</b></div>
-                <div class="col-md-3"><b>Updated By:</b></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"><div>@Model.orderdate</div></div>
-                <div class="col-md-3"><div>@Model.CreateUser</div></div>
-                <div class="col-md-3"><div>@Model.UpdateDate</div></div>
-                <div class="col-md-3"><div>@Model.UpdateUser</div></div>
-            </div>
+    <div class="well col-lg-12">
+        <div class="row">
+            <div class="col-md-3"><b>Created:</b></div>
+            <div class="col-md-3"><b>Created By:</b></div>
+            <div class="col-md-3"><b>Updated:</b></div>
+            <div class="col-md-3"><b>Updated By:</b></div>
         </div>
+        <div class="row">
+            <div class="col-md-3"><div>@Model.orderdate</div></div>
+            <div class="col-md-3"><div>@Model.CreateUser</div></div>
+            <div class="col-md-3"><div>@Model.UpdateDate</div></div>
+            <div class="col-md-3"><div>@Model.UpdateUser</div></div>
+        </div>
+    </div>
 
-    
+
     @using (Html.BeginForm("Save", "Orders", FormMethod.Post))
     {
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(m => m.orderid)
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.orderdate)
+
+        @Html.HiddenFor(m => m.CreateUser)
+        @Html.HiddenFor(m => m.CreateDate)
+        @Html.HiddenFor(m => m.UpdateUser)
+        @Html.HiddenFor(m => m.UpdateDate)
+
 
         <!--Start: Client Information Section-->
         <div class="panel panel-primary">
@@ -60,31 +66,31 @@
                     </div>
                     <div class="col-md-3 form-group">
                         @Html.LabelFor(m => m.billinggroup, htmlAttributes: new { @class = "control-label" })
-                        @Html.DropDownListFor(m => m.billinggroup,Model.ListOfBillingGroups, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.billinggroup, Model.ListOfBillingGroups, new { @class = "form-control" })
                     </div>
-   
+
 
                 </div>
                 <div class="row">
                     <div class="col-md-3 form-group">
                         <label class="control-label">Client Reference</label>
                         @Html.TextBoxFor(m => m.custrefnum, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.custrefnum )
+                        @Html.ValidationMessageFor(m => m.custrefnum)
                     </div>
                     <div class="col-md-3 form-group">
                         <label class="control-label">Client Order Number</label>
                         @Html.TextBoxFor(m => m.custordnum, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.custordnum )
+                        @Html.ValidationMessageFor(m => m.custordnum)
                     </div>
                     <div class="col-md-3 form-group">
                         @Html.LabelFor(m => m.ordertype, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(m => m.ordertype, Model.ListOfOrderTypes, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.ordertype )
+                        @Html.ValidationMessageFor(m => m.ordertype)
                     </div>
                     <div class="col-md-3 form-group">
                         <label class="control-label">Order Source</label>
                         @Html.DropDownListFor(m => m.source, Model.ListOfOrderSources, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.source )
+                        @Html.ValidationMessageFor(m => m.source)
                     </div>
                 </div>
             </div>
@@ -100,70 +106,70 @@
                     <div class="form-group col-md-6">
                         <label class="control-label">Name</label>
                         @Html.TextBoxFor(m => m.company, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.company )
+                        @Html.ValidationMessageFor(m => m.company)
                     </div>
                     <div class="form-group col-md-6">
                         @Html.LabelFor(m => m.attention, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.attention, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.attention )
+                        @Html.ValidationMessageFor(m => m.attention)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         @Html.LabelFor(m => m.email, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.email )
+                        @Html.ValidationMessageFor(m => m.email)
                     </div>
                     <div class="form-group col-md-3">
                         @Html.LabelFor(m => m.phone, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.phone )
+                        @Html.ValidationMessageFor(m => m.phone)
                     </div>
                     <div class="form-group col-md-3">
                         @Html.LabelFor(m => m.fax, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.fax, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.fax )
+                        @Html.ValidationMessageFor(m => m.fax)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Address 1</label>
                         @Html.TextBoxFor(m => m.street, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.street )
+                        @Html.ValidationMessageFor(m => m.street)
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">Address 2</label>
                         @Html.TextBoxFor(m => m.street2, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.street2 )
+                        @Html.ValidationMessageFor(m => m.street2)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Address 3</label>
                         @Html.TextBoxFor(m => m.street3, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.street3 )
+                        @Html.ValidationMessageFor(m => m.street3)
                     </div>
                     <div class="form-group col-md-3">
                         @Html.LabelFor(m => m.city, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.city )
+                        @Html.ValidationMessageFor(m => m.city)
                     </div>
                     <div class="form-group col-md-3">
                         @Html.LabelFor(m => m.Zip, htmlAttributes: new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.Zip, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.Zip )
+                        @Html.ValidationMessageFor(m => m.Zip)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         @Html.LabelFor(m => m.state, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.state, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.state )
+                        @Html.ValidationMessageFor(m => m.state)
                     </div>
                     <div class="form-group col-md-6">
                         @Html.LabelFor(m => m.country, htmlAttributes: new { @class = "control-label" })
-                        @Html.DropDownListFor(m => m.country,Model.ListOfCountries, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.country )
+                        @Html.DropDownListFor(m => m.country, Model.ListOfCountries, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.country)
                     </div>
                 </div>
             </div>
@@ -179,48 +185,48 @@
                     <div class="form-group col-md-12">
                         <label class="control-label">Requestor's Name</label>
                         @Html.TextBoxFor(m => m.req, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.req )
+                        @Html.ValidationMessageFor(m => m.req)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Requestor's Email</label>
                         @Html.TextBoxFor(m => m.reqemail, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.reqemail )
+                        @Html.ValidationMessageFor(m => m.reqemail)
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Requestor's Phone</label>
                         @Html.TextBoxFor(m => m.reqphone, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.reqphone )
+                        @Html.ValidationMessageFor(m => m.reqphone)
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Requestor's Fax</label>
                         @Html.TextBoxFor(m => m.reqfax, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.reqfax )
+                        @Html.ValidationMessageFor(m => m.reqfax)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Sales Rep's Name</label>
                         @Html.TextBoxFor(m => m.salesrep, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.salesrep )
+                        @Html.ValidationMessageFor(m => m.salesrep)
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">Sales Rep's Email</label>
                         @Html.TextBoxFor(m => m.sales_email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.sales_email )
+                        @Html.ValidationMessageFor(m => m.sales_email)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Sales Rep's Phone</label>
                         @Html.TextBoxFor(m => m.salesrepphone, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.salesrepphone )
+                        @Html.ValidationMessageFor(m => m.salesrepphone)
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">Sales Rep's Territory</label>
                         @Html.TextBoxFor(m => m.salesrepterritory, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.salesrepterritory )
+                        @Html.ValidationMessageFor(m => m.salesrepterritory)
                     </div>
                 </div>
                 <div class="row">
@@ -244,7 +250,7 @@
                     <div class="form-group col-md-3">
                         <label class="control-label">End Use</label>
                         @Html.DropDownListFor(m => m.enduse, Model.ListOfEndUses, new { @class = "form-control" })
-                        @Html.ValidationMessageFor( m => m.enduse )
+                        @Html.ValidationMessageFor(m => m.enduse)
                     </div>
                     <div class="form-group col-md-3">
                         @Html.LabelFor(m => m.approvalneeded, new { @class = "control-label" })
@@ -253,30 +259,30 @@
                     <div class="form-group col-md-3">
                         @Html.LabelFor(m => m.approvaldate, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.approvaldate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                        @Html.ValidationMessageFor( m => m.approvaldate )
+                        @Html.ValidationMessageFor(m => m.approvaldate)
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <!--End: Requestor Information Section-->
         <!--Start: Product Item Selection Section-->
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title" data-toggle="collapse" data-target="#prodselectpan"><i class="fa fa-file-text-o fa-fw"></i> Order Items</h3>
-        </div>
-        <div id="prodselectpan" class="panel-body collapse in">
-            <div id="dvItems">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#prodselectpan"><i class="fa fa-file-text-o fa-fw"></i> Order Items</h3>
+            </div>
+            <div id="prodselectpan" class="panel-body collapse in">
+                <div id="dvItems">
 
-                @if (Model.orderid == -1)
-                {
-                    <h5 class="alert alert-danger">Please save the order once before adding items</h5>
-                }
-                @if (Model.orderid > 1)
-                {
-                    <div>
-                        <span class="pull-left" style="padding-bottom: 20px;">
-                            @Ajax.ActionLink("Add an item to this order", "CreateItem", "Orders", new { id = Model.orderid },
+                    @if (Model.orderid == -1)
+                    {
+                        <h5 class="alert alert-danger">Please save the order once before adding items</h5>
+                    }
+                    @if (Model.orderid > 1)
+                    {
+                        <div>
+                            <span class="pull-left" style="padding-bottom: 20px;">
+                                @Ajax.ActionLink("Add an item to this order", "CreateItem", "Orders", new { id = Model.orderid },
                         new AjaxOptions
                     {
                         UpdateTargetId = "dialogPlaceholder",
@@ -284,21 +290,21 @@
                         HttpMethod = "GET",
                         OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
                     }, new { @class = "btn btn-primary" })
-                        </span>
-                    </div>
-                    <div class="clearfix"></div>    <!-- necessary -->
+                            </span>
+                        </div>
+                        <div class="clearfix"></div>    <!-- necessary -->
 
-                    <div id="dvOrderItemsList">
-                        @if(@Model.itemscount>0)
-                        {
-                        @Html.Action("fnOrderItemsList", "Orders", new { id = Model.orderid })
-                        }
-                    </div>
-                }
+                        <div id="dvOrderItemsList">
+                            @Html.Action("fnOrderItemsList", "Orders", new { id = Model.orderid })
+                        </div>
+                    }
+                </div>
+                <div id="dvAllocateResult" class="text-center text-success"></div>
             </div>
         </div>
-    </div>
         <!--End: Product Item Selection Section -->
+
+
 
         <!--Start: Transaction Log Notes Section-->
     <div class="panel panel-primary">

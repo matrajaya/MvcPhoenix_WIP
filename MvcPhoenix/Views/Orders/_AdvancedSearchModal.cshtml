@@ -1,0 +1,104 @@
+﻿@{
+    
+    
+}
+
+<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Advanced Search</h4>
+            </div>
+            <div id="dialogPlaceholderBody" class="modal-body">
+
+                @using (Ajax.BeginForm("LookupClientID", "Orders", FormMethod.Post, new AjaxOptions
+                        {
+                            UpdateTargetId = "dvSearchResults",
+                            InsertionMode = InsertionMode.Replace
+                            //OnSuccess = "$('#dialogPlaceholderModal').modal('hide')"
+                        }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.DropDownList("ClientID", MvcPhoenix.Services.OrderService.fnListOfClientIDs(), new { name = "ClientID", @class = "form-control" })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Last 20" /></span>
+                    </div>
+                }
+
+                @using (Ajax.BeginForm("LookupOrderDate", "Orders", FormMethod.Post, 
+                        new AjaxOptions {   UpdateTargetId = "dvSearchResults",
+                                            InsertionMode = InsertionMode.Replace }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        <input class="form-control" id="searchorderdate" name="searchorderdate" type="date" />
+                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                    </div>
+                }
+                
+                @using (Ajax.BeginForm("LookupCompany", "Orders", FormMethod.Post, 
+                            new AjaxOptions {   UpdateTargetId = "dvSearchResults",
+                                                InsertionMode = InsertionMode.Replace,OnFailure="alert('Company Search Failure')" }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchcompany",null, new { @class = "form-control", placeholder = "Ship To..." })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                    </div>
+                }
+
+
+                @using (Ajax.BeginForm("LookupZipCode", "Orders", FormMethod.Post,
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "dvSearchResults",
+                                InsertionMode = InsertionMode.Replace,
+                            }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchzipcode", null, new { @class = "form-control", placeholder = "Zip/postal code..." })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                    </div>
+                }
+                @using (Ajax.BeginForm("LookupSalesRep", "Orders", FormMethod.Post,
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "dvSearchResults",
+                                InsertionMode = InsertionMode.Replace,
+                            }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchsalesrep", null, new { @class = "form-control", placeholder = "Sales rep name..." })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                    </div>
+                }
+
+
+                <div class="clearfix"></div>
+                <br />
+                
+                
+
+
+                <div class="row">
+                    @*<div class="col-md-6 form-group">
+                        <span class="pull-left">
+                            <input type="submit" value="Search" class="btn btn-md btn-success" />
+                        </span>
+                    </div>*@
+
+                    <div class="col-md-12 form-group">
+                        <span class="pull-right">
+                            <input type="button" value="Close" onclick="$('#dialogPlaceholderModal').modal('hide')" class="btn btn-primary" />
+                        </span>
+                    </div>
+
+                </div>
+
+               
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

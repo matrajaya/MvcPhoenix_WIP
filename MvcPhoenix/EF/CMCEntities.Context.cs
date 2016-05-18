@@ -74,5 +74,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
         public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblCustomer> tblCustomer { get; set; }
+        public virtual DbSet<tblClient2> tblClient2 { get; set; }
     }
 }

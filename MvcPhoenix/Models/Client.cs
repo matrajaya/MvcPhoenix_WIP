@@ -48,6 +48,7 @@ namespace MvcPhoenix.Models
         {
             
         }
+
         public static Client fnFillClient(int id)
         {
             MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
@@ -70,6 +71,5 @@ namespace MvcPhoenix.Models
             db.Dispose();
             return obj;
         }
-
     }
 }
