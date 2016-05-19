@@ -45,7 +45,8 @@ namespace MvcPhoenix.EF
         public Nullable<bool> SDSRequired { get; set; }
         public Nullable<bool> COARequired { get; set; }
         public Nullable<bool> TDSRequired { get; set; }
-        public string CoverLetterRequired { get; set; }
+        public Nullable<bool> StdCoverLetterRequired { get; set; }
+        public string SpecialReqAllowed { get; set; }
         public string InventoryReports { get; set; }
         public string CeaseShipPeriod { get; set; }
         public string ReplenishmentLeadDays { get; set; }
@@ -53,12 +54,13 @@ namespace MvcPhoenix.EF
         public string ExpDateRules { get; set; }
         public string WasteProcedure { get; set; }
         public string InventoryBusinessRules { get; set; }
-        public string SpecialReqAllowed { get; set; }
         public string CommercialInvoiceValue { get; set; }
         public string FreezableProcedure { get; set; }
         public Nullable<bool> SurveyUsed { get; set; }
         public string CSBusinessRules { get; set; }
         public string ShipConfirmEmail { get; set; }
+        public string DelayConfirmEmail { get; set; }
+        public string OrderConfirmEmail { get; set; }
         public string InvoiceSegregation { get; set; }
         public string ChargesSummary { get; set; }
         public string PartialDeliveryAllowed { get; set; }

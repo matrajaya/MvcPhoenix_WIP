@@ -230,7 +230,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.InvoiceAddress)
+                            @*@Html.DisplayFor(model => model.InvoiceAddress)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceAddress))
                         </td>
                     </tr>
 
@@ -240,7 +241,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.InvoiceEmailTo)
+                            @*@Html.DisplayFor(model => model.InvoiceEmailTo)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceEmailTo))
                         </td>
                     </tr>
 
@@ -250,7 +252,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.KeyContactDir)
+                            @*@Html.DisplayFor(model => model.KeyContactDir)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.KeyContactDir))
                         </td>
                     </tr>
 
@@ -260,7 +263,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.ClientContact)
+                            @*@Html.DisplayFor(model => model.ClientContact)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.ClientContact))
                         </td>
                     </tr>
 
@@ -270,7 +274,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.CMCContact)
+                            @*@Html.DisplayFor(model => model.CMCContact)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.CMCContact))
                         </td>
                     </tr>
 
@@ -290,7 +295,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.ProductSetupDetails)
+                            @*@Html.DisplayFor(model => model.ProductSetupDetails)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.ProductSetupDetails))
                         </td>
                     </tr>
 
@@ -310,7 +316,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.SDSUpdateMethod)
+                            @*@Html.DisplayFor(model => model.SDSUpdateMethod)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.SDSUpdateMethod))
                         </td>
                     </tr>
 
@@ -356,11 +363,11 @@
 
                     <tr>
                         <td>
-                            @Html.LabelFor(model => model.CoverLetterRequired)
+                            @Html.LabelFor(model => model.StdCoverLetterRequired)
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.CoverLetterRequired)
+                            @Html.DisplayFor(model => model.StdCoverLetterRequired)
                         </td>
                     </tr>
 
@@ -370,7 +377,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.InventoryReports)
+                            @*@Html.DisplayFor(model => model.InventoryReports)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.InventoryReports))
                         </td>
                     </tr>
 
@@ -410,7 +418,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.ExpDateRules)
+                            @*@Html.DisplayFor(model => model.ExpDateRules)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.ExpDateRules))
                         </td>
                     </tr>
 
@@ -420,7 +429,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.WasteProcedure)
+                            @*@Html.DisplayFor(model => model.WasteProcedure)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.WasteProcedure))
                         </td>
                     </tr>
 
@@ -430,7 +440,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.InventoryBusinessRules)
+                            @*@Html.DisplayFor(model => model.InventoryBusinessRules)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.InventoryBusinessRules))
                         </td>
                     </tr>
 
@@ -480,7 +491,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.CSBusinessRules)
+                            @*@Html.DisplayFor(model => model.CSBusinessRules)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.CSBusinessRules))
                         </td>
                     </tr>
 
@@ -493,7 +505,24 @@
                             @Html.DisplayFor(model => model.ShipConfirmEmail)
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.DelayConfirmEmail)
+                        </td>
 
+                        <td>
+                            @Html.DisplayFor(model => model.DelayConfirmEmail)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.OrderConfirmEmail)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(model => model.OrderConfirmEmail)
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             @Html.LabelFor(model => model.InvoiceSegregation)
@@ -510,7 +539,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.ChargesSummary)
+                            @*@Html.DisplayFor(model => model.ChargesSummary)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.ChargesSummary))
                         </td>
                     </tr>
 

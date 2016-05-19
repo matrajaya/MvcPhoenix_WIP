@@ -64,30 +64,37 @@ namespace MvcPhoenix.Models
       [Display(Name = "Logo File Directory")]
       public string LogoFileDir { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Invoice Address")]
       public string InvoiceAddress { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Email Invoice To")]
       public string InvoiceEmailTo { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Key Contact Directory")]
       public string KeyContactDir { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Client Contact Information")]
       public string ClientContact { get; set; }
 
+      [AllowHtml]
       [Display(Name = "CMC Contact Information")]
       public string CMCContact { get; set; }
 
       [Display(Name = "Client Website")]
       public string ClientUrl { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Product Setup Details")]
       public string ProductSetupDetails { get; set; }
 
       [Display(Name = "SDS Language(s)")]
       public string SDSLanguage { get; set; }
 
+      [AllowHtml]
       [Display(Name = "SDS Update Method")]
       public string SDSUpdateMethod { get; set; }
 
@@ -103,9 +110,10 @@ namespace MvcPhoenix.Models
       [Display(Name = "TDS Required")]
       public bool TDSRequired { get; set; }
 
-      [Display(Name = "Cover Letter Required")]
-      public string CoverLetterRequired { get; set; }
+      [Display(Name = "Std Cover Letter Required")]
+      public bool StdCoverLetterRequired { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Inventory Reports")]
       public string InventoryReports { get; set; }
 
@@ -118,12 +126,15 @@ namespace MvcPhoenix.Models
       [Display(Name = "Expiration Date On Label")]
       public bool ExpDateOnLabel { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Expiry Date Rules")]
       public string ExpDateRules { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Waste Procedure")]
       public string WasteProcedure { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Inventory Business Rules")]
       public string InventoryBusinessRules { get; set; }
 
@@ -139,15 +150,23 @@ namespace MvcPhoenix.Models
       [Display(Name = "Survey Used")]
       public bool SurveyUsed { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Business Rules")]
       public string CSBusinessRules { get; set; }
 
       [Display(Name = "Ship Confirm Email")]
       public string ShipConfirmEmail { get; set; }
 
+      [Display(Name = "Delay Confirm Email")]
+      public string DelayConfirmEmail { get; set; }
+
+      [Display(Name = "Order Confirm Email")]
+      public string OrderConfirmEmail { get; set; }
+
       [Display(Name = "Invoice Segregation")]
       public string InvoiceSegregation { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Charges Summary")]
       public string ChargesSummary { get; set; }
 

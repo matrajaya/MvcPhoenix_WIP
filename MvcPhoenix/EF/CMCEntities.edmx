@@ -289,7 +289,8 @@
           <Property Name="SDSRequired" Type="bit" />
           <Property Name="COARequired" Type="bit" />
           <Property Name="TDSRequired" Type="bit" />
-          <Property Name="CoverLetterRequired" Type="nvarchar(max)" />
+          <Property Name="StdCoverLetterRequired" Type="bit" />
+          <Property Name="SpecialReqAllowed" Type="nvarchar(max)" />
           <Property Name="InventoryReports" Type="nvarchar(max)" />
           <Property Name="CeaseShipPeriod" Type="nvarchar(max)" />
           <Property Name="ReplenishmentLeadDays" Type="nvarchar(max)" />
@@ -297,12 +298,13 @@
           <Property Name="ExpDateRules" Type="nvarchar(max)" />
           <Property Name="WasteProcedure" Type="nvarchar(max)" />
           <Property Name="InventoryBusinessRules" Type="nvarchar(max)" />
-          <Property Name="SpecialReqAllowed" Type="nvarchar(max)" />
           <Property Name="CommercialInvoiceValue" Type="nvarchar(max)" />
           <Property Name="FreezableProcedure" Type="nvarchar(max)" />
           <Property Name="SurveyUsed" Type="bit" />
           <Property Name="CSBusinessRules" Type="nvarchar(max)" />
           <Property Name="ShipConfirmEmail" Type="nvarchar(max)" />
+          <Property Name="DelayConfirmEmail" Type="nvarchar(max)" />
+          <Property Name="OrderConfirmEmail" Type="nvarchar(max)" />
           <Property Name="InvoiceSegregation" Type="nvarchar(max)" />
           <Property Name="ChargesSummary" Type="nvarchar(max)" />
           <Property Name="PartialDeliveryAllowed" Type="nvarchar(max)" />
@@ -3008,7 +3010,8 @@
           <Property Name="SDSRequired" Type="Boolean" />
           <Property Name="COARequired" Type="Boolean" />
           <Property Name="TDSRequired" Type="Boolean" />
-          <Property Name="CoverLetterRequired" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StdCoverLetterRequired" Type="Boolean" />
+          <Property Name="SpecialReqAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="InventoryReports" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CeaseShipPeriod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ReplenishmentLeadDays" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -3016,12 +3019,13 @@
           <Property Name="ExpDateRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="WasteProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="InventoryBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SpecialReqAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CommercialInvoiceValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FreezableProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SurveyUsed" Type="Boolean" />
           <Property Name="CSBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ShipConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DelayConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrderConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="InvoiceSegregation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ChargesSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PartialDeliveryAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -4522,12 +4526,13 @@
                 <ScalarProperty Name="PartialDeliveryAllowed" ColumnName="PartialDeliveryAllowed" />
                 <ScalarProperty Name="ChargesSummary" ColumnName="ChargesSummary" />
                 <ScalarProperty Name="InvoiceSegregation" ColumnName="InvoiceSegregation" />
+                <ScalarProperty Name="OrderConfirmEmail" ColumnName="OrderConfirmEmail" />
+                <ScalarProperty Name="DelayConfirmEmail" ColumnName="DelayConfirmEmail" />
                 <ScalarProperty Name="ShipConfirmEmail" ColumnName="ShipConfirmEmail" />
                 <ScalarProperty Name="CSBusinessRules" ColumnName="CSBusinessRules" />
                 <ScalarProperty Name="SurveyUsed" ColumnName="SurveyUsed" />
                 <ScalarProperty Name="FreezableProcedure" ColumnName="FreezableProcedure" />
                 <ScalarProperty Name="CommercialInvoiceValue" ColumnName="CommercialInvoiceValue" />
-                <ScalarProperty Name="SpecialReqAllowed" ColumnName="SpecialReqAllowed" />
                 <ScalarProperty Name="InventoryBusinessRules" ColumnName="InventoryBusinessRules" />
                 <ScalarProperty Name="WasteProcedure" ColumnName="WasteProcedure" />
                 <ScalarProperty Name="ExpDateRules" ColumnName="ExpDateRules" />
@@ -4535,7 +4540,8 @@
                 <ScalarProperty Name="ReplenishmentLeadDays" ColumnName="ReplenishmentLeadDays" />
                 <ScalarProperty Name="CeaseShipPeriod" ColumnName="CeaseShipPeriod" />
                 <ScalarProperty Name="InventoryReports" ColumnName="InventoryReports" />
-                <ScalarProperty Name="CoverLetterRequired" ColumnName="CoverLetterRequired" />
+                <ScalarProperty Name="SpecialReqAllowed" ColumnName="SpecialReqAllowed" />
+                <ScalarProperty Name="StdCoverLetterRequired" ColumnName="StdCoverLetterRequired" />
                 <ScalarProperty Name="TDSRequired" ColumnName="TDSRequired" />
                 <ScalarProperty Name="COARequired" ColumnName="COARequired" />
                 <ScalarProperty Name="SDSRequired" ColumnName="SDSRequired" />

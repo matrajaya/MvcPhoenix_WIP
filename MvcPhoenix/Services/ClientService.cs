@@ -49,7 +49,7 @@ namespace MvcPhoenix.Models
                 CP.SDSRequired = q.SDSRequired ?? false;
                 CP.COARequired = q.COARequired ?? false;
                 CP.TDSRequired = q.TDSRequired ?? false;
-                CP.CoverLetterRequired = q.CoverLetterRequired;
+                CP.StdCoverLetterRequired = q.StdCoverLetterRequired ?? false;
                 CP.InventoryReports = q.InventoryReports;
                 CP.CeaseShipPeriod = q.CeaseShipPeriod;
                 CP.ReplenishmentLeadDays = q.ReplenishmentLeadDays;
@@ -63,6 +63,8 @@ namespace MvcPhoenix.Models
                 CP.SurveyUsed = q.SurveyUsed ?? false;
                 CP.CSBusinessRules = q.CSBusinessRules;
                 CP.ShipConfirmEmail = q.ShipConfirmEmail;
+                CP.DelayConfirmEmail = q.DelayConfirmEmail;
+                CP.OrderConfirmEmail = q.OrderConfirmEmail;
                 CP.InvoiceSegregation = q.InvoiceSegregation;
                 CP.ChargesSummary = q.ChargesSummary;
                 CP.PartialDeliveryAllowed = q.PartialDeliveryAllowed;
@@ -155,7 +157,7 @@ namespace MvcPhoenix.Models
                 q.SDSRequired = CP.SDSRequired;
                 q.COARequired = CP.COARequired;
                 q.TDSRequired = CP.TDSRequired;
-                q.CoverLetterRequired = CP.CoverLetterRequired;
+                q.StdCoverLetterRequired = CP.StdCoverLetterRequired;
                 q.InventoryReports = CP.InventoryReports;
                 q.CeaseShipPeriod = CP.CeaseShipPeriod;
                 q.ReplenishmentLeadDays = CP.ReplenishmentLeadDays;
@@ -169,6 +171,8 @@ namespace MvcPhoenix.Models
                 q.SurveyUsed = CP.SurveyUsed;
                 q.CSBusinessRules = CP.CSBusinessRules;
                 q.ShipConfirmEmail = CP.ShipConfirmEmail;
+                q.DelayConfirmEmail = CP.DelayConfirmEmail;
+                q.OrderConfirmEmail = CP.OrderConfirmEmail;
                 q.InvoiceSegregation = CP.InvoiceSegregation;
                 q.ChargesSummary = CP.ChargesSummary;
                 q.PartialDeliveryAllowed = CP.PartialDeliveryAllowed;

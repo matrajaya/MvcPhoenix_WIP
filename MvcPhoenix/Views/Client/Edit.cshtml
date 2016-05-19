@@ -136,7 +136,11 @@
                                         @Html.LabelFor(model => model.SurveyUsed)
                                         @Html.CheckBoxFor(model => model.SurveyUsed, new { @class = "checkbox" })
                                     </div>
-
+                                    <div class="form-group col-md-2">
+                                        @Html.LabelFor(model => model.ClientStatus)
+                                        @Html.TextBoxFor(model => model.ClientStatus, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.ClientStatus)
+                                    </div>
                                     <div class="form-group col-md-2 pull-right">
                                         @Html.LabelFor(model => model.ActiveDate)
                                         @Html.TextBoxFor(model => model.ActiveDate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
@@ -157,45 +161,52 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-3">
                                         @Html.LabelFor(model => model.CeaseShipPeriod)
                                         @Html.TextBoxFor(model => model.CeaseShipPeriod, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.CeaseShipPeriod)
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-3">
                                         @Html.LabelFor(model => model.ReplenishmentLeadDays)
                                         @Html.TextBoxFor(model => model.ReplenishmentLeadDays, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.ReplenishmentLeadDays)
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-3">
                                         @Html.LabelFor(model => model.SpecialReqAllowed)
-                                        @Html.TextBoxFor(model => model.SpecialReqAllowed, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.SpecialReqAllowed)
+                                        @Html.TextAreaFor(model => model.SpecialReqAllowed, new { @class = "form-control" })
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-3">
                                         @Html.LabelFor(model => model.CommercialInvoiceValue)
                                         @Html.TextBoxFor(model => model.CommercialInvoiceValue, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.CommercialInvoiceValue)
                                     </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="form-group col-md-6">
                                         @Html.LabelFor(model => model.ShipConfirmEmail)
                                         @Html.TextBoxFor(model => model.ShipConfirmEmail, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.ShipConfirmEmail)
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(model => model.DelayConfirmEmail)
+                                        @Html.TextBoxFor(model => model.DelayConfirmEmail, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.DelayConfirmEmail)
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(model => model.OrderConfirmEmail)
+                                        @Html.TextBoxFor(model => model.OrderConfirmEmail, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.OrderConfirmEmail)
+                                    </div>
+                                    <div class="form-group col-md-3">
                                         @Html.LabelFor(model => model.InvoiceSegregation)
                                         @Html.TextBoxFor(model => model.InvoiceSegregation, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.InvoiceSegregation)
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-3">
                                         @Html.LabelFor(model => model.PartialDeliveryAllowed)
                                         @Html.TextBoxFor(model => model.PartialDeliveryAllowed, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.PartialDeliveryAllowed)
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        @Html.LabelFor(model => model.ClientStatus)
-                                        @Html.TextBoxFor(model => model.ClientStatus, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.ClientStatus)
                                     </div>
                                 </div>
 
@@ -263,17 +274,17 @@
                                         @Html.TextBoxFor(model => model.LabelLanguage, new { @class = "form-control" })
                                     </div>
                                     <div class="form-group col-md-2">
-                                        @Html.LabelFor(model => model.CoverLetterRequired)
-                                        @Html.TextBoxFor(model => model.CoverLetterRequired, new { @class = "form-control" })
+                                        @Html.LabelFor(model => model.StdCoverLetterRequired)
+                                        @Html.CheckBoxFor(model => model.StdCoverLetterRequired, new { @class = "checkbox" })
                                     </div>
                                 </div>
-                                <div class="row">
+                                @*<div class="row">
                                     <div class="col-md-12">
                                         @Html.LabelFor(model => model.BOLComment)
                                         @Html.TextAreaFor(model => model.BOLComment, new { @class = "form-control" })
                                         @Html.ValidationMessageFor(model => model.BOLComment)
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>
