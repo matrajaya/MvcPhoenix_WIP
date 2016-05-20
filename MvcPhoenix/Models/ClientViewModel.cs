@@ -138,12 +138,14 @@ namespace MvcPhoenix.Models
       [Display(Name = "Inventory Business Rules")]
       public string InventoryBusinessRules { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Special Request Allowed")]
       public string SpecialReqAllowed { get; set; }
 
       [Display(Name = "Commercial Invoice Value")]
       public string CommercialInvoiceValue { get; set; }
 
+      [AllowHtml]
       [Display(Name = "Freezable Procedure")]
       public string FreezableProcedure { get; set; }
 

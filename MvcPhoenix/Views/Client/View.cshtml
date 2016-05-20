@@ -451,7 +451,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.SpecialReqAllowed)
+                            @*@Html.DisplayFor(model => model.SpecialReqAllowed)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.SpecialReqAllowed))
                         </td>
                     </tr>
 
@@ -471,7 +472,8 @@
                         </td>
 
                         <td>
-                            @Html.DisplayFor(model => model.FreezableProcedure)
+                            @*@Html.DisplayFor(model => model.FreezableProcedure)*@
+                            @Html.Raw(HttpUtility.HtmlDecode(@Model.FreezableProcedure))
                         </td>
                     </tr>
 
