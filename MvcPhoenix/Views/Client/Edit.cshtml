@@ -23,13 +23,13 @@
             <div class="form-group">
                 @using (Html.BeginForm("Index", "Client", FormMethod.Get))
                 {
-                    <label>Search Clients</label>
-                    <div class="input-group">
-                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by Client or Location" })
-                        <div class="input-group-btn">
-                            <input type="submit" value="Search" class="btn btn-success" />
-                        </div>
+                <label>Search Clients</label>
+                <div class="input-group">
+                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by Client or Location" })
+                    <div class="input-group-btn">
+                        <input type="submit" value="Search" class="btn btn-success" />
                     </div>
+                </div>
                 }
             </div>
         </div>
@@ -56,436 +56,440 @@
                 <h3 class="panel-title" data-toggle="collapse" data-target="#clientinfopanel"><i class="fa fa-book fa-fw"></i> Client Information</h3>
             </div>
             <div id="clientinfopanel" class="panel-body collapse in">
-                <table width="100%">
-                    <tr>
-                        <td width="30%"></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ClientName)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ClientName, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ClientName)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ClientCode)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ClientCode, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ClientCode)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.CMCLocation)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.CMCLocation, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.CMCLocation)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ClientCurrency)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ClientCurrency, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ClientCurrency)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ClientUM)
-                       </td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ClientUM, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ClientUM)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.InvoiceAddress)</td>
-                        <td>@Html.TextAreaFor(model => model.InvoiceAddress, new { @class = "form-control", @rows = "4" })</td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.InvoiceEmailTo)</td>
-                        <td>@Html.TextAreaFor(model => model.InvoiceEmailTo, new { @class = "form-control", @rows = "4" })</td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(m => m.KeyContactDir)</td>
-                        <td>@Html.TextAreaFor(m => m.KeyContactDir, new { @class = "form-control", @rows = "4" })</td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ClientUrl)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ClientUrl, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ClientUrl)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurveyUsed)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.SurveyUsed, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ClientStatus)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ClientStatus, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ClientStatus)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ActiveDate)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ActiveDate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
-                            @Html.ValidationMessageFor(model => model.ActiveDate)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ClientContact)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.ClientContact, new { @class = "form-control", @rows = "4" })
-                            @Html.ValidationMessageFor(model => model.ClientContact)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.CMCContact)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.CMCContact, new { @class = "form-control", @rows = "4" })
-                            @Html.ValidationMessageFor(model => model.CMCContact)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.CeaseShipPeriod)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.CeaseShipPeriod, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.CeaseShipPeriod)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ReplenishmentLeadDays)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ReplenishmentLeadDays, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ReplenishmentLeadDays)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SpecialReqAllowed)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.SpecialReqAllowed, new { @class = "form-control" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.CommercialInvoiceValue)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.CommercialInvoiceValue, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.CommercialInvoiceValue)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ShipConfirmEmail)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.ShipConfirmEmail, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.ShipConfirmEmail)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.DelayConfirmEmail)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.DelayConfirmEmail, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.DelayConfirmEmail)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.OrderConfirmEmail)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.OrderConfirmEmail, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.OrderConfirmEmail)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.InvoiceSegregation)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.InvoiceSegregation, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.InvoiceSegregation)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.PartialDeliveryAllowed)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.PartialDeliveryAllowed, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.PartialDeliveryAllowed)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.MSDS)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.MSDS, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.TDS)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.TDS, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.COA)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.COA, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.MSDSFileDir)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.MSDSFileDir, new { @class = "form-control" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.TDSFileDir)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.TDSFileDir, new { @class = "form-control" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.COAFileDir)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.COAFileDir, new { @class = "form-control" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SDSRequired)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.SDSRequired, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.COARequired)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.COARequired, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.TDSRequired)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.TDSRequired, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ExpDateOnLabel)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.ExpDateOnLabel, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SDSLanguage)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SDSLanguage, new { @class = "form-control" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.LabelLanguage)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.LabelLanguage, new { @class = "form-control" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.StdCoverLetterRequired)</td>
-                        <td>
-                            @Html.CheckBoxFor(model => model.StdCoverLetterRequired, new { @class = "checkbox" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.BOLComment)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.BOLComment, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.BOLComment)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ProductSetupDetails)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.ProductSetupDetails, new { @class = "form-control", @rows = "4" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.InventoryReports)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.InventoryReports, new { @class = "form-control", @rows = "4" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SDSUpdateMethod)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.SDSUpdateMethod, new { @class = "form-control", @rows = "4" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ExpDateRules)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.ExpDateRules, new { @class = "form-control", @rows = "4" })
-                            @Html.ValidationMessageFor(model => model.ExpDateRules)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.CSBusinessRules)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.CSBusinessRules, new { @class = "form-control", @rows = "4" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.WasteProcedure)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.WasteProcedure, new { @class = "form-control", @rows = "4" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.InventoryBusinessRules)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.InventoryBusinessRules, new { @class = "form-control", @rows = "4" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.FreezableProcedure)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.FreezableProcedure, new { @class = "form-control", @rows = "4" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.ChargesSummary)</td>
-                        <td>
-                            @Html.TextAreaFor(model => model.ChargesSummary, new { @class = "form-control" })
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchageHazard)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchageHazard, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchageHazard)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeFlammable)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeFlammable, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeFlammable)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeHeat)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeHeat, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeHeat)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeRefrigerate)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeRefrigerate, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeRefrigerate)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeFreeze)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeFreeze, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeFreeze)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeClean)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeClean, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeClean)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeNalgene)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeNalgene, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeNalgene)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeNitrogen)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeNitrogen, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeNitrogen)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeBiocide)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeBiocide, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeBiocide)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeBlend)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeBlend, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeBlend)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.SurchargeKosher)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.SurchargeKosher, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SurchargeKosher)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.HazDHServLvl1)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.HazDHServLvl1, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.HazDHServLvl1)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.HazDHServLvl2)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.HazDHServLvl2, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.HazDHServLvl2)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.HazDHServLvl3)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.HazDHServLvl3, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.HazDHServLvl3)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.HazDHServLvl4)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.HazDHServLvl4, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.HazDHServLvl4)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.NonHazDHServLvl1)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.NonHazDHServLvl1, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.NonHazDHServLvl1)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.NonHazDHServLvl2)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.NonHazDHServLvl2, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.NonHazDHServLvl2)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.NonHazDHServLvl3)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.NonHazDHServLvl3, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.NonHazDHServLvl3)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>@Html.LabelFor(model => model.NonHazDHServLvl4)</td>
-                        <td>
-                            @Html.TextBoxFor(model => model.NonHazDHServLvl4, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.NonHazDHServLvl4)
-                        </td>
-                    </tr>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <tr>
+                            <td width="30%"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ClientName)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ClientName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClientName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ClientCode)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ClientCode, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClientCode)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.CMCLocation)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.CMCLocation, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CMCLocation)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ClientCurrency)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ClientCurrency, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClientCurrency)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.LabelFor(model => model.ClientUM)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ClientUM, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClientUM)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.InvoiceAddress)</td>
+                            <td>@Html.TextAreaFor(model => model.InvoiceAddress, new { @class = "form-control", @rows = "4" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.InvoiceEmailTo)</td>
+                            <td>@Html.TextAreaFor(model => model.InvoiceEmailTo, new { @class = "form-control", @rows = "4" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(m => m.KeyContactDir)</td>
+                            <td>@Html.TextAreaFor(m => m.KeyContactDir, new { @class = "form-control", @rows = "4" })</td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ClientUrl)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ClientUrl, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClientUrl)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurveyUsed)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.SurveyUsed, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ClientStatus)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ClientStatus, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ClientStatus)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ActiveDate)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ActiveDate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                                @Html.ValidationMessageFor(model => model.ActiveDate)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ClientContact)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.ClientContact, new { @class = "form-control", @rows = "4" })
+                                @Html.ValidationMessageFor(model => model.ClientContact)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.CMCContact)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.CMCContact, new { @class = "form-control", @rows = "4" })
+                                @Html.ValidationMessageFor(model => model.CMCContact)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.CeaseShipPeriod)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.CeaseShipPeriod, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CeaseShipPeriod)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ReplenishmentLeadDays)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ReplenishmentLeadDays, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ReplenishmentLeadDays)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SpecialReqAllowed)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.SpecialReqAllowed, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.CommercialInvoiceValue)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.CommercialInvoiceValue, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CommercialInvoiceValue)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ShipConfirmEmail)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.ShipConfirmEmail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ShipConfirmEmail)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.DelayConfirmEmail)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.DelayConfirmEmail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.DelayConfirmEmail)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.OrderConfirmEmail)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.OrderConfirmEmail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.OrderConfirmEmail)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.InvoiceSegregation)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.InvoiceSegregation, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.InvoiceSegregation)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.PartialDeliveryAllowed)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.PartialDeliveryAllowed, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.PartialDeliveryAllowed)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.MSDS)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.MSDS, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.TDS)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.TDS, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.COA)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.COA, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.MSDSFileDir)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.MSDSFileDir, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.TDSFileDir)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.TDSFileDir, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.COAFileDir)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.COAFileDir, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SDSRequired)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.SDSRequired, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.COARequired)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.COARequired, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.TDSRequired)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.TDSRequired, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ExpDateOnLabel)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.ExpDateOnLabel, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SDSLanguage)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SDSLanguage, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.LabelLanguage)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.LabelLanguage, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.StdCoverLetterRequired)</td>
+                            <td>
+                                @Html.CheckBoxFor(model => model.StdCoverLetterRequired, new { @class = "checkbox" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.BOLComment)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.BOLComment, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.BOLComment)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ProductSetupDetails)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.ProductSetupDetails, new { @class = "form-control", @rows = "4" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.InventoryReports)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.InventoryReports, new { @class = "form-control", @rows = "4" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SDSUpdateMethod)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.SDSUpdateMethod, new { @class = "form-control", @rows = "4" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ExpDateRules)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.ExpDateRules, new { @class = "form-control", @rows = "4" })
+                                @Html.ValidationMessageFor(model => model.ExpDateRules)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.CSBusinessRules)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.CSBusinessRules, new { @class = "form-control", @rows = "4" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.WasteProcedure)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.WasteProcedure, new { @class = "form-control", @rows = "4" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.InventoryBusinessRules)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.InventoryBusinessRules, new { @class = "form-control", @rows = "4" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.FreezableProcedure)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.FreezableProcedure, new { @class = "form-control", @rows = "4" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.ChargesSummary)</td>
+                            <td>
+                                @Html.TextAreaFor(model => model.ChargesSummary, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchageHazard)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchageHazard, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchageHazard)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeFlammable)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeFlammable, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeFlammable)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeHeat)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeHeat, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeHeat)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeRefrigerate)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeRefrigerate, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeRefrigerate)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeFreeze)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeFreeze, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeFreeze)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeClean)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeClean, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeClean)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeNalgene)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeNalgene, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeNalgene)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeNitrogen)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeNitrogen, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeNitrogen)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeBiocide)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeBiocide, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeBiocide)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeBlend)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeBlend, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeBlend)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.SurchargeKosher)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.SurchargeKosher, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SurchargeKosher)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.HazDHServLvl1)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.HazDHServLvl1, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HazDHServLvl1)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.HazDHServLvl2)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.HazDHServLvl2, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HazDHServLvl2)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.HazDHServLvl3)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.HazDHServLvl3, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HazDHServLvl3)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.HazDHServLvl4)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.HazDHServLvl4, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HazDHServLvl4)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.NonHazDHServLvl1)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.NonHazDHServLvl1, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.NonHazDHServLvl1)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.NonHazDHServLvl2)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.NonHazDHServLvl2, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.NonHazDHServLvl2)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.NonHazDHServLvl3)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.NonHazDHServLvl3, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.NonHazDHServLvl3)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.LabelFor(model => model.NonHazDHServLvl4)</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.NonHazDHServLvl4, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.NonHazDHServLvl4)
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
         </div>
 
