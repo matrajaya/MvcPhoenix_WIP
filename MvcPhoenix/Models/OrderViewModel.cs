@@ -8,41 +8,10 @@ using System.ComponentModel.DataAnnotations;
 namespace MvcPhoenix.Models
 {
 
-    // retire this after ann orders search are updated
-    //public class OrdersListForLandingPage
-    //{
-    //    public int Client { get; set; }
-    //    public int OrderID { get; set; }
-    //    public string Customer { get; set; }
-    //    public string ClientName { get; set; }
-    //    public string OrderType { get; set; }
-    //    public DateTime? OrderDate { get; set; }
-    //    public string Company { get; set; }
-    //    public string CMCUser { get; set; }
-    //    public int ItemsCount { get; set; }
-    //    //public List<SelectListItem> ListOfClientIDs { get; set; }
-    //}
-
-
+    
     public class OrderMasterFull
     {
-        //public string ClientName
-        //{
-        //    get {
-        //        return MvcPhoenix.Services.OrderService.ClientNameForDisplay(clientid);
-        //    }
-        //}
-
-        
-        // remove this when removed from View ???
-        //public string UpdateResult { get; set; }
-
-        // remove this when removed from View
-        //public string RecordStatus { get; set; }
-
-        // add 04/24/16 by pc so this vm can be used on the ORders Index
-        // public List<SelectListItem> ListOfClientsIDs { get; set; }
-
+    
         public List<SelectListItem> ListOfDivisions { get; set; }
         public List<SelectListItem> ListOfOrderTypes { get; set; }
         public List<SelectListItem> ListOfSalesReps { get; set; }
@@ -53,10 +22,10 @@ namespace MvcPhoenix.Models
 
         // pc 04/28/16 new dd bound per cd, ii
         public List<SelectListItem> ListOfBillingGroups { get; set; }
-
-
+        
         public int itemscount { get; set; }
         public int transcount { get; set; }
+        public int needallocationcount { get; set; }
 
         [Display(Name = "Order ID")]
         public int orderid { get; set; }
@@ -322,6 +291,8 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Approval Needed")]
         public bool approvalneeded { get; set; }
+
+        public bool? IsSDN { get; set; }
 
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }

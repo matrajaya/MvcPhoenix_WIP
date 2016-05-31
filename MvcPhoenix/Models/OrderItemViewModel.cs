@@ -76,7 +76,7 @@ namespace MvcPhoenix.Models
         public Nullable<System.DateTime> ShipDate { get; set; }
 
         [Display(Name = "Non CMC Delay?")]
-        public Nullable<bool> NonCMCDelay { get; set; }
+        public bool? NonCMCDelay { get; set; }
 
         [Display(Name = "Delay Reason")]
         public string DelayReason { get; set; }
@@ -91,6 +91,7 @@ namespace MvcPhoenix.Models
         //[Display(Name = "Add a Status")]
         public Nullable<int> StatusID { get; set; }
 
+        [Display(Name = "A-Status")]
         public string AllocateStatus { get; set; }
 
         public Nullable<bool> CSAllocate { get; set; }
@@ -107,7 +108,8 @@ namespace MvcPhoenix.Models
 
         public Nullable<bool> BackorderEmailSent { get; set; }
 
-        public string Weight { get; set; }
+        //public string Weight { get; set; }
+        public decimal? Weight { get; set; }
 
         public string Warehouse { get; set; }
 
@@ -148,6 +150,7 @@ namespace MvcPhoenix.Models
         public string UpdateResult { get; set; }
         // Remove later
         public string PartialMode { get; set; }
+       
         //public Nullable<int> CMCOrder { get; set; }
         //public string LegacyCMCOrder { get; set; }
         //public string CustOrdNum { get; set; }
@@ -168,15 +171,11 @@ namespace MvcPhoenix.Models
         //public string CustStatus { get; set; }
         //public Nullable<int> LegacyID { get; set; }
         
-        //public OrderItem()
-        //{
-        //    NonCMCDelay = false;
-        //    BackOrdered = false;
-        //    CSAllocate = false;
-        //    EmailSent = false;
-        //    BackorderEmailSent = false;
-        //    SAPClosed = false;
-        //    CarrierInvoiceRcvd = false;
-        //}
+        // 5/20/2016
+        public string AlertNotesOrderEntry { get; set; }
+        public string AlertNotesShipping { get; set; }
+        public string AlertNotesOther { get; set; }
+        public string AlertNotesPackOut { get; set; }
+       
     }
 }

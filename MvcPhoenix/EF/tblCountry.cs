@@ -18,5 +18,6 @@ namespace MvcPhoenix.EF
         public string Country { get; set; }
         public string Code2 { get; set; }
         public string Code3 { get; set; }
+        public Nullable<bool> DoNotShip { get; set; }
     }
 }

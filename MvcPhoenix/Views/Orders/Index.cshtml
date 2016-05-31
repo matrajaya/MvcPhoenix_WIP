@@ -74,17 +74,23 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-2 form-group">
                             @Ajax.ActionLink("Today", "OrdersToday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show Orders Created Today" })
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-2 form-group">
                             @Ajax.ActionLink("Yesterday", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show Orders Created Yesterday" })
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-2 form-group">
                             @Ajax.ActionLink("Last 10 Orders", "OrdersLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show ALL Last 10 Orders" })
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-2 form-group">
                             @Ajax.ActionLink("My Orders (10)", "OrdersMineLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show MY Last 10 Orders" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            @Ajax.ActionLink("Need Allocation", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show MY Last 10 Orders" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            &nbsp;
                         </div>
                         <label class="invisible">.</label>
                     </div>

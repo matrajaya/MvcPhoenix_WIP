@@ -19,7 +19,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Index()
         {
-            var orderslist = fnOrdersSearchResults();  // default query for search results
+            var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist orderby t.orderdate descending select t).Take(10).ToList();  // refine for here
             TempData["SearchResultsMessage"] = "Last 10 Orders";
             List<SelectListItem> clientlist = new List<SelectListItem>();
@@ -50,31 +50,7 @@ namespace MvcPhoenix.Controllers
             TempData["SaveResult"] = "Order Information updated at " + DateTime.Now;
             return RedirectToAction("Edit", new { id = pk });
         }
-
-        public List<OrderMasterFull> fnOrdersSearchResults()
-        {
-            // default query join for the index_partial ORDERS search results, also used by all the search requests as the starting point
-            db.Configuration.AutoDetectChangesEnabled = false;
-            List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
-            orderslist = (from t in db.tblOrderMaster
-                          join clt in db.tblClient on t.ClientID equals clt.ClientID
-                          let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                          select new OrderMasterFull
-                          {   clientid=t.ClientID,
-                              orderid = t.OrderID,
-                              customer = t.Customer,
-                              clientname = clt.ClientName,
-                              ordertype = t.OrderType,
-                              orderdate = t.OrderDate,
-                              company = t.Company,
-                              CreateUser = t.CreateUser,
-                              itemscount = count,
-                              Zip=t.Zip,
-                              salesrep=t.SalesRep
-                          }).ToList();
-            db.Configuration.AutoDetectChangesEnabled = true;
-            return orderslist;
-        }
+              
 
         [HttpGet]
         public ActionResult fnOrderItemsList(int id)
@@ -98,6 +74,7 @@ namespace MvcPhoenix.Controllers
                            ShipDate=t.ShipDate,
                            BackOrdered=t.BackOrdered,
                            AllocateStatus=t.AllocateStatus,
+                           NonCMCDelay=t.NonCMCDelay,
                            QtyAvailable=(from q in db.tblStock where q.ShelfID==t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL" select q).Count()
                            }).ToList();
                 if(qry.Count>0)
@@ -143,22 +120,22 @@ namespace MvcPhoenix.Controllers
         public ActionResult DeleteItem(int id)
         {
             OrderService.fnDeleteOrderItem(id);
-            return Content("Item Deleted at " + System.DateTime.Now.ToString());
+            return Content("Item Deleted");
         }
 
 
         public ActionResult AllocateFromShelf(int id,bool IncludeExpiredStock)
         {
             // The view handles the partial updates
-            int pk = OrderService.fnAllocateShelf(id, IncludeExpiredStock);
-            return Content("Allocation Complete at " + System.DateTime.Now.ToString());
+            int AllocationCount = OrderService.fnAllocateShelf(id, IncludeExpiredStock);
+            return Content(AllocationCount.ToString() + " item(s) allocated");
         }
 
 
         public ActionResult AllocateFromBulk(int id, bool IncludeExpiredStock)
         {
-           int pk = OrderService.fnAllocateBulk(id, IncludeExpiredStock);
-           return Content("Allocation Complete at " + System.DateTime.Now.ToString());
+           int AllocationCount = OrderService.fnAllocateBulk(id, IncludeExpiredStock);
+           return Content(AllocationCount.ToString() + " item(s) allocated");
         }
 
 
@@ -171,7 +148,7 @@ namespace MvcPhoenix.Controllers
                        join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
                        from qry2 in a.DefaultIfEmpty()
                        where t.OrderID == id
-                       orderby t.TransType
+                       orderby t.OrderItemID,t.TransType
                        select new OrderTrans
                        {
                            ordertransid=t.OrderTransID,
@@ -213,17 +190,30 @@ namespace MvcPhoenix.Controllers
         public ActionResult DeleteTrans(int id)
         {
             OrderService.fnDeleteTrans(id);
-            return null;
+            return Content("Trans Deleted at " + System.DateTime.Now.ToString());
         }
 
 
 
         [HttpGet]
+        public ActionResult OrdersNeedAllocation()
+        {
+            var orderslist = OrderService.fnOrdersSearchResults();
+            orderslist = (from t in orderslist
+                          where t.needallocationcount>0
+                          orderby t.orderid ascending
+                          select t).ToList();
+            TempData["SearchResultsMessage"] = "Orders Needing Allocation";
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+        }
+
+        [HttpGet]
         public ActionResult OrdersToday()
         {
             DateTime datToday = DateTime.Today.AddDays(0);
-            List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
-            orderslist = fnOrdersSearchResults();
+            var orderslist = OrderService.fnOrdersSearchResults();
+            //List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+            //orderslist = fnOrdersSearchResults();
             orderslist = (from t in orderslist 
                           orderby t.orderid descending
                           where t.orderdate.Value.Date == datToday.Date
@@ -237,7 +227,8 @@ namespace MvcPhoenix.Controllers
         {
             //TODO change to calc last Business day
             DateTime datToday = DateTime.Today.AddDays(-1);
-            var orderslist = fnOrdersSearchResults();
+            //var orderslist = fnOrdersSearchResults();
+            var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist orderby t.orderid descending
                           where t.orderdate.Value.Date == datToday.Date
                           select t).ToList();
@@ -258,7 +249,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult OrdersMineLastTen()
         {
-            var orderslist = fnOrdersSearchResults();
+            //var orderslist = fnOrdersSearchResults();
+            var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist where t.CreateUser == User.Identity.Name
                           orderby t.orderid descending
                           select t).Take(10).ToList();
@@ -291,7 +283,8 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult LookupClientID(FormCollection fc)
         {
-            var orderslist = fnOrdersSearchResults();
+            //var orderslist = fnOrdersSearchResults();
+            var orderslist = OrderService.fnOrdersSearchResults();
             int pk = Convert.ToInt32(fc["ClientID"]);
             orderslist = (from t in orderslist where t.clientid == pk orderby t.orderid descending select t).Take(20).ToList();
             TempData["SearchResultsMessage"] = "No Results Found";
@@ -307,7 +300,8 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupOrderDate(FormCollection fc)
         {
             DateTime mydate = Convert.ToDateTime(fc["searchorderdate"]);
-            var orderslist = fnOrdersSearchResults();
+            //var orderslist = fnOrdersSearchResults();
+            var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist where t.orderdate.Value.Date == mydate.Date orderby t.orderid descending select t).ToList();
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
@@ -321,7 +315,8 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupCompany(FormCollection fc)
         {
             var mycompany = fc["searchcompany"];
-            var orderslist = fnOrdersSearchResults();
+            //var orderslist = fnOrdersSearchResults();
+            var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist where t.company != null && t.company.Contains(mycompany) select t).ToList();
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
@@ -335,7 +330,8 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupZipCode(FormCollection fc)
         {
             var myzipcode = fc["searchzipcode"];
-            var orderslist = fnOrdersSearchResults();
+            //var orderslist = fnOrdersSearchResults();
+            var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist where t.Zip != null && t.Zip.Contains(myzipcode) select t).ToList();
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
@@ -350,7 +346,8 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupSalesRep(FormCollection fc)
         {
             var mysalesrep = fc["searchsalesrep"];
-            var orderslist = fnOrdersSearchResults();
+            //var orderslist = fnOrdersSearchResults();
+            var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist where t.salesrep != null && t.salesrep.Contains(mysalesrep) select t).ToList();
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)

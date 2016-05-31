@@ -38,6 +38,14 @@
         </div>
     </div>
 
+    @if (Model.IsSDN == true)
+    {
+        <h3 class="alert alert-danger text-center">
+            <b>WARNING - This order appears to be on the Do Not Ship List</b>
+        </h3>
+
+    }
+
 
     @using (Html.BeginForm("Save", "Orders", FormMethod.Post))
     {
@@ -424,3 +432,10 @@
     }
 
 </div>
+
+<script type="text/javascript">
+    $(function () {
+       
+    });
+   
+</script>

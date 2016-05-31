@@ -44,7 +44,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblInvLog> tblInvLog { get; set; }
         public virtual DbSet<tblInvTrans> tblInvTrans { get; set; }
         public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
-        public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
         public virtual DbSet<tblOrderSource> tblOrderSource { get; set; }
         public virtual DbSet<tblOrderTrans> tblOrderTrans { get; set; }
         public virtual DbSet<tblOrderType> tblOrderType { get; set; }
@@ -75,5 +74,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblCustomer> tblCustomer { get; set; }
         public virtual DbSet<tblClient2> tblClient2 { get; set; }
+        public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
     }
 }

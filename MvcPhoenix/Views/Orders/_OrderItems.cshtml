@@ -1,10 +1,7 @@
 ﻿@model List<MvcPhoenix.Models.OrderItem>
 @{
     ViewBag.Title = "Order Items";
-    
-    
 }
-
 <div class="table-responsive">
     <table id="mytable" class="table table-hover table-striped" style="font-size:.85em;">
         <tr>
@@ -33,7 +30,9 @@
                     <td class="text-center">@item.Qty</td>
                     <td>@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
                     <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
-                    <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" disabled="disabled" /></td>
+                    <td class="text-center">
+                    <input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" />
+                    </td>
                     <td class="text-center">@item.QtyAvailable.ToString()</td>
                     <td class="text-center">@item.AllocateStatus</td>
 

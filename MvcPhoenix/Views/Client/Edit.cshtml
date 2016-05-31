@@ -50,6 +50,17 @@
         @Html.HiddenFor(m => m.LegacyID)
         @Html.HiddenFor(m => m.GlobalClientID)
 
+    <div class="form-group row">
+        <div class="col-md-6">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Clients Index", "Index")
+        </div>
+        <div class="col-md-6">
+            <div class="pull-right">
+                <a href="@Url.Action("View", "Client", new { id = @Model.ClientID })"><i class="fa fa-eye fa-lg"></i> View Mode</a>
+            </div>
+        </div>
+    </div>
+        
         <!-- Client Information -->
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -59,11 +70,7 @@
                 <div class="table-responsive">
                     <table class="table table-hover table-striped">
                         <tr>
-                            <td width="30%"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.ClientName)</td>
+                            <td width="30%">@Html.LabelFor(model => model.ClientName)</td>
                             <td>
                                 @Html.TextBoxFor(model => model.ClientName, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.ClientName)
@@ -214,7 +221,7 @@
                                 @Html.ValidationMessageFor(model => model.PartialDeliveryAllowed)
                             </td>
                         </tr>
-                        <tr>
+                        @*<tr>
                             <td>@Html.LabelFor(model => model.MSDS)</td>
                             <td>
                                 @Html.CheckBoxFor(model => model.MSDS, new { @class = "checkbox" })
@@ -249,7 +256,7 @@
                             <td>
                                 @Html.TextBoxFor(model => model.COAFileDir, new { @class = "form-control" })
                             </td>
-                        </tr>
+                        </tr>*@
                         <tr>
                             <td>@Html.LabelFor(model => model.SDSRequired)</td>
                             <td>
@@ -277,7 +284,7 @@
                         <tr>
                             <td>@Html.LabelFor(model => model.SDSLanguage)</td>
                             <td>
-                                @Html.TextBoxFor(model => model.SDSLanguage, new { @class = "form-control" })
+                                @Html.TextAreaFor(model => model.SDSLanguage, new { @class = "form-control" })
                             </td>
                         </tr>
                         <tr>
@@ -292,13 +299,13 @@
                                 @Html.CheckBoxFor(model => model.StdCoverLetterRequired, new { @class = "checkbox" })
                             </td>
                         </tr>
-                        <tr>
+                        @*<tr>
                             <td>@Html.LabelFor(model => model.BOLComment)</td>
                             <td>
                                 @Html.TextAreaFor(model => model.BOLComment, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.BOLComment)
                             </td>
-                        </tr>
+                        </tr>*@
                         <tr>
                             <td>@Html.LabelFor(model => model.ProductSetupDetails)</td>
                             <td>
@@ -354,7 +361,7 @@
                                 @Html.TextAreaFor(model => model.ChargesSummary, new { @class = "form-control" })
                             </td>
                         </tr>
-                        <tr>
+                        @*<tr>
                             <td>@Html.LabelFor(model => model.SurchageHazard)</td>
                             <td>
                                 @Html.TextBoxFor(model => model.SurchageHazard, new { @class = "form-control" })
@@ -486,7 +493,7 @@
                                 @Html.TextBoxFor(model => model.NonHazDHServLvl4, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.NonHazDHServLvl4)
                             </td>
-                        </tr>
+                        </tr>*@
                     </table>
                 </div>
 
@@ -564,6 +571,7 @@
     CKEDITOR.inline('InvoiceEmailTo');
     CKEDITOR.inline('KeyContactDir');
     CKEDITOR.inline('ClientContact');
+    CKEDITOR.inline('SDSLanguage');
     CKEDITOR.inline('CMCContact');
     CKEDITOR.inline('SpecialReqAllowed');
     CKEDITOR.inline('ProductSetupDetails');
@@ -575,4 +583,20 @@
     CKEDITOR.inline('InventoryBusinessRules');
     CKEDITOR.inline('FreezableProcedure');
     CKEDITOR.inline('ChargesSummary');
+    //CKEDITOR.replace('InvoiceAddress');
+    //CKEDITOR.replace('InvoiceEmailTo');
+    //CKEDITOR.replace('KeyContactDir');
+    //CKEDITOR.replace('ClientContact');
+    //CKEDITOR.replace('SDSLanguage');
+    //CKEDITOR.replace('CMCContact');
+    //CKEDITOR.replace('SpecialReqAllowed');
+    //CKEDITOR.replace('ProductSetupDetails');
+    //CKEDITOR.replace('InventoryReports');
+    //CKEDITOR.replace('SDSUpdateMethod');
+    //CKEDITOR.replace('ExpDateRules');
+    //CKEDITOR.replace('CSBusinessRules');
+    //CKEDITOR.replace('WasteProcedure');
+    //CKEDITOR.replace('InventoryBusinessRules');
+    //CKEDITOR.replace('FreezableProcedure');
+    //CKEDITOR.replace('ChargesSummary');
 </script>

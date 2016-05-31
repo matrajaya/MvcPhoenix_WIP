@@ -91,6 +91,7 @@ namespace MvcPhoenix.Models
       [Display(Name = "Product Setup Details")]
       public string ProductSetupDetails { get; set; }
 
+      [AllowHtml]
       [Display(Name = "SDS Language(s)")]
       public string SDSLanguage { get; set; }
 
