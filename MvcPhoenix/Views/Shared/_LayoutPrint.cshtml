@@ -3,48 +3,50 @@
     <title>@ViewBag.Title - Phoenix/CMC SiMPLE</title>
     <style media="all">
         /*Move styles to print.css when done tweaking*/
-        body{
+        body {
             font-family: Segoe, Arial, Helvetica, sans-serif;
-            margin:0;
-            padding:0;
+            margin: 0;
+            padding: 0;
         }
 
-        label{
-            font-weight:bold;
+        label {
+            font-weight: bold;
         }
 
         table {
-            width:100%;
-            border-collapse:collapse;
-            text-align:left;
-            page-break-inside:avoid
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            page-break-inside: avoid;
         }
-        
+
         th, td {
-            padding:5px;
-            vertical-align:text-top;
+            padding: 5px;
+            vertical-align: text-top;
         }
 
         h3 {
             padding: 5px,;
-            margin: 0
+            margin: 0;
         }
 
         p {
             padding: 2px;
-            margin:2px
+            margin: 2px;
         }
 
         .form-group {
-            page-break-inside:avoid
+            page-break-inside: avoid;
         }
 
         .form-control {
-            border-width:0;
-            border-color:transparent;
+            border-width: 0;
+            border-color: transparent;
         }
 
-        footer {page-break-after: always;}
+        footer {
+            page-break-after: always;
+        }
 
         .noprint, #noprint, a, div.alert, header, .group-media, .btn, .footer, form, #comments, .nav, ul.links.list-inline, ul.action-links {
             display: none !important;
@@ -52,7 +54,12 @@
     </style>
 </head>
 
-<body onload='$("#bcTarget").barcode("@Model.productdetailid ~ @Model.productcode ~ @Model.productname", "datamatrix", { moduleSize: 2, showHRI: false });'>
+@*
+    @Barcode - onload event in print layout. Find better solution for placing instance in views...
+    <body onload='$("#bcTarget").barcode("@Model.productdetailid ~ @Model.productcode ~ @Model.productname", "datamatrix", { moduleSize: 2, showHRI: false });'>
+*@
+
+<body>
     @RenderBody()
 
     @Scripts.Render("~/bundles/js")
@@ -60,4 +67,3 @@
 </body>
 
 </html>
-

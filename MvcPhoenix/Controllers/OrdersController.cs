@@ -7,9 +7,8 @@ using MvcPhoenix.Services;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
-
-// add
 using MvcPhoenix.Services;
+using Rotativa;
 
 namespace MvcPhoenix.Controllers
 {
@@ -42,6 +41,20 @@ namespace MvcPhoenix.Controllers
             var vm = OrderService.fnFillOrder(id);
             return View("~/Views/Orders/Edit.cshtml", vm);
         }
+
+        public ActionResult PrintOrder(int id)
+        {
+            string footer = "--footer-left \"Printed on: " +
+                DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") +
+                "                                                                                                                                    " +
+                " Page: [page]/[toPage]\"" +
+                " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+
+            var vm = OrderService.fnFillOrder(id);
+            return new ViewAsPdf(vm) { CustomSwitches = footer };
+            //return View(vm);
+        }
+
 
         [HttpPost]
         public ActionResult Save(OrderMasterFull vm)
@@ -361,13 +374,13 @@ namespace MvcPhoenix.Controllers
 
 
 
-        public ActionResult PrintOrder()
-        {
-            // The data view will need to more complicated
-            OrderMasterFull obj = new OrderMasterFull();
-            obj = OrderService.fnFillOrder(Convert.ToInt32(Session["OrderID"]));
-            return View("PrintOrder", obj);
-        }
+        //public ActionResult PrintOrder()
+        //{
+        //    // The data view will need to more complicated
+        //    OrderMasterFull obj = new OrderMasterFull();
+        //    obj = OrderService.fnFillOrder(Convert.ToInt32(Session["OrderID"]));
+        //    return View("PrintOrder", obj);
+        //}
 
         //public ActionResult Notification()
         //{

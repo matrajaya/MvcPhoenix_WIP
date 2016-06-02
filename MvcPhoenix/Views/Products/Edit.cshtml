@@ -37,8 +37,7 @@
             </div>
             <div class="col-md-12">
                 <div class="pull-right">
-                    <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank">Print View <i class="fa fa-file-pdf-o fa-lg fa-pull-right fa-border"></i></a>
-                    @*@Html.ActionLink("Print Document", "PrintProfile", new { id = @Model.productdetailid }, new { target = "_blank" })*@
+                    <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
                 </div>
             </div>
         </div>

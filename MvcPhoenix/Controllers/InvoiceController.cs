@@ -10,11 +10,9 @@ namespace MvcPhoenix.Controllers
     {
         //
         // GET: /Invoice/
-
         public ActionResult Index()
         {
             return View();
         }
-
     }
 }

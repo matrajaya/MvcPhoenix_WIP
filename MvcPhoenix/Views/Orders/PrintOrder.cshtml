@@ -1,21 +1,63 @@
 ﻿@model MvcPhoenix.Models.OrderMasterFull
 @{
-    Layout = null;
+    ViewBag.Title = "Order Entry:";
+    Layout = "~/Views/Shared/_LayoutPrint.cshtml";
 }
 
-<!DOCTYPE html>
+<img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+<h1 class="page-header">
+    @ViewBag.Title <small> @Model.orderid</small>
+</h1>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Print Order</title>
-</head>
-<body>
-    <div>
-        <h2>OrderID : @Model.orderid </h2>
-        <h2>When Complete, this will display an Order in printable format</h2>
+<div class="form-group">
+    <h3>Client Order Information</h3>
+    <table>
+        <tr>
+            <td width="25%">
+                <label>Created On:</label><br />
+                @Html.TextBoxFor(m => m.orderdate, new { @class = "form-control" })
+            </td>
+            <td width="25%">
+                <label>Created By:</label><br />
+                @Html.TextBoxFor(m => m.CreateUser, new { @class = "form-control" })
+            </td>
+            <td width="25%">
+                <label>Updated On:</label><br />
+                @Html.TextBoxFor(m => m.UpdateDate, new { @class = "form-control" })
+            </td>
+            <td width="25%">
+                <label>Updated By:</label><br />
+                @Html.TextBoxFor(m => m.UpdateUser, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
 
-        <h3><a href='Edit/@Session["OrderID"]'>Return to Order Edit</a> </h3>
-    </div>
-</body>
-</html>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="form-group">
+    <h3>Ship To Details</h3>
+</div>
+
+<div class="form-group">
+    <h3>Requestor's Details</h3>
+</div>
+
+<div class="form-group">
+    <h3>Order Items</h3>
+</div>
+
+<div class="form-group">
+    <h3>Transaction Charges &amp; Log Notes</h3>
+</div>
+
+<div class="form-group">
+    <h3>Shipments</h3>
+</div>
+
+<div class="form-group">
+    <h3>Special Instructions</h3>
+</div>

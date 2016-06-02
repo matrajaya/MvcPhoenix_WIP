@@ -77,6 +77,26 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="GleamTech.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a05198837413a6d8, processorArchitecture=MSIL">
+      <HintPath>..\packages\GleamTech.Core.1.2.3\lib\net40\GleamTech.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GleamTech.DocumentUltimate, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a05198837413a6d8, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentUltimate.1.7.6\lib\net40\GleamTech.DocumentUltimate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GleamTech.FileUltimate, Version=5.1.5.0, Culture=neutral, PublicKeyToken=a05198837413a6d8, processorArchitecture=MSIL">
+      <HintPath>..\packages\FileUltimate.5.3.8\lib\net40\GleamTech.FileUltimate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GleamTech.ImageUltimate, Version=1.1.0.0, Culture=neutral, PublicKeyToken=a05198837413a6d8, processorArchitecture=MSIL">
+      <HintPath>..\packages\ImageUltimate.1.2.6\lib\net40\GleamTech.ImageUltimate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GleamTech.VideoUltimate, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a05198837413a6d8, processorArchitecture=MSIL">
+      <HintPath>..\packages\VideoUltimate.1.1.6\lib\net40\GleamTech.VideoUltimate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
@@ -242,6 +262,7 @@
     <Compile Include="Controllers\ApplicationUsersController.cs" />
     <Compile Include="Controllers\BulkController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
@@ -1225,9 +1246,10 @@
     <Content Include="Views\Client\Create.cshtml" />
     <Content Include="Views\Client\View.cshtml" />
     <Content Include="Views\Orders\_AdvancedSearchModal.cshtml" />
+    <Content Include="Views\Documents\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\DocsDir\" />
     <Folder Include="Logs\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
