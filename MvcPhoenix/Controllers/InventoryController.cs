@@ -1,12 +1,8 @@
-﻿using System;
+﻿using MvcPhoenix.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using MvcPhoenix.Models;
-
-//pc add
-using MvcPhoenix.Services;
 
 namespace MvcPhoenix.Controllers
 {
@@ -35,7 +31,6 @@ namespace MvcPhoenix.Controllers
             return View();
         }
 
-
         // Action To call Edit Bulk Container View
         // View needs to be moved to Inventory and cleaned up
         public ActionResult EditBulkContainer(int id)
@@ -46,7 +41,6 @@ namespace MvcPhoenix.Controllers
             obj = fnFillBulkContainer(id);
             return View(obj);
         }
-
 
         private BulkContainerViewModel fnFillBulkContainer(int id)
         {
@@ -87,7 +81,7 @@ namespace MvcPhoenix.Controllers
                            receivedascode = t.ReceivedAsCode,
                            receivedasname = t.ReceivedAsName
                        }).FirstOrDefault();
-            // Have to fill list items after object is built  
+            // Have to fill list items after object is built
 
             // Fix these when I get to Inventory
             //qry.ListOfWareHouses =ReceivingService.
@@ -97,8 +91,6 @@ namespace MvcPhoenix.Controllers
             db.Dispose();
             return qry;
         }
-
-
 
         #region Search Related Actions
 
@@ -215,9 +207,6 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        #endregion
-
-
-
+        #endregion Search Related Actions
     }
 }

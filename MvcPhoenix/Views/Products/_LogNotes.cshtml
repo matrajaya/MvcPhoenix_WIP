@@ -29,7 +29,6 @@
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateProductNotesList"
                              }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
-                        
                     </td>
                     <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
                     <td>@item.notes</td>
@@ -54,9 +53,3 @@
         $("#dvLogNotes").load('@Url.Action("LogNotesList", "Products", new { id = @ViewBag.ParentKey })');
     }
 </script>
-
-
-
-
-
-

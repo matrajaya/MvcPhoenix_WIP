@@ -1,9 +1,6 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 using MvcPhoenix.Models;
+using System.Data.Entity;
 
 namespace MvcPhoenix.DataLayer
 {
@@ -13,7 +10,7 @@ namespace MvcPhoenix.DataLayer
             : base("AuthConnection", throwIfV1Schema: false)
         {
         }
-        
+
         // Comment this block first then rebuild before using EF scafolding; Otherwise error comes up.
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -26,6 +23,5 @@ namespace MvcPhoenix.DataLayer
         {
             return new ApplicationDbContext();
         }
-
     }
 }

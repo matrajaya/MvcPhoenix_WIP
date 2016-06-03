@@ -6,7 +6,7 @@
 
 <img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
 <h1 class="page-header">
-    @ViewBag.Title <small> @Model.orderid</small>
+    @ViewBag.Title <small> @Model.orderid for @Model.clientname</small>
 </h1>
 
 <div class="form-group">
@@ -15,49 +15,265 @@
         <tr>
             <td width="25%">
                 <label>Created On:</label><br />
-                @Html.TextBoxFor(m => m.orderdate, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.orderdate, new { @class = "form-control" })
             </td>
             <td width="25%">
                 <label>Created By:</label><br />
-                @Html.TextBoxFor(m => m.CreateUser, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.CreateUser, new { @class = "form-control" })
             </td>
             <td width="25%">
                 <label>Updated On:</label><br />
-                @Html.TextBoxFor(m => m.UpdateDate, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.UpdateDate, new { @class = "form-control" })
             </td>
             <td width="25%">
                 <label>Updated By:</label><br />
-                @Html.TextBoxFor(m => m.UpdateUser, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.UpdateUser, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <label class="control-label">Name</label><br />
+                @Html.DisplayFor(m => m.clientname, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Billing Group</label><br />
+                @Html.DisplayFor(m => m.billinggroup, new { @class = "form-control" })
             </td>
         </tr>
         <tr>
             <td>
-
+                <label>Client Reference</label><br />
+                @Html.DisplayFor(m => m.custrefnum, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Client Order Number</label><br />
+                @Html.DisplayFor(m => m.custordnum, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Order Type</label><br />
+                @Html.DisplayFor(m => m.ordertype, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Order Source</label><br />
+                @Html.DisplayFor(m => m.source, new { @class = "form-control" })
             </td>
         </tr>
     </table>
 </div>
 
+<hr />
+
 <div class="form-group">
     <h3>Ship To Details</h3>
+    <table>
+        <tr>
+            <td width="25%"></td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label>Name</label><br />
+                @Html.DisplayFor(m => m.company, new { @class = "form-control" })
+            </td>
+            <td colspan="2">
+                <label>Attention</label><br />
+                @Html.DisplayFor(m => m.attention, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label>Email</label><br />
+                @Html.DisplayFor(m => m.email, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Phone</label><br />
+                @Html.DisplayFor(m => m.phone, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Fax</label><br />
+                @Html.DisplayFor(m => m.fax, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label class="control-label">Address 1</label><br />
+                @Html.DisplayFor(m => m.street, new { @class = "form-control" })
+            </td>
+            <td>
+                <label class="control-label">Address 2</label><br />
+                @Html.DisplayFor(m => m.street2, new { @class = "form-control" })
+            </td>
+            <td>
+                <label class="control-label">Address 3</label><br />
+                @Html.DisplayFor(m => m.street3, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>City</label><br />
+                @Html.DisplayFor(m => m.city, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Zip</label><br />
+                @Html.DisplayFor(m => m.Zip, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>State</label><br />
+                @Html.DisplayFor(m => m.state, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Country</label><br />
+                @Html.DisplayFor(m => m.country, new { @class = "form-control" })
+            </td>
+        </tr>
+    </table>
 </div>
+
+<hr />
 
 <div class="form-group">
     <h3>Requestor's Details</h3>
+    <table>
+        <tr>
+            <td width="25%">
+                <label>Requestor's Name</label><br />
+                @Html.DisplayFor(m => m.req, new { @class = "form-control" })
+            </td>
+            <td width="25%">
+                <label>Requestor's Email</label><br />
+                @Html.DisplayFor(m => m.reqemail, new { @class = "form-control" })
+            </td>
+            <td width="25%">
+                <label>Requestor's Phone</label><br />
+                @Html.DisplayFor(m => m.reqphone, new { @class = "form-control" })
+            </td>
+            <td width="25%">
+                <label>Requestor's Fax</label><br />
+                @Html.DisplayFor(m => m.reqfax, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Sales Rep's Name</label><br />
+                @Html.DisplayFor(m => m.salesrep, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Sales Rep's Email</label><br />
+                @Html.DisplayFor(m => m.sales_email, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Sales Rep's Phone</label><br />
+                @Html.DisplayFor(m => m.salesrepphone, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Sales Rep's Territory</label><br />
+                @Html.DisplayFor(m => m.salesrepterritory, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Marketing Rep's Name</label><br />
+                @Html.DisplayFor(m => m.marketingrep, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Marketing Rep's Email</label><br />
+                @Html.DisplayFor(m => m.marketingrepemail, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Distributor</label><br />
+                @Html.DisplayFor(m => m.distributor, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>End Use</label><br />
+                @Html.DisplayFor(m => m.enduse, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Approval Needed</label><br />
+                @Html.CheckBoxFor(m => m.approvalneeded, new { @class = "checkbox" })
+            </td>
+            <td>
+                <label>Approval Date</label><br />
+                @Html.TextBoxFor(m => m.approvaldate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+            </td>
+        </tr>
+    </table>
 </div>
+
+<hr />
 
 <div class="form-group">
     <h3>Order Items</h3>
+    <div id="dvItems">
+        @if (Model.orderid > 1)
+        {
+            <div id="dvOrderItemsList">
+                @Html.Action("fnOrderItemsList", "Orders", new { id = Model.orderid })
+            </div>
+        }
+    </div>
 </div>
+
+<hr />
 
 <div class="form-group">
     <h3>Transaction Charges &amp; Log Notes</h3>
+    <div id="dvOrderTransList">
+        @if (@Model.transcount > 0)
+        {
+            @Html.Action("fnOrderTransList", "Orders", new { id = Model.orderid })
+        }
+    </div>
 </div>
+
+<hr />
 
 <div class="form-group">
     <h3>Shipments</h3>
+    <table>
+        <tr>
+            <td>
+                <label>Ship Via</label><br />
+                @Html.DisplayFor(m => m.shipvia, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Shipping Account</label><br />
+                @Html.DisplayFor(m => m.shipacct, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Preferred Carrier</label><br />
+                @Html.DisplayFor(m => m.preferredcarrier, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Timing</label><br />
+                @Html.DisplayFor(m => m.timing, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>SPS Freight Cost</label><br />
+                @Html.DisplayFor(m => m.spsfreightcost, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>SPS Shipped Weight</label><br />
+                @Html.DisplayFor(m => m.spsshippedwt, new { @class = "form-control" })
+            </td>
+        </tr>
+    </table>
 </div>
+
+<hr />
 
 <div class="form-group">
     <h3>Special Instructions</h3>
+    <table>
+        <tr>
+            <td>
+                @Html.DisplayFor(m => m.special, new { @class = "form-control" })
+            </td>
+        </tr>
+    </table>
 </div>

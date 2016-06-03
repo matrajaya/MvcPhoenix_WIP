@@ -1086,13 +1086,28 @@
     <Content Include="Scripts\ckeditor\package.json" />
     <Content Include="Scripts\ckeditor\LICENSE.md" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
+    <Content Include="Scripts\bootstrap.min.js.map">
+      <DependentUpon>bootstrap.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js.map">
+      <DependentUpon>jquery-1.10.2.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
     <Content Include="Scripts\jquery-2.2.0.min.js" />
     <Content Include="Scripts\jquery-2.2.0.min.map" />
+    <Content Include="Scripts\jquery-barcode.min.js.map">
+      <DependentUpon>jquery-barcode.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-2.2.0.min.js.map">
+      <DependentUpon>jquery-2.2.0.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-ui-1.11.4.min.js.map">
+      <DependentUpon>jquery-ui-1.11.4.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-barcode.js" />
     <Content Include="Scripts\jquery-barcode.min.js" />
@@ -1247,6 +1262,9 @@
     <Content Include="Views\Client\View.cshtml" />
     <Content Include="Views\Orders\_AdvancedSearchModal.cshtml" />
     <Content Include="Views\Documents\Index.cshtml" />
+    <Content Include="Scripts\jquery.validate.min.js.map">
+      <DependentUpon>jquery.validate.min.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

@@ -2,6 +2,7 @@
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(MvcPhoenix.Startup))]
+
 namespace MvcPhoenix
 {
     public partial class Startup

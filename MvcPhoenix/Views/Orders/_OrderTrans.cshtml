@@ -1,57 +1,43 @@
 ﻿@model List<MvcPhoenix.Models.OrderTrans>
 @{
     ViewBag.Title = "Order Trans";
-
-    
-    
-    
- }
+}
 <div class="table-responsive">
-        <table id="mytable" class="table table-hover table-striped" style="font-size:.85em;margin:auto;">
-            <tr>
-                <th>#</th>
-                <th>Product Code</th>
-                <th>Type</th>
-                <th style="text-align:center;">Qty</th>
-                <th style="text-align:right;">Amount</th>
-                @*<th>id</th>*@
-                <th>Date</th>
-                <th>Comments</th>
-                <th class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
-            </tr>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        @*<td>@item.ordertransid.ToString()</td>*@
-                        <td>@(Model.IndexOf(item) + 1)</td>
-                        <td>@item.productcode</td>
-                        <td>@item.transtype</td>
-                        <td class="text-center">@item.transqty</td>
-                        <td class="text-right">@item.transamount</td>
-                        <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
-                        <td>@item.comments</td>
-                        <td class="text-center">
-                            @Ajax.ActionLink("Edit", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
+    <table id="mytable" class="table table-hover table-striped" style="font-size:.85em;margin:auto;">
+        <tr>
+            <th>#</th>
+            <th>Product Code</th>
+            <th>Type</th>
+            <th style="text-align:center;">Qty</th>
+            <th style="text-align:right;">Amount</th>
+            <th>Date</th>
+            <th>Comments</th>
+            <th class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
+        </tr>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(Model.IndexOf(item) + 1)</td>
+                    <td>@item.productcode</td>
+                    <td>@item.transtype</td>
+                    <td style="text-align:center;">@item.transqty</td>
+                    <td style="text-align:right;">@item.transamount</td>
+                    <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
+                    <td>@item.comments</td>
+                    <td class="text-center">
+                        @Ajax.ActionLink("Edit", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",
                                  InsertionMode = InsertionMode.Replace,
                                  HttpMethod = "GET",
-                                 OnBegin="$('#dialogPlaceholder').empty()",
-                                OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                                 OnBegin = "$('#dialogPlaceholder').empty()",
+                                 OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
                              },
                            new { @class = "btn btn-xs btn-primary" })
-                        </td>
-
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
-
-<div id="testdiv">
-
-
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
-

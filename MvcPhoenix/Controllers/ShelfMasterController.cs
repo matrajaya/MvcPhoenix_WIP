@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-using MvcPhoenix.Models;
+﻿using MvcPhoenix.Models;
 using MvcPhoenix.Services;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
 {
     public class ShelfMasterController : Controller
     {
-
         public ActionResult Index(int id)
         {
             // build the landing page for shelf masters belonging to a productdetailid
@@ -45,9 +39,6 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-
-
-
         [HttpGet]
         public ActionResult Create(int id)
         {
@@ -55,7 +46,6 @@ namespace MvcPhoenix.Controllers
             obj = ShelfMasterService.fnCreateNewShelfMaster(id);
             return PartialView("~/Views/ShelfMaster/_Edit.cshtml", obj);
         }
-
 
         [HttpGet]
         public ActionResult Edit(int id)
@@ -92,7 +82,7 @@ namespace MvcPhoenix.Controllers
             }
             if (UserChoice == "Save")
             {
-                    ShelfMasterService.fnSaveShelfMaster(obj);
+                ShelfMasterService.fnSaveShelfMaster(obj);
             }
             if (UserChoice == "Delete")
             {
@@ -101,8 +91,5 @@ namespace MvcPhoenix.Controllers
             }
             return RedirectToAction("Index", new { id = obj.productdetailid });
         }
-
-
-
     }
 }

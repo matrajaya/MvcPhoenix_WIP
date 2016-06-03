@@ -1,10 +1,8 @@
-﻿using System.Data.Entity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using MvcPhoenix.DataLayer;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
@@ -15,7 +13,7 @@ namespace MvcPhoenix.Models
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            
+
             return userIdentity;
         }
 
@@ -34,7 +32,7 @@ namespace MvcPhoenix.Models
         public string PostalCode { get; set; }
 
         public string Country { get; set; }
-        
+
         public IEnumerable<SelectListItem> RolesList { get; set; }
 
         // Read Only
@@ -51,6 +49,5 @@ namespace MvcPhoenix.Models
                 return addressBlock == "<br/ >," ? string.Empty : addressBlock;
             }
         }
-
     }
 }

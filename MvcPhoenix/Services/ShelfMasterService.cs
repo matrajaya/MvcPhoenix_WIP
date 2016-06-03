@@ -1,9 +1,7 @@
-﻿using System;
+﻿using MvcPhoenix.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-
-using MvcPhoenix.Models;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Services
@@ -11,9 +9,6 @@ namespace MvcPhoenix.Services
     public class ShelfMasterService
     {
         private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
-
-
-
 
         public static List<ShelfMasterViewModel> fnListOfShelfMasters(int id)
         {
@@ -37,7 +32,7 @@ namespace MvcPhoenix.Services
                                   size = t.Size,
                                   packageid = t.PackageID,
                                   // ii busarea = t.BusArea,
-                                  warehouse=t.Warehouse,
+                                  warehouse = t.Warehouse,
                                   bin = t.Bin,
                                   reordermin = t.ReorderMin,
                                   reordermax = t.ReorderMax,
@@ -59,7 +54,7 @@ namespace MvcPhoenix.Services
                                   labelsurcharge = t.LabelSurcharge,
                                   othersurcharge = t.OtherSurcharge
                               }).ToList();
-                foreach(var item in mylist)
+                foreach (var item in mylist)
                 {
                     //if(String.IsNullOrEmpty(item.size))
                     //{
@@ -69,7 +64,6 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
-
 
         public static int fnCloneShelfMaster(int id)
         {
@@ -110,7 +104,6 @@ namespace MvcPhoenix.Services
                 //int? PDid = dbrow.ProductDetailID;
                 db.Database.ExecuteSqlCommand("Delete from tblShelfMaster where ShelfID=" + id.ToString());
             }
-
         }
 
         private static int fnNewShelfID()
@@ -126,7 +119,7 @@ namespace MvcPhoenix.Services
                 return newpk;
             }
         }
-        
+
         public static ShelfMasterViewModel fnFillShelfMasterFromDB(int id)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -227,7 +220,6 @@ namespace MvcPhoenix.Services
                 dbSM.Alert = obj.alert;
                 dbSM.CustCode = obj.custcode;
                 db.SaveChanges();
-
             }
         }
 
@@ -242,7 +234,6 @@ namespace MvcPhoenix.Services
             return mylist;
         }
 
-
         private static List<SelectListItem> fnListOfTierSizes(int? ClientID)
         {
             List<SelectListItem> mylist = new List<SelectListItem>();
@@ -255,9 +246,7 @@ namespace MvcPhoenix.Services
                 mylist.Add(new SelectListItem { Value = "", Text = "" });
                 return mylist;
             }
-
         }
-
 
         public static string fnBuildShelfMasterPackagesDropDown(string size)
         {
@@ -276,7 +265,6 @@ namespace MvcPhoenix.Services
                 s = s + "</select>";
                 return s;
             }
-
         }
 
         //public static string? isValidShelfMaster(ShelfMasterViewModel obj)
@@ -285,10 +273,9 @@ namespace MvcPhoenix.Services
         //    //bool retval = false;
         //    // look for a reason to fail
         //    string retval = "Errors";
-                    
+
         //    return retval;
         //}
-
 
         private static List<SelectListItem> fnListOfPackageIDs(string size)
         {
@@ -302,12 +289,6 @@ namespace MvcPhoenix.Services
                 mylist.Add(new SelectListItem { Value = "", Text = "" });
                 return mylist;
             }
-
         }
-
-
-
     }
-
-
 }

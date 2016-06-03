@@ -1,23 +1,19 @@
-﻿using System;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-//pc add
 using System.Web.Mvc;
-using MvcPhoenix.EF;
-using MvcPhoenix.Models;
-
 
 namespace MvcPhoenix.Services
 {
     public class ReplenishmentsService
     {
-        private static string PathToLogos="http://www.mysamplecenter.com/Logos/";
+        private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
 
-        public static List<BulkOrderSearchResults> fnSearchResults(FormCollection fc,string mode)
+        public static List<BulkOrderSearchResults> fnSearchResults(FormCollection fc, string mode)
         {
-
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
                 var mylist = (from t in db.tblBulkOrder
@@ -35,7 +31,7 @@ namespace MvcPhoenix.Services
                                   emailsent = t.EmailSent,
                                   clientname = t2.ClientName,
                                   itemcount = itemscount,
-                                  ResultsMessage="Results"
+                                  ResultsMessage = "Results"
                               }).ToList();
 
                 if (mode == "User")
@@ -54,7 +50,7 @@ namespace MvcPhoenix.Services
                 }
 
                 // preset request
-                string sResultsMessage=null;
+                string sResultsMessage = null;
                 switch (mode)
                 {
                     case "Initial":
@@ -62,18 +58,22 @@ namespace MvcPhoenix.Services
                         sResultsMessage = "Initial";
                         //mylist = mylist.Select(e => { e.ResultsMessage = "Initial"; return e; });
                         break;
+
                     case "LastTen":
                         mylist = mylist.Take(10).ToList();
                         sResultsMessage = "Last Ten";
                         break;
+
                     case "UnConfirmed":
                         mylist = (from t in mylist where t.emailsent == null select t).ToList();
                         sResultsMessage = "Un-confirmed";
                         break;
+
                     case "OpenOnly":
                         mylist = (from t in mylist where t.opencount > 0 select t).ToList();
                         sResultsMessage = "Open Items";
                         break;
+
                     default:
                         break;
                 }
@@ -81,11 +81,9 @@ namespace MvcPhoenix.Services
                 {
                     item.ResultsMessage = sResultsMessage;
                 }
-                
+
                 return mylist;
-            }       
-        
-        
+            }
         }
 
         public static string fnGetSupplyIDEmail(int clientid, string supplyid)
@@ -102,7 +100,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-
         public static List<BulkOrderItem> fnItemsList(int id)
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
@@ -112,8 +109,8 @@ namespace MvcPhoenix.Services
                               where t.BulkOrderID == id
                               select new BulkOrderItem
                               {
-                                  mastercode=pm.MasterCode,
-                                  mastername=pm.MasterName,
+                                  mastercode = pm.MasterCode,
+                                  mastername = pm.MasterName,
                                   bulkorderitemid = t.BulkOrderItemID,
                                   bulkorderid = t.BulkOrderID,
                                   productmasterid = t.ProductMasterID,
@@ -125,33 +122,32 @@ namespace MvcPhoenix.Services
                               }).ToList();
                 return mylist;
             }
-
         }
 
         public static BulkOrder fnFillBulkOrderFromDB(int id)
         {
-            using(var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
                 BulkOrder obj = new BulkOrder();
                 obj = (from t in db.tblBulkOrder
-                           join c in db.tblClient on t.ClientID equals c.ClientID
-                           where t.BulkOrderID == id
-                           select new BulkOrder
-                           {
-                               bulkorderid = t.BulkOrderID,
-                               clientid = t.ClientID,
-                               clientname =c.ClientName,
-                               logofilename = PathToLogos + c.LogoFileName,
-                               orderdate = t.OrderDate,
-                               ordercomment = t.Comment,
-                               supplyid = t.SupplyID,
-                
-                               bulksupplieremail = t.BulkSupplierEmail,
-                               emailsent = t.EmailSent,
-                           }).FirstOrDefault();
+                       join c in db.tblClient on t.ClientID equals c.ClientID
+                       where t.BulkOrderID == id
+                       select new BulkOrder
+                       {
+                           bulkorderid = t.BulkOrderID,
+                           clientid = t.ClientID,
+                           clientname = c.ClientName,
+                           logofilename = PathToLogos + c.LogoFileName,
+                           orderdate = t.OrderDate,
+                           ordercomment = t.Comment,
+                           supplyid = t.SupplyID,
+
+                           bulksupplieremail = t.BulkSupplierEmail,
+                           emailsent = t.EmailSent,
+                       }).FirstOrDefault();
 
                 obj.ListOfSupplyIDs = fnListOfSupplyIDs(obj.clientid);
-                
+
                 obj.ListOfBulkOrderItem = (from oi in db.tblBulkOrderItem
                                            where oi.BulkOrderID == id
                                            select new BulkOrderItem
@@ -175,17 +171,17 @@ namespace MvcPhoenix.Services
             System.Threading.Thread.Sleep(1500);
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
-                if(obj.bulkorderid==-1)
+                if (obj.bulkorderid == -1)
                 {
                     obj.bulkorderid = fnNewBulkOrderID();
                 }
-                var dbrow= db.tblBulkOrder.Find(obj.bulkorderid);
+                var dbrow = db.tblBulkOrder.Find(obj.bulkorderid);
                 dbrow.ClientID = obj.clientid;
-                dbrow.OrderDate=obj.orderdate;
-                dbrow.Comment=obj.ordercomment;
+                dbrow.OrderDate = obj.orderdate;
+                dbrow.Comment = obj.ordercomment;
                 dbrow.SupplyID = obj.supplyid;
-                dbrow.BulkSupplierEmail=obj.bulksupplieremail;
-                dbrow.EmailSent=obj.emailsent;
+                dbrow.BulkSupplierEmail = obj.bulksupplieremail;
+                dbrow.EmailSent = obj.emailsent;
                 db.SaveChanges();
                 return obj.bulkorderid;
             }
@@ -208,12 +204,11 @@ namespace MvcPhoenix.Services
             return message;
         }
 
-
-         public static void fnSendEmail(BulkOrderEmailViewModel obj)
+        public static void fnSendEmail(BulkOrderEmailViewModel obj)
         {
-             // update and SMTP
+            // update and SMTP
             using (var db = new EF.CMCSQL03Entities())
-            { 
+            {
                 var dbBulkOrder = db.tblBulkOrder.Find(obj.bulkorderid);
                 dbBulkOrder.EmailSent = String.Format("{0:dd MMM yyyy HH:mm:ss}", DateTime.Now.ToString());
                 db.SaveChanges();
@@ -221,31 +216,28 @@ namespace MvcPhoenix.Services
             }
         }
 
-
-
-         private static MvcHtmlString EmailBody(int id)
-         {
-             using (var db = new EF.CMCSQL03Entities())
-             {
-                 //var dbBulkOrder = db.tblBulkOrder.Find(id);
-                 List<BulkOrderItem> mylist = ReplenishmentsService.fnItemsList(id);
-                 //var myitems=(from t in db.tblBulkOrderItem where t.BulkOrderID==obj.bulkorderid select t).ToList();
-                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                 sb.Append("<table><tr><td>Mastercode</td><td>Master Name</td><td>Weight</td></tr>");
-                 //string sb = "";
-                 //sb = sb + string.Format("{0} {1} {2}", "MasterCode", "Name", "Weight") + "<br>";
-                 foreach (var item in mylist)
-                 {
-                     sb.Append("<tr><td>" + item.mastername + "</td><td>" + item.mastername + "</td><td>" + item.weight.ToString() + "</td></tr>");
-                     //    sb = sb + string.Format("{0} {1} {2}", item.mastercode, item.mastername, item.weight) + "<br>";
-                 }
-                 sb.Append("</table>");
-                 var str = MvcHtmlString.Create(sb.ToString());
-                 //return str.ToHtmlString();            
-                 return str;
-             }
-         }
-
+        private static MvcHtmlString EmailBody(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                //var dbBulkOrder = db.tblBulkOrder.Find(id);
+                List<BulkOrderItem> mylist = ReplenishmentsService.fnItemsList(id);
+                //var myitems=(from t in db.tblBulkOrderItem where t.BulkOrderID==obj.bulkorderid select t).ToList();
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append("<table><tr><td>Mastercode</td><td>Master Name</td><td>Weight</td></tr>");
+                //string sb = "";
+                //sb = sb + string.Format("{0} {1} {2}", "MasterCode", "Name", "Weight") + "<br>";
+                foreach (var item in mylist)
+                {
+                    sb.Append("<tr><td>" + item.mastername + "</td><td>" + item.mastername + "</td><td>" + item.weight.ToString() + "</td></tr>");
+                    //    sb = sb + string.Format("{0} {1} {2}", item.mastercode, item.mastername, item.weight) + "<br>";
+                }
+                sb.Append("</table>");
+                var str = MvcHtmlString.Create(sb.ToString());
+                //return str.ToHtmlString();
+                return str;
+            }
+        }
 
         private static int fnNewBulkOrderID()
         {
@@ -257,7 +249,6 @@ namespace MvcPhoenix.Services
                 return newrec.BulkOrderID;
             }
         }
-
 
         public static BulkOrderItem fnCreateItem(int id)
         {
@@ -286,18 +277,18 @@ namespace MvcPhoenix.Services
             {
                 BulkOrderItem obj = new BulkOrderItem();
                 obj = (from t in db.tblBulkOrderItem
-                           where t.BulkOrderItemID == id
-                           select new BulkOrderItem
-                           {
-                               bulkorderitemid = t.BulkOrderItemID,
-                               bulkorderid = t.BulkOrderID,
-                               productmasterid = t.ProductMasterID,
-                               weight = t.Weight,
-                               itemstatus = t.Status,
-                               eta = t.ETA,
-                               datereceived = t.DateReceived,
-                               itemnotes = t.ItemNotes,
-                           }).FirstOrDefault();
+                       where t.BulkOrderItemID == id
+                       select new BulkOrderItem
+                       {
+                           bulkorderitemid = t.BulkOrderItemID,
+                           bulkorderid = t.BulkOrderID,
+                           productmasterid = t.ProductMasterID,
+                           weight = t.Weight,
+                           itemstatus = t.Status,
+                           eta = t.ETA,
+                           datereceived = t.DateReceived,
+                           itemnotes = t.ItemNotes,
+                       }).FirstOrDefault();
                 var dbBulkOrder = db.tblBulkOrder.Find(obj.bulkorderid);
                 obj.ListOfProductMasters = fnProductMasterIDs(Convert.ToInt32(dbBulkOrder.ClientID));
                 obj.ListOfItemStatusIDs = fnOrderItemStatusIDs();
@@ -317,12 +308,12 @@ namespace MvcPhoenix.Services
                 //var dbrow = db.tblBulkOrderItem.Find(obj.bulkorderitemid);
                 var dbrow = (from t in db.tblBulkOrderItem where t.BulkOrderItemID == obj.bulkorderitemid select t).FirstOrDefault();
                 dbrow.BulkOrderID = obj.bulkorderid;
-                dbrow.ProductMasterID =obj.productmasterid;
-                dbrow.Weight=obj.weight;
-                dbrow.Status=obj.itemstatus;
-                dbrow.ETA=obj.eta;
-                dbrow.DateReceived=obj.datereceived;
-                dbrow.ItemNotes=obj.itemnotes;
+                dbrow.ProductMasterID = obj.productmasterid;
+                dbrow.Weight = obj.weight;
+                dbrow.Status = obj.itemstatus;
+                dbrow.ETA = obj.eta;
+                dbrow.DateReceived = obj.datereceived;
+                dbrow.ItemNotes = obj.itemnotes;
                 db.SaveChanges();
                 return obj.bulkorderitemid;
             }
@@ -332,16 +323,14 @@ namespace MvcPhoenix.Services
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
-                var dbBulkOrder=db.tblBulkOrderItem.Find(id);
+                var dbBulkOrder = db.tblBulkOrderItem.Find(id);
                 int pk = Convert.ToInt32(dbBulkOrder.BulkOrderID);
                 string s = "Delete from tblBulkOrderItem where BulkOrderItemID=" + id;
                 db.Database.ExecuteSqlCommand(s);
                 //db.Dispose();
                 return pk;
             }
-
         }
-
 
         private static int fnNewBulkOrderItemID()
         {
@@ -354,16 +343,13 @@ namespace MvcPhoenix.Services
             }
         }
 
-
-
-
         #region SuggestedBulkOrder ---------------------------------------------------------------------------------
 
         public static string fnBuildDivisionDropDown(int id)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var qry = (from t in db.tblDivision where t.ClientID == id  orderby t.Division, t.BusinessUnit select t);
+                var qry = (from t in db.tblDivision where t.ClientID == id orderby t.Division, t.BusinessUnit select t);
                 //var qry = (from t in db.tblDivision where t.ClientID == id orderby t.Division, t.BillingGroup select t);
                 string s = "<option value='0' selected=true>Select Division</option>";
                 s = s + "<option value='0'>All Divisions</option>";
@@ -381,7 +367,6 @@ namespace MvcPhoenix.Services
                 s = s + "</select>";
                 return s;
             }
-
         }
 
         public static int fnGenerateSuggestedOrder(SuggestedBulkOrder obj)
@@ -541,10 +526,8 @@ namespace MvcPhoenix.Services
                 itemscount = db.tblSuggestedBulk.Count();
                 return itemscount;
             }
-            
-            
         }
-        
+
         //public static List<SuggestedBulkOrderItem> Org_fnSuggestedItemsList()
         //{
         //    using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
@@ -582,7 +565,6 @@ namespace MvcPhoenix.Services
         //    }
         //}
 
-
         public static List<SuggestedBulkOrderItem> fnSuggestedItemsList()
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
@@ -600,7 +582,7 @@ namespace MvcPhoenix.Services
                                   id = t.id,
                                   clientid = t.ClientID,
                                   productmasterid = t.ProductMasterID,
-                                  masterdivisionid=t.MasterDivisionID,
+                                  masterdivisionid = t.MasterDivisionID,
                                   supplyid = t.SupplyID,
                                   reorderweight = t.ReorderWeight,
                                   reordernotes = t.ReorderNotes,
@@ -615,12 +597,11 @@ namespace MvcPhoenix.Services
                                   mastername = pm.MasterName,
                                   division = "No Division"
                               }).ToList();
-                foreach(var item in mylist)
+                foreach (var item in mylist)
                 {
                     var dbDivision = (from t in db.tblDivision where t.DivisionID == item.masterdivisionid select t).FirstOrDefault();
                     if (dbDivision == null)
                     {
-
                     }
                     else
                     {
@@ -632,9 +613,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-
-        
-        
         public static void fnDeleteSuggestedItem(int id)
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
@@ -645,30 +623,31 @@ namespace MvcPhoenix.Services
 
         public static SuggestedBulkOrderItem fnFillSuggestedItemfromDB(int id)
         {
-            using(var db = new EF.CMCSQL03Entities())
+            using (var db = new EF.CMCSQL03Entities())
             {
                 SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
                 obj = (from t in db.tblSuggestedBulk
-                              //join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
-                              //join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
-                     where t.id == id
-                     orderby t.ProductMasterID
-                     select new SuggestedBulkOrderItem {
-                                  id = t.id,
-                                  clientid = t.ClientID,
-                                  productmasterid = t.ProductMasterID,
-                                  supplyid = t.SupplyID,
-                                  reorderweight = t.ReorderWeight,
-                                  //username=t.UserName,
-                                  //mastercode = t2.MasterCode,
-                                  //division = t3.Division,
-                                  //mastername = t2.MasterName,
-                                  //bulkshippedperday = t.BulkShippedPerDay,
-                                  //shelfshippedperday = t.ShelfShippedPerDay,
-                                  //usethisdaystilexpiration = t.UseThisDaysTilExpiration,
-                                  //averageleadtime = t.AverageLeadTime,
-                                  reordernotes = t.ReorderNotes
-                              }).FirstOrDefault();
+                       //join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
+                       //join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
+                       where t.id == id
+                       orderby t.ProductMasterID
+                       select new SuggestedBulkOrderItem
+                       {
+                           id = t.id,
+                           clientid = t.ClientID,
+                           productmasterid = t.ProductMasterID,
+                           supplyid = t.SupplyID,
+                           reorderweight = t.ReorderWeight,
+                           //username=t.UserName,
+                           //mastercode = t2.MasterCode,
+                           //division = t3.Division,
+                           //mastername = t2.MasterName,
+                           //bulkshippedperday = t.BulkShippedPerDay,
+                           //shelfshippedperday = t.ShelfShippedPerDay,
+                           //usethisdaystilexpiration = t.UseThisDaysTilExpiration,
+                           //averageleadtime = t.AverageLeadTime,
+                           reordernotes = t.ReorderNotes
+                       }).FirstOrDefault();
                 obj.ListOfProductMasters = fnProductMasterIDs(Convert.ToInt32(obj.clientid));
                 //obj.ListOfSupplyIDs = fnListOfSupplyIDs(obj.clientid);
                 return obj;
@@ -681,11 +660,10 @@ namespace MvcPhoenix.Services
             SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
             obj.id = -1;    // important
             obj.clientid = ClientID;
-            //obj.username = "philc";    // replace later with identity string 
+            //obj.username = "philc";    // replace later with identity string
             obj.ListOfProductMasters = ReplenishmentsService.fnProductMasterIDs(obj.clientid);
             return obj;
         }
-
 
         // *************************************************************************
         // ********************** FIX THIS *****************************************
@@ -721,11 +699,10 @@ namespace MvcPhoenix.Services
 
                 //db.SaveChanges();
                 return obj.id;
-                 }
+            }
         }
 
-               
-         private static int fnNewSuggestedOrderItemID()
+        private static int fnNewSuggestedOrderItemID()
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
@@ -736,72 +713,66 @@ namespace MvcPhoenix.Services
             }
         }
 
+        public static int fnCreateBulkOrders()
+        {
+            //TODO using
+            //TODO add username filter
 
-         public static int fnCreateBulkOrders()
-         {
-             
-             //TODO using
-             //TODO add username filter
-             
-             // convert to identity
-             string username = "philc";
+            // convert to identity
+            string username = "philc";
 
-             string s;
-             string fnTempTable = "tblSuggestedBulk";
-             MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-             s = "Update " + fnTempTable + " set SupplyID='n/a' where Supplyid is null";
-             s = s + " and UserName='" + username + "'";
-             db.Database.ExecuteSqlCommand(s);
+            string s;
+            string fnTempTable = "tblSuggestedBulk";
+            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+            s = "Update " + fnTempTable + " set SupplyID='n/a' where Supplyid is null";
+            s = s + " and UserName='" + username + "'";
+            db.Database.ExecuteSqlCommand(s);
 
-             var qry = (from t in db.tblSuggestedBulk
-                        where t.UserName==username
-                        select new { t.ClientID, t.SupplyID }).Distinct();
-             int SupplyIDCount = qry.Count();
-             DateTime myOrderDate = DateTime.Now;
-             string BatchNumber = myOrderDate.ToString();
-             string sSessionID = HttpContext.Current.Session.SessionID;
+            var qry = (from t in db.tblSuggestedBulk
+                       where t.UserName == username
+                       select new { t.ClientID, t.SupplyID }).Distinct();
+            int SupplyIDCount = qry.Count();
+            DateTime myOrderDate = DateTime.Now;
+            string BatchNumber = myOrderDate.ToString();
+            string sSessionID = HttpContext.Current.Session.SessionID;
 
-             MvcPhoenix.EF.CMCSQL03Entities db1 = new MvcPhoenix.EF.CMCSQL03Entities();
+            MvcPhoenix.EF.CMCSQL03Entities db1 = new MvcPhoenix.EF.CMCSQL03Entities();
 
-             // For each distinct supplyid
-             foreach (var item in qry)
-             {
-                 var newitem = new EF.tblBulkOrder
-                 {
-                     ClientID = item.ClientID,
-                     OrderDate = myOrderDate,
-                     Status = "OP",
-                     SupplyID = item.SupplyID
-                 };
-                 db1.tblBulkOrder.Add(newitem);
-                 db1.SaveChanges();
-                 int newpk = newitem.BulkOrderID;
-                 //System.Diagnostics.Debug.WriteLine("New OrderID= " + newpk.ToString());
-                 //// now create order items records
-                 s = "Insert into tblBulkOrderItem (BulkOrderID,ProductMasterID,Qty,Weight,Status,SupplyID,ItemNotes)";
-                 s = s + " Select " + newpk + ",ProductMasterID,1,ReorderWeight,'OP',SupplyID,ReorderNotes from " + fnTempTable;
-                 s = s + " Where Supplyid='" + item.SupplyID + "'";
-                 //System.Diagnostics.Debug.WriteLine(s);
-                 db1.Database.ExecuteSqlCommand(s);
-             }
-             int OrdersCount = qry.Count();
-             db1.Database.ExecuteSqlCommand("Delete From tblSuggestedBulk where UserName='" + username + "'");
-             db1.Dispose();
-             db.Dispose();
-             return OrdersCount;
-         }
+            // For each distinct supplyid
+            foreach (var item in qry)
+            {
+                var newitem = new EF.tblBulkOrder
+                {
+                    ClientID = item.ClientID,
+                    OrderDate = myOrderDate,
+                    Status = "OP",
+                    SupplyID = item.SupplyID
+                };
+                db1.tblBulkOrder.Add(newitem);
+                db1.SaveChanges();
+                int newpk = newitem.BulkOrderID;
+                //System.Diagnostics.Debug.WriteLine("New OrderID= " + newpk.ToString());
+                //// now create order items records
+                s = "Insert into tblBulkOrderItem (BulkOrderID,ProductMasterID,Qty,Weight,Status,SupplyID,ItemNotes)";
+                s = s + " Select " + newpk + ",ProductMasterID,1,ReorderWeight,'OP',SupplyID,ReorderNotes from " + fnTempTable;
+                s = s + " Where Supplyid='" + item.SupplyID + "'";
+                //System.Diagnostics.Debug.WriteLine(s);
+                db1.Database.ExecuteSqlCommand(s);
+            }
+            int OrdersCount = qry.Count();
+            db1.Database.ExecuteSqlCommand("Delete From tblSuggestedBulk where UserName='" + username + "'");
+            db1.Dispose();
+            db.Dispose();
+            return OrdersCount;
+        }
 
-
-        #endregion --------------------------------------------------------------------------------------
-
-
+        #endregion SuggestedBulkOrder ---------------------------------------------------------------------------------
 
         // ********************************* Support methods
 
-
         //TODO fix private vs public
 
-     public static List<SelectListItem> fnClientIDs()
+        public static List<SelectListItem> fnClientIDs()
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -813,51 +784,49 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
-        
-     private static List<SelectListItem> fnListOfSupplyIDs(int? clientid)
-     {
-         using (var db = new CMCSQL03Entities())
-         {
-             List<SelectListItem> mylist = new List<SelectListItem>();
-             mylist = (from t in db.tblProductMaster
-                       where t.ClientID == clientid
-                       orderby t.SUPPLYID
-                       select
-                       new SelectListItem { Value = t.SUPPLYID, Text = t.SUPPLYID }).Distinct().ToList();
-              mylist.Insert(0, new SelectListItem { Value = "0", Text = "" });
-              return mylist;
-         }
-     }
 
-     public static List<SelectListItem> fnProductMasterIDs(int? clientid)
-     {
+        private static List<SelectListItem> fnListOfSupplyIDs(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblProductMaster
+                          where t.ClientID == clientid
+                          orderby t.SUPPLYID
+                          select
+                          new SelectListItem { Value = t.SUPPLYID, Text = t.SUPPLYID }).Distinct().ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "" });
+                return mylist;
+            }
+        }
 
-         using (var db = new CMCSQL03Entities())
-         {
-             List<SelectListItem> mylist = new List<SelectListItem>();
-             mylist = (from t in db.tblProductMaster
-                       where t.ClientID == clientid
-                       orderby t.MasterCode
-                       select
-                           new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
+        public static List<SelectListItem> fnProductMasterIDs(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblProductMaster
+                          where t.ClientID == clientid
+                          orderby t.MasterCode
+                          select
+                              new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
 
-             mylist.Insert(0, new SelectListItem { Value = "0", Text = "Master Code" });
-             return mylist;
-         }
-     }
-     
-     private static List<SelectListItem> fnOrderItemStatusIDs()
-     {
-         List<SelectListItem> mylist = new List<SelectListItem>();
-         mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-         mylist.Insert(1, new SelectListItem { Value = "CL", Text = "Closed" });
-         mylist.Insert(2, new SelectListItem { Value = "OP", Text = "Open" });
-         mylist.Insert(3, new SelectListItem { Value = "CN", Text = "Cancelled" });
-         return mylist;
-     }
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Master Code" });
+                return mylist;
+            }
+        }
 
+        private static List<SelectListItem> fnOrderItemStatusIDs()
+        {
+            List<SelectListItem> mylist = new List<SelectListItem>();
+            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+            mylist.Insert(1, new SelectListItem { Value = "CL", Text = "Closed" });
+            mylist.Insert(2, new SelectListItem { Value = "OP", Text = "Open" });
+            mylist.Insert(3, new SelectListItem { Value = "CN", Text = "Cancelled" });
+            return mylist;
+        }
 
-     public static List<SelectListItem> fnDivisionIDs(int clientid)
+        public static List<SelectListItem> fnDivisionIDs(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -867,10 +836,5 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
-
-
-
-
-
     }
 }

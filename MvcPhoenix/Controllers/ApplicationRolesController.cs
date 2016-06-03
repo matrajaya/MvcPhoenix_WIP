@@ -1,19 +1,17 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using MvcPhoenix.Models;
+using PagedList;
 using System;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using PagedList;
 
 namespace MvcPhoenix.Controllers
 {
     public class ApplicationRolesController : Controller
     {
-       public ApplicationRolesController()
+        public ApplicationRolesController()
         {
         }
 
@@ -51,13 +49,11 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-
         // GET: ApplicationRoles
-        //public async Task<ActionResult> Index(ManageMessageId? message)
         public async Task<ActionResult> Index(ManageMessageId? message, string sortOrder, string currentFilter, string searchString, int? page)
         {
-            ViewBag.StatusMessage = message == 
-                ManageMessageId.AdminDeleteError ? "Admin role cannot be deleted." 
+            ViewBag.StatusMessage = message ==
+                ManageMessageId.AdminDeleteError ? "Admin role cannot be deleted."
                 : "";
 
             ViewBag.CurrentSort = sortOrder;
@@ -112,104 +108,29 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Name")] ApplicationRoleViewModel applicationRoleViewModel)
-                
         {
             if (ModelState.IsValid)
             {
-                ApplicationRole applicationRole = new ApplicationRole{Name = applicationRoleViewModel.Name};
+                ApplicationRole applicationRole = new ApplicationRole { Name = applicationRoleViewModel.Name };
 
                 var roleResult = await RoleManager.CreateAsync(applicationRole);
                 if (!roleResult.Succeeded)
                 {
                     ModelState.AddModelError("", roleResult.Errors.First());
                     return RedirectToAction("Index");
-
                 }
-                
                 return RedirectToAction("Index");
             }
-
             return RedirectToAction("Index");
-            //return View();
         }
 
-        // GET: ApplicationRoles/Edit/5
-        //public async Task<ActionResult> Edit(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ApplicationRole applicationRole = await RoleManager.FindByIdAsync(id);
-        //    if (applicationRole == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    ApplicationRoleViewModel applicationRoleViewModel = new ApplicationRoleViewModel { Id = applicationRole.Id, Name = applicationRole.Name };
-
-        //    return View();
-        //}
-
-        // POST: ApplicationRoles/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Edit([Bind(Include = "Id,Name")] ApplicationRole applicationRoleViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        ApplicationRole applicationRole = await RoleManager.FindByIdAsync(applicationRoleViewModel.Id);
-        //        string originalName = applicationRole.Name;
-
-        //        if (originalName == "Admin" && applicationRoleViewModel.Name != "Admin")
-        //        {
-        //            ModelState.AddModelError("", "You cannot change the name of the Admin role.");
-        //            return View(applicationRoleViewModel);
-        //        }
-
-        //        if (originalName != "Admin" && applicationRoleViewModel.Name == "Admin")
-        //        {
-        //            ModelState.AddModelError("", "You cannot change the name of a role to Admin.");
-        //            return View(applicationRoleViewModel);
-        //        }
-
-        //        applicationRole.Name = applicationRoleViewModel.Name;
-        //        await RoleManager.UpdateAsync(applicationRole);
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(applicationRoleViewModel);
-        //}
-
-        // GET: ApplicationRoles/Delete/5
-        //public async Task<ActionResult> Delete(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ApplicationRole applicationRole = await RoleManager.FindByIdAsync(id);
-        //    if (applicationRole == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(applicationRole);
-        //}
-
-        // POST: ApplicationRoles/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> DeleteConfirmed(string id)
         public async Task<ActionResult> Delete(string id)
         {
             ApplicationRole applicationRole = await RoleManager.FindByIdAsync(id);
 
             if (applicationRole.Name == "Admin")
             {
-                //ModelState.AddModelError("", "Admin role cannot be deleted.");
-
                 return RedirectToAction("Index", new { Message = ManageMessageId.AdminDeleteError });
-                //return View(applicationRole);
             }
 
             await RoleManager.DeleteAsync(applicationRole);

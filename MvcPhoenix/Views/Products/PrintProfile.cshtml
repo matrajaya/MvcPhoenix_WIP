@@ -4,6 +4,15 @@
     Layout = "~/Views/Shared/_LayoutPrint.cshtml";
 }
 
+<script type="text/javascript">
+    window.onload = function () {
+        $("#bcTarget").barcode(
+            "@Model.productdetailid ~ @Model.productcode ~ @Model.productname",
+            "datamatrix",
+            { moduleSize: 2, showHRI: false });
+    };
+</script>
+
 <div id="bcTarget"></div>
 
 <img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
@@ -87,7 +96,6 @@
 
     @{Html.RenderAction("ShelfMasterList", "ShelfMaster", new { id = @Model.productdetailid });}
 </div>
-
 
 <hr />
 

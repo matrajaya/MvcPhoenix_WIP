@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using MvcPhoenix.Models;
-using MvcPhoenix.Services;
+﻿using MvcPhoenix.Models;
 using PagedList;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
 {
@@ -35,7 +31,7 @@ namespace MvcPhoenix.Controllers
             ViewBag.CurrentFilter = searchString;
 
             var clients = from c in db.tblClient2
-                        select c;
+                          select c;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -94,7 +90,6 @@ namespace MvcPhoenix.Controllers
             return View();
         }
 
-        
         // GET: Client/Edit/id
         [AllowAnonymous]
         public ActionResult Edit(int id)
@@ -126,6 +121,6 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("Edit", new { id = pk });
         }
 
-        #endregion
+        #endregion TODO
     }
 }

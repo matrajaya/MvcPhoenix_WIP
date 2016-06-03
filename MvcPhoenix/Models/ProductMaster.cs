@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-
-// pc add
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
@@ -12,7 +8,6 @@ namespace MvcPhoenix.Models
     // Maps to tblProductMaster
     public class ProductMaster
     {
-
         public string logofilename { get; set; }
 
         [Display(Name = "ProductMasterID")]
@@ -26,7 +21,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Client")]
         public string clientname { get; set; }
-
 
         // Panel Product Identification
         //[Display(Name = "MasterDivisionID")]
@@ -53,9 +47,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "Restrictedamount")]
         public decimal? restrictedamount { get; set; }
 
-
-
-
         // *********************************************************
 
         [Display(Name = "SampGd LegacyID")]
@@ -64,15 +55,11 @@ namespace MvcPhoenix.Models
         [Display(Name = "Shelf Detail LegacyID")]
         public int? sdlegacyid { get; set; }
 
-
-
-
         //[Display(Name = "SUPPLYID")]
         public string supplyid { get; set; }
 
         [Display(Name = "SUPPLYID")]
         public List<SelectListItem> ListOfSupplyIDs { get; set; }
-
 
         [Display(Name = "NoReorder")]
         public bool? noreorder { get; set; }
@@ -266,8 +253,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "OtherEquipmentDescription")]
         public string otherequipmentdescription { get; set; }
 
-
-
         [Display(Name = "Booties")]
         public bool? booties { get; set; }
 
@@ -310,8 +295,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "RETURNLOCATION")]
         public string returnlocation { get; set; }
 
-
-
         [Display(Name = "SpecialBlend")]
         public bool? specialblend { get; set; }
 
@@ -326,7 +309,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "FullFaceRespirator")]
         public bool? fullfacerespirator { get; set; }
-
 
         [Display(Name = "Torque")]
         public bool? torque { get; set; }
@@ -480,14 +462,5 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Location_MDB")]
         public string location_mdb { get; set; }
-
-
-
-
     }
-
-
-
-
-
 }

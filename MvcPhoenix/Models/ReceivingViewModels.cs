@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-// pc add
-using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
-
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
     //public class ReceivingViewModels
     //{
-
     //}
-    
+
     public class OpenBulkOrderItems
     {
         // short class for use in _OpenOrderItems.cshtml
         public int bulkorderitemid { get; set; }
+
         public int? bulkorderid { get; set; }
         public int? productmasterid { get; set; }
         public decimal? weight { get; set; }
@@ -29,7 +24,6 @@ namespace MvcPhoenix.Models
         public DateTime? orderdate { get; set; }
         public bool? ToBeClosed { get; set; }
     }
-
 
     public class ItemForPrePackViewModel
     {
@@ -42,21 +36,20 @@ namespace MvcPhoenix.Models
         // join to tblProductDetail
         //public string productcode { get; set; }
         //public string productname { get; set; }
-               
+
         [Display(Name = "Size")]
         public string size { get; set; }
 
         [Display(Name = "Bin")]
         public string bin { get; set; }
-
-
     }
+
     public class PrePackViewModel
     {
         public List<ItemForPrePackViewModel> ListOfShelfMasters { get; set; }
         public int ItemsCount { get; set; }
         public bool? isknownmaterial { get; set; }
-       
+
         public int? clientid { get; set; }
         public string clientname { get; set; }
         public string logofilename { get; set; }
@@ -65,6 +58,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Warehouse")]
         public string warehouse { get; set; }
+
         public List<SelectListItem> ListOfWareHouses { get; set; }
 
         [Display(Name = "Receive Date")]
@@ -124,7 +118,6 @@ namespace MvcPhoenix.Models
 
         public string qty { get; set; } // default=1, No user interface, remove from db?
 
-
         [Display(Name = "COA Included?")]
         public bool? coaincluded { get; set; }
 
@@ -136,12 +129,7 @@ namespace MvcPhoenix.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? qcdate { get; set; }
 
-
         public string productcode { get; set; }
         public string productname { get; set; }
-
     }
-
-
-
 }

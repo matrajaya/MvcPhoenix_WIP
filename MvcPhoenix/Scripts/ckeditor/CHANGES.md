@@ -336,7 +336,7 @@ Fixed Issues:
 * [#13254](http://dev.ckeditor.com/ticket/13254): Fixed: Cannot outdent block after indent when using the [Div Editing Area](http://ckeditor.com/addon/divarea) plugin. Thanks to [Jonathan Cottrill](https://github.com/jcttrll)!
 * [#13268](http://dev.ckeditor.com/ticket/13268): Fixed: Documentation for [`CKEDITOR.dom.text`](http://docs.ckeditor.com/#!/api/CKEDITOR.dom.text) is incorrect. Thanks to [Ben Kiefer](https://github.com/benkiefer)!
 * [#12739](http://dev.ckeditor.com/ticket/12739): Fixed: Link loses inline styles when edited without the [Advanced Tab for Dialogs](http://ckeditor.com/addon/dialogadvtab) plugin. Thanks to [Віталій Крутько](https://github.com/asmforce)!
-* [#13292](http://dev.ckeditor.com/ticket/13292): Fixed: Protection pattern does not work in attribute in self-closing elements with no space before `/>`. Thanks to [Віталій Крутько](https://github.com/asmforce)!
+* [#13292](http://dev.ckeditor.com/ticket/13292): Fixed: Protection pattern does not work in attribute in self-closing elements with no space before ` />`. Thanks to [Віталій Крутько](https://github.com/asmforce)!
 * [PR#192](https://github.com/ckeditor/ckeditor-dev/pull/192): Fixed: Variable name typo in the [Dialog User Interface](http://ckeditor.com/addon/dialogui) plugin which caused [`CKEDITOR.ui.dialog.radio`](http://docs.ckeditor.com/#!/api/CKEDITOR.ui.dialog.radio) validation to not work. Thanks to [Florian Ludwig](https://github.com/FlorianLudwig)!
 * [#13232](http://dev.ckeditor.com/ticket/13232): [Safari] Fixed: The [`element.appendText()`](http://docs.ckeditor.com/#!/api/CKEDITOR.dom.element-method-appendText) method does not work properly for empty elements.
 * [#13233](http://dev.ckeditor.com/ticket/13233): Fixed: [HTMLDataProcessor](http://docs.ckeditor.com/#!/api/CKEDITOR.htmlDataProcessor) can process `foo:href` attributes.
@@ -359,7 +359,6 @@ Other Changes:
 * [#12844](http://dev.ckeditor.com/ticket/12844) and [#13103](http://dev.ckeditor.com/ticket/13103): Upgraded the [testing environment](http://docs.ckeditor.com/#!/guide/dev_tests) to [Bender.js](https://github.com/benderjs/benderjs) `0.2.3`.
 * [#12930](http://dev.ckeditor.com/ticket/12930): Because of licensing issues, `truncated-mathjax/` is now removed from the `tests/` directory. Now `bender.config.mathJaxLibPath` must be configured manually in order to run [Mathematical Formulas](http://ckeditor.com/addon/mathjax) plugin tests.
 * [#13266](http://dev.ckeditor.com/ticket/13266): Added more shades of gray in the [Color Dialog](http://ckeditor.com/addon/colordialog) window. Thanks to [mizafish](https://github.com/mizafish)!
-
 
 ## CKEditor 4.4.7
 
@@ -409,7 +408,6 @@ Fixed Issues:
 * [#12403](http://dev.ckeditor.com/ticket/12403): Fixed: Changing the [font](http://ckeditor.com/addon/font) style should not lead to nesting it in the previous style element.
 * [#12609](http://dev.ckeditor.com/ticket/12609): Fixed: Incorrect `config.magicline_putEverywhere` name used for a [Magic Line](http://ckeditor.com/addon/magicline) all-encompassing [`config.magicline_everywhere`](http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-magicline_everywhere) configuration option.
 
-
 ## CKEditor 4.4.5
 
 New Features:
@@ -437,7 +435,6 @@ Fixed Issues:
 * [#12402](http://dev.ckeditor.com/ticket/12402): [Blink] Fixed: Workaround for Blink bug with `document.title` which breaks updating title in the full HTML mode.
 * [#12338](http://dev.ckeditor.com/ticket/12338): Fixed: The CKEditor package contains unoptimized images.
 
-
 ## CKEditor 4.4.4
 
 Fixed Issues:
@@ -463,7 +460,6 @@ Fixed Issues:
 * [#12204](http://dev.ckeditor.com/ticket/12204): Fixed: Editor's voice label is not affected by [`config.title`](http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-title).
 * [#11915](http://dev.ckeditor.com/ticket/11915): Fixed: With [SCAYT](http://ckeditor.com/addon/scayt) enabled, cursor moves to the beginning of the first highlighted, misspelled word after typing or pasting into the editor.
 * [SCAYT](https://github.com/WebSpellChecker/ckeditor-plugin-scayt/issues/69): Fixed: Error thrown in the console after enabling [SCAYT](http://ckeditor.com/addon/scayt) and trying to add a new image.
-
 
 Other Changes:
 
@@ -1067,7 +1063,6 @@ Fixed Issues:
 * [#9853](http://dev.ckeditor.com/ticket/9853): [`editor.addRemoveFormatFilter()`](http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-addRemoveFormatFilter) is exposed before it really works.
 * [#8893](http://dev.ckeditor.com/ticket/8893): Value of the [`pasteFromWordCleanupFile`](http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-pasteFromWordCleanupFile) configuration option is now taken from the instance configuration.
 * [#9693](http://dev.ckeditor.com/ticket/9693): Removed "Live Preview" checkbox from UI color picker.
-
 
 ## CKEditor 4.0
 

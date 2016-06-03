@@ -85,7 +85,6 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="form-group col-md-12">
             <div class="clearfix"></div>
@@ -93,9 +92,7 @@
             <div class="clearfix"></div>
         </div>
     </div>
-    
 </div>
-
 
 <script type="text/javascript">
 
@@ -104,5 +101,4 @@
         var myurl = '@Url.Action("GetSupplyIDEmail", "Replenishments")';
         $.get(myurl, { clientid: $("#clientid").val(), supplyid: $("#supplyid").val() }, function (result) { $("#bulksupplieremail").val(result) });
     }
-
 </script>

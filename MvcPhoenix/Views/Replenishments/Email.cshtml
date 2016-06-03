@@ -12,10 +12,10 @@
     </div>
 
         @using(Html.BeginForm("SendEmail","Replenishments"))
-        { 
+        {
 
          @Html.HiddenFor(m=>m.bulkorderid)
-            
+
         <div class="row">
             <div class="col-md-12 form-group">
                 @Html.LabelFor(m=>m.FromAddress)
@@ -35,9 +35,8 @@
                 @Html.LabelFor(m => m.Subject)
                 @Html.TextBoxFor(m=>m.Subject, new { @class = "form-control", @style = "width:50%;" })
             </div>
-
         </div>
-            
+
         <div class="row">
             <div class="col-md-12 form-group">
                 @Html.LabelFor(m => m.MessageBody)
@@ -62,7 +61,4 @@
             @*@Html.Raw(@Model.MessageBody)*@
 
         }
-    
 </div>
-
-

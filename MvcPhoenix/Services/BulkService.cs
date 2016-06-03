@@ -1,12 +1,9 @@
-﻿using System;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-
 using System.Web.Mvc;
-using MvcPhoenix.EF;
-
-using MvcPhoenix.Models;
 
 namespace MvcPhoenix.Services
 {
@@ -32,7 +29,6 @@ namespace MvcPhoenix.Services
                 s = s + "</select>";
                 return s;
             }
-
         }
 
         public static BulkContainerViewModel fnFillBulkContainerFromDB(int id)
@@ -96,10 +92,8 @@ namespace MvcPhoenix.Services
                 //obj.packout = qPM.PackOutOnReceipt;
 
                 return obj;
-
             }
         }
-
 
         public static bool fnSaveBulk(BulkContainerViewModel incoming)
         {
@@ -159,10 +153,8 @@ namespace MvcPhoenix.Services
             return retval;
         }
 
-
-
-
         #region SupportMethods
+
         public static List<BulkContainerViewModel> fnBulkContainerList()
         {
             // full list
@@ -171,12 +163,12 @@ namespace MvcPhoenix.Services
                 var mylist = (from t in db.tblBulk
                               join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
                               join cl in db.tblClient on pm.ClientID equals cl.ClientID
-                              orderby cl.ClientName,pm.MasterCode
+                              orderby cl.ClientName, pm.MasterCode
                               select new BulkContainerViewModel
                               {
                                   bulkid = t.BulkID,
                                   warehouse = t.Warehouse,
-                                  bin=t.Bin,
+                                  bin = t.Bin,
                                   clientname = cl.ClientName,
                                   MasterCode = pm.MasterCode,
                                   MasterName = pm.MasterName,
@@ -187,7 +179,6 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
-
 
         public static List<SelectListItem> fnClientIDs()
         {
@@ -228,9 +219,7 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
-        #endregion
 
-
-
+        #endregion SupportMethods
     }
 }

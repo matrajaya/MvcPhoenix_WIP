@@ -21,11 +21,20 @@
             </h1>
         </div>
     </div>
+    @if (this.User.IsInRole("Admin"))
+    {
+        <div class=" form-group row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <a href="@Url.Action("Activity", "Documents")" target="_blank">File Activity Log</a>
+                </div>
+            </div>
+        </div>
+    }
 
     <div class="row">
         <div class="col-lg-12">
             @Html.RenderControl(Model)
         </div>
     </div>
-    
 </div>

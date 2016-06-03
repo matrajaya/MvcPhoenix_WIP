@@ -1,14 +1,12 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MvcPhoenix.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
 {
@@ -22,7 +20,7 @@ namespace MvcPhoenix.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +32,9 @@ namespace MvcPhoenix.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -81,7 +79,6 @@ namespace MvcPhoenix.Controllers
                     ViewBag.Email = user.Email;
                     return View("UnconfirmedAccount");
                 }
-
             }
 
             // This doesn't count login failures towards account lockout
@@ -91,10 +88,13 @@ namespace MvcPhoenix.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -127,9 +127,9 @@ namespace MvcPhoenix.Controllers
         //        return View(model);
         //    }
 
-        //    // The following code protects for brute force attacks against the two factor codes. 
-        //    // If a user enters incorrect codes for a specified amount of time then the user account 
-        //    // will be locked out for a specified amount of time. 
+        //    // The following code protects for brute force attacks against the two factor codes.
+        //    // If a user enters incorrect codes for a specified amount of time then the user account
+        //    // will be locked out for a specified amount of time.
         //    // You can configure the account lockout settings in IdentityConfig
         //    var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
         //    switch (result)
@@ -162,14 +162,14 @@ namespace MvcPhoenix.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser 
-                { 
-                    UserName = model.Email, 
-                    Email = model.Email, 
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
-                    FaxNumber= model.FaxNumber,
+                    FaxNumber = model.FaxNumber,
                     Address = model.Address,
                     City = model.City,
                     State = model.State,
@@ -190,7 +190,6 @@ namespace MvcPhoenix.Controllers
             return View(model);
         }
 
-
         [AllowAnonymous]
         public async Task<ActionResult> GenerateEmailConfirmation(ApplicationUser user)
         {
@@ -210,7 +209,7 @@ namespace MvcPhoenix.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> RegenerateEmailConfirmation(string email) 
+        public async Task<ActionResult> RegenerateEmailConfirmation(string email)
         {
             var user = await UserManager.FindByNameAsync(email);
             if (user != null)
@@ -394,10 +393,13 @@ namespace MvcPhoenix.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
@@ -484,6 +486,7 @@ namespace MvcPhoenix.Controllers
         }
 
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -540,6 +543,7 @@ namespace MvcPhoenix.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
+
+        #endregion Helpers
     }
 }

@@ -9,7 +9,7 @@
             </div>
 
             <div id="dialogPlaceholderBody" class="modal-body">
-                @using (Ajax.BeginForm("SaveSuggestedItem", "Replenishments", new AjaxOptions { 
+                @using (Ajax.BeginForm("SaveSuggestedItem", "Replenishments", new AjaxOptions {
                     UpdateTargetId="dvupdateresult",
                     InsertionMode=InsertionMode.Replace,
                     OnSuccess = "RefreshItemsGrid",
@@ -37,10 +37,8 @@
                             <label>SupplyID</label>
                             @Html.DropDownListFor(m => m.supplyid, Model.ListOfSupplyIDs, new { @class = "form-control" })
                         </div>
-
                     </div>*@
-                    
-                    
+
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Item Notes</label>
@@ -72,7 +70,5 @@
         $("#dvItemsList").load(url);
         $("#savebutton").prop('disabled', true);
 
-
     }
-
 </script>

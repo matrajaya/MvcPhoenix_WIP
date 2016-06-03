@@ -259,7 +259,7 @@ ul.alert-dropdown {
     padding-bottom: 10px;
 }
 
-.vertical-line {    
+.vertical-line {
     position: absolute;
     border-right: 1px solid black;
     /*height: 85px; place in div container instead*/

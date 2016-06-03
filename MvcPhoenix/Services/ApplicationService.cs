@@ -1,11 +1,8 @@
-﻿using System;
+﻿using MvcPhoenix.EF;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-//pc add
 using System.Web.Mvc;
-using MvcPhoenix.EF;
 
 // ************** ApplicationService.cs *****************
 // This class contains Application level methods
@@ -13,60 +10,52 @@ using MvcPhoenix.EF;
 
 namespace MvcPhoenix.Models
 {
-        
     public class ApplicationService
     {
-        static string SmtpHostName = "192.168.0.27";
-        static string SmtpUserName = "??";
-        static string SmtpPassword = "??";
-        static int SmtpPort = 25;
+        private static string SmtpHostName = "192.168.0.27";
+        private static string SmtpUserName = "??";
+        private static string SmtpPassword = "??";
+        private static int SmtpPort = 25;
         //static EF.CMCSQL03Entities thisdb = new EF.CMCSQL03Entities();
 
-     public static void fnInsertLog(string UserName,int ClientID,string CalledFrom,string Notes)
+        public static void fnInsertLog(string UserName, int ClientID, string CalledFrom, string Notes)
         {
             // to be developed - takes parameters and inserts a record into new tblLog
         }
 
+        public static void fnSimpleSendSmtp(string FromAddress, string ToAddress, string Subject, string Body)
+        {
+            var msg = new System.Net.Mail.MailMessage();
+            msg.To.Add(new System.Net.Mail.MailAddress(ToAddress));
+            msg.From = new System.Net.Mail.MailAddress(FromAddress);
+            msg.Subject = Subject;
+            msg.Body = Body;
+            msg.IsBodyHtml = true;
+            using (var smtp = new System.Net.Mail.SmtpClient())
+            {
+                var credential = new System.Net.NetworkCredential
+                {
+                    UserName = SmtpUserName,
+                    Password = SmtpPassword
+                };
+                smtp.Credentials = credential;
+                smtp.Host = SmtpHostName;
+                smtp.Port = SmtpPort;
+                //smtp.EnableSsl = true;
+                smtp.Send(msg);
+            }
+        }
 
-     public static void fnSimpleSendSmtp(string FromAddress,string ToAddress,string Subject,string Body)
-     {
-         var msg = new System.Net.Mail.MailMessage();
-         msg.To.Add(new System.Net.Mail.MailAddress(ToAddress));
-         msg.From = new System.Net.Mail.MailAddress(FromAddress);
-         msg.Subject = Subject;
-         msg.Body = Body;
-         msg.IsBodyHtml = true;
-         using (var smtp = new System.Net.Mail.SmtpClient())
-         {
-             var credential = new System.Net.NetworkCredential
-             {
-                 UserName = SmtpUserName,
-                 Password = SmtpPassword
-             };
-             smtp.Credentials = credential;
-             smtp.Host = SmtpHostName;
-             smtp.Port = SmtpPort;
-             //smtp.EnableSsl = true;
-             smtp.Send(msg);
-         }
-
-     }
-
-     public static string GetTemplateFromFile(string FileName)
-         {
-         // Easy way to use a .HTML file as an email template
-         string sFileName = HttpContext.Current.Server.MapPath("/Templates/" + FileName);
-         System.IO.StreamReader obj = new System.IO.StreamReader(sFileName);
-         obj = System.IO.File.OpenText(sFileName);
-         string FileContents = obj.ReadToEnd();
-         obj.Close();
-         return FileContents;
-     }
-
-
-
-
-
+        public static string GetTemplateFromFile(string FileName)
+        {
+            // Easy way to use a .HTML file as an email template
+            string sFileName = HttpContext.Current.Server.MapPath("/Templates/" + FileName);
+            System.IO.StreamReader obj = new System.IO.StreamReader(sFileName);
+            obj = System.IO.File.OpenText(sFileName);
+            string FileContents = obj.ReadToEnd();
+            obj.Close();
+            return FileContents;
+        }
 
         #region generic select lists
 
@@ -83,7 +72,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-
         public static List<SelectListItem> fnStates()
         {
             using (var db = new CMCSQL03Entities())
@@ -96,7 +84,6 @@ namespace MvcPhoenix.Models
                 return mylist;
             }
         }
-
 
         public static List<SelectListItem> fnCountries()
         {
@@ -111,7 +98,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-
         public static List<SelectListItem> fnCarriers()
         {
             using (var db = new CMCSQL03Entities())
@@ -125,7 +111,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-
         public static List<SelectListItem> fnHSCodes()
         {
             using (var db = new CMCSQL03Entities())
@@ -138,7 +123,6 @@ namespace MvcPhoenix.Models
                 return mylist;
             }
         }
-
 
         public static List<SelectListItem> fnOrderSources()
         {
@@ -165,7 +149,6 @@ namespace MvcPhoenix.Models
                 return mylist;
             }
         }
-
 
         public static List<SelectListItem> fnReportCriterias()
         {
@@ -206,10 +189,10 @@ namespace MvcPhoenix.Models
             }
         }
 
-        #endregion
+        #endregion generic select lists
 
         #region specific select lists
-                
+
         //public static List<SelectListItem> fnBolComments(int id)
         //{
         //    using (var db = new CMCSQL03Entities())
@@ -237,7 +220,7 @@ namespace MvcPhoenix.Models
                 return mylist;
             }
         }
-                
+
         public static List<SelectListItem> fnClientsContacts(int id, string sContactType)
         {
             using (var db = new CMCSQL03Entities())
@@ -283,7 +266,6 @@ namespace MvcPhoenix.Models
 
         //public partial class DTO_Application
         //{
-
         //}
 
         //Insert here
@@ -311,23 +293,16 @@ namespace MvcPhoenix.Models
 
         //Insert here
 
+        //Insert here
 
         //Insert here
 
+        //Insert here
 
         //Insert here
 
-
         //Insert here
 
-
-        //Insert here
-
-
-        //Insert here
-
-        #endregion
-
-
+        #endregion specific select lists
     }
 }

@@ -57,6 +57,7 @@
 @*
     @Barcode - onload event in print layout. Find better solution for placing instance in views...
     <body onload='$("#bcTarget").barcode("@Model.productdetailid ~ @Model.productcode ~ @Model.productname", "datamatrix", { moduleSize: 2, showHRI: false });'>
+    Done- Placed in view using windows.onload js instead of jquery whiich doesn't instantiatein realtime
 *@
 
 <body>
@@ -65,5 +66,4 @@
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
 </body>
-
 </html>

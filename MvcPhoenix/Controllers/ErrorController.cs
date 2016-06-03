@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
 {
@@ -25,8 +21,8 @@ namespace MvcPhoenix.Controllers
             //in the global.asax.cs code we handle the error. maybe we can send it to an email.
 
             //return a status code for proper seo
-            Response.StatusCode = 500; 
-            
+            Response.StatusCode = 500;
+
             return View();
         }
     }

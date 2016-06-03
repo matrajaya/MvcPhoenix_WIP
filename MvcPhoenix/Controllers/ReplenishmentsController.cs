@@ -1,17 +1,13 @@
 ﻿using MvcPhoenix.Models;
+using MvcPhoenix.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-
-using MvcPhoenix.Services;
 
 namespace MvcPhoenix.Controllers
 {
     public class ReplenishmentsController : Controller
     {
-        
         private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
 
         public ActionResult Index()
@@ -27,33 +23,34 @@ namespace MvcPhoenix.Controllers
             ViewBag.ParentKey = id;
             return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", mylist);
         }
-              
 
         #region SearchActions ------------------------------------------------------
+
         [HttpPost]
-        public ActionResult SearchResultsUserCriteria(FormCollection fc,string mode)
+        public ActionResult SearchResultsUserCriteria(FormCollection fc, string mode)
         {
-            List<BulkOrderSearchResults> mylist = ReplenishmentsService.fnSearchResults(fc,"User");
+            List<BulkOrderSearchResults> mylist = ReplenishmentsService.fnSearchResults(fc, "User");
             return PartialView("~/Views/Replenishments/_SearchResults.cshtml", mylist);
         }
 
         [HttpGet]
-        public ActionResult SearchResults(FormCollection fc,string mode)
+        public ActionResult SearchResults(FormCollection fc, string mode)
         {
-            List<BulkOrderSearchResults> mylist = ReplenishmentsService.fnSearchResults(fc,mode);
+            List<BulkOrderSearchResults> mylist = ReplenishmentsService.fnSearchResults(fc, mode);
             return PartialView("~/Views/Replenishments/_SearchResults.cshtml", mylist);
         }
-        #endregion SearchActions --------------------------------------------------
-            
+
+        #endregion SearchActions ------------------------------------------------------
+
         #region OrderEdit ---------------------------------------------------------
-        
+
         public ActionResult Edit(int id)
         {
             BulkOrder obj = new BulkOrder();
-            obj=ReplenishmentsService.fnFillBulkOrderFromDB(id);
+            obj = ReplenishmentsService.fnFillBulkOrderFromDB(id);
             return View("~/Views/Replenishments/Edit.cshtml", obj);
         }
-        
+
         [HttpPost]
         public ActionResult Save(BulkOrder obj)
         {
@@ -66,16 +63,16 @@ namespace MvcPhoenix.Controllers
                 return View("~/Views/Replenishments/Email.cshtml", message);
             }
             TempData["SaveResult"] = "Order Saved at " + DateTime.Now.ToString();
-            return RedirectToAction("Edit", new { id = pk});
+            return RedirectToAction("Edit", new { id = pk });
         }
 
-        public ActionResult GetSupplyIDEmail(int clientid,string supplyid)
+        public ActionResult GetSupplyIDEmail(int clientid, string supplyid)
         {
-            return Content(ReplenishmentsService.fnGetSupplyIDEmail(clientid,supplyid));
+            return Content(ReplenishmentsService.fnGetSupplyIDEmail(clientid, supplyid));
         }
 
-        #endregion OrderEdit ----------------------------------------------------
-        
+        #endregion OrderEdit ---------------------------------------------------------
+
         #region Email -----------------------------------------------------------
 
         [HttpPost]
@@ -84,11 +81,11 @@ namespace MvcPhoenix.Controllers
             ReplenishmentsService.fnSendEmail(obj);
             return RedirectToAction("Edit", new { id = obj.bulkorderid });
         }
-        
 
-        #endregion Email ---------------------------------------------------------
+        #endregion Email -----------------------------------------------------------
 
         #region Items --------------------------------------------------------------------
+
         [HttpGet]
         public ActionResult CreateItem(int id)
         {
@@ -106,7 +103,6 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Replenishments/_BulkOrderItemModal.cshtml", obj);
         }
 
-        
         [HttpPost]
         public ActionResult SaveItem(BulkOrderItem obj)
         {
@@ -121,7 +117,8 @@ namespace MvcPhoenix.Controllers
             //return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", obj);
             return Content("Deleted");
         }
-        #endregion Items ----------------------------------------------------------------
+
+        #endregion Items --------------------------------------------------------------------
 
         #region SuggestedBulkOrder ------------------------------------------------
 
@@ -145,7 +142,7 @@ namespace MvcPhoenix.Controllers
             int ItemsCreated = ReplenishmentsService.fnGenerateSuggestedOrder(obj);
             List<SuggestedBulkOrderItem> mylist = ReplenishmentsService.fnSuggestedItemsList();
             Session["SuggestedBulkOrderItemClientID"] = obj.clientid;
-            return PartialView("~/Views/Replenishments/_SuggestedItems.cshtml",mylist);
+            return PartialView("~/Views/Replenishments/_SuggestedItems.cshtml", mylist);
         }
 
         public ActionResult SuggestedItemsList()
@@ -169,7 +166,7 @@ namespace MvcPhoenix.Controllers
             obj = ReplenishmentsService.fnFillSuggestedItemfromDB(id);
             return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", obj);
         }
-        
+
         [HttpGet]
         public ActionResult CreateSuggestedItem(int ClientID)
         {
@@ -177,7 +174,6 @@ namespace MvcPhoenix.Controllers
             obj = ReplenishmentsService.fnCreateSuggestedBulkOrderItem(ClientID);
             return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", obj);
         }
-
 
         public ActionResult SaveSuggestedItem(SuggestedBulkOrderItem obj)
         {
@@ -191,14 +187,8 @@ namespace MvcPhoenix.Controllers
             int OrderCount = ReplenishmentsService.fnCreateBulkOrders();
             return RedirectToAction("Index");
             //return Content("New Orders Created = " + OrderCount.ToString());
-            
-            
         }
 
-        
         #endregion SuggestedBulkOrder ------------------------------------------------
-        
-
-
     }
 }

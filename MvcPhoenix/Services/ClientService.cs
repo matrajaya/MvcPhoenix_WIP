@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 // ************** ClientService.cs ********************
 // This class contains Client Management service methods
@@ -112,7 +109,7 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var newrow = new EF.tblClient2{};
+                var newrow = new EF.tblClient2 { };
                 db.tblClient2.Add(newrow);
                 db.SaveChanges();
                 int clientkey = newrow.ClientID;
@@ -201,6 +198,5 @@ namespace MvcPhoenix.Models
                 db.SaveChanges();
             }
         }
-
     }
 }

@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using MvcPhoenix.Models;
-using MvcPhoenix.Services;
-using System.Threading.Tasks;
+﻿using MvcPhoenix.Models;
 using PagedList;
 using Rotativa;
-using Rotativa.Options;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
 {
     public class ProductsController : Controller
     {
-
         public ActionResult Index()
         {
             return View("~/Views/Products/Index.cshtml");
@@ -50,12 +45,15 @@ namespace MvcPhoenix.Controllers
                     case "name":
                         productCodes = productCodes.OrderBy(p => p.ProductName);
                         break;
+
                     case "name_desc":
                         productCodes = productCodes.OrderByDescending(p => p.ProductName);
                         break;
+
                     case "code_desc":
                         productCodes = productCodes.OrderByDescending(p => p.ProductCode);
                         break;
+
                     default:
                         productCodes = productCodes.OrderBy(p => p.ProductCode);
                         break;
@@ -85,7 +83,6 @@ namespace MvcPhoenix.Controllers
             PP = ProductsService.fnFillOtherPMProps(PP);
             return View(PP);
         }
-
 
         public ActionResult PrintProfile(int id)
         {
@@ -124,7 +121,6 @@ namespace MvcPhoenix.Controllers
             PP = ProductsService.fnFillOtherPMProps(PP);
             return View("~/Views/Products/Create.cshtml", PP);
         }
-
 
         [HttpPost]
         public ActionResult SaveProductProfile(ProductProfile PPVM)
@@ -210,7 +206,6 @@ namespace MvcPhoenix.Controllers
         {
             int pk = ProductsService.fnSaveProductNoteToDB(PN);
             return Content("Data Updated at " + DateTime.Now);
-
         }
 
         [HttpGet]
@@ -220,7 +215,7 @@ namespace MvcPhoenix.Controllers
             return null;
         }
 
-        #endregion
+        #endregion LogNotes - ProductNotes
 
         #region CAS
 
@@ -280,31 +275,6 @@ namespace MvcPhoenix.Controllers
             return null;
         }
 
-        #endregion
-
-        #region PC Testing
-
-        // *******************************************************************
-        // Older POST versions - used by pc for testing 
-        //[HttpPost]
-        //public ActionResult SetUpProductProfileEdit(int productdetailid1)
-        //{
-        //    return RedirectToAction("Edit", new { id = productdetailid1 });
-        //}
-
-        //[HttpPost]
-        //public ActionResult SetUpProductProfileNew(int clientid2)
-        //{
-        //    return RedirectToAction("Edit", new { id = clientid2 });
-        //}
-
-        //[HttpPost]
-        //public ActionResult SetUpProductProfileEquiv(int productdetailid3)
-        //{
-        //    return RedirectToAction("Equiv", new { id = productdetailid3 });
-        //}
-        // *******************************************************************
-
-        #endregion
+        #endregion CAS
     }
 }

@@ -50,7 +50,6 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-
         public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -68,7 +67,7 @@ namespace MvcPhoenix.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var users = from u in UserManager.Users 
+            var users = from u in UserManager.Users
                         select u;
 
             if (!String.IsNullOrEmpty(searchString))
@@ -81,20 +80,20 @@ namespace MvcPhoenix.Controllers
             switch (sortOrder)
             {
                 case "name_desc":
-                   users = users.OrderByDescending(u => u.FirstName);
-                   break;
+                    users = users.OrderByDescending(u => u.FirstName);
+                    break;
 
                 case "Date":
-                   users = users.OrderBy(u => u.LockoutEndDateUtc);
-                   break;
+                    users = users.OrderBy(u => u.LockoutEndDateUtc);
+                    break;
 
                 case "date_desc":
-                   users = users.OrderByDescending(u => u.LockoutEndDateUtc);
-                   break;
+                    users = users.OrderByDescending(u => u.LockoutEndDateUtc);
+                    break;
 
                 default:
-                   users = users.OrderBy(u => u.FirstName);
-                   break;
+                    users = users.OrderBy(u => u.FirstName);
+                    break;
             }
 
             int pageSize = 10;
@@ -103,7 +102,6 @@ namespace MvcPhoenix.Controllers
             return View(users.ToPagedList(pageNumber, pageSize));
         }
 
-        
         // GET: ApplicationUsers/Edit/5
 
         public async Task<ActionResult> Edit(string id)
@@ -130,7 +128,7 @@ namespace MvcPhoenix.Controllers
         }
 
         // POST: ApplicationUsers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -152,8 +150,8 @@ namespace MvcPhoenix.Controllers
 
                 // (populate the roles list in case we have to return to the Edit view)
                 applicationUser = await UserManager.FindByIdAsync(applicationUser.Id);
-                applicationUser.RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem() 
-                                                                                    { 
+                applicationUser.RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
+                                                                                    {
                                                                                         Selected = rolesCurrentlyPersistedForUser.Contains(x.Name),
                                                                                         Text = x.Name,
                                                                                         Value = x.Name
@@ -165,7 +163,7 @@ namespace MvcPhoenix.Controllers
                     ModelState.AddModelError("", "At least one user must retain the Admin role; you are attempting to delete the Admin role");
                     return View(applicationUser);
                 }
-                
+
                 var result = await UserManager.AddToRolesAsync(
                     applicationUser.Id,
                     rolesSelectedOnView.Except(rolesCurrentlyPersistedForUser).ToArray());
@@ -193,7 +191,6 @@ namespace MvcPhoenix.Controllers
             return View();
         }
 
-        
         public async Task<ActionResult> LockAccount([Bind(Include = "Id")] string id)
         {
             await UserManager.ResetAccessFailedCountAsync(id);
@@ -201,7 +198,6 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("Edit", "ApplicationUsers", new { id = @id });
         }
 
-        
         public async Task<ActionResult> UnlockAccount([Bind(Include = "Id")] string id)
         {
             await UserManager.ResetAccessFailedCountAsync(id);

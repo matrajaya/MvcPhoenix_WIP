@@ -1,13 +1,12 @@
-﻿using System;
+﻿using GleamTech.FileUltimate;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using GleamTech.FileUltimate;
-using System.Web;
 using System.Web.UI.WebControls;
 
 namespace MvcPhoenix.Controllers
@@ -36,28 +35,8 @@ namespace MvcPhoenix.Controllers
                 AllowedPermissions = FileManagerPermissions.Full
             });
 
-            //Attached event handlers should be static methods because they are raised out of the context of the host page.
-            //If instance methods are attached (eg. an instance method of Page class), this would cause memory leaks. 
-
-            //Before Events which are fired before the action is started.
-            //Use e.Cancel("message") within a before event handler for canceling the event and displaying a message to the user, 
-            //When an event is canceled, the corresponding action will be canceled and the after event will not be fired.
-            //fileManager.Expanding += FileManagerExpanding;
-            //fileManager.Listing += FileManagerListing;
-            //fileManager.Creating += FileManagerCreating;
-            //fileManager.Deleting += FileManagerDeleting;
-            //fileManager.Renaming += FileManagerRenaming;
-            //fileManager.Copying += FileManagerCopying;
-            //fileManager.Moving += FileManagerMoving;
-            //fileManager.Compressing += FileManagerCompressing;
-            //fileManager.Extracting += FileManagerExtracting;
-            //fileManager.Uploading += FileManagerUploading;
-            //fileManager.Downloading += FileManagerDownloading;
-            //fileManager.Previewing += FileManagerPreviewing;
-
             //After Events which are fired after the action is completed.
             fileManager.Expanded += FileManagerExpanded;
-            //fileManager.Listed += FileManagerListed;
             fileManager.Created += FileManagerCreated;
             fileManager.Deleted += FileManagerDeleted;
             fileManager.Renamed += FileManagerRenamed;
@@ -71,6 +50,26 @@ namespace MvcPhoenix.Controllers
             fileManager.Failed += FileManagerFailed;
 
             return View(fileManager);
+        }
+
+        public ActionResult Activity()
+        {
+            string filepath = Server.MapPath("\\App_Data\\DocsDir\\eventslog.txt");
+            string content = string.Empty;
+
+            try
+            {
+                using (var stream = new StreamReader(filepath))
+                {
+                    content = stream.ReadToEnd();
+                }
+            }
+            catch (Exception exc)
+            {
+                return Content("Uh oh!");
+            }
+
+            return Content(content, "text/plain");
         }
 
         private static void LogEvents()
@@ -94,7 +93,7 @@ namespace MvcPhoenix.Controllers
             System.IO.File.AppendAllText(@"C:\inetpub\wwwroot\Phoenix\App_Data\DocsDir\eventslog.txt", sb.ToString());
         }
 
-        #region  Event handlers for before events
+        #region Event handlers for before events
 
         private static void FileManagerExpanding(object sender, FileManagerExpandingEventArgs e)
         {
@@ -231,7 +230,7 @@ namespace MvcPhoenix.Controllers
                 });
         }
 
-        #endregion
+        #endregion Event handlers for before events
 
         #region Event handlers for after events
 
@@ -412,7 +411,7 @@ namespace MvcPhoenix.Controllers
             LogEvents();
         }
 
-        #endregion
+        #endregion Event handlers for after events
 
         private static void SaveEventInfo(Dictionary<string, object> eventInfo)
         {

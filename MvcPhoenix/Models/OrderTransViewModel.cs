@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
@@ -28,7 +26,7 @@ namespace MvcPhoenix.Models
         //[Display(Name = "UserID")]
         //public int? userid { get; set; }
 
-        [Required(ErrorMessage="Select Transaction Type")]
+        [Required(ErrorMessage = "Select Transaction Type")]
         [Display(Name = "Type")]
         public string transtype { get; set; }
 
@@ -61,13 +59,9 @@ namespace MvcPhoenix.Models
 
         //public string qryfilter { get; set; }
 
-        
         //constructor
         public OrderTrans()
-        
         {
-        
-        
         }
     }
 }

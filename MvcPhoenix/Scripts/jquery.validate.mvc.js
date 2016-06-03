@@ -1,7 +1,6 @@
 // the semi-colon before function invocation is a safety net against concatenated
 // scripts and/or other plugins which may not be closed properly.
 ; (function ($, window, document, undefined) {
-
     // undefined is used here as the undefined global variable in ECMAScript 3 is
     // mutable (ie. it can be changed by someone else). undefined isn't really being
     // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
@@ -30,9 +29,7 @@
     }
 
     Plugin.prototype = {
-
         init: function () {
-
             // Place initialization logic here
             // You already have access to the DOM element and
             // the options via the instance, e.g. this.element
@@ -46,14 +43,11 @@
                 tooltipPlacement = this.options.placement;
 
             if (name) {
-
                 var errValElem = $('span[data-valmsg-for="' + name + '"]');
                 errValElem.hide();
 
                 function onDOMSubtreeModified(errValElem) {
-
                     errValElem.bind("DOMSubtreeModified", function () {
-
                         elem.tooltip("destroy");
                         elem.siblings("div.tooltip").remove();
 
@@ -75,14 +69,11 @@
                             elem.tooltip('destroy');
                             elem.siblings("div.tooltip").remove();
                         }
-
                     });
                 };
                 function showTooltipOfError(event) {
-
                     var inputField = event.currentTarget;
                     if (errValElem.hasClass("field-validation-error") || errValElem.hasClass("field-error")) {
-
                         $(inputField).siblings("div.tooltip").remove();
 
                         $(inputField).tooltip({
@@ -154,5 +145,4 @@
             }
         });
     };
-
 })(jQuery, window, document);

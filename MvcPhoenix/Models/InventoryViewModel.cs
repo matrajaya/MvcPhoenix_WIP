@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
     public class Inventory
     {
-
     }
-
 
     public class BulkContainerViewModel
     {
@@ -136,7 +132,6 @@ namespace MvcPhoenix.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? qcdate { get; set; }
 
-        
         [Display(Name = "Return Location")]
         [StringLength(10, ErrorMessage = "Max 10)")]
         public string returnlocation { get; set; }
@@ -162,22 +157,15 @@ namespace MvcPhoenix.Models
         [StringLength(500, ErrorMessage = "Max 500)")]
         public string containernotes { get; set; }
 
-
         public string otherstorage { get; set; }
-                
+
         // Some readonly properties from PM
         public bool? flammable { get; set; }
+
         public bool? freezer { get; set; }
         public bool? refrigerated { get; set; }
 
         [Display(Name = "PackOut on Recpt")]
         public bool? packout { get; set; }
-
-
-
     }
-
-
-
-
 }

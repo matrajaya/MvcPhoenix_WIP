@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-// pc add
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
-
-   
-
     public class ShelfMasterViewModel
     {
         [Display(Name = "ShelfID")]
@@ -114,9 +106,9 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfPackages { get; set; }
 
         public string packagepartnumber { get; set; }
-               
+
         //[Display(Name = "Bus Area")]
-       // public string busarea { get; set; }
+        // public string busarea { get; set; }
 
         //[Display(Name = "Mnemonic")]
         //public string mnemonic { get; set; }
@@ -144,10 +136,5 @@ namespace MvcPhoenix.Models
 
         //public string datastate { get; set; }
         //public bool? IsValidItem { get; set; }
-
-
     }
-
-   
-
 }

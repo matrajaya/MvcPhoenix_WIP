@@ -2,7 +2,7 @@
 
 <div id="dvItemsList">
     <label>Items | </label>
-        
+
     @Ajax.ActionLink("+ Add Item", "CreateItem", "Replenishments", new { id = @ViewBag.ParentKey }, new AjaxOptions
     {
         InsertionMode = InsertionMode.Replace,
@@ -10,7 +10,6 @@
         UpdateTargetId = "dialogPlaceholder",
         OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
     })
-    
 
     <div class="table-responsive">
         <table class="table table-striped">

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-// pc add
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MvcPhoenix.Models
 {
-
     // Maps to tblShelfMaster
 
     public class ShelfMaster
@@ -18,7 +11,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "ProductDetailID")]
         public int productdetailid { get; set; }
-
 
         [Display(Name = "Warehouse")]
         public string warehouse { get; set; }
@@ -145,12 +137,5 @@ namespace MvcPhoenix.Models
 
         //[Display(Name = "MigrationNotes")]
         //public string migrationnotes { get; set; }
-
-
-
-
-
     }
-
-
 }

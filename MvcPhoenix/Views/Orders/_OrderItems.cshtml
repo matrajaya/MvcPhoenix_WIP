@@ -45,7 +45,6 @@
                                  OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
                              }, new { @class = "btn btn-xs btn-primary" })
                     </td>
-
                 </tr>
             }
         </tbody>
@@ -54,7 +53,7 @@
 
 <!-- Start Allocate Buttons -->
     <!-- dvAllocateResult is in Edit.cshtml to provide a place to stick a message after allocation -->
-    
+
     <div class="row text-center">
         <div class="form-group col-md-3">
 
@@ -79,7 +78,6 @@
                         OnSuccess = "UpdateItemsList",
                         OnFailure = "alert('Error- Could not allocate order')",
                     }, new { @class = "btn btn-sm btn-primary" })
-
         </div>
         <div class="form-group col-md-3">
             @Ajax.ActionLink("Allocate from Bulk (Available Stock Only)", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = false },
@@ -104,23 +102,16 @@
                         OnFailure = "alert('Error- Could not allocate order')",
                     }, new { @class = "btn btn-sm btn-primary" })
         </div>
-
-
-
     </div>
 
 <!-- End Allocate Buttons -->
-
-
 
 <script type="text/javascript">
 
     function UpdateItemsList()
     {
-        
+
         $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { id = @Model[0].OrderID })');
-        
+
     }
-
-
 </script>

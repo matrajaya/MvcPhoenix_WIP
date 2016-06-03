@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace MvcPhoenix.Models
 {
-
-    
     public class OrderMasterFull
     {
-    
         public List<SelectListItem> ListOfDivisions { get; set; }
         public List<SelectListItem> ListOfOrderTypes { get; set; }
         public List<SelectListItem> ListOfSalesReps { get; set; }
@@ -22,7 +18,7 @@ namespace MvcPhoenix.Models
 
         // pc 04/28/16 new dd bound per cd, ii
         public List<SelectListItem> ListOfBillingGroups { get; set; }
-        
+
         public int itemscount { get; set; }
         public int transcount { get; set; }
         public int needallocationcount { get; set; }
@@ -32,10 +28,10 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Client")]
         public int? clientid { get; set; }
-        
+
         public string clientname { get; set; }
         public string logofilename { get; set; }
-        
+
         [Display(Name = "Ord Status")]
         public string orderstatus { get; set; }
 
@@ -63,7 +59,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Ref No.")]
         public string custrefnum { get; set; }
-        
+
         [Display(Name = "Order Type")]
         public string ordertype { get; set; }
 
@@ -102,7 +98,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Sales Rep")]
         public string salesrep { get; set; }
-        
 
         [Display(Name = "Sales Email")]
         public string sales_email { get; set; }
@@ -267,7 +262,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Cust Requested Carrier")]
         public string custrequestedcarrier { get; set; }
-        
+
         [Display(Name = "Legacy ID")]
         public int legacyid { get; set; }
 
@@ -298,9 +293,6 @@ namespace MvcPhoenix.Models
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
-
-      
-
 
         //public OrderMasterFull()
         //{

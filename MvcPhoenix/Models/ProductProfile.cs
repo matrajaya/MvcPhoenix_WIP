@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
-
     public class ProductProfileLanding
     {
         // small class used by the landing page, built in the index view load
         public int searchclientid { get; set; }
-        
+
         [Display(Name = "ClientID")]
         public List<SelectListItem> ListOfClients { get; set; }
-        public int searchproductdetailid { get;set; }
+
+        public int searchproductdetailid { get; set; }
     }
 
     public class UN
@@ -23,6 +21,7 @@ namespace MvcPhoenix.Models
         // we probably do not need a CRUD interface for this
         // but used by helper function in ProductProfile
         public int unid { get; set; }
+
         public string unnumber { get; set; }
         public string hazardclass { get; set; }
         public string propershippingname { get; set; }
@@ -56,59 +55,52 @@ namespace MvcPhoenix.Models
         //public List<EF.tblProductNotes> ListOfProductNotes { get; set; }
 
         //public List<ProductNote> ListOfProductNotesA { get; set; }
-
     }
 
-    
-
-    
     public class Cas
     {
-        [Display(Name="CASID")]
+        [Display(Name = "CASID")]
         public int casid { get; set; }
 
-        [Display(Name="ProductDetailID")]
+        [Display(Name = "ProductDetailID")]
         public int? productdetailid { get; set; }
 
-        [Display(Name="CasNumber")]
+        [Display(Name = "CasNumber")]
         public string casnumber { get; set; }
 
-        [Display(Name="ChemicalName")]
+        [Display(Name = "ChemicalName")]
         public string chemicalname { get; set; }
 
-        [Display(Name="Percentage")]
+        [Display(Name = "Percentage")]
         public string percentage { get; set; }
 
-        [Display(Name="RestrictedQty")]
+        [Display(Name = "RestrictedQty")]
         public bool? restrictedqty { get; set; }
 
-        [Display(Name="RestrictedAmount")]
+        [Display(Name = "RestrictedAmount")]
         public decimal? restrictedamount { get; set; }
 
-        [Display(Name="PackOnReceipt")]
+        [Display(Name = "PackOnReceipt")]
         public bool? packonreceipt { get; set; }
 
-        [Display(Name="ReportableQty")]
+        [Display(Name = "ReportableQty")]
         public bool? reportableqty { get; set; }
 
-        [Display(Name="ReportableAmount")]
+        [Display(Name = "ReportableAmount")]
         public decimal? reportableamount { get; set; }
 
-        [Display(Name="LessThan")]
+        [Display(Name = "LessThan")]
         public bool? lessthan { get; set; }
 
-        [Display(Name="ExcludeFromLabel")]
+        [Display(Name = "ExcludeFromLabel")]
         public bool? excludefromlabel { get; set; }
-
-
     }
-    
+
     public class ProductProfile
     {
-
         public List<SelectListItem> ListOfPackagePartNumbers { get; set; }
         public List<ProductNote> ListOfProductNotes { get; set; }
-        public List<Cas> ListOfCasNumbers { get;set; }
+        public List<Cas> ListOfCasNumbers { get; set; }
         public List<MvcPhoenix.Models.ShelfMasterViewModel> ListOfShelfItems { get; set; }
         public List<SelectListItem> ListOfHarmonizedCodes { get; set; }
         public List<SelectListItem> ListOfEndUsesForCustoms { get; set; }
@@ -122,21 +114,22 @@ namespace MvcPhoenix.Models
 
         // retire these 2 later
         public DateTime? masterlastupdate { get; set; }
+
         public DateTime? detaillastupdate { get; set; }
 
         // ------------------------------------------- pc Fields added 03/15/2016
         [Display(Name = "Alert Notes - Shipping")]
         public string alertnotesshipping { get; set; }
-        
+
         [Display(Name = "Alert Notes - Receiving")]
         public string alertnotesreceiving { get; set; }
-        
+
         [Display(Name = "Alert Notes - Packout")]
         public string alertnotespackout { get; set; }
 
         [Display(Name = "Alert Notes - Order Entry")]
         public string alertnotesorderentry { get; set; }
-        
+
         public string countryoforigin { get; set; }
         public List<SelectListItem> ListOfCountries { get; set; }
 
@@ -171,12 +164,11 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "RCRAOSNAME")]
         public string rcranosname { get; set; }
+
         // ------------------------------------------- pc Fields added 03/15/2016
 
-
-        
         // **********************************************************************
-        
+
         [Display(Name = "ProductDetailID")]
         [Required]
         public int productdetailid { get; set; }
@@ -207,10 +199,10 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "HarmonizedCode")]
         public string harmonizedcode { get; set; }
-        
+
         [Display(Name = "EndUse")]
         public string enduse { get; set; }
-        
+
         [Display(Name = "SGRevisionDate")]
         public DateTime? sgrevisiondate { get; set; }
 
@@ -283,10 +275,10 @@ namespace MvcPhoenix.Models
         public string sdscontactname { get; set; }
 
         [Display(Name = "SDS Contact Phone")]
-        public string  sdscontactphone { get; set; }
+        public string sdscontactphone { get; set; }
 
         [Display(Name = "China Certification Date")]
-        public DateTime? chinacertificationdate { get; set; }        
+        public DateTime? chinacertificationdate { get; set; }
 
         [Display(Name = "Label Contact Name")]
         public string labelcontactname { get; set; }
@@ -298,16 +290,16 @@ namespace MvcPhoenix.Models
         public bool? technicalsheet { get; set; }
 
         [Display(Name = "Tech Sheet Rev Date")]
-        public DateTime? technicalsheetrevisondate { get; set; }        
+        public DateTime? technicalsheetrevisondate { get; set; }
 
         [Display(Name = "Emergency Contact Number")]
-        public string emergencycontactnumber { get; set; }        
+        public string emergencycontactnumber { get; set; }
 
         [Display(Name = "EPA Hazardous Waste")]
-        public bool?  epahazardouswaste { get; set; }
+        public bool? epahazardouswaste { get; set; }
 
         [Display(Name = "Non RCRA Waste")]
-        public bool? nonrcrawaste { get; set; }        
+        public bool? nonrcrawaste { get; set; }
 
         [Display(Name = "Waste Profile Number")]
         public string wasteprofilenumber { get; set; }
@@ -315,13 +307,13 @@ namespace MvcPhoenix.Models
         //new field added by cd,ii on 10/28
         [Display(Name = "Shipping Chemical Name")]
         public string shippingchemicalname { get; set; }
-        
+
         //new field added by cd,ii on 10/28 (already in master??)
         [Display(Name = "Label Notes (EPA, etc)")]
         public string labelnotesepa { get; set; }
-        
+
         // **********************************************************************
-        
+
         [Display(Name = "ProductMasterID")]
         [Required]
         public int? productmasterid { get; set; }
@@ -338,7 +330,7 @@ namespace MvcPhoenix.Models
         // pc 04/28/16 retired use of MasterDivisionID
         //[Display(Name = "Business Unit/Division")]
         //public int? masterdivisionid { get; set; }
-        
+
         [Display(Name = "Discontinued")]
         public bool? discontinued { get; set; }
 
@@ -356,17 +348,18 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Restrictedamount")]
         public decimal? restrictedamount { get; set; }
-         // *********************************************************
+
+        // *********************************************************
 
         //[Display(Name = "SampGd LegacyID")]
         //public int? sglegacyid { get; set; }
 
         //[Display(Name = "Shelf Detail LegacyID")]
         //public int? sdlegacyid { get; set; }
-        
+
         [Display(Name = "SUPPLYID")]
         public string supplyid { get; set; }
-        
+
         [Display(Name = "NoReorder")]
         public bool? noreorder { get; set; }
 
@@ -432,7 +425,7 @@ namespace MvcPhoenix.Models
         //public string other { get; set; }
         [Display(Name = "Other Handling Instr")]
         public string otherhandlinginstr { get; set; }
-        
+
         [Display(Name = "NormalAppearence")]
         public string normalappearence { get; set; }
 
@@ -453,7 +446,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Gloves")]
         public bool? gloves { get; set; }
-              
+
         [Display(Name = "GloveType")]
         public string glovetype { get; set; }
 
@@ -561,7 +554,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "OtherEquipmentDescription")]
         public string otherequipmentdescription { get; set; }
-        
+
         [Display(Name = "Booties")]
         public bool? booties { get; set; }
 
@@ -603,7 +596,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "RETURNLOCATION")]
         public string returnlocation { get; set; }
-        
+
         [Display(Name = "SpecialBlend")]
         public bool? specialblend { get; set; }
 
@@ -618,7 +611,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "FullFaceRespirator")]
         public bool? fullfacerespirator { get; set; }
-        
+
         [Display(Name = "Torque")]
         public bool? torque { get; set; }
 
@@ -696,10 +689,10 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "GRNOSNAME")]
         public string grnosname { get; set; }
-                
+
         [Display(Name = "GRNSHIPNAMED")]
         public string grnshipnamed { get; set; }
-        
+
         [Display(Name = "GRNTREMACARD")]
         public string grntremacard { get; set; }
 
@@ -726,7 +719,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "AIRNOSNAME")]
         public string airnosname { get; set; }
-
 
         [Display(Name = "SEAUNNUM")]
         public string seaunnum { get; set; }
@@ -764,7 +756,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "SEAMFAGNO")]
         public string seamfagno { get; set; }
 
-
         [Display(Name = "S.G.")]
         public decimal? specificgravity { get; set; }
 
@@ -778,13 +769,5 @@ namespace MvcPhoenix.Models
         // Added by CD,PC  11/20/2015
         [Display(Name = "Waste Code")]
         public string wastecode { get; set; }
-
-
-
     }
-
-    
-
-
-
 }

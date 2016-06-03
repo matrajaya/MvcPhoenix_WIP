@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
@@ -11,18 +9,20 @@ namespace MvcPhoenix.Models
     {
     }
 
-
     public class BulkOrderSearchResults
     {
         //TODO use the BulkOrder class instead
         public int bulkorderid { get; set; }
+
         public int? clientid { get; set; }
         public string supplyid { get; set; }
         public DateTime? orderdate { get; set; }
         public string comment { get; set; }
         public string clientname { get; set; }
+
         //public string bulksupplieremail { get; set; }
         public string emailsent { get; set; }   // leave as string, push date as string intoit
+
         public int itemcount { get; set; }
         public int opencount { get; set; }
         public string ResultsMessage { get; set; }
@@ -45,6 +45,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "SupplyID")]
         public string supplyid { get; set; }
+
         public List<SelectListItem> ListOfSupplyIDs { get; set; }
 
         [Display(Name = "Supplier Email")]
@@ -68,7 +69,7 @@ namespace MvcPhoenix.Models
 
         public string mastercode { get; set; }
         public string mastername { get; set; }
-        
+
         public List<SelectListItem> ListOfProductMasters { get; set; }
 
         [Display(Name = "Weight")]
@@ -76,6 +77,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Status")]
         public string itemstatus { get; set; }
+
         public List<SelectListItem> ListOfItemStatusIDs { get; set; }
 
         [Display(Name = "ETA")]
@@ -86,7 +88,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Item Notes")]
         public string itemnotes { get; set; }
-                
     }
 
     public class BulkOrderEmailViewModel
@@ -100,7 +101,6 @@ namespace MvcPhoenix.Models
         public string Subject { get; set; }
         public string MessageBody { get; set; }
     }
-
 
     // This will be moved to Inventory
     public class BulkContainerSearchResults
@@ -121,9 +121,8 @@ namespace MvcPhoenix.Models
         public string containertype { get; set; }
         public string clientname { get; set; }
         public decimal? currentweight { get; set; }
-
     }
-    
+
     // Retire this later
     public class SuggestedBulkOrder
     {
@@ -135,8 +134,9 @@ namespace MvcPhoenix.Models
     {
         // corresponds to a record in tblSuggestedBulk
         public int id { get; set; }
+
         public int? clientid { get; set; }
-        
+
         public string clientname { get; set; }
         public string logofilename { get; set; }
 
@@ -160,17 +160,15 @@ namespace MvcPhoenix.Models
         public string username { get; set; }
 
         // add fields to reire above class
-        public string  mastercode { get; set; }
+        public string mastercode { get; set; }
+
         //p/ublic int? masterdivisionid { get; set; }
         public string division { get; set; }
+
         public string mastername { get; set; }
         public Decimal? bulkshippedperday { get; set; }
         public Decimal? shelfshippedperday { get; set; }
         public int? usethisdaystilexpiration { get; set; }
         public Decimal? averageleadtime { get; set; }
-    
     }
-    
-
-   
 }

@@ -1,26 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-// pc add
-//using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace MvcPhoenix.Models
 {
-
     // need to add per CD 10/12/2015
     //SpecificGravity (used to calc Density) Density = SG * 8.34
-    // 
+    //
     //AccuracyVerified
-
-
 
     // Maps to tblProductDetail
     public class ProductDetail
     {
-
         public ProductMaster PM { get; set; }
 
         [Display(Name = "ProductDetailID")]
@@ -119,6 +109,5 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Division_MDB")]
         public string division_mdb { get; set; }
-
     }
 }

@@ -43,7 +43,6 @@
                             <div class="form-group col-md-6">
                                 <label>Client</label>
                                 @Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "$('#dvGridPlaceHolder').html('')", @class = "form-control" })
-
                             </div>
                             <div class="form-group col-md-3">
                                 <label>Rows</label>
@@ -54,7 +53,7 @@
                                 <input id="btnsubmit" type="submit" value="Search" class="btn btn-success form-control" />
                             </div>
                         </div>
-                        
+
         }
                 </div>
             </div>
@@ -103,7 +102,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="col-md-12 text-center" id="dvspinner" style="display:none;">
@@ -113,5 +111,4 @@
     <div id="dvGridPlaceHolder" class="row">
         @{Html.RenderAction("SearchResults", "Replenishments", new { mode = "Initial" });}
     </div>
-
 </div>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 // ************** ProductsService.cs ********************
@@ -40,11 +39,10 @@ namespace MvcPhoenix.Models
 
         public static ProductProfile fnFillOtherPMProps(ProductProfile PP)
         {
-
             using (var db = new EF.CMCSQL03Entities())
             {
                 // Countries
-                PP.ListOfCountries = (from t in db.tblCountry orderby t.Country select new SelectListItem { Value = t.Country, Text = t.Country}).ToList();
+                PP.ListOfCountries = (from t in db.tblCountry orderby t.Country select new SelectListItem { Value = t.Country, Text = t.Country }).ToList();
                 PP.ListOfCountries.Insert(0, new SelectListItem { Value = "0", Text = "" });
 
                 //PackagePartNumbers
@@ -59,7 +57,6 @@ namespace MvcPhoenix.Models
                 gloves.Add(new SelectListItem { Value = "NEOPRENE+NITRIL", Text = "NEOPRENE+NITRIL" });
                 gloves.Add(new SelectListItem { Value = "NITRILE", Text = "NITRILE" });
                 PP.ListOfGloves = gloves;
-
 
                 PP.ListOfEquivalents = (from t in db.tblProductDetail where t.ProductMasterID == PP.productmasterid && t.ProductCode != PP.productcode select new SelectListItem { Value = t.ProductCode, Text = t.ProductCode }).ToList();
 
@@ -134,9 +131,7 @@ namespace MvcPhoenix.Models
                                   reorderqty = t.ReorderQty
                               }).ToList();
 
-
                 PP.ListOfShelfItems = qshelf;
-
             }
             return PP;
         }
@@ -190,7 +185,6 @@ namespace MvcPhoenix.Models
                 // fields add by Iffy 10/28 (already in Master ???)
                 PP.shippingchemicalname = qd.ShippingChemicalName;
                 PP.labelnotesepa = qd.LabelNotesEPA;
-
 
                 // Eight standard ground fields pulled from tblUN
                 PP.grnunnumber = qd.GRNUNNUMBER;
@@ -246,7 +240,7 @@ namespace MvcPhoenix.Models
                 PP.rcrahazcl = qd.RCRAHAZCL;
                 PP.rcrashipname = qd.RCRASHIPNAME;
                 PP.rcranosname = qd.RCRANOSNAME;
-                
+
                 return PP;
             }
         }
@@ -287,9 +281,8 @@ namespace MvcPhoenix.Models
                 PP.heatinginstructions = q.HeatingInstructions;
 
                 //cd says rename to OtherHandlingInstr
-                //PP.other = q.Other; 
+                //PP.other = q.Other;
                 PP.otherhandlinginstr = q.OtherHandlingInstr;
-
 
                 PP.normalappearence = q.NormalAppearence;
                 PP.rejectioncriterion = q.RejectionCriterion;
@@ -402,30 +395,27 @@ namespace MvcPhoenix.Models
                 var q = (from t in db.tblProductDetail where t.ProductDetailID == id select new { t.ProductMasterID }).FirstOrDefault();
                 return Convert.ToInt32(q.ProductMasterID);
             }
-
-
         }
 
         public static int fnSaveProductProfile(ProductProfile PPVM)
         {
-                // Take a VM and insert/update records
-                // return the ProductDetailID
-                int pkProductMaster = Convert.ToInt32(PPVM.productmasterid);
-                if (pkProductMaster == -1)
-                {
-                    PPVM.productmasterid = fnNewProductMasterID();
-                }
-                ProductsService.SaveProductMaster(PPVM);
-                            
-                int pkProductDetail = Convert.ToInt32(PPVM.productdetailid);
-                if (pkProductDetail==-1)
-                {
-                    PPVM.productdetailid = fnNewProductDetailID();
-                }
-                ProductsService.SaveProductDetail(PPVM);
+            // Take a VM and insert/update records
+            // return the ProductDetailID
+            int pkProductMaster = Convert.ToInt32(PPVM.productmasterid);
+            if (pkProductMaster == -1)
+            {
+                PPVM.productmasterid = fnNewProductMasterID();
+            }
+            ProductsService.SaveProductMaster(PPVM);
 
-                return PPVM.productdetailid;
+            int pkProductDetail = Convert.ToInt32(PPVM.productdetailid);
+            if (pkProductDetail == -1)
+            {
+                PPVM.productdetailid = fnNewProductDetailID();
+            }
+            ProductsService.SaveProductDetail(PPVM);
 
+            return PPVM.productdetailid;
         }
 
         public static void SaveProductDetail(ProductProfile PP)
@@ -480,7 +470,6 @@ namespace MvcPhoenix.Models
                 q.ShippingChemicalName = PP.shippingchemicalname;
                 q.LabelNotesEPA = PP.labelnotesepa;
 
-
                 q.GRNUNNUMBER = PP.grnunnumber;
                 q.GRNPKGRP = PP.grnpkgrp;
                 q.GRNHAZSUBCL = PP.grnhazsubcl;
@@ -500,7 +489,6 @@ namespace MvcPhoenix.Models
                 q.AIRHAZCL = PP.airhazcl;
                 q.AIRSHIPNAME = PP.airshipname;
                 q.AIRNOSNAME = PP.airnosname;
-
 
                 q.SEAUNNUM = PP.seaunnum;
                 q.SEAPKGRP = PP.seapkgrp;
@@ -525,22 +513,19 @@ namespace MvcPhoenix.Models
                 q.AlertNotesShipping = PP.alertnotesshipping;
                 q.AlertNotesReceiving = PP.alertnotesreceiving;
                 q.AlertNotesPackout = PP.alertnotespackout;
-                q.AlertNotesOrderEntry= PP.alertnotesorderentry;
+                q.AlertNotesOrderEntry = PP.alertnotesorderentry;
                 q.AccuracyVerifiedBy = PP.accuracyverifiedby;
                 q.RCRAUNNumber = PP.rcraunnumber;
                 q.RCRAPKGRP = PP.rcrapkgrp;
                 q.RCRAHAZSUBCL = PP.rcrahazsubcl;
                 q.RCRALABEL = PP.rcralabel;
-                q.RCRASUBLABEL =PP.rcrasublabel;
+                q.RCRASUBLABEL = PP.rcrasublabel;
                 q.RCRAHAZCL = PP.rcrahazcl;
-                q.RCRASHIPNAME =PP.rcrashipname;
-                q.RCRANOSNAME =PP.rcranosname;
+                q.RCRASHIPNAME = PP.rcrashipname;
+                q.RCRANOSNAME = PP.rcranosname;
 
                 db.SaveChanges();
-
             }
-
-
         }
 
         public static void SaveProductMaster(ProductProfile pm)
@@ -684,7 +669,6 @@ namespace MvcPhoenix.Models
 
                 db.SaveChanges();
             }
-
         }
 
         public static int fnNewProductDetailID()
@@ -708,7 +692,6 @@ namespace MvcPhoenix.Models
             // Select * into  tblPMTemp from tblProductMaster where ProductMasterID=id
             // Insert into tblProductMasterArchive Select * from tblPMTemp;
             // If exists tblPmTemp Drop table tblPMTemp;
-
         }
 
         public static int fnNewProductMasterID()
@@ -755,18 +738,17 @@ namespace MvcPhoenix.Models
             }
         }
 
-
-       
-
         // -----------------------------------------------
+
         #region ProductNotes Methods
+
         public static ProductNote fnCreateProductNote(int id)
         {
             ProductNote PN = new ProductNote();
             using (var db = new EF.CMCSQL03Entities())
             {
                 PN.productnoteid = -1;
-                PN.productdetailid = id;  // important 
+                PN.productdetailid = id;  // important
                 PN.reasoncode = null;
                 PN.notedate = DateTime.Now;
                 PN.notes = null;
@@ -822,12 +804,15 @@ namespace MvcPhoenix.Models
             }
             return id;
         }
-        #endregion
+
+        #endregion ProductNotes Methods
+
         // -----------------------------------------------
 
-
         // -----------------------------------------------
+
         #region CAS Methods
+
         public static Cas fnCreateCAS(int id)
         {
             Cas CS = new Cas();
@@ -885,7 +870,7 @@ namespace MvcPhoenix.Models
                 return q.CASID;
             }
         }
-                       
+
         public static int fnDeleteCAS(int id)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -895,9 +880,8 @@ namespace MvcPhoenix.Models
             return id;
         }
 
-        #endregion
-        // -----------------------------------------------
+        #endregion CAS Methods
 
+        // -----------------------------------------------
     }
 }
-

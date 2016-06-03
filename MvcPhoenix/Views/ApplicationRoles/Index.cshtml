@@ -6,7 +6,6 @@
     ViewBag.Title = "Role Management";
 }
 
-
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="row">
@@ -16,7 +15,6 @@
         </div>
     </div>
     <!-- /.Page Heading -->
-
 
     <div class="row">
         <div class="col-md-6">
@@ -33,7 +31,6 @@
                     </div>
                 }
             </div>
-
         </div>
     </div>
     <div class="row">
@@ -64,9 +61,6 @@
                 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
                 @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
             </div>
-
         </div>
-
     </div>
 </div>
-

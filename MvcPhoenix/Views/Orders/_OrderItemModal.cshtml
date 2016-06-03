@@ -88,8 +88,6 @@
                                     </select>
                                 </div>
                             }
-
-
                         </div>
                         <div class="col-md-3 form-group">
                             @Html.LabelFor(m => m.SRSize, new { @class = "control-label" })
@@ -117,8 +115,6 @@
                                 @Html.TextBoxFor(m => m.Qty, new { @class = "form-control", disabled = "disabled" })
                                 @Html.HiddenFor(m => m.Qty)
                             }
-
-
                         </div>
                     </div>
 
@@ -137,7 +133,6 @@
                                 @Html.TextBoxFor(m => m.LotNumber, new { @class = "form-control", disabled = "disabled" })
                             }
                         </div>
-
                     </div>
 
                     <div class="clearfix"></div>
@@ -165,7 +160,6 @@
                             @Html.CheckBox("CarrierInvoiceRcvd", Model.CarrierInvoiceRcvd != null && (bool)Model.CarrierInvoiceRcvd, new { @class = "checkbox" })
                         </div>
                     </div>
-
 
                     <div class="clearfix"></div>
 
@@ -211,7 +205,6 @@
                     </div>
                     <div class="clearfix"></div>
 
-
                     <div class="row myrow">
                         <div class="col-md-12 form-group">
                             @Html.DisplayFor(m => m.AlertNotesPackOut)
@@ -227,8 +220,6 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-
-
 
                     <div class="row myrow">
                         <div class="col-md-4 form-group">
@@ -255,7 +246,6 @@
                             else
                             { <span>&nbsp;</span>
                             }
-
                         </div>
 
                         <!-- The close button calls a js function to update the underlying partials-->
@@ -264,20 +254,17 @@
                                 <input type="button" value="Close" onclick="CloseForm()" class="btn btn-primary" />
                             </span>
                         </div>
-
                     </div>
                     <div class="clearfix"></div>
 
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <span id="dialogResult" class="text-center" style="font-weight:bold;">
-
                             </span>
                         </div>
                     </div>
                 }
             </div>
-
         </div>
     </div>
 </div>
@@ -308,7 +295,6 @@
     function SaveFailure() {
         $('#dialogResult').html("Update failed - Please contact Support");
 
-
     }
 
     function CloseForm() {
@@ -321,7 +307,4 @@
         // Hide the modal
         $('#dialogPlaceholderModal').modal('hide')
     }
-
-
 </script>
-

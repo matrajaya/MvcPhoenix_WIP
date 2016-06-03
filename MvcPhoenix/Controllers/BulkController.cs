@@ -1,17 +1,14 @@
-﻿using System;
+﻿using MvcPhoenix.Models;
+using MvcPhoenix.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-
-using MvcPhoenix.Models;
-using MvcPhoenix.Services;
 
 namespace MvcPhoenix.Controllers
 {
     public class BulkController : Controller
     {
-        
         private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
 
         public ActionResult Index()
@@ -29,13 +26,12 @@ namespace MvcPhoenix.Controllers
             return Content(BulkService.fnBuildProductMasterDropDown(id));
         }
 
-
         [HttpPost]
         public ActionResult Search1()
         {
             int ClientID = Convert.ToInt32(Request.Form["clientid"]);
             int PK = Convert.ToInt32(Request.Form["productmasterid"]);
-            if(ClientID==0 || PK==0)
+            if (ClientID == 0 || PK == 0)
             {
                 return Content("<strong>Please Select a Client and Mastercode</strong>");
             }
@@ -44,9 +40,7 @@ namespace MvcPhoenix.Controllers
                 List<BulkContainerViewModel> mylist = BulkService.fnBulkContainerList();
                 mylist = (from t in mylist where t.clientid == ClientID && t.productmasterid == PK select t).ToList();
                 return PartialView("~/Views/Bulk/_SearchResults.cshtml", mylist);
-
             }
-
         }
 
         [HttpPost]
@@ -70,7 +64,6 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Bulk/_SearchResults.cshtml", mylist);
         }
 
-
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -79,16 +72,13 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Bulk/Edit.cshtml", obj);
         }
 
-
         [HttpPost]
         public ActionResult Save(BulkContainerViewModel obj)
         {
             // WIP
             bool bUpdate = BulkService.fnSaveBulk(obj);
-            TempData["SaveResult"]= "Bulk Container Saved at " + System.DateTime.Now.ToString();
+            TempData["SaveResult"] = "Bulk Container Saved at " + System.DateTime.Now.ToString();
             return RedirectToAction("Edit", new { id = obj.bulkid });
         }
-
-
     }
 }
