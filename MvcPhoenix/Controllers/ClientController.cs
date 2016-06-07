@@ -12,8 +12,7 @@ namespace MvcPhoenix.Controllers
         private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
 
         // GET: Client/Index
-        [AllowAnonymous]
-        public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -65,28 +64,9 @@ namespace MvcPhoenix.Controllers
             return View(clients.ToPagedList(pageNumber, pageSize));
         }
 
-        #region TODO
-
         // GET: Client/Create
-        [AllowAnonymous]
         public ActionResult Create()
         {
-            //// POST: Client/Create
-            //[HttpPost]
-            //[AllowAnonymous]
-            //public ActionResult Create(FormCollection collection)
-            //{
-            //    try
-            //    {
-            //        // TODO: Add insert logic here
-            //        return RedirectToAction("Index");
-            //    }
-            //    catch
-            //    {
-            //        return View();
-            //    }
-            //}
-
             return View();
         }
 
@@ -112,7 +92,6 @@ namespace MvcPhoenix.Controllers
             return View(obj);
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public ActionResult SaveClientProfile(ClientProfile CPVM)
         {
@@ -120,7 +99,5 @@ namespace MvcPhoenix.Controllers
 
             return RedirectToAction("Edit", new { id = pk });
         }
-
-        #endregion TODO
     }
 }

@@ -52,6 +52,7 @@ namespace MvcPhoenix.Controllers
             return View(fileManager);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Activity()
         {
             string filepath = Server.MapPath("\\App_Data\\DocsDir\\eventslog.txt");
@@ -64,7 +65,7 @@ namespace MvcPhoenix.Controllers
                     content = stream.ReadToEnd();
                 }
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 return Content("Uh oh!");
             }

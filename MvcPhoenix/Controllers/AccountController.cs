@@ -453,7 +453,10 @@ namespace MvcPhoenix.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut();
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            
+            Session.Clear();
+            
             return RedirectToAction("Index", "Home");
         }
 

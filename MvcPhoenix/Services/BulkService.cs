@@ -9,7 +9,8 @@ namespace MvcPhoenix.Services
 {
     public class BulkService
     {
-        private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
+        private static string PathToLogos = "~/Content/images/logos";
+        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
 
         public static string fnBuildProductMasterDropDown(int clientid)
         {

@@ -15,7 +15,7 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Products/Index.cshtml");
         }
 
-        public async Task<ActionResult> Search(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
             using (var db = new EF.CMCSQL03Entities())
             {

@@ -11,7 +11,8 @@ namespace MvcPhoenix.Models
 {
     public class ProductsService
     {
-        private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
+        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
+        private static string PathToLogos = "~/Content/images/logos";
 
         public static string fnProductCodesDropDown(int id, string divid)
         {

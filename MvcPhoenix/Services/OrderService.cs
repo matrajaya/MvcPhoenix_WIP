@@ -11,7 +11,8 @@ namespace MvcPhoenix.Services
 {
     public class OrderService
     {
-        private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
+        private static string PathToLogos = "~/Content/images/logos";
+        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
         //private static string connstring = System.Configuration.ConfigurationManager.ConnectionStrings["ADOConnectionString"].ConnectionString;
 
         public static List<OrderMasterFull> fnOrdersSearchResults()
@@ -328,7 +329,7 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 bool ShowAlert = false;
-                string sCommand = "";
+                //string sCommand = "";
                 var q = (from t in db.tblOrderMaster where t.OrderID == vm.orderid select t).FirstOrDefault();
 
                 var qCountry = (from t in db.tblCountry where t.Country == vm.country && t.DoNotShip == true select t).FirstOrDefault();

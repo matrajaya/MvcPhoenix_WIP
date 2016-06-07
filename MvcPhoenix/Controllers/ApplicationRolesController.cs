@@ -50,7 +50,7 @@ namespace MvcPhoenix.Controllers
         }
 
         // GET: ApplicationRoles
-        public async Task<ActionResult> Index(ManageMessageId? message, string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(ManageMessageId? message, string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.StatusMessage = message ==
                 ManageMessageId.AdminDeleteError ? "Admin role cannot be deleted."
@@ -94,8 +94,6 @@ namespace MvcPhoenix.Controllers
             int pageNumber = (page ?? 1);
 
             return View(roles.ToPagedList(pageNumber, pageSize));
-
-            //return View(await RoleManager.Roles.ToListAsync());
         }
 
         // GET: ApplicationRoles/Create

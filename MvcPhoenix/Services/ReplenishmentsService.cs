@@ -10,7 +10,8 @@ namespace MvcPhoenix.Services
 {
     public class ReplenishmentsService
     {
-        private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
+        private static string PathToLogos = "~/Content/images/logos";
+        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
 
         public static List<BulkOrderSearchResults> fnSearchResults(FormCollection fc, string mode)
         {
