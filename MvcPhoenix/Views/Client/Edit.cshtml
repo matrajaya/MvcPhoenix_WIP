@@ -56,7 +56,7 @@
         </div>
         <div class="col-md-6">
             <div class="pull-right">
-                <a href="@Url.Action("View", "Client", new { id = @Model.ClientID })"><i class="fa fa-eye fa-lg"></i> View Mode</a>
+                <a href="@Url.Action("View", "Client", new { id = @Model.ClientID })"><i class="fa fa-eye fa-fw"></i> View Mode</a>
             </div>
         </div>
     </div>
@@ -221,42 +221,6 @@
                                 @Html.ValidationMessageFor(model => model.PartialDeliveryAllowed)
                             </td>
                         </tr>
-                        @*<tr>
-                            <td>@Html.LabelFor(model => model.MSDS)</td>
-                            <td>
-                                @Html.CheckBoxFor(model => model.MSDS, new { @class = "checkbox" })
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.TDS)</td>
-                            <td>
-                                @Html.CheckBoxFor(model => model.TDS, new { @class = "checkbox" })
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.COA)</td>
-                            <td>
-                                @Html.CheckBoxFor(model => model.COA, new { @class = "checkbox" })
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.MSDSFileDir)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.MSDSFileDir, new { @class = "form-control" })
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.TDSFileDir)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.TDSFileDir, new { @class = "form-control" })
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.COAFileDir)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.COAFileDir, new { @class = "form-control" })
-                            </td>
-                        </tr>*@
                         <tr>
                             <td>@Html.LabelFor(model => model.SDSRequired)</td>
                             <td>
@@ -299,13 +263,6 @@
                                 @Html.CheckBoxFor(model => model.StdCoverLetterRequired, new { @class = "checkbox" })
                             </td>
                         </tr>
-                        @*<tr>
-                            <td>@Html.LabelFor(model => model.BOLComment)</td>
-                            <td>
-                                @Html.TextAreaFor(model => model.BOLComment, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.BOLComment)
-                            </td>
-                        </tr>*@
                         <tr>
                             <td>@Html.LabelFor(model => model.ProductSetupDetails)</td>
                             <td>
@@ -361,145 +318,12 @@
                                 @Html.TextAreaFor(model => model.ChargesSummary, new { @class = "form-control" })
                             </td>
                         </tr>
-                        @*<tr>
-                            <td>@Html.LabelFor(model => model.SurchageHazard)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchageHazard, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchageHazard)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeFlammable)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeFlammable, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeFlammable)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeHeat)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeHeat, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeHeat)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeRefrigerate)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeRefrigerate, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeRefrigerate)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeFreeze)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeFreeze, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeFreeze)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeClean)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeClean, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeClean)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeNalgene)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeNalgene, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeNalgene)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeNitrogen)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeNitrogen, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeNitrogen)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeBiocide)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeBiocide, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeBiocide)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeBlend)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeBlend, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeBlend)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.SurchargeKosher)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.SurchargeKosher, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SurchargeKosher)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.HazDHServLvl1)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.HazDHServLvl1, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.HazDHServLvl1)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.HazDHServLvl2)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.HazDHServLvl2, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.HazDHServLvl2)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.HazDHServLvl3)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.HazDHServLvl3, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.HazDHServLvl3)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.HazDHServLvl4)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.HazDHServLvl4, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.HazDHServLvl4)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.NonHazDHServLvl1)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.NonHazDHServLvl1, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.NonHazDHServLvl1)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.NonHazDHServLvl2)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.NonHazDHServLvl2, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.NonHazDHServLvl2)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.NonHazDHServLvl3)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.NonHazDHServLvl3, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.NonHazDHServLvl3)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.LabelFor(model => model.NonHazDHServLvl4)</td>
-                            <td>
-                                @Html.TextBoxFor(model => model.NonHazDHServLvl4, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.NonHazDHServLvl4)
-                            </td>
-                        </tr>*@
                     </table>
                 </div>
             </div>
         </div>
 
-                        <!-- Contacts Management -->
+        @*<!-- Contacts Management -->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#contactpanel"><i class="fa fa-book fa-fw"></i> Contacts</h3>
@@ -507,13 +331,13 @@
             <div id="contactpanel" class="panel-body collapse in">
                 <div class="row">
                     <div id="">
-                        @*@Html.Partial("~/Views/Client/_Contacts.cshtml")*@
+                        @Html.Partial("~/Views/Client/_Contacts.cshtml")
                     </div>
                 </div>
             </div>
         </div>
 
-                        <!-- End Use Management -->
+        <!-- End Use Management -->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#endusepanel"><i class="fa fa-book fa-fw"></i> End Use</h3>
@@ -521,13 +345,13 @@
             <div id="endusepanel" class="panel-body collapse in">
                 <div class="row">
                     <div id="">
-                        @*@Html.Partial("~/Views/Client/_EndUse.cshtml")*@
+                        @Html.Partial("~/Views/Client/_EndUse.cshtml")
                     </div>
                 </div>
             </div>
         </div>
 
-                        <!-- Suppliers Information -->
+        <!-- Suppliers Information -->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#supplierpanel"><i class="fa fa-book fa-fw"></i>Suppliers</h3>
@@ -535,11 +359,11 @@
             <div id="supplierpanel" class="panel-body collapse in">
                 <div class="row">
                     <div id="">
-                        @*@Html.Partial("~/Views/Client/_Suppliers.cshtml")*@
+                        @Html.Partial("~/Views/Client/_Suppliers.cshtml")
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group row">
             <div class="col-md-12">
@@ -582,20 +406,4 @@
     CKEDITOR.inline('InventoryBusinessRules');
     CKEDITOR.inline('FreezableProcedure');
     CKEDITOR.inline('ChargesSummary');
-    //CKEDITOR.replace('InvoiceAddress');
-    //CKEDITOR.replace('InvoiceEmailTo');
-    //CKEDITOR.replace('KeyContactDir');
-    //CKEDITOR.replace('ClientContact');
-    //CKEDITOR.replace('SDSLanguage');
-    //CKEDITOR.replace('CMCContact');
-    //CKEDITOR.replace('SpecialReqAllowed');
-    //CKEDITOR.replace('ProductSetupDetails');
-    //CKEDITOR.replace('InventoryReports');
-    //CKEDITOR.replace('SDSUpdateMethod');
-    //CKEDITOR.replace('ExpDateRules');
-    //CKEDITOR.replace('CSBusinessRules');
-    //CKEDITOR.replace('WasteProcedure');
-    //CKEDITOR.replace('InventoryBusinessRules');
-    //CKEDITOR.replace('FreezableProcedure');
-    //CKEDITOR.replace('ChargesSummary');
 </script>

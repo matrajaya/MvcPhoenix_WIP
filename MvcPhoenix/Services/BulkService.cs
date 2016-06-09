@@ -9,9 +9,6 @@ namespace MvcPhoenix.Services
 {
     public class BulkService
     {
-        private static string PathToLogos = "~/Content/images/logos";
-        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
-
         public static string fnBuildProductMasterDropDown(int clientid)
         {
             // This returns ONLY the <option> portion of the <select> tag, thus allowing the <select> tag to
@@ -78,19 +75,14 @@ namespace MvcPhoenix.Services
                 obj.clientid = qPM.ClientID;
                 obj.clientname = qCL.ClientName;
 
-                obj.logofilename = PathToLogos + qCL.LogoFileName;
+                obj.logofilename = qCL.LogoFileName;
                 obj.ListOfWareHouses = fnWarehouseIDs();
-                //obj.ListOfProductMasters = ReceivingService.fnProductMasterIDs(qPM.ClientID, qPM.ProductMasterID);
                 obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
                 obj.ListOfContainerTypeIDs = ReceivingService.fnContainerTypeIDs();
                 obj.ListOfCarriers = ReceivingService.fnCarriers();
 
                 obj.MasterCode = qPM.MasterCode;
                 obj.MasterName = qPM.MasterName;
-                //obj.flammable = qPM.Flammable;
-                //obj.freezer = qPM.FREEZERSTORAGE;
-                //obj.refrigerated = qPM.Refrigerate;
-                //obj.packout = qPM.PackOutOnReceipt;
 
                 return obj;
             }

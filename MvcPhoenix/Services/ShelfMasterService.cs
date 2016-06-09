@@ -8,9 +8,6 @@ namespace MvcPhoenix.Services
 {
     public class ShelfMasterService
     {
-        private static string PathToLogos = "~/Content/images/logos";
-        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
-
         public static List<ShelfMasterViewModel> fnListOfShelfMasters(int id)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -27,7 +24,7 @@ namespace MvcPhoenix.Services
                                   productdetailid = t.ProductDetailID,
                                   clientid = cl.ClientID,
                                   clientname = cl.ClientName,
-                                  logofilename = PathToLogos + cl.LogoFileName,
+                                  logofilename = cl.LogoFileName,
                                   productcode = pd.ProductCode,
                                   productname = pd.ProductName,
                                   size = t.Size,

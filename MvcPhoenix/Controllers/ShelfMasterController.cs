@@ -32,7 +32,7 @@ namespace MvcPhoenix.Controllers
                 var dbProductMaster = db.tblProductMaster.Find(dbProductDetail.ProductMasterID);
                 var dbClient = db.tblClient.Find(dbProductMaster.ClientID);
                 ViewBag.ParentID = id;
-                ViewBag.logofilename = "http://www.mysamplecenter.com/Logos/" + dbClient.LogoFileName;
+                ViewBag.logofilename = dbClient.LogoFileName;
                 ViewBag.ProductCode = dbProductDetail.ProductCode;
                 ViewBag.ProductName = dbProductDetail.ProductName;
                 return null;

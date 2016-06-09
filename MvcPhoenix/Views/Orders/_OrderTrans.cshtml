@@ -12,7 +12,7 @@
             <th style="text-align:right;">Amount</th>
             <th>Date</th>
             <th>Comments</th>
-            <th class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
+            <th id="noprint" class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
         </tr>
         <tbody>
             @foreach (var item in Model)
@@ -25,7 +25,7 @@
                     <td style="text-align:right;">@item.transamount</td>
                     <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
                     <td>@item.comments</td>
-                    <td class="text-center">
+                    <td id="noprint" class="text-center">
                         @Ajax.ActionLink("Edit", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",

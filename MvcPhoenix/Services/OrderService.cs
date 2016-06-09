@@ -11,10 +11,6 @@ namespace MvcPhoenix.Services
 {
     public class OrderService
     {
-        private static string PathToLogos = "~/Content/images/logos";
-        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
-        //private static string connstring = System.Configuration.ConfigurationManager.ConnectionStrings["ADOConnectionString"].ConnectionString;
-
         public static List<OrderMasterFull> fnOrdersSearchResults()
         {
             // default query join for the index_partial ORDERS search results, also used by all the search requests as the starting point
@@ -57,10 +53,9 @@ namespace MvcPhoenix.Services
                 vm.clientid = id;
                 var cl = db.tblClient.Find(vm.clientid);
                 vm.clientname = cl.ClientName;
-                vm.logofilename = PathToLogos + cl.LogoFileName;
+                vm.logofilename = cl.LogoFileName;
                 vm.orderstatus = "z";
                 vm.orderdate = System.DateTime.Now;
-                //vm.ListOfDivisions = fnListOfDivisions(id);
                 vm.ListOfOrderTypes = fnListOfOrderTypes();
                 vm.ListOfSalesReps = fnListOfSalesReps(id);
                 vm.ListOfOrderSources = fnListOfOrderSources();
@@ -90,10 +85,9 @@ namespace MvcPhoenix.Services
 
                 var cl = db.tblClient.Find(q.ClientID);
                 o.clientname = cl.ClientName;
-                o.logofilename = PathToLogos + cl.LogoFileName;
+                o.logofilename = cl.LogoFileName;
 
                 // Fill lists buried in object
-                //o.ListOfDivisions = fnListOfDivisions(q.ClientID);
                 o.ListOfOrderTypes = fnListOfOrderTypes();
                 o.ListOfSalesReps = fnListOfSalesReps(o.clientid);
                 o.ListOfOrderSources = fnListOfOrderSources();

@@ -4,13 +4,23 @@
     Layout = "~/Views/Shared/_LayoutPrint.cshtml";
 }
 
-<img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+<script type="text/javascript">
+    window.onload = function () {
+        $("#bcTarget").barcode(
+            "@Model.orderid ~ @Model.clientid ~ @Model.clientname",
+            "datamatrix",
+            { moduleSize: 2, showHRI: false });
+    };
+</script>
+
+<div id="bcTarget"></div>
+
+<img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
 <h1 class="page-header">
     @ViewBag.Title <small> @Model.orderid for @Model.clientname</small>
 </h1>
 
 <div class="form-group">
-    <h3>Client Order Information</h3>
     <table>
         <tr>
             <td width="25%">
@@ -29,6 +39,20 @@
                 <label>Updated By:</label><br />
                 @Html.DisplayFor(m => m.UpdateUser, new { @class = "form-control" })
             </td>
+        </tr>
+    </table>
+</div>
+
+<hr />
+
+<div class="form-group">
+    <h3>Client Order Information</h3>
+    <table>
+        <tr>
+            <td width="25%"></td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+            <td width="25%"></td>
         </tr>
         <tr>
             <td colspan="3">
@@ -235,15 +259,15 @@
     <h3>Shipments</h3>
     <table>
         <tr>
-            <td>
+            <td width="33.33%">
                 <label>Ship Via</label><br />
                 @Html.DisplayFor(m => m.shipvia, new { @class = "form-control" })
             </td>
-            <td>
+            <td width="33.33%">
                 <label>Shipping Account</label><br />
                 @Html.DisplayFor(m => m.shipacct, new { @class = "form-control" })
             </td>
-            <td>
+            <td width="33.33%">
                 <label>Preferred Carrier</label><br />
                 @Html.DisplayFor(m => m.preferredcarrier, new { @class = "form-control" })
             </td>
@@ -272,6 +296,13 @@
     <table>
         <tr>
             <td>
+                <label>Internal Notes</label><br />
+                @Html.DisplayFor(m => m.specialinternal, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>External Notes</label><br />
                 @Html.DisplayFor(m => m.special, new { @class = "form-control" })
             </td>
         </tr>

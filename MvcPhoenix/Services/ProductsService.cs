@@ -11,9 +11,6 @@ namespace MvcPhoenix.Models
 {
     public class ProductsService
     {
-        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
-        private static string PathToLogos = "~/Content/images/logos";
-
         public static string fnProductCodesDropDown(int id, string divid)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -72,7 +69,7 @@ namespace MvcPhoenix.Models
                 // Logo filename (needs to be moved to a Client class)
                 var q = (from t in db.tblClient where t.ClientID == PP.clientid select new { t.ClientName, t.LogoFileName }).FirstOrDefault();
                 PP.clientname = q.ClientName;
-                PP.logofilename = "http://www.mysamplecenter.com/Logos/" + q.LogoFileName;
+                PP.logofilename = q.LogoFileName;
 
                 PP.ListOfDivisions = (from t in db.tblDivision where t.ClientID == PP.clientid select new SelectListItem { Value = t.DivisionID.ToString(), Text = t.Division }).ToList();
                 PP.ListOfDivisions.Insert(0, (new SelectListItem { Value = "0", Text = "" }));

@@ -16,7 +16,7 @@
             <th class="text-center">Delay</th>
             <th class="text-center">Avail</th>
             <th class="text-center">A-Status</th>
-            <th class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
+            <th id="noprint" class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
         </tr>
         <tbody>
             @foreach (var item in Model)
@@ -36,7 +36,7 @@
                     <td class="text-center">@item.QtyAvailable.ToString()</td>
                     <td class="text-center">@item.AllocateStatus</td>
 
-                    <td class="text-center">
+                    <td id="noprint" class="text-center">
                         @Ajax.ActionLink("Edit", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",

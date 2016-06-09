@@ -42,8 +42,7 @@
         </div>
         <div class="col-md-6">
             <div class="pull-right">
-                <a href="@Url.Action("Edit", "Client", new { id = @Model.ClientID })"><i class="fa fa-pencil"></i> Edit Mode</a>
-                @*@Html.ActionLink("Edit Mode", "Edit", new { id = Model.ClientID })*@
+                <a href="@Url.Action("Edit", "Client", new { id = @Model.ClientID })"><i class="fa fa-fw fa-pencil"></i> Edit Mode</a>
             </div>
         </div>
     </div>
@@ -155,76 +154,6 @@
                             @Html.DisplayFor(model => model.ClientUM)
                         </td>
                     </tr>
-
-                    @*<tr>
-                <td>
-                    @Html.LabelFor(model => model.MSDS)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.MSDS)
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.MSDSFileDir)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.MSDSFileDir)
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.TDS)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.TDS)
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.TDSFileDir)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.TDSFileDir)
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.COA)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.COA)
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.COAFileDir)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(model => model.COAFileDir)
-                </td>
-            </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.BOLComment)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(model => model.BOLComment)
-                    </td>
-                </tr>*@
-
                     <tr>
                         <td>
                             @Html.LabelFor(model => model.LogoFileDir)
@@ -241,7 +170,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.InvoiceAddress)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceAddress))
                         </td>
                     </tr>
@@ -252,7 +180,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.InvoiceEmailTo)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceEmailTo))
                         </td>
                     </tr>
@@ -263,7 +190,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.KeyContactDir)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.KeyContactDir))
                         </td>
                     </tr>
@@ -274,7 +200,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.ClientContact)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.ClientContact))
                         </td>
                     </tr>
@@ -285,7 +210,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.CMCContact)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.CMCContact))
                         </td>
                     </tr>
@@ -306,7 +230,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.ProductSetupDetails)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.ProductSetupDetails))
                         </td>
                     </tr>
@@ -317,7 +240,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.SDSLanguage)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.SDSLanguage))
                         </td>
                     </tr>
@@ -328,7 +250,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.SDSUpdateMethod)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.SDSUpdateMethod))
                         </td>
                     </tr>
@@ -389,7 +310,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.InventoryReports)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.InventoryReports))
                         </td>
                     </tr>
@@ -430,7 +350,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.ExpDateRules)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.ExpDateRules))
                         </td>
                     </tr>
@@ -441,7 +360,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.WasteProcedure)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.WasteProcedure))
                         </td>
                     </tr>
@@ -452,7 +370,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.InventoryBusinessRules)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.InventoryBusinessRules))
                         </td>
                     </tr>
@@ -463,7 +380,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.SpecialReqAllowed)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.SpecialReqAllowed))
                         </td>
                     </tr>
@@ -484,7 +400,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.FreezableProcedure)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.FreezableProcedure))
                         </td>
                     </tr>
@@ -505,7 +420,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.CSBusinessRules)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.CSBusinessRules))
                         </td>
                     </tr>
@@ -553,7 +467,6 @@
                         </td>
 
                         <td>
-                            @*@Html.DisplayFor(model => model.ChargesSummary)*@
                             @Html.Raw(HttpUtility.HtmlDecode(@Model.ChargesSummary))
                         </td>
                     </tr>
@@ -587,196 +500,6 @@
                             @Html.DisplayFor(model => model.ActiveDate)
                         </td>
                     </tr>
-
-                    @*<tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchageHazard)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchageHazard)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeFlammable)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeFlammable)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeHeat)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeHeat)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeRefrigerate)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeRefrigerate)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeFreeze)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeFreeze)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeClean)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeClean)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeNalgene)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeNalgene)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeNitrogen)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeNitrogen)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeBiocide)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeBiocide)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeBlend)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeBlend)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.SurchargeKosher)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.SurchargeKosher)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.HazDHServLvl1)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.HazDHServLvl1)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.HazDHServLvl2)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.HazDHServLvl2)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.HazDHServLvl3)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.HazDHServLvl3)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.HazDHServLvl4)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.HazDHServLvl4)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.NonHazDHServLvl1)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.NonHazDHServLvl1)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.NonHazDHServLvl2)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.NonHazDHServLvl2)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.NonHazDHServLvl3)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.NonHazDHServLvl3)
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @Html.LabelFor(model => model.NonHazDHServLvl4)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(model => model.NonHazDHServLvl4)
-                        </td>
-                    </tr>*@
                 </table>
             </div>
         </div>

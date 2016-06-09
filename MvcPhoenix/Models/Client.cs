@@ -53,8 +53,7 @@ namespace MvcPhoenix.Models
                        select t).FirstOrDefault();
             obj.ClientID = qry.ClientID;
             // Cheat this value until SQL changes flush
-            obj.LogoFileName = "http://www.mysamplecenter.com/Logos/" + qry.CustomerReference.Trim() + ".gif";
-            //obj.LogoFileName = "acme80.jpg"; // until all data changes are flushed thru
+            obj.LogoFileName = qry.LogoFileName;
             obj.LegacyID = qry.LegacyID; obj.GlobalClientID = qry.GlobalClientID; obj.ClientCode = qry.ClientCode; obj.ClientName = qry.ClientName;
             obj.CMCLocation = qry.CMCLocation; obj.CustomerReference = qry.CustomerReference; obj.CMCLongCustomer = qry.CMCLongCustomer;
             obj.MSDS = qry.MSDS; obj.TDS = qry.TDS; obj.COA = qry.COA; obj.DocumentDirectory = qry.DocumentDirectory;

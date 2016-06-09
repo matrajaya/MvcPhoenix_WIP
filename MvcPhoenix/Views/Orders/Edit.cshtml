@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <img src="@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+            <img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">@ViewBag.Title <small>@Model.orderid for @Model.clientname</small></h1>
@@ -400,7 +400,14 @@
             <div id="specialinstrpan" class="panel-body collapse in">
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label>Special Instructions</label>
+                        <label>Special Instructions - Internal</label>
+                        @Html.TextAreaFor(m => m.specialinternal, new { @class = "form-control", @rows = 10 })
+                        @Html.ValidationMessageFor(m => m.specialinternal)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Special Instructions - External</label>
                         @Html.TextAreaFor(m => m.special, new { @class = "form-control", @rows = 10 })
                         @Html.ValidationMessageFor(m => m.special)
                     </div>
@@ -410,11 +417,8 @@
         <!--End: Special Instructions Section -->
 
         <div class="form-group row">
-            <div class=" col-md-6">
+            <div class=" col-md-12">
                 <input type="submit" value="Save Order" class="btn btn-success btn-block" />
-            </div>
-            <div class=" col-md-6">
-                @Html.ActionLink("Print Order", "PrintOrder", "Orders", null, new { @class = "btn btn-primary btn-block" })
             </div>
             <div class="clearfix"></div>
             <br />

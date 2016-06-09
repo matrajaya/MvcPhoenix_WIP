@@ -168,7 +168,7 @@ namespace MvcPhoenix.Services
                 obj.bulkid = -1;    // for insert later
                 obj.clientid = dbClient.ClientID;
                 obj.clientname = dbClient.ClientName;
-                obj.logofilename = "http://www.mysamplecenter.com/Logos/" + dbClient.LogoFileName;
+                obj.logofilename = dbClient.LogoFileName;
                 obj.productmasterid = id;
                 obj.receivedate = DateTime.Now;
                 obj.bulkstatus = "RECD";
@@ -263,7 +263,7 @@ namespace MvcPhoenix.Services
                 obj.clientid = qPM.ClientID;
                 obj.clientname = qCL.ClientName;
 
-                obj.logofilename = "http://www.mysamplecenter.com/Logos/" + qCL.LogoFileName;
+                obj.logofilename = qCL.LogoFileName;
                 obj.ListOfWareHouses = fnWarehouseIDs();
                 obj.ListOfProductMasters = fnProductMasterIDs(qPM.ClientID, qPM.ProductMasterID);
                 obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
@@ -293,7 +293,7 @@ namespace MvcPhoenix.Services
                 obj.isknownmaterial = true;
                 obj.clientid = clientid;
                 obj.clientname = dbClient.ClientName;
-                obj.logofilename = "http://www.mysamplecenter.com/Logos/" + dbClient.LogoFileName;
+                obj.logofilename = dbClient.LogoFileName;
                 obj.bulkid = -1;    // for insert later
                 obj.receivedate = DateTime.Now;
                 obj.carrier = null;

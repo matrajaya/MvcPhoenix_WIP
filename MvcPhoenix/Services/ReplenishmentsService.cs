@@ -10,9 +10,6 @@ namespace MvcPhoenix.Services
 {
     public class ReplenishmentsService
     {
-        private static string PathToLogos = "~/Content/images/logos";
-        //private static string PathToLogos = "http://www.mysamplecenter.com/Logos/";
-
         public static List<BulkOrderSearchResults> fnSearchResults(FormCollection fc, string mode)
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
@@ -138,7 +135,7 @@ namespace MvcPhoenix.Services
                            bulkorderid = t.BulkOrderID,
                            clientid = t.ClientID,
                            clientname = c.ClientName,
-                           logofilename = PathToLogos + c.LogoFileName,
+                           logofilename = c.LogoFileName,
                            orderdate = t.OrderDate,
                            ordercomment = t.Comment,
                            supplyid = t.SupplyID,
