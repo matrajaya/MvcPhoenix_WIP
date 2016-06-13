@@ -1183,7 +1183,6 @@
     <Content Include="Views\Products\Create.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\Products\_AddEquivProductModal.cshtml" />
     <Content Include="Views\Products\_Cas.cshtml" />
     <Content Include="Views\Products\_CasModal.cshtml" />
     <Content Include="Views\Products\_LogNotes.cshtml" />

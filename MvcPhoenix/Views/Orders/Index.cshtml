@@ -15,33 +15,32 @@
         </div>
     </div>
     <!-- End: Title Head -->
-
     <!-- Start: Create New Order -->
-    <div class="alert alert-success col-lg-12">
-        @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
-        {
-            <div class="input-group">
-                @Html.DropDownList("NewClientID",(List<SelectListItem>)ViewBag.NewClientID, new { name = "NewClientID", @class = "form-control" })
-                <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create New Order" /></span>
-            </div>
-        }
+    <div class="panel panel-success">
+        <div class="panel-body">
+            @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
+            {
+                <div class="input-group">
+                    @Html.DropDownList("NewClientID", (List<SelectListItem>)ViewBag.NewClientID, new { name = "NewClientID", @class = "form-control" })
+                    <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create New Order" /></span>
+                </div>
+            }
+        </div>
     </div>
     <!-- End: Create New Order -->
-
     <!-- Order Import-->
     @Html.Action("OrderImport")
     <!-- Order Import-->
-
     <!-- Start: Search Order -->
     <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-info">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-search fa-fw"></i>Search</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-8 form-group">
                             @using (Html.BeginForm("LookupOrderID", "Orders", FormMethod.Post))
                             {
                                 <div class="input-group">
@@ -51,62 +50,53 @@
                                 </div>
                             }
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             @Ajax.ActionLink("Advanced Search Options", "AdvancedSearch", "Orders", new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",
                                  InsertionMode = InsertionMode.Replace,
                                  HttpMethod = "GET",
                                  OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                             }, new { @class = "btn btn-xs btn-primary" })
+                             }, new { @class = "btn btn-primary btn-block" })
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-search fa-fw"></i><i class="fa fa-filter fa-fw"></i>Quick Search</h3>
-                </div>
-                <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-2 form-group">
-                            @Ajax.ActionLink("Today", "OrdersToday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show Orders Created Today" })
+                        <div class="col-md-2">
+                            @Ajax.ActionLink("Today", "OrdersToday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show Orders Created Today" })
                         </div>
-                        <div class="col-md-2 form-group">
-                            @Ajax.ActionLink("Yesterday", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show Orders Created Yesterday" })
+                        <div class="col-md-2">
+                            @Ajax.ActionLink("Yesterday", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show Orders Created Yesterday" })
                         </div>
-                        <div class="col-md-2 form-group">
-                            @Ajax.ActionLink("Last 10 Orders", "OrdersLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show ALL Last 10 Orders" })
+                        <div class="col-md-2">
+                            @Ajax.ActionLink("Last 10 Orders", "OrdersLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show ALL Last 10 Orders" })
                         </div>
-                        <div class="col-md-2 form-group">
-                            @Ajax.ActionLink("My Orders (10)", "OrdersMineLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show MY Last 10 Orders" })
+                        <div class="col-md-2">
+                            @Ajax.ActionLink("My Orders (10)", "OrdersMineLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show MY Last 10 Orders" })
                         </div>
-                        <div class="col-md-2 form-group">
-                            @Ajax.ActionLink("Need Allocation", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block form-control", title = "Show MY Last 10 Orders" })
+                        <div class="col-md-2">
+                            @Ajax.ActionLink("Need Allocation", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show MY Last 10 Orders" })
                         </div>
-                        <div class="col-md-2 form-group">
-                            &nbsp;
+                        <div class="col-md-2">
+                            <input class="btn btn-block btn-danger" value="Problem Orders" onclick="alert('No Problem Orders')" />
                         </div>
-                        <label class="invisible">.</label>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- End: Search Order -->
-
     <!--Start: Display Results-->
-    <div class="row">
-        <div id="dvSearchResults" class="table-responsive col-md-12">
-            <!-- First time this view loads, pass the default list vm built into the ActionResult Index() -->
-            @Html.Partial("~/Views/Orders/_IndexPartial.cshtml",Model)
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <div class="row">
+                <div id="dvSearchResults" class="table-responsive col-md-12">
+                    <!-- First time this view loads, pass the default list vm built into the ActionResult Index() -->
+                    @Html.Partial("~/Views/Orders/_IndexPartial.cshtml", Model)
+                </div>
+            </div>
         </div>
     </div>
     <!--End: Display Results-->
-
     <!--Advanced Search Modal-->
-
     <!--./Advanced Search Modal-->
 </div> <!-- container-fluid -->

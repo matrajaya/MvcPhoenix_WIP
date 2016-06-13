@@ -2,7 +2,6 @@
 
 @{
     // Do not include Model.Customer field; thats actually CMCLongCustomer
-
 }
 
 <h4>@TempData["SearchResultsMessage"]</h4>
@@ -28,17 +27,8 @@
         <td>@item.CreateUser</td>
         <td>@item.itemscount</td>
         <td>
-            @*@Html.ActionLink("Edit", "Edit", "Orders", new { id = item.OrderID }, null)*@
             <a class="btn btn-xs btn-primary" title="Edit" href="~/Orders/Edit/@item.orderid"><i class="fa fa-fw fa-pencil"></i></a>
-    </td>
+        </td>
     </tr>
     }
 </table>
-
-@section Scripts {
-    <script>
-        //$(function () {
-        //    $('#advancedsearch').modal('hide'); // close modal after successful data load
-        //});
-    </script>
-}

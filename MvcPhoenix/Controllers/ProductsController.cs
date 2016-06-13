@@ -163,6 +163,14 @@ namespace MvcPhoenix.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult LookupUNRCRA(string id)
+        {
+            UN obj = new UN();
+            obj = ProductsService.fnGetUN(id);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
         #region LogNotes - ProductNotes
 
         public ActionResult LogNotesList(int id)
