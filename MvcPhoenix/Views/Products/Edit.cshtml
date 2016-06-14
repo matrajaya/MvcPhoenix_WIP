@@ -36,12 +36,15 @@
                 <span class="pull-right label label-info">Product ID: @Model.productdetailid</span>
             </div>
             <div class="col-md-12">
+                <div class="pull-left">
+                    <a href="#_" type="button" onclick="$('.panel-body').collapse('show');" value="open all"> Open All</a> |
+                    <a href="#__" type="button" onclick="$('.panel-body').collapse('hide');" value="close all"> Close All</a>
+                </div>
                 <div class="pull-right">
                     <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
                 </div>
             </div>
         </div>
-
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#prodid">
@@ -234,11 +237,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-6">
+                    <div class="col-md-6">
                         <label>Sample Request Alert*</label>
                         <textarea class="form-control" placeholder="need to add to table and model or pull from client mgmt"></textarea>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="col-md-6">
                         <label>Note Upon Receipt Material*</label>
                         <textarea class="form-control" placeholder="need to add to table and model"></textarea>
                     </div>

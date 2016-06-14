@@ -213,6 +213,10 @@ ul.alert-dropdown {
     color: #df8a13;
 }
 
+.panel-title:hover {
+     cursor: pointer;
+}
+
 .table-responsive
 {
     overflow-x: auto;
