@@ -70,21 +70,21 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Equivalents</label><br />
-                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control" })
+                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control", @size = 8 })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cross Reference List</label><br />
-                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control"})
-                    </div>
-                    @*<div class="form-group col-md-3">
-                        <label>Profile Revision Date</label>
-                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
-                        @Html.ValidationMessageFor(m => m.sgrevisiondate)
+                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control", @size = 8 })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>MSDS Revision Date</label>
-                        @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
-                    </div>*@
+                        <label>Active Date*</label>
+                        @Html.TextBoxFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Profile Revision Date</label>
+                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.sgrevisiondate)
+                    </div>
                     <div class="col-md-6">
                         <ul class="list-unstyled list-3-col">
                             <li>
@@ -131,7 +131,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#special"><i class="fa fa-suitcase fa-fw"></i> Special Handling & Storage</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#special"><i class="fa fa-suitcase fa-fw"></i> Handling / Storage / Customs</h3>
             </div>
             <div id="special" class="panel-body collapse">
                 <div class="row">
@@ -144,6 +144,7 @@
                             <li>@Html.CheckBox("specialblend", Model.specialblend != null && (bool)Model.specialblend) Special Blend</li>
                             <li>@Html.CheckBox("freezerstorage", Model.freezerstorage != null && (bool)Model.freezerstorage) Freezer Storage</li>
                             <li>@Html.CheckBox("refrigerate", Model.refrigerate != null && (bool)Model.refrigerate) Refrig Storage</li>
+                            <li>@Html.CheckBox("noreorder", Model.noreorder != null && (bool)Model.noreorder) Do Not Reorder</li>
                         </ul>
                     </div>
 
@@ -190,12 +191,14 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>End Use</label>
-                        @Html.DropDownListFor(m => m.enduse, Model.ListOfEndUsesForCustoms, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.enduse, new { @class = "form-control" })
+                        @*@Html.DropDownListFor(m => m.enduse, Model.ListOfEndUsesForCustoms, new { @class = "form-control" })*@
                         @Html.ValidationMessageFor(m => m.enduse)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Harmonized Code</label>
-                        @Html.DropDownListFor(m => m.harmonizedcode, Model.ListOfHarmonizedCodes, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.harmonizedcode, new { @class = "form-control" })
+                        @*@Html.DropDownListFor(m => m.harmonizedcode, Model.ListOfHarmonizedCodes, new { @class = "form-control" })*@
                         @Html.ValidationMessageFor(m => m.harmonizedcode)
                     </div>
                     <div class="form-group col-md-2">
@@ -204,8 +207,8 @@
                         @Html.ValidationMessageFor(m => m.customsvalue)
                     </div>
                     <div class="form-group col-md-1">
-                        <label class="invisible">.</label>
-                        @Html.TextBoxFor(m => m.customsvalueunit, new { @class = "form-control", @readonly = "readonly" })
+                        <label>Unit</label>
+                        @Html.DropDownListFor(m => m.customsvalueunit, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.ProductProfile.ValueUnit))), new{ @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -220,7 +223,7 @@
                         @Html.ValidationMessageFor(m => m.countryoforigin)
                     </div>
                     <div class="form-group col-md-2">
-                        <label>Cease Ship Diff</label>
+                        <label>Cease Ship Days</label>
                         @Html.TextBoxFor(m => m.ceaseshipdifferential, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
@@ -231,7 +234,7 @@
                         @Html.ValidationMessageFor(m => m.rejectioncriterion)
                     </div>
                     <div class="form-group col-md-2">
-                        <label>Plant Lead Time</label>
+                        <label>Lead Time From Plant</label>
                         @Html.TextBoxFor(m => m.leadtime, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.leadtime)
                     </div>
@@ -251,7 +254,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#msds"><i class="fa fa-suitcase fa-fw"></i> SDS Information</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#msds"><i class="fa fa-suitcase fa-fw"></i> SDS Document Information</h3>
             </div>
             <div id="msds" class="panel-body collapse">
                 <div class="row">
@@ -260,12 +263,12 @@
                         @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.msdsrevisiondate)
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label>SDS Rev Number</label>
                         @Html.TextBoxFor(m => m.msdsrevisionnumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.msdsrevisionnumber)
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label>Other Number</label>
                         @Html.TextBoxFor(m => m.msdsothernumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.msdsothernumber)
@@ -274,11 +277,6 @@
                         <label>Shelf Life</label>
                         @Html.TextBoxFor(m => m.shlflife, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.shlflife)
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label>Hazard Class</label>
-                        @Html.TextBoxFor(m => m.hazardclassground_sg, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.hazardclassground_sg)
                     </div>
                     <div class="form-group col-md-2">
                         <label style="color: white">.</label>
@@ -328,88 +326,88 @@
             <div id="ghs" class="panel-body collapse">
                 <div class="row">
                     <div class="col-md-2">
-                            <label>GHS Signal Word</label>
-                            <select class="form-control">
-                                <option> </option>
-                                <option>Danger</option>
-                                <option>Warning</option>
-                                <option>Caution</option>
-                            </select>
+                        <label>GHS Signal Word</label>
+                        <select class="form-control">
+                            <option> </option>
+                            <option>Danger</option>
+                            <option>Warning</option>
+                            <option>Caution</option>
+                        </select>
                     </div>
                     <div class="col-md-2">
-                            <label>GHS Symbol 1</label>
-                            <select class="form-control">
-                                <option> </option>
-                                <option>Explosive</option>
-                                <option>Flammable</option>
-                                <option>Oxidizing</option>
-                                <option>Compressed Gas</option>
-                                <option>Corrosive</option>
-                                <option>Toxic</option>
-                                <option>Irritant</option>
-                                <option>Health Hazard</option>
-                                <option>Environmental Hazard</option>
-                            </select>
+                        <label>GHS Symbol 1</label>
+                        <select class="form-control">
+                            <option> </option>
+                            <option>Explosive</option>
+                            <option>Flammable</option>
+                            <option>Oxidizing</option>
+                            <option>Compressed Gas</option>
+                            <option>Corrosive</option>
+                            <option>Toxic</option>
+                            <option>Irritant</option>
+                            <option>Health Hazard</option>
+                            <option>Environmental Hazard</option>
+                        </select>
                     </div>
                     <div class="col-md-2">
-                            <label>GHS Symbol 2</label>
-                            <select class="form-control">
-                                <option> </option>
-                                <option>Explosive</option>
-                                <option>Flammable</option>
-                                <option>Oxidizing</option>
-                                <option>Compressed Gas</option>
-                                <option>Corrosive</option>
-                                <option>Toxic</option>
-                                <option>Irritant</option>
-                                <option>Health Hazard</option>
-                                <option>Environmental Hazard</option>
-                            </select>
+                        <label>GHS Symbol 2</label>
+                        <select class="form-control">
+                            <option> </option>
+                            <option>Explosive</option>
+                            <option>Flammable</option>
+                            <option>Oxidizing</option>
+                            <option>Compressed Gas</option>
+                            <option>Corrosive</option>
+                            <option>Toxic</option>
+                            <option>Irritant</option>
+                            <option>Health Hazard</option>
+                            <option>Environmental Hazard</option>
+                        </select>
                     </div>
                     <div class="col-md-2">
-                            <label>GHS Symbol 3</label>
-                            <select class="form-control">
-                                <option> </option>
-                                <option>Explosive</option>
-                                <option>Flammable</option>
-                                <option>Oxidizing</option>
-                                <option>Compressed Gas</option>
-                                <option>Corrosive</option>
-                                <option>Toxic</option>
-                                <option>Irritant</option>
-                                <option>Health Hazard</option>
-                                <option>Environmental Hazard</option>
-                            </select>
+                        <label>GHS Symbol 3</label>
+                        <select class="form-control">
+                            <option> </option>
+                            <option>Explosive</option>
+                            <option>Flammable</option>
+                            <option>Oxidizing</option>
+                            <option>Compressed Gas</option>
+                            <option>Corrosive</option>
+                            <option>Toxic</option>
+                            <option>Irritant</option>
+                            <option>Health Hazard</option>
+                            <option>Environmental Hazard</option>
+                        </select>
                     </div>
                     <div class="col-md-2">
-                            <label>GHS Symbol 4</label>
-                            <select class="form-control">
-                                <option> </option>
-                                <option>Explosive</option>
-                                <option>Flammable</option>
-                                <option>Oxidizing</option>
-                                <option>Compressed Gas</option>
-                                <option>Corrosive</option>
-                                <option>Toxic</option>
-                                <option>Irritant</option>
-                                <option>Health Hazard</option>
-                                <option>Environmental Hazard</option>
-                            </select>
+                        <label>GHS Symbol 4</label>
+                        <select class="form-control">
+                            <option> </option>
+                            <option>Explosive</option>
+                            <option>Flammable</option>
+                            <option>Oxidizing</option>
+                            <option>Compressed Gas</option>
+                            <option>Corrosive</option>
+                            <option>Toxic</option>
+                            <option>Irritant</option>
+                            <option>Health Hazard</option>
+                            <option>Environmental Hazard</option>
+                        </select>
                     </div>
                     <div class="col-md-2">
-                            <label>GHS Symbol 5</label>
-                            <select class="form-control">
-                                <option> </option>
-                                <option>Explosive</option>
-                                <option>Flammable</option>
-                                <option>Oxidizing</option>
-                                <option>Compressed Gas</option>
-                                <option>Corrosive</option>
-                                <option>Toxic</option>
-                                <option>Irritant</option>
-                                <option>Health Hazard</option>
-                                <option>Environmental Hazard</option>
-                            </select>
+                        <label>GHS Symbol 5</label>
+                        <select class="form-control">
+                            <option> </option>
+                            <option>Explosive</option>
+                            <option>Flammable</option>
+                            <option>Oxidizing</option>
+                            <option>Compressed Gas</option>
+                            <option>Corrosive</option>
+                            <option>Toxic</option>
+                            <option>Irritant</option>
+                            <option>Health Hazard</option>
+                            <option>Environmental Hazard</option>
+                        </select>
                     </div>
                 </div>
                 <hr />
@@ -572,7 +570,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#infoingredients"><i class="fa fa-suitcase fa-fw"></i> Ingredients Information (CAS)</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#infoingredients"><i class="fa fa-suitcase fa-fw"></i> Ingredients Information (CAS / EC)</h3>
             </div>
             <div id="infoingredients" class="panel-body collapse">
                 <div class="row">
@@ -631,12 +629,12 @@
                             <li>@Html.CheckBox("halfmaskrespirator", Model.halfmaskrespirator != null && (bool)Model.halfmaskrespirator) Half Mask Resp</li>
                             <li>@Html.CheckBox("fullfacerespirator", Model.fullfacerespirator != null && (bool)Model.fullfacerespirator) Full Face Resp</li>
                             <li>@Html.CheckBox("fullsuit", Model.fullsuit != null && (bool)Model.fullsuit) Full Suit</li>
-                            <li><input type="checkbox" /> Dustfilter*</li>
+                            <li>@Html.CheckBox("dustfilter", Model.dustfilter != null && (bool)Model.dustfilter) Dust Filter</li>
                             <li>@Html.CheckBox("cleanroomequipment", Model.cleanroomequipment != null && (bool)Model.cleanroomequipment) Clean Room Equip</li>
-                            <li>@Html.CheckBox("booties", Model.booties != null && (bool)Model.booties) Booties</li>
                             <li>
                                 Glove Type
                                 @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.glovetype)
                             </li>
                             <li>
                                 Other Equipment

@@ -2,7 +2,7 @@
 
 <div id="dvCasList">
 
-    <label id="noprint">CAS | </label>
+    <label id="noprint">CAS/EC | </label>
     @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = ViewBag.ParentKey }, new AjaxOptions
         {
             InsertionMode = InsertionMode.Replace,
@@ -15,7 +15,7 @@
         <table class="table table-striped">
             <tr>
                 <th id="noprint"></th>
-                <th>CAS Number</th>
+                <th>CAS/EC Number</th>
                 <th>Chemical Name</th>
                 <th>Less Than</th>
                 <th>Percentage</th>

@@ -110,12 +110,29 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfSupplyIDs { get; set; }
         public List<SelectListItem> ListOfGloves { get; set; }
 
+
         public string logofilename { get; set; }
 
         // retire these 2 later
         public DateTime? masterlastupdate { get; set; }
 
         public DateTime? detaillastupdate { get; set; }
+
+        // -------------------------------------------- Iffy added 06/10/2016
+        [Display(Name = "Active Date")]
+        public DateTime? activedate { get; set; }
+
+        public enum ValueUnit
+        {
+            [Display(Name = "Liter")]
+            L,
+            [Display(Name = "Kilogram")]
+            KG,
+            [Display(Name = "Pound")]
+            LB,
+            [Display(Name = "Gallon")]
+            Gal,
+        }
 
         // ------------------------------------------- pc Fields added 03/15/2016
         [Display(Name = "Alert Notes - Shipping")]
@@ -447,6 +464,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Gloves")]
         public bool? gloves { get; set; }
 
+        [Required]
         [Display(Name = "GloveType")]
         public string glovetype { get; set; }
 

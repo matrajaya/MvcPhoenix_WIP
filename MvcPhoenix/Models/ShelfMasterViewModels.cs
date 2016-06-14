@@ -28,6 +28,10 @@ namespace MvcPhoenix.Models
         [Display(Name = "Size")]
         public string size { get; set; }
 
+        //-------------------------------------------------Iffy added 06/10/2016
+        [Display(Name = "Package Material")]
+        public string pkgmaterial { get; set; }
+
         public List<SelectListItem> ListOfTierSizes { get; set; }
 
         [Display(Name = "Unit Weight")]
