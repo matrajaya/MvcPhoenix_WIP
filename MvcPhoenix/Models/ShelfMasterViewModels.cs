@@ -56,7 +56,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Flammable Surcharge")]
         public bool? flammablesurcharge { get; set; }
 
-        [Display(Name = "Heat Surcharge")]
+        [Display(Name = "Oven Surcharge")]
         public bool? heatsurcharge { get; set; }
 
         [Display(Name = "Refrig Surcharge")]

@@ -16,7 +16,7 @@ namespace MvcPhoenix.Services
                               join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
                               join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
                               join cl in db.tblClient on pm.ClientID equals cl.ClientID
-                              where t.ProductDetailID == id
+                              where t.ProductDetailID == id && t.InactiveSize == false
                               let PPN = (from pk in db.tblPackage where pk.PackageID == t.PackageID select pk.PartNumber).FirstOrDefault()
                               select new ShelfMasterViewModel
                               {
@@ -71,7 +71,8 @@ namespace MvcPhoenix.Services
                 // copy a record, return the productdetailid
                 var dbrow = db.tblShelfMaster.Find(id);
                 int pdid = Convert.ToInt32(dbrow.ProductDetailID);
-                string s = "Insert into tblShelfMaster (ProductDetailID,Size,Warehouse,Bin) Select ProductDetailID,null,Warehouse,Bin from tblShelfMaster where shelfid=" + id.ToString();
+                //string s = "Insert into tblShelfMaster (ProductDetailID,Size,Warehouse,Bin,Notes) Select ProductDetailID,null,Warehouse,Bin from tblShelfMaster where shelfid=" + id.ToString();
+                string s = "Insert into tblShelfMaster (ProductDetailID,Warehouse,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge) Select ProductDetailID,Warehouse,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge from tblShelfMaster where shelfid=" + id.ToString();
                 db.Database.ExecuteSqlCommand(s);
                 return pdid;
             }

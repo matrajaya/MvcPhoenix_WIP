@@ -55,7 +55,7 @@
                             <th>Order</th>
                             <th>Haz</th>
                             <th>Flam</th>
-                            <th>Heat</th>
+                            <th>Oven</th>
                             <th>Refr</th>
                             <th>Freez</th>
                             <th>Clean</th>
@@ -92,7 +92,7 @@
                                 <td><input type="checkbox" checked="@item.biocidesurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.labelsurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.othersurcharge" disabled="disabled"></td>
-                                @*<td>@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new {onclick="return confirm('Copy this Size?');" })</td>*@
+                                <td>@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new {onclick="return confirm('Copy this Size?');" })</td>
                                 <td class="text-center">
                                     @Ajax.ActionLink("Edit", "Edit", "ShelfMaster", new { id = @item.shelfid }, new AjaxOptions
                            {

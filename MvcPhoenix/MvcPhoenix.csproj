@@ -1187,8 +1187,6 @@
     <Content Include="Views\Products\_CasModal.cshtml" />
     <Content Include="Views\Products\_LogNotes.cshtml" />
     <Content Include="Views\Products\_LogNotesModal.cshtml" />
-    <Content Include="Views\Products\_ShelfSize.cshtml" />
-    <Content Include="Views\Products\_ShelfSizeModal.cshtml" />
     <Content Include="Views\Receiving\Index.cshtml" />
     <Content Include="Views\Receiving\_OpenOrderItems.cshtml" />
     <Content Include="Views\Receiving\_SearchResults.cshtml" />
