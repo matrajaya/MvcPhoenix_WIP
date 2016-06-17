@@ -1,7 +1,7 @@
-﻿@model List<MvcPhoenix.Models.BulkOrderSearchResults>
+﻿@model List<MvcPhoenix.Models.BulkOrder>
 
 <div class="col-md-12" style="margin-top:-10px;">
-    <label>@Model.Count results </label>
+    <label>@Model.Count results</label>
 </div>
 
 <div class="table-responsive col-md-12">
@@ -27,7 +27,7 @@
                 <td>@String.Format("{0:dd MMM yyyy}", @item.orderdate)</td>
                 <td class="text-center">@item.itemcount</td>
                 <td class="text-center">@item.opencount</td>
-                <td>@item.comment</td>
+                <td>@item.ordercomment</td>
                 <td>@item.emailsent</td>
                 <td>@Html.ActionLink("Edit", "Edit", new { id = @item.bulkorderid })</td>
             </tr>

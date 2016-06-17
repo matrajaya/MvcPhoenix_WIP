@@ -2,7 +2,7 @@
 
 <div id="dvItemsList">
     <label>Items | </label>
-
+        
     @Ajax.ActionLink("+ Add Item", "CreateItem", "Replenishments", new { id = @ViewBag.ParentKey }, new AjaxOptions
     {
         InsertionMode = InsertionMode.Replace,
@@ -53,6 +53,6 @@
 
 <script type="text/javascript">
     function UpdateItemsList() {
-        $("#dvItemsList").load('@Url.Action("ItemsList", "Replenishments", new { id = @ViewBag.ParentKey })');
+        $("#dvItemsList").load('@Url.Action("BulkItemsList", "Replenishments", new { id = @ViewBag.ParentKey })');
     }
 </script>

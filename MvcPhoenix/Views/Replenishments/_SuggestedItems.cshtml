@@ -1,12 +1,12 @@
 ﻿@model List<MvcPhoenix.Models.SuggestedBulkOrderItem>
 @{
-    int ParentID = Convert.ToInt32(Session["SuggestedBulkOrderItemClientID"]);
-
+   // if the list has no members, then there is no clientid ??
+    int ParentID =(int)(Session["SuggestedBulkOrderItemClientID"]);
 }
 <div id="dvItemsList">
     <div class="col-md-12">
         <label>Suggested Items | </label>
-        @Ajax.ActionLink("+ Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
+    @Ajax.ActionLink("+ Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
     {
         InsertionMode = InsertionMode.Replace,
         HttpMethod = "GET",

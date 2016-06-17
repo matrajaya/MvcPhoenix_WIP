@@ -16,51 +16,51 @@ namespace MvcPhoenix.Controllers
             return View();
         }
 
-        public ActionResult ItemsList(int id)
+        public ActionResult BulkItemsList(int id)
         {
             // Build list of BulkOrderItems for use in partial
             List<BulkOrderItem> mylist = ReplenishmentsService.fnItemsList(id);
             ViewBag.ParentKey = id;
             return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", mylist);
         }
-
+        
         #region SearchActions ------------------------------------------------------
 
         [HttpPost]
         public ActionResult SearchResultsUserCriteria(FormCollection fc, string mode)
         {
-            List<BulkOrderSearchResults> mylist = ReplenishmentsService.fnSearchResults(fc, "User");
+            var mylist = ReplenishmentsService.fnSearchResults(fc, "User");
             return PartialView("~/Views/Replenishments/_SearchResults.cshtml", mylist);
         }
 
         [HttpGet]
         public ActionResult SearchResults(FormCollection fc, string mode)
         {
-            List<BulkOrderSearchResults> mylist = ReplenishmentsService.fnSearchResults(fc, mode);
+            var mylist = ReplenishmentsService.fnSearchResults(fc, mode);
             return PartialView("~/Views/Replenishments/_SearchResults.cshtml", mylist);
         }
-
+        
         #endregion SearchActions ------------------------------------------------------
-
+            
         #region OrderEdit ---------------------------------------------------------
-
+        
         public ActionResult Edit(int id)
         {
-            BulkOrder obj = new BulkOrder();
-            obj = ReplenishmentsService.fnFillBulkOrderFromDB(id);
-            return View("~/Views/Replenishments/Edit.cshtml", obj);
+            BulkOrder vm = new BulkOrder();
+            vm = ReplenishmentsService.fnFillBulkOrderFromDB(id);
+            return View("~/Views/Replenishments/Edit.cshtml", vm);
         }
-
+        
         [HttpPost]
         public ActionResult Save(BulkOrder obj)
         {
+            // Always save the Bulk Order then maybe re-direct to SendEmail
             string btn = Request.Form["btnSave"];
             int pk = ReplenishmentsService.fnSaveBulkOrder(obj);
-            // Trap the Send Email action
             if (btn == "Send Email")
             {
-                var message = ReplenishmentsService.fnCreateEmail(obj);
-                return View("~/Views/Replenishments/Email.cshtml", message);
+                var EmailModel = ReplenishmentsService.fnCreateEmail(obj);
+                return View("~/Views/Replenishments/Email.cshtml", EmailModel);
             }
             TempData["SaveResult"] = "Order Saved at " + DateTime.Now.ToString();
             return RedirectToAction("Edit", new { id = pk });
@@ -68,11 +68,12 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult GetSupplyIDEmail(int clientid, string supplyid)
         {
+            // called from view to insert value into view
             return Content(ReplenishmentsService.fnGetSupplyIDEmail(clientid, supplyid));
         }
 
         #endregion OrderEdit ---------------------------------------------------------
-
+        
         #region Email -----------------------------------------------------------
 
         [HttpPost]
@@ -81,7 +82,7 @@ namespace MvcPhoenix.Controllers
             ReplenishmentsService.fnSendEmail(obj);
             return RedirectToAction("Edit", new { id = obj.bulkorderid });
         }
-
+        
         #endregion Email -----------------------------------------------------------
 
         #region Items --------------------------------------------------------------------
@@ -117,7 +118,7 @@ namespace MvcPhoenix.Controllers
             //return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", obj);
             return Content("Deleted");
         }
-
+        
         #endregion Items --------------------------------------------------------------------
 
         #region SuggestedBulkOrder ------------------------------------------------
@@ -136,13 +137,14 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateSuggestedOrder(SuggestedBulkOrder obj)
+        public ActionResult CreateSuggestedOrder(FormCollection fc)
         {
-            // Generate the suggested items and return partial
-            int ItemsCreated = ReplenishmentsService.fnGenerateSuggestedOrder(obj);
-            List<SuggestedBulkOrderItem> mylist = ReplenishmentsService.fnSuggestedItemsList();
-            Session["SuggestedBulkOrderItemClientID"] = obj.clientid;
-            return PartialView("~/Views/Replenishments/_SuggestedItems.cshtml", mylist);
+            // Generate the suggested items, let the view refresh the partial after the ajax POST
+            int myclientid = Convert.ToInt32(fc["clientid"]);
+            int mydivisionid = Convert.ToInt32(fc["divisionid"]);
+            int ItemsCreated = ReplenishmentsService.fnGenerateSuggestedOrder(myclientid, mydivisionid);
+            Session["SuggestedBulkOrderItemClientID"] = myclientid;
+            return null;
         }
 
         public ActionResult SuggestedItemsList()
@@ -162,17 +164,17 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult EditSuggestedItem(int id)
         {
-            SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
-            obj = ReplenishmentsService.fnFillSuggestedItemfromDB(id);
-            return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", obj);
+            SuggestedBulkOrderItem vm = new SuggestedBulkOrderItem();
+            vm = ReplenishmentsService.fnFillSuggestedItemfromDB(id);
+            return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", vm);
         }
-
+        
         [HttpGet]
         public ActionResult CreateSuggestedItem(int ClientID)
         {
-            SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
-            obj = ReplenishmentsService.fnCreateSuggestedBulkOrderItem(ClientID);
-            return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", obj);
+            SuggestedBulkOrderItem vm = new SuggestedBulkOrderItem();
+            vm = ReplenishmentsService.fnCreateSuggestedBulkOrderItem(ClientID);
+            return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", vm);
         }
 
         public ActionResult SaveSuggestedItem(SuggestedBulkOrderItem obj)

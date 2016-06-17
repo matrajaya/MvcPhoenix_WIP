@@ -14,24 +14,22 @@ namespace MvcPhoenix.EF
     
     public partial class tblPreferredCarrierList
     {
-        public int PreferredCarrierListID { get; set; }
+        public int ID { get; set; }
         public string CountryCode { get; set; }
         public string Country { get; set; }
-        public Nullable<bool> CommercialInvoice { get; set; }
+        public Nullable<bool> CommInvoiceReq { get; set; }
         public string NonHaz_Sm { get; set; }
         public string NonHaz_Lg { get; set; }
-        public string NonHazIncoTerms { get; set; }
+        public string NonHaz_IncoTerms { get; set; }
         public string HazIATA_Sm { get; set; }
         public string HazIATA_Lg { get; set; }
-        public string HazCarrierADR_LQ { get; set; }
-        public string HazCarrierADR { get; set; }
-        public string HazIncoTerms { get; set; }
-        public string IncoTermsDSM { get; set; }
-        public string NotesAlgemeen { get; set; }
-        public string NotesIATA_ADR { get; set; }
-        public string NonHazIncoTermsAshLand_Importer { get; set; }
-        public string HazIncoTermsAshLand_Importer { get; set; }
-        public string xxNonHazCarrier2ndChoice { get; set; }
-        public Nullable<int> LegacyID { get; set; }
+        public string HazGround_LQ { get; set; }
+        public string HazGround { get; set; }
+        public string Haz_Incoterms { get; set; }
+        public string Incoterms_Alt { get; set; }
+        public string Notes_General { get; set; }
+        public string Notes_IATA_ADR { get; set; }
+        public string NonHazIncoterms_Alt { get; set; }
+        public string HazIncoterms_Alt { get; set; }
     }
 }

@@ -11,39 +11,43 @@
         </div>
     </div>
 
-        @using(Html.BeginForm("SendEmail","Replenishments"))
-        {
+    @using (Html.BeginForm("SendEmail", "Replenishments"))
+    {
 
-         @Html.HiddenFor(m=>m.bulkorderid)
+        @Html.HiddenFor(m => m.bulkorderid)
 
         <div class="row">
             <div class="col-md-12 form-group">
-                @Html.LabelFor(m=>m.FromAddress)
-                @Html.TextBoxFor(m=>m.FromAddress, new { @class = "form-control", @style = "width:50%;" })
+                @Html.LabelFor(m => m.FromAddress)
+                @Html.TextBoxFor(m => m.FromAddress, new { @class = "form-control", @style = "width:50%;" })
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12 form-group">
                 @Html.LabelFor(m => m.ToAddress)
-                @Html.TextBoxFor(m=>m.ToAddress, new { @class = "form-control", @style = "width:50%;" })
+                @Html.TextBoxFor(m => m.ToAddress, new { @class = "form-control", @style = "width:50%;" })
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-12 form-group">
                 @Html.LabelFor(m => m.Subject)
-                @Html.TextBoxFor(m=>m.Subject, new { @class = "form-control", @style = "width:50%;" })
+                @Html.TextBoxFor(m => m.Subject, new { @class = "form-control", @style = "width:50%;" })
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12 form-group">
-                @Html.LabelFor(m => m.MessageBody)
-                <textarea id="MessageBody" name="MessageBody" rows="10" cols="80">
-                    @Html.Raw(@Model.MessageBody)
-                </textarea>
-            </div>
+        @*<div class="row">
+                <div class="col-md-12 form-group">
+                    @Html.LabelFor(m => m.MessageBody)
+                    <textarea id="MessageBody" name="MessageBody" rows="10" cols="80">
+                        @Html.Raw(@Model.MessageBody)
+                    </textarea>
+                </div>
+            </div>*@
+
+        <div class="row well well-sm">
+            @Html.Raw(@Model.MessageBody)
         </div>
 
         <div class="form-group row" style="width:60%;margin:auto;">
@@ -51,14 +55,10 @@
                 <input id="btnSend" name="btnSend" type="submit" value="Send Email" class="btn btn-success btn-block" />
             </div>
             <div class="col-md-6">
-                @Html.ActionLink("Cancel", "Edit", "Replenishments", new{id=Model.bulkorderid}, new {@class = "btn btn-danger btn-block", onclick = "return confirm('Cancel?')" })
+                @Html.ActionLink("Cancel", "Edit", "Replenishments", new { id = Model.bulkorderid }, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel?')" })
             </div>
             <div class="clearfix"></div>
         </div>
 
-            @*@HttpUtility.HtmlDecode(@Model.MessageBody)*@
-
-            @*@Html.Raw(@Model.MessageBody)*@
-
-        }
+    }
 </div>

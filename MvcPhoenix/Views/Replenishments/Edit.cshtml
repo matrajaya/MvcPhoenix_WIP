@@ -28,7 +28,7 @@
                     <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Order Header</h3>
                 </div>
                 <div class="panel-body">
-                    @using(Html.BeginForm("Save","Replenishments"))
+                    @using (Html.BeginForm("Save", "Replenishments"))
                     {
                         <!-- DO NOT REMOVE -->
                         <input type="hidden" id="clientid" name="clientid" value="@Model.clientid" />
@@ -75,9 +75,11 @@
                             <i class="fa fa-circle-o-notch fa-1x fa-spin"></i> Saving...
                         </div>
                         <div class="col-md-12 text-center">
-                            <strong><span id="dvOrderSaveResult">
-                                        @TempData["SaveResult"]
-                                </span></strong>
+                            <strong>
+                                <span id="dvOrderSaveResult">
+                                    @TempData["SaveResult"]
+                                </span>
+                            </strong>
                         </div>
                     }
                 </div>
@@ -88,7 +90,7 @@
     <div class="row">
         <div class="form-group col-md-12">
             <div class="clearfix"></div>
-            @{Html.RenderAction("ItemsList","Replenishments", new { id = @Model.bulkorderid});}
+            @{Html.RenderAction("BulkItemsList", "Replenishments", new { id = @Model.bulkorderid });}
             <div class="clearfix"></div>
         </div>
     </div>

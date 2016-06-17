@@ -79,7 +79,7 @@
 
 <script type="text/javascript">
     function RefreshItemsGrid() {
-        url = '@Url.Action("ItemsList/" + @Model.bulkorderid, "Replenishments")';
+        url = '@Url.Action("BulkItemsList/" + @Model.bulkorderid, "Replenishments")';
         $("#dvItemsList").load(url);
         $("#savebutton").prop('disabled', true);
     }

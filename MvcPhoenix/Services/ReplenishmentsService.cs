@@ -10,7 +10,7 @@ namespace MvcPhoenix.Services
 {
     public class ReplenishmentsService
     {
-        public static List<BulkOrderSearchResults> fnSearchResults(FormCollection fc, string mode)
+        public static List<BulkOrder> fnSearchResults(FormCollection fc, string mode)
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
@@ -19,17 +19,16 @@ namespace MvcPhoenix.Services
                               let itemscount = (from items in db.tblBulkOrderItem where items.BulkOrderID == t.BulkOrderID select items).Count()
                               let opencount = (from items in db.tblBulkOrderItem where (items.BulkOrderID == t.BulkOrderID) && (items.Status == "OP") select items).Count()
                               orderby t.BulkOrderID descending
-                              select new MvcPhoenix.Models.BulkOrderSearchResults
-                              {
+                              select new MvcPhoenix.Models.BulkOrder
+                              {   
                                   bulkorderid = t.BulkOrderID,
                                   clientid = t.ClientID,
                                   supplyid = t.SupplyID,
                                   orderdate = t.OrderDate,
-                                  comment = t.Comment,
+                                  ordercomment = t.Comment,
                                   emailsent = t.EmailSent,
                                   clientname = t2.ClientName,
                                   itemcount = itemscount,
-                                  ResultsMessage = "Results"
                               }).ToList();
 
                 if (mode == "User")
@@ -37,14 +36,14 @@ namespace MvcPhoenix.Services
                     int myordercount = Convert.ToInt32(fc["ordercount"]);
                     int myclientid = Convert.ToInt32(fc["clientid"]);
                     if (!String.IsNullOrEmpty(fc["ordercount"]))
-                    {
+                    { 
                         mylist = (from t in mylist where t.clientid == myclientid select t).ToList();
                     }
                     if (!String.IsNullOrEmpty(fc["clientid"]))
-                    {
-                        mylist = (from t in mylist select t).Take(myordercount).ToList();
+                    { 
+                        mylist = (from t in mylist select t).Take(myordercount).ToList();  
                     }
-                    return mylist;
+                    //return mylist;
                 }
 
                 // preset request
@@ -89,10 +88,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 string retval = "no email on file";
-                var dbrow = (from t in db.tblBulkSupplier where t.ClientID == clientid && t.SupplyID == supplyid select new { t.Email }).FirstOrDefault();
-                if (!string.IsNullOrEmpty(dbrow.Email))
+                //var q = (from t in db.tblBulkSupplier where t.ClientID == clientid && t.SupplyID == supplyid select new { t.Email }).FirstOrDefault();
+                var q = (from t in db.tblBulkSupplier where t.ClientID == clientid && t.SupplyID == supplyid select t).FirstOrDefault();
+                if(q != null)
                 {
-                    retval = dbrow.Email;
+                   retval = q.Email;
                 }
                 return retval;
             }
@@ -128,31 +128,34 @@ namespace MvcPhoenix.Services
             {
                 BulkOrder obj = new BulkOrder();
                 obj = (from t in db.tblBulkOrder
-                       join c in db.tblClient on t.ClientID equals c.ClientID
-                       where t.BulkOrderID == id
-                       select new BulkOrder
-                       {
-                           bulkorderid = t.BulkOrderID,
-                           clientid = t.ClientID,
-                           clientname = c.ClientName,
-                           logofilename = c.LogoFileName,
-                           orderdate = t.OrderDate,
-                           ordercomment = t.Comment,
-                           supplyid = t.SupplyID,
-
-                           bulksupplieremail = t.BulkSupplierEmail,
-                           emailsent = t.EmailSent,
-                       }).FirstOrDefault();
+                           join c in db.tblClient on t.ClientID equals c.ClientID
+                           where t.BulkOrderID == id
+                           select new BulkOrder
+                           {
+                               bulkorderid = t.BulkOrderID,
+                               clientid = t.ClientID,
+                               clientname = c.ClientName,
+                               logofilename = c.LogoFileName,
+                               orderdate = t.OrderDate,
+                               ordercomment = t.Comment,
+                               supplyid = t.SupplyID,
+                
+                               bulksupplieremail = t.BulkSupplierEmail,
+                               emailsent = t.EmailSent,
+                           }).FirstOrDefault();
 
                 obj.ListOfSupplyIDs = fnListOfSupplyIDs(obj.clientid);
-
+                
                 obj.ListOfBulkOrderItem = (from oi in db.tblBulkOrderItem
+                                           join pm in db.tblProductMaster on oi.ProductMasterID equals pm.ProductMasterID
                                            where oi.BulkOrderID == id
                                            select new BulkOrderItem
                                            {
                                                bulkorderitemid = oi.BulkOrderItemID,
                                                bulkorderid = oi.BulkOrderID,
                                                productmasterid = oi.ProductMasterID,
+                                               mastercode = pm.MasterCode,
+                                               mastername = pm.MasterName,
                                                weight = oi.Weight,
                                                itemstatus = oi.Status,
                                                eta = oi.ETA,
@@ -185,28 +188,36 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static BulkOrderEmailViewModel fnCreateEmail(BulkOrder obj)
+        public static BulkOrderEmailViewModel fnCreateEmail(BulkOrder vm)
         {
             // build obj and return it
             BulkOrderEmailViewModel message = new BulkOrderEmailViewModel();
 
-            message.bulkorderid = obj.bulkorderid;
-            message.clientname = obj.clientname;
-            message.logofilename = obj.logofilename;
+            message.bulkorderid = vm.bulkorderid;
+            message.clientname = vm.clientname;
+            message.logofilename = vm.logofilename;
             message.FromAddress = "philc@usdevelopers.com";
-            message.ToAddress = obj.bulksupplieremail;
-            message.Subject = "Replenishment Order";
-            //message.MessageBody = EmailBody(obj.bulkorderid).ToHtmlString();
-            //message.MessageBody = "<table><tr><td>Mastercode</td><td>Master Name</td><td>Weight</td></tr>";
-            message.MessageBody = "When completed this will contain a greeting and list of order items";
+            //message.ToAddress = vm.bulksupplieremail;
+            message.ToAddress = "philc@usdevelopers.com";
+            message.Subject = "CMC Replenishment Order";
+            var q = fnFillBulkOrderFromDB(vm.bulkorderid);
+            System.Text.StringBuilder s = new System.Text.StringBuilder();
+            s.Append("<table><tr><td>Mastercode</td><td>Master Name</td><td>Weight</td></tr>");
+            foreach(var item in q.ListOfBulkOrderItem)
+            {
+                s.Append(String.Format("<tr><td>{0}</td><td>{1}</td><td align=right>{2}</td></tr>", item.mastercode, item.mastername, item.weight));
+            }
+            s.Append("</table>");
+            message.MessageBody = s.ToString();
+            //message.MessageBody = MvcHtmlString.Create(s.ToString());
             return message;
         }
 
         public static void fnSendEmail(BulkOrderEmailViewModel obj)
         {
-            // update and SMTP
+             // update and SMTP
             using (var db = new EF.CMCSQL03Entities())
-            {
+            { 
                 var dbBulkOrder = db.tblBulkOrder.Find(obj.bulkorderid);
                 dbBulkOrder.EmailSent = String.Format("{0:dd MMM yyyy HH:mm:ss}", DateTime.Now.ToString());
                 db.SaveChanges();
@@ -214,28 +225,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        private static MvcHtmlString EmailBody(int id)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                //var dbBulkOrder = db.tblBulkOrder.Find(id);
-                List<BulkOrderItem> mylist = ReplenishmentsService.fnItemsList(id);
-                //var myitems=(from t in db.tblBulkOrderItem where t.BulkOrderID==obj.bulkorderid select t).ToList();
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                sb.Append("<table><tr><td>Mastercode</td><td>Master Name</td><td>Weight</td></tr>");
-                //string sb = "";
-                //sb = sb + string.Format("{0} {1} {2}", "MasterCode", "Name", "Weight") + "<br>";
-                foreach (var item in mylist)
-                {
-                    sb.Append("<tr><td>" + item.mastername + "</td><td>" + item.mastername + "</td><td>" + item.weight.ToString() + "</td></tr>");
-                    //    sb = sb + string.Format("{0} {1} {2}", item.mastercode, item.mastername, item.weight) + "<br>";
-                }
-                sb.Append("</table>");
-                var str = MvcHtmlString.Create(sb.ToString());
-                //return str.ToHtmlString();
-                return str;
-            }
-        }
 
         private static int fnNewBulkOrderID()
         {
@@ -275,18 +264,18 @@ namespace MvcPhoenix.Services
             {
                 BulkOrderItem obj = new BulkOrderItem();
                 obj = (from t in db.tblBulkOrderItem
-                       where t.BulkOrderItemID == id
-                       select new BulkOrderItem
-                       {
-                           bulkorderitemid = t.BulkOrderItemID,
-                           bulkorderid = t.BulkOrderID,
-                           productmasterid = t.ProductMasterID,
-                           weight = t.Weight,
-                           itemstatus = t.Status,
-                           eta = t.ETA,
-                           datereceived = t.DateReceived,
-                           itemnotes = t.ItemNotes,
-                       }).FirstOrDefault();
+                           where t.BulkOrderItemID == id
+                           select new BulkOrderItem
+                           {
+                               bulkorderitemid = t.BulkOrderItemID,
+                               bulkorderid = t.BulkOrderID,
+                               productmasterid = t.ProductMasterID,
+                               weight = t.Weight,
+                               itemstatus = t.Status,
+                               eta = t.ETA,
+                               datereceived = t.DateReceived,
+                               itemnotes = t.ItemNotes,
+                           }).FirstOrDefault();
                 var dbBulkOrder = db.tblBulkOrder.Find(obj.bulkorderid);
                 obj.ListOfProductMasters = fnProductMasterIDs(Convert.ToInt32(dbBulkOrder.ClientID));
                 obj.ListOfItemStatusIDs = fnOrderItemStatusIDs();
@@ -348,9 +337,8 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var qry = (from t in db.tblDivision where t.ClientID == id orderby t.Division, t.BusinessUnit select t);
-                //var qry = (from t in db.tblDivision where t.ClientID == id orderby t.Division, t.BillingGroup select t);
-                string s = "<option value='0' selected=true>Select Division</option>";
-                s = s + "<option value='0'>All Divisions</option>";
+                //string s = "<option value='0' selected=true>Select Division</option>";
+                string s = "<option value='0'>All Divisions</option>";
                 if (qry.Count() > 0)
                 {
                     foreach (var item in qry)
@@ -367,220 +355,237 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static int fnGenerateSuggestedOrder(SuggestedBulkOrder obj)
+
+        //public static int fnGenerateSuggestedOrder(SuggestedBulkOrder obj)
+        public static int fnGenerateSuggestedOrder(int clientid,int divisionid)
         {
             // return the number of items created
             //System.Diagnostics.Debug.WriteLine(s);
-            //MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
             int itemscount = 0;
 
-            // change this later to user the identity prop
-            //string username = "philc";
             string username = HttpContext.Current.User.Identity.Name;
 
             using (var db = new CMCSQL03Entities())
             {
                 string s;
                 string fnTempTable = "tblSuggestedBulk";
-                //string sSessionID = HttpContext.Current.Session["MySessionID"].ToString();
-                //string sSessionID = HttpContext.Current.Session.SessionID.ToString();
-                //string sSessionID = "hello";
 
-                //s = "Delete from " + fnTempTable;
+                // Clear the work table of my records
                 s = "Delete from " + fnTempTable + " where UserName='" + username + "'";
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Insert into " + fnTempTable + "(ClientID, ProductMasterID,SUPPLYID, ShelfLife, CreateDate,MasterDivisionID)";
-                s = s + " SELECT ClientID, ProductMasterID,SUPPLYID,ShlfLife,CreateDate,MasterDivisionID from tblProductMaster";
-                s = s + " Where ClientID=" + obj.clientid;
+                //s = "Insert into " + fnTempTable + "(ClientID, ProductMasterID,SUPPLYID, ShelfLife, CreateDate,DivisionID,UserName)";
+                //s = s + " SELECT ClientID, ProductMasterID,SUPPLYID,ShlfLife,CreateDate,DivisionID,'" + username + "' from tblProductMaster";
+                //s = s + " Where ClientID=" + obj.clientid;
 
-                if (obj.divisionid > 0)
-                { s = s + " and MasterDivisionID='" + obj.divisionid + "'"; }
+                // Build a list of ProductMasters to analyze
+                var q1 = (from pd in db.tblProductDetail
+                          join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                          where pm.ClientID == clientid
+                          select new
+                          {
+                              pm.ClientID,
+                              pm.ProductMasterID,
+                              pm.SUPPLYID,
+                              pm.ShlfLife,
+                              pm.CreateDate,
+                              pd.DivisionID,
+                          }).ToList();
+
+                // Restrict list to a PD.DivisionID if user requested
+                if (divisionid > 0)
+                {  q1 = (from t in q1 where t.DivisionID == divisionid select t).ToList(); }
+
+                // Insert new records into the work table
+                foreach (var row in q1)
+                {
+                    var newrec = new EF.tblSuggestedBulk();
+                    newrec.ClientID = row.ClientID;
+                    newrec.UserName = username;
+                    newrec.ProductMasterID = row.ProductMasterID;
+                    newrec.SupplyID = row.SUPPLYID;
+                    newrec.ShelfLife = row.ShlfLife;
+                    newrec.CreateDate = row.CreateDate;
+                    newrec.DivisionID = row.DivisionID;
+                    
+                    db.tblSuggestedBulk.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                s = String.Format("Update {0} Set BulkOnOrder=0 where Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s);
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set UserName='" + username + "'";
+                s = string.Format("Update {0} Set ProductMasterAge=DateDiff(day,createdate,getdate()) where Username='{1}'", fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s);
                 db.Database.ExecuteSqlCommand(s);
 
-                //s = "Update " + fnTempTable + " Set SessionID='" + sSessionID + "'";
-                //db.Database.ExecuteSqlCommand(s);
-
-                s = "Update " + fnTempTable + " Set BulkOnOrder=0";
+                s = String.Format("Update {0} Set BulkCurrentavailable=(Select isnull(Sum( isnull(qty,1) * CurrentWeight),0) from tblBulk where ProductMasterID={0}.ProductMasterID and Username='{1}' and BulkStatus not in('QC','TEST','WASTE'))", fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s);
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ProductMasterAge=DateDiff(day,createdate,getdate())";
+                //vwShelfWeightForReplenishment
+                s = String.Format("Update {0} Set ShelfCurrentAvailable=(Select isnull(Sum(QtyOnHand*UnitWeight),0) from vwShelfStockForReplenishment where ProductMasterID={0}.ProductMasterID) where Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkCurrentavailable=(Select isnull(Sum(  isnull(qty,1) *CurrentWeight),0) from tblBulk where ProductMasterID=" + fnTempTable + ".ProductMasterID and BulkStatus not in('QC','TEST','WASTE'))";
+                s = String.Format("Update {0} Set CurrentAvailable=IsNull(BulkCurrentAvailable,0)+IsNull(ShelfCurrentAvailable,0) Where Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ShelfCurrentAvailable=(Select isnull(Sum(TotalShelfWeight),0) from vwStockWeightsForReOrder where ProductMasterID=" + fnTempTable + ".ProductMasterID and ShelfStatus not in('QC','TEST','WASTE'))";
+                s = String.Format("Update {0} Set BulkShippedPastYear=(Select sum(TransQty*TransAmount) from vwBulkTransForReplenishment where transdate>DateAdd(day,-365,getdate()) and ProductMasterID={0}.ProductMasterID) where Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set CurrentAvailable=IsNull(BulkCurrentAvailable,0)+IsNull(ShelfCurrentAvailable,0)";
+                s = String.Format("Update {0} Set BulkShippedPastYear=0 where BulkShippedPastYear is Null and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkShippedPastYear=(Select sum(TransQty*TransAmount) from vwInvTransBulk";
-                s = s + " Where TransType='B02' and Status not in('QC','TEST','WASTE') and transdate>DateAdd(day,-365,getdate())";
-                s = s + " And ProductMasterID=" + fnTempTable + ".ProductMasterID)";
+                s = String.Format("Update {0} Set BulkShippedPerDay=bulkShippedPastYear/365 where BulkShippedPastYear>0 and ProductMasterAge>365 and Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkShippedPastYear=0 where BulkShippedPastYear is Null";
+                s = String.Format("Update {0} Set BulkShippedPerDay=bulkShippedPastYear/ProductMasterAge where BulkShippedpastYear>0 and ProductMasterAge<=365 and Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkShippedPerDay=bulkShippedPastYear/365 where BulkShippedPastYear>0 and ProductMasterAge>365";
+                s = String.Format("Update {0} Set BulkShippedPerDay=0 Where BulkShippedPerDay is null And Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkShippedPerDay=bulkShippedPastYear/ProductMasterAge where BulkShippedpastYear>0 and ProductMasterAge<=365";
+                s = String.Format("Update {0} Set ShelfShippedPastYear=(Select isnull(Sum(TransQty*TransAmount),0) from vwShelfTransForReplenishment Where transdate>DateAdd(day,-365,getdate()) And ProductMasterID={0}.ProductMasterID) where UserName='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkShippedPerDay=0 Where BulkShippedPerDay is null";
+                s = String.Format("Update {0} Set ShelfShippedPastYear=0 where ShelfShippedPastYear is null and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ShelfShippedPastYear=(Select isnull(Sum(TransQty*TransAmount),0) from vwInvTransShelf";
-                s = s + " Where Status not in('QC','TEST','WASTE') and TransType IN('S04') and transdate>DateAdd(day,-365,getdate()) And ProductMasterID=" + fnTempTable + ".ProductMasterID)";
+                s = String.Format("Update {0} Set ShelfShippedPerDay=ShelfShippedPastYear/365 Where ShelfShippedPastYear>0 and ProductMasterAge>365 And Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ShelfShippedPastYear=0 where ShelfShippedPastYear is null";
+                s = String.Format("Update {0} Set ShelfShippedPerDay=ShelfShippedPastYear/ProductMasterAge Where ShelfShippedPastYear>0 and ProductMasterAge<=365 And Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ShelfShippedPerDay=ShelfShippedPastYear/365 Where ShelfShippedPastYear>0 and ProductMasterAge>365";
+                s = String.Format("Update {0} Set ShelfShippedPerDay=0 Where ShelfShippedPerDay Is Null and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ShelfShippedPerDay=ShelfShippedPastYear/ProductMasterAge Where ShelfShippedPastYear>0 and ProductMasterAge<=365";
+                s = String.Format("Update {0} Set BulkLatestExpirationDate=(Select top 1 ExpirationDate from tblBulk where ProductMasterID={0}.ProductMasterID order by ExpirationDate Desc) Where Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ShelfShippedPerDay=0 Where ShelfShippedPerDay Is Null";
+                s = String.Format("Update {0} Set BulkDaysTilExpiration=DateDiff(day, Getdate(), BulkLatestExpirationDate) where Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkLatestExpirationDate=(Select top 1 ExpirationDate from tblBulk where ProductMasterID=" + fnTempTable + ".ProductMasterID order by ExpirationDate Desc)";
+                s = String.Format("Update {0} Set ShelfLatestExpirationDate=(Select top 1 ExpirationDate from tblBulk where ProductMasterID={0}.ProductMasterID order by ExpirationDate Desc) Where Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkDaysTilExpiration=DateDiff(day, Getdate(), BulkLatestExpirationDate)";
+                s = String.Format("Update {0} Set ShelfDaysTilExpiration=DateDiff(day, Getdate(), ShelfLatestExpirationDate) Where Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ShelfLatestExpirationDate=(Select Max(expirationdate) from vwExpirationForReorder where ProductMasterid=" + fnTempTable + ".ProductMasterID)";
+                s = String.Format("Update {0} Set UseThisExpirationDate=IIF(BulkLatestExpirationDate>ShelfLatestExpirationDate,BulkLatestExpirationDate,ShelfLatestExpirationDate) Where Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ShelfDaysTilExpiration=DateDiff(day, Getdate(), ShelfLatestExpirationDate)";
+                s = String.Format("Update {0} Set UseThisExpirationDate=BulkLatestExpirationDate where UseThisExpirationDate is null and ShelfLatestExpirationDate is null And Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set UseThisExpirationDate=IIF(BulkLatestExpirationDate>ShelfLatestExpirationDate,BulkLatestExpirationDate,ShelfLatestExpirationDate)";
+                s = String.Format("Update {0} Set UseThisExpirationDate=ShelfLatestExpirationDate where UseThisExpirationDate is null and BulkLatestExpirationDate is null And Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set UseThisExpirationDate=BulkLatestExpirationDate where UseThisExpirationDate is null and ShelfLatestExpirationDate is null";
+                s = String.Format("Update {0} Set UseThisExpirationDate='2099-01-01' where UseThisExpirationDate is null and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set UseThisExpirationDate=ShelfLatestExpirationDate where UseThisExpirationDate is null and BulkLatestExpirationDate is null";
+                s = String.Format("Update {0} Set UseThisDaysTilExpiration=datediff(day,getdate(),UseThisExpirationDate) where Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set UseThisExpirationDate='2099-01-01' where UseThisExpirationDate is null";
+                s = String.Format("Update {0} Set UseThisDaysTilExpiration=999 where UseThisDaysTilExpiration>998 and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set UseThisDaysTilExpiration=datediff(day,getdate(),UseThisExpirationDate)";
+                s = String.Format("Update {0} Set DaysSupplyLeft= CurrentAvailable / (ShelfShippedPerDay+BulkShippedPerDay) Where (ShelfShippedPerDay+BulkShippedPerDay>0) And Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set UseThisDaysTilExpiration=999 where UseThisDaysTilExpiration>998";
+                s = String.Format("Update {0} Set DaysSupplyLeft=0 Where DaysSupplyLeft Is Null and Username='{1}'", fnTempTable, username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set DaysSupplyLeft= CurrentAvailable / (ShelfShippedPerDay+BulkShippedPerDay) Where (ShelfShippedPerDay+BulkShippedPerDay>0)";
+                s = String.Format("Update {0} Set AverageLeadTime=0 where Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set DaysSupplyLeft=0 Where DaysSupplyLeft Is Null";
+                s = String.Format("Update {0} Set ReorderThis=0,ReorderWeight=0 where Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set AverageLeadTime=0";
+                s = String.Format("Update {0} Set BulkOnOrder=(Select Case When (Select Count(*) from tblBulkOrderItem Where ProductMasterID={0}.ProductMasterID and Status in('OP','OPEN'))>0 then 1 Else 0 End) where username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ReorderThis=0,ReorderWeight=0";
+                s = String.Format("Update {0} Set ReorderThis=1 Where DaysSupplyLeft<65 and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set BulkOnOrder=(Select Case When (Select Count(*) from tblBulkOrderItem Where ProductMasterID=" + fnTempTable + ".ProductMasterID and Status in('OP','OPEN'))>0 then 1 Else 0 End)";
+                s = String.Format("Update {0} Set ReorderThis=1 Where UseThisDaysTilExpiration<65 and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ReorderThis=1 Where DaysSupplyLeft<65";
+                s = String.Format("Update {0} Set ReorderThis=0 Where (ShelfShippedPerDay)+(BulkShippedPerDay)=0 and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ReorderThis=1 Where UseThisDaysTilExpiration<65";
+                s = String.Format("Update {0} Set ReorderThis=0 Where BulkOnOrder=1 and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ReorderThis=0 Where (ShelfShippedPerDay)+(BulkShippedPerDay)=0";
+                s = String.Format("Delete from {0} where ReorderThis=0 and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ReorderThis=0 Where BulkOnOrder=1";
+                s = String.Format("Update {0} Set ReorderWeight=Round((ShelfShippedPerDay+BulkShippedPerDay) * 120,0) Where ShelfLife<13 and ReorderThis=1 and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Delete from " + fnTempTable + " where ReorderThis=0";
+                s = String.Format("Update {0} Set ReorderWeight=Round((ShelfShippedPerDay+BulkShippedPerDay) * 180,0) Where (ShelfLife>=13 or ShelfLife is null) and (ReorderThis=1) and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ReorderWeight=Round((ShelfShippedPerDay+BulkShippedPerDay) * 120,0) Where ShelfLife<13 and ReorderThis=1";
+                s = String.Format("Update {0} Set ReorderWeight=1 Where (ReorderWeight<1)  and (ReorderThis=1) and Username='{1}'",fnTempTable,username);
+                System.Diagnostics.Debug.WriteLine(s); 
                 db.Database.ExecuteSqlCommand(s);
 
-                s = "Update " + fnTempTable + " Set ReorderWeight=Round((ShelfShippedPerDay+BulkShippedPerDay) * 180,0) Where (ShelfLife>=13 or ShelfLife is null) and (ReorderThis=1)";
-                db.Database.ExecuteSqlCommand(s);
-
-                s = "Update " + fnTempTable + " Set ReorderWeight=1 Where (ReorderWeight<1)  and (ReorderThis=1)";
-                db.Database.ExecuteSqlCommand(s);
-
-                itemscount = db.tblSuggestedBulk.Count();
+                itemscount = (from t in db.tblSuggestedBulk where t.UserName==username select t).Count();
                 return itemscount;
             }
         }
-
-        //public static List<SuggestedBulkOrderItem> Org_fnSuggestedItemsList()
-        //{
-        //    using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-        //    {
-        //        // *****************************************************
-        //        // NOTE
-        //        string username = "philc"; // replace later with identity
-
-        //        var mylist = (from t in db.tblSuggestedBulk
-        //                      where t.UserName==username
-        //                      join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
-        //                      join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
-        //                      join c in db.tblClient on t.ClientID equals c.ClientID
-        //                      orderby t2.MasterCode, t2.SUPPLYID
-        //                      select new SuggestedBulkOrderItem
-        //                      {
-        //                          id = t.id,
-        //                          username=t.UserName,
-        //                          clientid = t.ClientID,
-        //                          clientname = c.ClientName,
-        //                          logofilename = c.LogoFileName,
-        //                          productmasterid = t.ProductMasterID,
-        //                          mastercode = t2.MasterCode,
-        //                          division = t3.Division,
-        //                          mastername = t2.MasterName,
-        //                          supplyid = t.SupplyID,
-        //                          reorderweight = t.ReorderWeight,
-        //                          bulkshippedperday = t.BulkShippedPerDay,
-        //                          shelfshippedperday = t.ShelfShippedPerDay,
-        //                          usethisdaystilexpiration = t.UseThisDaysTilExpiration,
-        //                          averageleadtime = t.AverageLeadTime,
-        //                          reordernotes = t.ReorderNotes
-        //                      }).ToList();
-        //        return mylist;
-        //    }
-        //}
 
         public static List<SuggestedBulkOrderItem> fnSuggestedItemsList()
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
-                // *****************************************************
-                // NOTE
-                string username = "philc"; // replace later with identity
-
+                string username = HttpContext.Current.User.Identity.Name;
                 var mylist = (from t in db.tblSuggestedBulk
+                              join dv in db.tblDivision on t.DivisionID equals dv.DivisionID into m from x in m.DefaultIfEmpty()
                               join c in db.tblClient on t.ClientID equals c.ClientID
-                              join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                              join pm in db.tblProductMaster on t.ProductMasterID  equals pm.ProductMasterID
                               where t.UserName == username
                               select new SuggestedBulkOrderItem
                               {
                                   id = t.id,
                                   clientid = t.ClientID,
                                   productmasterid = t.ProductMasterID,
-                                  masterdivisionid = t.MasterDivisionID,
+                                  divisionid = t.DivisionID,
                                   supplyid = t.SupplyID,
                                   reorderweight = t.ReorderWeight,
                                   reordernotes = t.ReorderNotes,
@@ -593,19 +598,9 @@ namespace MvcPhoenix.Services
                                   logofilename = c.LogoFileName,
                                   mastercode = pm.MasterCode,
                                   mastername = pm.MasterName,
-                                  division = "No Division"
+                                  division = x.Division
                               }).ToList();
-                foreach (var item in mylist)
-                {
-                    var dbDivision = (from t in db.tblDivision where t.DivisionID == item.masterdivisionid select t).FirstOrDefault();
-                    if (dbDivision == null)
-                    {
-                    }
-                    else
-                    {
-                        item.division = dbDivision.Division;
-                    }
-                }
+                
                 mylist = (from t in mylist orderby t.mastercode, t.supplyid select t).ToList();
                 return mylist;
             }
@@ -625,27 +620,27 @@ namespace MvcPhoenix.Services
             {
                 SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
                 obj = (from t in db.tblSuggestedBulk
-                       //join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
-                       //join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
-                       where t.id == id
-                       orderby t.ProductMasterID
-                       select new SuggestedBulkOrderItem
-                       {
-                           id = t.id,
-                           clientid = t.ClientID,
-                           productmasterid = t.ProductMasterID,
-                           supplyid = t.SupplyID,
-                           reorderweight = t.ReorderWeight,
-                           //username=t.UserName,
-                           //mastercode = t2.MasterCode,
-                           //division = t3.Division,
-                           //mastername = t2.MasterName,
-                           //bulkshippedperday = t.BulkShippedPerDay,
-                           //shelfshippedperday = t.ShelfShippedPerDay,
-                           //usethisdaystilexpiration = t.UseThisDaysTilExpiration,
-                           //averageleadtime = t.AverageLeadTime,
-                           reordernotes = t.ReorderNotes
-                       }).FirstOrDefault();
+                              //join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
+                              //join t3 in db.tblDivision on t2.MasterDivisionID equals t3.DivisionID
+                     where t.id == id
+                     orderby t.ProductMasterID
+                     select new SuggestedBulkOrderItem
+                     {
+                         id = t.id,
+                         clientid = t.ClientID,
+                         productmasterid = t.ProductMasterID,
+                         supplyid = t.SupplyID,
+                         reorderweight = t.ReorderWeight,
+                         //username=t.UserName,
+                         //mastercode = t2.MasterCode,
+                         //division = t3.Division,
+                         //mastername = t2.MasterName,
+                         //bulkshippedperday = t.BulkShippedPerDay,
+                         //shelfshippedperday = t.ShelfShippedPerDay,
+                         //usethisdaystilexpiration = t.UseThisDaysTilExpiration,
+                         //averageleadtime = t.AverageLeadTime,
+                         reordernotes = t.ReorderNotes
+                     }).FirstOrDefault();
                 obj.ListOfProductMasters = fnProductMasterIDs(Convert.ToInt32(obj.clientid));
                 //obj.ListOfSupplyIDs = fnListOfSupplyIDs(obj.clientid);
                 return obj;
@@ -658,44 +653,32 @@ namespace MvcPhoenix.Services
             SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
             obj.id = -1;    // important
             obj.clientid = ClientID;
-            //obj.username = "philc";    // replace later with identity string
             obj.ListOfProductMasters = ReplenishmentsService.fnProductMasterIDs(obj.clientid);
             return obj;
         }
 
-        // *************************************************************************
-        // ********************** FIX THIS *****************************************
-        // *************************************************************************
-        // This needs to be fixed to use detail divisionid
         public static int fnSaveSuggestedItem(SuggestedBulkOrderItem obj)
         {
             //System.Threading.Thread.Sleep(1500);
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
-                //if (obj.id == -1)
-                //{
-                //    obj.id = fnNewSuggestedOrderItemID();
-                //}
-                //var dbrow = db.tblSuggestedBulk.Find(obj.id);
-                //dbrow.ClientID = obj.clientid;
-                //dbrow.ProductMasterID = obj.productmasterid;
-                //dbrow.ReorderWeight = obj.reorderweight;
-                //dbrow.ReorderNotes = obj.reordernotes;
+                if (obj.id == -1)
+                {
+                    obj.id = fnNewSuggestedOrderItemID();
+                }
+                var dbrow = db.tblSuggestedBulk.Find(obj.id);
+                
+                dbrow.ClientID = obj.clientid;
+                dbrow.ProductMasterID = obj.productmasterid;
+                dbrow.ReorderWeight = obj.reorderweight;
+                dbrow.ReorderNotes = obj.reordernotes;
 
-                //var dbMaster = db.tblProductMaster.Find(obj.productmasterid);
-                //dbrow.SupplyID = dbMaster.SUPPLYID;
+                var dbMaster = db.tblProductMaster.Find(obj.productmasterid);
+                dbrow.SupplyID = dbMaster.SUPPLYID;
 
-                //var dbDivision = db.tblDivision.Find(dbMaster.MasterDivisionID);
-                //if (dbDivision == null)
-                //{ }
-                //else
-                //{ dbrow.MasterDivisionID = dbDivision.DivisionID; }
+                dbrow.UserName = HttpContext.Current.User.Identity.Name;
 
-                ////TODO change later
-                //// always overwrite
-                //dbrow.UserName = "philc";
-
-                //db.SaveChanges();
+                db.SaveChanges();
                 return obj.id;
             }
         }
@@ -710,67 +693,57 @@ namespace MvcPhoenix.Services
                 return newrec.id;
             }
         }
-
+        
         public static int fnCreateBulkOrders()
         {
-            //TODO using
-            //TODO add username filter
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+             {
+                 string username = HttpContext.Current.User.Identity.Name;
+                 
+                 string fnTempTable = "tblSuggestedBulk";
+                 string s =String.Format("Update {0} set SupplyID='n/a' where Supplyid is null and UserName='{1}'",fnTempTable,username);
+                 db.Database.ExecuteSqlCommand(s);
 
-            // convert to identity
-            string username = "philc";
+                 var qry = (from t in db.tblSuggestedBulk where t.UserName == username
+                            select new { t.ClientID, t.SupplyID }).Distinct();
+                 int SupplyIDCount = qry.Count();
+                 DateTime myOrderDate = DateTime.Now;
+                 string BatchNumber = myOrderDate.ToString();
+                 //string sSessionID = HttpContext.Current.Session.SessionID;
+                 foreach (var item in qry)
+                 {
+                     using (var db1 = new MvcPhoenix.EF.CMCSQL03Entities())
+                     { 
+                         var newitem = new EF.tblBulkOrder
+                         {
+                             ClientID = item.ClientID,
+                             OrderDate = myOrderDate,
+                             Status = "OP",
+                             SupplyID = item.SupplyID
+                         };
+                         db1.tblBulkOrder.Add(newitem);
+                         db1.SaveChanges();
+                         int newpk = newitem.BulkOrderID;
+                         //// now create order items records
+                         s = String.Format("Insert into tblBulkOrderItem (BulkOrderID,ProductMasterID,Qty,Weight,Status,SupplyID,ItemNotes) Select {0},ProductMasterID,1,ReorderWeight,'OP',SupplyID,ReorderNotes from {1} where SupplyID='{2}'", newpk, fnTempTable,item.SupplyID);
+                         db1.Database.ExecuteSqlCommand(s);
+                     }
+                 }
 
-            string s;
-            string fnTempTable = "tblSuggestedBulk";
-            MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-            s = "Update " + fnTempTable + " set SupplyID='n/a' where Supplyid is null";
-            s = s + " and UserName='" + username + "'";
-            db.Database.ExecuteSqlCommand(s);
+                 int OrdersCount = qry.Count();
+                 s = String.Format("Delete From {0} where UserName='{1}'", fnTempTable, username);
+                 db.Database.ExecuteSqlCommand(s);
+                 return OrdersCount;
+             }
+         }
 
-            var qry = (from t in db.tblSuggestedBulk
-                       where t.UserName == username
-                       select new { t.ClientID, t.SupplyID }).Distinct();
-            int SupplyIDCount = qry.Count();
-            DateTime myOrderDate = DateTime.Now;
-            string BatchNumber = myOrderDate.ToString();
-            string sSessionID = HttpContext.Current.Session.SessionID;
-
-            MvcPhoenix.EF.CMCSQL03Entities db1 = new MvcPhoenix.EF.CMCSQL03Entities();
-
-            // For each distinct supplyid
-            foreach (var item in qry)
-            {
-                var newitem = new EF.tblBulkOrder
-                {
-                    ClientID = item.ClientID,
-                    OrderDate = myOrderDate,
-                    Status = "OP",
-                    SupplyID = item.SupplyID
-                };
-                db1.tblBulkOrder.Add(newitem);
-                db1.SaveChanges();
-                int newpk = newitem.BulkOrderID;
-                //System.Diagnostics.Debug.WriteLine("New OrderID= " + newpk.ToString());
-                //// now create order items records
-                s = "Insert into tblBulkOrderItem (BulkOrderID,ProductMasterID,Qty,Weight,Status,SupplyID,ItemNotes)";
-                s = s + " Select " + newpk + ",ProductMasterID,1,ReorderWeight,'OP',SupplyID,ReorderNotes from " + fnTempTable;
-                s = s + " Where Supplyid='" + item.SupplyID + "'";
-                //System.Diagnostics.Debug.WriteLine(s);
-                db1.Database.ExecuteSqlCommand(s);
-            }
-            int OrdersCount = qry.Count();
-            db1.Database.ExecuteSqlCommand("Delete From tblSuggestedBulk where UserName='" + username + "'");
-            db1.Dispose();
-            db.Dispose();
-            return OrdersCount;
-        }
-
-        #endregion SuggestedBulkOrder ---------------------------------------------------------------------------------
+        #endregion --------------------------------------------------------------------------------------
 
         // ********************************* Support methods
 
         //TODO fix private vs public
 
-        public static List<SelectListItem> fnClientIDs()
+     public static List<SelectListItem> fnClientIDs()
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -782,49 +755,50 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
+        
+     private static List<SelectListItem> fnListOfSupplyIDs(int? clientid)
+     {
+         using (var db = new CMCSQL03Entities())
+         {
+             List<SelectListItem> mylist = new List<SelectListItem>();
+             mylist = (from t in db.tblProductMaster
+                       where t.ClientID == clientid
+                       orderby t.SUPPLYID
+                       select
+                       new SelectListItem { Value = t.SUPPLYID, Text = t.SUPPLYID }).Distinct().ToList();
+              mylist.Insert(0, new SelectListItem { Value = "0", Text = "" });
+              return mylist;
+         }
+     }
 
-        private static List<SelectListItem> fnListOfSupplyIDs(int? clientid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblProductMaster
-                          where t.ClientID == clientid
-                          orderby t.SUPPLYID
-                          select
-                          new SelectListItem { Value = t.SUPPLYID, Text = t.SUPPLYID }).Distinct().ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "" });
-                return mylist;
-            }
-        }
+     public static List<SelectListItem> fnProductMasterIDs(int? clientid)
+     {
+         // 06/13/2016 This now is a list of PD-PN records
+         using (var db = new CMCSQL03Entities())
+         {
+             List<SelectListItem> mylist = new List<SelectListItem>();
+             mylist = (from t in db.tblProductMaster
+                       where t.ClientID == clientid
+                       orderby t.MasterCode
+                       select
+                           new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
 
-        public static List<SelectListItem> fnProductMasterIDs(int? clientid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblProductMaster
-                          where t.ClientID == clientid
-                          orderby t.MasterCode
-                          select
-                              new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
+             mylist.Insert(0, new SelectListItem { Value = "0", Text = "Master Code" });
+             return mylist;
+         }
+     }
+     
+     private static List<SelectListItem> fnOrderItemStatusIDs()
+     {
+         List<SelectListItem> mylist = new List<SelectListItem>();
+         mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+         mylist.Insert(1, new SelectListItem { Value = "CL", Text = "Closed" });
+         mylist.Insert(2, new SelectListItem { Value = "OP", Text = "Open" });
+         mylist.Insert(3, new SelectListItem { Value = "CN", Text = "Cancelled" });
+         return mylist;
+     }
 
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Master Code" });
-                return mylist;
-            }
-        }
-
-        private static List<SelectListItem> fnOrderItemStatusIDs()
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-            mylist.Insert(1, new SelectListItem { Value = "CL", Text = "Closed" });
-            mylist.Insert(2, new SelectListItem { Value = "OP", Text = "Open" });
-            mylist.Insert(3, new SelectListItem { Value = "CN", Text = "Cancelled" });
-            return mylist;
-        }
-
-        public static List<SelectListItem> fnDivisionIDs(int clientid)
+     public static List<SelectListItem> fnDivisionIDs(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {

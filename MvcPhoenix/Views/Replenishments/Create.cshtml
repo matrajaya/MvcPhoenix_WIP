@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group col-md-2">
                                 <label class="invisible">.</label>
-                                <span id="dvPlaceholderContinue" class="hidden">
+                                <span id="dvPlaceholderContinue">
                                     <input id="btnsubmit" type="submit" value="Create" class="btn btn-success btn-block form-control" />
                                 </span>
                             </div>
@@ -69,13 +69,11 @@
 
 <!-- Local javascript -->
 <script type="text/javascript">
-
+   
     function OnChangeClientID() {
         var myurl = '@Url.Action("BuildDivisionDropDown", "Replenishments")';
         var data = $('#clientid').val();
         $("#divisionid").load(myurl, { id: data });
-        $("#dvPlaceholderContinue").removeClass("hidden");
-        // add update the logofile img
     }
 
     function UpdateItemsPartial()

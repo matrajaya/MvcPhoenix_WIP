@@ -16,7 +16,7 @@ namespace MvcPhoenix.EF
     {
         public int BulkOrderID { get; set; }
         public Nullable<int> LegacyID { get; set; }
-        public Nullable<int> OrderNumber { get; set; }
+        public Nullable<int> OrderNumber_MDB { get; set; }
         public Nullable<int> ClientID { get; set; }
         public Nullable<int> LegacyOrderNumber { get; set; }
         public Nullable<int> LegacyOrderNumber_Acc2 { get; set; }

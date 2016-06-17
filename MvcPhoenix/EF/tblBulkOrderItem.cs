@@ -19,7 +19,7 @@ namespace MvcPhoenix.EF
         public Nullable<int> BulkOrderID { get; set; }
         public Nullable<int> ProductMasterID { get; set; }
         public Nullable<bool> ToBeClosed { get; set; }
-        public Nullable<int> OrderNumber { get; set; }
+        public Nullable<int> OrderNumber_MDB { get; set; }
         public Nullable<int> LegacyOrderNumber { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }

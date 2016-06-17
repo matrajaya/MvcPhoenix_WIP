@@ -9,27 +9,28 @@ namespace MvcPhoenix.Models
     {
     }
 
-    public class BulkOrderSearchResults
-    {
-        //TODO use the BulkOrder class instead
-        public int bulkorderid { get; set; }
-
-        public int? clientid { get; set; }
-        public string supplyid { get; set; }
-        public DateTime? orderdate { get; set; }
-        public string comment { get; set; }
-        public string clientname { get; set; }
-
-        //public string bulksupplieremail { get; set; }
-        public string emailsent { get; set; }   // leave as string, push date as string intoit
-
-        public int itemcount { get; set; }
-        public int opencount { get; set; }
-        public string ResultsMessage { get; set; }
-    }
+    //public class BulkOrderSearchResults
+    //{
+    //    //TODO use the BulkOrder class instead
+    //    public int bulkorderid { get; set; }
+    //    public int? clientid { get; set; }
+    //    public string supplyid { get; set; }
+    //    public DateTime? orderdate { get; set; }
+    //    public string comment { get; set; }
+    //    public string clientname { get; set; }
+    //    //public string bulksupplieremail { get; set; }
+    //    public string emailsent { get; set; }   // leave as string, push date as string intoit
+    //    public int itemcount { get; set; }
+    //    public int opencount { get; set; }
+    //    public string ResultsMessage { get; set; }
+    //}
 
     public class BulkOrder
     {
+        public string ResultsMessage { get; set; }
+        public int itemcount { get; set; }
+        public int opencount { get; set; }
+
         [Display(Name = "Bulk Order ID")]
         public int bulkorderid { get; set; }
 
@@ -69,7 +70,7 @@ namespace MvcPhoenix.Models
 
         public string mastercode { get; set; }
         public string mastername { get; set; }
-
+        
         public List<SelectListItem> ListOfProductMasters { get; set; }
 
         [Display(Name = "Weight")]
@@ -122,13 +123,13 @@ namespace MvcPhoenix.Models
         public string clientname { get; set; }
         public decimal? currentweight { get; set; }
     }
-
+    
     // Retire this later
-    public class SuggestedBulkOrder
-    {
-        public int? clientid { get; set; }
-        public int? divisionid { get; set; }
-    }
+    //public class SuggestedBulkOrder
+    //{
+    //    public int? clientid { get; set; }
+    //    public int? divisionid { get; set; }
+    //}
 
     public class SuggestedBulkOrderItem
     {
@@ -136,14 +137,15 @@ namespace MvcPhoenix.Models
         public int id { get; set; }
 
         public int? clientid { get; set; }
-
+        
         public string clientname { get; set; }
         public string logofilename { get; set; }
 
         [Display(Name = "Mastercode")]
         public int? productmasterid { get; set; }
 
-        public int? masterdivisionid { get; set; }
+        //public int? masterdivisionid { get; set; }
+        public int? divisionid { get; set; }
 
         public List<SelectListItem> ListOfProductMasters { get; set; }
 
@@ -162,7 +164,7 @@ namespace MvcPhoenix.Models
         // add fields to reire above class
         public string mastercode { get; set; }
 
-        //p/ublic int? masterdivisionid { get; set; }
+        //public int? masterdivisionid { get; set; }
         public string division { get; set; }
 
         public string mastername { get; set; }

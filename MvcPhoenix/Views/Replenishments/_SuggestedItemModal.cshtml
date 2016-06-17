@@ -4,16 +4,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
                 <h5 class="modal-title">Suggested Replenishment Order Item</h5>
             </div>
 
             <div id="dialogPlaceholderBody" class="modal-body">
                 @using (Ajax.BeginForm("SaveSuggestedItem", "Replenishments", new AjaxOptions {
-                    UpdateTargetId="dvupdateresult",
-                    InsertionMode=InsertionMode.Replace,
-                    OnSuccess = "RefreshItemsGrid",
-                    OnFailure="alert('ajax error')"
+                    UpdateTargetId = "dvupdateresult",
+                    InsertionMode = InsertionMode.Replace,
                 }))
                 {
                 <!-- do not remove -->
@@ -31,14 +28,7 @@
                             @Html.TextBoxFor(m => m.reorderweight, new { @class = "form-control"})
                         </div>
                     </div>
-
-                    @*<div class="row">
-                        <div class="col-md-12 form-group">
-                            <label>SupplyID</label>
-                            @Html.DropDownListFor(m => m.supplyid, Model.ListOfSupplyIDs, new { @class = "form-control" })
-                        </div>
-                    </div>*@
-
+                    
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Item Notes</label>
@@ -46,16 +36,16 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row text-center">
                         <div class="col-md-6 form-group">
                             <input id="savebutton" type="submit" value="Save Changes" class="btn btn-block btn-success" />
                         </div>
                         <div class="col-md-6 form-group">
-                            <button type="button" class="btn btn-danger btn-block form-control" data-dismiss="modal">Close</button>
+                            <input type="button" value="Close" onclick="CloseForm()" class="btn btn-primary" />
                         </div>
                     </div>
                     <div id="dvupdateresult">
-                        <!-- Place holder for string returned from controller from Save operation -->
+                        <!-- Place holder for controller Save result -->
                     </div>
                 }
                 </div>
@@ -65,10 +55,18 @@
 
 <script type="text/javascript">
 
-    function RefreshItemsGrid() {
+    @*function RefreshItemsGrid() {
         url = '@Url.Action("SuggestedItemsList", "Replenishments")';
-        $("#dvItemsList").load(url);
+        $("#dvGridPlaceHolder").load(url);
         $("#savebutton").prop('disabled', true);
+    }*@
 
+    function CloseForm() {
+        // Update the partial, hide the modal
+        //$("#savebutton").prop('disabled', true);
+        // Hide the modal
+        url = '@Url.Action("SuggestedItemsList", "Replenishments")';
+        $("#dvGridPlaceHolder").load(url);
+        $('#dialogPlaceholderModal').modal('hide')
     }
 </script>

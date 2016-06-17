@@ -352,6 +352,15 @@
     <Compile Include="EF\tblInvLog.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblInvoice.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblInvoiceDetail.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblInvoiceMaster.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblInvTrans.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -397,6 +406,9 @@
     <Compile Include="EF\tblProductXRef.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblProfile_MDB.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblReasonCode.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -440,6 +452,15 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblWasteCode.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vwBulkTransForReplenishment.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vwShelfStockForReplenishment.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vwShelfTransForReplenishment.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
