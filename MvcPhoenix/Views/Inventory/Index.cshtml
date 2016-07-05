@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Inventory";
+    ViewBag.Title = "Inventory Management";
 }
 
 <div class="container-fluid">
@@ -12,19 +12,124 @@
             <h1 class="page-header">@ViewBag.Title</h1>
         </div>
     </div>
-
-    <form role="form">
-        <div class="row">
-            <div class="form-group col-md-12">
+    <div class="row">
+        <div class="col-md-12 form-group">
+            @using (Html.BeginForm("Search", "Inventory"))
+            {
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-                    <input type="search" class="form-control" placeholder="Enter Product Code...">
-                    <span class="input-group-btn"><a href="~/Inventory/Edit"><input type="button" class="btn btn-success" value="Search" /></a></span>
+                    @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Product Code", @required = "required" })
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
+                    </span>
                 </div>
-                <hr />
-            </div>
-            <div class="form-group col-md-12">
+            }
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <div id="dvGridPlaceHolder" class="row">
+                <div class="col-md-12 text-center">
+                    <label class="lead">Recently Received Products</label>
+                </div>
+                <div class="table-responsive col-md-12">
+                    <table id="myTable" class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Status</th>
+                                <th>Client</th>
+                                <th>Rec'd</th>
+                                <th>Expiry</th>
+                                <th>WH</th>
+                                <th>Carrier</th>
+                                <th>Master Code</th>
+                                <th>Name</th>
+                                <th>Lot</th>
+                                <th>UM</th>
+                                <th>WT</th>
+                                <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>@Html.ActionLink( "Edit", "Edit" )</td>
+                            </tr>
+                            @*@foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.bulkid.ToString()</td>
+                                        <td>@item.bulkstatus</td>
+                                        <td>@item.clientname</td>
+                                        <td>@String.Format("{0:dd MMM yyyy}", @item.receivedate)</td>
+                                        <td>@String.Format("{0:dd MMM yyyy}", @item.expirationdate)</td>
+                                        <td>@item.warehouse</td>
+                                        <td>@item.carrier</td>
+                                        <td>@item.MasterCode</td>
+                                        <td>@item.MasterName</td>
+                                        <td>@item.lotnumber</td>
+                                        <td>@item.um</td>
+                                        <td>@item.receiveweight.ToString()</td>
+                                        <td>@Html.ActionLink("Edit", "EditContainerReceipt", new { id = @item.bulkid })</td>
+                                    </tr>
+                                }*@
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </form>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <div id="dvGridPlaceHolder" class="row">
+                <div class="col-md-12 text-center">
+                    <label class="lead">Pack-Out Production Work Orders</label>
+                </div>
+                <div class="table-responsive col-md-12">
+                    <table id="myTable" class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Status</th>
+                                <th>Client</th>
+                                <th>Expiry</th>
+                                <th>WH</th>
+                                <th>Master Code</th>
+                                <th>Name</th>
+                                <th>QTY</th>
+                                <th>UM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                                <td>12345</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

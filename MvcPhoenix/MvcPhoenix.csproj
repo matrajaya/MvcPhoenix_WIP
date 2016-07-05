@@ -510,6 +510,7 @@
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ClientViewModel.cs" />
     <Compile Include="Models\InventoryViewModel.cs" />
+    <Compile Include="Models\InvoiceViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\OrderItemViewModel.cs" />
     <Compile Include="Models\OrderTransViewModel.cs" />
@@ -527,6 +528,7 @@
     <Compile Include="Services\BulkService.cs" />
     <Compile Include="Services\ClientService.cs" />
     <Compile Include="Services\InventoryService.cs" />
+    <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\ReceivingService.cs" />
@@ -1283,6 +1285,8 @@
     <Content Include="Scripts\jquery.validate.min.js.map">
       <DependentUpon>jquery.validate.min.js</DependentUpon>
     </Content>
+    <Content Include="Views\Inventory\Search.cshtml" />
+    <Content Include="Views\Invoice\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

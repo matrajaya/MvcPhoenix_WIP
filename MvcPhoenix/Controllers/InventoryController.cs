@@ -1,4 +1,6 @@
 ﻿using MvcPhoenix.Models;
+using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +10,60 @@ namespace MvcPhoenix.Controllers
 {
     public class InventoryController : Controller
     {
-        //
-        // GET: /Inventory/
-
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
+                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else { searchString = currentFilter; }
+
+                ViewBag.CurrentFilter = searchString;
+                ViewBag.SearchString = searchString;
+
+                var productCodes = from p in db.tblProductDetail select p;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    productCodes = productCodes.Where(p => p.ProductCode.Contains(searchString)
+                        || p.ProductName.Contains(searchString));
+                }
+
+                switch (sortOrder)
+                {
+                    case "name":
+                        productCodes = productCodes.OrderBy(p => p.ProductName);
+                        break;
+
+                    case "name_desc":
+                        productCodes = productCodes.OrderByDescending(p => p.ProductName);
+                        break;
+
+                    case "code_desc":
+                        productCodes = productCodes.OrderByDescending(p => p.ProductCode);
+                        break;
+
+                    default:
+                        productCodes = productCodes.OrderBy(p => p.ProductCode);
+                        break;
+                }
+
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+
+                return View(productCodes.ToPagedList(pageNumber, pageSize));
+            }
         }
 
         public ActionResult Edit()

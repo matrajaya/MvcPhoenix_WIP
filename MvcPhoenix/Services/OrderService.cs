@@ -325,7 +325,7 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 bool ShowAlert = false;
-                string sCommand = "";
+                // string sCommand = "";
                 var q = (from t in db.tblOrderMaster where t.OrderID == vm.orderid select t).FirstOrDefault();
 
                 var qCountry = (from t in db.tblCountry where t.Country == vm.country && t.DoNotShip == true select t).FirstOrDefault();

@@ -4,9 +4,12 @@ namespace MvcPhoenix.Controllers
 {
     public class InvoiceController : Controller
     {
-        //
-        // GET: /Invoice/
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Edit()
         {
             return View();
         }
