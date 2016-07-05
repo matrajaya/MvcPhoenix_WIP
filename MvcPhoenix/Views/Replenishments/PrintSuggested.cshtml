@@ -1,0 +1,64 @@
+﻿@model List<MvcPhoenix.Models.SuggestedBulkOrderItem>
+@{
+    Layout = null;
+
+    // Layout = "~/Views/Shared/_LayoutPrint.cshtml";
+    
+    // Simple view to print a suggested replenishment order
+}
+
+<br />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<style type="text/css">
+    body
+    {
+         margin-left:5px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>
+            Suggested Bulk Order for @Html.DisplayFor(m => m[0].clientname) on @System.DateTime.Now.ToString()
+            <span class="pull-right">
+                <a href="#" onclick="window.print();return false"><span class="glyphicon glyphicon-print"></span></a>
+                <a href="#" onclick="window.close();return false"><span class="glyphicon glyphicon-remove"></span></a>
+            </span>
+        </h4>
+    </div>
+</div>
+
+<table class="table" style="font-size:.85em;">
+    <tr>
+        <th>#</th>
+        <th>Mastercode</th>
+        <th>Division</th>
+        <th>Name</th>
+        <th>SupplyID</th>
+        <th>Bulk Shipped<br />Per Day</th>
+        <th>Shelf Shipped<br />Per Day</th>
+        <th>Days<br />Til Expiry</th>
+        <th>Lead<br />Time</th>
+        <th>Reorder<br />Weight</th>
+        <th>Notes</th>
+    </tr>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(Model.IndexOf(item) + 1)</td>
+                <td>@item.mastercode</td>
+                <td>@item.division</td>
+                <td>@item.mastername</td>
+                <td>@item.supplyid</td>
+                <td>@item.bulkshippedperday</td>
+                <td>@item.shelfshippedperday</td>
+                <td>@item.usethisdaystilexpiration</td>
+                <td>@item.averageleadtime</td>
+                <td>@item.reorderweight</td>
+                <td>@item.reordernotes</td>
+            </tr>
+        }
+    </tbody>
+</table>

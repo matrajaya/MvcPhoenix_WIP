@@ -1287,6 +1287,7 @@
     </Content>
     <Content Include="Views\Inventory\Search.cshtml" />
     <Content Include="Views\Invoice\Edit.cshtml" />
+    <Content Include="Views\Replenishments\PrintSuggested.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

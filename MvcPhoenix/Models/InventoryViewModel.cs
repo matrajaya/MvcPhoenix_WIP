@@ -157,6 +157,7 @@ namespace MvcPhoenix.Models
         [StringLength(500, ErrorMessage = "Max 500)")]
         public string containernotes { get; set; }
 
+		[Display(Name = "Other Storage")]
         public string otherstorage { get; set; }
 
         // Some readonly properties from PM
@@ -167,5 +168,10 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "PackOut on Recpt")]
         public bool? packout { get; set; }
+
+        public DateTime? CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

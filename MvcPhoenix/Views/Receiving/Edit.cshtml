@@ -47,12 +47,15 @@
             </div>
             <div id="prodinfopan" class="panel-body collapse in">
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-9">
                         <label>Master Code - Name</label>
                         <p class="lead">
                             @Html.DisplayFor(m => m.MasterCode, new { @class = "form-control" }) - @Html.DisplayFor(m => m.MasterName, new { @class = "form-control" })
-                            @*@Html.DisplayFor(m => m.productmasterid, new { @class = "form-control" })*@
                         </p>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Bulk Status</label>
+                        @Html.TextBoxFor(m => m.bulkstatus, new { @class = "form-control", @readonly = "readonly" })
                     </div>
                 </div>
                 <div class="row">
@@ -61,12 +64,16 @@
                         @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.clientname)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Date Received</label>
                         @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.receivedate)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
+                        <label>Bin</label>
+                        @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-2">
                         <label>Warehouse</label>
                         @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.warehouse)
@@ -85,8 +92,9 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Current Weight</label>
-                        @Html.TextBoxFor(m => m.currentweight, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.currentweight)
+                        @Html.TextBoxFor(m => m.currentweight, new { @class = "form-control",@readonly="readonly" })
+                        @Html.HiddenFor(m=>m.currentweight)
+                        @*@Html.ValidationMessageFor(m => m.currentweight)*@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Receive Weight</label>
@@ -149,14 +157,14 @@
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label>Container Note</label>
-                                @Html.TextAreaFor(m => m.containernotes, new { @class = "form-control", @rows = 3 })
+                                @Html.TextAreaFor(m => m.containernotes, new { @class = "form-control", @rows = 5 })
                                 @Html.ValidationMessageFor(m => m.containernotes)
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label>Bulk Label Note</label>
-                                @Html.TextAreaFor(m => m.bulklabelnote, new { @class = "form-control", @rows = 3 })
+                                @Html.TextAreaFor(m => m.bulklabelnote, new { @class = "form-control", @rows = 5 })
                                 @Html.ValidationMessageFor(m => m.bulklabelnote)
                             </div>
                         </div>
@@ -181,20 +189,34 @@
                         @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.containertype)
                     </div>
-                    <div class="col-md-3">
-                        <ul class="list-unstyled list-2-col">
-                            <li><label>Flammable</label></li>
-                            <li>@Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox", disabled = "disabled" })</li>
-                            <li><label>Freezer</label></li>
-                            <li>@Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox", disabled = "disabled" })</li>
-                        </ul>
+                    <div class="form-group col-md-3">
+                        <label>Other Storage</label>
+                        @Html.TextBoxFor(m => m.otherstorage, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.otherstorage)
                     </div>
-                    <div class="col-md-3">
+                    <div class="form-group col-md-3">
+                        <label>Unit Measure</label>
+                        @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.um)
+                    </div>
+                    <div class="col-md-6">
                         <ul class="list-unstyled list-2-col">
-                            <li><label>Refrigerate</label></li>
-                            <li>@Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox", disabled = "disabled" })</li>
-                            <li><label>Packout</label></li>
-                            <li>@Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox", disabled = "disabled" })</li>
+                            <li>
+                                @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
+                                <label class="control-label">Flammable</label>
+                            </li>
+                            <li>
+                                @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
+                                <label class="control-label">Freezer</label>
+                            </li>
+                            <li>
+                                @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
+                                <label class="control-label">Refrigerate</label>
+                            </li>
+                            <li>
+                                @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
+                                <label class="control-label">Packout On Receipt</label>
+                            </li>
                         </ul>
                     </div>
                 </div>

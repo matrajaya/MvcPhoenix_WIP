@@ -184,6 +184,13 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
+        public ActionResult PrintSuggested()
+        {
+            List<SuggestedBulkOrderItem> vm = ReplenishmentsService.fnSuggestedItemsList();
+            return View("~/Views/Replenishments/PrintSuggested.cshtml", vm);
+        }
+
+        [HttpGet]
         public ActionResult CreateBulkOrders()
         {
             int OrderCount = ReplenishmentsService.fnCreateBulkOrders();

@@ -1,10 +1,10 @@
 ﻿using MvcPhoenix.EF;
 using MvcPhoenix.Models;
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-
 namespace MvcPhoenix.Services
 {
     public class BulkService
@@ -100,6 +100,8 @@ namespace MvcPhoenix.Services
                     {
                         var newrec = new EF.tblBulk { ProductMasterID = incoming.productmasterid };
                         db.tblBulk.Add(newrec);
+						newrec.CreateDate = System.DateTime.Now;
+                        newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                         db.SaveChanges();
                         pk = newrec.BulkID;
                     }
@@ -132,6 +134,8 @@ namespace MvcPhoenix.Services
                     qry.ReceivedAsCode = incoming.receivedascode;
                     qry.ReceivedAsName = incoming.receivedasname;
                     qry.OtherStorage = incoming.otherstorage;
+					qry.UpdateDate = System.DateTime.Now;
+                    qry.UpdateUser = HttpContext.Current.User.Identity.Name;
                     db.SaveChanges();
                     retval = true;
                 }

@@ -1,10 +1,10 @@
 ﻿using MvcPhoenix.EF;
 using MvcPhoenix.Models;
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-
 namespace MvcPhoenix.Services
 {
     public class ReceivingService
@@ -167,6 +167,7 @@ namespace MvcPhoenix.Services
 
                 obj.bulkid = -1;    // for insert later
                 obj.clientid = dbClient.ClientID;
+				obj.warehouse = dbClient.CMCLocation;
                 obj.clientname = dbClient.ClientName;
                 obj.logofilename = dbClient.LogoFileName;
                 obj.productmasterid = id;
@@ -464,6 +465,8 @@ namespace MvcPhoenix.Services
                     if (incoming.bulkid == -1)
                     {
                         var newrec = new EF.tblBulk { ProductMasterID = incoming.productmasterid };
+						newrec.CreateDate = System.DateTime.Now;
+                        newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                         db.tblBulk.Add(newrec);
                         db.SaveChanges();
                         pk = newrec.BulkID;
@@ -497,6 +500,8 @@ namespace MvcPhoenix.Services
                     qry.ReceivedAsCode = incoming.receivedascode;
                     qry.ReceivedAsName = incoming.receivedasname;
                     qry.OtherStorage = incoming.otherstorage;
+					qry.UpdateDate = System.DateTime.Now;
+                    qry.UpdateUser = HttpContext.Current.User.Identity.Name;
                     db.SaveChanges();
 
                     // Close items tagged to be closed for this productmasterid (would be better to pass a comma delimited list of PKs)
