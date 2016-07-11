@@ -59,10 +59,11 @@ namespace MvcPhoenix.Controllers
                         break;
                 }
 
-                int pageSize = 10;
+                int pageSize = 20;
                 int pageNumber = (page ?? 1);
 
-                return View(productCodes.ToPagedList(pageNumber, pageSize));
+                //return View(productCodes.ToPagedList(pageNumber, pageSize));
+                return PartialView(productCodes.ToPagedList(pageNumber, pageSize));
             }
         }
 

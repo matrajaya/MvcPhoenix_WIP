@@ -271,6 +271,11 @@ ul.alert-dropdown {
     bottom: 0;
 }
 
+.pagination-container {
+    margin-top: -20px;
+    margin-bottom: -25px;
+}
+
 iframe {
     border-color: transparent;
 }

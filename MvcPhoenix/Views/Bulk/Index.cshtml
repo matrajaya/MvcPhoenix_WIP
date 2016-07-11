@@ -16,7 +16,7 @@
     <!-- Page Heading -->
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Search Client/Master Code</h3>
@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Search Other</h3>
@@ -68,11 +68,11 @@
                         }))
                     {
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <label>Bulk Status</label>
                                 @Html.DropDownList("BulkStatus", (List<SelectListItem>)ViewBag.ListOfBulkStatus, new { @class = "form-control" })
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <label>Warehouse</label>
                                 <div class="input-group">
                                     @Html.DropDownList("Warehouse", (List<SelectListItem>)ViewBag.ListOfWarehouses, new { @class = "form-control" })
@@ -89,7 +89,7 @@
     </div>
 
     <div class="col-md-12 text-center" id="dvspinner" style="display:none;">
-        <i class="fa fa-circle-o-notch fa-2x fa-spin"></i> Processing...
+        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
     </div>
 
     <div id="dvSearchResults"></div>

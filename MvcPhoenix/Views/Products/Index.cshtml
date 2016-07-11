@@ -1,13 +1,12 @@
 ﻿@model MvcPhoenix.Models.ProductProfileLanding
 @{
-    ViewBag.Title = "Product Profile";
+    ViewBag.Title = "Product Profile Management";
 
     if (Model == null)
     { }
 }
 
 <div class="container-fluid">
-
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
@@ -25,7 +24,7 @@
         <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Create</h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="margin-bottom:-20px;">
             <div class="row">
                 <div class="col-md-6">
                     <div class="alert alert-success">
@@ -33,12 +32,12 @@
                         <p>This will create a product with a mastercode type attribute</p><br />
                         @using (Html.BeginForm("Create", "Products"))
                         {
-                            <div class="input-group">
-                                @Html.DropDownList("clientid2", fnClientIDs(), new { @class = "form-control" })
-                                <span class="input-group-btn">
-                                    <input type="submit" id="btnNew" value="Create" class="btn btn-success" />
-                                </span>
-                            </div>
+                        <div class="input-group">
+                            @Html.DropDownList("clientid2", fnClientIDs(), new { @class = "form-control" })
+                            <span class="input-group-btn">
+                                <input type="submit" id="btnNew" value="Create" class="btn btn-success" />
+                            </span>
+                        </div>
                         }
                     </div>
                 </div>
@@ -48,19 +47,19 @@
                         <label>Create Equivalent Product Profile</label>
                         @using (Html.BeginForm("Equiv", "Products"))
                         {
-                            <div class="form-group">
-                                @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
+                        <div class="form-group">
+                            @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
+                        </div>
+                        <div class="input-group">
+                            <div id="dvProductMasterIDs3">
+                                <select name="productdetailid3" id='productdetailid3' class='form-control'>
+                                    <option value="0"></option>
+                                </select>
                             </div>
-                            <div class="input-group">
-                                <div id="dvProductMasterIDs3">
-                                    <select name="productdetailid3" id='productdetailid3' class='form-control'>
-                                        <option value="0"></option>
-                                    </select>
-                                </div>
-                                <span class="input-group-btn">
-                                    <input type="submit" id="btnEquiv" value="Create" class="btn btn-success" />
-                                </span>
-                            </div>
+                            <span class="input-group-btn">
+                                <input type="submit" id="btnEquiv" value="Create" class="btn btn-success" />
+                            </span>
+                        </div>
                         }
                     </div>
                 </div>
@@ -80,10 +79,16 @@
                     </div>
                     <div class="col-md-4">
                         <div class="row">
-                            @using (Html.BeginForm("Search", "Products"))
+                            @using (Ajax.BeginForm("Search", "Products", new AjaxOptions
+                            {
+                                UpdateTargetId = "dvSearchProduct",
+                                InsertionMode = InsertionMode.Replace,
+                                HttpMethod = "POST",
+                                LoadingElementId = "dvspinner"
+                            }))
                             {
                                 <div class="form-group">
-                                    @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Product Code", @required = "required"})
+                                    @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Keywords...", @required = "required" })
                                 </div>
                                 <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
                             }
@@ -145,6 +150,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="dvSearchProduct"></div>
+
+    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
     </div>
 </div>
 

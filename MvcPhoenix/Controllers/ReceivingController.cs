@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Rotativa;
+using PagedList;
 
 namespace MvcPhoenix.Controllers
 {
@@ -16,6 +18,58 @@ namespace MvcPhoenix.Controllers
         {
             List<BulkContainerViewModel> mylist = ReceivingService.fnIndexList();
             return View("~/Views/Receiving/Index.cshtml", mylist);
+        }
+
+        public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
+                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else { searchString = currentFilter; }
+
+                ViewBag.CurrentFilter = searchString;
+                ViewBag.SearchString = searchString;
+
+                var productCodes = from p in db.tblProductMaster select p;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    productCodes = productCodes.Where(
+                        p => p.MasterCode.Contains(searchString)
+                        || p.MasterName.Contains(searchString));
+                }
+
+                switch (sortOrder)
+                {
+                    case "name":
+                        productCodes = productCodes.OrderBy(p => p.MasterName);
+                        break;
+
+                    case "name_desc":
+                        productCodes = productCodes.OrderByDescending(p => p.MasterName);
+                        break;
+
+                    case "code_desc":
+                        productCodes = productCodes.OrderByDescending(p => p.MasterCode);
+                        break;
+
+                    default:
+                        productCodes = productCodes.OrderBy(p => p.MasterCode);
+                        break;
+                }
+
+                int pageSize = 20;
+                int pageNumber = (page ?? 1);
+
+                return PartialView(productCodes.ToPagedList(pageNumber, pageSize));
+            }
         }
 
         public ActionResult SetUpReceiveKnown()
