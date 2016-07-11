@@ -45,7 +45,7 @@
                             {
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-                                    <input class="form-control" id="orderid" type="search" placeholder="Enter Order Number" min="3" name="orderid" />
+                                    <input class="form-control" id="orderid" type="search" pattern="[0-9]{1,10}" required title="Numbers Only. Max 10" placeholder="Enter Order Number" min="3" name="orderid" />
                                     <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
                                 </div>
                             }
