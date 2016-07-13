@@ -13,36 +13,40 @@
     </div>
 
     <div class="row">
-        <div class="form-group col-md-6">
-            <label>Search Invoice #</label>
-            <div class="input-group">
-                <input class="form-control" />
-                <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-sticky-note fa-fw"></i> Search</h3>
+                </div>
+                <div class="panel-body">
+                    <label>Search Invoice #</label>
+                    <div class="input-group">
+                        <input class="form-control" />
+                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-9">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-sticky-note fa-fw"></i> Generate Invoice</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>Client</label>
                             <input class="form-control" />
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>Division/Business Unit</label>
                             <input class="form-control" />
                         </div>
-                        <div class="col-md-3">
-                            <label>Month/Year</label>
-                            <input type="month" class="form-control" />
-                        </div>
-                        <div class="col-md-3">
+                        @*<div class="col-md-3">
+                                <label>Month/Year</label>
+                                <input type="month" class="form-control" />
+                            </div>*@
+                        <div class="col-md-4">
                             <label class="invisible">Generate</label>
                             <input type="button" class="btn btn-success btn-block form-control" value="Generate" />
                         </div>
@@ -72,12 +76,12 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>12345</td>
-                                <td>ClientName</td>
-                                <td>Division - BusinessUnit</td>
-                                <td>June, 2016</td>
+                                <td>1000556</td>
+                                <td>Allnex</td>
+                                <td>Coatings</td>
+                                <td>July, 2016</td>
                                 <td>Pending Review</td>
-                                <td>@Html.ActionLink("Edit", "Edit")</td>
+                                <td>@Html.ActionLink("Edit", "Edit", new { id = 1000556 })</td>
                             </tr>
                         </tbody>
                     </table>

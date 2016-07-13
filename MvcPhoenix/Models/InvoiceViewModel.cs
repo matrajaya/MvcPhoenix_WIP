@@ -39,7 +39,7 @@ namespace MvcPhoenix.Models
         public int ponumber { get; set; }
 
         [Display(Name = "Net")]
-        public string netterm { get; set; }
+        public int netterm { get; set; }
 
         [Display(Name = "BILL TO")]
         public string billtoaddress { get; set; }
@@ -50,7 +50,7 @@ namespace MvcPhoenix.Models
         
         // Master Invoice Summary
         [Display(Name = "Number of Samples")]
-        public decimal totalsamples { get; set; }
+        public int totalsamples { get; set; }
 
         [Display(Name = "Total Cost of Processing Samples")]
         public decimal totalcostsampleprocessing { get; set; }
@@ -84,17 +84,17 @@ namespace MvcPhoenix.Models
 
         // Billing Worksheet
         [Display(Name = "Grand Total")]
-        public int grandtotal { get; set; }
+        public decimal grandtotal { get; set; }
 
         [Display(Name = "Manual Order Entry")]
         public int manualentryqty { get; set; }
-        public int manualentryrate { get; set; }
-        public int manualentrytotal { get; set; }
+        public decimal manualentryrate { get; set; }
+        public decimal manualentrytotal { get; set; }
 
         [Display(Name = "Follow Up Orders")]
         public int followuporderqty { get; set; }
-        public int followuporderrate { get; set; }
-        public int followupordertotal { get; set; }
+        public decimal followuporderrate { get; set; }
+        public decimal followupordertotal { get; set; }
 
         [Display(Name = "Re-Label Labor Fee")]
         public int relabelfeeqty { get; set; }

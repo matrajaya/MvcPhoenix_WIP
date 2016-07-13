@@ -1289,6 +1289,7 @@
     <Content Include="Views\Invoice\Edit.cshtml" />
     <Content Include="Views\Replenishments\PrintSuggested.cshtml" />
     <Content Include="Views\Receiving\Search.cshtml" />
+    <Content Include="Views\Invoice\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

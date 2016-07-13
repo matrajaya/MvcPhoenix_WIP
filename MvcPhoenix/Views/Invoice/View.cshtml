@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-6">
             <div class="pull-right">
-                <a href="@Url.Action("View", "Invoice", new { id = @Model.invoiceid })"><i class="fa fa-fw fa-eye"></i> View Mode</a>
+                <a href="@Url.Action("Edit", "Invoice", new { id = @Model.invoiceid})"><i class="fa fa-fw fa-pencil"></i> Edit Mode</a>
             </div>
         </div>
     </div>
@@ -56,7 +56,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary">
@@ -67,29 +66,29 @@
                             <table class="table table-hover table-striped">
                                 <tr>
                                     <th>Number of Samples</th>
-                                    <td>@Html.TextBoxFor(m => m.totalsamples, new { @class = "pull-right", @style = "width: 100px"})</td>
+                                    <td>@Html.DisplayFor(m => m.totalsamples, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <th>Totals Cost of Processing Samples</th>
-                                    <td>@Html.TextBoxFor(m => m.totalcostsampleprocessing, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.totalcostsampleprocessing, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <th>Freight</th>
-                                    <td>@Html.TextBoxFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <th>Freight Harzardous Surcharge</th>
-                                    <td>@Html.TextBoxFor(m => m.totalfreightHzdSchg, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.totalfreightHzdSchg, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
 
                                 <tr>
                                     <th>Administrative Charges</th>
-                                    <td>@Html.TextBoxFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
 
                                 <tr>
                                     <th>Total Due</th>
-                                    <th>@Html.TextBoxFor(m => m.totaldue, new { @class = "pull-right", @style = "width: 100px" })</th>
+                                    <th>@Html.DisplayFor(m => m.totaldue, new { @class = "pull-right", @style = "width: 100px" })</th>
                                 </tr>
                             </table>
                         </div>
@@ -99,22 +98,22 @@
                             <table class="table table-hover table-striped">
                                 <tr>
                                     <th>Same Day</th>
-                                    <td>@Html.TextBoxFor(m => m.sampleshipsameday, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.sampleshipsameday, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <th>Next Day</th>
-                                    <td>@Html.TextBoxFor(m => m.sampleshipnextday, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.sampleshipnextday, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <th>Second Day</th>
-                                    <td>@Html.TextBoxFor(m => m.sampleshipsecondday, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.sampleshipsecondday, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <th>Other</th>
-                                    <td>@Html.TextBoxFor(m => m.sampleshipother, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.sampleshipother, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                             </table>
-                            <div class="pull-right" hidden>
+                            <div class="pull-right">
                                 <button class="btn btn-warning"><i class="fa fa-cloud-download fa-fw"></i> Download Invoice</button>
                             </div>
                         </div>
@@ -133,93 +132,93 @@
                             <table class="table table-hover table-striped">
                                 <tr>
                                     <th style="width: 70%">Charge Item</th>
-                                    <th style="text-align:center">Quantity</th>
-                                    <th style="text-align:center">Rate</th>
-                                    <th style="text-align:center">Total</th>
+                                    <th>Quantity</th>
+                                    <th>Rate</th>
+                                    <th>Total</th>
                                 </tr>
                                 <tr>
                                     <td>Manual Order Entry</td>
-                                    <td>@Html.TextBoxFor(m => m.manualentryqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.manualentryrate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.manualentrytotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.manualentryqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.manualentryrate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.manualentrytotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Follow Up Orders</td>
-                                    <td>@Html.TextBoxFor(m => m.followuporderqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.followuporderrate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.followupordertotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.followuporderqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.followuporderrate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.followupordertotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Re-Label Labor Fee</td>
-                                    <td>@Html.TextBoxFor(m => m.relabelfeeqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.relabelfeerate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.relabelfeetotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.relabelfeeqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.relabelfeerate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.relabelfeetotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Change in Product Set-up</td>
-                                    <td>@Html.TextBoxFor(m => m.productsetupqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.productsetuprate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.productsetuptotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.productsetupqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.productsetuprate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.productsetuptotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Credit Card Order Proecessing Fee</td>
-                                    <td>@Html.TextBoxFor(m => m.ccorderprocessqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.ccorderprocessrate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.ccorderprocesstotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.ccorderprocessqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.ccorderprocessrate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.ccorderprocesstotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Credit Card Credit</td>
                                     <td></td>
                                     <td></td>
-                                    <td>@Html.TextBoxFor(m => m.cccredittotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.cccredittotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Global Processing Fee</td>
                                     <td></td>
                                     <td></td>
-                                    <td>@Html.TextBoxFor(m => m.globalprocessingfeetotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.globalprocessingfeetotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Misc Credits</td>
-                                    <td>@Html.TextBoxFor(m => m.misccreditqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.misccreditrate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.misccredittotal, new { @style = "font-weight: bold;" })</td>
+                                    <td>@Html.DisplayFor(m => m.misccreditqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.misccreditrate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.misccredittotal, new { @style = "font-weight: bold;" })</td>
                                 </tr>
                                 <tr>
                                     <td>Same Day Rush Shipment</td>
-                                    <td>@Html.TextBoxFor(m => m.samedayrushqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.samedayrushrate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.samedayrushtotal, new { @style = "font-weight: bold;" })</td>
+                                    <td>@Html.DisplayFor(m => m.samedayrushqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.samedayrushrate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.samedayrushtotal, new { @style = "font-weight: bold;" })</td>
                                 </tr>
                                 <tr>
                                     <td>Empty Drum Disposal</td>
                                     <td></td>
                                     <td></td>
-                                    <td>@Html.TextBoxFor(m => m.emptydrumdisposaltotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.emptydrumdisposaltotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Empty Pails</td>
-                                    <td>@Html.TextBoxFor(m => m.emptypailsqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.emptypailsrate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.emptypailstotal, new { @style = "font-weight: bold;" })</td>
+                                    <td>@Html.DisplayFor(m => m.emptypailsqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.emptypailsrate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.emptypailstotal, new { @style = "font-weight: bold;" })</td>
                                 </tr>
                                 <tr>
                                     <td>Empty Pails Freight</td>
                                     <td></td>
                                     <td></td>
-                                    <td>@Html.TextBoxFor(m => m.emptypailsfgttotal, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.emptypailsfgttotal, new { @class = "pull-right", @style = "width: 100px" })</td>
                                 </tr>
                                 <tr>
                                     <td>Inactive Stock Storage Surcharge</td>
-                                    <td>@Html.TextBoxFor(m => m.inactivestksurchqty, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td>@Html.TextBoxFor(m => m.inactivestksurchrate, new { @class = "pull-right", @style = "width: 100px" })</td>
-                                    <td style="text-align:center">@Html.DisplayFor(m => m.inactivestksurchtotal)</td>
+                                    <td>@Html.DisplayFor(m => m.inactivestksurchqty, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.inactivestksurchrate, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                    <td>@Html.DisplayFor(m => m.inactivestksurchtotal)</td>
                                 </tr>
                                 <tr>
                                     <th>Grand Total</th>
                                     <td></td>
                                     <td></td>
-                                    <th style="text-align:center">@Html.DisplayFor(m => m.grandtotal)</th>
+                                    <th>@Html.DisplayFor(m => m.grandtotal)</th>
                                 </tr>
                             </table>
                         </div>
@@ -228,12 +227,7 @@
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-12 form-group">
-            <input type="button" value="Save Changes" class="btn btn-success btn-block" />
-        </div>
-    </div>
+    
     <div class="row">
         <div class="col-lg-12">
             <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>
