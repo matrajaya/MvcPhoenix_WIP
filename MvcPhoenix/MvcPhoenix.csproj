@@ -1128,6 +1128,7 @@
     <Content Include="Scripts\jquery-2.2.0.min.js.map">
       <DependentUpon>jquery-2.2.0.min.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\jquery-calx-2.2.6.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js.map">
       <DependentUpon>jquery-ui-1.11.4.min.js</DependentUpon>
     </Content>

@@ -42,8 +42,9 @@ namespace MvcPhoenix.Models
         public int netterm { get; set; }
 
         [Display(Name = "BILL TO")]
-        public string billtoaddress { get; set; }
-        public string billtoattention { get; set; }
+        public string billto { get; set; }
+        //public string billtoaddress { get; set; }
+        //public string billtoattention { get; set; }
 
         [Display(Name = "REMIT TO")]
         public string remitto { get; set; }

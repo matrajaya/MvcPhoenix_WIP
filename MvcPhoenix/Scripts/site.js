@@ -1,4 +1,20 @@
-﻿// Custom jquery general helpers
+﻿// Calx on change helper used in Invoice RT calculation
+$('#show_formula').click(function (e) {
+    e.preventDefault();
+
+    if ($(this).attr('data-shown') == '0') {
+        $('[data-formula],[data-cell]').each(function () {
+            $(this).after('<span class="formula">' + $(this).attr('data-cell') + ($(this).attr('data-formula') ? ' = ' + $(this).attr('data-formula') : '') + '&nbsp;</span>');
+        });
+
+        $(this).attr('data-shown', 1).html('Hide Formula');
+    } else {
+        $('span.formula').remove();
+        $(this).attr('data-shown', 0).html('Show Formula');
+    }
+});
+
+// Custom jquery general helpers
 $(function () {
     $("form input").tooltipValidation({
         placement: "top"
@@ -25,29 +41,10 @@ $(function () {
     });
 });
 
-// Order/Index
-//--------------------------------------------------
-// Modal Search
+// Order/Index - Modal Search
 $("#advancedsearch").on('hidden.bs.modal', function () {
     $(this).data('bs.modal', null);
 });
-
-//// Order Import File Upload
-//function handleFileSelect(evt) {
-//    var Files = evt.target.files; // FileList object
-
-//    // files is a FileList of File objects. List some properties.
-//    var output = [];
-//    for (var i = 0, f; f = Files[i]; i++) {
-//        output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-//                    f.size, ' bytes, last modified: ',
-//                    f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-//                    '</li>');
-//    }
-//    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
-//}
-
-//document.getElementById('Files').addEventListener('change', handleFileSelect, false);
 
 // General Helpers
 function goBack() {

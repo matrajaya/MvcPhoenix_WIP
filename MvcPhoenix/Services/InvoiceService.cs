@@ -14,6 +14,7 @@ namespace MvcPhoenix.Models
             model.verifieddate = System.DateTime.UtcNow;
             model.status = "Pending Review";
             model.clientname = "Ashland";
+            model.billinggroup = "ALL";
             model.periodmonth = "July";
             model.periodyear = "2016";
 
@@ -22,9 +23,10 @@ namespace MvcPhoenix.Models
             model.ponumber = 14562654;
             model.netterm = 60;
 
-            model.billinggroup = "Ashland, Inc";
-            model.billtoaddress = "Suite 400 <br>Roseland, New Jersey 07068";
-            model.billtoattention = "Attn: M. Feeney - Manager, Sales Service";
+            model.billto = "Ashland, Inc<br>Suite 400<br>Roseland, New Jersey 07068<br>Attn: M. Feeney - Manager, Sales Service";
+            
+            //model.billtoaddress = "Suite 400 <br>Roseland, New Jersey 07068";
+            //model.billtoattention = "Attn: M. Feeney - Manager, Sales Service";
 
             model.remitto = "Chemical Marketing Concepts, LLC <br>c/o Odyssey Logistics & Technology Corp <br>39 Old Ridgebury Road, N-1 <br>Danbury, CT 06810";
 
