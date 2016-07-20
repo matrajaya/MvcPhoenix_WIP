@@ -9,83 +9,109 @@ namespace MvcPhoenix.Models
     {
         public static InvoiceViewModel FillInvoice(InvoiceViewModel model)
         {
-            model.createddate = System.DateTime.UtcNow;
-            model.createdby = "You";
-            model.verifieddate = System.DateTime.UtcNow;
-            model.status = "Pending Review";
-            model.clientname = "Ashland";
-            model.billinggroup = "ALL";
-            model.periodmonth = "July";
-            model.periodyear = "2016";
-
             model.invoiceid = 1000556;
-            model.invoicedate = System.DateTime.UtcNow;
+            model.billinggroup = "ALL";
+            model.warehouselocation = "CT";
+            model.clientid = 123456;
+            model.clientname = "Ashland";
+            model.createdby = "You";
+            model.createddate = System.DateTime.Now;
+            model.verifieddate = System.DateTime.Now;
+            model.status = "Pending Review";
+            model.invoicedate = System.DateTime.Now;
+            model.invoiceperiod = "July, 2016"; //extract month and year from invoice date conver tto string
+            // model.periodmonth = "July";
+            // model.periodyear = "2016";
             model.ponumber = 14562654;
             model.netterm = 60;
-
             model.billto = "Ashland, Inc<br>Suite 400<br>Roseland, New Jersey 07068<br>Attn: M. Feeney - Manager, Sales Service";
-            
-            //model.billtoaddress = "Suite 400 <br>Roseland, New Jersey 07068";
-            //model.billtoattention = "Attn: M. Feeney - Manager, Sales Service";
-
             model.remitto = "Chemical Marketing Concepts, LLC <br>c/o Odyssey Logistics & Technology Corp <br>39 Old Ridgebury Road, N-1 <br>Danbury, CT 06810";
-
-            model.totalsamples = 100;
-            model.totalcostsampleprocessing = 100;
-            model.totalfreight = 100;
-            model.totalfreightHzdSchg = 100;
-            model.totaladmincharge = 100;
-            model.totaldue = model.totalcostsampleprocessing + model.totalfreight + model.totalfreightHzdSchg + model.totaladmincharge;
-            
+            model.currency = "EUR";        // USD / EUR / CNY
+            model.tier = 1;
+            model.ordertype = "Samples"; // Sample/International/Revenue does not apply to all clients
+           
+            // Shipping Performance
             model.sampleshipsameday = 50;
             model.sampleshipnextday = 30;
             model.sampleshipsecondday = 20;
             model.sampleshipother = 10;
             
-            model.grandtotal = model.totaldue;
+            // Invoice Summary
+            model.totalsamples = 100;
+            model.totalcostsamples = 100;
+            model.totalfreight = 100;
+            model.totalfrtHzdSchg = 100;
+            model.totaladmincharge = 100;
+            model.totaldue = model.totalcostsamples + model.totalfreight + model.totalfrtHzdSchg + model.totaladmincharge;
+             
+            // Billing Worksheet
+            model.grandtotal = 0;
+
+            model.samplesqty = 1;
+            model.samplesrate = 1;
+            model.samplescharge = model.samplesqty * model.samplesrate;
+
+            model.revenueqty = 1;
+            model.revenuerate = 1;
+            model.revenuecharge = model.revenueqty * model.revenueqty;
+
+            model.nonrevenueqty = 1;
+            model.nonrevenuerate = 1;
+            model.nonrevenuecharge = model.nonrevenueqty * model.nonrevenueqty;
 
             model.manualentryqty = 10;
             model.manualentryrate = 5;
-            model.manualentrytotal = model.manualentryqty * model.manualentryrate;
+            model.manualentrycharge = model.manualentryqty * model.manualentryrate;
 
-            model.followuporderqty = 10;
-            model.followuporderrate = 5;
-            model.followupordertotal = model.followuporderqty * model.followuporderrate;
+            model.followupqty = 10;
+            model.followuprate = 5;
+            model.followupcharge = model.followupqty * model.followuprate;
+
+            model.labelprtqty = 10;
+            model.labelprtrate = 10;
+            model.labelprtcharge = model.labelprtqty * model.labelprtrate;
+
+            model.labelstock = 100;
+
+            model.relabelprtqty = 10;
+            model.relabelprtrate = 10;
+            model.relabelprtcharge = model.relabelprtqty * model.relabelprtrate;
 
             model.relabelfeeqty = 10;
             model.relabelfeerate = 5;
-            model.relabelfeetotal = model.relabelfeeqty * model.relabelfeerate;
+            model.relabelfeecharge = model.relabelfeeqty * model.relabelfeerate;
 
             model.productsetupqty = 10;
             model.productsetuprate = 5;
-            model.productsetuptotal = model.productsetupqty * model.productsetuprate;
+            model.productsetupcharge = model.productsetupqty * model.productsetuprate;
 
-            model.ccorderprocessqty = 10;
-            model.ccorderprocessrate = 5;
-            model.ccorderprocesstotal = model.ccorderprocessqty * model.ccorderprocessrate;
+            model.ccprocessqty = 10;
+            model.ccprocessrate = 5;
+            model.ccprocesscharge = model.ccprocessqty * model.ccprocessrate;
 
-            model.cccredittotal = 100;
-            model.globalprocessingfeetotal = 100;
-            
-            model.misccreditqty = 10;
-            model.misccreditrate = 5;
-            model.misccredittotal = model.misccreditqty * model.misccreditrate;
+            model.cccredit = -100;
+            model.globalprocesscharge = 100;            
+            model.misccreditcharge = 10;
+            model.itsupportcharge = 100;
+            model.emptydrumcharge = 100;
 
-            model.samedayrushqty = 100;
-            model.samedayrushrate = 5;
-            model.samedayrushtotal = model.samedayrushqty * model.samedayrushrate;
+            model.rushshipqty = 100;
+            model.rushshiprate = 5;
+            model.rushshipcharge = model.rushshipqty * model.rushshiprate;
 
-            model.emptydrumdisposaltotal = 100;
-            
             model.emptypailsqty = 10;
             model.emptypailsrate = 5;
-            model.emptypailstotal = model.emptypailsqty * model.emptypailsrate;
+            model.emptypailscharge = model.emptypailsqty * model.emptypailsrate;
             
-            model.emptypailsfgttotal = 100;
+            model.emptypailsfgtcharge = 100;
             
-            model.inactivestksurchqty = 10;
-            model.inactivestksurchrate = 20;
-            model.inactivestksurchtotal = model.inactivestksurchqty * model.inactivestksurchrate;
+            model.inactivestockqty = 10;
+            model.inactivestockrate = 20;
+            model.inactivestockcharge = model.inactivestockqty * model.inactivestockrate;
+
+            model.hm181pkgcharge = 100;
+            model.dochandlingcharge = 100;
+            model.minimalsamplecharge = 100.00;
 
             return model;
         }

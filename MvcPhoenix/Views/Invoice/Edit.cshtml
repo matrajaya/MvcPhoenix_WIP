@@ -65,33 +65,30 @@
                             <table class="table table-hover table-striped" id="summaryinvoice">
                                 <tr>
                                     <th>Number of Samples</th>
-                                    <td>@Html.TextBoxFor(m => m.totalsamples, new { @class = "pull-right", @style = "width: 100px", @id = "A1", @name = "A1", @data_cell = "A1", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.totalsamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "A1", @data_format = "0,0", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
                                     <th>Totals Cost of Processing Samples</th>
-                                    <td>@Html.TextBoxFor(m => m.totalcostsampleprocessing, new { @class = "pull-right", @style = "width: 100px", @id = "B1", @name = "B1", @data_cell = "B1", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.totalcostsamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "B1", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
                                     <th>Freight</th>
-                                    <td>@Html.TextBoxFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px", @id = "C1", @name = "C1", @data_cell = "C1", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px", @data_cell = "C1", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
                                     <th>Freight Harzardous Surcharge</th>
-                                    <td>@Html.TextBoxFor(m => m.totalfreightHzdSchg, new { @class = "pull-right", @style = "width: 100px", @id = "D1", @name = "D1", @data_cell = "D1", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.totalfrtHzdSchg, new { @class = "pull-right", @style = "width: 100px", @data_cell = "D1", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
-
                                 <tr>
                                     <th>Administrative Charges</th>
-                                    <td>@Html.TextBoxFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px", @id = "E1", @name = "E1", @data_cell = "E1", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px", @data_cell = "E1", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
-
                                 <tr>
                                     <th>Total Due</th>
-                                    <th>@Html.TextBoxFor(m => m.totaldue, new { @class = "pull-right", @style = "width: 100px", @readonly = "readonly", @id = "F2", @name = "F2", @data_cell = "F2", @data_format = "0,0[.]00", @data_formula = "SUM(B1:E1)" })</th>
+                                    <th>@Html.TextBoxFor(m => m.totaldue, new { @class = "pull-right", @style = "width: 100px", @readonly = "readonly", @data_cell = "F2", @data_format = "0,0[.]00", @data_formula = "SUM(B1:E1)" })</th>
                                 </tr>
                             </table>
                         </div>
-
                         <div class="table-responsive col-md-6">
                             <h3>Total Shipping Performance</h3>
                             <table class="table table-hover table-striped">
@@ -126,8 +123,11 @@
             <div class="panel panel-primary">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="table-responsive col-md-12" id="billingworksheet">
+                        <div class="col-md-12">
+                            <span class="pull-right"><b>Currency: </b>@Html.DisplayFor(m => m.currency) | <b>Tier: </b>@Html.DisplayFor(m => m.tier)</span>
                             <h3>Billing Worksheet</h3>
+                        </div>
+                        <div class="table-responsive col-md-12" id="billingworksheet">
                             <ul class="nav nav-tabs pull-right">
                                 <li class="active"><a href="#">Samples(Domestic)</a></li>
                                 <li><a href="#">International</a></li>
@@ -138,91 +138,152 @@
                                     <th style="width: 70%">Charge Item</th>
                                     <th style="text-align:center">Quantity</th>
                                     <th style="text-align:center">Rate</th>
-                                    <th style="text-align:center">Total</th>
+                                    <th style="text-align:center">Charge</th>
+                                </tr>
+                                <tr>
+                                    <td>Samples</td>
+                                    <td>@Html.TextBoxFor(m => m.samplesqty, new { @style = "width: 100px", @data_cell = "A1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.samplesrate, new { @style = "width: 100px", @data_cell = "A2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.samplescharge, new { @style = "width: 100px", @data_cell = "A3", @data_format = "0,0[.]00", @data_formula = "A1*A2" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Revenue</td>
+                                    <td>@Html.TextBoxFor(m => m.revenueqty, new { @style = "width: 100px", @data_cell = "B1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.revenuerate, new { @style = "width: 100px", @data_cell = "B2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.revenuecharge, new { @style = "width: 100px", @data_cell = "B3", @data_format = "0,0[.]00", @data_formula = "B1*B2" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Non-Revenue</td>
+                                    <td>@Html.TextBoxFor(m => m.nonrevenueqty, new { @style = "width: 100px", @data_cell = "C1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.nonrevenuerate, new { @style = "width: 100px", @data_cell = "C2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.nonrevenuecharge, new { @style = "width: 100px", @data_cell = "C3", @data_format = "0,0[.]00", @data_formula = "C1*C2" })</td>
                                 </tr>
                                 <tr>
                                     <td>Manual Order Entry</td>
-                                    <td>@Html.TextBoxFor(m => m.manualentryqty, new { @style = "width: 100px", @id = "A1", @name = "A1", @data_cell = "A1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.manualentryrate, new { @style = "width: 100px", @id = "A2", @name = "A2", @data_cell = "A2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.manualentrytotal, new { @style = "width: 100px", @id = "A3", @name = "A3", @data_cell = "A3", @data_format = "0,0[.]00", @data_formula = "A1*A2" })</td>
+                                    <td>@Html.TextBoxFor(m => m.manualentryqty, new { @style = "width: 100px", @data_cell = "D1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.manualentryrate, new { @style = "width: 100px", @data_cell = "D2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.manualentrycharge, new { @style = "width: 100px", @data_cell = "D3", @data_format = "0,0[.]00", @data_formula = "D1*D2" })</td>
                                 </tr>
                                 <tr>
                                     <td>Follow Up Orders</td>
-                                    <td>@Html.TextBoxFor(m => m.followuporderqty, new { @style = "width: 100px", @id = "B1", @name = "B1", @data_cell = "B1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.followuporderrate, new { @style = "width: 100px", @id = "B2", @name = "B2", @data_cell = "B2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.followupordertotal, new { @style = "width: 100px", @id = "B3", @name = "B3", @data_cell = "B3", @data_format = "0,0[.]00", @data_formula = "B1*B2" })</td>
+                                    <td>@Html.TextBoxFor(m => m.followupqty, new { @style = "width: 100px", @data_cell = "E1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.followuprate, new { @style = "width: 100px", @data_cell = "E2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.followupcharge, new { @style = "width: 100px", @data_cell = "E3", @data_format = "0,0[.]00", @data_formula = "E1*E2" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Label Print Fee</td>
+                                    <td>@Html.TextBoxFor(m => m.labelprtqty, new { @style = "width: 100px", @data_cell = "F1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.labelprtrate, new { @style = "width: 100px", @data_cell = "F2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.labelprtcharge, new { @style = "width: 100px", @data_cell = "F3", @data_format = "0,0[.]00", @data_formula = "F1*F2" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Label Stock Fee</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Html.TextBoxFor(m => m.labelstock, new { @style = "width: 100px", @data_cell = "G3", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Re-Label Print Fee</td>
+                                    <td>@Html.TextBoxFor(m => m.relabelprtqty, new { @style = "width: 100px", @data_cell = "H1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.relabelprtrate, new { @style = "width: 100px", @data_cell = "H2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.relabelprtcharge, new { @style = "width: 100px", @data_cell = "H3", @data_format = "0,0[.]00", @data_formula = "H1*H2" })</td>
                                 </tr>
                                 <tr>
                                     <td>Re-Label Labor Fee</td>
-                                    <td>@Html.TextBoxFor(m => m.relabelfeeqty, new { @style = "width: 100px", @id = "C1", @name = "C1", @data_cell = "C1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.relabelfeerate, new { @style = "width: 100px", @id = "C2", @name = "C2", @data_cell = "C2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.relabelfeetotal, new { @style = "width: 100px", @id = "C3", @name = "C3", @data_cell = "C3", @data_format = "0,0[.]00", @data_formula = "C1*C2" })</td>
+                                    <td>@Html.TextBoxFor(m => m.relabelfeeqty, new { @style = "width: 100px", @data_cell = "I1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.relabelfeerate, new { @style = "width: 100px", @data_cell = "I2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.relabelfeecharge, new { @style = "width: 100px", @data_cell = "I3", @data_format = "0,0[.]00", @data_formula = "I1*I2" })</td>
                                 </tr>
                                 <tr>
-                                    <td>Change in Product Set-up</td>
-                                    <td>@Html.TextBoxFor(m => m.productsetupqty, new { @style = "width: 100px", @id = "D1", @name = "D1", @data_cell = "D1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.productsetuprate, new { @style = "width: 100px", @id = "D2", @name = "D2", @data_cell = "D2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.productsetuptotal, new { @style = "width: 100px", @id = "D3", @name = "D3", @data_cell = "D3", @data_format = "0,0[.]00", @data_formula = "D1*D2" })</td>
+                                    <td>Product Set-up Changes</td>
+                                    <td>@Html.TextBoxFor(m => m.productsetupqty, new { @style = "width: 100px", @data_cell = "J1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.productsetuprate, new { @style = "width: 100px", @data_cell = "J2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.productsetupcharge, new { @style = "width: 100px", @data_cell = "J3", @data_format = "0,0[.]00", @data_formula = "J1*J2" })</td>
                                 </tr>
+
                                 <tr>
                                     <td>Credit Card Order Proecessing Fee</td>
-                                    <td>@Html.TextBoxFor(m => m.ccorderprocessqty, new { @style = "width: 100px", @id = "E1", @name = "E1", @data_cell = "E1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.ccorderprocessrate, new { @style = "width: 100px", @id = "E2", @name = "E2", @data_cell = "E2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.ccorderprocesstotal, new { @style = "width: 100px", @id = "E3", @name = "E3", @data_cell = "E3", @data_format = "0,0[.]00", @data_formula = "E1*E2" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ccprocessqty, new { @style = "width: 100px", @data_cell = "K1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ccprocessrate, new { @style = "width: 100px", @data_cell = "K2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ccprocesscharge, new { @style = "width: 100px", @data_cell = "K3", @data_format = "0,0[.]00", @data_formula = "K1*K2" })</td>
                                 </tr>
                                 <tr>
                                     <td>Credit Card Credit</td>
                                     <td></td>
                                     <td></td>
-                                    <td>@Html.TextBoxFor(m => m.cccredittotal, new { @style = "width: 100px", @id = "F3", @name = "F3", @data_cell = "F3", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.cccredit, new { @style = "width: 100px", @data_cell = "L3", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
                                     <td>Global Processing Fee</td>
                                     <td></td>
                                     <td></td>
-                                    <td>@Html.TextBoxFor(m => m.globalprocessingfeetotal, new { @style = "width: 100px", @id = "G3", @name = "G3", @data_cell = "G3", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.globalprocesscharge, new { @style = "width: 100px", @data_cell = "M3", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
                                     <td>Misc Credits</td>
-                                    <td>@Html.TextBoxFor(m => m.misccreditqty, new { @style = "width: 100px", @id = "H1", @name = "H1", @data_cell = "H1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.misccreditrate, new { @style = "width: 100px", @id = "H2", @name = "H2", @data_cell = "H2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.misccredittotal, new { @style = "width: 100px", @id = "H3", @name = "H3", @data_cell = "H3", @data_format = "0,0[.]00", @data_formula = "H1*H2" })</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Html.TextBoxFor(m => m.misccreditcharge, new { @style = "width: 100px", @data_cell = "N3", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
-                                    <td>Same Day Rush Shipment</td>
-                                    <td>@Html.TextBoxFor(m => m.samedayrushqty, new { @style = "width: 100px", @id = "I1", @name = "I1", @data_cell = "I1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.samedayrushrate, new { @style = "width: 100px", @id = "I2", @name = "I2", @data_cell = "I2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.samedayrushtotal, new { @style = "width: 100px", @id = "I3", @name = "I3", @data_cell = "I3", @data_format = "0,0[.]00", @data_formula = "I1*I2" })</td>
+                                    <td>IT Project Support Fee</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Html.TextBoxFor(m => m.itsupportcharge, new { @style = "width: 100px", @data_cell = "O3", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
                                     <td>Empty Drum Disposal</td>
                                     <td></td>
                                     <td></td>
-                                    <td>@Html.TextBoxFor(m => m.emptydrumdisposaltotal, new { @style = "width: 100px", @id = "J3", @name = "J3", @data_cell = "J3", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.emptydrumcharge, new { @style = "width: 100px", @data_cell = "P3", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Same Day Rush Shipment</td>
+                                    <td>@Html.TextBoxFor(m => m.rushshipqty, new { @style = "width: 100px", @data_cell = "Q1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.rushshiprate, new { @style = "width: 100px", @data_cell = "Q2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.rushshipcharge, new { @style = "width: 100px", @data_cell = "Q3", @data_format = "0,0[.]00", @data_formula = "Q1*Q2" })</td>
                                 </tr>
                                 <tr>
                                     <td>Empty Pails</td>
-                                    <td>@Html.TextBoxFor(m => m.emptypailsqty, new { @style = "width: 100px", @id = "K1", @name = "K1", @data_cell = "K1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.emptypailsrate, new { @style = "width: 100px", @id = "K2", @name = "K2", @data_cell = "K2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.emptypailstotal, new { @style = "width: 100px", @id = "K3", @name = "K3", @data_cell = "K3", @data_format = "0,0[.]00", @data_formula = "K1*K2" })</td>
+                                    <td>@Html.TextBoxFor(m => m.emptypailsqty, new { @style = "width: 100px", @data_cell = "R1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.emptypailsrate, new { @style = "width: 100px", @data_cell = "R2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.emptypailscharge, new { @style = "width: 100px", @data_cell = "R3", @data_format = "0,0[.]00", @data_formula = "R1*R2" })</td>
                                 </tr>
                                 <tr>
                                     <td>Empty Pails Freight</td>
                                     <td></td>
                                     <td></td>
-                                    <td>@Html.TextBoxFor(m => m.emptypailsfgttotal, new { @style = "width: 100px", @id = "L3", @name = "L3", @data_cell = "L3", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.emptypailsfgtcharge, new { @style = "width: 100px", @data_cell = "S3", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
                                     <td>Inactive Stock Storage Surcharge</td>
-                                    <td>@Html.TextBoxFor(m => m.inactivestksurchqty, new { @style = "width: 100px", @id = "M1", @name = "M1", @data_cell = "M1", @data_format = "0,0", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.inactivestksurchrate, new { @style = "width: 100px", @readonly="readonly", @id = "M2", @name = "M2", @data_cell = "M2", @data_format = "0,0[.]00", @data_formula = "" })</td>
-                                    <td>@Html.TextBoxFor(m => m.inactivestksurchtotal, new { @style = "width: 100px", @id = "M3", @name = "M3", @data_cell = "M3", @data_format = "0,0[.]00", @data_formula = "M1*M2" })</td>
+                                    <td>@Html.TextBoxFor(m => m.inactivestockqty, new { @style = "width: 100px", @data_cell = "T1", @data_format = "0,0", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.inactivestockrate, new { @style = "width: 100px", @data_cell = "T2", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                    <td>@Html.TextBoxFor(m => m.inactivestockcharge, new { @style = "width: 100px", @data_cell = "T3", @data_format = "0,0[.]00", @data_formula = "T1*T2" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Other HM 181 Packaging</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Html.TextBoxFor(m => m.hm181pkgcharge, new { @style = "width: 100px", @data_cell = "U3", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Documentation & Handling Fee</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Html.TextBoxFor(m => m.dochandlingcharge, new { @style = "width: 100px", @data_cell = "V3", @data_format = "0,0[.]00", @data_formula = "" })</td>
+                                </tr>
+                                <tr>
+                                    <td>Minimal Sample Charge</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Html.TextBoxFor(m => m.minimalsamplecharge, new { @style = "width: 100px", @data_cell = "W3", @data_format = "0,0[.]00", @data_formula = "" })</td>
                                 </tr>
                                 <tr>
                                     <th>Grand Total</th>
                                     <td></td>
                                     <td></td>
-                                    <th>@Html.TextBoxFor(m => m.grandtotal, new { @style = "width: 100px", @readonly="readonly", @id = "N3", @name = "N3", @data_cell = "N3", @data_format = "0,0[.]00", @data_formula = "SUM(A3:M3)" })</th>
+                                    <th>@Html.TextBoxFor(m => m.grandtotal, new { @style = "width: 100px", @readonly = "readonly", @data_cell = "X3", @data_format = "0,0[.]00", @data_formula = "SUM(A3:W3)" })</th>
                                 </tr>
                             </table>
                         </div>
