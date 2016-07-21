@@ -62,7 +62,6 @@ namespace MvcPhoenix.Controllers
                 int pageSize = 20;
                 int pageNumber = (page ?? 1);
 
-                //return View(productCodes.ToPagedList(pageNumber, pageSize));
                 return PartialView(productCodes.ToPagedList(pageNumber, pageSize));
             }
         }
@@ -244,7 +243,6 @@ namespace MvcPhoenix.Controllers
                                percentage = t.Percentage,
                                restrictedqty = t.RestrictedQty,
                                restrictedamount = t.RestrictedAmount,
-                               packonreceipt = t.PackOnReceipt,
                                reportableqty = t.ReportableQty,
                                reportableamount = t.ReportableAmount,
                                lessthan = t.LessThan,

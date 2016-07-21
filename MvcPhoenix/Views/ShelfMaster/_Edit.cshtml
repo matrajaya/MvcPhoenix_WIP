@@ -96,15 +96,23 @@
                                     <label>Label</label>
                                 </li>
                             </ul>
-                            <label>Other Surcharge Amt: </label>
-                            @Html.TextBoxFor(m => m.othersurchargeamt)
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Other Surcharge Amt</label>
+                                    @Html.TextBoxFor(m => m.othersurchargeamt, new { @class = "form-control"})
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Other Surcharge Description</label>
+                                    @Html.TextBoxFor(m => m.othersurchargedescription, new { @class = "form-control" })
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Notes</label>
-                        @Html.TextAreaFor(m => m.notes, new { @class = "form-control", @rows = 6 })
+                        @Html.TextAreaFor(m => m.notes, new { @class = "form-control", @rows = 9 })
                     </div>
                     <ul class="list-unstyled list-2-col">
                         <li>

@@ -21,7 +21,6 @@ namespace MvcPhoenix.EF
         public string Percentage { get; set; }
         public Nullable<bool> RestrictedQty { get; set; }
         public Nullable<decimal> RestrictedAmount { get; set; }
-        public Nullable<bool> PackOnReceipt { get; set; }
         public Nullable<bool> ReportableQty { get; set; }
         public Nullable<decimal> ReportableAmount { get; set; }
         public Nullable<bool> LessThan { get; set; }

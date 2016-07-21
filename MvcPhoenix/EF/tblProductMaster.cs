@@ -137,6 +137,7 @@ namespace MvcPhoenix.EF
         public string CountryOfOrigin { get; set; }
         public Nullable<int> LeadTime { get; set; }
         public Nullable<bool> DustFilter { get; set; }
+        public Nullable<bool> TemperatureControlledStorage { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string Location_MDB { get; set; }

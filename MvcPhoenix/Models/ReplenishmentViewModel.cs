@@ -9,22 +9,6 @@ namespace MvcPhoenix.Models
     {
     }
 
-    //public class BulkOrderSearchResults
-    //{
-    //    //TODO use the BulkOrder class instead
-    //    public int bulkorderid { get; set; }
-    //    public int? clientid { get; set; }
-    //    public string supplyid { get; set; }
-    //    public DateTime? orderdate { get; set; }
-    //    public string comment { get; set; }
-    //    public string clientname { get; set; }
-    //    //public string bulksupplieremail { get; set; }
-    //    public string emailsent { get; set; }   // leave as string, push date as string intoit
-    //    public int itemcount { get; set; }
-    //    public int opencount { get; set; }
-    //    public string ResultsMessage { get; set; }
-    //}
-
     public class BulkOrder
     {
         public string ResultsMessage { get; set; }
@@ -103,10 +87,10 @@ namespace MvcPhoenix.Models
         public string MessageBody { get; set; }
     }
 
-    // This will be moved to Inventory
+    // pc 07/15/16 retired
     public class BulkContainerSearchResults
     {
-        public string searchname { get; set; }
+        //public string searchname { get; set; }
         public int bulkid { get; set; }
         public string warehouse { get; set; }
         public DateTime? receivedate { get; set; }
@@ -124,13 +108,6 @@ namespace MvcPhoenix.Models
         public decimal? currentweight { get; set; }
     }
     
-    // Retire this later
-    //public class SuggestedBulkOrder
-    //{
-    //    public int? clientid { get; set; }
-    //    public int? divisionid { get; set; }
-    //}
-
     public class SuggestedBulkOrderItem
     {
         // corresponds to a record in tblSuggestedBulk

@@ -47,6 +47,7 @@
                         <tr>
                             <th>Size</th>
                             <th>Unit Wt</th>
+							<th>UM</th>
                             <th>Pkg</th>
                             <th>WH</th>
                             <th>Bin</th>
@@ -65,6 +66,8 @@
                             <th>Bioc</th>
                             <th>Label</th>
                             <th>Other</th>
+                            <th>In <br>Active</th>
+							<th></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -74,7 +77,8 @@
                             <tr>
                                 <td><strong>@item.size</strong></td>
                                 <td>@item.unitweight</td>
-                                <td>@item.packagepartnumber</td>
+								<td>@item.clientum</td>
+                                <td>@item.packagepartnumber <br />@item.pkgmaterial</td>
                                 <td>@item.warehouse</td>
                                 <td>@item.bin</td>
                                 <td>@item.reordermin.ToString()</td>
@@ -92,6 +96,7 @@
                                 <td><input type="checkbox" checked="@item.biocidesurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.labelsurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.othersurcharge" disabled="disabled"></td>
+								<td><input type="checkbox" checked="@item.inactivesize" disabled="disabled"></td>
                                 <td>@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new {onclick="return confirm('Copy this Size?');" })</td>
                                 <td class="text-center">
                                     @Ajax.ActionLink("Edit", "Edit", "ShelfMaster", new { id = @item.shelfid }, new AjaxOptions

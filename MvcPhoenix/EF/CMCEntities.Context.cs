@@ -49,6 +49,7 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblInvoiceDetail> tblInvoiceDetail { get; set; }
         public virtual DbSet<tblInvoiceMaster> tblInvoiceMaster { get; set; }
         public virtual DbSet<tblInvTrans> tblInvTrans { get; set; }
+        public virtual DbSet<tblLog> tblLog { get; set; }
         public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
         public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
         public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
@@ -79,8 +80,9 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblUN> tblUN { get; set; }
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
-        public virtual DbSet<vwShelfTransForReplenishment> vwShelfTransForReplenishment { get; set; }
         public virtual DbSet<vwBulkTransForReplenishment> vwBulkTransForReplenishment { get; set; }
+        public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
         public virtual DbSet<vwShelfStockForReplenishment> vwShelfStockForReplenishment { get; set; }
+        public virtual DbSet<vwShelfTransForReplenishment> vwShelfTransForReplenishment { get; set; }
     }
 }

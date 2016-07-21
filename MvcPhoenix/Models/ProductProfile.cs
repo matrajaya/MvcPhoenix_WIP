@@ -80,9 +80,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "RestrictedAmount")]
         public decimal? restrictedamount { get; set; }
 
-        [Display(Name = "PackOnReceipt")]
-        public bool? packonreceipt { get; set; }
-
         [Display(Name = "ReportableQty")]
         public bool? reportableqty { get; set; }
 
@@ -98,6 +95,13 @@ namespace MvcPhoenix.Models
 
     public class ProductProfile
     {
+		//constructor
+        public ProductProfile()
+        {
+            // pc: move the list items here and cleanup controller code
+            active = true;
+        }
+		
         public List<SelectListItem> ListOfPackagePartNumbers { get; set; }
         public List<ProductNote> ListOfProductNotes { get; set; }
         public List<Cas> ListOfCasNumbers { get; set; }
@@ -248,15 +252,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "EPA Biocide")]
         public bool? epabiocide { get; set; }
 
-        //[Display(Name = "ShippingNotes")]
-        //public string shippingnotes { get; set; }
-
-        //[Display(Name = "OtherLabelNotes")]
-        //public string otherlabelnotes { get; set; }
-
-        //[Display(Name = "ProductDescription")]
-        //public string productdescription { get; set; }
-
         [Display(Name = "Label Info")]
         public string labelinfo { get; set; }
 
@@ -328,6 +323,9 @@ namespace MvcPhoenix.Models
         //new field added by cd,ii on 10/28 (already in master??)
         [Display(Name = "Label Notes (EPA, etc)")]
         public string labelnotesepa { get; set; }
+		
+		[Display(Name = "Active")]
+        public bool? active { get; set; }
 
         // **********************************************************************
 
@@ -343,10 +341,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Client")]
         public string clientname { get; set; }
-
-        // pc 04/28/16 retired use of MasterDivisionID
-        //[Display(Name = "Business Unit/Division")]
-        //public int? masterdivisionid { get; set; }
 
         [Display(Name = "Discontinued")]
         public bool? discontinued { get; set; }
@@ -367,12 +361,6 @@ namespace MvcPhoenix.Models
         public decimal? restrictedamount { get; set; }
 
         // *********************************************************
-
-        //[Display(Name = "SampGd LegacyID")]
-        //public int? sglegacyid { get; set; }
-
-        //[Display(Name = "Shelf Detail LegacyID")]
-        //public int? sdlegacyid { get; set; }
 
         [Display(Name = "SUPPLYID")]
         public string supplyid { get; set; }
@@ -437,9 +425,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "HeatingInstructions")]
         public string heatinginstructions { get; set; }
 
-        // 10/24/2015 per cd rename in migration
-        //[Display(Name = "Other")]
-        //public string other { get; set; }
         [Display(Name = "Other Handling Instr")]
         public string otherhandlinginstr { get; set; }
 
@@ -784,8 +769,11 @@ namespace MvcPhoenix.Models
         [Display(Name = "Physical Toxic")]
         public bool? physicaltoxic { get; set; }
 
-        // Added by CD,PC  11/20/2015
         [Display(Name = "Waste Code")]
         public string wastecode { get; set; }
+				
+        [Display(Name = "Temperature Controlled Storage")]
+        public bool? temperaturecontrolledstorage { get; set; }
+
     }
 }

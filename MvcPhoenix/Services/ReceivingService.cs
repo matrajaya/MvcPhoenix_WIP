@@ -157,11 +157,24 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 obj.isknownmaterial = true;
-                //var qPM = (from t in db.tblProductMaster where t.ProductMasterID == id select t).FirstOrDefault();
 
+				var x = (from t in db.tblBulk where t.ProductMasterID == id select t).ToList();
+                obj.pm_sumofcurrentweight = 0;
+                foreach(var row in x)
+                {
+                    obj.pm_sumofcurrentweight = obj.pm_sumofcurrentweight + row.CurrentWeight;
+                }
+				
                 var dbPM = db.tblProductMaster.Find(id);
                 // assign ProductMaster fields for R/O
-
+				obj.pm_MasterNotes = dbPM.MasterNotes;
+                obj.pm_HandlingOther = dbPM.HandlingOther;
+                obj.pm_OtherHandlingInstr = dbPM.OtherHandlingInstr;
+                obj.pm_refrigerate = dbPM.Refrigerate;
+                obj.pm_flammablestorageroom = dbPM.FlammableStorageRoom;
+                obj.pm_freezablelist = dbPM.FreezableList;
+                obj.pm_refrigeratedlist = dbPM.RefrigeratedList;
+				
                 //var qCL = (from t in db.tblClient where t.ClientID == qPM.ClientID select t).FirstOrDefault();
                 var dbClient = db.tblClient.Find(dbPM.ClientID);
 
@@ -227,6 +240,7 @@ namespace MvcPhoenix.Services
                            where t.BulkID == id
                            select new BulkContainerViewModel
                                {
+								   pm_sumofcurrentweight=(from x in db.tblBulk where x.ProductMasterID==t.ProductMasterID select x.CurrentWeight).Sum(),
                                    isknownmaterial = true,
                                    bulkid = t.BulkID,
                                    productmasterid = t.ProductMasterID,
@@ -492,7 +506,7 @@ namespace MvcPhoenix.Services
                     qry.COAIncluded = incoming.coaincluded;
                     qry.MSDSIncluded = incoming.msdsincluded;
                     qry.ContainerNotes = incoming.containernotes;
-                    qry.CurrentWeight = incoming.currentweight;
+					qry.CurrentWeight = incoming.receiveweight;
                     qry.QCDate = incoming.qcdate;
                     qry.ReturnLocation = incoming.returnlocation;
                     qry.NoticeDate = incoming.noticedate;

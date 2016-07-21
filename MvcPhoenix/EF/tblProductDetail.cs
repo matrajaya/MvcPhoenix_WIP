@@ -106,5 +106,6 @@ namespace MvcPhoenix.EF
         public string Company_MDB { get; set; }
         public string MasterCode_MDB { get; set; }
         public string Division_MDB { get; set; }
+        public Nullable<bool> Active { get; set; }
     }
 }

@@ -42,22 +42,57 @@
         @Html.HiddenFor(m => m.bulkstatus)
 
         <div class="panel panel-primary">
+            <div class="panel-body collapse in">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>MasterCode</th>
+                            <th>Name</th>
+                            <th>Current Weight on Hand</th>
+                            <th>@Html.LabelFor(m => m.bulkstatus)</th>
+                        </tr>
+                        <tr>
+                            <td>@Model.MasterCode</td>
+                            <td>@Model.MasterName</td>
+                            <td>@Model.pm_sumofcurrentweight.ToString()</td>
+                            <td>@Html.DisplayFor(m => m.bulkstatus, new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">MasterNotes</th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">@Model.pm_MasterNotes</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Handling Other</th>
+                            <th colspan="2">Other Handling Instr</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">@Model.pm_HandlingOther</td>
+                            <td colspan="2">@Model.pm_OtherHandlingInstr</td>
+                        </tr>
+                        <tr>
+                            <th>Refrigerate</th>
+                            <th>Refrigerator List</th>
+                            <th>Flammable Room</th>
+                            <th>Freezable List</th>
+                        </tr>
+                        <tr>
+                            <td>@Model.pm_refrigerate</td>
+                            <td>@Model.pm_refrigeratedlist</td>
+                            <td>@Model.pm_flammablestorageroom</td>
+                            <td>@Model.pm_freezablelist</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#prodinfopan"><i class="fa fa-file-text-o fa-fw"></i> Product Batch / Lot Information</h3>
             </div>
             <div id="prodinfopan" class="panel-body collapse in">
-                <div class="row">
-                    <div class="form-group col-md-9">
-                        <label>Master Code - Name</label>
-                        <p class="lead">
-                            @Html.DisplayFor(m => m.MasterCode, new { @class = "form-control" }) - @Html.DisplayFor(m => m.MasterName, new { @class = "form-control" })
-                        </p>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Bulk Status</label>
-                        @Html.TextBoxFor(m => m.bulkstatus, new { @class = "form-control", @readonly = "readonly" })
-                    </div>
-                </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Client</label>
@@ -80,7 +115,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-6">
                         <label>Lot Number</label>
                         @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.lotnumber)
@@ -89,12 +124,6 @@
                         <label>Carrier</label>
                         @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.carrier)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Current Weight</label>
-                        @Html.TextBoxFor(m => m.currentweight, new { @class = "form-control",@readonly="readonly" })
-                        @Html.HiddenFor(m=>m.currentweight)
-                        @*@Html.ValidationMessageFor(m => m.currentweight)*@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Receive Weight</label>
@@ -162,7 +191,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="col-md-12">
                                 <label>Bulk Label Note</label>
                                 @Html.TextAreaFor(m => m.bulklabelnote, new { @class = "form-control", @rows = 5 })
                                 @Html.ValidationMessageFor(m => m.bulklabelnote)

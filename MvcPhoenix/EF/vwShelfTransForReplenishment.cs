@@ -14,12 +14,12 @@ namespace MvcPhoenix.EF
     
     public partial class vwShelfTransForReplenishment
     {
+        public int InvTransID { get; set; }
         public string TransType { get; set; }
         public Nullable<System.DateTime> TransDate { get; set; }
         public Nullable<int> TransQty { get; set; }
         public Nullable<decimal> TransAmount { get; set; }
         public Nullable<int> ProductMasterID { get; set; }
         public string Status { get; set; }
-        public int InvTransID { get; set; }
     }
 }

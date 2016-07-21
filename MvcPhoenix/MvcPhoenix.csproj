@@ -364,6 +364,9 @@
     <Compile Include="EF\tblInvTrans.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblLog.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblOrderImport.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -457,6 +460,9 @@
     <Compile Include="EF\vwBulkTransForReplenishment.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\vwProductsInfo.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\vwShelfStockForReplenishment.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -521,7 +527,6 @@
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\ReceivingViewModels.cs" />
     <Compile Include="Models\ReplenishmentViewModel.cs" />
-    <Compile Include="Models\ShelfMaster.cs" />
     <Compile Include="Models\ShelfMasterViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApplicationService.cs" />

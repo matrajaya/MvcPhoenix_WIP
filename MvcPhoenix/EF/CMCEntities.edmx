@@ -203,7 +203,6 @@
           <Property Name="Percentage" Type="nvarchar" MaxLength="6" />
           <Property Name="RestrictedQty" Type="bit" />
           <Property Name="RestrictedAmount" Type="numeric" Precision="12" Scale="2" />
-          <Property Name="PackOnReceipt" Type="bit" />
           <Property Name="ReportableQty" Type="bit" />
           <Property Name="ReportableAmount" Type="numeric" Precision="12" Scale="2" />
           <Property Name="LessThan" Type="bit" />
@@ -609,19 +608,89 @@
           </Key>
           <Property Name="InvoiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="InvoiceNumber" Type="int" />
+          <Property Name="BillingGroup" Type="nvarchar(max)" />
+          <Property Name="WarehouseLocation" Type="nvarchar(max)" />
           <Property Name="ClientID" Type="int" />
-          <Property Name="ChargeDate" Type="datetime" />
-          <Property Name="ChargeMonth" Type="nvarchar" MaxLength="3" />
-          <Property Name="ChargeYear" Type="int" />
-          <Property Name="Item" Type="nvarchar" MaxLength="20" />
-          <Property Name="Description" Type="nvarchar" MaxLength="100" />
-          <Property Name="Qty" Type="int" />
-          <Property Name="Rate" Type="numeric" Precision="10" Scale="2" />
-          <Property Name="Comments" Type="nvarchar" MaxLength="255" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
-          <Property Name="UpdateDate" Type="datetime" />
-          <Property Name="UpdateUser" Type="nvarchar" MaxLength="256" />
+          <Property Name="ClientName" Type="nvarchar(max)" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreateDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="UpdatedBy" Type="nvarchar(max)" />
+          <Property Name="UpdateDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="VerifiedBy" Type="nvarchar(max)" />
+          <Property Name="VerifyDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="Status" Type="nvarchar(max)" />
+          <Property Name="InvoiceDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="InvoicePeriod" Type="nvarchar(max)" />
+          <Property Name="PeriodMonth" Type="nvarchar(max)" />
+          <Property Name="PeriodYear" Type="int" />
+          <Property Name="PONumber" Type="nvarchar(max)" />
+          <Property Name="NetTerm" Type="nvarchar(max)" />
+          <Property Name="BillTo" Type="nvarchar(max)" />
+          <Property Name="RemitTo" Type="nvarchar(max)" />
+          <Property Name="Currency" Type="nvarchar(max)" />
+          <Property Name="Tier" Type="int" />
+          <Property Name="OrderType" Type="nvarchar(max)" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="SampleShipSameDay" Type="int" />
+          <Property Name="SampleShipNextDay" Type="int" />
+          <Property Name="SampleShipSecondDay" Type="int" />
+          <Property Name="SampleShipOther" Type="int" />
+          <Property Name="TotalSamples" Type="int" />
+          <Property Name="TotalCostSamples" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="TotalFreight" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="TotalFrtHzdSchg" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="TotalAdminCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="TotalDue" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="GrandTotal" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="SamplesQty" Type="int" />
+          <Property Name="SamplesRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="SamplesCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="RevenueQty" Type="int" />
+          <Property Name="RevenueRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="RevenueCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="NonRevenueQty" Type="int" />
+          <Property Name="NonRevenueRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="NonRevenueCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ManualEntryQty" Type="int" />
+          <Property Name="ManualEntryRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ManualEntryCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="FollowUpQty" Type="int" />
+          <Property Name="FollowUpRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="FollowUpCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="LabelPrtQty" Type="int" />
+          <Property Name="LabelPrtRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="LabelPrtCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelPrtQty" Type="int" />
+          <Property Name="ReLabelPrtRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelPrtCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelFeeQty" Type="int" />
+          <Property Name="ReLabelFeeRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelFeeCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ProductSetupQty" Type="int" />
+          <Property Name="ProductSetupRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ProductSetupCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="CCProcessQty" Type="int" />
+          <Property Name="CCProcessRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="CCProcessCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="CCCredit" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="GlobalProcessCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="MiscCreditCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ITSupportCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="LabelStockCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyDrumCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="RushShipQty" Type="int" />
+          <Property Name="RushShipRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="RushShipCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsQty" Type="int" />
+          <Property Name="EmptyPailsRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsFgtCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="InactiveStockQty" Type="int" />
+          <Property Name="InactiveStockRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="InactiveStockCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="HM181PkgCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="DocHandlingCharge" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="MinimalSampleCharge" Type="decimal" Precision="10" Scale="2" />
         </EntityType>
         <EntityType Name="tblInvoiceDetail">
           <Key>
@@ -687,6 +756,43 @@
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="35" />
           <Property Name="ProductCode_MDB" Type="nvarchar" MaxLength="50" />
+          <Property Name="LotNumber_MDB" Type="nvarchar" MaxLength="35" />
+          <Property Name="Size_MDB" Type="nvarchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="tblLog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogType" Type="nvarchar" MaxLength="5" />
+          <Property Name="LogDate" Type="datetime" />
+          <Property Name="BulkID" Type="int" />
+          <Property Name="StockID" Type="int" />
+          <Property Name="ProductMasterID" Type="int" />
+          <Property Name="ProductDetailID" Type="int" />
+          <Property Name="LogQty" Type="int" />
+          <Property Name="LogAmount" Type="numeric" Precision="12" Scale="4" />
+          <Property Name="LogNotes" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Status" Type="nvarchar" MaxLength="6" />
+          <Property Name="Warehouse" Type="nvarchar" MaxLength="2" />
+          <Property Name="Lotnumber" Type="nvarchar" MaxLength="25" />
+          <Property Name="Bin" Type="nvarchar" MaxLength="15" />
+          <Property Name="Size" Type="nvarchar" MaxLength="20" />
+          <Property Name="MasterCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="MasterName" Type="nvarchar" MaxLength="60" />
+          <Property Name="ProductCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="60" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="UpdateUser" Type="nvarchar" MaxLength="256" />
+          <Property Name="LegacyID" Type="int" />
+          <Property Name="LogRecordStatus_MDB" Type="nvarchar" MaxLength="2" />
+          <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
+          <Property Name="Division_MDB" Type="nvarchar" MaxLength="35" />
+          <Property Name="ProductCode_MDB" Type="nvarchar" MaxLength="50" />
+          <Property Name="MasterCode_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="LotNumber_MDB" Type="nvarchar" MaxLength="35" />
           <Property Name="Size_MDB" Type="nvarchar" MaxLength="12" />
         </EntityType>
@@ -1129,6 +1235,7 @@
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="MasterCode_MDB" Type="nvarchar" MaxLength="20" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" />
         </EntityType>
         <EntityType Name="tblProductMaster">
           <Key>
@@ -1257,6 +1364,7 @@
           <Property Name="CountryOfOrigin" Type="nvarchar" MaxLength="50" />
           <Property Name="LeadTime" Type="int" />
           <Property Name="DustFilter" Type="bit" />
+          <Property Name="TemperatureControlledStorage" Type="bit" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -1369,6 +1477,7 @@
           <Property Name="LabelSurcharge" Type="bit" />
           <Property Name="OtherSurcharge" Type="bit" />
           <Property Name="OtherSurchargeAmt" Type="smallmoney" />
+          <Property Name="OtherSurchargeDescription" Type="nvarchar" MaxLength="50" />
           <Property Name="NewItem" Type="nvarchar" MaxLength="8" />
           <Property Name="InactiveSize" Type="bit" />
           <Property Name="WebOEInclude" Type="bit" />
@@ -1584,6 +1693,50 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkTransForReplenishment' does not
           <Property Name="ProductMasterID" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwProductsInfo">
+          <Key>
+            <PropertyRef Name="ClientID" />
+            <PropertyRef Name="ProductMasterID" />
+          </Key>
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="ClientName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CMCLocation" Type="nvarchar" MaxLength="2" />
+          <Property Name="DivisionID" Type="int" />
+          <Property Name="Division" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanyCountry" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProductMasterID" Type="int" Nullable="false" />
+          <Property Name="MasterName" Type="nvarchar" MaxLength="60" />
+          <Property Name="MasterCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
+          <Property Name="EndUse" Type="nvarchar" MaxLength="255" />
+          <Property Name="GHSReady" Type="bit" />
+          <Property Name="ProductDetailID" Type="int" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="ReasonCode" Type="nvarchar" MaxLength="25" />
+          <Property Name="Warehouse" Type="nvarchar" MaxLength="2" />
+          <Property Name="Size" Type="nvarchar" MaxLength="10" />
+          <Property Name="UnitWeight" Type="decimal" Precision="12" Scale="4" />
+          <Property Name="ReorderMin" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="ReorderMax" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="HazardSurcharge" Type="bit" />
+          <Property Name="FlammableSurcharge" Type="bit" />
+          <Property Name="HeatSurcharge" Type="bit" />
+          <Property Name="RefrigSurcharge" Type="bit" />
+          <Property Name="FreezerSurcharge" Type="bit" />
+          <Property Name="CleanSurcharge" Type="bit" />
+          <Property Name="BlendSurcharge" Type="bit" />
+          <Property Name="NalgeneSurcharge" Type="bit" />
+          <Property Name="NitrogenSurcharge" Type="bit" />
+          <Property Name="BiocideSurcharge" Type="bit" />
+          <Property Name="KosherSurcharge" Type="bit" />
+          <Property Name="LabelSurcharge" Type="bit" />
+          <Property Name="OtherSurcharge" Type="bit" />
+          <Property Name="OtherSurchargeAmt" Type="smallmoney" />
+          <Property Name="WebOEInclude" Type="bit" />
+          <Property Name="PackagePartNumber_MDB" Type="nvarchar" MaxLength="8" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'CMCSQL03.dbo.vwShelfStockForReplenishment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vwShelfStockForReplenishment">
           <Key>
@@ -1636,6 +1789,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="tblInvoiceDetail" EntityType="Self.tblInvoiceDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblInvoiceMaster" EntityType="Self.tblInvoiceMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblInvTrans" EntityType="Self.tblInvTrans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLog" EntityType="Self.tblLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderImport" EntityType="Self.tblOrderImport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderItem" EntityType="Self.tblOrderItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderMaster" EntityType="Self.tblOrderMaster" Schema="dbo" store:Type="Tables" />
@@ -1676,6 +1830,46 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
     [vwBulkTransForReplenishment].[BulkStatus] AS [BulkStatus], 
     [vwBulkTransForReplenishment].[ProductMasterID] AS [ProductMasterID]
     FROM [dbo].[vwBulkTransForReplenishment] AS [vwBulkTransForReplenishment]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwProductsInfo" EntityType="Self.vwProductsInfo" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwProductsInfo].[ClientID] AS [ClientID], 
+    [vwProductsInfo].[ClientName] AS [ClientName], 
+    [vwProductsInfo].[CMCLocation] AS [CMCLocation], 
+    [vwProductsInfo].[DivisionID] AS [DivisionID], 
+    [vwProductsInfo].[Division] AS [Division], 
+    [vwProductsInfo].[CompanyCountry] AS [CompanyCountry], 
+    [vwProductsInfo].[ProductMasterID] AS [ProductMasterID], 
+    [vwProductsInfo].[MasterName] AS [MasterName], 
+    [vwProductsInfo].[MasterCode] AS [MasterCode], 
+    [vwProductsInfo].[ProductName] AS [ProductName], 
+    [vwProductsInfo].[EndUse] AS [EndUse], 
+    [vwProductsInfo].[GHSReady] AS [GHSReady], 
+    [vwProductsInfo].[ProductDetailID] AS [ProductDetailID], 
+    [vwProductsInfo].[Notes] AS [Notes], 
+    [vwProductsInfo].[ReasonCode] AS [ReasonCode], 
+    [vwProductsInfo].[Warehouse] AS [Warehouse], 
+    [vwProductsInfo].[Size] AS [Size], 
+    [vwProductsInfo].[UnitWeight] AS [UnitWeight], 
+    [vwProductsInfo].[ReorderMin] AS [ReorderMin], 
+    [vwProductsInfo].[ReorderMax] AS [ReorderMax], 
+    [vwProductsInfo].[HazardSurcharge] AS [HazardSurcharge], 
+    [vwProductsInfo].[FlammableSurcharge] AS [FlammableSurcharge], 
+    [vwProductsInfo].[HeatSurcharge] AS [HeatSurcharge], 
+    [vwProductsInfo].[RefrigSurcharge] AS [RefrigSurcharge], 
+    [vwProductsInfo].[FreezerSurcharge] AS [FreezerSurcharge], 
+    [vwProductsInfo].[CleanSurcharge] AS [CleanSurcharge], 
+    [vwProductsInfo].[BlendSurcharge] AS [BlendSurcharge], 
+    [vwProductsInfo].[NalgeneSurcharge] AS [NalgeneSurcharge], 
+    [vwProductsInfo].[NitrogenSurcharge] AS [NitrogenSurcharge], 
+    [vwProductsInfo].[BiocideSurcharge] AS [BiocideSurcharge], 
+    [vwProductsInfo].[KosherSurcharge] AS [KosherSurcharge], 
+    [vwProductsInfo].[LabelSurcharge] AS [LabelSurcharge], 
+    [vwProductsInfo].[OtherSurcharge] AS [OtherSurcharge], 
+    [vwProductsInfo].[OtherSurchargeAmt] AS [OtherSurchargeAmt], 
+    [vwProductsInfo].[WebOEInclude] AS [WebOEInclude], 
+    [vwProductsInfo].[PackagePartNumber_MDB] AS [PackagePartNumber_MDB]
+    FROM [dbo].[vwProductsInfo] AS [vwProductsInfo]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vwShelfStockForReplenishment" EntityType="Self.vwShelfStockForReplenishment" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1728,6 +1922,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="tblInvoiceDetail" EntityType="CMCSQL03Model.tblInvoiceDetail" />
           <EntitySet Name="tblInvoiceMaster" EntityType="CMCSQL03Model.tblInvoiceMaster" />
           <EntitySet Name="tblInvTrans" EntityType="CMCSQL03Model.tblInvTrans" />
+          <EntitySet Name="tblLog" EntityType="CMCSQL03Model.tblLog" />
           <EntitySet Name="tblOrderImport" EntityType="CMCSQL03Model.tblOrderImport" />
           <EntitySet Name="tblOrderItem" EntityType="CMCSQL03Model.tblOrderItem" />
           <EntitySet Name="tblOrderMaster" EntityType="CMCSQL03Model.tblOrderMaster" />
@@ -1758,9 +1953,10 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="tblUN" EntityType="CMCSQL03Model.tblUN" />
           <EntitySet Name="tblUser" EntityType="CMCSQL03Model.tblUser" />
           <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
-          <EntitySet Name="vwShelfTransForReplenishment" EntityType="CMCSQL03Model.vwShelfTransForReplenishment" />
           <EntitySet Name="vwBulkTransForReplenishment" EntityType="CMCSQL03Model.vwBulkTransForReplenishment" />
+          <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
           <EntitySet Name="vwShelfStockForReplenishment" EntityType="CMCSQL03Model.vwShelfStockForReplenishment" />
+          <EntitySet Name="vwShelfTransForReplenishment" EntityType="CMCSQL03Model.vwShelfTransForReplenishment" />
         </EntityContainer>
         <EntityType Name="tblBulk">
           <Key>
@@ -1960,7 +2156,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="Percentage" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
           <Property Name="RestrictedQty" Type="Boolean" />
           <Property Name="RestrictedAmount" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="PackOnReceipt" Type="Boolean" />
           <Property Name="ReportableQty" Type="Boolean" />
           <Property Name="ReportableAmount" Type="Decimal" Precision="12" Scale="2" />
           <Property Name="LessThan" Type="Boolean" />
@@ -2366,19 +2561,89 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           </Key>
           <Property Name="InvoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="InvoiceNumber" Type="Int32" />
+          <Property Name="BillingGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WarehouseLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClientID" Type="Int32" />
-          <Property Name="ChargeDate" Type="DateTime" Precision="3" />
-          <Property Name="ChargeMonth" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="ChargeYear" Type="Int32" />
-          <Property Name="Item" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Qty" Type="Int32" />
-          <Property Name="Rate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="Comments" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ClientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="VerifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VerifyDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="InvoicePeriod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PeriodMonth" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PeriodYear" Type="Int32" />
+          <Property Name="PONumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NetTerm" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BillTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RemitTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tier" Type="Int32" />
+          <Property Name="OrderType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SampleShipSameDay" Type="Int32" />
+          <Property Name="SampleShipNextDay" Type="Int32" />
+          <Property Name="SampleShipSecondDay" Type="Int32" />
+          <Property Name="SampleShipOther" Type="Int32" />
+          <Property Name="TotalSamples" Type="Int32" />
+          <Property Name="TotalCostSamples" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalFreight" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalFrtHzdSchg" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalAdminCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalDue" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="GrandTotal" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="SamplesQty" Type="Int32" />
+          <Property Name="SamplesRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="SamplesCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RevenueQty" Type="Int32" />
+          <Property Name="RevenueRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RevenueCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="NonRevenueQty" Type="Int32" />
+          <Property Name="NonRevenueRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="NonRevenueCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ManualEntryQty" Type="Int32" />
+          <Property Name="ManualEntryRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ManualEntryCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="FollowUpQty" Type="Int32" />
+          <Property Name="FollowUpRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="FollowUpCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LabelPrtQty" Type="Int32" />
+          <Property Name="LabelPrtRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LabelPrtCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelPrtQty" Type="Int32" />
+          <Property Name="ReLabelPrtRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelPrtCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelFeeQty" Type="Int32" />
+          <Property Name="ReLabelFeeRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelFeeCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ProductSetupQty" Type="Int32" />
+          <Property Name="ProductSetupRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ProductSetupCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CCProcessQty" Type="Int32" />
+          <Property Name="CCProcessRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CCProcessCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CCCredit" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="GlobalProcessCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="MiscCreditCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ITSupportCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LabelStockCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyDrumCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RushShipQty" Type="Int32" />
+          <Property Name="RushShipRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RushShipCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsQty" Type="Int32" />
+          <Property Name="EmptyPailsRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsFgtCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="InactiveStockQty" Type="Int32" />
+          <Property Name="InactiveStockRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="InactiveStockCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="HM181PkgCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="DocHandlingCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="MinimalSampleCharge" Type="Decimal" Precision="10" Scale="2" />
         </EntityType>
         <EntityType Name="tblInvoiceDetail">
           <Key>
@@ -2444,6 +2709,43 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
           <Property Name="ProductCode_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LotNumber_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="Size_MDB" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblLog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="LogDate" Type="DateTime" Precision="3" />
+          <Property Name="BulkID" Type="Int32" />
+          <Property Name="StockID" Type="Int32" />
+          <Property Name="ProductMasterID" Type="Int32" />
+          <Property Name="ProductDetailID" Type="Int32" />
+          <Property Name="LogQty" Type="Int32" />
+          <Property Name="LogAmount" Type="Decimal" Precision="12" Scale="4" />
+          <Property Name="LogNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Lotnumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Bin" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MasterCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MasterName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="ProductCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="LogRecordStatus_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="ProductCode_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MasterCode_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LotNumber_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
           <Property Name="Size_MDB" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -2886,6 +3188,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblProductMaster">
           <Key>
@@ -3014,6 +3317,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="CountryOfOrigin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LeadTime" Type="Int32" />
           <Property Name="DustFilter" Type="Boolean" />
+          <Property Name="TemperatureControlledStorage" Type="Boolean" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
@@ -3126,6 +3430,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="LabelSurcharge" Type="Boolean" />
           <Property Name="OtherSurcharge" Type="Boolean" />
           <Property Name="OtherSurchargeAmt" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="OtherSurchargeDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="NewItem" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
           <Property Name="InactiveSize" Type="Boolean" />
           <Property Name="WebOEInclude" Type="Boolean" />
@@ -3326,18 +3631,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProdCode_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="vwShelfTransForReplenishment">
-          <Key>
-            <PropertyRef Name="InvTransID" />
-          </Key>
-          <Property Name="TransType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="TransDate" Type="DateTime" Precision="3" />
-          <Property Name="TransQty" Type="Int32" />
-          <Property Name="TransAmount" Type="Decimal" Precision="12" Scale="4" />
-          <Property Name="ProductMasterID" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-          <Property Name="InvTransID" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="vwBulkTransForReplenishment">
           <Key>
             <PropertyRef Name="InvTransID" />
@@ -3350,6 +3643,48 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="BulkStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
           <Property Name="ProductMasterID" Type="Int32" />
         </EntityType>
+        <EntityType Name="vwProductsInfo">
+          <Key>
+            <PropertyRef Name="ClientID" />
+            <PropertyRef Name="ProductMasterID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="ClientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CMCLocation" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="DivisionID" Type="Int32" />
+          <Property Name="Division" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductMasterID" Type="Int32" Nullable="false" />
+          <Property Name="MasterName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="MasterCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EndUse" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GHSReady" Type="Boolean" />
+          <Property Name="ProductDetailID" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReasonCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UnitWeight" Type="Decimal" Precision="12" Scale="4" />
+          <Property Name="ReorderMin" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="ReorderMax" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="HazardSurcharge" Type="Boolean" />
+          <Property Name="FlammableSurcharge" Type="Boolean" />
+          <Property Name="HeatSurcharge" Type="Boolean" />
+          <Property Name="RefrigSurcharge" Type="Boolean" />
+          <Property Name="FreezerSurcharge" Type="Boolean" />
+          <Property Name="CleanSurcharge" Type="Boolean" />
+          <Property Name="BlendSurcharge" Type="Boolean" />
+          <Property Name="NalgeneSurcharge" Type="Boolean" />
+          <Property Name="NitrogenSurcharge" Type="Boolean" />
+          <Property Name="BiocideSurcharge" Type="Boolean" />
+          <Property Name="KosherSurcharge" Type="Boolean" />
+          <Property Name="LabelSurcharge" Type="Boolean" />
+          <Property Name="OtherSurcharge" Type="Boolean" />
+          <Property Name="OtherSurchargeAmt" Type="Decimal" Precision="10" Scale="4" />
+          <Property Name="WebOEInclude" Type="Boolean" />
+          <Property Name="PackagePartNumber_MDB" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="vwShelfStockForReplenishment">
           <Key>
             <PropertyRef Name="StockID" />
@@ -3361,6 +3696,18 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="ProductMasterID" Type="Int32" Nullable="false" />
           <Property Name="DivisionID" Type="Int32" />
           <Property Name="ShelfStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vwShelfTransForReplenishment">
+          <Key>
+            <PropertyRef Name="InvTransID" />
+          </Key>
+          <Property Name="InvTransID" Type="Int32" Nullable="false" />
+          <Property Name="TransType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="TransDate" Type="DateTime" Precision="3" />
+          <Property Name="TransQty" Type="Int32" />
+          <Property Name="TransAmount" Type="Decimal" Precision="12" Scale="4" />
+          <Property Name="ProductMasterID" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -3575,7 +3922,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="LessThan" ColumnName="LessThan" />
                 <ScalarProperty Name="ReportableAmount" ColumnName="ReportableAmount" />
                 <ScalarProperty Name="ReportableQty" ColumnName="ReportableQty" />
-                <ScalarProperty Name="PackOnReceipt" ColumnName="PackOnReceipt" />
                 <ScalarProperty Name="RestrictedAmount" ColumnName="RestrictedAmount" />
                 <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
                 <ScalarProperty Name="Percentage" ColumnName="Percentage" />
@@ -3989,19 +4335,89 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySetMapping Name="tblInvoice">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblInvoice">
               <MappingFragment StoreEntitySet="tblInvoice">
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="MinimalSampleCharge" ColumnName="MinimalSampleCharge" />
+                <ScalarProperty Name="DocHandlingCharge" ColumnName="DocHandlingCharge" />
+                <ScalarProperty Name="HM181PkgCharge" ColumnName="HM181PkgCharge" />
+                <ScalarProperty Name="InactiveStockCharge" ColumnName="InactiveStockCharge" />
+                <ScalarProperty Name="InactiveStockRate" ColumnName="InactiveStockRate" />
+                <ScalarProperty Name="InactiveStockQty" ColumnName="InactiveStockQty" />
+                <ScalarProperty Name="EmptyPailsFgtCharge" ColumnName="EmptyPailsFgtCharge" />
+                <ScalarProperty Name="EmptyPailsCharge" ColumnName="EmptyPailsCharge" />
+                <ScalarProperty Name="EmptyPailsRate" ColumnName="EmptyPailsRate" />
+                <ScalarProperty Name="EmptyPailsQty" ColumnName="EmptyPailsQty" />
+                <ScalarProperty Name="RushShipCharge" ColumnName="RushShipCharge" />
+                <ScalarProperty Name="RushShipRate" ColumnName="RushShipRate" />
+                <ScalarProperty Name="RushShipQty" ColumnName="RushShipQty" />
+                <ScalarProperty Name="EmptyDrumCharge" ColumnName="EmptyDrumCharge" />
+                <ScalarProperty Name="LabelStockCharge" ColumnName="LabelStockCharge" />
+                <ScalarProperty Name="ITSupportCharge" ColumnName="ITSupportCharge" />
+                <ScalarProperty Name="MiscCreditCharge" ColumnName="MiscCreditCharge" />
+                <ScalarProperty Name="GlobalProcessCharge" ColumnName="GlobalProcessCharge" />
+                <ScalarProperty Name="CCCredit" ColumnName="CCCredit" />
+                <ScalarProperty Name="CCProcessCharge" ColumnName="CCProcessCharge" />
+                <ScalarProperty Name="CCProcessRate" ColumnName="CCProcessRate" />
+                <ScalarProperty Name="CCProcessQty" ColumnName="CCProcessQty" />
+                <ScalarProperty Name="ProductSetupCharge" ColumnName="ProductSetupCharge" />
+                <ScalarProperty Name="ProductSetupRate" ColumnName="ProductSetupRate" />
+                <ScalarProperty Name="ProductSetupQty" ColumnName="ProductSetupQty" />
+                <ScalarProperty Name="ReLabelFeeCharge" ColumnName="ReLabelFeeCharge" />
+                <ScalarProperty Name="ReLabelFeeRate" ColumnName="ReLabelFeeRate" />
+                <ScalarProperty Name="ReLabelFeeQty" ColumnName="ReLabelFeeQty" />
+                <ScalarProperty Name="ReLabelPrtCharge" ColumnName="ReLabelPrtCharge" />
+                <ScalarProperty Name="ReLabelPrtRate" ColumnName="ReLabelPrtRate" />
+                <ScalarProperty Name="ReLabelPrtQty" ColumnName="ReLabelPrtQty" />
+                <ScalarProperty Name="LabelPrtCharge" ColumnName="LabelPrtCharge" />
+                <ScalarProperty Name="LabelPrtRate" ColumnName="LabelPrtRate" />
+                <ScalarProperty Name="LabelPrtQty" ColumnName="LabelPrtQty" />
+                <ScalarProperty Name="FollowUpCharge" ColumnName="FollowUpCharge" />
+                <ScalarProperty Name="FollowUpRate" ColumnName="FollowUpRate" />
+                <ScalarProperty Name="FollowUpQty" ColumnName="FollowUpQty" />
+                <ScalarProperty Name="ManualEntryCharge" ColumnName="ManualEntryCharge" />
+                <ScalarProperty Name="ManualEntryRate" ColumnName="ManualEntryRate" />
+                <ScalarProperty Name="ManualEntryQty" ColumnName="ManualEntryQty" />
+                <ScalarProperty Name="NonRevenueCharge" ColumnName="NonRevenueCharge" />
+                <ScalarProperty Name="NonRevenueRate" ColumnName="NonRevenueRate" />
+                <ScalarProperty Name="NonRevenueQty" ColumnName="NonRevenueQty" />
+                <ScalarProperty Name="RevenueCharge" ColumnName="RevenueCharge" />
+                <ScalarProperty Name="RevenueRate" ColumnName="RevenueRate" />
+                <ScalarProperty Name="RevenueQty" ColumnName="RevenueQty" />
+                <ScalarProperty Name="SamplesCharge" ColumnName="SamplesCharge" />
+                <ScalarProperty Name="SamplesRate" ColumnName="SamplesRate" />
+                <ScalarProperty Name="SamplesQty" ColumnName="SamplesQty" />
+                <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
+                <ScalarProperty Name="TotalDue" ColumnName="TotalDue" />
+                <ScalarProperty Name="TotalAdminCharge" ColumnName="TotalAdminCharge" />
+                <ScalarProperty Name="TotalFrtHzdSchg" ColumnName="TotalFrtHzdSchg" />
+                <ScalarProperty Name="TotalFreight" ColumnName="TotalFreight" />
+                <ScalarProperty Name="TotalCostSamples" ColumnName="TotalCostSamples" />
+                <ScalarProperty Name="TotalSamples" ColumnName="TotalSamples" />
+                <ScalarProperty Name="SampleShipOther" ColumnName="SampleShipOther" />
+                <ScalarProperty Name="SampleShipSecondDay" ColumnName="SampleShipSecondDay" />
+                <ScalarProperty Name="SampleShipNextDay" ColumnName="SampleShipNextDay" />
+                <ScalarProperty Name="SampleShipSameDay" ColumnName="SampleShipSameDay" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Item" ColumnName="Item" />
-                <ScalarProperty Name="ChargeYear" ColumnName="ChargeYear" />
-                <ScalarProperty Name="ChargeMonth" ColumnName="ChargeMonth" />
-                <ScalarProperty Name="ChargeDate" ColumnName="ChargeDate" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="Tier" ColumnName="Tier" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="RemitTo" ColumnName="RemitTo" />
+                <ScalarProperty Name="BillTo" ColumnName="BillTo" />
+                <ScalarProperty Name="NetTerm" ColumnName="NetTerm" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+                <ScalarProperty Name="PeriodYear" ColumnName="PeriodYear" />
+                <ScalarProperty Name="PeriodMonth" ColumnName="PeriodMonth" />
+                <ScalarProperty Name="InvoicePeriod" ColumnName="InvoicePeriod" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="VerifyDate" ColumnName="VerifyDate" />
+                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="WarehouseLocation" ColumnName="WarehouseLocation" />
+                <ScalarProperty Name="BillingGroup" ColumnName="BillingGroup" />
                 <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
                 <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
               </MappingFragment>
@@ -4074,6 +4490,44 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="TransType" ColumnName="TransType" />
                 <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="InvTransID" ColumnName="InvTransID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLog">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblLog">
+              <MappingFragment StoreEntitySet="tblLog">
+                <ScalarProperty Name="Size_MDB" ColumnName="Size_MDB" />
+                <ScalarProperty Name="LotNumber_MDB" ColumnName="LotNumber_MDB" />
+                <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
+                <ScalarProperty Name="ProductCode_MDB" ColumnName="ProductCode_MDB" />
+                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="LogRecordStatus_MDB" ColumnName="LogRecordStatus_MDB" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="MasterName" ColumnName="MasterName" />
+                <ScalarProperty Name="MasterCode" ColumnName="MasterCode" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Bin" ColumnName="Bin" />
+                <ScalarProperty Name="Lotnumber" ColumnName="Lotnumber" />
+                <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LogNotes" ColumnName="LogNotes" />
+                <ScalarProperty Name="LogAmount" ColumnName="LogAmount" />
+                <ScalarProperty Name="LogQty" ColumnName="LogQty" />
+                <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
+                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+                <ScalarProperty Name="StockID" ColumnName="StockID" />
+                <ScalarProperty Name="BulkID" ColumnName="BulkID" />
+                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+                <ScalarProperty Name="LogType" ColumnName="LogType" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4433,6 +4887,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySetMapping Name="tblProductDetail">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductDetail">
               <MappingFragment StoreEntitySet="tblProductDetail">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
                 <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
@@ -4534,6 +4989,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
                 <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="TemperatureControlledStorage" ColumnName="TemperatureControlledStorage" />
                 <ScalarProperty Name="DustFilter" ColumnName="DustFilter" />
                 <ScalarProperty Name="LeadTime" ColumnName="LeadTime" />
                 <ScalarProperty Name="CountryOfOrigin" ColumnName="CountryOfOrigin" />
@@ -4768,6 +5224,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="WebOEInclude" ColumnName="WebOEInclude" />
                 <ScalarProperty Name="InactiveSize" ColumnName="InactiveSize" />
                 <ScalarProperty Name="NewItem" ColumnName="NewItem" />
+                <ScalarProperty Name="OtherSurchargeDescription" ColumnName="OtherSurchargeDescription" />
                 <ScalarProperty Name="OtherSurchargeAmt" ColumnName="OtherSurchargeAmt" />
                 <ScalarProperty Name="OtherSurcharge" ColumnName="OtherSurcharge" />
                 <ScalarProperty Name="LabelSurcharge" ColumnName="LabelSurcharge" />
@@ -4986,19 +5443,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vwShelfTransForReplenishment">
-            <EntityTypeMapping TypeName="CMCSQL03Model.vwShelfTransForReplenishment">
-              <MappingFragment StoreEntitySet="vwShelfTransForReplenishment">
-                <ScalarProperty Name="InvTransID" ColumnName="InvTransID" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-                <ScalarProperty Name="TransAmount" ColumnName="TransAmount" />
-                <ScalarProperty Name="TransQty" ColumnName="TransQty" />
-                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
-                <ScalarProperty Name="TransType" ColumnName="TransType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vwBulkTransForReplenishment">
             <EntityTypeMapping TypeName="CMCSQL03Model.vwBulkTransForReplenishment">
               <MappingFragment StoreEntitySet="vwBulkTransForReplenishment">
@@ -5012,6 +5456,48 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="vwProductsInfo">
+            <EntityTypeMapping TypeName="CMCSQL03Model.vwProductsInfo">
+              <MappingFragment StoreEntitySet="vwProductsInfo">
+                <ScalarProperty Name="PackagePartNumber_MDB" ColumnName="PackagePartNumber_MDB" />
+                <ScalarProperty Name="WebOEInclude" ColumnName="WebOEInclude" />
+                <ScalarProperty Name="OtherSurchargeAmt" ColumnName="OtherSurchargeAmt" />
+                <ScalarProperty Name="OtherSurcharge" ColumnName="OtherSurcharge" />
+                <ScalarProperty Name="LabelSurcharge" ColumnName="LabelSurcharge" />
+                <ScalarProperty Name="KosherSurcharge" ColumnName="KosherSurcharge" />
+                <ScalarProperty Name="BiocideSurcharge" ColumnName="BiocideSurcharge" />
+                <ScalarProperty Name="NitrogenSurcharge" ColumnName="NitrogenSurcharge" />
+                <ScalarProperty Name="NalgeneSurcharge" ColumnName="NalgeneSurcharge" />
+                <ScalarProperty Name="BlendSurcharge" ColumnName="BlendSurcharge" />
+                <ScalarProperty Name="CleanSurcharge" ColumnName="CleanSurcharge" />
+                <ScalarProperty Name="FreezerSurcharge" ColumnName="FreezerSurcharge" />
+                <ScalarProperty Name="RefrigSurcharge" ColumnName="RefrigSurcharge" />
+                <ScalarProperty Name="HeatSurcharge" ColumnName="HeatSurcharge" />
+                <ScalarProperty Name="FlammableSurcharge" ColumnName="FlammableSurcharge" />
+                <ScalarProperty Name="HazardSurcharge" ColumnName="HazardSurcharge" />
+                <ScalarProperty Name="ReorderMax" ColumnName="ReorderMax" />
+                <ScalarProperty Name="ReorderMin" ColumnName="ReorderMin" />
+                <ScalarProperty Name="UnitWeight" ColumnName="UnitWeight" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+                <ScalarProperty Name="ReasonCode" ColumnName="ReasonCode" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
+                <ScalarProperty Name="GHSReady" ColumnName="GHSReady" />
+                <ScalarProperty Name="EndUse" ColumnName="EndUse" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="MasterCode" ColumnName="MasterCode" />
+                <ScalarProperty Name="MasterName" ColumnName="MasterName" />
+                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+                <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
+                <ScalarProperty Name="Division" ColumnName="Division" />
+                <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+                <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="vwShelfStockForReplenishment">
             <EntityTypeMapping TypeName="CMCSQL03Model.vwShelfStockForReplenishment">
               <MappingFragment StoreEntitySet="vwShelfStockForReplenishment">
@@ -5021,6 +5507,19 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="UnitWeight" ColumnName="UnitWeight" />
                 <ScalarProperty Name="QtyOnHand" ColumnName="QtyOnHand" />
                 <ScalarProperty Name="StockID" ColumnName="StockID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwShelfTransForReplenishment">
+            <EntityTypeMapping TypeName="CMCSQL03Model.vwShelfTransForReplenishment">
+              <MappingFragment StoreEntitySet="vwShelfTransForReplenishment">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
+                <ScalarProperty Name="TransAmount" ColumnName="TransAmount" />
+                <ScalarProperty Name="TransQty" ColumnName="TransQty" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="TransType" ColumnName="TransType" />
+                <ScalarProperty Name="InvTransID" ColumnName="InvTransID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

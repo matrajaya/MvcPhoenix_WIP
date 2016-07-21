@@ -57,14 +57,14 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Equivalents</label><br />
-                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control", @size = 8 })
+                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control", @size = 10 })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cross Reference List</label><br />
-                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control", @size = 8 })
+                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control", @size = 10 })
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Active Date*</label>
+                        <label>Active Date</label>
                         @Html.TextBoxFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                     </div>
                     <div class="form-group col-md-3">
@@ -73,7 +73,7 @@
                         @Html.ValidationMessageFor(m => m.sgrevisiondate)
                     </div>
                     <div class="col-md-6">
-                        <ul class="list-unstyled list-3-col">
+                        <ul class="list-unstyled list-2-col">
                             <li>
                                 @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline" })
                                 <label class="control-label">Accuracy Verified</label>
@@ -86,6 +86,10 @@
                                 @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
                                 <label class="control-label">Discontinued</label>
                             </li>
+							<li>
+                                @Html.CheckBox("active", Model.active != null && (bool)Model.active, new { @class = "checkbox-inline" })
+								<label class="control-label">Active</label>
+							</li>
                         </ul>
                         <div class="form-group">
                             <label>Accuracy Verified By</label>
@@ -130,6 +134,7 @@
                             <li>@Html.CheckBox("freezerstorage", Model.freezerstorage != null && (bool)Model.freezerstorage) Freezer Storage</li>
                             <li>@Html.CheckBox("refrigerate", Model.refrigerate != null && (bool)Model.refrigerate) Refrig Storage</li>
                             <li>@Html.CheckBox("noreorder", Model.noreorder != null && (bool)Model.noreorder) Do Not Reorder</li>
+							<li>@Html.CheckBox("temperaturecontrolledstorage", Model.temperaturecontrolledstorage != null && (bool)Model.temperaturecontrolledstorage) Temp Controlled Storage</li>
                         </ul>
                     </div>
 

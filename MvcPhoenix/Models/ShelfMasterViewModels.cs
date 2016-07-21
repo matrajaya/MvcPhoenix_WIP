@@ -6,6 +6,8 @@ namespace MvcPhoenix.Models
 {
     public class ShelfMasterViewModel
     {
+		public string clientum { get; set; }
+		
         [Display(Name = "ShelfID")]
         public int shelfid { get; set; }
 
@@ -91,6 +93,9 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Other SurchargeAmt")]
         public decimal? othersurchargeamt { get; set; }
+		
+		[Display(Name = "Other Description")]
+        public string othersurchargedescription { get; set; }
 
         [Display(Name = "New Item")]
         public string newitem { get; set; }
@@ -111,18 +116,6 @@ namespace MvcPhoenix.Models
 
         public string packagepartnumber { get; set; }
 
-        //[Display(Name = "Bus Area")]
-        // public string busarea { get; set; }
-
-        //[Display(Name = "Mnemonic")]
-        //public string mnemonic { get; set; }
-
-        //[Display(Name = "Ground Hazard")]
-        //public string groundhazard { get; set; }
-
-        //[Display(Name = "Air Hazard")]
-        //public string airhazard { get; set; }
-
         [Display(Name = "Notes")]
         public string notes { get; set; }
 
@@ -134,11 +127,5 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "CustCode")]
         public string custcode { get; set; }
-
-        //[Display(Name = "MigrationNotes")]
-        //public string migrationnotes { get; set; }
-
-        //public string datastate { get; set; }
-        //public bool? IsValidItem { get; set; }
     }
 }

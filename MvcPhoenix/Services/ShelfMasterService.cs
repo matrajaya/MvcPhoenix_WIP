@@ -16,10 +16,12 @@ namespace MvcPhoenix.Services
                               join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
                               join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
                               join cl in db.tblClient on pm.ClientID equals cl.ClientID
-                              where t.ProductDetailID == id && t.InactiveSize == false
+                              where t.ProductDetailID == id //&& t.InactiveSize == false
                               let PPN = (from pk in db.tblPackage where pk.PackageID == t.PackageID select pk.PartNumber).FirstOrDefault()
+							  let PPMaterial = (from pk1 in db.tblPackage where pk1.PackageID == t.PackageID select pk1.Description).FirstOrDefault()
                               select new ShelfMasterViewModel
                               {
+								  clientum = cl.ClientUM,
                                   shelfid = t.ShelfID,
                                   productdetailid = t.ProductDetailID,
                                   clientid = cl.ClientID,
@@ -37,7 +39,7 @@ namespace MvcPhoenix.Services
                                   reorderqty = t.ReorderQty,
                                   notes = t.Notes,
                                   packagepartnumber = PPN,
-
+								  pkgmaterial=PPMaterial,
                                   hazardsurcharge = t.HazardSurcharge,
                                   flammablesurcharge = t.FlammableSurcharge,
                                   heatsurcharge = t.HeatSurcharge,
@@ -50,14 +52,11 @@ namespace MvcPhoenix.Services
                                   biocidesurcharge = t.BiocideSurcharge,
                                   koshersurcharge = t.KosherSurcharge,
                                   labelsurcharge = t.LabelSurcharge,
-                                  othersurcharge = t.OtherSurcharge
+                                  othersurcharge = t.OtherSurcharge,
+								  inactivesize = t.InactiveSize
                               }).ToList();
                 foreach (var item in mylist)
                 {
-                    //if(String.IsNullOrEmpty(item.size))
-                    //{
-                    //    item.IsValidItem = false;
-                    //}
                 }
                 return mylist;
             }
@@ -65,14 +64,12 @@ namespace MvcPhoenix.Services
 
         public static int fnCloneShelfMaster(int id)
         {
-            // id = shelfid
             using (var db = new EF.CMCSQL03Entities())
             {
                 // copy a record, return the productdetailid
                 var dbrow = db.tblShelfMaster.Find(id);
                 int pdid = Convert.ToInt32(dbrow.ProductDetailID);
-                //string s = "Insert into tblShelfMaster (ProductDetailID,Size,Warehouse,Bin,Notes) Select ProductDetailID,null,Warehouse,Bin from tblShelfMaster where shelfid=" + id.ToString();
-                string s = "Insert into tblShelfMaster (ProductDetailID,Warehouse,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge) Select ProductDetailID,Warehouse,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge from tblShelfMaster where shelfid=" + id.ToString();
+                string s = String.Format("Insert into tblShelfMaster (ProductDetailID,Warehouse,Size,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge) Select ProductDetailID,Warehouse,Size,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge from tblShelfMaster where shelfid={0}",id);
                 db.Database.ExecuteSqlCommand(s);
                 return pdid;
             }
@@ -99,8 +96,6 @@ namespace MvcPhoenix.Services
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                //var dbrow = db.tblShelfMaster.Find(id);
-                //int? PDid = dbrow.ProductDetailID;
                 db.Database.ExecuteSqlCommand("Delete from tblShelfMaster where ShelfID=" + id.ToString());
             }
         }
@@ -153,15 +148,12 @@ namespace MvcPhoenix.Services
                 SM.labelsurcharge = dbSM.LabelSurcharge;
                 SM.othersurcharge = dbSM.OtherSurcharge;
                 SM.othersurchargeamt = dbSM.OtherSurchargeAmt;
+				SM.othersurchargedescription = dbSM.OtherSurchargeDescription;
                 SM.newitem = dbSM.NewItem;
                 SM.inactivesize = dbSM.InactiveSize;
                 SM.weboeinclude = dbSM.WebOEInclude;
                 SM.sortorder = dbSM.SortOrder;
                 SM.packageid = dbSM.PackageID;
-                //SM.busarea = dbSM.BusArea;
-                //SM.mnemonic = dbSM.Mnemonic;
-                //SM.groundhazard = dbSM.GroundHazard;
-                //SM.airhazard = dbSM.AirHazard;
                 SM.notes = dbSM.Notes;
                 SM.discontinued = dbSM.Discontinued;
                 SM.alert = dbSM.Alert;
@@ -205,15 +197,12 @@ namespace MvcPhoenix.Services
                 dbSM.LabelSurcharge = obj.labelsurcharge;
                 dbSM.OtherSurcharge = obj.othersurcharge;
                 dbSM.OtherSurchargeAmt = obj.othersurchargeamt;
+				dbSM.OtherSurchargeDescription = obj.othersurchargedescription;
                 dbSM.NewItem = obj.newitem;
                 dbSM.InactiveSize = obj.inactivesize;
                 dbSM.WebOEInclude = obj.weboeinclude;
                 dbSM.SortOrder = obj.sortorder;
                 dbSM.PackageID = obj.packageid;
-                //dbSM.BusArea = obj.busarea;
-                //dbSM.Mnemonic = obj.mnemonic;
-                //dbSM.GroundHazard = obj.groundhazard;
-                //dbSM.AirHazard = obj.airhazard;
                 dbSM.Notes = obj.notes;
                 dbSM.Discontinued = obj.discontinued;
                 dbSM.Alert = obj.alert;
@@ -265,16 +254,6 @@ namespace MvcPhoenix.Services
                 return s;
             }
         }
-
-        //public static string? isValidShelfMaster(ShelfMasterViewModel obj)
-        //{
-        //    // Validate the viewmodel and return a t/f
-        //    //bool retval = false;
-        //    // look for a reason to fail
-        //    string retval = "Errors";
-
-        //    return retval;
-        //}
 
         private static List<SelectListItem> fnListOfPackageIDs(string size)
         {

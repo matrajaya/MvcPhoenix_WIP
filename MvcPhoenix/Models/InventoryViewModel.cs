@@ -11,6 +11,15 @@ namespace MvcPhoenix.Models
 
     public class BulkContainerViewModel
     {
+		public decimal? pm_sumofcurrentweight { get; set; }
+        public string pm_MasterNotes { get; set; }
+        public string pm_HandlingOther { get; set; }
+        public string pm_OtherHandlingInstr { get; set; }
+        public bool? pm_refrigerate { get; set; }
+        public bool? pm_flammablestorageroom { get; set; }
+        public bool? pm_freezablelist { get; set; }
+        public bool? pm_refrigeratedlist { get; set; }
+		
         public bool? isknownmaterial { get; set; }
         public string closelist { get; set; }
 

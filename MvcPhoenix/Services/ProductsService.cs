@@ -99,7 +99,6 @@ namespace MvcPhoenix.Models
                                            percentage = t.Percentage,
                                            restrictedqty = t.RestrictedQty,
                                            restrictedamount = t.RestrictedAmount,
-                                           packonreceipt = t.PackOnReceipt,
                                            reportableqty = t.ReportableQty,
                                            reportableamount = t.ReportableAmount,
                                            lessthan = t.LessThan,
@@ -238,6 +237,7 @@ namespace MvcPhoenix.Models
                 PP.rcrahazcl = qd.RCRAHAZCL;
                 PP.rcrashipname = qd.RCRASHIPNAME;
                 PP.rcranosname = qd.RCRANOSNAME;
+				PP.active = qd.Active;
 
                 return PP;
             }
@@ -380,6 +380,7 @@ namespace MvcPhoenix.Models
                 PP.countryoforigin = q.CountryOfOrigin;
                 PP.leadtime = q.LeadTime;
                 PP.dustfilter = q.DustFilter;
+				PP.temperaturecontrolledstorage = q.TemperatureControlledStorage;
 
                 return PP;
             }
@@ -501,12 +502,6 @@ namespace MvcPhoenix.Models
                 q.SEAEMSNO = PP.seaemsno;
                 q.SEAMFAGNO = PP.seamfagno;
 
-                //q.LastUpDate = DateTime.Now;
-
-                //q.Company_MDB = pd.company_mdb;
-                //q.MasterCode_MDB = pd.mastercode_mdb;
-                //q.Division_MDB = pd.division_mdb;
-
                 // ------------------------- pc fields added 3/16/2016
                 q.AlertNotesShipping = PP.alertnotesshipping;
                 q.AlertNotesReceiving = PP.alertnotesreceiving;
@@ -521,6 +516,7 @@ namespace MvcPhoenix.Models
                 q.RCRAHAZCL = PP.rcrahazcl;
                 q.RCRASHIPNAME = PP.rcrashipname;
                 q.RCRANOSNAME = PP.rcranosname;
+				q.Active = PP.active;
 
                 db.SaveChanges();
             }
@@ -664,6 +660,7 @@ namespace MvcPhoenix.Models
                 q.CountryOfOrigin = pm.countryoforigin;
                 q.LeadTime = pm.leadtime;
                 q.DustFilter = pm.dustfilter;
+				q.TemperatureControlledStorage = pm.temperaturecontrolledstorage;
 
                 db.SaveChanges();
             }
@@ -832,7 +829,6 @@ namespace MvcPhoenix.Models
                 CS.percentage = q.Percentage;
                 CS.restrictedqty = q.RestrictedQty;
                 CS.restrictedamount = q.RestrictedAmount;
-                CS.packonreceipt = q.PackOnReceipt;
                 CS.reportableqty = q.ReportableQty;
                 CS.reportableamount = q.ReportableAmount;
                 CS.lessthan = q.LessThan;
@@ -859,7 +855,6 @@ namespace MvcPhoenix.Models
                 q.Percentage = CS.percentage;
                 q.RestrictedQty = CS.restrictedqty;
                 q.RestrictedAmount = CS.restrictedamount;
-                q.PackOnReceipt = CS.packonreceipt;
                 q.ReportableQty = CS.reportableqty;
                 q.ReportableAmount = CS.reportableamount;
                 q.LessThan = CS.lessthan;

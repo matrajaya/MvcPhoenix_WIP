@@ -12,17 +12,28 @@ namespace MvcPhoenix.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tblShelfMaster
+    public partial class vwProductsInfo
     {
-        public int ShelfID { get; set; }
+        public int ClientID { get; set; }
+        public string ClientName { get; set; }
+        public string CMCLocation { get; set; }
+        public Nullable<int> DivisionID { get; set; }
+        public string Division { get; set; }
+        public string CompanyCountry { get; set; }
+        public int ProductMasterID { get; set; }
+        public string MasterName { get; set; }
+        public string MasterCode { get; set; }
+        public string ProductName { get; set; }
+        public string EndUse { get; set; }
+        public Nullable<bool> GHSReady { get; set; }
         public Nullable<int> ProductDetailID { get; set; }
+        public string Notes { get; set; }
+        public string ReasonCode { get; set; }
         public string Warehouse { get; set; }
         public string Size { get; set; }
         public Nullable<decimal> UnitWeight { get; set; }
         public Nullable<decimal> ReorderMin { get; set; }
         public Nullable<decimal> ReorderMax { get; set; }
-        public Nullable<decimal> ReorderQty { get; set; }
-        public string Bin { get; set; }
         public Nullable<bool> HazardSurcharge { get; set; }
         public Nullable<bool> FlammableSurcharge { get; set; }
         public Nullable<bool> HeatSurcharge { get; set; }
@@ -37,25 +48,7 @@ namespace MvcPhoenix.EF
         public Nullable<bool> LabelSurcharge { get; set; }
         public Nullable<bool> OtherSurcharge { get; set; }
         public Nullable<decimal> OtherSurchargeAmt { get; set; }
-        public string OtherSurchargeDescription { get; set; }
-        public string NewItem { get; set; }
-        public Nullable<bool> InactiveSize { get; set; }
         public Nullable<bool> WebOEInclude { get; set; }
-        public Nullable<int> SortOrder { get; set; }
-        public Nullable<int> PackageID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public string CreateUser { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-        public string UpdateUser { get; set; }
         public string PackagePartNumber_MDB { get; set; }
-        public string Company_MDB { get; set; }
-        public string Division_MDB { get; set; }
-        public string ProductCode_MDB { get; set; }
-        public string BusArea_MDB { get; set; }
-        public string Notes { get; set; }
-        public Nullable<bool> Discontinued { get; set; }
-        public string Alert { get; set; }
-        public string CustCode { get; set; }
-        public string MigrationNotes { get; set; }
     }
 }
