@@ -138,7 +138,7 @@
             </div>
             <div id="special" class="panel-body collapse">
                 <div class="row">
-                    <div class="form-group col-md-6">
+                    <div class="col-md-6">
                         <ul class="list-unstyled list-2-col">
                             <li>@Html.CheckBox("cleanroomgmp", Model.cleanroomgmp != null && (bool)Model.cleanroomgmp) Clean Room GMP</li>
                             <li>@Html.CheckBox("nitrogenblanket", Model.nitrogenblanket != null && (bool)Model.nitrogenblanket) Nitrogen Blanket</li>
@@ -152,7 +152,7 @@
                         </ul>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="col-md-6">
                         <ul class="list-unstyled list-2-col">
                             <li>
                                 Torque: @Html.TextBoxFor(m => m.torquerequirements, new { @class = "form-control" })

@@ -18,7 +18,7 @@ namespace MvcPhoenix.Models
         public string warehouselocation { get; set; }
 
         [Display(Name = "Client ID")]
-        public int clientid { get; set; }
+        public int? clientid { get; set; }
 
         [Display(Name = "Client Name")]
         public string clientname { get; set; }
@@ -27,28 +27,28 @@ namespace MvcPhoenix.Models
         public string createdby { get; set; }
         
         [Display(Name = "Created Date")]
-        public DateTime? createddate { get; set; }
+        public DateTimeOffset? createddate { get; set; }
         
         [Display(Name = "Verified Date")]
-        public DateTime? verifieddate { get; set; }
+        public DateTimeOffset? verifieddate { get; set; }
 
         [Display(Name = "Invoice Status")]
         public string status { get; set; }          // possible: new / reviewed / emailed / closed
 
         [Display(Name = "Invoice Date")]
-        public DateTime? invoicedate { get; set; }
+        public DateTimeOffset? invoicedate { get; set; }
 
         [Display(Name = "Invoice Period")]
         public string invoiceperiod { get; set; }
 
         public string periodmonth { get; set; }
-        public string periodyear { get; set; }
+        public int? periodyear { get; set; }
 
         [Display(Name = "PO Number")]
-        public int ponumber { get; set; }
+        public string ponumber { get; set; }
 
         [Display(Name = "Net Term")]
-        public int netterm { get; set; }
+        public string netterm { get; set; }
 
         [Display(Name = "BILL TO")]
         public string billto { get; set; }
@@ -60,147 +60,147 @@ namespace MvcPhoenix.Models
         public string currency { get; set; }
 
         [Display(Name = "Tier")]
-        public int tier { get; set; }
+        public int? tier { get; set; }
 
         [Display(Name = "Order Type")]
-        public string ordertype { get; set; }       //Sample(domestic)/International/Revenue does not apply to all clients
+        public string ordertype { get; set; }       //Sample(domestic)/international/Revenue does not apply to all clients
 
         /////////////////////////////////////////////
         // Shipping Performance
         /////////////////////////////////////////////
         [Display(Name = "Same Day")]
-        public int sampleshipsameday { get; set; }
+        public int? sampleshipsameday { get; set; }
 
         [Display(Name = "Next Day")]
-        public int sampleshipnextday { get; set; }
+        public int? sampleshipnextday { get; set; }
         
         [Display(Name = "Second Day")]
-        public int sampleshipsecondday { get; set; }
+        public int? sampleshipsecondday { get; set; }
         
         [Display(Name = "Other")]
-        public int sampleshipother { get; set; }
+        public int? sampleshipother { get; set; }
 
         /////////////////////////////////////////////
         // Master Invoice Summary
         /////////////////////////////////////////////
         [Display(Name = "Number of Samples")]
-        public int totalsamples { get; set; }
+        public int? totalsamples { get; set; }
 
         [Display(Name = "Total Cost of Processing Samples")]
-        public decimal totalcostsamples { get; set; }
+        public decimal? totalcostsamples { get; set; }
         
         [Display(Name = "Total Freight")]
-        public decimal totalfreight { get; set; }
+        public decimal? totalfreight { get; set; }
         
         [Display(Name = "Total Freight Hazardous Surcharge")]
-        public decimal totalfrtHzdSchg { get; set; }
+        public decimal? totalfrtHzdSchg { get; set; }
 
         [Display(Name = "Total Administrative Charges")]
-        public decimal totaladmincharge { get; set; }
+        public decimal? totaladmincharge { get; set; }
 
         [Display(Name = "Total Due")]
-        public decimal totaldue { get; set; }
+        public decimal? totaldue { get; set; }
 
         /////////////////////////////////////////////
         // Billing Worksheet
         /////////////////////////////////////////////
         [Display(Name = "Grand Total")]
-        public decimal grandtotal { get; set; }
+        public decimal? grandtotal { get; set; }
 
         [Display(Name = "Samples")]
-        public int samplesqty { get; set; }
-        public decimal samplesrate { get; set; }
-        public decimal samplescharge { get; set; }
+        public int? samplesqty { get; set; }
+        public decimal? samplesrate { get; set; }
+        public decimal? samplescharge { get; set; }
 
         [Display(Name = "Revenue")]
-        public int revenueqty { get; set; }
-        public decimal revenuerate { get; set; }
-        public decimal revenuecharge { get; set; }
+        public int? revenueqty { get; set; }
+        public decimal? revenuerate { get; set; }
+        public decimal? revenuecharge { get; set; }
 
         [Display(Name = "Non-Revenue")]
-        public int nonrevenueqty { get; set; }
-        public decimal nonrevenuerate { get; set; }
-        public decimal nonrevenuecharge { get; set; }
+        public int? nonrevenueqty { get; set; }
+        public decimal? nonrevenuerate { get; set; }
+        public decimal? nonrevenuecharge { get; set; }
 
         [Display(Name = "Manual Entry")]
-        public int manualentryqty { get; set; }
-        public decimal manualentryrate { get; set; }
-        public decimal manualentrycharge { get; set; }
+        public int? manualentryqty { get; set; }
+        public decimal? manualentryrate { get; set; }
+        public decimal? manualentrycharge { get; set; }
 
         [Display(Name = "Follow Up Orders")]
-        public int followupqty { get; set; }
-        public decimal followuprate { get; set; }
-        public decimal followupcharge { get; set; }
+        public int? followupqty { get; set; }
+        public decimal? followuprate { get; set; }
+        public decimal? followupcharge { get; set; }
 
         [Display(Name = "Label Printed")]
-        public int labelprtqty { get; set; }
-        public decimal labelprtrate { get; set; }
-        public decimal labelprtcharge { get; set; }
+        public int? labelprtqty { get; set; }
+        public decimal? labelprtrate { get; set; }
+        public decimal? labelprtcharge { get; set; }
 
         [Display(Name = "Re-Label Printed")]
-        public int relabelprtqty { get; set; }
-        public decimal relabelprtrate { get; set; }
-        public decimal relabelprtcharge { get; set; }
+        public int? relabelprtqty { get; set; }
+        public decimal? relabelprtrate { get; set; }
+        public decimal? relabelprtcharge { get; set; }
 
         [Display(Name = "Re-Label Labor Fee")]
-        public int relabelfeeqty { get; set; }
-        public decimal relabelfeerate { get; set; }
-        public decimal relabelfeecharge { get; set; }
+        public int? relabelfeeqty { get; set; }
+        public decimal? relabelfeerate { get; set; }
+        public decimal? relabelfeecharge { get; set; }
 
         [Display(Name = "Product Set-Up Changes")]
-        public int productsetupqty { get; set; }
-        public decimal productsetuprate { get; set; }
-        public decimal productsetupcharge { get; set; }
+        public int? productsetupqty { get; set; }
+        public decimal? productsetuprate { get; set; }
+        public decimal? productsetupcharge { get; set; }
 
         [Display(Name = "Credit Card Order Processing Fee")]
-        public int ccprocessqty { get; set; }
-        public decimal ccprocessrate { get; set; }
-        public decimal ccprocesscharge { get; set; }
+        public int? ccprocessqty { get; set; }
+        public decimal? ccprocessrate { get; set; }
+        public decimal? ccprocesscharge { get; set; }
 
         [Display(Name = "Credit Card Credit")]
-        public decimal cccredit { get; set; }
+        public decimal? cccredit { get; set; }
 
         [Display(Name = "Global Processing Fee")]
-        public decimal globalprocesscharge { get; set; }
+        public decimal? globalprocesscharge { get; set; }
 
         [Display(Name = "Misc Credits For Failure")]
-        public decimal misccreditcharge { get; set; }
+        public decimal? misccreditcharge { get; set; }
 
         [Display(Name = "IT Project Support")]
-        public decimal itsupportcharge { get; set; }
+        public decimal? itsupportcharge { get; set; }
 
         [Display(Name = "Label Stock")]
-        public decimal labelstock { get; set; }
+        public decimal? labelstock { get; set; }
 
         [Display(Name = "Empty Drum Disposal")]
-        public decimal emptydrumcharge { get; set; }
+        public decimal? emptydrumcharge { get; set; }
 
         [Display(Name = "Same Day Rush Shipment")]
-        public int rushshipqty { get; set; }
-        public decimal rushshiprate { get; set; }
-        public decimal rushshipcharge { get; set; }
+        public int? rushshipqty { get; set; }
+        public decimal? rushshiprate { get; set; }
+        public decimal? rushshipcharge { get; set; }
 
         [Display(Name = "Empty Pails")]
-        public int emptypailsqty { get; set; }
-        public decimal emptypailsrate { get; set; }
-        public decimal emptypailscharge { get; set; }
+        public int? emptypailsqty { get; set; }
+        public decimal? emptypailsrate { get; set; }
+        public decimal? emptypailscharge { get; set; }
 
         [Display(Name = "Empty Pails Freight")]
-        public decimal emptypailsfgtcharge { get; set; }
+        public decimal? emptypailsfgtcharge { get; set; }
 
         [Display(Name = "Inactive Stock Storage Surcharge")]
-        public int inactivestockqty { get; set; }
-        public decimal inactivestockrate { get; set; }
-        public decimal inactivestockcharge { get; set; }
+        public int? inactivestockqty { get; set; }
+        public decimal? inactivestockrate { get; set; }
+        public decimal? inactivestockcharge { get; set; }
 
         [Display(Name = "Other HM 181 Packaging")]
-        public decimal hm181pkgcharge { get; set; }
+        public decimal? hm181pkgcharge { get; set; }
 
         [Display(Name = "Documentation & Handling Fee")]
-        public decimal dochandlingcharge { get; set; }
+        public decimal? dochandlingcharge { get; set; }
 
         [Display(Name = "Minimal Sample Charge")]
-        public double minimalsamplecharge { get; set; }
+        public decimal? minimalsamplecharge { get; set; }
 
         public enum WHChoice
         {
@@ -212,6 +212,21 @@ namespace MvcPhoenix.Models
             EU,
             [Display(Name = "Asia Pacific")]
             AP,
+        }
+
+        public enum CurrencyChoice
+        {
+            USD,
+            EUR,
+            CNY
+        }
+
+        public enum InvoiceStatusChoice
+        {
+            New,
+            Reviewed,
+            Emailed,
+            Closed
         }
 
         // Consider month choice for period or possible code magic and date manipulation

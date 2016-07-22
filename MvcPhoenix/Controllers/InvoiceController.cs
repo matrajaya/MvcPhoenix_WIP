@@ -12,22 +12,15 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Edit(int id)
         {
-            InvoiceViewModel CI = new InvoiceViewModel();
+            var vm = InvoiceService.FillInvoice(id);
             
-            CI.invoiceid = id;
-            CI = InvoiceService.FillInvoice(CI);
-            
-            return View(CI);
+            return View(vm);
         }
 
         public ActionResult View(int id)
         {
-            InvoiceViewModel CI = new InvoiceViewModel();
-
-            CI.invoiceid = id;
-            CI = InvoiceService.FillInvoice(CI);
-
-            return View(CI);
+            
+            return View();
         }
 
         public ActionResult GenerateInvoice(string client, string division)
