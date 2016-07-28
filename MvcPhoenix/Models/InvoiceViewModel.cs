@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
@@ -50,9 +51,11 @@ namespace MvcPhoenix.Models
         [Display(Name = "Net Term")]
         public string netterm { get; set; }
 
+        [AllowHtml]
         [Display(Name = "BILL TO")]
         public string billto { get; set; }
 
+        [AllowHtml]
         [Display(Name = "REMIT TO")]
         public string remitto { get; set; }
 

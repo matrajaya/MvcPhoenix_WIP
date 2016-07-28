@@ -1,6 +1,6 @@
 ﻿@model MvcPhoenix.Models.InvoiceViewModel
 @{
-    ViewBag.Title = "Edit Invoice";
+    ViewBag.Title = "View Invoice";
 }
 
 <div class="container-fluid">
@@ -29,9 +29,9 @@
                 <div class="panel-heading">TERMS</div>
                 <div class="panel-body">
                     <b>Invoice Number:</b> @Html.DisplayFor(m => m.invoiceid)<br>
-                    <b>Invoice Date:</b> @Html.DisplayFor(m => m.invoicedate)<br>
+                    <b>Invoice Date:</b> @Model.invoicedate.Value.ToString("d")<br>
                     <b>PO Number:</b> @Html.DisplayFor(m => m.ponumber)<br />
-                    <b>Net @Html.DisplayFor(m => m.netterm) Days</b>
+                    <b>Net @Html.DisplayFor(m => m.netterm)</b>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="col-md-4">
             <div class="panel panel-primary">
                 <div class="panel-heading">BILL TO</div>
-                <div class="panel-body">
+                <div class="panel-body" style="margin-bottom: -10px;">
                     @Html.Raw(Model.billto)
                 </div>
             </div>
@@ -48,7 +48,7 @@
         <div class="col-md-4">
             <div class="panel panel-primary">
                 <div class="panel-heading">REMIT TO</div>
-                <div class="panel-body">
+                <div class="panel-body" style="margin-bottom: -10px;">
                     @Html.Raw(Model.remitto)
                 </div>
             </div>
@@ -64,7 +64,7 @@
                             <table class="table table-hover table-striped">
                                 <tr>
                                     <th>Number of Samples</th>
-                                    <td style="text-align:right">@Html.DisplayFor(m => m.totalsamples)</td>
+                                    <th style="text-align:right">@Html.DisplayFor(m => m.totalsamples)</th>
                                 </tr>
                                 <tr>
                                     <th>Totals Cost of Processing Samples</th>
@@ -78,12 +78,10 @@
                                     <th>Freight Harzardous Surcharge</th>
                                     <td style="text-align:right">@Html.DisplayFor(m => m.totalfrtHzdSchg)</td>
                                 </tr>
-
                                 <tr>
                                     <th>Administrative Charges</th>
                                     <td style="text-align:right">@Html.DisplayFor(m => m.totaladmincharge)</td>
                                 </tr>
-
                                 <tr>
                                     <th>Total Due</th>
                                     <th style="text-align:right">@Html.DisplayFor(m => m.totaldue)</th>
@@ -111,9 +109,11 @@
                                     <td style="text-align:right">@Html.DisplayFor(m => m.sampleshipother)</td>
                                 </tr>
                             </table>
+
                             <div class="pull-right">
                                 <button class="btn btn-warning"><i class="fa fa-cloud-download fa-fw"></i> Download Invoice</button>
                             </div>
+
                         </div>
                     </div>
                 </div>

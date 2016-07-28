@@ -1,7 +1,14 @@
-﻿using System;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Web;
+
+using MvcPhoenix.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
@@ -9,119 +16,10 @@ namespace MvcPhoenix.Models
     {
         public static InvoiceViewModel FillInvoice(int id)
         {
-            # region dummydata
-            //model.invoiceid = 1000556;
-            //model.billinggroup = "ALL";
-            //model.warehouselocation = "CT";
-            //model.clientid = 123456;
-            //model.clientname = "Ashland";
-            //model.createdby = "You";
-            //model.createddate = System.DateTime.Now;
-            //model.verifieddate = System.DateTime.Now;
-            //model.status = "Pending Review";
-            //model.invoicedate = System.DateTime.Now;
-            //model.invoiceperiod = "July, 2016"; //extract month and year from invoice date conver tto string
-            //// model.periodmonth = "July";
-            //// model.periodyear = "2016";
-            //model.ponumber = 14562654;
-            //model.netterm = 60;
-            //model.billto = "Ashland, Inc<br>Suite 400<br>Roseland, New Jersey 07068<br>Attn: M. Feeney - Manager, Sales Service";
-            //model.remitto = "Chemical Marketing Concepts, LLC <br>c/o Odyssey Logistics & Technology Corp <br>39 Old Ridgebury Road, N-1 <br>Danbury, CT 06810";
-            //model.currency = "EUR";        // USD / EUR / CNY
-            //model.tier = 1;
-            //model.ordertype = "Samples"; // Sample/International/Revenue does not apply to all clients
-           
-            //// Shipping Performance
-            //model.sampleshipsameday = 50;
-            //model.sampleshipnextday = 30;
-            //model.sampleshipsecondday = 20;
-            //model.sampleshipother = 10;
-            
-            //// Invoice Summary
-            //model.totalsamples = 100;
-            //model.totalcostsamples = 100;
-            //model.totalfreight = 100;
-            //model.totalfrtHzdSchg = 100;
-            //model.totaladmincharge = 100;
-            //model.totaldue = model.totalcostsamples + model.totalfreight + model.totalfrtHzdSchg + model.totaladmincharge;
-             
-            //// Billing Worksheet
-            //model.grandtotal = 0;
-
-            //model.samplesqty = 1;
-            //model.samplesrate = 1;
-            //model.samplescharge = model.samplesqty * model.samplesrate;
-
-            //model.revenueqty = 1;
-            //model.revenuerate = 1;
-            //model.revenuecharge = model.revenueqty * model.revenueqty;
-
-            //model.nonrevenueqty = 1;
-            //model.nonrevenuerate = 1;
-            //model.nonrevenuecharge = model.nonrevenueqty * model.nonrevenueqty;
-
-            //model.manualentryqty = 10;
-            //model.manualentryrate = 5;
-            //model.manualentrycharge = model.manualentryqty * model.manualentryrate;
-
-            //model.followupqty = 10;
-            //model.followuprate = 5;
-            //model.followupcharge = model.followupqty * model.followuprate;
-
-            //model.labelprtqty = 10;
-            //model.labelprtrate = 10;
-            //model.labelprtcharge = model.labelprtqty * model.labelprtrate;
-
-            //model.labelstock = 100;
-
-            //model.relabelprtqty = 10;
-            //model.relabelprtrate = 10;
-            //model.relabelprtcharge = model.relabelprtqty * model.relabelprtrate;
-
-            //model.relabelfeeqty = 10;
-            //model.relabelfeerate = 5;
-            //model.relabelfeecharge = model.relabelfeeqty * model.relabelfeerate;
-
-            //model.productsetupqty = 10;
-            //model.productsetuprate = 5;
-            //model.productsetupcharge = model.productsetupqty * model.productsetuprate;
-
-            //model.ccprocessqty = 10;
-            //model.ccprocessrate = 5;
-            //model.ccprocesscharge = model.ccprocessqty * model.ccprocessrate;
-
-            //model.cccredit = -100;
-            //model.globalprocesscharge = 100;            
-            //model.misccreditcharge = 10;
-            //model.itsupportcharge = 100;
-            //model.emptydrumcharge = 100;
-
-            //model.rushshipqty = 100;
-            //model.rushshiprate = 5;
-            //model.rushshipcharge = model.rushshipqty * model.rushshiprate;
-
-            //model.emptypailsqty = 10;
-            //model.emptypailsrate = 5;
-            //model.emptypailscharge = model.emptypailsqty * model.emptypailsrate;
-            
-            //model.emptypailsfgtcharge = 100;
-            
-            //model.inactivestockqty = 10;
-            //model.inactivestockrate = 20;
-            //model.inactivestockcharge = model.inactivestockqty * model.inactivestockrate;
-
-            //model.hm181pkgcharge = 100;
-            //model.dochandlingcharge = 100;
-            //model.minimalsamplecharge = 100.00;
-
-            #endregion
-
             using (var db = new EF.CMCSQL03Entities())
             {
                 InvoiceViewModel IVM = new InvoiceViewModel();
-                var q = (from t in db.tblInvoice
-                         where t.InvoiceID == id
-                         select t).FirstOrDefault();
+                var q = (from t in db.tblInvoice where t.InvoiceID == id select t).FirstOrDefault();
 
                 IVM.invoiceid = q.InvoiceID;
                 IVM.billinggroup = q.BillingGroup;
@@ -228,6 +126,98 @@ namespace MvcPhoenix.Models
                 IVM.minimalsamplecharge = q.MinimalSampleCharge;
                 
                 return IVM;
+            }
+        }
+
+        public static int SaveInvoice(InvoiceViewModel vm)
+        {
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            {
+                var q = (from t in db.tblInvoice where t.InvoiceID == vm.invoiceid select t).FirstOrDefault();
+
+                q.BillingGroup = vm.billinggroup;
+                q.WarehouseLocation = vm.warehouselocation;
+                q.ClientID = vm.clientid;
+                q.ClientName = vm.clientname;
+                q.CreatedBy = "Ifeanyi";
+                q.CreateDate = vm.createddate;
+                q.VerifyDate = vm.verifieddate;
+                q.Status = vm.status;
+                q.InvoiceDate = vm.invoicedate;
+                q.InvoicePeriod = vm.invoiceperiod;
+                q.PeriodMonth = vm.periodmonth;
+                q.PeriodYear = vm.periodyear;
+                q.PONumber = vm.ponumber;
+                q.NetTerm = vm.netterm;
+                q.BillTo = vm.billto;
+                q.RemitTo = vm.remitto;
+                q.Currency = vm.currency;
+                q.Tier = vm.tier;
+                q.OrderType = vm.ordertype;
+                q.SampleShipSameDay = vm.sampleshipsameday;
+                q.SampleShipNextDay = vm.sampleshipnextday;
+                q.SampleShipSecondDay = vm.sampleshipsecondday;
+                q.SampleShipOther = vm.sampleshipother;
+                q.TotalSamples = vm.totalsamples;
+                q.TotalCostSamples = vm.totalcostsamples;
+                q.TotalFreight = vm.totalfreight;
+                q.TotalFrtHzdSchg = vm.totalfrtHzdSchg;
+                q.TotalAdminCharge = vm.totaladmincharge;
+                q.TotalDue = vm.totaldue;
+                q.GrandTotal = vm.grandtotal;
+                q.SamplesQty = vm.samplesqty;
+                q.SamplesRate = vm.samplesrate;
+                q.SamplesCharge = vm.samplescharge;
+                q.RevenueQty = vm.revenueqty;
+                q.RevenueRate = vm.revenuerate;
+                q.RevenueCharge = vm.revenuecharge;
+                q.NonRevenueQty = vm.nonrevenueqty;
+                q.NonRevenueRate = vm.nonrevenuerate;
+                q.NonRevenueCharge = vm.nonrevenuecharge;
+                q.ManualEntryQty = vm.manualentryqty;
+                q.ManualEntryRate = vm.manualentryrate;
+                q.ManualEntryCharge = vm.manualentrycharge;
+                q.FollowUpQty = vm.followupqty;
+                q.FollowUpRate = vm.followuprate;
+                q.FollowUpCharge = vm.followupcharge;
+                q.LabelPrtQty = vm.labelprtqty;
+                q.LabelPrtRate = vm.labelprtrate;
+                q.LabelPrtCharge = vm.labelprtcharge;
+                q.LabelStockCharge = vm.labelstock;
+                q.ReLabelPrtQty = vm.relabelprtqty;
+                q.ReLabelPrtRate = vm.relabelprtrate;
+                q.ReLabelPrtCharge = vm.relabelprtcharge;
+                q.ReLabelFeeQty = vm.relabelfeeqty;
+                q.ReLabelFeeRate = vm.relabelfeerate;
+                q.ReLabelFeeCharge = vm.relabelfeecharge;
+                q.ProductSetupQty = vm.productsetupqty;
+                q.ProductSetupRate = vm.productsetuprate;
+                q.ProductSetupCharge = vm.productsetupcharge;
+                q.CCProcessQty = vm.ccprocessqty;
+                q.CCProcessRate = vm.ccprocessrate;
+                q.CCProcessCharge = vm.ccprocesscharge;
+                q.CCCredit = vm.cccredit;
+                q.GlobalProcessCharge = vm.globalprocesscharge;
+                q.MiscCreditCharge = vm.misccreditcharge;
+                q.ITSupportCharge = vm.itsupportcharge;
+                q.EmptyDrumCharge = vm.emptydrumcharge;
+                q.RushShipQty = vm.rushshipqty;
+                q.RushShipRate = vm.rushshiprate;
+                q.RushShipCharge = vm.rushshipcharge;
+                q.EmptyPailsQty = vm.emptypailsqty;
+                q.EmptyPailsRate = vm.emptypailsrate;
+                q.EmptyPailsCharge = vm.emptypailscharge;
+                q.EmptyPailsFgtCharge = vm.emptypailsfgtcharge;
+                q.InactiveStockQty = vm.inactivestockqty;
+                q.InactiveStockRate = vm.inactivestockrate;
+                q.InactiveStockCharge = vm.inactivestockcharge;
+                q.HM181PkgCharge = vm.hm181pkgcharge;
+                q.DocHandlingCharge = vm.dochandlingcharge;
+                q.MinimalSampleCharge = vm.minimalsamplecharge;
+
+                db.SaveChanges();
+
+                return vm.invoiceid;
             }
         }
     }
