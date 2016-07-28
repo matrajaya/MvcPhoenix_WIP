@@ -27,9 +27,21 @@ namespace MvcPhoenix.Models
         [Display(Name = "Created By")]
         public string createdby { get; set; }
         
-        [Display(Name = "Created Date")]
-        public DateTimeOffset? createddate { get; set; }
-        
+        [Display(Name = "Create Date")]
+        public DateTimeOffset? createdate { get; set; }
+
+        [Display(Name = "Updated By")]
+        public string updatedby { get; set; }
+
+        [Display(Name = "Update Date")]
+        public DateTimeOffset? updatedate { get; set; }
+
+        [Display(Name = "Is Verified")]
+        public bool? isverified { get; set; }
+
+        [Display(Name = "Verified By")]
+        public string verifiedby { get; set; }
+
         [Display(Name = "Verified Date")]
         public DateTimeOffset? verifieddate { get; set; }
 

@@ -27,7 +27,11 @@ namespace MvcPhoenix.Models
                 IVM.clientid = q.ClientID;
                 IVM.clientname = q.ClientName;
                 IVM.createdby = q.CreatedBy;
-                IVM.createddate = q.CreateDate;
+                IVM.createdate = q.CreateDate;
+                IVM.updatedby = q.UpdatedBy;
+                IVM.updatedate = q.UpdateDate;
+                IVM.isverified = q.IsVerified;
+                IVM.verifiedby = q.VerifiedBy;
                 IVM.verifieddate = q.VerifyDate;
                 IVM.status = q.Status;
                 IVM.invoicedate = q.InvoiceDate;
@@ -133,14 +137,29 @@ namespace MvcPhoenix.Models
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
+                if (vm.invoiceid == -1)
+                {
+                    vm.invoiceid = NewInvoiceID();
+                    vm.createdate = System.DateTime.Now;
+                    vm.createdby = HttpContext.Current.User.Identity.Name;
+                }
+
+                // Capture user info in viewmodel
+                vm.updatedby = HttpContext.Current.User.Identity.Name;
+                vm.updatedate = System.DateTime.Now;
+
                 var q = (from t in db.tblInvoice where t.InvoiceID == vm.invoiceid select t).FirstOrDefault();
 
                 q.BillingGroup = vm.billinggroup;
                 q.WarehouseLocation = vm.warehouselocation;
                 q.ClientID = vm.clientid;
                 q.ClientName = vm.clientname;
-                q.CreatedBy = "Ifeanyi";
-                q.CreateDate = vm.createddate;
+                q.CreatedBy = vm.createdby;
+                q.CreateDate = vm.createdate;
+                q.UpdatedBy = vm.updatedby;
+                q.UpdateDate = vm.updatedate;
+                q.IsVerified = vm.isverified;
+                q.VerifiedBy = vm.verifiedby;
                 q.VerifyDate = vm.verifieddate;
                 q.Status = vm.status;
                 q.InvoiceDate = vm.invoicedate;
@@ -218,6 +237,19 @@ namespace MvcPhoenix.Models
                 db.SaveChanges();
 
                 return vm.invoiceid;
+            }
+        }
+
+        public static int NewInvoiceID()
+        {
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            {
+                MvcPhoenix.EF.tblInvoice nr = new MvcPhoenix.EF.tblInvoice();
+                db.tblInvoice.Add(nr);
+
+                db.SaveChanges();
+
+                return nr.InvoiceID;
             }
         }
     }

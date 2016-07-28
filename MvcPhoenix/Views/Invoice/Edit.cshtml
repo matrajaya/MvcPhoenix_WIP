@@ -90,29 +90,44 @@
                                 <table class="table table-hover table-striped">
                                     <tr>
                                         <th>Number of Samples</th>
-                                        <td>@Html.TextBoxFor(m => m.totalsamples, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.totalsamples, new { @class = "pull-right", @style = "width: 100px" })
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Totals Cost of Processing Samples</th>
-                                        <td>@Html.TextBoxFor(m => m.totalcostsamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "A1" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.totalcostsamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "A1" })
+                                            @Html.ValidationMessageFor(m => m.totalcostsamples)
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Freight</th>
-                                        <td>@Html.TextBoxFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px", @data_cell = "B1" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px", @data_cell = "B1" })
+                                            @Html.ValidationMessageFor(m => m.totalfreight)
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Freight Harzardous Surcharge</th>
-                                        <td>@Html.TextBoxFor(m => m.totalfrtHzdSchg, new { @class = "pull-right", @style = "width: 100px", @data_cell = "C1" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.totalfrtHzdSchg, new { @class = "pull-right", @style = "width: 100px", @data_cell = "C1" })
+                                            @Html.ValidationMessageFor(m => m.totalfrtHzdSchg)
+                                        </td>
                                     </tr>
-
                                     <tr>
                                         <th>Administrative Charges</th>
-                                        <td>@Html.TextBoxFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px", @data_cell = "D1" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px", @data_cell = "D1" })
+                                            @Html.ValidationMessageFor(m => m.totaladmincharge)
+                                        </td>
                                     </tr>
-
                                     <tr>
                                         <th>Total Due</th>
-                                        <th>@Html.TextBoxFor(m => m.totaldue, new { @class = "pull-right", @style = "width: 100px", @readonly = "readonly", @data_cell = "E1" })</th>
+                                        <th>
+                                            @Html.TextBoxFor(m => m.totaldue, new { @class = "pull-right", @style = "width: 100px", @readonly = "readonly", @data_cell = "E1" })
+                                            @Html.ValidationMessageFor(m => m.totaldue)
+                                        </th>
                                     </tr>
                                 </table>
                             </div>
@@ -122,19 +137,31 @@
                                 <table class="table table-hover table-striped">
                                     <tr>
                                         <th>Same Day</th>
-                                        <td>@Html.TextBoxFor(m => m.sampleshipsameday, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.sampleshipsameday, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.ValidationMessageFor(m => m.sampleshipsameday)
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Next Day</th>
-                                        <td>@Html.TextBoxFor(m => m.sampleshipnextday, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.sampleshipnextday, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.ValidationMessageFor(m => m.sampleshipnextday)
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Second Day</th>
-                                        <td>@Html.TextBoxFor(m => m.sampleshipsecondday, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.sampleshipsecondday, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.ValidationMessageFor(m => m.sampleshipsecondday)
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Other</th>
-                                        <td>@Html.TextBoxFor(m => m.sampleshipother, new { @class = "pull-right", @style = "width: 100px" })</td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.sampleshipother, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.ValidationMessageFor(m => m.sampleshipother)
+                                        </td>
                                     </tr>
                                 </table>
                                 <div class="pull-right" id="verificationcalc">
@@ -181,148 +208,298 @@
                                             </tr>
                                             <tr>
                                                 <td>Samples</td>
-                                                <td>@Html.TextBoxFor(m => m.samplesqty, new { @style = "width: 100px", @data_cell = "A1" })</td>
-                                                <td>@Html.TextBoxFor(m => m.samplesrate, new { @style = "width: 100px", @data_cell = "B1" })</td>
-                                                <td>@Html.TextBoxFor(m => m.samplescharge, new { @style = "width: 100px", @data_cell = "C1" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.samplesqty, new { @style = "width: 100px", @data_cell = "A1" })
+                                                    @Html.ValidationMessageFor(m => m.samplesqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.samplesrate, new { @style = "width: 100px", @data_cell = "B1" })
+                                                    @Html.ValidationMessageFor(m => m.samplesrate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.samplescharge, new { @style = "width: 100px", @data_cell = "C1" })
+                                                    @Html.ValidationMessageFor(m => m.samplescharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Revenue</td>
-                                                <td>@Html.TextBoxFor(m => m.revenueqty, new { @style = "width: 100px", @data_cell = "A2" })</td>
-                                                <td>@Html.TextBoxFor(m => m.revenuerate, new { @style = "width: 100px", @data_cell = "B2" })</td>
-                                                <td>@Html.TextBoxFor(m => m.revenuecharge, new { @style = "width: 100px", @data_cell = "C2" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.revenueqty, new { @style = "width: 100px", @data_cell = "A2" })
+                                                    @Html.ValidationMessageFor(m => m.revenueqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.revenuerate, new { @style = "width: 100px", @data_cell = "B2" })
+                                                    @Html.ValidationMessageFor(m => m.revenuerate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.revenuecharge, new { @style = "width: 100px", @data_cell = "C2" })
+                                                    @Html.ValidationMessageFor(m => m.revenuecharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Non-Revenue</td>
-                                                <td>@Html.TextBoxFor(m => m.nonrevenueqty, new { @style = "width: 100px", @data_cell = "A3" })</td>
-                                                <td>@Html.TextBoxFor(m => m.nonrevenuerate, new { @style = "width: 100px", @data_cell = "B3" })</td>
-                                                <td>@Html.TextBoxFor(m => m.nonrevenuecharge, new { @style = "width: 100px", @data_cell = "C3" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.nonrevenueqty, new { @style = "width: 100px", @data_cell = "A3" })
+                                                    @Html.ValidationMessageFor(m => m.nonrevenueqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.nonrevenuerate, new { @style = "width: 100px", @data_cell = "B3" })
+                                                    @Html.ValidationMessageFor(m => m.nonrevenuerate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.nonrevenuecharge, new { @style = "width: 100px", @data_cell = "C3" })
+                                                    @Html.ValidationMessageFor(m => m.nonrevenuecharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Manual Order Entry</td>
-                                                <td>@Html.TextBoxFor(m => m.manualentryqty, new { @style = "width: 100px", @data_cell = "A4" })</td>
-                                                <td>@Html.TextBoxFor(m => m.manualentryrate, new { @style = "width: 100px", @data_cell = "B4" })</td>
-                                                <td>@Html.TextBoxFor(m => m.manualentrycharge, new { @style = "width: 100px", @data_cell = "C4" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.manualentryqty, new { @style = "width: 100px", @data_cell = "A4" })
+                                                    @Html.ValidationMessageFor(m => m.manualentryqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.manualentryrate, new { @style = "width: 100px", @data_cell = "B4" })
+                                                    @Html.ValidationMessageFor(m => m.manualentryrate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.manualentrycharge, new { @style = "width: 100px", @data_cell = "C4" })
+                                                    @Html.ValidationMessageFor(m => m.manualentrycharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Follow Up Orders</td>
-                                                <td>@Html.TextBoxFor(m => m.followupqty, new { @style = "width: 100px", @data_cell = "A5" })</td>
-                                                <td>@Html.TextBoxFor(m => m.followuprate, new { @style = "width: 100px", @data_cell = "B5" })</td>
-                                                <td>@Html.TextBoxFor(m => m.followupcharge, new { @style = "width: 100px", @data_cell = "C5" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.followupqty, new { @style = "width: 100px", @data_cell = "A5" })
+                                                    @Html.ValidationMessageFor(m => m.followupqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.followuprate, new { @style = "width: 100px", @data_cell = "B5" })
+                                                    @Html.ValidationMessageFor(m => m.followuprate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.followupcharge, new { @style = "width: 100px", @data_cell = "C5" })
+                                                    @Html.ValidationMessageFor(m => m.followupcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Label Print Fee</td>
-                                                <td>@Html.TextBoxFor(m => m.labelprtqty, new { @style = "width: 100px", @data_cell = "A6" })</td>
-                                                <td>@Html.TextBoxFor(m => m.labelprtrate, new { @style = "width: 100px", @data_cell = "B6" })</td>
-                                                <td>@Html.TextBoxFor(m => m.labelprtcharge, new { @style = "width: 100px", @data_cell = "C6" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.labelprtqty, new { @style = "width: 100px", @data_cell = "A6" })
+                                                    @Html.ValidationMessageFor(m => m.labelprtqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.labelprtrate, new { @style = "width: 100px", @data_cell = "B6" })
+                                                    @Html.ValidationMessageFor(m => m.labelprtrate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.labelprtcharge, new { @style = "width: 100px", @data_cell = "C6" })
+                                                    @Html.ValidationMessageFor(m => m.labelprtcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Label Stock Fee</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.labelstock, new { @style = "width: 100px", @data_cell = "C7" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.labelstock, new { @style = "width: 100px", @data_cell = "C7" })
+                                                    @Html.ValidationMessageFor(m => m.labelstock)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Re-Label Print Fee</td>
-                                                <td>@Html.TextBoxFor(m => m.relabelprtqty, new { @style = "width: 100px", @data_cell = "A8" })</td>
-                                                <td>@Html.TextBoxFor(m => m.relabelprtrate, new { @style = "width: 100px", @data_cell = "B8" })</td>
-                                                <td>@Html.TextBoxFor(m => m.relabelprtcharge, new { @style = "width: 100px", @data_cell = "C8" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.relabelprtqty, new { @style = "width: 100px", @data_cell = "A8" })
+                                                    @Html.ValidationMessageFor(m => m.relabelprtqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.relabelprtrate, new { @style = "width: 100px", @data_cell = "B8" })
+                                                    @Html.ValidationMessageFor(m => m.relabelprtrate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.relabelprtcharge, new { @style = "width: 100px", @data_cell = "C8" })
+                                                    @Html.ValidationMessageFor(m => m.relabelprtcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Re-Label Labor Fee</td>
-                                                <td>@Html.TextBoxFor(m => m.relabelfeeqty, new { @style = "width: 100px", @data_cell = "A9" })</td>
-                                                <td>@Html.TextBoxFor(m => m.relabelfeerate, new { @style = "width: 100px", @data_cell = "B9" })</td>
-                                                <td>@Html.TextBoxFor(m => m.relabelfeecharge, new { @style = "width: 100px", @data_cell = "C9" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.relabelfeeqty, new { @style = "width: 100px", @data_cell = "A9" })
+                                                    @Html.ValidationMessageFor(m => m.relabelfeeqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.relabelfeerate, new { @style = "width: 100px", @data_cell = "B9" })
+                                                    @Html.ValidationMessageFor(m => m.relabelfeerate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.relabelfeecharge, new { @style = "width: 100px", @data_cell = "C9" })
+                                                    @Html.ValidationMessageFor(m => m.relabelfeecharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Product Set-up Changes</td>
-                                                <td>@Html.TextBoxFor(m => m.productsetupqty, new { @style = "width: 100px", @data_cell = "A10" })</td>
-                                                <td>@Html.TextBoxFor(m => m.productsetuprate, new { @style = "width: 100px", @data_cell = "B10" })</td>
-                                                <td>@Html.TextBoxFor(m => m.productsetupcharge, new { @style = "width: 100px", @data_cell = "C10" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.productsetupqty, new { @style = "width: 100px", @data_cell = "A10" })
+                                                    @Html.ValidationMessageFor(m => m.productsetupqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.productsetuprate, new { @style = "width: 100px", @data_cell = "B10" })
+                                                    @Html.ValidationMessageFor(m => m.productsetuprate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.productsetupcharge, new { @style = "width: 100px", @data_cell = "C10" })
+                                                    @Html.ValidationMessageFor(m => m.productsetupcharge)
+                                                </td>
                                             </tr>
 
                                             <tr>
                                                 <td>Credit Card Order Proecessing Fee</td>
-                                                <td>@Html.TextBoxFor(m => m.ccprocessqty, new { @style = "width: 100px", @data_cell = "A11" })</td>
-                                                <td>@Html.TextBoxFor(m => m.ccprocessrate, new { @style = "width: 100px", @data_cell = "B11" })</td>
-                                                <td>@Html.TextBoxFor(m => m.ccprocesscharge, new { @style = "width: 100px", @data_cell = "C11" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.ccprocessqty, new { @style = "width: 100px", @data_cell = "A11" })
+                                                    @Html.ValidationMessageFor(m => m.ccprocessqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.ccprocessrate, new { @style = "width: 100px", @data_cell = "B11" })
+                                                    @Html.ValidationMessageFor(m => m.ccprocessrate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.ccprocesscharge, new { @style = "width: 100px", @data_cell = "C11" })
+                                                    @Html.ValidationMessageFor(m => m.ccprocesscharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Credit Card Credit</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.cccredit, new { @style = "width: 100px", @data_cell = "C12" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.cccredit, new { @style = "width: 100px", @data_cell = "C12" })
+                                                    @Html.ValidationMessageFor(m => m.cccredit)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Global Processing Fee</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.globalprocesscharge, new { @style = "width: 100px", @data_cell = "C13" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.globalprocesscharge, new { @style = "width: 100px", @data_cell = "C13" })
+                                                    @Html.ValidationMessageFor(m => m.globalprocesscharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Misc Credits</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.misccreditcharge, new { @style = "width: 100px", @data_cell = "C14" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.misccreditcharge, new { @style = "width: 100px", @data_cell = "C14" })
+                                                    @Html.ValidationMessageFor(m => m.misccreditcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>IT Project Support Fee</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.itsupportcharge, new { @style = "width: 100px", @data_cell = "C15" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.itsupportcharge, new { @style = "width: 100px", @data_cell = "C15" })
+                                                    @Html.ValidationMessageFor(m => m.itsupportcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Empty Drum Disposal</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.emptydrumcharge, new { @style = "width: 100px", @data_cell = "C16" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.emptydrumcharge, new { @style = "width: 100px", @data_cell = "C16" })
+                                                    @Html.ValidationMessageFor(m => m.emptydrumcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Same Day Rush Shipment</td>
-                                                <td>@Html.TextBoxFor(m => m.rushshipqty, new { @style = "width: 100px", @data_cell = "A17" })</td>
-                                                <td>@Html.TextBoxFor(m => m.rushshiprate, new { @style = "width: 100px", @data_cell = "B17" })</td>
-                                                <td>@Html.TextBoxFor(m => m.rushshipcharge, new { @style = "width: 100px", @data_cell = "C17" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.rushshipqty, new { @style = "width: 100px", @data_cell = "A17" })
+                                                    @Html.ValidationMessageFor(m => m.rushshipqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.rushshiprate, new { @style = "width: 100px", @data_cell = "B17" })
+                                                    @Html.ValidationMessageFor(m => m.rushshiprate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.rushshipcharge, new { @style = "width: 100px", @data_cell = "C17" })
+                                                    @Html.ValidationMessageFor(m => m.rushshipcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Empty Pails</td>
-                                                <td>@Html.TextBoxFor(m => m.emptypailsqty, new { @style = "width: 100px", @data_cell = "A18" })</td>
-                                                <td>@Html.TextBoxFor(m => m.emptypailsrate, new { @style = "width: 100px", @data_cell = "B18" })</td>
-                                                <td>@Html.TextBoxFor(m => m.emptypailscharge, new { @style = "width: 100px", @data_cell = "C18" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.emptypailsqty, new { @style = "width: 100px", @data_cell = "A18" })
+                                                    @Html.ValidationMessageFor(m => m.emptypailsqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.emptypailsrate, new { @style = "width: 100px", @data_cell = "B18" })
+                                                    @Html.ValidationMessageFor(m => m.emptypailsrate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.emptypailscharge, new { @style = "width: 100px", @data_cell = "C18" })
+                                                    @Html.ValidationMessageFor(m => m.emptypailscharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Empty Pails Freight</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.emptypailsfgtcharge, new { @style = "width: 100px", @data_cell = "C19" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.emptypailsfgtcharge, new { @style = "width: 100px", @data_cell = "C19" })
+                                                    @Html.ValidationMessageFor(m => m.emptypailsfgtcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Inactive Stock Storage Surcharge</td>
-                                                <td>@Html.TextBoxFor(m => m.inactivestockqty, new { @style = "width: 100px", @data_cell = "A20" })</td>
-                                                <td>@Html.TextBoxFor(m => m.inactivestockrate, new { @style = "width: 100px", @data_cell = "B20" })</td>
-                                                <td>@Html.TextBoxFor(m => m.inactivestockcharge, new { @style = "width: 100px", @data_cell = "C20" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.inactivestockqty, new { @style = "width: 100px", @data_cell = "A20" })
+                                                    @Html.ValidationMessageFor(m => m.inactivestockqty)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.inactivestockrate, new { @style = "width: 100px", @data_cell = "B20" })
+                                                    @Html.ValidationMessageFor(m => m.inactivestockrate)
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.inactivestockcharge, new { @style = "width: 100px", @data_cell = "C20" })
+                                                    @Html.ValidationMessageFor(m => m.inactivestockcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Other HM 181 Packaging</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.hm181pkgcharge, new { @style = "width: 100px", @data_cell = "C21" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.hm181pkgcharge, new { @style = "width: 100px", @data_cell = "C21" })
+                                                    @Html.ValidationMessageFor(m => m.hm181pkgcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Documentation & Handling Fee</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.dochandlingcharge, new { @style = "width: 100px", @data_cell = "C22" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.dochandlingcharge, new { @style = "width: 100px", @data_cell = "C22" })
+                                                    @Html.ValidationMessageFor(m => m.dochandlingcharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Minimal Sample Charge</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@Html.TextBoxFor(m => m.minimalsamplecharge, new { @style = "width: 100px", @data_cell = "C23" })</td>
+                                                <td>
+                                                    @Html.TextBoxFor(m => m.minimalsamplecharge, new { @style = "width: 100px", @data_cell = "C23" })
+                                                    @Html.ValidationMessageFor(m => m.minimalsamplecharge)
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Grand Total</th>
                                                 <td></td>
                                                 <td></td>
-                                                <th>@Html.TextBoxFor(m => m.grandtotal, new { @style = "width: 100px", @readonly = "readonly", @data_cell = "C24" })</th>
+                                                <th>
+                                                    @Html.TextBoxFor(m => m.grandtotal, new { @style = "width: 100px", @readonly = "readonly", @data_cell = "C24" })
+                                                    @Html.ValidationMessageFor(m => m.grandtotal)
+                                                </th>
                                             </tr>
                                         </table>
                                     </div>

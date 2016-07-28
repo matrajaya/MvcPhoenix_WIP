@@ -99,5 +99,6 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> HM181PkgCharge { get; set; }
         public Nullable<decimal> DocHandlingCharge { get; set; }
         public Nullable<decimal> MinimalSampleCharge { get; set; }
+        public Nullable<bool> IsVerified { get; set; }
     }
 }

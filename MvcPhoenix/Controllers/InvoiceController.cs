@@ -1,8 +1,4 @@
-﻿//using System.Web.Mvc;
-//using MvcPhoenix.Models;
-//using System;
-
-using MvcPhoenix.Models;
+﻿using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using Rotativa;
 using System;
@@ -54,6 +50,11 @@ namespace MvcPhoenix.Controllers
         [AllowAnonymous]
         public ActionResult GenerateInvoice(string client, string division)
         {
+            /// Assign invoice period based on current date: Get: ClientID, BillingGroup, Period
+            /// Automated business rules from service
+            /// Assign Invoice ID = -1 and go to edit action
+            /// Ephemeral until the user executes save action 
+            
             return View();
         }
 

@@ -616,6 +616,7 @@
           <Property Name="CreateDate" Type="datetimeoffset" Precision="7" />
           <Property Name="UpdatedBy" Type="nvarchar(max)" />
           <Property Name="UpdateDate" Type="datetimeoffset" Precision="7" />
+          <Property Name="IsVerified" Type="bit" />
           <Property Name="VerifiedBy" Type="nvarchar(max)" />
           <Property Name="VerifyDate" Type="datetimeoffset" Precision="7" />
           <Property Name="Status" Type="nvarchar(max)" />
@@ -2644,6 +2645,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="HM181PkgCharge" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="DocHandlingCharge" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="MinimalSampleCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="IsVerified" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblInvoiceDetail">
           <Key>
@@ -4335,6 +4337,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySetMapping Name="tblInvoice">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblInvoice">
               <MappingFragment StoreEntitySet="tblInvoice">
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
                 <ScalarProperty Name="MinimalSampleCharge" ColumnName="MinimalSampleCharge" />
                 <ScalarProperty Name="DocHandlingCharge" ColumnName="DocHandlingCharge" />
                 <ScalarProperty Name="HM181PkgCharge" ColumnName="HM181PkgCharge" />
