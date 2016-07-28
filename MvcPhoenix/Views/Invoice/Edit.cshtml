@@ -38,8 +38,6 @@
         @Html.HiddenFor(m => m.warehouselocation)
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.clientname)
-        @Html.HiddenFor(m => m.createddate)
-        @Html.HiddenFor(m => m.createdby)
         @Html.HiddenFor(m => m.status)
         @Html.HiddenFor(m => m.currency)
         @Html.HiddenFor(m => m.tier)
@@ -186,15 +184,15 @@
                                 <h3>Billing Worksheet</h3>
                             </div>
                         </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <ul class="nav nav-tabs pull-right">
-                                        <li class="active"><a data-toggle="tab" href="#samplestab">Samples(Domestic)</a></li>
-                                        <li><a data-toggle="tab" href="#internationaltab">International</a></li>
-                                        <li><a data-toggle="tab" href="#revenuetab">Revenue $</a></li>
-                                    </ul>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="nav nav-tabs pull-right">
+                                    <li class="active"><a data-toggle="tab" href="#samplestab">Samples(Domestic)</a></li>
+                                    <li><a data-toggle="tab" href="#internationaltab">International</a></li>
+                                    <li><a data-toggle="tab" href="#revenuetab">Revenue $</a></li>
+                                </ul>
                             </div>
+                        </div>
                         <div class="row">
                             <div class="tab-content">
                                 <div id="samplestab" class="tab-pane fade in active">
@@ -517,7 +515,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
             </div>

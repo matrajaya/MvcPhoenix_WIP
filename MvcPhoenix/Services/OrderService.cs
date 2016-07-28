@@ -1408,7 +1408,6 @@ namespace MvcPhoenix.Services
                           orderby t.Country
                           select new SelectListItem { Value = t.Country, Text = t.Country }).ToList();
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-                db.Dispose();
                 return mylist;
             }
         }

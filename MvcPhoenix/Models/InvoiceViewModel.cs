@@ -52,11 +52,9 @@ namespace MvcPhoenix.Models
         public DateTimeOffset? invoicedate { get; set; }
 
         [Display(Name = "Invoice Period")]
-        public string invoiceperiod { get; set; }
-
-        public string periodmonth { get; set; }
-        public int? periodyear { get; set; }
-
+        [DisplayFormat(DataFormatString = "{0:MMM-yyyy}")]
+        public DateTimeOffset? invoiceperiod { get; set; }
+        
         [Display(Name = "PO Number")]
         public string ponumber { get; set; }
 

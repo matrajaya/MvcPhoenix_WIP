@@ -11,21 +11,33 @@ namespace MvcPhoenix.Controllers
 {
     public class InvoiceController : Controller
     {
-        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
-        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult Create(FormCollection fc)
+        {
+            int ClientID = Convert.ToInt32(fc["NewClientID"]);
+            var vm = InvoiceService.CreateInvoice(ClientID);
+
+            /// string client, string division, 
+            /// Assign invoice period based on current date: Get: ClientID, BillingGroup, Period
+            /// Automated business rules from service
+            /// Assign Invoice ID = -1 and go to edit action
+            /// Ephemeral until the user executes save action
+
+            return View("~/Views/Orders/Edit.cshtml", vm);
+        }
+
         public ActionResult Edit(int id)
         {
             var vm = InvoiceService.FillInvoice(id);
             
             return View(vm);
         }
-                
-        [AllowAnonymous]
+
         [HttpPost]
         public ActionResult SaveInvoice(InvoiceViewModel vm)
         {
@@ -34,29 +46,17 @@ namespace MvcPhoenix.Controllers
             if (ModelState.IsValid)
             {
                 pk = InvoiceService.SaveInvoice(vm);
-                //todo: insert success messsage
+                // todo: insert success messsage
             }
 
             return RedirectToAction("Edit", new { id = pk });
         }
 
-        [AllowAnonymous]
         public ActionResult View(int id)
         {
             var vm = InvoiceService.FillInvoice(id);
             return View(vm);
         }
-
-        [AllowAnonymous]
-        public ActionResult GenerateInvoice(string client, string division)
-        {
-            /// Assign invoice period based on current date: Get: ClientID, BillingGroup, Period
-            /// Automated business rules from service
-            /// Assign Invoice ID = -1 and go to edit action
-            /// Ephemeral until the user executes save action 
-            
-            return View();
-        }
-
+        
     }
 }

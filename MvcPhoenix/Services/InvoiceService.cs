@@ -35,9 +35,7 @@ namespace MvcPhoenix.Models
                 IVM.verifieddate = q.VerifyDate;
                 IVM.status = q.Status;
                 IVM.invoicedate = q.InvoiceDate;
-                IVM.invoiceperiod = q.InvoicePeriod;        //extract month and year from invoice date conver tto string
-                IVM.periodmonth = q.PeriodMonth;
-                IVM.periodyear = q.PeriodYear;
+                IVM.invoiceperiod = q.InvoicePeriod;        //extract month and year from invoice date convert to string
                 IVM.ponumber = q.PONumber;
                 IVM.netterm = q.NetTerm;
                 IVM.billto = q.BillTo;
@@ -164,8 +162,6 @@ namespace MvcPhoenix.Models
                 q.Status = vm.status;
                 q.InvoiceDate = vm.invoicedate;
                 q.InvoicePeriod = vm.invoiceperiod;
-                q.PeriodMonth = vm.periodmonth;
-                q.PeriodYear = vm.periodyear;
                 q.PONumber = vm.ponumber;
                 q.NetTerm = vm.netterm;
                 q.BillTo = vm.billto;
@@ -250,6 +246,20 @@ namespace MvcPhoenix.Models
                 db.SaveChanges();
 
                 return nr.InvoiceID;
+            }
+        }
+
+        public static InvoiceViewModel CreateInvoice(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                InvoiceViewModel vm = new InvoiceViewModel();
+                vm.invoiceid = -1;
+                vm.clientid = id;
+
+                
+
+                return vm;
             }
         }
     }
