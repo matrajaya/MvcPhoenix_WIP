@@ -35,11 +35,11 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(m => m.invoiceid)
         @Html.HiddenFor(m => m.billinggroup)
-        @Html.HiddenFor(m => m.warehouselocation)
+        @*@Html.HiddenFor(m => m.warehouselocation)*@
+        @*@Html.HiddenFor(m => m.currency)*@
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.clientname)
         @Html.HiddenFor(m => m.status)
-        @Html.HiddenFor(m => m.currency)
         @Html.HiddenFor(m => m.tier)
         @Html.HiddenFor(m => m.ordertype)
         @Html.HiddenFor(m => m.invoicedate)
@@ -51,7 +51,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">TERMS</div>
                     <div class="panel-body">
-                        <b>Invoice Number:</b> @Html.DisplayFor(m => m.invoiceid)<br>
+                        <b>Invoice Number:</b> @Html.DisplayFor(m => m.invoicenumber)<br>
                         <b>Invoice Date:</b> @Model.invoicedate.Value.ToString("d")<br>
                         <b>PO Number:</b> @Html.DisplayFor(m => m.ponumber)<br />
                         <b>Net @Html.DisplayFor(m => m.netterm)</b>
@@ -163,9 +163,7 @@
                                     </tr>
                                 </table>
                                 <div class="pull-right" id="verificationcalc">
-                                    <label>
-                                        <abbr title="Total Due minus Grand Total.&#13;This number should be 0.">Totals</abbr> Balance
-                                    </label>
+                                    <label><abbr title="Total Due minus Grand Total.&#13;This number should be 0.">Totals</abbr> Balance</label>
                                     <input id="totalsdiff" class="form-control input-sm" readonly style="width: 100px" data-cell="C1">
                                 </div>
                             </div>
@@ -179,9 +177,15 @@
                 <div class="panel panel-primary">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-12">
-                                <span class="pull-right"><b>Currency: </b>@Html.DisplayFor(m => m.currency) | <b>Tier: </b>@Html.DisplayFor(m => m.tier)</span>
+                            <div class="col-md-6">
                                 <h3>Billing Worksheet</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">
+                                    <b>Location: </b>@Html.DropDownListFor(m => m.warehouselocation, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.InvoiceViewModel.WHChoice)))) |
+                                    <b>Currency: </b>@Html.DropDownListFor(m => m.currency, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.InvoiceViewModel.CurrencyChoice)))) |
+                                    <b>Tier: </b>@Html.DisplayFor(m => m.tier)
+                                </span>
                             </div>
                         </div>
                         <div class="row">
@@ -504,7 +508,7 @@
                                 </div>
                                 <div id="internationaltab" class="tab-pane fade">
                                     <div class="col-md-12">
-                                        <label>Show International Ordertype</label>
+                                        <label>Show International Order Type</label>
                                         <p>Reserve for worksheet with ordertype marked as international.</p>
                                     </div>
                                 </div>

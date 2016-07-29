@@ -616,12 +616,12 @@
           <Property Name="CreateDate" Type="datetimeoffset" Precision="7" />
           <Property Name="UpdatedBy" Type="nvarchar(max)" />
           <Property Name="UpdateDate" Type="datetimeoffset" Precision="7" />
-          <Property Name="IsVerified" Type="bit" />
+          <Property Name="VerifiedAccuracy" Type="bit" />
           <Property Name="VerifiedBy" Type="nvarchar(max)" />
           <Property Name="VerifyDate" Type="datetimeoffset" Precision="7" />
           <Property Name="Status" Type="nvarchar(max)" />
           <Property Name="InvoiceDate" Type="datetimeoffset" Precision="7" />
-          <Property Name="InvoicePeriod" Type="datetimeoffset" Precision="7" />
+          <Property Name="InvoicePeriod" Type="nvarchar(max)" />
           <Property Name="PONumber" Type="nvarchar(max)" />
           <Property Name="NetTerm" Type="nvarchar(max)" />
           <Property Name="BillTo" Type="nvarchar(max)" />
@@ -1917,6 +1917,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="tblEndUseForCustoms" EntityType="CMCSQL03Model.tblEndUseForCustoms" />
           <EntitySet Name="tblHSCode" EntityType="CMCSQL03Model.tblHSCode" />
           <EntitySet Name="tblInvLog" EntityType="CMCSQL03Model.tblInvLog" />
+          <EntitySet Name="tblInvoice" EntityType="CMCSQL03Model.tblInvoice" />
           <EntitySet Name="tblInvoiceDetail" EntityType="CMCSQL03Model.tblInvoiceDetail" />
           <EntitySet Name="tblInvoiceMaster" EntityType="CMCSQL03Model.tblInvoiceMaster" />
           <EntitySet Name="tblInvTrans" EntityType="CMCSQL03Model.tblInvTrans" />
@@ -1955,7 +1956,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
           <EntitySet Name="vwShelfStockForReplenishment" EntityType="CMCSQL03Model.vwShelfStockForReplenishment" />
           <EntitySet Name="vwShelfTransForReplenishment" EntityType="CMCSQL03Model.vwShelfTransForReplenishment" />
-          <EntitySet Name="tblInvoice" EntityType="CMCSQL03Model.tblInvoice" />
         </EntityContainer>
         <EntityType Name="tblBulk">
           <Key>
@@ -2553,6 +2553,95 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="Initials" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Name="MigrationNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblInvoice">
+          <Key>
+            <PropertyRef Name="InvoiceID" />
+          </Key>
+          <Property Name="InvoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceNumber" Type="Int32" />
+          <Property Name="BillingGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WarehouseLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="ClientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="VerifiedAccuracy" Type="Boolean" />
+          <Property Name="VerifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VerifyDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="InvoicePeriod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PONumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NetTerm" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BillTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RemitTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tier" Type="Int32" />
+          <Property Name="OrderType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SampleShipSameDay" Type="Int32" />
+          <Property Name="SampleShipNextDay" Type="Int32" />
+          <Property Name="SampleShipSecondDay" Type="Int32" />
+          <Property Name="SampleShipOther" Type="Int32" />
+          <Property Name="TotalSamples" Type="Int32" />
+          <Property Name="TotalCostSamples" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalFreight" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalFrtHzdSchg" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalAdminCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="TotalDue" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="GrandTotal" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="SamplesQty" Type="Int32" />
+          <Property Name="SamplesRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="SamplesCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RevenueQty" Type="Int32" />
+          <Property Name="RevenueRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RevenueCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="NonRevenueQty" Type="Int32" />
+          <Property Name="NonRevenueRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="NonRevenueCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ManualEntryQty" Type="Int32" />
+          <Property Name="ManualEntryRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ManualEntryCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="FollowUpQty" Type="Int32" />
+          <Property Name="FollowUpRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="FollowUpCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LabelPrtQty" Type="Int32" />
+          <Property Name="LabelPrtRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LabelPrtCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelPrtQty" Type="Int32" />
+          <Property Name="ReLabelPrtRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelPrtCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelFeeQty" Type="Int32" />
+          <Property Name="ReLabelFeeRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelFeeCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ProductSetupQty" Type="Int32" />
+          <Property Name="ProductSetupRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ProductSetupCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CCProcessQty" Type="Int32" />
+          <Property Name="CCProcessRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CCProcessCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CCCredit" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="GlobalProcessCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="MiscCreditCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ITSupportCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LabelStockCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyDrumCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RushShipQty" Type="Int32" />
+          <Property Name="RushShipRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RushShipCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsQty" Type="Int32" />
+          <Property Name="EmptyPailsRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsFgtCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="InactiveStockQty" Type="Int32" />
+          <Property Name="InactiveStockRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="InactiveStockCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="HM181PkgCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="DocHandlingCharge" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="MinimalSampleCharge" Type="Decimal" Precision="10" Scale="2" />
         </EntityType>
         <EntityType Name="tblInvoiceDetail">
           <Key>
@@ -3618,95 +3707,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="ProductMasterID" Type="Int32" />
           <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblInvoice">
-          <Key>
-            <PropertyRef Name="InvoiceID" />
-          </Key>
-          <Property Name="InvoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="InvoiceNumber" Type="Int32" />
-          <Property Name="BillingGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WarehouseLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="ClientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTimeOffset" Precision="7" />
-          <Property Name="UpdatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateDate" Type="DateTimeOffset" Precision="7" />
-          <Property Name="IsVerified" Type="Boolean" />
-          <Property Name="VerifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="VerifyDate" Type="DateTimeOffset" Precision="7" />
-          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InvoiceDate" Type="DateTimeOffset" Precision="7" />
-          <Property Name="InvoicePeriod" Type="DateTimeOffset" Precision="7" />
-          <Property Name="PONumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NetTerm" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="BillTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="RemitTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Currency" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Tier" Type="Int32" />
-          <Property Name="OrderType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SampleShipSameDay" Type="Int32" />
-          <Property Name="SampleShipNextDay" Type="Int32" />
-          <Property Name="SampleShipSecondDay" Type="Int32" />
-          <Property Name="SampleShipOther" Type="Int32" />
-          <Property Name="TotalSamples" Type="Int32" />
-          <Property Name="TotalCostSamples" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="TotalFreight" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="TotalFrtHzdSchg" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="TotalAdminCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="TotalDue" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="GrandTotal" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="SamplesQty" Type="Int32" />
-          <Property Name="SamplesRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="SamplesCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="RevenueQty" Type="Int32" />
-          <Property Name="RevenueRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="RevenueCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="NonRevenueQty" Type="Int32" />
-          <Property Name="NonRevenueRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="NonRevenueCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ManualEntryQty" Type="Int32" />
-          <Property Name="ManualEntryRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ManualEntryCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="FollowUpQty" Type="Int32" />
-          <Property Name="FollowUpRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="FollowUpCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="LabelPrtQty" Type="Int32" />
-          <Property Name="LabelPrtRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="LabelPrtCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ReLabelPrtQty" Type="Int32" />
-          <Property Name="ReLabelPrtRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ReLabelPrtCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ReLabelFeeQty" Type="Int32" />
-          <Property Name="ReLabelFeeRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ReLabelFeeCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ProductSetupQty" Type="Int32" />
-          <Property Name="ProductSetupRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ProductSetupCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="CCProcessQty" Type="Int32" />
-          <Property Name="CCProcessRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="CCProcessCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="CCCredit" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="GlobalProcessCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="MiscCreditCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ITSupportCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="LabelStockCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="EmptyDrumCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="RushShipQty" Type="Int32" />
-          <Property Name="RushShipRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="RushShipCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="EmptyPailsQty" Type="Int32" />
-          <Property Name="EmptyPailsRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="EmptyPailsCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="EmptyPailsFgtCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="InactiveStockQty" Type="Int32" />
-          <Property Name="InactiveStockRate" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="InactiveStockCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="HM181PkgCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="DocHandlingCharge" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="MinimalSampleCharge" Type="Decimal" Precision="10" Scale="2" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4327,6 +4327,96 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="TransType" ColumnName="TransType" />
                 <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="LogID" ColumnName="LogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblInvoice">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblInvoice">
+              <MappingFragment StoreEntitySet="tblInvoice">
+                <ScalarProperty Name="MinimalSampleCharge" ColumnName="MinimalSampleCharge" />
+                <ScalarProperty Name="DocHandlingCharge" ColumnName="DocHandlingCharge" />
+                <ScalarProperty Name="HM181PkgCharge" ColumnName="HM181PkgCharge" />
+                <ScalarProperty Name="InactiveStockCharge" ColumnName="InactiveStockCharge" />
+                <ScalarProperty Name="InactiveStockRate" ColumnName="InactiveStockRate" />
+                <ScalarProperty Name="InactiveStockQty" ColumnName="InactiveStockQty" />
+                <ScalarProperty Name="EmptyPailsFgtCharge" ColumnName="EmptyPailsFgtCharge" />
+                <ScalarProperty Name="EmptyPailsCharge" ColumnName="EmptyPailsCharge" />
+                <ScalarProperty Name="EmptyPailsRate" ColumnName="EmptyPailsRate" />
+                <ScalarProperty Name="EmptyPailsQty" ColumnName="EmptyPailsQty" />
+                <ScalarProperty Name="RushShipCharge" ColumnName="RushShipCharge" />
+                <ScalarProperty Name="RushShipRate" ColumnName="RushShipRate" />
+                <ScalarProperty Name="RushShipQty" ColumnName="RushShipQty" />
+                <ScalarProperty Name="EmptyDrumCharge" ColumnName="EmptyDrumCharge" />
+                <ScalarProperty Name="LabelStockCharge" ColumnName="LabelStockCharge" />
+                <ScalarProperty Name="ITSupportCharge" ColumnName="ITSupportCharge" />
+                <ScalarProperty Name="MiscCreditCharge" ColumnName="MiscCreditCharge" />
+                <ScalarProperty Name="GlobalProcessCharge" ColumnName="GlobalProcessCharge" />
+                <ScalarProperty Name="CCCredit" ColumnName="CCCredit" />
+                <ScalarProperty Name="CCProcessCharge" ColumnName="CCProcessCharge" />
+                <ScalarProperty Name="CCProcessRate" ColumnName="CCProcessRate" />
+                <ScalarProperty Name="CCProcessQty" ColumnName="CCProcessQty" />
+                <ScalarProperty Name="ProductSetupCharge" ColumnName="ProductSetupCharge" />
+                <ScalarProperty Name="ProductSetupRate" ColumnName="ProductSetupRate" />
+                <ScalarProperty Name="ProductSetupQty" ColumnName="ProductSetupQty" />
+                <ScalarProperty Name="ReLabelFeeCharge" ColumnName="ReLabelFeeCharge" />
+                <ScalarProperty Name="ReLabelFeeRate" ColumnName="ReLabelFeeRate" />
+                <ScalarProperty Name="ReLabelFeeQty" ColumnName="ReLabelFeeQty" />
+                <ScalarProperty Name="ReLabelPrtCharge" ColumnName="ReLabelPrtCharge" />
+                <ScalarProperty Name="ReLabelPrtRate" ColumnName="ReLabelPrtRate" />
+                <ScalarProperty Name="ReLabelPrtQty" ColumnName="ReLabelPrtQty" />
+                <ScalarProperty Name="LabelPrtCharge" ColumnName="LabelPrtCharge" />
+                <ScalarProperty Name="LabelPrtRate" ColumnName="LabelPrtRate" />
+                <ScalarProperty Name="LabelPrtQty" ColumnName="LabelPrtQty" />
+                <ScalarProperty Name="FollowUpCharge" ColumnName="FollowUpCharge" />
+                <ScalarProperty Name="FollowUpRate" ColumnName="FollowUpRate" />
+                <ScalarProperty Name="FollowUpQty" ColumnName="FollowUpQty" />
+                <ScalarProperty Name="ManualEntryCharge" ColumnName="ManualEntryCharge" />
+                <ScalarProperty Name="ManualEntryRate" ColumnName="ManualEntryRate" />
+                <ScalarProperty Name="ManualEntryQty" ColumnName="ManualEntryQty" />
+                <ScalarProperty Name="NonRevenueCharge" ColumnName="NonRevenueCharge" />
+                <ScalarProperty Name="NonRevenueRate" ColumnName="NonRevenueRate" />
+                <ScalarProperty Name="NonRevenueQty" ColumnName="NonRevenueQty" />
+                <ScalarProperty Name="RevenueCharge" ColumnName="RevenueCharge" />
+                <ScalarProperty Name="RevenueRate" ColumnName="RevenueRate" />
+                <ScalarProperty Name="RevenueQty" ColumnName="RevenueQty" />
+                <ScalarProperty Name="SamplesCharge" ColumnName="SamplesCharge" />
+                <ScalarProperty Name="SamplesRate" ColumnName="SamplesRate" />
+                <ScalarProperty Name="SamplesQty" ColumnName="SamplesQty" />
+                <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
+                <ScalarProperty Name="TotalDue" ColumnName="TotalDue" />
+                <ScalarProperty Name="TotalAdminCharge" ColumnName="TotalAdminCharge" />
+                <ScalarProperty Name="TotalFrtHzdSchg" ColumnName="TotalFrtHzdSchg" />
+                <ScalarProperty Name="TotalFreight" ColumnName="TotalFreight" />
+                <ScalarProperty Name="TotalCostSamples" ColumnName="TotalCostSamples" />
+                <ScalarProperty Name="TotalSamples" ColumnName="TotalSamples" />
+                <ScalarProperty Name="SampleShipOther" ColumnName="SampleShipOther" />
+                <ScalarProperty Name="SampleShipSecondDay" ColumnName="SampleShipSecondDay" />
+                <ScalarProperty Name="SampleShipNextDay" ColumnName="SampleShipNextDay" />
+                <ScalarProperty Name="SampleShipSameDay" ColumnName="SampleShipSameDay" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="Tier" ColumnName="Tier" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="RemitTo" ColumnName="RemitTo" />
+                <ScalarProperty Name="BillTo" ColumnName="BillTo" />
+                <ScalarProperty Name="NetTerm" ColumnName="NetTerm" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+                <ScalarProperty Name="InvoicePeriod" ColumnName="InvoicePeriod" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="VerifyDate" ColumnName="VerifyDate" />
+                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
+                <ScalarProperty Name="VerifiedAccuracy" ColumnName="VerifiedAccuracy" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="WarehouseLocation" ColumnName="WarehouseLocation" />
+                <ScalarProperty Name="BillingGroup" ColumnName="BillingGroup" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5427,96 +5517,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="TransDate" ColumnName="TransDate" />
                 <ScalarProperty Name="TransType" ColumnName="TransType" />
                 <ScalarProperty Name="InvTransID" ColumnName="InvTransID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblInvoice">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblInvoice">
-              <MappingFragment StoreEntitySet="tblInvoice">
-                <ScalarProperty Name="MinimalSampleCharge" ColumnName="MinimalSampleCharge" />
-                <ScalarProperty Name="DocHandlingCharge" ColumnName="DocHandlingCharge" />
-                <ScalarProperty Name="HM181PkgCharge" ColumnName="HM181PkgCharge" />
-                <ScalarProperty Name="InactiveStockCharge" ColumnName="InactiveStockCharge" />
-                <ScalarProperty Name="InactiveStockRate" ColumnName="InactiveStockRate" />
-                <ScalarProperty Name="InactiveStockQty" ColumnName="InactiveStockQty" />
-                <ScalarProperty Name="EmptyPailsFgtCharge" ColumnName="EmptyPailsFgtCharge" />
-                <ScalarProperty Name="EmptyPailsCharge" ColumnName="EmptyPailsCharge" />
-                <ScalarProperty Name="EmptyPailsRate" ColumnName="EmptyPailsRate" />
-                <ScalarProperty Name="EmptyPailsQty" ColumnName="EmptyPailsQty" />
-                <ScalarProperty Name="RushShipCharge" ColumnName="RushShipCharge" />
-                <ScalarProperty Name="RushShipRate" ColumnName="RushShipRate" />
-                <ScalarProperty Name="RushShipQty" ColumnName="RushShipQty" />
-                <ScalarProperty Name="EmptyDrumCharge" ColumnName="EmptyDrumCharge" />
-                <ScalarProperty Name="LabelStockCharge" ColumnName="LabelStockCharge" />
-                <ScalarProperty Name="ITSupportCharge" ColumnName="ITSupportCharge" />
-                <ScalarProperty Name="MiscCreditCharge" ColumnName="MiscCreditCharge" />
-                <ScalarProperty Name="GlobalProcessCharge" ColumnName="GlobalProcessCharge" />
-                <ScalarProperty Name="CCCredit" ColumnName="CCCredit" />
-                <ScalarProperty Name="CCProcessCharge" ColumnName="CCProcessCharge" />
-                <ScalarProperty Name="CCProcessRate" ColumnName="CCProcessRate" />
-                <ScalarProperty Name="CCProcessQty" ColumnName="CCProcessQty" />
-                <ScalarProperty Name="ProductSetupCharge" ColumnName="ProductSetupCharge" />
-                <ScalarProperty Name="ProductSetupRate" ColumnName="ProductSetupRate" />
-                <ScalarProperty Name="ProductSetupQty" ColumnName="ProductSetupQty" />
-                <ScalarProperty Name="ReLabelFeeCharge" ColumnName="ReLabelFeeCharge" />
-                <ScalarProperty Name="ReLabelFeeRate" ColumnName="ReLabelFeeRate" />
-                <ScalarProperty Name="ReLabelFeeQty" ColumnName="ReLabelFeeQty" />
-                <ScalarProperty Name="ReLabelPrtCharge" ColumnName="ReLabelPrtCharge" />
-                <ScalarProperty Name="ReLabelPrtRate" ColumnName="ReLabelPrtRate" />
-                <ScalarProperty Name="ReLabelPrtQty" ColumnName="ReLabelPrtQty" />
-                <ScalarProperty Name="LabelPrtCharge" ColumnName="LabelPrtCharge" />
-                <ScalarProperty Name="LabelPrtRate" ColumnName="LabelPrtRate" />
-                <ScalarProperty Name="LabelPrtQty" ColumnName="LabelPrtQty" />
-                <ScalarProperty Name="FollowUpCharge" ColumnName="FollowUpCharge" />
-                <ScalarProperty Name="FollowUpRate" ColumnName="FollowUpRate" />
-                <ScalarProperty Name="FollowUpQty" ColumnName="FollowUpQty" />
-                <ScalarProperty Name="ManualEntryCharge" ColumnName="ManualEntryCharge" />
-                <ScalarProperty Name="ManualEntryRate" ColumnName="ManualEntryRate" />
-                <ScalarProperty Name="ManualEntryQty" ColumnName="ManualEntryQty" />
-                <ScalarProperty Name="NonRevenueCharge" ColumnName="NonRevenueCharge" />
-                <ScalarProperty Name="NonRevenueRate" ColumnName="NonRevenueRate" />
-                <ScalarProperty Name="NonRevenueQty" ColumnName="NonRevenueQty" />
-                <ScalarProperty Name="RevenueCharge" ColumnName="RevenueCharge" />
-                <ScalarProperty Name="RevenueRate" ColumnName="RevenueRate" />
-                <ScalarProperty Name="RevenueQty" ColumnName="RevenueQty" />
-                <ScalarProperty Name="SamplesCharge" ColumnName="SamplesCharge" />
-                <ScalarProperty Name="SamplesRate" ColumnName="SamplesRate" />
-                <ScalarProperty Name="SamplesQty" ColumnName="SamplesQty" />
-                <ScalarProperty Name="GrandTotal" ColumnName="GrandTotal" />
-                <ScalarProperty Name="TotalDue" ColumnName="TotalDue" />
-                <ScalarProperty Name="TotalAdminCharge" ColumnName="TotalAdminCharge" />
-                <ScalarProperty Name="TotalFrtHzdSchg" ColumnName="TotalFrtHzdSchg" />
-                <ScalarProperty Name="TotalFreight" ColumnName="TotalFreight" />
-                <ScalarProperty Name="TotalCostSamples" ColumnName="TotalCostSamples" />
-                <ScalarProperty Name="TotalSamples" ColumnName="TotalSamples" />
-                <ScalarProperty Name="SampleShipOther" ColumnName="SampleShipOther" />
-                <ScalarProperty Name="SampleShipSecondDay" ColumnName="SampleShipSecondDay" />
-                <ScalarProperty Name="SampleShipNextDay" ColumnName="SampleShipNextDay" />
-                <ScalarProperty Name="SampleShipSameDay" ColumnName="SampleShipSameDay" />
-                <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
-                <ScalarProperty Name="Tier" ColumnName="Tier" />
-                <ScalarProperty Name="Currency" ColumnName="Currency" />
-                <ScalarProperty Name="RemitTo" ColumnName="RemitTo" />
-                <ScalarProperty Name="BillTo" ColumnName="BillTo" />
-                <ScalarProperty Name="NetTerm" ColumnName="NetTerm" />
-                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
-                <ScalarProperty Name="InvoicePeriod" ColumnName="InvoicePeriod" />
-                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="VerifyDate" ColumnName="VerifyDate" />
-                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
-                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="WarehouseLocation" ColumnName="WarehouseLocation" />
-                <ScalarProperty Name="BillingGroup" ColumnName="BillingGroup" />
-                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
-                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

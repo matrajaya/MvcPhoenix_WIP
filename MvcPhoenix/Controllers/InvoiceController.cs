@@ -13,6 +13,7 @@ namespace MvcPhoenix.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.ListOfClients = InvoiceService.ListOfClientIDs();
             return View();
         }
 

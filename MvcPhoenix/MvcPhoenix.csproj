@@ -1229,13 +1229,6 @@
     <Content Include="Views\Replenishments\_SuggestedItems.cshtml" />
     <Content Include="Views\Shared\_LayoutNaked.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
-    <Content Include="Views\ClientDetail\Index.cshtml" />
-    <Content Include="Views\ClientDetail\_Contacts.cshtml" />
-    <Content Include="Views\ClientDetail\_ContactsModal.cshtml" />
-    <Content Include="Views\ClientDetail\_EndUse.cshtml" />
-    <Content Include="Views\ClientDetail\_EndUseModal.cshtml" />
-    <Content Include="Views\ClientDetail\_Suppliers.cshtml" />
-    <Content Include="Views\ClientDetail\_SuppliersModal.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Receiving\SelectProduct.cshtml" />

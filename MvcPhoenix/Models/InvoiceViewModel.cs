@@ -12,11 +12,22 @@ namespace MvcPhoenix.Models
         [Display(Name = "Invoice ID")]
         public int invoiceid { get; set; }
 
+        [Display(Name = "Invoice Number")]
+        public int? invoicenumber { get; set; }
+
         [Display(Name = "Billing Group")]
         public string billinggroup { get; set; }
 
         [Display(Name = "Warehouse Location")]
         public string warehouselocation { get; set; }
+
+        public enum WHChoice
+        {   
+            CT,
+            CO,
+            EU,
+            AP
+        }
 
         [Display(Name = "Client ID")]
         public int? clientid { get; set; }
@@ -36,8 +47,8 @@ namespace MvcPhoenix.Models
         [Display(Name = "Update Date")]
         public DateTimeOffset? updatedate { get; set; }
 
-        [Display(Name = "Is Verified")]
-        public bool? isverified { get; set; }
+        [Display(Name = "Verified Accuracy")]
+        public bool? verifiedaccuracy { get; set; }
 
         [Display(Name = "Verified By")]
         public string verifiedby { get; set; }
@@ -48,12 +59,19 @@ namespace MvcPhoenix.Models
         [Display(Name = "Invoice Status")]
         public string status { get; set; }          // possible: new / reviewed / emailed / closed
 
+        public enum InvoiceStatusChoice
+        {
+            New,
+            Reviewed,
+            Emailed,
+            Closed
+        }
+
         [Display(Name = "Invoice Date")]
         public DateTimeOffset? invoicedate { get; set; }
 
         [Display(Name = "Invoice Period")]
-        [DisplayFormat(DataFormatString = "{0:MMM-yyyy}")]
-        public DateTimeOffset? invoiceperiod { get; set; }
+        public string invoiceperiod { get; set; }
         
         [Display(Name = "PO Number")]
         public string ponumber { get; set; }
@@ -71,6 +89,13 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Currency")]
         public string currency { get; set; }
+
+        public enum CurrencyChoice
+        {
+            USD,
+            EUR,
+            CNY
+        }
 
         [Display(Name = "Tier")]
         public int? tier { get; set; }
@@ -214,33 +239,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Minimal Sample Charge")]
         public decimal? minimalsamplecharge { get; set; }
-
-        public enum WHChoice
-        {
-            [Display(Name = "Connecticut")]
-            CT,
-            [Display(Name = "Colorado")]
-            CO,
-            [Display(Name = "Europe")]
-            EU,
-            [Display(Name = "Asia Pacific")]
-            AP,
-        }
-
-        public enum CurrencyChoice
-        {
-            USD,
-            EUR,
-            CNY
-        }
-
-        public enum InvoiceStatusChoice
-        {
-            New,
-            Reviewed,
-            Emailed,
-            Closed
-        }
 
         // Consider month choice for period or possible code magic and date manipulation
     }

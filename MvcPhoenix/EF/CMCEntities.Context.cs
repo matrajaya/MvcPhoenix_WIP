@@ -45,6 +45,7 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblEndUseForCustoms> tblEndUseForCustoms { get; set; }
         public virtual DbSet<tblHSCode> tblHSCode { get; set; }
         public virtual DbSet<tblInvLog> tblInvLog { get; set; }
+        public virtual DbSet<tblInvoice> tblInvoice { get; set; }
         public virtual DbSet<tblInvoiceDetail> tblInvoiceDetail { get; set; }
         public virtual DbSet<tblInvoiceMaster> tblInvoiceMaster { get; set; }
         public virtual DbSet<tblInvTrans> tblInvTrans { get; set; }
@@ -83,6 +84,5 @@ namespace MvcPhoenix.EF
         public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
         public virtual DbSet<vwShelfStockForReplenishment> vwShelfStockForReplenishment { get; set; }
         public virtual DbSet<vwShelfTransForReplenishment> vwShelfTransForReplenishment { get; set; }
-        public virtual DbSet<tblInvoice> tblInvoice { get; set; }
     }
 }

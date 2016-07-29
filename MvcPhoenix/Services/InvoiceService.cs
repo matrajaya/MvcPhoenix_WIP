@@ -22,6 +22,7 @@ namespace MvcPhoenix.Models
                 var q = (from t in db.tblInvoice where t.InvoiceID == id select t).FirstOrDefault();
 
                 IVM.invoiceid = q.InvoiceID;
+                IVM.invoicenumber = q.InvoiceNumber;
                 IVM.billinggroup = q.BillingGroup;
                 IVM.warehouselocation = q.WarehouseLocation;
                 IVM.clientid = q.ClientID;
@@ -30,7 +31,7 @@ namespace MvcPhoenix.Models
                 IVM.createdate = q.CreateDate;
                 IVM.updatedby = q.UpdatedBy;
                 IVM.updatedate = q.UpdateDate;
-                IVM.isverified = q.IsVerified;
+                IVM.verifiedaccuracy = q.VerifiedAccuracy;
                 IVM.verifiedby = q.VerifiedBy;
                 IVM.verifieddate = q.VerifyDate;
                 IVM.status = q.Status;
@@ -148,6 +149,8 @@ namespace MvcPhoenix.Models
 
                 var q = (from t in db.tblInvoice where t.InvoiceID == vm.invoiceid select t).FirstOrDefault();
 
+                q.InvoiceNumber = 1; //there can be multiple invoice numbers which can be used to group different order types for an invoice
+
                 q.BillingGroup = vm.billinggroup;
                 q.WarehouseLocation = vm.warehouselocation;
                 q.ClientID = vm.clientid;
@@ -156,7 +159,7 @@ namespace MvcPhoenix.Models
                 q.CreateDate = vm.createdate;
                 q.UpdatedBy = vm.updatedby;
                 q.UpdateDate = vm.updatedate;
-                q.IsVerified = vm.isverified;
+                q.VerifiedAccuracy = vm.verifiedaccuracy;
                 q.VerifiedBy = vm.verifiedby;
                 q.VerifyDate = vm.verifieddate;
                 q.Status = vm.status;
@@ -257,10 +260,40 @@ namespace MvcPhoenix.Models
                 vm.invoiceid = -1;
                 vm.clientid = id;
 
-                
-
                 return vm;
             }
         }
+
+        /// <summary>
+        /// List Creation
+        /// </summary>
+        /// 
+        public static List<SelectListItem> ListOfClientIDs()
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblClient
+                          orderby t.ClientName
+                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+                return mylist;
+            }
+        }
+        
+        public static List<SelectListItem> ListOfBillingGroups(int? id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblDivision
+                          where t.ClientID == id
+                          orderby t.Division
+                          select new SelectListItem { Value = t.Division, Text = t.Division }).Distinct().ToList();
+                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
+                return mylist;
+            }
+        }
+
     }
 }

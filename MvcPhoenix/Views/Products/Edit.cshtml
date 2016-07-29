@@ -99,38 +99,38 @@
                                 @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
                                 <label class="control-label">Discontinued</label>
                             </li>
-							<li>@Html.CheckBox("active", Model.active != null && (bool)Model.active, new { @class = "checkbox-inline" })
-                                <label class="control-label">Active</label>
-                            </li>
-                        </ul>
-                        <div class="form-group">
-                            <label>Accuracy Verified By</label>
-                            @Html.TextBoxFor(m => m.accuracyverifiedby, new { @class = "form-control" })
-                        </div>
+                            <li>@Html.CheckBox("active", Model.active != null && (bool)Model.active, new { @class = "checkbox-inline" })
+                            <label class="control-label">Active</label>
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        <label>Accuracy Verified By</label>
+                        @Html.TextBoxFor(m => m.accuracyverifiedby, new { @class = "form-control" })
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label>Product Code</label>
-                        @Html.TextBoxFor(m => m.productcode, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.productcode)
-                    </div>
-                    <div class="col-md-6">
-                        <label>Product Name</label>
-                        @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.productname)
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Product Code</label>
+                    @Html.TextBoxFor(m => m.productcode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.productcode)
                 </div>
-                <hr />
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="">
-                            @{Html.RenderAction("ShelfMasterList", "ShelfMaster", new { id = @Model.productdetailid });}
-                        </div>
+                <div class="col-md-6">
+                    <label>Product Name</label>
+                    @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.productname)
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="">
+                        @{Html.RenderAction("ShelfMasterList", "ShelfMaster", new { id = @Model.productdetailid });}
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -148,7 +148,7 @@
                             <li>@Html.CheckBox("freezerstorage", Model.freezerstorage != null && (bool)Model.freezerstorage) Freezer Storage</li>
                             <li>@Html.CheckBox("refrigerate", Model.refrigerate != null && (bool)Model.refrigerate) Refrig Storage</li>
                             <li>@Html.CheckBox("noreorder", Model.noreorder != null && (bool)Model.noreorder) Do Not Reorder</li>
-							<li>@Html.CheckBox("temperaturecontrolledstorage", Model.temperaturecontrolledstorage != null && (bool)Model.temperaturecontrolledstorage) Temp Controlled Storage</li>
+                            <li>@Html.CheckBox("temperaturecontrolledstorage", Model.temperaturecontrolledstorage != null && (bool)Model.temperaturecontrolledstorage) Temp Controlled Storage</li>
                         </ul>
                     </div>
 

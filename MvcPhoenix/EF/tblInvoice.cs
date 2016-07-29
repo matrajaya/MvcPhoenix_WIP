@@ -24,12 +24,12 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTimeOffset> CreateDate { get; set; }
         public string UpdatedBy { get; set; }
         public Nullable<System.DateTimeOffset> UpdateDate { get; set; }
-        public Nullable<bool> IsVerified { get; set; }
+        public Nullable<bool> VerifiedAccuracy { get; set; }
         public string VerifiedBy { get; set; }
         public Nullable<System.DateTimeOffset> VerifyDate { get; set; }
         public string Status { get; set; }
         public Nullable<System.DateTimeOffset> InvoiceDate { get; set; }
-        public Nullable<System.DateTimeOffset> InvoicePeriod { get; set; }
+        public string InvoicePeriod { get; set; }
         public string PONumber { get; set; }
         public string NetTerm { get; set; }
         public string BillTo { get; set; }
