@@ -14,22 +14,24 @@ namespace MvcPhoenix.Controllers
         public ActionResult Index()
         {
             ViewBag.ListOfClients = InvoiceService.ListOfClientIDs();
-            return View();
+            ViewBag.ListOfBillingGroups = InvoiceService.ListOfBillingGroups();
+            List<InvoiceViewModel> mylist = InvoiceService.IndexList();
+
+            return View(mylist);
         }
 
-        [HttpPost]
-        public ActionResult Create(FormCollection fc)
+        public ActionResult Create()
         {
-            int ClientID = Convert.ToInt32(fc["NewClientID"]);
-            var vm = InvoiceService.CreateInvoice(ClientID);
-
             /// string client, string division, 
             /// Assign invoice period based on current date: Get: ClientID, BillingGroup, Period
             /// Automated business rules from service
             /// Assign Invoice ID = -1 and go to edit action
             /// Ephemeral until the user executes save action
 
-            return View("~/Views/Orders/Edit.cshtml", vm);
+            InvoiceViewModel obj = new InvoiceViewModel();
+            obj = InvoiceService.CreateInvoice();
+            
+            return View("Edit", obj);
         }
 
         public ActionResult Edit(int id)

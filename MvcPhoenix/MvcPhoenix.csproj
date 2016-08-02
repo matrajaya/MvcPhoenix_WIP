@@ -292,6 +292,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CMCEntities.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblBillingGroup.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblBulk.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -410,6 +413,9 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblProfile_MDB.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblRates.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblReasonCode.cs">

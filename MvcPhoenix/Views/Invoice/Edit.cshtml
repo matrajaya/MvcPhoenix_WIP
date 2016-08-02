@@ -35,8 +35,6 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(m => m.invoiceid)
         @Html.HiddenFor(m => m.billinggroup)
-        @*@Html.HiddenFor(m => m.warehouselocation)*@
-        @*@Html.HiddenFor(m => m.currency)*@
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.clientname)
         @Html.HiddenFor(m => m.status)
@@ -45,6 +43,7 @@
         @Html.HiddenFor(m => m.invoicedate)
         @Html.HiddenFor(m => m.ponumber)
         @Html.HiddenFor(m => m.netterm)
+        @Html.HiddenFor(m => m.invoiceperiod)
 
         <div class="row">
             <div class="col-md-4">

@@ -61,10 +61,11 @@ namespace MvcPhoenix.Models
 
         public enum InvoiceStatusChoice
         {
-            New,
-            Reviewed,
-            Emailed,
-            Closed
+            NEW,
+            REVIEWED,
+            VERIFIED,
+            EMAILED,
+            CLOSED
         }
 
         [Display(Name = "Invoice Date")]

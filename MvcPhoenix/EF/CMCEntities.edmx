@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="CMCSQL03Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblBillingGroup">
+          <Key>
+            <PropertyRef Name="BillingGroupID" />
+          </Key>
+          <Property Name="BillingGroupID" Type="int" Nullable="false" />
+          <Property Name="BillingGroupName" Type="nvarchar(max)" />
+          <Property Name="ClientID" Type="int" />
+          <Property Name="ClientName" Type="nvarchar(max)" />
+          <Property Name="DivisionName" Type="nvarchar(max)" />
+          <Property Name="BusinessUnit" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="tblBulk">
           <Key>
             <PropertyRef Name="BulkID" />
@@ -1425,6 +1436,25 @@
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
         </EntityType>
+        <EntityType Name="tblRates">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="RevenueRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="NonRevenueRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ManualEntryRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="FollowUpRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="LabelPrtRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelPrtRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelFeeRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ProductSetupRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="CCProcessRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="RushShipRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="InactiveStockRate" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="MinimalSampleCharge" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
         <EntityType Name="tblReasonCode">
           <Key>
             <PropertyRef Name="ReasonCodeID" />
@@ -1764,6 +1794,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="Status" Type="nvarchar" MaxLength="6" />
         </EntityType>
         <EntityContainer Name="CMCSQL03ModelStoreContainer">
+          <EntitySet Name="tblBillingGroup" EntityType="Self.tblBillingGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBulk" EntityType="Self.tblBulk" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBulkOrder" EntityType="Self.tblBulkOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBulkOrderItem" EntityType="Self.tblBulkOrderItem" Schema="dbo" store:Type="Tables" />
@@ -1804,6 +1835,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="tblProductNotes" EntityType="Self.tblProductNotes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductXRef" EntityType="Self.tblProductXRef" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProfile_MDB" EntityType="Self.tblProfile_MDB" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRates" EntityType="Self.tblRates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblReasonCode" EntityType="Self.tblReasonCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblReportCriteria" EntityType="Self.tblReportCriteria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblShelfMaster" EntityType="Self.tblShelfMaster" Schema="dbo" store:Type="Tables" />
@@ -1956,6 +1988,8 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
           <EntitySet Name="vwShelfStockForReplenishment" EntityType="CMCSQL03Model.vwShelfStockForReplenishment" />
           <EntitySet Name="vwShelfTransForReplenishment" EntityType="CMCSQL03Model.vwShelfTransForReplenishment" />
+          <EntitySet Name="tblBillingGroup" EntityType="CMCSQL03Model.tblBillingGroup" />
+          <EntitySet Name="tblRates" EntityType="CMCSQL03Model.tblRates" />
         </EntityContainer>
         <EntityType Name="tblBulk">
           <Key>
@@ -3706,6 +3740,36 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="TransAmount" Type="Decimal" Precision="12" Scale="4" />
           <Property Name="ProductMasterID" Type="Int32" />
           <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblBillingGroup">
+          <Key>
+            <PropertyRef Name="BillingGroupID" />
+          </Key>
+          <Property Name="BillingGroupID" Type="Int32" Nullable="false" />
+          <Property Name="BillingGroupName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="ClientName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DivisionName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BusinessUnit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblRates">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="RevenueRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="NonRevenueRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ManualEntryRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="FollowUpRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LabelPrtRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelPrtRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReLabelFeeRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ProductSetupRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="CCProcessRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RushShipRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="EmptyPailsRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="InactiveStockRate" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="MinimalSampleCharge" Type="Decimal" Precision="10" Scale="2" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5517,6 +5581,38 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="TransDate" ColumnName="TransDate" />
                 <ScalarProperty Name="TransType" ColumnName="TransType" />
                 <ScalarProperty Name="InvTransID" ColumnName="InvTransID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblBillingGroup">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblBillingGroup">
+              <MappingFragment StoreEntitySet="tblBillingGroup">
+                <ScalarProperty Name="BusinessUnit" ColumnName="BusinessUnit" />
+                <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="BillingGroupName" ColumnName="BillingGroupName" />
+                <ScalarProperty Name="BillingGroupID" ColumnName="BillingGroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRates">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblRates">
+              <MappingFragment StoreEntitySet="tblRates">
+                <ScalarProperty Name="MinimalSampleCharge" ColumnName="MinimalSampleCharge" />
+                <ScalarProperty Name="InactiveStockRate" ColumnName="InactiveStockRate" />
+                <ScalarProperty Name="EmptyPailsRate" ColumnName="EmptyPailsRate" />
+                <ScalarProperty Name="RushShipRate" ColumnName="RushShipRate" />
+                <ScalarProperty Name="CCProcessRate" ColumnName="CCProcessRate" />
+                <ScalarProperty Name="ProductSetupRate" ColumnName="ProductSetupRate" />
+                <ScalarProperty Name="ReLabelFeeRate" ColumnName="ReLabelFeeRate" />
+                <ScalarProperty Name="ReLabelPrtRate" ColumnName="ReLabelPrtRate" />
+                <ScalarProperty Name="LabelPrtRate" ColumnName="LabelPrtRate" />
+                <ScalarProperty Name="FollowUpRate" ColumnName="FollowUpRate" />
+                <ScalarProperty Name="ManualEntryRate" ColumnName="ManualEntryRate" />
+                <ScalarProperty Name="NonRevenueRate" ColumnName="NonRevenueRate" />
+                <ScalarProperty Name="RevenueRate" ColumnName="RevenueRate" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

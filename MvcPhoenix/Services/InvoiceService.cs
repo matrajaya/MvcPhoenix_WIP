@@ -6,6 +6,7 @@
 using MvcPhoenix.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -141,6 +142,12 @@ namespace MvcPhoenix.Models
                     vm.invoiceid = NewInvoiceID();
                     vm.createdate = System.DateTime.Now;
                     vm.createdby = HttpContext.Current.User.Identity.Name;
+                    vm.invoicedate = System.DateTimeOffset.UtcNow;
+                    vm.status = "NEW";
+                }
+
+                if (vm.verifiedaccuracy == true){
+                    vm.status = "VERIFIED";
                 }
 
                 // Capture user info in viewmodel
@@ -149,8 +156,7 @@ namespace MvcPhoenix.Models
 
                 var q = (from t in db.tblInvoice where t.InvoiceID == vm.invoiceid select t).FirstOrDefault();
 
-                q.InvoiceNumber = 1; //there can be multiple invoice numbers which can be used to group different order types for an invoice
-
+                q.InvoiceNumber = vm.invoiceid; //there can be multiple invoice numbers which can be used to group different order types for an invoice
                 q.BillingGroup = vm.billinggroup;
                 q.WarehouseLocation = vm.warehouselocation;
                 q.ClientID = vm.clientid;
@@ -252,15 +258,41 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static InvoiceViewModel CreateInvoice(int id)
+        public static InvoiceViewModel CreateInvoice()
         {
+            InvoiceViewModel obj = new InvoiceViewModel();
+
             using (var db = new EF.CMCSQL03Entities())
             {
-                InvoiceViewModel vm = new InvoiceViewModel();
-                vm.invoiceid = -1;
-                vm.clientid = id;
+                obj.invoiceid = -1;
+                obj.invoicedate = DateTime.UtcNow;
+                obj.clientid = 2;
+                obj.clientname = "Akzo Nobel";
+                obj.billinggroup = "ADHESIVES";
+                obj.ponumber = "AS234522";
+                obj.netterm = "60 Days";
+                obj.status = "New";
+                obj.warehouselocation = "AP";
+                obj.currency = "USD";
+                obj.tier = 1;
+                obj.invoiceperiod = DateTime.Now.ToString("MMMM yyyy", CultureInfo.CreateSpecificCulture("en-US"));
+                obj.remitto = "<p>Chemical Marketing Concepts, LLC<br />c/o Odyssey Logistics &amp; Technology Corp<br />39 Old Ridgebury Road, N-1<br />Danbury, CT 06810</p>";
 
-                return vm;
+                //obj.revenuerate = q.RevenueRate;
+                //obj.nonrevenuerate = q.NonRevenueRate;
+                //obj.manualentryrate = q.ManualEntryRate;
+                //obj.followuprate = q.FollowUpRate;
+                //obj.labelprtrate = q.LabelPrtRate;
+                //obj.relabelprtrate = q.ReLabelPrtRate;
+                //obj.relabelfeerate = q.ReLabelFeeRate;
+                //obj.productsetuprate = q.ProductSetupRate;
+                //obj.ccprocessrate = q.CCProcessRate;
+                //obj.rushshiprate = q.RushShipRate;
+                //obj.emptypailsrate = q.EmptyPailsRate;
+                //obj.inactivestockrate = q.InactiveStockRate;
+                //obj.minimalsamplecharge = q.MinimalSampleCharge;
+                
+                return obj;
             }
         }
 
@@ -268,6 +300,29 @@ namespace MvcPhoenix.Models
         /// List Creation
         /// </summary>
         /// 
+        public static List<InvoiceViewModel> IndexList()
+        {
+            // List for the Index View
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var obj = (from t in db.tblInvoice
+                           //where t.Status == "NEW" || 
+                           //     t.Status == "PENDING"
+                           orderby t.InvoiceNumber ascending
+                           select new InvoiceViewModel
+                           {
+                               invoiceid = t.InvoiceID,
+                               invoicenumber = t.InvoiceNumber,
+                               clientname = t.ClientName,
+                               billinggroup = t.BillingGroup,
+                               invoicedate = t.InvoiceDate,
+                               invoiceperiod = t.InvoicePeriod,
+                               status = t.Status
+                           }).ToList();
+                return obj;
+            }
+        }
+
         public static List<SelectListItem> ListOfClientIDs()
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -281,14 +336,13 @@ namespace MvcPhoenix.Models
             }
         }
         
-        public static List<SelectListItem> ListOfBillingGroups(int? id)
+        //public static List<SelectListItem> ListOfBillingGroups(int? id)
+        public static List<SelectListItem> ListOfBillingGroups()
         {
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 mylist = (from t in db.tblDivision
-                          where t.ClientID == id
-                          orderby t.Division
                           select new SelectListItem { Value = t.Division, Text = t.Division }).Distinct().ToList();
                 mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
                 return mylist;
