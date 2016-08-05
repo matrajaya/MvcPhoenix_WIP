@@ -12,24 +12,21 @@
             <h1 class="page-header">@ViewBag.Title: <small>@Html.DisplayFor(m => m.invoiceid) for @Html.DisplayFor(m => m.clientname) - @Html.DisplayFor(m => m.billinggroup)</small> </h1>
         </div>
     </div>
-    <div class="form-group row">
-        <div class="col-md-8">
-            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Invoice Main", "Index")
-        </div>
-        <div class="col-md-4">
-            <div class="pull-right">
-                <a href="@Url.Action("View", "Invoice", new { id = @Model.invoiceid })"><i class="fa fa-fw fa-eye"></i> View Mode</a>
+    <div class="row form-group">
+        <div class="col-md-12">
+            <div class="pull-left">
+                <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Invoice Main", "Index")
+            </div>
+            <div style="text-align:center;">
+                <span id="dvTopMessage" style="color:green;font-weight:bold;"> @TempData["SaveResult"]</span><!-- show message after save -->
+                <div class="pull-right">
+                    <a href="@Url.Action("View", "Invoice", new { id = @Model.invoiceid })"><i class="fa fa-fw fa-eye"></i> View Mode</a>
+                </div>
             </div>
         </div>
     </div>
 
-    @using (Ajax.BeginForm("SaveInvoice", "Invoice",
-    new AjaxOptions
-    {
-        OnBegin = "$('#dvSaveResult').html('')",
-        HttpMethod = "POST",
-        LoadingElementId = "dvspinner",
-    }))
+    @using (Html.BeginForm("SaveInvoice", "Invoice", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })

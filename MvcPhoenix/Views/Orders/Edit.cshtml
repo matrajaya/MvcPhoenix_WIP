@@ -28,15 +28,14 @@
                 <a href="#_" type="button" onclick="$('.panel-body').collapse('show');" value="open all"> Open All</a> |
                 <a href="#__" type="button" onclick="$('.panel-body').collapse('hide');" value="close all"> Close All</a>
             </div>
-            <div class="text-center">
+            <div style="text-align:center;">
                 <span id="dvTopMessage" style="color:green;font-weight:bold;"> @TempData["SaveResult"]</span><!-- show message after save -->
-            </div>
-            <div class="pull-right">
-                @if(@Model.orderid != -1)
-                {
-                    <a href="@Url.Action("PrintOrder", "Orders", new { id = @Model.orderid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
-                }
-
+                <div class="pull-right">
+                    @if (@Model.orderid != -1)
+                    {
+                        <a href="@Url.Action("PrintOrder", "Orders", new { id = @Model.orderid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
+                    }
+                </div>
             </div>
         </div>
     </div>

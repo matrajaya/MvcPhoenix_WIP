@@ -49,6 +49,7 @@ namespace MvcPhoenix.Controllers
             if (ModelState.IsValid)
             {
                 pk = InvoiceService.SaveInvoice(vm);
+                TempData["SaveResult"] = "Invoice updated at " + DateTime.Now;
                 // todo: insert success messsage
             }
 
