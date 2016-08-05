@@ -9,9 +9,9 @@ namespace MvcPhoenix.Models
     public class OrderMasterFull
     {
         public List<SelectListItem> ListOfDivisions { get; set; }
-        public List<SelectListItem> ListOfOrderTypes { get; set; }
+        // public List<SelectListItem> ListOfOrderTypes { get; set; } Discussion on streamlining and trimming current selections. Enum list below
         public List<SelectListItem> ListOfSalesReps { get; set; }
-        public List<SelectListItem> ListOfOrderSources { get; set; }
+        // public List<SelectListItem> ListOfOrderSources { get; set; } Discussion on streamlining and trimming current selections. Enum list below
         public List<SelectListItem> ListOfCountries { get; set; }
         public List<SelectListItem> ListOfEndUses { get; set; }
         public List<SelectListItem> ListOfShipVias { get; set; }
@@ -63,10 +63,23 @@ namespace MvcPhoenix.Models
         [Display(Name = "Order Type")]
         public string ordertype { get; set; }
 
+        public enum OrderTypeChoice
+        {
+            [Display(Name = "Sample")]
+            S,
+            [Display(Name = "Dormant")]
+            D,
+            [Display(Name = "Return")]
+            R,
+            [Display(Name = "Commercial")]
+            C
+        }
+
         [Display(Name = "Order Date")]
         public DateTime? orderdate { get; set; }
 
         [Display(Name = "Company")]
+        [Required(ErrorMessage = "Ship To Name is required")]
         public string company { get; set; }
 
         [Display(Name = "Street")]
@@ -126,8 +139,24 @@ namespace MvcPhoenix.Models
         [Display(Name = "Phone")]
         public string phone { get; set; }
 
+        // Change "source" to ordersource and add "clientsource" to tblOrderMaster.
         [Display(Name = "Source")]
         public string source { get; set; }
+
+        [Display(Name = "Order Source")]
+        public string ordersource { get; set; } 
+
+        public enum OrderSourceChoice
+        {
+            Manual,
+            Web,
+            Download,
+            Transfer
+        }
+
+        // Transfer legacy data from source to client source
+        [Display(Name = "Client Source")]
+        public string clientsource { get; set; }
 
         [Display(Name = "Fax")]
         public string fax { get; set; }

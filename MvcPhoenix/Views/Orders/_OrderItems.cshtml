@@ -30,12 +30,9 @@
                     <td class="text-center">@item.Qty</td>
                     <td>@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
                     <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
-                    <td class="text-center">
-                    <input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" />
-                    </td>
+                    <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
                     <td class="text-center">@item.QtyAvailable.ToString()</td>
                     <td class="text-center">@item.AllocateStatus</td>
-
                     <td id="noprint" class="text-center">
                         @Ajax.ActionLink("Edit", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
                              {
@@ -52,35 +49,26 @@
 </div>
 
 <!-- Start Allocate Buttons -->
-    <!-- dvAllocateResult is in Edit.cshtml to provide a place to stick a message after allocation -->
-
-    <div class="row text-center">
-        <div class="form-group col-md-3">
-
-            @Ajax.ActionLink("Allocate from Shelf (Available Stock Only)", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = false },
+<!-- dvAllocateResult is in Edit.cshtml to provide a place to stick a message after allocation -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-primary" style="margin-bottom:-10px;margin-top:-10px;">
+            <div class="panel-body" style="margin:-5px">
+                <label>Available Stock Only</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        @Ajax.ActionLink("Allocate from Shelf", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = false },
                         new AjaxOptions
                              {
-                        UpdateTargetId = "dvAllocateResult",
-                        InsertionMode=InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        OnSuccess = "UpdateItemsList",
-                        OnFailure = "alert('Error- Could not allocate order')"
-                    }, new { @class = "btn btn-sm btn-primary" })
-        </div>
-
-        <div class="form-group col-md-3">
-            @Ajax.ActionLink("Allocate from Shelf (QC Stock)", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = true },
-                        new AjaxOptions
-                             {
-                        UpdateTargetId = "dvAllocateResult",
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        OnSuccess = "UpdateItemsList",
-                        OnFailure = "alert('Error- Could not allocate order')",
-                    }, new { @class = "btn btn-sm btn-primary" })
-        </div>
-        <div class="form-group col-md-3">
-            @Ajax.ActionLink("Allocate from Bulk (Available Stock Only)", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = false },
+                                 UpdateTargetId = "dvAllocateResult",
+                                 InsertionMode = InsertionMode.Replace,
+                                 HttpMethod = "GET",
+                                 OnSuccess = "UpdateItemsList",
+                                 OnFailure = "alert('Error- Could not allocate order')"
+                             }, new { @class = "btn btn-sm btn-primary btn-block" })
+                    </div>
+                    <div class="col-md-6">
+                        @Ajax.ActionLink("Allocate from Bulk", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = false },
                         new AjaxOptions
                     {
                         UpdateTargetId = "dvAllocateResult",
@@ -88,30 +76,49 @@
                         HttpMethod = "GET",
                         OnSuccess = "UpdateItemsList",
                         OnFailure = "alert('Error- Could not allocate order')",
-                    }, new { @class = "btn btn-sm btn-primary" })
-        </div>
-
-        <div class="form-group col-md-3">
-            @Ajax.ActionLink("Allocate from Bulk (QC Stock)", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = true },
-                        new AjaxOptions
-                    {
-                        UpdateTargetId = "dvAllocateResult",
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        OnSuccess = "UpdateItemsList",
-                        OnFailure = "alert('Error- Could not allocate order')",
-                    }, new { @class = "btn btn-sm btn-primary" })
+                    }, new { @class = "btn btn-sm btn-primary btn-block" })
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
+    <div class="col-md-6">
+        <div class="panel panel-primary" style="margin-bottom:-10px;margin-top:-10px;">
+            <div class="panel-body" style="margin:-5px">
+                <label>QC Stock</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        @Ajax.ActionLink("Allocate from Shelf", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = true },
+                        new AjaxOptions
+                             {
+                                 UpdateTargetId = "dvAllocateResult",
+                                 InsertionMode = InsertionMode.Replace,
+                                 HttpMethod = "GET",
+                                 OnSuccess = "UpdateItemsList",
+                                 OnFailure = "alert('Error- Could not allocate order')",
+                             }, new { @class = "btn btn-sm btn-primary btn-block" })
+                    </div>
+                    <div class="col-md-6">
+                        @Ajax.ActionLink("Allocate from Bulk", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = true },
+                        new AjaxOptions
+                    {
+                        UpdateTargetId = "dvAllocateResult",
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "GET",
+                        OnSuccess = "UpdateItemsList",
+                        OnFailure = "alert('Error- Could not allocate order')",
+                    }, new { @class = "btn btn-sm btn-primary btn-block" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End Allocate Buttons -->
 
 <script type="text/javascript">
-
     function UpdateItemsList()
     {
-
         $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { id = @Model[0].OrderID })');
-
     }
 </script>

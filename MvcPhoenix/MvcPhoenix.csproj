@@ -349,10 +349,19 @@
     <Compile Include="EF\tblEndUseForCustoms.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblGHSPHDetail.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblGHSPHSource.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblHSCode.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblInvLog.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblInvLogType.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblInvoice.cs">
@@ -365,9 +374,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblInvTrans.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblLog.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblOrderImport.cs">
@@ -449,9 +455,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblTier.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblTransType.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblUN.cs">

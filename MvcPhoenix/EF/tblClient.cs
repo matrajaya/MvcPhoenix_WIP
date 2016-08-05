@@ -47,5 +47,64 @@ namespace MvcPhoenix.EF
         public string SP_Expedite { get; set; }
         public string BOLComment { get; set; }
         public string LogoFileName { get; set; }
+        public string ClientReference { get; set; }
+        public string ClientEntityName { get; set; }
+        public string MSDSFileDir { get; set; }
+        public string TDSFileDir { get; set; }
+        public string COAFileDir { get; set; }
+        public string LogoFileDir { get; set; }
+        public string InvoiceAddress { get; set; }
+        public string InvoiceEmailTo { get; set; }
+        public string KeyContactDir { get; set; }
+        public string ClientContact { get; set; }
+        public string CMCContact { get; set; }
+        public string ClientUrl { get; set; }
+        public string ProductSetupDetails { get; set; }
+        public string SDSLanguage { get; set; }
+        public string SDSUpdateMethod { get; set; }
+        public string LabelLanguage { get; set; }
+        public Nullable<bool> SDSRequired { get; set; }
+        public Nullable<bool> COARequired { get; set; }
+        public Nullable<bool> TDSRequired { get; set; }
+        public Nullable<bool> StdCoverLetterRequired { get; set; }
+        public string SpecialReqAllowed { get; set; }
+        public string InventoryReports { get; set; }
+        public string CeaseShipPeriod { get; set; }
+        public string ReplenishmentLeadDays { get; set; }
+        public Nullable<bool> ExpDateOnLabel { get; set; }
+        public string ExpDateRules { get; set; }
+        public string WasteProcedure { get; set; }
+        public string InventoryBusinessRules { get; set; }
+        public string CommercialInvoiceValue { get; set; }
+        public string FreezableProcedure { get; set; }
+        public Nullable<bool> SurveyUsed { get; set; }
+        public string CSBusinessRules { get; set; }
+        public string ShipConfirmEmail { get; set; }
+        public string DelayConfirmEmail { get; set; }
+        public string OrderConfirmEmail { get; set; }
+        public string InvoiceSegregation { get; set; }
+        public string ChargesSummary { get; set; }
+        public string PartialDeliveryAllowed { get; set; }
+        public string ClientStatus { get; set; }
+        public Nullable<System.DateTimeOffset> ActiveDate { get; set; }
+        public Nullable<int> SurchageHazard { get; set; }
+        public Nullable<int> SurchargeFlammable { get; set; }
+        public Nullable<int> SurchargeHeat { get; set; }
+        public Nullable<int> SurchargeRefrigerate { get; set; }
+        public Nullable<int> SurchargeFreeze { get; set; }
+        public Nullable<int> SurchargeClean { get; set; }
+        public Nullable<int> SurchargeNalgene { get; set; }
+        public Nullable<int> SurchargeNitrogen { get; set; }
+        public Nullable<int> SurchargeBiocide { get; set; }
+        public Nullable<int> SurchargeBlend { get; set; }
+        public Nullable<int> SurchargeKosher { get; set; }
+        public Nullable<int> HazDHServLvl1 { get; set; }
+        public Nullable<int> HazDHServLvl2 { get; set; }
+        public Nullable<int> HazDHServLvl3 { get; set; }
+        public Nullable<int> HazDHServLvl4 { get; set; }
+        public Nullable<int> NonHazDHServLvl1 { get; set; }
+        public Nullable<int> NonHazDHServLvl2 { get; set; }
+        public Nullable<int> NonHazDHServLvl3 { get; set; }
+        public Nullable<int> NonHazDHServLvl4 { get; set; }
     }
 }

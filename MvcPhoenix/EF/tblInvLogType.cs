@@ -12,10 +12,11 @@ namespace MvcPhoenix.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tblTransType
+    public partial class tblInvLogType
     {
         public int ID { get; set; }
-        public string TransType { get; set; }
-        public string TransDescription { get; set; }
+        public string LogType { get; set; }
+        public string LogTypeDescription { get; set; }
+        public string LogType_Legacy { get; set; }
     }
 }

@@ -90,26 +90,31 @@
                         @Html.LabelFor(m => m.billinggroup, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(m => m.billinggroup, Model.ListOfBillingGroups, new { @class = "form-control" })
                     </div>
+                    <div class="col-md-3">
+                        <label class="control-label">Client Source</label>
+                        @Html.TextBoxFor(m => m.source, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.source)
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-3">
                         <label class="control-label">Client Reference</label>
                         @Html.TextBoxFor(m => m.custrefnum, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.custrefnum)
                     </div>
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-3">
                         <label class="control-label">Client Order Number</label>
                         @Html.TextBoxFor(m => m.custordnum, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.custordnum)
                     </div>
-                    <div class="col-md-3 form-group">
-                        @Html.LabelFor(m => m.ordertype, htmlAttributes: new { @class = "control-label" })
-                        @Html.DropDownListFor(m => m.ordertype, Model.ListOfOrderTypes, new { @class = "form-control" })
+                    <div class="col-md-3">
+                        <label>Order Type <i class="fa fa-fw fa-question-circle" rel="tooltip" title="S = Samples&#13;D = Dormant&#13;R = Returns&#13;C = Commercial&#13;"></i></label>
+                        @Html.DropDownListFor(m => m.ordertype, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderMasterFull.OrderTypeChoice))), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ordertype)
                     </div>
-                    <div class="col-md-3 form-group">
+                    <div class="col-md-3">
                         <label class="control-label">Order Source</label>
-                        @Html.DropDownListFor(m => m.source, Model.ListOfOrderSources, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.source, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderMasterFull.OrderSourceChoice))), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.source)
                     </div>
                 </div>
@@ -181,12 +186,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-6">
+                    <div class="col-md-6">
                         @Html.LabelFor(m => m.state, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.state, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.state)
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="col-md-6">
                         @Html.LabelFor(m => m.country, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(m => m.country, Model.ListOfCountries, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.country)
@@ -262,21 +267,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         @Html.LabelFor(m => m.distributor, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.distributor, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.distributor)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         <label class="control-label">End Use</label>
                         @Html.DropDownListFor(m => m.enduse, Model.ListOfEndUses, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.enduse)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         @Html.LabelFor(m => m.approvalneeded, new { @class = "control-label" })
                         @Html.CheckBoxFor(m => m.approvalneeded, new { @class = "checkbox" })
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         @Html.LabelFor(m => m.approvaldate, new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.approvaldate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.approvaldate)
@@ -291,8 +296,8 @@
                 <h3 class="panel-title" data-toggle="collapse" data-target="#prodselectpan"><i class="fa fa-file-text-o fa-fw"></i> Order Items</h3>
             </div>
             <div id="prodselectpan" class="panel-body collapse in">
+                <span id="dvAllocateResult" class="pull-right text-success"></span>
                 <div id="dvItems">
-
                     @if (Model.orderid == -1)
                     {
                         <h5 class="alert alert-danger">Please save the order once before adding items</h5>
@@ -300,15 +305,14 @@
                     @if (Model.orderid > 1)
                     {
                         <div>
-                            <span class="pull-left" style="padding-bottom: 20px;">
-                                @Ajax.ActionLink("Add an item to this order", "CreateItem", "Orders", new { id = Model.orderid },
-                        new AjaxOptions
-                    {
-                        UpdateTargetId = "dialogPlaceholder",
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                    }, new { @class = "btn btn-primary" })
+                            <span class="pull-left" style="padding-bottom: 10px;">
+                                @Ajax.ActionLink("Add an item to this order", "CreateItem", "Orders", new { id = Model.orderid }, new AjaxOptions
+                                {
+                                    UpdateTargetId = "dialogPlaceholder",
+                                    InsertionMode = InsertionMode.Replace,
+                                    HttpMethod = "GET",
+                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                                }, new { @class = "btn btn-primary" })
                             </span>
                         </div>
                         <div class="clearfix"></div>    <!-- necessary -->
@@ -318,7 +322,6 @@
                         </div>
                     }
                 </div>
-                <div id="dvAllocateResult" class="text-center text-success"></div>
             </div>
         </div>
         <!--End: Product Item Selection Section -->
@@ -336,17 +339,15 @@
                     }
                     @if (Model.orderid > 1)
                     {
-                        <span class="pull-left" style="padding-bottom: 20px;">
-                            @Ajax.ActionLink("Add a transaction to this order", "CreateTrans", "Orders", new { id = Model.orderid },
-                        new AjaxOptions
-                    {
-                        UpdateTargetId = "dialogPlaceholder",
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                    }, new { @class = "btn btn-primary" })
+                        <span class="pull-left" style="padding-bottom: 10px;">
+                            @Ajax.ActionLink("Add a transaction to this order", "CreateTrans", "Orders", new { id = Model.orderid }, new AjaxOptions
+                            {
+                                UpdateTargetId = "dialogPlaceholder",
+                                InsertionMode = InsertionMode.Replace,
+                                HttpMethod = "GET",
+                                OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                            }, new { @class = "btn btn-primary" })
                         </span>
-
                     }
                 </div>
                 <div class="clearfix"></div>    <!-- necessary -->
@@ -384,17 +385,17 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         @Html.LabelFor(m => m.timing, htmlAttributes: new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.timing, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.timing)
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         @Html.LabelFor(m => m.spsfreightcost, htmlAttributes: new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.spsfreightcost, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.spsfreightcost)
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-4">
                         @Html.LabelFor(m => m.spsshippedwt, htmlAttributes: new { @class = "control-label" })
                         @Html.TextBoxFor(m => m.spsshippedwt, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.spsshippedwt)
@@ -418,7 +419,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="col-md-12">
                         <label>Special Instructions - External</label>
                         @Html.TextAreaFor(m => m.special, new { @class = "form-control", @rows = 10 })
                         @Html.ValidationMessageFor(m => m.special)

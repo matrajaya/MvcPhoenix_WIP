@@ -15,63 +15,50 @@ namespace MvcPhoenix.EF
     public partial class tblInvLog
     {
         public int LogID { get; set; }
-        public Nullable<int> LegacyID { get; set; }
-        public string TransType { get; set; }
-        public string Company_MDB { get; set; }
-        public string Division { get; set; }
-        public string ReceivedBy { get; set; }
-        public string EnteredBy { get; set; }
-        public Nullable<System.DateTime> DateReceived { get; set; }
+        public string LogType { get; set; }
+        public Nullable<System.DateTime> LogDate { get; set; }
+        public Nullable<int> BulkID { get; set; }
+        public Nullable<int> StockID { get; set; }
+        public Nullable<int> ProductMasterID { get; set; }
+        public Nullable<int> ProductDetailID { get; set; }
+        public Nullable<int> LogQty { get; set; }
+        public Nullable<decimal> LogAmount { get; set; }
+        public string UM { get; set; }
+        public string LogNotes { get; set; }
+        public Nullable<int> ClientID { get; set; }
+        public string ClientName { get; set; }
+        public string Status { get; set; }
+        public string Warehouse { get; set; }
+        public string Lotnumber { get; set; }
+        public string BulkBin { get; set; }
+        public string ShelfBin { get; set; }
+        public string Size { get; set; }
+        public string MasterCode { get; set; }
+        public string MasterName { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
-        public string LotNumber { get; set; }
-        public Nullable<int> Quantity { get; set; }
-        public Nullable<System.DateTime> DOM { get; set; }
-        public Nullable<System.DateTime> expdt { get; set; }
-        public Nullable<System.DateTime> ceaseshipdate { get; set; }
-        public string Location { get; set; }
-        public string Status { get; set; }
-        public string Carrier { get; set; }
-        public string Notes { get; set; }
-        public string Container { get; set; }
-        public string ContainerType { get; set; }
-        public Nullable<decimal> Weight { get; set; }
-        public string ColorOfContainer { get; set; }
-        public Nullable<bool> COAIncluded { get; set; }
-        public Nullable<bool> MSDSIncluded { get; set; }
-        public Nullable<int> PercentSolids { get; set; }
-        public Nullable<int> NCO { get; set; }
-        public Nullable<decimal> TEW { get; set; }
-        public Nullable<int> PercentOH { get; set; }
-        public string LogRecordStatus { get; set; }
-        public string ReceivedAsCode { get; set; }
-        public string ReceivedAsName { get; set; }
-        public Nullable<bool> flammable { get; set; }
-        public Nullable<bool> freezer { get; set; }
-        public Nullable<bool> refrigerator { get; set; }
-        public string Other { get; set; }
-        public Nullable<bool> RestrictedQty { get; set; }
-        public Nullable<decimal> RestrictedAmt { get; set; }
-        public Nullable<System.DateTime> DateEntered { get; set; }
-        public Nullable<System.DateTime> DateShipped { get; set; }
-        public Nullable<decimal> CurrentAvailable { get; set; }
+        public Nullable<System.DateTime> ShipDate { get; set; }
+        public Nullable<int> CurrentQtyAvailable { get; set; }
+        public Nullable<decimal> CurrentWeightAvailable { get; set; }
+        public Nullable<System.DateTime> ExpirationDate { get; set; }
+        public Nullable<System.DateTime> CeaseShipDate { get; set; }
         public string OrderNumber { get; set; }
+        public Nullable<System.DateTime> DateReceived { get; set; }
         public Nullable<System.DateTime> QCDate { get; set; }
-        public string UM { get; set; }
-        public Nullable<int> NumberOfPackages { get; set; }
-        public Nullable<decimal> UnitWeight { get; set; }
-        public string mastercode { get; set; }
-        public Nullable<int> CurrentPackages { get; set; }
-        public string packoutnumber { get; set; }
-        public string BulkLocation { get; set; }
-        public Nullable<System.DateTime> DatePackaged { get; set; }
-        public Nullable<decimal> CurrentTotal { get; set; }
-        public Nullable<decimal> CurrentTest { get; set; }
-        public string ShelfLocation { get; set; }
-        public Nullable<decimal> BulkContainerWeight { get; set; }
-        public Nullable<bool> DrumDeleted { get; set; }
-        public string Initials { get; set; }
-        public string Location_MDB { get; set; }
-        public string MigrationNotes { get; set; }
+        public Nullable<int> PackOutID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
+        public Nullable<int> LegacyID { get; set; }
+        public string LogRecordStatus_MDB { get; set; }
+        public string Company_MDB { get; set; }
+        public string Division_MDB { get; set; }
+        public string ProductCode_MDB { get; set; }
+        public string MasterCode_MDB { get; set; }
+        public string LotNumber_MDB { get; set; }
+        public string Size_MDB { get; set; }
+        public string Source_MDB { get; set; }
+        public string Source_Table { get; set; }
     }
 }

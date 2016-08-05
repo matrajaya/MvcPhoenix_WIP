@@ -275,7 +275,7 @@ namespace MvcPhoenix.Models
                 obj.warehouselocation = "AP";
                 obj.currency = "USD";
                 obj.tier = 1;
-                obj.invoiceperiod = DateTime.Now.ToString("MMMM yyyy", CultureInfo.CreateSpecificCulture("en-US"));
+                obj.invoiceperiod = DateTime.Now.ToString("MMMM\",\" yyyy", CultureInfo.CreateSpecificCulture("en-US"));
                 obj.remitto = "<p>Chemical Marketing Concepts, LLC<br />c/o Odyssey Logistics &amp; Technology Corp<br />39 Old Ridgebury Road, N-1<br />Danbury, CT 06810</p>";
 
                 //obj.revenuerate = q.RevenueRate;
@@ -343,8 +343,10 @@ namespace MvcPhoenix.Models
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 mylist = (from t in db.tblDivision
+                          //where t.ClientID == id
+                          orderby t.Division
                           select new SelectListItem { Value = t.Division, Text = t.Division }).Distinct().ToList();
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
+                mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Billing Group" });
                 return mylist;
             }
         }

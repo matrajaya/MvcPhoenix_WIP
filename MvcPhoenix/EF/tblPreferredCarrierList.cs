@@ -16,7 +16,7 @@ namespace MvcPhoenix.EF
     {
         public int ID { get; set; }
         public string CountryCode { get; set; }
-        public string Country { get; set; }
+        public string CountryName { get; set; }
         public Nullable<bool> CommInvoiceReq { get; set; }
         public string NonHaz_Sm { get; set; }
         public string NonHaz_Lg { get; set; }

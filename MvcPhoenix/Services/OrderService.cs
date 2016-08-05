@@ -57,9 +57,9 @@ namespace MvcPhoenix.Services
                 vm.orderstatus = "z";
                 vm.orderdate = System.DateTime.Now;
                 //vm.ListOfDivisions = fnListOfDivisions(id);
-                vm.ListOfOrderTypes = fnListOfOrderTypes();
+                //vm.ListOfOrderTypes = fnListOfOrderTypes();
                 vm.ListOfSalesReps = fnListOfSalesReps(id);
-                vm.ListOfOrderSources = fnListOfOrderSources();
+                //vm.ListOfOrderSources = fnListOfOrderSources();
                 vm.ListOfCountries = fnListOfCountries();
                 vm.ListOfEndUses = fnListOfEndUses(id);
                 vm.ListOfShipVias = fnListOfShipVias();
@@ -90,9 +90,9 @@ namespace MvcPhoenix.Services
 
                 // Fill lists buried in object
                 //o.ListOfDivisions = fnListOfDivisions(q.ClientID);
-                o.ListOfOrderTypes = fnListOfOrderTypes();
+                //o.ListOfOrderTypes = fnListOfOrderTypes();
                 o.ListOfSalesReps = fnListOfSalesReps(o.clientid);
-                o.ListOfOrderSources = fnListOfOrderSources();
+                //o.ListOfOrderSources = fnListOfOrderSources();
                 o.ListOfCountries = fnListOfCountries();
                 o.ListOfEndUses = fnListOfEndUses(o.clientid);
                 o.ListOfShipVias = fnListOfShipVias();

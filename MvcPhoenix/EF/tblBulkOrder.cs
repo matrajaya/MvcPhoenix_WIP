@@ -20,8 +20,6 @@ namespace MvcPhoenix.EF
         public Nullable<int> ClientID { get; set; }
         public Nullable<int> LegacyOrderNumber { get; set; }
         public Nullable<int> LegacyOrderNumber_Acc2 { get; set; }
-        public string Company_MDB { get; set; }
-        public string Division_MDB { get; set; }
         public Nullable<System.DateTime> OrderDate { get; set; }
         public string Comment { get; set; }
         public string Status { get; set; }
@@ -33,6 +31,8 @@ namespace MvcPhoenix.EF
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateUser { get; set; }
+        public string Company_MDB { get; set; }
+        public string Division_MDB { get; set; }
         public string Location_MDB { get; set; }
         public string MigrationNotes { get; set; }
     }
