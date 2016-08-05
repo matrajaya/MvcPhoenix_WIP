@@ -146,8 +146,14 @@ namespace MvcPhoenix.Models
                     vm.status = "NEW";
                 }
 
+                var confirmVerify = false;
                 if (vm.verifiedaccuracy == true){
+                    ///Add logic to check invoice status if not new or verified already
+                    ///check if verified by user == created user. should be different
+                    ///capture verified datetime and user identity and save to db
+                    ///verified invoices should be locked from further edits..
                     vm.status = "VERIFIED";
+                    confirmVerify = true;
                 }
 
                 // Capture user info in viewmodel
@@ -165,9 +171,14 @@ namespace MvcPhoenix.Models
                 q.CreateDate = vm.createdate;
                 q.UpdatedBy = vm.updatedby;
                 q.UpdateDate = vm.updatedate;
-                q.VerifiedAccuracy = vm.verifiedaccuracy;
-                q.VerifiedBy = vm.verifiedby;
-                q.VerifyDate = vm.verifieddate;
+
+                if (confirmVerify == true)
+                {
+                    q.VerifiedAccuracy = vm.verifiedaccuracy;
+                    q.VerifiedBy = HttpContext.Current.User.Identity.Name;
+                    q.VerifyDate = System.DateTimeOffset.UtcNow;
+                }
+                
                 q.Status = vm.status;
                 q.InvoiceDate = vm.invoicedate;
                 q.InvoicePeriod = vm.invoiceperiod;
@@ -278,19 +289,20 @@ namespace MvcPhoenix.Models
                 obj.invoiceperiod = DateTime.Now.ToString("MMMM\",\" yyyy", CultureInfo.CreateSpecificCulture("en-US"));
                 obj.remitto = "<p>Chemical Marketing Concepts, LLC<br />c/o Odyssey Logistics &amp; Technology Corp<br />39 Old Ridgebury Road, N-1<br />Danbury, CT 06810</p>";
 
-                //obj.revenuerate = q.RevenueRate;
-                //obj.nonrevenuerate = q.NonRevenueRate;
-                //obj.manualentryrate = q.ManualEntryRate;
-                //obj.followuprate = q.FollowUpRate;
-                //obj.labelprtrate = q.LabelPrtRate;
-                //obj.relabelprtrate = q.ReLabelPrtRate;
-                //obj.relabelfeerate = q.ReLabelFeeRate;
-                //obj.productsetuprate = q.ProductSetupRate;
-                //obj.ccprocessrate = q.CCProcessRate;
-                //obj.rushshiprate = q.RushShipRate;
-                //obj.emptypailsrate = q.EmptyPailsRate;
-                //obj.inactivestockrate = q.InactiveStockRate;
-                //obj.minimalsamplecharge = q.MinimalSampleCharge;
+                var q = (from t in db.tblRates where t.ClientID == 1 select t).FirstOrDefault();
+                obj.revenuerate = q.RevenueRate;
+                obj.nonrevenuerate = q.NonRevenueRate;
+                obj.manualentryrate = q.ManualEntryRate;
+                obj.followuprate = q.FollowUpRate;
+                obj.labelprtrate = q.LabelPrtRate;
+                obj.relabelprtrate = q.ReLabelPrtRate;
+                obj.relabelfeerate = q.ReLabelFeeRate;
+                obj.productsetuprate = q.ProductSetupRate;
+                obj.ccprocessrate = q.CCProcessRate;
+                obj.rushshiprate = q.RushShipRate;
+                obj.emptypailsrate = q.EmptyPailsRate;
+                obj.inactivestockrate = q.InactiveStockRate;
+                obj.minimalsamplecharge = q.MinimalSampleCharge;
                 
                 return obj;
             }

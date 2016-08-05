@@ -1,10 +1,6 @@
 ﻿using MvcPhoenix.Models;
-using MvcPhoenix.Services;
-using Rotativa;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
@@ -50,7 +46,6 @@ namespace MvcPhoenix.Controllers
             {
                 pk = InvoiceService.SaveInvoice(vm);
                 TempData["SaveResult"] = "Invoice updated at " + DateTime.Now;
-                // todo: insert success messsage
             }
 
             return RedirectToAction("Edit", new { id = pk });

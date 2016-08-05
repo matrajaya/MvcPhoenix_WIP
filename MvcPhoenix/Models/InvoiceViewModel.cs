@@ -57,8 +57,12 @@ namespace MvcPhoenix.Models
         public DateTimeOffset? verifieddate { get; set; }
 
         [Display(Name = "Invoice Status")]
-        public string status { get; set; }          // possible: new / reviewed / emailed / closed
+        public string status { get; set; }          // choices: NEW / REVIEWED / VERIFIED / EMAILED / CLOSED
 
+        /// InvoiceStatusChoice is not being used for UX atm.
+        /// Will leave here in enum as a reference of options. 
+        /// Most choices are used in services and controllers.
+        /// Might use choice when creating admin ux for invoice filter
         public enum InvoiceStatusChoice
         {
             NEW,

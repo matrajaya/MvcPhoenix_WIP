@@ -188,8 +188,8 @@
                             <div class="col-md-12">
                                 <ul class="nav nav-tabs pull-right">
                                     <li class="active"><a data-toggle="tab" href="#samplestab">Samples(Domestic)</a></li>
-                                    <li><a data-toggle="tab" href="#internationaltab">International</a></li>
-                                    <li><a data-toggle="tab" href="#revenuetab">Revenue $</a></li>
+                                    @*<li><a data-toggle="tab" href="#internationaltab">International</a></li>
+                                    <li><a data-toggle="tab" href="#revenuetab">Revenue $</a></li>*@
                                 </ul>
                             </div>
                         </div>
@@ -501,6 +501,19 @@
                                             </tr>
                                         </table>
                                     </div>
+                                    @if (Model.verifiedaccuracy == false || Model.verifiedaccuracy == null)
+                                    {
+                                        <div class="col-md-12">
+                                            @Html.CheckBox("verifiedaccuracy", Model.verifiedaccuracy != null && (bool)Model.verifiedaccuracy, new { @class = "checkbox-inline" })
+                                            <label class="control-label">check to verify invoice accuracy</label>
+                                        </div>
+                                    }
+                                    @if (Model.verifiedaccuracy == true)
+                                    {
+                                        <div class="col-md-12">
+                                            <em>Invoice accuracy verified by @Html.DisplayFor(m => m.verifiedby) on @Html.DisplayFor(m => m.verifieddate)</em>
+                                        </div>
+                                    }
                                 </div>
                                 <div id="internationaltab" class="tab-pane fade">
                                     <div class="col-md-12">

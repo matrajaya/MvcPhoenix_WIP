@@ -99,7 +99,7 @@
                                 <th>Billing Group</th>
                                 <th>Period</th>
                                 <th>Status</th>
-                                <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -111,7 +111,7 @@
                                     <td>@item.billinggroup</td>
                                     <td>@item.invoiceperiod</td>
                                     <td>@item.status</td>
-                                    <td>@Html.ActionLink("Edit", "Edit", new { id = item.invoiceid })</td>
+                                    <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = item.invoiceid }) | @Html.ActionLink("View", "View", new { id = item.invoiceid })</td>
                                 </tr>
                             }
                         </tbody>
@@ -121,41 +121,6 @@
         </div>
     </div>
 
-    @*<div class="panel panel-primary">
-            <div class="panel-body">
-                <div id="dvGridPlaceHolder" class="row">
-                    <div class="col-md-12 text-center">
-                        <label class="lead">Verified Invoices</label>
-                    </div>
-                    <div class="table-responsive col-md-12">
-                        <table id="myTable" class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Invoice #</th>
-                                    <th>Client</th>
-                                    <th>Billing Group</th>
-                                    <th>Period</th>
-                                    <th>Status</th>
-                                    <th>Verified?</th>
-                                    <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1000556</td>
-                                    <td>Allnex</td>
-                                    <td>Coatings</td>
-                                    <td>July, 2016</td>
-                                    <td>Pending Review</td>
-                                    <td>Yes</td>
-                                    <td>@Html.ActionLink("Edit", "Edit", new { id = 1 })</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>*@
 </div>
 
 <script>
@@ -163,13 +128,4 @@
         alert("Hello There");
         var clientddlid = id;
     }
-
-    //function GetMonth(vDate) {
-    //    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-    //    //var d = new Date();
-    //    var d = vDate;
-    //    alert("The current month is " + monthNames[d.getMonth()]);
-    //}
-    
 </script>
