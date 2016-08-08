@@ -21,17 +21,15 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        @using (Html.BeginForm("Create", "Invoice", "POST"))
+                        @using (Html.BeginForm("Create", "Invoice", new { }))
                         {
                             <div class="col-md-3">
                                 <label>Client</label>
-                                @Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { @class = "form-control" })
-                                @*@Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "BillingGroupDropDown(this.value)", @class = "form-control" })*@
+                                @Html.DropDownList("ClientID", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
                             </div>
                             <div class="col-md-3">
                                 <label>Billing Group</label>
-                                @Html.DropDownList("billinggroupid", (List<SelectListItem>)ViewBag.ListOfBillingGroups, new { @class = "form-control" })
-                                @*<select id="ddlbillgrp" name="ddlbillgrp" class="form-control"></select>*@
+                                <select name='billinggroupid' id='billinggroupid' class='form-control'></select>
                             </div>
                             <div class="col-md-3">
                                 <label>Invoice Period</label>
@@ -124,8 +122,9 @@
 </div>
 
 <script>
-    function BillingGroupDropDown(id) {
-        alert("Hello There");
-        var clientddlid = id;
+    function OnChangeClientID() {
+        var url = '@Url.Action("BuildBillingGroupDDL", "Invoice")';
+        var data = $('#ClientID').val()
+        $("#billinggroupid").load(url, { id: data });
     }
 </script>

@@ -1,9 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Web;
-
-using MvcPhoenix.Models;
+﻿using MvcPhoenix.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -269,7 +264,7 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static InvoiceViewModel CreateInvoice()
+        public static InvoiceViewModel CreateInvoice(int client, int division)
         {
             InvoiceViewModel obj = new InvoiceViewModel();
 
@@ -277,13 +272,20 @@ namespace MvcPhoenix.Models
             {
                 obj.invoiceid = -1;
                 obj.invoicedate = DateTime.UtcNow;
-                obj.clientid = 2;
-                obj.clientname = "Akzo Nobel";
-                obj.billinggroup = "ADHESIVES";
+                obj.status = "New";
+
+                if (division > 0) {
+                    var div = db.tblDivision.Find(division);
+                    obj.billinggroup = div.Division;
+                } else{ obj.billinggroup = "All"; }
+
+                var cl = db.tblClient.Find(client);
+                obj.clientid = cl.ClientID;
+                obj.clientname = cl.ClientName;
+                obj.warehouselocation = cl.CMCLocation;
+                                
                 obj.ponumber = "AS234522";
                 obj.netterm = "60 Days";
-                obj.status = "New";
-                obj.warehouselocation = "AP";
                 obj.currency = "USD";
                 obj.tier = 1;
                 obj.invoiceperiod = DateTime.Now.ToString("MMMM\",\" yyyy", CultureInfo.CreateSpecificCulture("en-US"));
@@ -308,10 +310,7 @@ namespace MvcPhoenix.Models
             }
         }
 
-        /// <summary>
         /// List Creation
-        /// </summary>
-        /// 
         public static List<InvoiceViewModel> IndexList()
         {
             // List for the Index View
@@ -348,20 +347,22 @@ namespace MvcPhoenix.Models
             }
         }
         
-        //public static List<SelectListItem> ListOfBillingGroups(int? id)
-        public static List<SelectListItem> ListOfBillingGroups()
+        public static string fnBuildBillingGroupDDL(int clientid)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblDivision
-                          //where t.ClientID == id
-                          orderby t.Division
-                          select new SelectListItem { Value = t.Division, Text = t.Division }).Distinct().ToList();
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Billing Group" });
-                return mylist;
+                var qry = (from t in db.tblDivision where t.ClientID == clientid orderby t.DivisionID, t.Division select t);
+                string s = "<option value='0' selected=true>Select Billing Group</option>";
+                if (qry.Count() > 0)
+                {
+                    foreach (var item in qry)
+                    { s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.Division + "</option>"; }
+                }
+                else
+                { s = s + "<option value=0>No Billing Group</option>"; }
+                s = s + "</select>";
+                return s;
             }
         }
-
     }
 }

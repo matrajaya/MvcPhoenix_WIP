@@ -10,22 +10,29 @@ namespace MvcPhoenix.Controllers
         public ActionResult Index()
         {
             ViewBag.ListOfClients = InvoiceService.ListOfClientIDs();
-            ViewBag.ListOfBillingGroups = InvoiceService.ListOfBillingGroups();
             List<InvoiceViewModel> mylist = InvoiceService.IndexList();
 
             return View(mylist);
         }
 
-        public ActionResult Create()
+        public ActionResult BuildBillingGroupDDL(int id)
+        {
+            return Content(InvoiceService.fnBuildBillingGroupDDL(id));
+        }
+
+        [HttpPost]
+        public ActionResult Create(FormCollection fc)
         {
             /// string client, string division, 
             /// Assign invoice period based on current date: Get: ClientID, BillingGroup, Period
             /// Automated business rules from service
             /// Assign Invoice ID = -1 and go to edit action
             /// Ephemeral until the user executes save action
+            int ClientID = Convert.ToInt32(fc["ClientID"]);
+            int DivisionID = Convert.ToInt32(fc["billinggroupid"]);
 
             InvoiceViewModel obj = new InvoiceViewModel();
-            obj = InvoiceService.CreateInvoice();
+            obj = InvoiceService.CreateInvoice(ClientID, DivisionID);
             
             return View("Edit", obj);
         }
