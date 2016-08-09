@@ -14,46 +14,13 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-sticky-note fa-fw"></i> Generate Invoice</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        @using (Html.BeginForm("Create", "Invoice", new { }))
-                        {
-                            <div class="col-md-3">
-                                <label>Client</label>
-                                @Html.DropDownList("ClientID", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
-                            </div>
-                            <div class="col-md-3">
-                                <label>Billing Group</label>
-                                <select name='billinggroupid' id='billinggroupid' class='form-control' required></select>
-                            </div>
-                            <div class="col-md-3">
-                                <label>Invoice Period</label>
-                                <input name="invoiceperiod" id="invoiceperiod" class="form-control date-picker" required/>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="invisible">Generate</label>
-                                <input type="submit" class="btn btn-success btn-block form-control" value="Generate" />
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-sticky-note fa-fw"></i> Search</h3>
                 </div>
                 <div class="panel-body">
-                    <label>Search Invoice #</label>
+                    <label>Invoice Search</label>
                     @using (Ajax.BeginForm("Search", "Invoice", new AjaxOptions
                             {
                                 UpdateTargetId = "dvSearchInvoice",
@@ -69,27 +36,38 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-sticky-note fa-fw"></i> Invoice Support Utility</h3>
+                    <h3 class="panel-title"><i class="fa fa-sticky-note fa-fw"></i> Generate Invoice</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-6">
-                            <label>Rates Contract Table</label>
-                            <input type="button" class="btn btn-success btn-block form-control" value="Edit" onclick="alert('TBD')" />
-                        </div>
-                        <div class="col-md-6">
-                            <label>Billing Group Assignment Table</label>
-                            <input type="button" class="btn btn-success btn-block form-control" value="Edit" onclick="alert('TBD')" />
-                        </div>
+                        @using (Html.BeginForm("Create", "Invoice", new { }))
+                        {
+                            <div class="col-md-4">
+                                <label>Client</label>
+                                @Html.DropDownList("ClientID", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                <label>Billing Group</label>
+                                <select name='billinggroupid' id='billinggroupid' class='form-control' required></select>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Invoice Period</label>
+                                <input name="invoiceperiod" id="invoiceperiod" class="form-control date-picker" required />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="invisible">Create</label>
+                                <input type="submit" class="btn btn-success btn-block form-control" value="Generate" />
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <div id="dvSearchInvoice"></div>
 
     <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
@@ -110,6 +88,7 @@
                                 <th>Client</th>
                                 <th>Billing Group</th>
                                 <th>Period</th>
+                                <th style="text-align:center;">Location</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -122,6 +101,7 @@
                                     <td>@item.clientname</td>
                                     <td>@item.billinggroup</td>
                                     <td>@item.invoiceperiod</td>
+                                    <td style="text-align:center;">@item.warehouselocation</td>
                                     <td>@item.status</td>
                                     <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = item.invoiceid }) | @Html.ActionLink("View", "View", new { id = item.invoiceid })</td>
                                 </tr>

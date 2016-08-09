@@ -14,7 +14,7 @@
                 if (Model.Count == 0 || @ViewBag.CurrentFilter == null)
                 {
                     <div class="col-md-12">
-                        <label class="lead">No invoice found. Try again.</label>
+                        <label class="lead">No invoice found for "@ViewBag.CurrentFilter". Try again.</label>
                     </div>
                 }
                 else
@@ -30,6 +30,7 @@
                                     <th>Client</th>
                                     <th>Billing Group</th>
                                     <th>Period</th>
+                                    <th style="text-align:center;">Location</th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
@@ -41,6 +42,7 @@
                                     <td data-label="Client">@item.ClientName</td>
                                     <td data-label="Billing Group">@item.BillingGroup</td>
                                     <td data-label="Period">@item.InvoicePeriod</td>
+                                    <td data-label="Location" style="text-align:center;">@item.WarehouseLocation</td>
                                     <td data-label="Status">@item.Status</td>
                                     <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = item.InvoiceID }) | @Html.ActionLink("View", "View", new { id = item.InvoiceID })</td>
                                 </tr>

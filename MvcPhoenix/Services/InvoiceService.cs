@@ -329,6 +329,7 @@ namespace MvcPhoenix.Models
                                billinggroup = t.BillingGroup,
                                invoicedate = t.InvoiceDate,
                                invoiceperiod = t.InvoicePeriod,
+                               warehouselocation = t.WarehouseLocation,
                                status = t.Status
                            }).ToList();
                 return obj;
