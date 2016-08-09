@@ -29,11 +29,11 @@
                             </div>
                             <div class="col-md-3">
                                 <label>Billing Group</label>
-                                <select name='billinggroupid' id='billinggroupid' class='form-control'></select>
+                                <select name='billinggroupid' id='billinggroupid' class='form-control' required></select>
                             </div>
                             <div class="col-md-3">
                                 <label>Invoice Period</label>
-                                <input id="invoiceperiod" type="month" class="form-control"/>
+                                <input name="invoiceperiod" id="invoiceperiod" class="form-control date-picker" required/>
                             </div>
                             <div class="col-md-3">
                                 <label class="invisible">Generate</label>
@@ -54,10 +54,18 @@
                 </div>
                 <div class="panel-body">
                     <label>Search Invoice #</label>
-                    <div class="input-group">
-                        <input class="form-control" />
-                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" onclick="alert('TBD')" /></span>
-                    </div>
+                    @using (Ajax.BeginForm("Search", "Invoice", new AjaxOptions
+                            {
+                                UpdateTargetId = "dvSearchInvoice",
+                                InsertionMode = InsertionMode.Replace,
+                                HttpMethod = "POST",
+                                LoadingElementId = "dvspinner"
+                            }))
+                    {
+                        <div class="">
+                            @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Keyword...", @required = "required" })
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -80,6 +88,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="dvSearchInvoice"></div>
+
+    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
     </div>
 
     <div class="panel panel-primary">
@@ -119,12 +133,31 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a>
+            <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+        </div>
+    </div>
 </div>
 
-<script>
+<script type="text/javascript">
     function OnChangeClientID() {
         var url = '@Url.Action("BuildBillingGroupDDL", "Invoice")';
         var data = $('#ClientID').val()
         $("#billinggroupid").load(url, { id: data });
     }
+
+    $(function () {
+        $('.date-picker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            maxDate: "+0D",
+            dateFormat: 'MM, yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+            }
+        });
+    });
 </script>

@@ -1,0 +1,65 @@
+﻿@model PagedList.IPagedList<MvcPhoenix.EF.tblInvoice>
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Invoice Search";
+    Layout = null;
+}
+
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <div class="row">
+            @{
+                if (Model.Count == 0 || @ViewBag.CurrentFilter == null)
+                {
+                    <div class="col-md-12">
+                        <label class="lead">No invoice found. Try again.</label>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <label class="lead">Search Results For "@ViewBag.CurrentFilter"</label>
+                    </div>
+                    <div class="col-md-12 table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="30px">Invoice#</th>
+                                    <th>Client</th>
+                                    <th>Billing Group</th>
+                                    <th>Period</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td data-label="Invoice #" style="text-align:center">@item.InvoiceID.ToString()</td>
+                                    <td data-label="Client">@item.ClientName</td>
+                                    <td data-label="Billing Group">@item.BillingGroup</td>
+                                    <td data-label="Period">@item.InvoicePeriod</td>
+                                    <td data-label="Status">@item.Status</td>
+                                    <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = item.InvoiceID }) | @Html.ActionLink("View", "View", new { id = item.InvoiceID })</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <label>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</label>
+                        @Html.PagedListPager((IPagedList)Model, page => Url.Action("Search", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+                            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.ClassicPlusFirstAndLast,
+                                new AjaxOptions
+                                {
+                                    InsertionMode = InsertionMode.Replace,
+                                    HttpMethod = "Get",
+                                    UpdateTargetId = "dvSearchInvoice"
+                                }))
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

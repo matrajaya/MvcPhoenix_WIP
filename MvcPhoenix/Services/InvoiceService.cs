@@ -264,7 +264,7 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static InvoiceViewModel CreateInvoice(int client, int division)
+        public static InvoiceViewModel CreateInvoice(int client, int division, string period)
         {
             InvoiceViewModel obj = new InvoiceViewModel();
 
@@ -288,7 +288,8 @@ namespace MvcPhoenix.Models
                 obj.netterm = "60 Days";
                 obj.currency = "USD";
                 obj.tier = 1;
-                obj.invoiceperiod = DateTime.Now.ToString("MMMM\",\" yyyy", CultureInfo.CreateSpecificCulture("en-US"));
+                //obj.invoiceperiod = DateTime.Now.ToString("MMMM\",\" yyyy", CultureInfo.CreateSpecificCulture("en-US"));
+                obj.invoiceperiod = period;
                 obj.remitto = "<p>Chemical Marketing Concepts, LLC<br />c/o Odyssey Logistics &amp; Technology Corp<br />39 Old Ridgebury Road, N-1<br />Danbury, CT 06810</p>";
 
                 var q = (from t in db.tblRates where t.ClientID == 1 select t).FirstOrDefault();

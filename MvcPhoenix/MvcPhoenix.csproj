@@ -1298,6 +1298,7 @@
     <Content Include="Views\Receiving\Search.cshtml" />
     <Content Include="Views\Invoice\View.cshtml" />
     <Content Include="Views\Invoice\Edit.cshtml" />
+    <Content Include="Views\Invoice\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />
