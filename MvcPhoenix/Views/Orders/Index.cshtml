@@ -1,11 +1,10 @@
 ﻿@model List<MvcPhoenix.Models.OrderMasterFull>
 @{
-    ViewBag.Title = "Orders";
+    ViewBag.Title = "Orders Management";
     ViewBag.TodayLink = "NewToday";
 }
 
 <div class="container-fluid">
-    <!-- Start: Title Head -->
     <div class="row">
         <div class="col-lg-12">
             <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
@@ -14,76 +13,82 @@
             <h1 class="page-header">@ViewBag.Title</h1>
         </div>
     </div>
-    <!-- End: Title Head -->
-    <!-- Start: Create New Order -->
-    <div class="panel panel-success">
-        <div class="panel-body">
-            @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
-            {
-                <div class="input-group">
-                    @Html.DropDownList("NewClientID", (List<SelectListItem>)ViewBag.NewClientID, new { name = "NewClientID", @class = "form-control" })
-                    <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create New Order" /></span>
-                </div>
-            }
-        </div>
-    </div>
-    <!-- End: Create New Order -->
-    <!-- Order Import-->
-    @Html.Action("OrderImport")
-    <!-- Order Import-->
-    <!-- Start: Search Order -->
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="panel panel-success" style="margin-bottom:10px;">
+                <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-hand-o-right fa-fw"></i>Create</h3></div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
+                    {
+                        <div class="input-group">
+                            @Html.DropDownList("NewClientID", (List<SelectListItem>)ViewBag.NewClientID, new { name = "NewClientID", @class = "form-control" })
+                            <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create New Order" /></span>
+                        </div>
+                    }
+                </div>
+            </div>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-search fa-fw"></i>Search</h3>
+                    <h3 class="panel-title" data-toggle="collapse" data-target="#searchoptions"><i class="fa fa-search fa-fw"></i>Search</h3>
                 </div>
-                <div class="panel-body">
+                <div id="searchoptions" class="panel-body collapse" style="margin-bottom:-20px;">
                     <div class="row">
-                        <div class="col-md-8 form-group">
+                        <div class="form-group col-md-8">
                             @using (Html.BeginForm("LookupOrderID", "Orders", FormMethod.Post))
                             {
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-                                    <input class="form-control" id="orderid" type="search" pattern="[0-9]{1,10}" required title="Numbers Only. Max 10" placeholder="Enter Order Number" min="3" name="orderid" />
-                                    <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                                    <input class="form-control" id="orderid" type="search" pattern="[0-9]{1,10}" required title="Numbers Only. Max 10" placeholder="Type Order #, Hit Enter" min="3" name="orderid" />
+                                    @*<span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>*@
                                 </div>
                             }
                         </div>
-                        <div class="col-md-4">
-                            @Ajax.ActionLink("Advanced Search Options", "AdvancedSearch", "Orders", new AjaxOptions
+                        <div class="form-group col-md-4">
+                            @Ajax.ActionLink("+ Advanced Search", "AdvancedSearch", "Orders", new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",
                                  InsertionMode = InsertionMode.Replace,
                                  HttpMethod = "GET",
                                  OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                             }, new { @class = "btn btn-primary btn-block" })
+                             }, new { @class = "btn btn-block" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            @Ajax.ActionLink("Today", "OrdersToday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show Orders Created Today" })
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title" data-toggle="collapse" data-target="#quickquery" style="text-align:center;">Quick Query</h4>
                         </div>
-                        <div class="col-md-2">
-                            @Ajax.ActionLink("Yesterday", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show Orders Created Yesterday" })
-                        </div>
-                        <div class="col-md-2">
-                            @Ajax.ActionLink("Last 10 Orders", "OrdersLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show ALL Last 10 Orders" })
-                        </div>
-                        <div class="col-md-2">
-                            @Ajax.ActionLink("My Orders (10)", "OrdersMineLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show MY Last 10 Orders" })
-                        </div>
-                        <div class="col-md-2">
-                            @Ajax.ActionLink("Need Allocation", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-primary btn-block", title = "Show MY Last 10 Orders" })
-                        </div>
-                        <div class="col-md-2">
-                            <input class="btn btn-block btn-danger" value="Problem Orders" onclick="alert('No Problem Orders')" />
+                        <div id="quickquery" class="panel-body collapse" style="margin-bottom:-20px;">
+                            <ul class="list-unstyled">
+                                <li>
+                                    @Ajax.ActionLink("Today", "OrdersToday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show Orders Created Today" })
+                                </li>
+                                <li>
+                                    @Ajax.ActionLink("Yesterday", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show Orders Created Yesterday" })
+                                </li>
+                                <li>
+                                    @Ajax.ActionLink("Last 10 Orders", "OrdersLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show ALL Last 10 Orders" })
+                                </li>
+                                <li>
+                                    @Ajax.ActionLink("My Orders (10)", "OrdersMineLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show MY Last 10 Orders" })
+                                </li>
+                                <li>
+                                    @Ajax.ActionLink("Need Allocation", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show MY Last 10 Orders" })
+                                </li>
+                                <li>
+                                    <a href="#" onclick="alert('No Problem Orders')">Problem Orders</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            @Html.Action("OrderImport")
+        </div>
     </div>
+
     <!-- End: Search Order -->
     <!--Start: Display Results-->
     <div class="panel panel-primary">
