@@ -6,9 +6,6 @@
 }
 
 <div class="container-fluid">
-
-    <!-- Page Heading -->
-
     <div class="row">
         <div class="col-lg-12">
             <img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
@@ -73,7 +70,6 @@
         @Html.HiddenFor(m => m.UpdateUser)
         @Html.HiddenFor(m => m.UpdateDate)
 
-        <!--Start: Client Information Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#clientpan"><i class="fa fa-file-text-o fa-fw"></i> Client Order Information</h3>
@@ -119,8 +115,6 @@
                 </div>
             </div>
         </div>
-        <!--End: Client Information Section-->
-        <!--Start: ShipTo Information Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#shiptopan"><i class="fa fa-file-text-o fa-fw"></i> Ship To Details</h3>
@@ -198,8 +192,6 @@
                 </div>
             </div>
         </div>
-        <!--End: ShipTo Information Section-->
-        <!--Start: Requestor Information Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#requestorpan"><i class="fa fa-file-text-o fa-fw"></i> Requestor's Details</h3>
@@ -288,8 +280,6 @@
                 </div>
             </div>
         </div>
-        <!--End: Requestor Information Section-->
-        <!--Start: Product Item Selection Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#prodselectpan"><i class="fa fa-file-text-o fa-fw"></i> Order Items</h3>
@@ -314,7 +304,7 @@
                                 }, new { @class = "btn btn-primary" })
                             </span>
                         </div>
-                        <div class="clearfix"></div>    <!-- necessary -->
+                        <div class="clearfix"></div>
 
                         <div id="dvOrderItemsList">
                             @Html.Action("fnOrderItemsList", "Orders", new { id = Model.orderid })
@@ -323,9 +313,6 @@
                 </div>
             </div>
         </div>
-        <!--End: Product Item Selection Section -->
-
-        <!--Start: Transaction Log Notes Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#translogpan"><i class="fa fa-file-text-o fa-fw"></i> Transaction Charges &amp; Log Notes</h3>
@@ -349,7 +336,7 @@
                         </span>
                     }
                 </div>
-                <div class="clearfix"></div>    <!-- necessary -->
+                <div class="clearfix"></div>
                 <div id="dvOrderTransList">
                     @if (@Model.transcount > 0)
                     {
@@ -358,9 +345,6 @@
                 </div>
             </div>
         </div>
-        <!--End: Transaction Log Notes Section -->
-
-        <!--Start: Shipments Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#shipmentspan"><i class="fa fa-file-text-o fa-fw"></i> Shipments</h3>
@@ -402,9 +386,6 @@
                 </div>
             </div>
         </div>
-        <!--End: Shipments Selection Section -->
-
-        <!--Start: Special Instructions Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#specialinstrpan"><i class="fa fa-file-text-o fa-fw"></i> Special Instructions</h3>
@@ -426,8 +407,7 @@
                 </div>
             </div>
         </div>
-        <!--End: Special Instructions Section -->
-
+        
         <div class="form-group row">
             <div class=" col-md-12">
                 <input type="submit" value="Save Order" class="btn btn-success btn-block" />

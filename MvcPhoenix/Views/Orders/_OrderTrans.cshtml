@@ -4,16 +4,18 @@
 }
 <div class="table-responsive">
     <table id="mytable" class="table table-hover table-striped" style="font-size:.85em;margin:auto;">
-        <tr>
-            <th>#</th>
-            <th>Product Code</th>
-            <th>Type</th>
-            <th style="text-align:center;">Qty</th>
-            <th style="text-align:right;">Amount</th>
-            <th>Date</th>
-            <th>Comments</th>
-            <th id="noprint" class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
-        </tr>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product Code</th>
+                <th>Type</th>
+                <th style="text-align:center;">Qty</th>
+                <th style="text-align:right;">Amount</th>
+                <th>Date</th>
+                <th>Comments</th>
+                <th id="noprint"></th>
+            </tr>
+        </thead>
         <tbody>
             @foreach (var item in Model)
             {
@@ -25,7 +27,7 @@
                     <td style="text-align:right;">@item.transamount</td>
                     <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
                     <td>@item.comments</td>
-                    <td id="noprint" class="text-center">
+                    <td id="noprint" class="text-right">
                         @Ajax.ActionLink("Edit", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",

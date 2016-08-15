@@ -4,20 +4,22 @@
 }
 <div class="table-responsive">
     <table id="mytable" class="table table-hover table-striped" style="font-size:.85em;">
-        <tr>
-            <th>#</th>
-            <th>Product Code</th>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Lot#</th>
-            <th>Qty</th>
-            <th>Ship Date</th>
-            <th class="text-center">BO</th>
-            <th class="text-center">Delay</th>
-            <th class="text-center">Avail</th>
-            <th class="text-center">A-Status</th>
-            <th id="noprint" class="text-center"><i class="fa fa-fw fa-pencil-square-o"></i></th>
-        </tr>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product Code</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Lot#</th>
+                <th>Qty</th>
+                <th>Ship Date</th>
+                <th class="text-center">BO</th>
+                <th class="text-center">Delay</th>
+                <th class="text-center">Avail</th>
+                <th class="text-center">A-Status</th>
+                <th id="noprint"></th>
+            </tr>
+        </thead>
         <tbody>
             @foreach (var item in Model)
             {
@@ -33,7 +35,7 @@
                     <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
                     <td class="text-center">@item.QtyAvailable.ToString()</td>
                     <td class="text-center">@item.AllocateStatus</td>
-                    <td id="noprint" class="text-center">
+                    <td id="noprint" class="text-right">
                         @Ajax.ActionLink("Edit", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",
@@ -49,10 +51,10 @@
 </div>
 
 <!-- Start Allocate Buttons -->
-<!-- dvAllocateResult is in Edit.cshtml to provide a place to stick a message after allocation -->
-<div class="row">
+@*dvAllocateResult is in Edit.cshtml to provide a place to stick a message after allocation*@
+<div class="row" id="noprint">
     <div class="col-md-6">
-        <div class="panel panel-primary" style="margin-bottom:-10px;margin-top:-10px;">
+        <div class="panel panel-primary" style="margin-bottom:-10px;">
             <div class="panel-body" style="margin:-5px">
                 <label>Available Stock Only</label>
                 <div class="row">
@@ -83,7 +85,7 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="panel panel-primary" style="margin-bottom:-10px;margin-top:-10px;">
+        <div class="panel panel-primary" style="margin-bottom:-10px;">
             <div class="panel-body" style="margin:-5px">
                 <label>QC Stock</label>
                 <div class="row">
