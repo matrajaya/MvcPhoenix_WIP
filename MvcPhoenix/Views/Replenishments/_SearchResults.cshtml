@@ -1,39 +1,66 @@
 ﻿@model List<MvcPhoenix.Models.BulkOrder>
 
-<div class="col-md-12">
-    <label class="lead">Showing @Model.Count Results</label>
-</div>
+@if (Model.Count < 1)
+{
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="lead">Nothing Found. Try Again.</label>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
-<div class="table-responsive col-md-12">
-    <table class="table table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Client</th>
-                <th>Order ID</th>
-                <th>SupplyID</th>
-                <th>Order Date</th>
-                <th class="text-center">Item Cnt</th>
-                <th class="text-center">Open Cnt</th>
-                <th>Comments</th>
-                <th>Email Sent</th>
-                <th class="text-right"><i class="fa fa-fw fa-pencil-square-o"></i></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in @Model)
-            {
-                <tr>
-                    <td>@item.clientname</td>
-                    <td>@item.bulkorderid.ToString()</td>
-                    <td>@item.supplyid</td>
-                    <td>@String.Format("{0:dd MMM yyyy}", @item.orderdate)</td>
-                    <td class="text-center">@item.itemcount</td>
-                    <td class="text-center">@item.opencount</td>
-                    <td>@item.ordercomment</td>
-                    <td>@item.emailsent</td>
-                    <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = @item.bulkorderid })</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+@if (Model.Count > 0)
+{
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="lead">Showing @Model.Count Results</label>
+                </div>
+                <div class="table-responsive col-md-12">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Order ID</th>
+                                <th>SupplyID</th>
+                                <th>Order Date</th>
+                                <th class="text-center">Item Cnt</th>
+                                <th class="text-center">Open Cnt</th>
+                                <th>Comments</th>
+                                <th>Email Sent</th>
+                                <th class="text-right"><i class="fa fa-fw fa-pencil-square-o"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in @Model)
+                            {
+                            <tr>
+                                <td>@item.clientname</td>
+                                <td>@item.bulkorderid.ToString()</td>
+                                <td>@item.supplyid</td>
+                                <td>@String.Format("{0:dd MMM yyyy}", @item.orderdate)</td>
+                                <td class="text-center">@item.itemcount</td>
+                                <td class="text-center">@item.opencount</td>
+                                <td>@item.ordercomment</td>
+                                <td>@item.emailsent</td>
+                                <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = @item.bulkorderid })</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>
+            <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+        </div>
+    </div>
+}
