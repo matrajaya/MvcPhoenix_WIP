@@ -103,7 +103,7 @@
                         @Html.ValidationMessageFor(m => m.custordnum)
                     </div>
                     <div class="col-md-3">
-                        <label>Order Type <i class="fa fa-fw fa-question-circle" rel="tooltip" title="S = Samples&#13;D = Dormant&#13;R = Returns&#13;C = Commercial&#13;"></i></label>
+                        <label><abbr title="S = Samples&#13;D = Dormant&#13;R = Returns&#13;C = Commercial&#13;">Order Type <i class="fa fa-fw fa-question-circle" rel="tooltip"></i></abbr></label>
                         @Html.DropDownListFor(m => m.ordertype, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderMasterFull.OrderTypeChoice))), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ordertype)
                     </div>

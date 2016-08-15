@@ -305,7 +305,7 @@ namespace MvcPhoenix.Controllers
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Order For " + mydate.ToShortDateString();
+                TempData["SearchResultsMessage"] = "Orders For " + mydate.ToShortDateString();
             }
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
@@ -354,22 +354,6 @@ namespace MvcPhoenix.Controllers
             }
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
-
-        //public ActionResult PrintOrder()
-        //{
-        //    // The data view will need to more complicated
-        //    OrderMasterFull obj = new OrderMasterFull();
-        //    obj = OrderService.fnFillOrder(Convert.ToInt32(Session["OrderID"]));
-        //    return View("PrintOrder", obj);
-        //}
-
-        //public ActionResult Notification()
-        //{
-        //    // The data view will need to more complicated
-        //    OrderMasterFull obj = new OrderMasterFull();
-        //    obj = OrderService.fnFillOrder(Convert.ToInt32(Session["OrderID"]));
-        //    return View("Notification", obj);
-        //}
 
         public ActionResult Import()
         {
