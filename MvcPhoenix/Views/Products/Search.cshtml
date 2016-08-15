@@ -13,7 +13,7 @@
                 if (Model.Count == 0 || @ViewBag.CurrentFilter == null)
                 {
                     <div class="col-md-12">
-                        <label class="lead">No products found. Try again.</label>
+                        <label class="lead">No Products Found. Try Again.</label>
                     </div>
                 }
                 else
@@ -27,14 +27,8 @@
                                 <tr>
                                     <th>Client</th>
                                     <th>Product ID</th>
-                                    <th>
-                                        Product Code
-                                        @*@Html.ActionLink("Product Code", "Search", new { sortOrder = ViewBag.CodeSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>*@
-                                    </th>
-                                    <th>
-                                        Product Name
-                                        @*@Html.ActionLink("Product Name", "Search", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>*@
-                                    </th>
+                                    <th>Product Code</th>
+                                    <th>Product Name</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -62,8 +56,6 @@
                     </div>
                     <div class="col-md-12 text-center">
                         <label>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</label>
-                        @*@Html.PagedListPager(Model, page => Url.Action("Search", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
-
                         @Html.PagedListPager((IPagedList)Model, page => Url.Action("Search", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
                             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.ClassicPlusFirstAndLast,
                                 new AjaxOptions
