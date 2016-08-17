@@ -103,7 +103,7 @@ namespace MvcPhoenix.Services
             {
                 mylist = (from t in db.tblBulkOrderItem
                           join t2 in db.tblBulkOrder on t.BulkOrderID equals t2.BulkOrderID
-                          where t.ProductMasterID == id
+                          //where t.ProductMasterID == id
                           where t.Status == "OP"
                           select
                           new OpenBulkOrderItems

@@ -112,7 +112,7 @@ namespace MvcPhoenix.Controllers
             }
             else
             {
-                return Content("<br>No open orders found for the selected Master Product");
+                return Content("<br><label>No open orders found for the selected Master Product</label>");
             }
         }
 

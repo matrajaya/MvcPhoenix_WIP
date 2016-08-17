@@ -6,8 +6,8 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-                <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
-            </div>
+            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
+        </div>
         <div class="col-lg-12">
             <h1 class="page-header">@ViewBag.Title</h1>
         </div>
@@ -26,7 +26,7 @@
         OnBegin = "$('#dvPlaceholderOpenOrderItems').removeClass('hidden')",
         InsertionMode = InsertionMode.Replace,
         HttpMethod = "POST",
-        LoadingElementId = "dvSpinner",
+        LoadingElementId = "dvspinner",
         LoadingElementDuration = 4
     }))
     {
@@ -39,7 +39,7 @@
             <div class="col-md-6 form-group">
                 <div id="dvPlaceholderMasterCode" class="hidden">
                     <select name='productmasterid' id='productmasterid' onchange="OnChangeMasterCode()" class='form-control'>
-                        <!-- Placeholder for options values  -->
+                        @* Placeholder for options values *@
                     </select>
                 </div>
             </div>
@@ -57,15 +57,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-                    <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
-                </div>
-                <div id="dvPlaceholderOpenOrderItems" class="hidden">
-                    <!-- Placeholder for Open Order Items -->
-                </div>
+            <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+                <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
             </div>
         </div>
+
+        <div id="dvPlaceholderOpenOrderItems" class="hidden">@* Placeholder for Open Order Items *@</div>
     }
 </div>
 
