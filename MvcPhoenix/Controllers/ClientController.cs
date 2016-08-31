@@ -29,7 +29,7 @@ namespace MvcPhoenix.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var clients = from c in db.tblClient2
+            var clients = from c in db.tblClient
                           select c;
 
             if (!String.IsNullOrEmpty(searchString))

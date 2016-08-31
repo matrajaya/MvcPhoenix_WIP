@@ -13,7 +13,7 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = (from t in db.tblClient2 where t.ClientID == CP.ClientID select t).FirstOrDefault();
+                var q = (from t in db.tblClient where t.ClientID == CP.ClientID select t).FirstOrDefault();
                 CP.ClientID = q.ClientID;
                 CP.LegacyID = q.LegacyID;
                 CP.GlobalClientID = q.GlobalClientID;
@@ -109,9 +109,11 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var newrow = new EF.tblClient2 { };
-                db.tblClient2.Add(newrow);
+                var newrow = new EF.tblClient { };
+
+                db.tblClient.Add(newrow);
                 db.SaveChanges();
+
                 int clientkey = newrow.ClientID;
 
                 return clientkey;
@@ -122,7 +124,7 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = db.tblClient2.Find(CP.ClientID);
+                var q = db.tblClient.Find(CP.ClientID);
                 q.ClientID = CP.ClientID;
                 q.LegacyID = CP.LegacyID;
                 q.GlobalClientID = CP.GlobalClientID;
