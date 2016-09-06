@@ -457,6 +457,9 @@
     <Compile Include="EF\tblTier.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblTransType.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblUN.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -464,6 +467,9 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblWasteCode.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\vwBulkLevel.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\vwBulkTransForReplenishment.cs">
@@ -1200,15 +1206,8 @@
     <Content Include="Views\Inventory\Edit.cshtml" />
     <Content Include="Views\Inventory\Index.cshtml" />
     <Content Include="Views\Inventory\_BulkStock.cshtml" />
-    <Content Include="Views\Inventory\_BulkStockModal.cshtml" />
-    <Content Include="Views\Inventory\_LogNotes.cshtml" />
-    <Content Include="Views\Inventory\_LogNotesModal.cshtml" />
-    <Content Include="Views\Inventory\_PackoutModal.cshtml" />
     <Content Include="Views\Inventory\_ReplenishOrders.cshtml" />
-    <Content Include="Views\Inventory\_ReplenishOrdersModal.cshtml" />
-    <Content Include="Views\Inventory\_ReversePackoutModal.cshtml" />
     <Content Include="Views\Inventory\_ShelfStock.cshtml" />
-    <Content Include="Views\Inventory\_ShelfStockModal.cshtml" />
     <Content Include="Views\Invoice\Index.cshtml" />
     <Content Include="Views\Orders\Notification.cshtml" />
     <Content Include="Views\Orders\OrderImport.cshtml" />
@@ -1299,6 +1298,9 @@
     <Content Include="Views\Invoice\View.cshtml" />
     <Content Include="Views\Invoice\Edit.cshtml" />
     <Content Include="Views\Invoice\Search.cshtml" />
+    <Content Include="Views\Inventory\_RecentBulkReceived.cshtml" />
+    <Content Include="Views\Inventory\PrePackStock.cshtml" />
+    <Content Include="Views\Inventory\_ProductLogNotes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

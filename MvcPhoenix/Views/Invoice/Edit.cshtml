@@ -38,7 +38,7 @@
         @Html.HiddenFor(m => m.tier)
         @Html.HiddenFor(m => m.ordertype)
         @Html.HiddenFor(m => m.invoicedate)
-        @Html.HiddenFor(m => m.ponumber)
+        //@Html.HiddenFor(m => m.ponumber)
         @Html.HiddenFor(m => m.netterm)
         @Html.HiddenFor(m => m.invoiceperiod)
 
@@ -49,8 +49,8 @@
                     <div class="panel-body">
                         <b>Invoice Number:</b> @Html.DisplayFor(m => m.invoicenumber)<br>
                         <b>Invoice Date:</b> @Model.invoicedate.Value.ToString("d")<br>
-                        <b>PO Number:</b> @Html.DisplayFor(m => m.ponumber)<br />
-                        <b>Net @Html.DisplayFor(m => m.netterm)</b>
+                        <b>PO Number:</b>  @Html.TextBoxFor(m => m.ponumber, new { @style = "height: 70%; border-style:none", @placeholder = "Enter PO# Here" })<br />
+                        <b>@Html.DisplayFor(m => m.netterm)</b>
                     </div>
                 </div>
             </div>
@@ -86,6 +86,7 @@
                                         <th>Number of Samples</th>
                                         <td>
                                             @Html.TextBoxFor(m => m.totalsamples, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.ValidationMessageFor(m => m.totalsamples)
                                         </td>
                                     </tr>
                                     <tr>

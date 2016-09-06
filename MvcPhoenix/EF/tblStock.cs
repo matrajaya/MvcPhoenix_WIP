@@ -29,6 +29,7 @@ namespace MvcPhoenix.EF
         public string UM_MDB { get; set; }
         public string LotNumber_MDB { get; set; }
         public string MasterCode_MDB { get; set; }
+        public Nullable<System.DateTime> WasteAccumStartDate { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

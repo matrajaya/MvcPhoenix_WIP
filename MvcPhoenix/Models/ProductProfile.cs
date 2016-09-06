@@ -50,11 +50,6 @@ namespace MvcPhoenix.Models
         public string reasoncode { get; set; }
 
         public List<SelectListItem> ListOfReasonCodes { get; set; }
-
-        // List prop  - This should actually point to an SQL View !!
-        //public List<EF.tblProductNotes> ListOfProductNotes { get; set; }
-
-        //public List<ProductNote> ListOfProductNotesA { get; set; }
     }
 
     public class Cas
@@ -113,7 +108,6 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfDivisions { get; set; }
         public List<SelectListItem> ListOfSupplyIDs { get; set; }
         public List<SelectListItem> ListOfGloves { get; set; }
-
 
         public string logofilename { get; set; }
 
@@ -240,7 +234,6 @@ namespace MvcPhoenix.Models
         public string labelnumber { get; set; }
 
         [Display(Name = "Product Checked")]
-        // table field in JET is named [checked], changed to productchecked for SQL Server
         public bool? productchecked { get; set; }
 
         [Display(Name = "Checked By")]
@@ -266,17 +259,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Global Product")]
         public bool? globalproduct { get; set; }
-
-        //[Display(Name = "Company_MDB")]
-        //public string company_mdb { get; set; }
-
-        //[Display(Name = "MasterCode_MDB")]
-        //public string mastercode_mdb { get; set; }
-
-        //[Display(Name = "Division_MDB")]
-        //public string division_mdb { get; set; }
-
-        //pc 10/23/2015 new fields created by Iffy
 
         public bool? polymerizationhazard { get; set; }
 
@@ -316,11 +298,9 @@ namespace MvcPhoenix.Models
         [Display(Name = "Waste Profile Number")]
         public string wasteprofilenumber { get; set; }
 
-        //new field added by cd,ii on 10/28
         [Display(Name = "Shipping Chemical Name")]
         public string shippingchemicalname { get; set; }
 
-        //new field added by cd,ii on 10/28 (already in master??)
         [Display(Name = "Label Notes (EPA, etc)")]
         public string labelnotesepa { get; set; }
 		
@@ -356,9 +336,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "DENSITY")]
         public decimal? density { get; set; }
-
-        [Display(Name = "Restrictedamount")]
-        public decimal? restrictedamount { get; set; }
 
         // *********************************************************
 
@@ -581,10 +558,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "FreezableList")]
         public bool? freezablelist { get; set; }
-
-        [Display(Name = "RefrigeratedList")]
-        public bool? refrigeratedlist { get; set; }
-
         [Display(Name = "MSDSOTHERNUMBER")]
         public string msdsothernumber { get; set; }
 
@@ -765,7 +738,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "pH")]
         public decimal? phvalue { get; set; }
 
-        //new field added by II 10/28
         [Display(Name = "Physical Toxic")]
         public bool? physicaltoxic { get; set; }
 
@@ -774,6 +746,16 @@ namespace MvcPhoenix.Models
 				
         [Display(Name = "Temperature Controlled Storage")]
         public bool? temperaturecontrolledstorage { get; set; }
+		
+		public bool? prepacked { get; set; }
 
+        public DateTime? CreateDateMaster { get; set; }
+        public string CreateUserMaster { get; set; }
+        public DateTime? UpdateDateMaster { get; set; }
+        public string UpdateUserMaster { get; set; }
+        public DateTime? CreateDateDetail { get; set; }
+        public string CreateUserDetail { get; set; }
+        public DateTime? UpdateDateDetail { get; set; }
+        public string UpdateUserDetail { get; set; }
     }
 }

@@ -106,7 +106,6 @@ namespace MvcPhoenix.EF
         public Nullable<bool> SARA313 { get; set; }
         public Nullable<bool> HalfMaskRespirator { get; set; }
         public Nullable<bool> FullFaceRespirator { get; set; }
-        public Nullable<decimal> Restrictedamount { get; set; }
         public Nullable<bool> Torque { get; set; }
         public string TorqueRequirements { get; set; }
         public string OtherPkg { get; set; }
@@ -130,6 +129,7 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> LastUpDate { get; set; }
         public Nullable<bool> PhysicalToxic { get; set; }
         public string WasteCode { get; set; }
+        public Nullable<System.DateTime> WasteAccumStartDate { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
@@ -138,6 +138,7 @@ namespace MvcPhoenix.EF
         public Nullable<int> LeadTime { get; set; }
         public Nullable<bool> DustFilter { get; set; }
         public Nullable<bool> TemperatureControlledStorage { get; set; }
+        public Nullable<bool> PrePacked { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string Location_MDB { get; set; }

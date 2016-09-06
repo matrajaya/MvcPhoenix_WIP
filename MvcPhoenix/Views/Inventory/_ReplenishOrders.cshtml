@@ -1,45 +1,43 @@
-﻿@model MvcPhoenix.Models.Inventory
-@using MvcPhoenix.Models
+﻿@model List<MvcPhoenix.Models.BulkOrderItemForInventory>
 @{}
 
-<div class="row" style="padding-bottom:20px;">
-    <div class="col-md-3">
-        <input type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#replenishmodal" value="Enter Order Details" />
+<div class="row" style="padding-bottom:15px;">
+    <div class="col-md-3 pull-right">
+        @Html.ActionLink("Create New Order", "CreateReplenishmentOrder", "Inventory", new { id = @ViewBag.ProductDetailID }, new { @class = "btn btn-primary btn-block" })
     </div>
     <div class="clearfix"></div>
 </div>
 
-<div id="replenishmodal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                @Html.Partial("~/Views/Inventory/_ReplenishOrdersModal.cshtml")
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="table-responsive">
-    <table class="table table-hover table-striped">
-        <tr>
-            <th>Order Date</th>
-            <th>Order Number</th>
-            <th>Supplyid</th>
-            <th>Quantity</th>
-            <th>Size</th>
-            <th>Status</th>
-            <th>ETA</th>
-            <th>Notes</th>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+    <table class="table table-hover table-striped" style="font-size:.85em;">
+        <thead>
+            <tr>
+                <th>Order Date</th>
+                <th>Order Number</th>
+                <th>Supplyid</th>
+                <th>Weight</th>
+                <th>Order<br />Status</th>
+                <th>Item<br />Status</th>
+                <th>ETA</th>
+                <th>Notes</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model)
+            {
+                <tr>
+                    <td>@String.Format("{0:dd MMM yyyy}", row.OrderDate)</td>
+                    <td>@row.bulkorderid</td>
+                    <td>@row.SupplyID</td>
+                    <td>@row.weight</td>
+                    <td>@row.OrderStatus</td>
+                    <td>@row.itemstatus</td>
+                    <td>@row.eta</td>
+                    <td>@row.itemnotes</td>
+                    <td>@Html.ActionLink("Edit", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, null)</td>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>

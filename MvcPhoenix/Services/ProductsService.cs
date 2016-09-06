@@ -237,7 +237,11 @@ namespace MvcPhoenix.Models
                 PP.rcrahazcl = qd.RCRAHAZCL;
                 PP.rcrashipname = qd.RCRASHIPNAME;
                 PP.rcranosname = qd.RCRANOSNAME;
-				PP.active = qd.Active;
+                PP.active = qd.Active;
+                PP.CreateDateDetail = qd.CreateDate;
+                PP.CreateUserDetail = qd.CreateUser;
+                PP.UpdateDateDetail = qd.UpdateDate;
+                PP.UpdateUserDetail = qd.UpdateUser;
 
                 return PP;
             }
@@ -277,11 +281,7 @@ namespace MvcPhoenix.Models
                 PP.heatpriortofilling = q.HeatPriorToFilling;
                 PP.flashpoint = q.FlashPoint;
                 PP.heatinginstructions = q.HeatingInstructions;
-
-                //cd says rename to OtherHandlingInstr
-                //PP.other = q.Other;
                 PP.otherhandlinginstr = q.OtherHandlingInstr;
-
                 PP.normalappearence = q.NormalAppearence;
                 PP.rejectioncriterion = q.RejectionCriterion;
                 PP.hood = q.Hood;
@@ -334,7 +334,6 @@ namespace MvcPhoenix.Models
                 PP.flammablestorageroom = q.FlammableStorageRoom;
                 PP.firelist = q.FireList;
                 PP.freezablelist = q.FreezableList;
-                PP.refrigeratedlist = q.RefrigeratedList;
                 PP.msdsothernumber = q.MSDSOTHERNUMBER;
                 PP.freezerstorage = q.FREEZERSTORAGE;
                 PP.clientreq = q.CLIENTREQ;
@@ -346,7 +345,6 @@ namespace MvcPhoenix.Models
                 PP.sara313 = q.SARA313;
                 PP.halfmaskrespirator = q.HalfMaskRespirator;
                 PP.fullfacerespirator = q.FullFaceRespirator;
-                PP.restrictedamount = q.Restrictedamount;
                 PP.torque = q.Torque;
                 PP.torquerequirements = q.TorqueRequirements;
                 PP.otherpkg = q.OtherPkg;
@@ -367,20 +365,18 @@ namespace MvcPhoenix.Models
                 PP.peroxideformer = q.PeroxideFormer;
                 PP.specificgravity = q.SpecificGravity;
                 PP.phvalue = q.phValue;
-                //new field added by II
-
                 PP.masterlastupdate = q.LastUpDate;
                 PP.physicaltoxic = q.PhysicalToxic;
                 PP.wastecode = q.WasteCode;
-                //PP.company_mdb = q.Company_MDB;
-                //PP.division_mdb = q.Division_MDB;
-                //PP.location_mdb = q.Location_MDB;
-
-                // ------------------------- pc fields added 3/16/2016
                 PP.countryoforigin = q.CountryOfOrigin;
                 PP.leadtime = q.LeadTime;
                 PP.dustfilter = q.DustFilter;
-				PP.temperaturecontrolledstorage = q.TemperatureControlledStorage;
+                PP.temperaturecontrolledstorage = q.TemperatureControlledStorage;
+                PP.prepacked = q.PrePacked;
+                PP.CreateDateMaster = q.CreateDate;
+                PP.CreateUserMaster = q.CreateUser;
+                PP.UpdateDateMaster = q.UpdateDate;
+                PP.UpdateUserMaster = q.UpdateUser;
 
                 return PP;
             }
@@ -421,15 +417,11 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                //fnArchiveProductMaster(pm.productmasterid);
-                //var q = (from t in db.tblProductDetail where t.ProductDetailID == PP.productdetailid select t).FirstOrDefault();
                 var q = db.tblProductDetail.Find(PP.productdetailid);
                 q.ProductCode = PP.productcode;
                 q.ProductDetailID = PP.productdetailid;
                 q.ProductMasterID = PP.productmasterid;
-                //q.SGLegacyID = pd.sglegacyid;
                 q.DivisionID = PP.divisionid;
-                //q.BusArea = PP.busarea;
                 q.ProductCode = PP.productcode;
                 q.ProductName = PP.productname;
                 q.CustCode = PP.custcode;
@@ -464,11 +456,8 @@ namespace MvcPhoenix.Models
                 q.EPAHazardousWaste = PP.epahazardouswaste;
                 q.NonRCRAWaste = PP.nonrcrawaste;
                 q.WasteProfileNumber = PP.wasteprofilenumber;
-
-                // fields add by Iffy 10/28 (already in Master ???)
                 q.ShippingChemicalName = PP.shippingchemicalname;
                 q.LabelNotesEPA = PP.labelnotesepa;
-
                 q.GRNUNNUMBER = PP.grnunnumber;
                 q.GRNPKGRP = PP.grnpkgrp;
                 q.GRNHAZSUBCL = PP.grnhazsubcl;
@@ -479,7 +468,6 @@ namespace MvcPhoenix.Models
                 q.GRNOSNAME = PP.grnosname;
                 q.GRNSHIPNAMED = PP.grnshipnamed;
                 q.GRNTREMACARD = PP.grntremacard;
-
                 q.AIRUNNUMBER = PP.airunnumber;
                 q.AIRPKGRP = PP.airpkgrp;
                 q.AIRHAZSUBCL = PP.airhazsubcl;
@@ -488,7 +476,6 @@ namespace MvcPhoenix.Models
                 q.AIRHAZCL = PP.airhazcl;
                 q.AIRSHIPNAME = PP.airshipname;
                 q.AIRNOSNAME = PP.airnosname;
-
                 q.SEAUNNUM = PP.seaunnum;
                 q.SEAPKGRP = PP.seapkgrp;
                 q.SEAHAZSUBCL = PP.seahazsubcl;
@@ -501,8 +488,6 @@ namespace MvcPhoenix.Models
                 q.SEAHAZMAT = PP.seahazmat;
                 q.SEAEMSNO = PP.seaemsno;
                 q.SEAMFAGNO = PP.seamfagno;
-
-                // ------------------------- pc fields added 3/16/2016
                 q.AlertNotesShipping = PP.alertnotesshipping;
                 q.AlertNotesReceiving = PP.alertnotesreceiving;
                 q.AlertNotesPackout = PP.alertnotespackout;
@@ -516,7 +501,7 @@ namespace MvcPhoenix.Models
                 q.RCRAHAZCL = PP.rcrahazcl;
                 q.RCRASHIPNAME = PP.rcrashipname;
                 q.RCRANOSNAME = PP.rcranosname;
-				q.Active = PP.active;
+                q.Active = PP.active;
 
                 db.SaveChanges();
             }
@@ -526,16 +511,10 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                //fnArchiveProductMaster(pm.productmasterid);
-                //var q = (from t in db.tblProductMaster where t.ProductMasterID == pm.productmasterid select t).FirstOrDefault();
                 var q = db.tblProductMaster.Find(pm.productmasterid);
-                //q.ProductMasterID = pm.productmasterid;
                 q.ClientID = pm.clientid;
-                //q.SGLegacyID = pm.sglegacyid;
-                //q.SDLegacyID = pm.sdlegacyid;
                 q.MasterCode = pm.mastercode;
                 q.MasterName = pm.mastername;
-                //q.MasterDivisionID = pm.masterdivisionid;
                 q.SUPPLYID = pm.supplyid;
                 q.Discontinued = pm.discontinued;
                 q.NoReorder = pm.noreorder;
@@ -558,7 +537,6 @@ namespace MvcPhoenix.Models
                 q.HeatPriorToFilling = pm.heatpriortofilling;
                 q.FlashPoint = pm.flashpoint;
                 q.HeatingInstructions = pm.heatinginstructions;
-                // name change per cd q.Other = pm.other;
                 q.OtherHandlingInstr = pm.otherhandlinginstr;
                 q.NormalAppearence = pm.normalappearence;
                 q.RejectionCriterion = pm.rejectioncriterion;
@@ -612,7 +590,6 @@ namespace MvcPhoenix.Models
                 q.FlammableStorageRoom = pm.flammablestorageroom;
                 q.FireList = pm.firelist;
                 q.FreezableList = pm.freezablelist;
-                q.RefrigeratedList = pm.refrigeratedlist;
                 q.MSDSOTHERNUMBER = pm.msdsothernumber;
                 q.FREEZERSTORAGE = pm.freezerstorage;
                 q.CLIENTREQ = pm.clientreq;
@@ -624,7 +601,6 @@ namespace MvcPhoenix.Models
                 q.SARA313 = pm.sara313;
                 q.HalfMaskRespirator = pm.halfmaskrespirator;
                 q.FullFaceRespirator = pm.fullfacerespirator;
-                q.Restrictedamount = pm.restrictedamount;
                 q.Torque = pm.torque;
                 q.TorqueRequirements = pm.torquerequirements;
                 q.OtherPkg = pm.otherpkg;
@@ -643,24 +619,16 @@ namespace MvcPhoenix.Models
                 q.OtherLabelNotes = pm.otherlabelnotes;
                 q.ProductDescription = pm.productdescription;
                 q.PeroxideFormer = pm.peroxideformer;
-
                 q.SpecificGravity = pm.specificgravity;
                 q.phValue = pm.phvalue;
-
                 q.LastUpDate = DateTime.Now;
-
                 q.PhysicalToxic = pm.physicaltoxic;
-
                 q.WasteCode = pm.wastecode;
-                //q.Company_MDB = pm.company_mdb;
-                //q.Division_MDB = pm.division_mdb;
-                //q.Location_MDB = pm.location_mdb;
-
-                // ------------------------- pc fields added 3/16/2016
                 q.CountryOfOrigin = pm.countryoforigin;
                 q.LeadTime = pm.leadtime;
                 q.DustFilter = pm.dustfilter;
-				q.TemperatureControlledStorage = pm.temperaturecontrolledstorage;
+                q.TemperatureControlledStorage = pm.temperaturecontrolledstorage;
+                q.PrePacked = pm.prepacked;
 
                 db.SaveChanges();
             }
@@ -670,36 +638,40 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var newrecord = new EF.tblProductDetail
-                {
-                    // dont need to insert any fields, just need the new PK
-                };
-                db.tblProductDetail.Add(newrecord); db.SaveChanges();
+                var newrecord = new EF.tblProductDetail { }; // dont need to insert any fields, just need the new PK
+
+                db.tblProductDetail.Add(newrecord); 
+                db.SaveChanges();
+
                 int newpk = newrecord.ProductDetailID;
+
                 return newpk;
             }
         }
 
+        /// <summary>
+        /// Add logic to copy pm record to tblProductMasterArchive
+        /// If exists tblPmTemp Drop table tblPMTemp;
+        /// Select * into  tblPMTemp from tblProductMaster where ProductMasterID=id
+        /// Insert into tblProductMasterArchive Select * from tblPMTemp;
+        /// If exists tblPmTemp Drop table tblPMTemp;
+        /// </summary>
+        /// <param name="id"></param>
         private static void fnArchiveProductMaster(int id)
         {
-            // Add logic to copy pm record to tblProductMasterArchive
-            // If exists tblPmTemp Drop table tblPMTemp;
-            // Select * into  tblPMTemp from tblProductMaster where ProductMasterID=id
-            // Insert into tblProductMasterArchive Select * from tblPMTemp;
-            // If exists tblPmTemp Drop table tblPMTemp;
         }
 
         public static int fnNewProductMasterID()
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var newrecord = new EF.tblProductMaster
-                {
-                    // dont need to insert any fields, just need the new PK
-                };
+                var newrecord = new EF.tblProductMaster { };// dont need to insert any fields, just need the new PK
+
                 db.tblProductMaster.Add(newrecord);
                 db.SaveChanges();
+
                 int newpk = newrecord.ProductMasterID;
+
                 return newpk;
             }
         }
@@ -719,7 +691,12 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 UN obj = new UN();
-                var q = (from t in db.tblUN orderby t.UNID descending where t.UNNumber == id select t).FirstOrDefault();
+
+                var q = (from t in db.tblUN
+                         orderby t.UNID descending
+                         where t.UNNumber == id
+                         select t).FirstOrDefault();
+
                 obj.unid = q.UNID;
                 obj.unnumber = q.UNNumber;
                 obj.hazardclass = q.HazardClass;
@@ -729,17 +706,17 @@ namespace MvcPhoenix.Models
                 obj.subclass = q.SubClass;
                 obj.subsidlabelreq = q.SubSidLabelReq;
                 obj.packinggroup = q.PackingGroup;
+
                 return obj;
             }
         }
-
-        // -----------------------------------------------
 
         #region ProductNotes Methods
 
         public static ProductNote fnCreateProductNote(int id)
         {
             ProductNote PN = new ProductNote();
+
             using (var db = new EF.CMCSQL03Entities())
             {
                 PN.productnoteid = -1;
@@ -747,9 +724,12 @@ namespace MvcPhoenix.Models
                 PN.reasoncode = null;
                 PN.notedate = DateTime.Now;
                 PN.notes = null;
-                PN.ListOfReasonCodes = (from t in db.tblReasonCode orderby t.Reason select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
+                PN.ListOfReasonCodes = (from t in db.tblReasonCode
+                                        orderby t.Reason
+                                        select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
                 PN.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
             }
+
             return PN;
         }
 
@@ -764,9 +744,12 @@ namespace MvcPhoenix.Models
                 PN.reasoncode = q.ReasonCode;
                 PN.notedate = q.NoteDate;
                 PN.notes = q.Notes;
-                PN.ListOfReasonCodes = (from t in db.tblReasonCode orderby t.Reason select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
+                PN.ListOfReasonCodes = (from t in db.tblReasonCode
+                                        orderby t.Reason
+                                        select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
                 PN.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
             }
+
             return PN;
         }
 
@@ -781,12 +764,18 @@ namespace MvcPhoenix.Models
                     db.SaveChanges();
                     PN.productnoteid = newrec.ProductNoteID;
                 }
-                var q = (from t in db.tblProductNotes where t.ProductNoteID == PN.productnoteid select t).FirstOrDefault();
+
+                var q = (from t in db.tblProductNotes
+                         where t.ProductNoteID == PN.productnoteid
+                         select t).FirstOrDefault();
+
                 q.ProductDetailID = PN.productdetailid;
                 q.NoteDate = PN.notedate;
                 q.Notes = PN.notes;
                 q.ReasonCode = PN.reasoncode;
+
                 db.SaveChanges();
+
                 return q.ProductNoteID;
             }
         }
@@ -797,14 +786,11 @@ namespace MvcPhoenix.Models
             {
                 db.Database.ExecuteSqlCommand("Delete from tblProductNotes Where ProductNoteID=" + id);
             }
+
             return id;
         }
 
         #endregion ProductNotes Methods
-
-        // -----------------------------------------------
-
-        // -----------------------------------------------
 
         #region CAS Methods
 
@@ -813,15 +799,20 @@ namespace MvcPhoenix.Models
             Cas CS = new Cas();
             CS.casid = -1;
             CS.productdetailid = id;
+
             return CS;
         }
 
         public static Cas fnGetCAS(int id)
         {
             Cas CS = new Cas();
+
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = (from t in db.tblCAS where t.CASID == id select t).FirstOrDefault();
+                var q = (from t in db.tblCAS
+                         where t.CASID == id
+                         select t).FirstOrDefault();
+
                 CS.casid = q.CASID;
                 CS.productdetailid = q.ProductDetailID;
                 CS.casnumber = q.CasNumber;
@@ -833,6 +824,7 @@ namespace MvcPhoenix.Models
                 CS.reportableamount = q.ReportableAmount;
                 CS.lessthan = q.LessThan;
                 CS.excludefromlabel = q.ExcludeFromLabel;
+
                 return CS;
             }
         }
@@ -848,7 +840,11 @@ namespace MvcPhoenix.Models
                     db.SaveChanges();
                     CS.casid = newrec.CASID;
                 }
-                var q = (from t in db.tblCAS where t.CASID == CS.casid select t).FirstOrDefault();
+
+                var q = (from t in db.tblCAS
+                         where t.CASID == CS.casid
+                         select t).FirstOrDefault();
+
                 q.ProductDetailID = CS.productdetailid;
                 q.CasNumber = CS.casnumber;
                 q.ChemicalName = CS.chemicalname;
@@ -859,7 +855,9 @@ namespace MvcPhoenix.Models
                 q.ReportableAmount = CS.reportableamount;
                 q.LessThan = CS.lessthan;
                 q.ExcludeFromLabel = CS.excludefromlabel;
+
                 db.SaveChanges();
+
                 return q.CASID;
             }
         }
@@ -874,7 +872,5 @@ namespace MvcPhoenix.Models
         }
 
         #endregion CAS Methods
-
-        // -----------------------------------------------
     }
 }

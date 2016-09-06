@@ -2,6 +2,7 @@
 using MvcPhoenix.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
@@ -23,7 +24,7 @@ namespace MvcPhoenix.Controllers
             ViewBag.ParentKey = id;
             return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", mylist);
         }
-        
+
         #region SearchActions ------------------------------------------------------
 
         [HttpPost]
@@ -39,18 +40,18 @@ namespace MvcPhoenix.Controllers
             var mylist = ReplenishmentsService.fnSearchResults(fc, mode);
             return PartialView("~/Views/Replenishments/_SearchResults.cshtml", mylist);
         }
-        
+
         #endregion SearchActions ------------------------------------------------------
-            
+
         #region OrderEdit ---------------------------------------------------------
-        
+
         public ActionResult Edit(int id)
         {
             BulkOrder vm = new BulkOrder();
             vm = ReplenishmentsService.fnFillBulkOrderFromDB(id);
             return View("~/Views/Replenishments/Edit.cshtml", vm);
         }
-        
+
         [HttpPost]
         public ActionResult Save(BulkOrder obj)
         {
@@ -73,7 +74,7 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion OrderEdit ---------------------------------------------------------
-        
+
         #region Email -----------------------------------------------------------
 
         [HttpPost]
@@ -82,7 +83,7 @@ namespace MvcPhoenix.Controllers
             ReplenishmentsService.fnSendEmail(obj);
             return RedirectToAction("Edit", new { id = obj.bulkorderid });
         }
-        
+
         #endregion Email -----------------------------------------------------------
 
         #region Items --------------------------------------------------------------------
@@ -118,7 +119,7 @@ namespace MvcPhoenix.Controllers
             //return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", obj);
             return Content("Deleted");
         }
-        
+
         #endregion Items --------------------------------------------------------------------
 
         #region SuggestedBulkOrder ------------------------------------------------
@@ -128,6 +129,27 @@ namespace MvcPhoenix.Controllers
         {
             ViewBag.ListOfClients = ReplenishmentsService.fnClientIDs();
             return View("~/Views/Replenishments/Create.cshtml");
+        }
+
+        [HttpGet]
+        public ActionResult CreateFromInventory(int id) // id=productdetailid
+        {
+            // pc 09/02/16 add action to respond to request from Inventory
+            using (db)
+            {
+                var pd = db.tblProductDetail.Find(id);
+                var pm = db.tblProductMaster.Find(pd.ProductMasterID);
+                var mylist = ReplenishmentsService.fnClientIDs();
+
+                mylist = (from t in mylist
+                          where (t.Value == pm.ClientID.ToString()) || (t.Value == "0")
+                          select t).ToList(); //limit to this clientid
+
+                ViewBag.ListOfClients = mylist; // needed to view
+                ViewBag.ProductDetailID = id;
+                Session["InventoryProductDetailID"] = id; // so CreateBulkOrders Action below can redirect back to Inventory / easier then changing Replenishment views(s)
+                return View("~/Views/Replenishments/Create.cshtml");
+            }
         }
 
         public ActionResult BuildDivisionDropDown(int id)
@@ -168,7 +190,7 @@ namespace MvcPhoenix.Controllers
             vm = ReplenishmentsService.fnFillSuggestedItemfromDB(id);
             return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", vm);
         }
-        
+
         [HttpGet]
         public ActionResult CreateSuggestedItem(int ClientID)
         {
@@ -194,8 +216,18 @@ namespace MvcPhoenix.Controllers
         public ActionResult CreateBulkOrders()
         {
             int OrderCount = ReplenishmentsService.fnCreateBulkOrders();
+            // 09/02/16 pc: need a dirty way to route back to Inventory
+            int iSession = Convert.ToInt32(Session["InventoryProductDetailID"]);
+
+            if (iSession > 0)
+            {
+                // reroute back to Inventory
+                int pdid = Convert.ToInt32(Session["InventoryProductDetailID"]);
+                Session["InventoryProductDetailID"] = null; //reset
+                return RedirectToAction("Edit", "Inventory", new { id = pdid });
+            }
+
             return RedirectToAction("Index");
-            //return Content("New Orders Created = " + OrderCount.ToString());
         }
 
         #endregion SuggestedBulkOrder ------------------------------------------------

@@ -13,7 +13,10 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = (from t in db.tblClient where t.ClientID == CP.ClientID select t).FirstOrDefault();
+                var q = (from t in db.tblClient 
+                         where t.ClientID == CP.ClientID 
+                         select t).FirstOrDefault();
+
                 CP.ClientID = q.ClientID;
                 CP.LegacyID = q.LegacyID;
                 CP.GlobalClientID = q.GlobalClientID;
@@ -24,6 +27,7 @@ namespace MvcPhoenix.Models
                 CP.ClientEntityName = q.ClientEntityName;
                 CP.ClientCurrency = q.ClientCurrency;
                 CP.ClientUM = q.ClientUM;
+                CP.ClientNetTerm = String.IsNullOrEmpty(q.ClientNetTerm) ? "Net 30 Days" : q.ClientNetTerm;
                 CP.MSDS = q.MSDS ?? false;
                 CP.MSDSFileDir = q.MSDSFileDir;
                 CP.TDS = q.TDS ?? false;
@@ -131,10 +135,9 @@ namespace MvcPhoenix.Models
                 q.ClientCode = CP.ClientCode;
                 q.ClientName = CP.ClientName;
                 q.CMCLocation = CP.CMCLocation;
-                //q.ClientReference = CP.ClientReference;
-                //q.ClientEntityName = CP.ClientEntityName;
                 q.ClientCurrency = CP.ClientCurrency;
                 q.ClientUM = CP.ClientUM;
+                q.ClientNetTerm = CP.ClientNetTerm;
                 q.MSDS = CP.MSDS;
                 q.MSDSFileDir = CP.MSDSFileDir;
                 q.TDS = CP.TDS;

@@ -1,7 +1,5 @@
-﻿using MvcPhoenix.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,7 +13,9 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 InvoiceViewModel IVM = new InvoiceViewModel();
-                var q = (from t in db.tblInvoice where t.InvoiceID == id select t).FirstOrDefault();
+                var q = (from t in db.tblInvoice
+                         where t.InvoiceID == id
+                         select t).FirstOrDefault();
 
                 IVM.invoiceid = q.InvoiceID;
                 IVM.invoicenumber = q.InvoiceNumber;
@@ -123,7 +123,7 @@ namespace MvcPhoenix.Models
                 IVM.hm181pkgcharge = q.HM181PkgCharge;
                 IVM.dochandlingcharge = q.DocHandlingCharge;
                 IVM.minimalsamplecharge = q.MinimalSampleCharge;
-                
+
                 return IVM;
             }
         }
@@ -142,7 +142,8 @@ namespace MvcPhoenix.Models
                 }
 
                 var confirmVerify = false;
-                if (vm.verifiedaccuracy == true){
+                if (vm.verifiedaccuracy == true)
+                {
                     ///Add logic to check invoice status if not new or verified already
                     ///check if verified by user == created user. should be different
                     ///capture verified datetime and user identity and save to db
@@ -173,7 +174,7 @@ namespace MvcPhoenix.Models
                     q.VerifiedBy = HttpContext.Current.User.Identity.Name;
                     q.VerifyDate = System.DateTimeOffset.UtcNow;
                 }
-                
+
                 q.Status = vm.status;
                 q.InvoiceDate = vm.invoicedate;
                 q.InvoicePeriod = vm.invoiceperiod;
@@ -274,39 +275,46 @@ namespace MvcPhoenix.Models
                 obj.invoicedate = DateTime.UtcNow;
                 obj.status = "New";
 
-                if (division > 0) {
+                if (division > 0)
+                {
                     var div = db.tblDivision.Find(division);
                     obj.billinggroup = div.Division;
-                } else{ obj.billinggroup = "All"; }
+                }
+                else { obj.billinggroup = "All"; }
 
+                // Pull default values from Client table
                 var cl = db.tblClient.Find(client);
                 obj.clientid = cl.ClientID;
                 obj.clientname = cl.ClientName;
                 obj.warehouselocation = cl.CMCLocation;
-                                
-                obj.ponumber = "AS234522";
-                obj.netterm = "60 Days";
-                obj.currency = "USD";
+                obj.billto = cl.InvoiceAddress;
+                obj.netterm = String.IsNullOrEmpty(cl.ClientNetTerm) ? "Net 30 Days" : cl.ClientNetTerm;
+                obj.currency = cl.ClientCurrency;
+
+                obj.ponumber = "Enter PO Number";
                 obj.tier = 1;
-                //obj.invoiceperiod = DateTime.Now.ToString("MMMM\",\" yyyy", CultureInfo.CreateSpecificCulture("en-US"));
                 obj.invoiceperiod = period;
                 obj.remitto = "<p>Chemical Marketing Concepts, LLC<br />c/o Odyssey Logistics &amp; Technology Corp<br />39 Old Ridgebury Road, N-1<br />Danbury, CT 06810</p>";
 
-                var q = (from t in db.tblRates where t.ClientID == 1 select t).FirstOrDefault();
-                obj.revenuerate = q.RevenueRate;
-                obj.nonrevenuerate = q.NonRevenueRate;
-                obj.manualentryrate = q.ManualEntryRate;
-                obj.followuprate = q.FollowUpRate;
-                obj.labelprtrate = q.LabelPrtRate;
-                obj.relabelprtrate = q.ReLabelPrtRate;
-                obj.relabelfeerate = q.ReLabelFeeRate;
-                obj.productsetuprate = q.ProductSetupRate;
-                obj.ccprocessrate = q.CCProcessRate;
-                obj.rushshiprate = q.RushShipRate;
-                obj.emptypailsrate = q.EmptyPailsRate;
-                obj.inactivestockrate = q.InactiveStockRate;
-                obj.minimalsamplecharge = q.MinimalSampleCharge;
-                
+                // Pull default values from Rates table
+                var rate = (from t in db.tblRates
+                            where t.ClientID == 1
+                            select t).FirstOrDefault();
+
+                obj.revenuerate = rate.RevenueRate;
+                obj.nonrevenuerate = rate.NonRevenueRate;
+                obj.manualentryrate = rate.ManualEntryRate;
+                obj.followuprate = rate.FollowUpRate;
+                obj.labelprtrate = rate.LabelPrtRate;
+                obj.relabelprtrate = rate.ReLabelPrtRate;
+                obj.relabelfeerate = rate.ReLabelFeeRate;
+                obj.productsetuprate = rate.ProductSetupRate;
+                obj.ccprocessrate = rate.CCProcessRate;
+                obj.rushshiprate = rate.RushShipRate;
+                obj.emptypailsrate = rate.EmptyPailsRate;
+                obj.inactivestockrate = rate.InactiveStockRate;
+                obj.minimalsamplecharge = rate.MinimalSampleCharge;
+
                 return obj;
             }
         }
@@ -318,7 +326,7 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 var obj = (from t in db.tblInvoice
-                           //where t.Status == "NEW" || 
+                           //where t.Status == "NEW" ||
                            //     t.Status == "PENDING"
                            orderby t.InvoiceNumber ascending
                            select new InvoiceViewModel
@@ -332,6 +340,7 @@ namespace MvcPhoenix.Models
                                warehouselocation = t.WarehouseLocation,
                                status = t.Status
                            }).ToList();
+
                 return obj;
             }
         }
@@ -345,24 +354,34 @@ namespace MvcPhoenix.Models
                           orderby t.ClientName
                           select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+
                 return mylist;
             }
         }
-        
+
         public static string fnBuildBillingGroupDDL(int clientid)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var qry = (from t in db.tblDivision where t.ClientID == clientid orderby t.DivisionID, t.Division select t);
+                var qry = (from t in db.tblDivision
+                           where t.ClientID == clientid
+                           orderby t.DivisionID, t.Division
+                           select t);
+
                 string s = "<option value='0' selected=true>Select Billing Group</option>";
                 if (qry.Count() > 0)
                 {
                     foreach (var item in qry)
-                    { s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.Division + "</option>"; }
+                    {
+                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.Division + "</option>";
+                    }
                 }
                 else
-                { s = s + "<option value=0>No Billing Group</option>"; }
+                {
+                    s = s + "<option value=0>No Billing Group</option>";
+                }
                 s = s + "</select>";
+
                 return s;
             }
         }

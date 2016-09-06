@@ -15,6 +15,25 @@
             </h1>
         </div>
     </div>
+
+    <div class="form-group row">
+        <div class="col-md-12">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products Index", "Index")
+            <span class="pull-right label label-info">Product ID: @Model.productdetailid</span>
+        </div>
+        <div class="col-md-12">
+            <div class="pull-left">
+                <a href="#_" type="button" onclick="$('.panel-body').collapse('show');" value="open all"> Open All</a> |
+                <a href="#__" type="button" onclick="$('.panel-body').collapse('hide');" value="close all"> Close All</a>
+            </div>
+            <div style="text-align:center;">
+                <span id="dvTopMessage" style="color:green;font-weight:bold;"> @TempData["SaveResult"]</span><!-- show message after save -->
+                <div class="pull-right">
+                    <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- /.Page Heading -->
     @using (Ajax.BeginForm("SaveProductProfile", "Products",
     new AjaxOptions
@@ -24,27 +43,12 @@
         LoadingElementId = "dvspinner"
     }))
     {
-
     <!-- do not remove -->
         @Html.HiddenFor(m => m.productmasterid)
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.productdetailid)
+        @Html.HiddenFor(m => m.prepacked)
 
-        <div class="form-group row">
-            <div class="col-md-12">
-                <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products Index", "Index")
-                <span class="pull-right label label-info">Product ID: @Model.productdetailid</span>
-            </div>
-            <div class="col-md-12">
-                <div class="pull-left">
-                    <a href="#_" type="button" onclick="$('.panel-body').collapse('show');" value="open all"> Open All</a> |
-                    <a href="#__" type="button" onclick="$('.panel-body').collapse('hide');" value="close all"> Close All</a>
-                </div>
-                <div class="pull-right">
-                    <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
-                </div>
-            </div>
-        </div>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#prodid">
@@ -70,11 +74,11 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Equivalents</label><br />
-                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control", @size = 10 })
+                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control", @style = "overflow:auto", @size = 10 })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cross Reference List</label><br />
-                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control", @size = 10 })
+                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control", @style = "overflow:auto", @size = 10 })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Active Date</label>
@@ -99,38 +103,39 @@
                                 @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
                                 <label class="control-label">Discontinued</label>
                             </li>
-                            <li>@Html.CheckBox("active", Model.active != null && (bool)Model.active, new { @class = "checkbox-inline" })
-                            <label class="control-label">Active</label>
-                        </li>
-                    </ul>
-                    <div class="form-group">
-                        <label>Accuracy Verified By</label>
-                        @Html.TextBoxFor(m => m.accuracyverifiedby, new { @class = "form-control" })
+                            <li>
+                                @Html.CheckBox("active", Model.active != null && (bool)Model.active, new { @class = "checkbox-inline" })
+                                <label class="control-label">Active</label>
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                            <label>Accuracy Verified By</label>
+                            @Html.TextBoxFor(m => m.accuracyverifiedby, new { @class = "form-control" })
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <label>Product Code</label>
-                    @Html.TextBoxFor(m => m.productcode, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.productcode)
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Product Code</label>
+                        @Html.TextBoxFor(m => m.productcode, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.productcode)
+                    </div>
+                    <div class="col-md-6">
+                        <label>Product Name</label>
+                        @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.productname)
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label>Product Name</label>
-                    @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.productname)
-                </div>
-            </div>
-            <hr />
-            <div class="row">
-                <div class="col-md-12">
-                    <div id="">
-                        @{Html.RenderAction("ShelfMasterList", "ShelfMaster", new { id = @Model.productdetailid });}
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="">
+                            @{Html.RenderAction("ShelfMasterList", "ShelfMaster", new { id = @Model.productdetailid });}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -212,7 +217,7 @@
                     </div>
                     <div class="form-group col-md-1">
                         <label>Unit</label>
-                        @Html.DropDownListFor(m => m.customsvalueunit, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.ProductProfile.ValueUnit))), new{ @class = "form-control" })
+                        @Html.DropDownListFor(m => m.customsvalueunit, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.ProductProfile.ValueUnit))), new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -238,19 +243,19 @@
                         @Html.ValidationMessageFor(m => m.rejectioncriterion)
                     </div>
                     <div class="form-group col-md-2">
-                        <label>Lead Time From Plant</label>
+                        <label>Plant Lead Time</label>
                         @Html.TextBoxFor(m => m.leadtime, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.leadtime)
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Sample Request Alert*</label>
-                        <textarea class="form-control" placeholder="need to add to table and model or pull from client mgmt"></textarea>
+                        <label>Sample Request Alert Note</label>
+                        @Html.TextAreaFor(m => m.alertnotesorderentry, new { @class = "form-control" })
                     </div>
                     <div class="col-md-6">
-                        <label>Note Upon Receipt Material*</label>
-                        <textarea class="form-control" placeholder="need to add to table and model"></textarea>
+                        <label>Receiving Alert Note</label>
+                        @Html.TextAreaFor(m => m.alertnotesreceiving, new { @class = "form-control" })
                     </div>
                 </div>
             </div>
@@ -616,9 +621,9 @@
                         @Html.ValidationMessageFor(m => m.phvalue)
                     </div>
                     <div class="col-md-2">
-                        <label>Restricted Qty (lbs)</label>
-                        @Html.TextBoxFor(m => m.restrictedamount, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.restrictedamount)
+                        <label>Restricted Amt</label>
+                        @Html.TextBoxFor(m => m.restrictedtoamount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.restrictedtoamount)
                     </div>
                 </div>
                 <hr />

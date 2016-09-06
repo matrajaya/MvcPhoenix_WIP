@@ -24,6 +24,14 @@ namespace MvcPhoenix.Models
         [Display(Name = "CMC Location")]
         public string CMCLocation { get; set; }
 
+        public enum CMCLocationChoice
+        {
+            CT,
+            CO,
+            EU,
+            AP
+        }
+
         [Display(Name = "Client Reference")]
         public string ClientReference { get; set; }
 
@@ -33,8 +41,24 @@ namespace MvcPhoenix.Models
         [Display(Name = "Client Currency")]
         public string ClientCurrency { get; set; }
 
+        public enum CurrencyChoice
+        {
+            USD,
+            EUR,
+            CNY
+        }
+
         [Display(Name = "Client UM")]
         public string ClientUM { get; set; }
+
+        public enum UMChoice
+        {
+            KG,
+            LB,
+        }
+
+        [Display(Name = "Client Net Term")]
+        public string ClientNetTerm { get; set; }
 
         [Display(Name = "MSDS")]
         public bool MSDS { get; set; }
