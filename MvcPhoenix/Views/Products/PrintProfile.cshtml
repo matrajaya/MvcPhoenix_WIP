@@ -513,7 +513,7 @@
 
 <div class="form-group">
     <h3>Notes</h3>
-    @{Html.RenderAction("LogNotesList", "Products", new { id = @Model.productdetailid });}
+    @{Html.RenderAction("ProductLogList", "Products", new { id = @Model.productdetailid });}
 </div>
 
 <script type="text/javascript">$("#bcTarget").barcode("", "");</script>

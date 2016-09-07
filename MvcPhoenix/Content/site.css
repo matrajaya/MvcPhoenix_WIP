@@ -286,6 +286,10 @@ iframe {
     transition: height 0.05s ease;
 }
 
-.table{
-    margin-bottom:0;
+.table {
+    margin-bottom: 0;
 }
+
+.table-responsive > table {
+        font-size: .85em;
+    }

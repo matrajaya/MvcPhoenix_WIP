@@ -41,16 +41,10 @@ namespace MvcPhoenix.Controllers
             var vm = MvcPhoenix.Services.BulkService.fnFillBulkContainerFromDB(id);
             return View("~/Views/Bulk/Edit.cshtml", vm);
         }
-
-        public ActionResult CreateReplenishmentOrder(int id)  // id=productdetailid
-        {
-            return RedirectToAction("CreateFromInventory", "Replenishments", new { id = id});
-        }
-
+        
         public ActionResult EditBulkOrder(int id)
         {
-            var vm = MvcPhoenix.Services.ReplenishmentsService.fnFillBulkOrderFromDB(id);
-            return View("~/Views/Replenishments/Edit.cshtml", vm);
+            return RedirectToAction("Edit", "Replenishments", new { id = id });
         }
 
         public ActionResult BulkStockList(int id)  // return partial

@@ -29,11 +29,11 @@
 
     <div class="panel panel-primary">
         <div class="panel-body">
-            <div id="dvGridPlaceHolder" class="row">
+            <div id="dvGridPlaceHolder">
                 <div class="col-md-12 text-center">
                     <label class="lead">Recently Received Bulk</label>
                 </div>
-                <div class="table-responsive col-md-12">
+                <div class="table-responsive">
                     @{Html.RenderAction("RecentBulkReceived", "Inventory");}
                 </div>
             </div>
@@ -42,11 +42,11 @@
 
     <div class="panel panel-primary">
         <div class="panel-body">
-            <div id="dvGridPlaceHolder" class="row">
+            <div id="dvGridPlaceHolder">
                 <div class="col-md-12 text-center">
                     <label class="lead">Pack-Out Production Work Orders</label> <span style="background-color:yellow;">Under Development</span>
                 </div>
-                <div class="table-responsive col-md-12">
+                <div class="table-responsive">
                     <table id="myTable" class="table table-hover table-striped">
                         <thead>
                             <tr>

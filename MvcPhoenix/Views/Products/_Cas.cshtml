@@ -1,21 +1,24 @@
 ﻿@model List<MvcPhoenix.Models.Cas>
 
 <div id="dvCasList">
-
-    <label id="noprint">CAS/EC | </label>
-    @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = ViewBag.ParentKey }, new AjaxOptions
+    <div class="row form-group">
+        <div class="col-md-3 pull-right">
+            @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = ViewBag.ParentKey }, new AjaxOptions
         {
             InsertionMode = InsertionMode.Replace,
             HttpMethod = "GET",
             UpdateTargetId = "dialogPlaceholder",
             OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-        })
+        }, new { @class = "btn btn-primary btn-block" })
+        </div>
+    </div>
 
-    <div class="form-group table-responsive">
+
+    <div class="table-responsive">
         <table class="table table-striped">
             <tr>
                 <th id="noprint"></th>
-                <th>CAS/EC Number</th>
+                <th width="10%">CAS/EC Number</th>
                 <th>Chemical Name</th>
                 <th>Less Than</th>
                 <th>Percentage</th>
@@ -24,7 +27,7 @@
                 <th>Reportable Qty</th>
                 <th>Exclude From Label</th>
                 <th>Reportable Amt</th>
-                <th id="noprint">Action</th>
+                <th id="noprint"></th>
             </tr>
 
             @foreach (var item in Model)

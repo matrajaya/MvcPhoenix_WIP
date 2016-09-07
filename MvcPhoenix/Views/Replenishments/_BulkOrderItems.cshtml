@@ -2,7 +2,7 @@
 
 <div id="dvItemsList">
     <label>Items | </label>
-        
+
     @Ajax.ActionLink("+ Add Item", "CreateItem", "Replenishments", new { id = @ViewBag.ParentKey }, new AjaxOptions
     {
         InsertionMode = InsertionMode.Replace,
@@ -12,7 +12,7 @@
     })
 
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-hover table-striped">
             <tr>
                 <th>&nbsp;</th>
                 <th>Master Code</th>
@@ -22,7 +22,7 @@
                 <th>ETA</th>
                 <th>Date Rec'd</th>
                 <th>Notes</th>
-                <th>Action</th>
+                <th></th>
             </tr>
             @foreach (var item in Model)
             {
@@ -50,6 +50,7 @@
         </table>
     </div>
 </div>
+
 
 <script type="text/javascript">
     function UpdateItemsList() {

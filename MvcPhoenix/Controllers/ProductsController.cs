@@ -173,7 +173,7 @@ namespace MvcPhoenix.Controllers
 
         #region LogNotes - ProductNotes
 
-        public ActionResult LogNotesList(int id)
+        public ActionResult ProductLogList(int id)
         {
             using (var db = new EF.CMCSQL03Entities())
             {

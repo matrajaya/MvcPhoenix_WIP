@@ -34,39 +34,29 @@
             </div>
         </div>
 
-        <div class="well col-lg-12">
-            <div class="row">
-                <div class="col-md-3"><b>Product ID:</b><div>@Model.PP.productdetailid</div></div>
-                <div class="col-md-3"><b>Created On:*</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.CreateDateDetail)</div></div>
-                <div class="col-md-3"><b>Last Update On:*</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.UpdateDateDetail)</div></div>
-                <div class="col-md-3"><b>Last Update By:*</b><div>@Model.PP.UpdateUserDetail</div></div>
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="row" style="padding-bottom:15px;">
+                    <div class="col-md-3"><b>Product ID:</b><div>@Model.PP.productdetailid</div></div>
+                    <div class="col-md-3"><b>Created On:*</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.CreateDateDetail)</div></div>
+                    <div class="col-md-3"><b>Last Update On:*</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.UpdateDateDetail)</div></div>
+                    <div class="col-md-3"><b>Last Update By:*</b><div>@Model.PP.UpdateUserDetail</div></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><b>Client:</b><div>@Model.PP.clientname</div></div>
+                    <div class="col-md-3"><b>Client Code:</b><div>@Model.ClientCode</div></div>
+                    <div class="col-md-3"><b>Division:</b><div>@Model.Division</div></div>
+                    <div class="col-md-3"><b>Supplier ID:</b><div>@Model.PP.supplyid</div></div>
+                </div>
             </div>
         </div>
 
-        <!--Start: General Product Information Section-->
+                <!--Start: General Product Information Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#generalinfopan"><i class="fa fa-file-text-o fa-fw"></i>General Product Information</h3>
             </div>
             <div id="generalinfopan" class="panel-body collapse in">
-                <div class="row">
-                    <div class="col-md-3 form-group">
-                        <label>Client</label>
-                        <input class="form-control" value="@Html.DisplayFor(m => m.PP.clientname)" disabled="disabled" />
-                    </div>
-                    <div class="col-md-3 form-group">
-                        <label>Client Code</label>
-                        <input class="form-control" value="@Model.ClientCode" disabled="disabled" />
-                    </div>
-                    <div class="col-md-3 form-group">
-                        <label>Division</label>
-                        <input class="form-control" value="@Model.Division" disabled="disabled" />
-                    </div>
-                    <div class="col-md-3 form-group">
-                        <label>Supplier ID</label>
-                        <input class="form-control" value="@Model.PP.supplyid" disabled="disabled" />
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-md-3 form-group">
                         <label>Product Code</label>
@@ -152,8 +142,8 @@
                 </div>
             </div>
         </div>
-        <!--End: General Product Information Section-->
-        <!--Start: Inventory Status Section-->
+                <!--End: General Product Information Section-->
+                <!--Start: Inventory Status Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#inventorystatpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Status</h3>
@@ -259,8 +249,8 @@
                 </div>
             </div>
         </div>
-        <!--End: Inventory Status Section-->
-        <!--Start: Replenishment Orders Section-->
+                <!--End: Inventory Status Section-->
+                <!--Start: Replenishment Orders Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#replenishorderpan"><i class="fa fa-file-text-o fa-fw"></i> Open Replenishment Orders</h3>
@@ -271,8 +261,8 @@
                 </div>
             </div>
         </div>
-        <!--End: Replenishment Orders Section-->
-        <!--Start: Bulk Stock Section-->
+                <!--End: Replenishment Orders Section-->
+                <!--Start: Bulk Stock Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#bulkstockpan"><i class="fa fa-file-text-o fa-fw"></i> Bulk Stock*</h3>
@@ -283,8 +273,8 @@
                 </div>
             </div>
         </div>
-        <!--End: Bulk Stock Section-->
-        <!--Start: Shelf Stock Section-->
+                <!--End: Bulk Stock Section-->
+                <!--Start: Shelf Stock Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#shelfstockpan"><i class="fa fa-file-text-o fa-fw"></i> Shelf Stock</h3>
@@ -295,39 +285,47 @@
                 </div>
             </div>
         </div>
-        <!--End: Shelf Stock Section-->
-        <!--Start: Inventory Note Section-->
+                <!--End: Shelf Stock Section-->
+                <!--Start: Inventory Log Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#inventorynotepan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Note</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#inventorylogpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Log</h3>
             </div>
-            <div id="inventorynotepan" class="panel-body collapse in">
+            <div id="inventorylogpan" class="panel-body collapse in">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="pull-right col-md-3">
+                        <input type="button" value="Create New Log" class="btn btn-primary btn-block" onclick="alert('Processing... Sorry In Progress')"/>
+                    </div>
+                </div>
+                @{Html.RenderAction("ProductLogList", "Inventory", new { id = @Model.PP.productdetailid });}
+
+                <hr />
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label>Inventory Master Note</label>
+                        <span class="pull-right form-inline">
+                            @Html.CheckBox("vmMasterNotesAlert", Model.vmMasterNotesAlert != null && (bool)Model.vmMasterNotesAlert, new { @class = "checkbox-inline" })
+                            <em>Include this note upon receipt of product</em>
+                        </span>
                         @Html.TextAreaFor(m => m.PP.masternotes, new { @class = "form-control", @rows = "4" })
                     </div>
-                    <hr />
-                    <div class="col-md-9 form-inline">
-                        @Html.CheckBox("vmMasterNotesAlert", Model.vmMasterNotesAlert != null && (bool)Model.vmMasterNotesAlert, new { @class = "checkbox-inline" })
-                        <label>Include this note upon receipt of product</label>
-                    </div>
-                    <div class=" col-md-3">
+                    <div class="pull-right col-md-3">
                         <input type="submit" value="Save Note" class="btn btn-success btn-block" />
                     </div>
                 </div>
             </div>
         </div>
-        <!--End: Inventory Note Section-->
-        <!--Start: Product Log Notes Section-->
+                <!--End: Inventory Note Section-->
+                <!--Start: Product Log Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#lognotespan"><i class="fa fa-file-text-o fa-fw"></i> Product Log Notes</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#lognotespan"><i class="fa fa-file-text-o fa-fw"></i> Product Log</h3>
             </div>
             <div id="lognotespan" class="panel-body collapse in">
                 @{Html.RenderAction("ProductLogList", "Inventory", new { id = @Model.PP.productdetailid });}
             </div>
         </div>
-        <!--End: Log Notes Section-->
+                <!--End: Log Notes Section-->
 
         <div class="form-group row">
             <div class="col-lg-12">

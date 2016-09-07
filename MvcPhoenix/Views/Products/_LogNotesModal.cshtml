@@ -4,8 +4,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
-                <h4 class="modal-title">Product Note</h4>
+                <h4 class="modal-title">Product Log Note</h4>
             </div>
             <div id="dialogPlaceholderBody" class="modal-body">
 
@@ -15,7 +14,6 @@
                 UpdateTargetId = "dialogResult",
                 OnSuccess = "UpdateProductNotesList",
                 InsertionMode = InsertionMode.Replace
-
                 }))
                 {
                     @Html.HiddenFor(m => m.productnoteid)
@@ -66,9 +64,9 @@
     function UpdateProductNotesList()
     {
         // Update the list
-        $("#dvLogNotes").load('@Url.Action("LogNotesList","Products",new{id=@Model.productdetailid})');
+        $("#dvLogNotes").load('@Url.Action("ProductLogList", "Products", new { id = @Model.productdetailid })');
 
         // Activate to hide the modal after list update
-        // $("#dialogPlaceholderModal").modal('hide');
+        $("#dialogPlaceholderModal").modal('hide');
     }
 </script>

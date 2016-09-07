@@ -936,14 +936,14 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#misc"><i class="fa fa-suitcase fa-fw"></i> Notes</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#misc"><i class="fa fa-suitcase fa-fw"></i> Product Log</h3>
             </div>
             <div id="misc" class="panel-body collapse">
 
                 <div class="row">
                     <div class="form-group col-md-12">
                         <div>
-                            @{Html.RenderAction("LogNotesList", "Products", new { id = @Model.productdetailid });}
+                            @{Html.RenderAction("ProductLogList", "Products", new { id = @Model.productdetailid });}
                         </div>
                     </div>
                 </div>
@@ -952,18 +952,16 @@
 
         <div class="form-group row">
             <div class="col-md-6">
-                @*<button class="btn btn-success btn-block">Save Changes</button>*@
                 <input type="submit" class="btn btn-success btn-block" value="Save Changes" />
             </div>
             <div class="col-md-6">
-                @*<button class="btn btn-danger btn-block">De-Activate</button>*@
                 @Ajax.ActionLink("De-Activate", "DeActivateProductMaster", "Products", new { id = Model.productmasterid }, new AjaxOptions
-            {
-                UpdateTargetId = "dvSaveResult",
-                InsertionMode = InsertionMode.Replace,
-                HttpMethod = "GET",
-                OnSuccess = "$('#discontinued').prop('checked',true)"
-            }, new { @class = "btn btn-danger btn-block" })
+           {
+               UpdateTargetId = "dvSaveResult",
+               InsertionMode = InsertionMode.Replace,
+               HttpMethod = "GET",
+               OnSuccess = "$('#discontinued').prop('checked',true)"
+           }, new { @class = "btn btn-danger btn-block" })
             </div>
             <div class="clearfix"></div>
             <br />
