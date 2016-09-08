@@ -1,0 +1,106 @@
+﻿@model MvcPhoenix.Models.StockViewModel
+@{
+    ViewBag.Title = "Edit Stock Record";
+}
+
+<div class="container-fluid">
+
+    <h3>Edit Stock Record </h3>
+    <hr />
+    @using (Html.BeginForm("SaveStock", "Inventory", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.StockID)
+        @Html.HiddenFor(m => m.ProductDetailID)
+
+        <div class="row">
+            <div class="col-md-12">
+                <p>Stock ID: @Model.StockID.ToString()</p>
+                <p>Product Code: @Model.ProductCode</p>
+                <p>Product Name: @Model.ProductName</p>
+                <p>Size: @Model.Size</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 form-group">
+                <label>Warehouse</label>
+                @Html.DropDownListFor(m => m.Warehouse, @Model.ListOfWareHouseIDs, new { @class = "form-control" })
+            </div>
+
+            <div class="col-md-3 form-group">
+                <label>Qty On Hand</label>
+                @Html.TextBoxFor(m => m.QtyOnHand, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                <label>Qty Allocated</label>
+                @Html.TextBoxFor(m => m.QtyAllocated, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                <label>Bin</label>
+                @Html.TextBoxFor(m => m.Bin, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 form-group">
+                <label>Shelf Status</label>
+                @Html.DropDownListFor(m => m.ShelfStatus, @Model.ListOfShelfStatusIDs, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                <label>Waste Accum Start Date</label>
+                @Html.TextBoxFor(m => m.WasteAccumStartDate, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3 form-group">
+                &nbsp;
+            </div>
+            <div class="col-md-3 form-group">
+                &nbsp;
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 form-group">
+                <label>Create Date</label>
+            </div>
+            <div class="col-md-3 form-group">
+                <label>Create User</label>
+            </div>
+            <div class="col-md-3 form-group">
+                <label>Update Date</label>
+            </div>
+            <div class="col-md-3 form-group">
+                <label>Update User</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 form-group">
+                @Html.DisplayFor(m => m.CreateDate, "{0:dd MMM yyyy}")
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.DisplayFor(m => m.CreateUser)
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.DisplayFor(m => m.UpdateDate, "{0:dd MMM yyyy}")
+            </div>
+            <div class="col-md-3 form-group">
+                @Html.DisplayFor(m => m.UpdateUser)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <input class="btn btn-success btn-block" type="submit" value="Save" />
+            </div>
+            <div class="col-md-6 form-group">
+                @Html.ActionLink("Close", "Edit", "Inventory", new { id = @Model.ProductDetailID }, new { @class = "btn btn-danger btn-block" })
+            </div>
+        </div>
+    }
+
+    @*<div class="row">
+            <div class="col-md-12">
+                <p>Save Result here</p>
+            </div>
+        </div>*@
+</div>
