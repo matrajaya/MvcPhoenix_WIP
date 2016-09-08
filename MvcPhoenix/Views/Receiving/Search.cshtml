@@ -8,30 +8,30 @@
 
 <div class="panel panel-primary">
     <div class="panel-body">
-        <div class="row">
-            @{
-                if (Model.Count == 0 || @ViewBag.CurrentFilter == null)
-                {
-                    <div class="col-md-12">
-                        <label class="lead">No products found. Try again.</label>
-                    </div>
-                }
-                else
-                {
-                    <div class="col-md-12">
-                        <label class="lead">Reference Search Results For "@ViewBag.CurrentFilter"</label>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Location</th>
-                                    <th>Client</th>
-                                    <th>Division</th>
-                                    <th>Master Code</th>
-                                    <th>Master Name</th>
-                                </tr>
-                            </thead>
+        @{
+            if (Model.Count == 0 || @ViewBag.CurrentFilter == null)
+            {
+                <div class="col-md-12">
+                    <label class="lead">No products found. Try again.</label>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <label class="lead">Reference Search Results For "@ViewBag.CurrentFilter"</label>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Client</th>
+                                <th>Division</th>
+                                <th>Master Code</th>
+                                <th>Master Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             @foreach (var item in Model)
                             {
                                 <tr>
@@ -52,13 +52,15 @@
                                     </td>
                                 </tr>
                             }
-                        </table>
-                    </div>
-                    <div class="col-md-12 text-center">
-                        <label>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</label>
-                        @*@Html.PagedListPager(Model, page => Url.Action("Search", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+                        </tbody>
+</table>
 
-                        @Html.PagedListPager((IPagedList)Model, page => Url.Action("Search", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
+                </div>
+                <div class="col-md-12 text-center">
+                    <label>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</label>
+                    @*@Html.PagedListPager(Model, page => Url.Action("Search", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+
+                    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Search", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }),
                             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.ClassicPlusFirstAndLast,
                                 new AjaxOptions
                                 {
@@ -66,9 +68,8 @@
                                     HttpMethod = "Get",
                                     UpdateTargetId = "dvSearchReference"
                                 }))
-                    </div>
-                }
+                </div>
             }
-        </div>
+        }
     </div>
 </div>

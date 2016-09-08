@@ -1,36 +1,46 @@
 ﻿@model List<MvcPhoenix.Models.BulkOrderItemForInventory>
 
-<div class="table-responsive">
-    <table class="table table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Order Date</th>
-                <th>Order Number</th>
-                <th>Supplyid</th>
-                <th>Weight</th>
-                <th>Order<br />Status</th>
-                <th>Item<br />Status</th>
-                <th>ETA</th>
-                <th>Notes</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var row in Model)
-            {
+@if (Model.Count < 1)
+{
+    <label class="lead">No Open Replenishment Orders Found.</label>
+    <span class="col-md-3 pull-right row">
+        @Html.ActionLink("Create New Order", "CreateFromInventory", "Replenishments", new { id = @ViewBag.ProductDetailID }, new { @class = "btn btn-primary btn-block", @target = "_blank" })
+    </span>
+}
+
+@if (@Model.Count > 0)
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
                 <tr>
-                    <td>@String.Format("{0:dd MMM yyyy}", row.OrderDate)</td>
-                    <td>@row.bulkorderid</td>
-                    <td>@row.SupplyID</td>
-                    <td>@row.weight</td>
-                    <td>@row.OrderStatus</td>
-                    <td>@row.itemstatus</td>
-                    <td>@row.eta</td>
-                    <td>@row.itemnotes</td>
-                    <td>@Html.ActionLink("Edit", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, new { target = "_blank" })</td>
-                    @*<td>@Html.ActionLink("Edit", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, new { target = "_blank" })</td>*@
+                    <th>Order Date</th>
+                    <th>Order Number</th>
+                    <th>Supplyid</th>
+                    <th>Weight</th>
+                    <th>Order<br />Status</th>
+                    <th>Item<br />Status</th>
+                    <th>ETA</th>
+                    <th>Notes</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var row in Model)
+                {
+                    <tr>
+                        <td>@String.Format("{0:dd MMM yyyy}", row.OrderDate)</td>
+                        <td>@row.bulkorderid</td>
+                        <td>@row.SupplyID</td>
+                        <td>@row.weight</td>
+                        <td>@row.OrderStatus</td>
+                        <td>@row.itemstatus</td>
+                        <td>@row.eta</td>
+                        <td>@row.itemnotes</td>
+                        <td>@Html.ActionLink("Edit", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, new { target = "_blank" })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

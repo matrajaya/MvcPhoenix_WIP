@@ -1,5 +1,6 @@
 ﻿@model List<MvcPhoenix.Models.BulkContainerViewModel>
 @using MvcPhoenix.Models
+
 <div class="row" style="padding-bottom:15px">
     <div class="pull-right col-md-3">
         <input type="button" class="btn btn-primary btn-block form-control" value="Packout Request" onclick="javascript:alert('Later, this will redirect to Create Packout')" />
@@ -12,8 +13,8 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Warehouse</th>
-                <th>Bin</th>
+                <th>WH</th>
+                <th width="8%">Bin</th>
                 <th>Lot Number</th>
                 <th>Container<br />Type</th>
                 <th class="text-center">Recd<br />Wt</th>
@@ -54,6 +55,5 @@
                 </tr>
             }
         </tbody>
-
     </table>
 </div>

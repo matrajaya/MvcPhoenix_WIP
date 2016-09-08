@@ -14,34 +14,32 @@
             @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="row">
-                    <div class="form-group col-md-6">
-                        <div class="col-md-12">
-                            @Html.DropDownListFor(m => m.Client, Model.Clients, "- Please select a Client -", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Client)
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+                                @Html.DropDownListFor(m => m.Client, Model.Clients, "- Please select a Client -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Client)
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <output id="list"></output>
-                        </div>
-
-                        @if (TempData["message"] != null)
-                        {
-                            <div style="margin:15px">
-                                <div class="alert alert-success fade in">
-                                    <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                    <strong>@Html.Encode(TempData["message"]).</strong>
-                                </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <output id="list"></output>
                             </div>
-                        }
+
+                            @if (TempData["message"] != null)
+                            {
+                                    <div class="alert alert-success fade in">
+                                        <a id ="alertclose" href="#" class="close" data-dismiss="alert">&times;</a>
+                                        <strong>@Html.Encode(TempData["message"]).</strong>
+                                    </div>
+                            }
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-6">
-                            <span class="btn btn-warning btn-block btn-file">
-                                <i class="fa fa-folder-open fa-fw"></i> Browse Files&hellip; <input type="file" name="Files" id="Files" multiple />
+                            <span class="btn btn-warning btn-block btn-file" onclick="$('#alertclose').click();">
+                                <i class="fa fa-folder-open fa-fw"></i> Browse Files&hellip; <input type="file" name="Files" id="Files" multiple/>
                             </span>
                         </div>
                         <div class="col-md-6">
@@ -62,12 +60,14 @@
         // files is a FileList of File objects. List some properties.
         var output = [];
         for (var i = 0, f; f = Files[i]; i++) {
-            output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                        f.size, ' bytes, last modified: ',
+            output.push('<li><strong>', escape(f.name), '</strong> - ',
+          //output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ', f.size, ' bytes,
+                        'last modified: ',
                         f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
                         '</li>');
         }
-        document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+        document.getElementById('list').innerHTML = '<ul class="list-unstyled">' + output.join('') + '</ul>';
+        //document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
     }
 
     document.getElementById('Files').addEventListener('change', handleFileSelect, false);

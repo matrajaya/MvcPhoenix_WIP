@@ -102,35 +102,33 @@
         </div>
         <div class="panel panel-primary">
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <label class="lead">Enter Received Items Below</label>
-                    </div>
-                    <div class="table-responsive">
-                        <table id="myTable" class="table table-hover table-striped display">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Shelf ID</th>
-                                    <th>Bin</th>
-                                    <th>Size</th>
-                                    <th style="text-align:center;">Qty Received</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 0; i < Model.ListOfShelfMasters.Count(); i++)
+                <div class="col-md-12 text-center">
+                    <label class="lead">Enter Received Items Below</label>
+                </div>
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-hover table-striped display">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Shelf ID</th>
+                                <th>Bin</th>
+                                <th>Size</th>
+                                <th style="text-align:center;">Qty Received</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.ListOfShelfMasters.Count(); i++)
                                 {
-                                    <tr>
-                                        <td>@(i + 1)</td>
-                                        <td><input type="text" readonly="readonly" name='@fnRowKey(@i+1)' value="@Model.ListOfShelfMasters[i].shelfid" style="width:35px;text-align:center;border:none;"></td>
-                                        <td>@Model.ListOfShelfMasters[i].bin</td>
-                                        <td>@Model.ListOfShelfMasters[i].size</td>
-                                        <td style="text-align:center;"><input type="text" required name='@fnRowQty(@i+1)' style="width:55px;text-align:center;" /></td>
-                                    </tr>
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td><input type="text" readonly="readonly" name='@fnRowKey(@i+1)' value="@Model.ListOfShelfMasters[i].shelfid" style="width:35px;text-align:center;border:none;"></td>
+                                    <td>@Model.ListOfShelfMasters[i].bin</td>
+                                    <td>@Model.ListOfShelfMasters[i].size</td>
+                                    <td style="text-align:center;"><input type="text" required name='@fnRowQty(@i+1)' style="width:55px;text-align:center;" /></td>
+                                </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

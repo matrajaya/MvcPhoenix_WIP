@@ -30,26 +30,27 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        @foreach (var item in Model)
+                        <tbody>
+                            @foreach (var item in Model)
                             {
-                            <tr>
-                                <td data-label="Client">
-                                    @Html.DisplayFor(modelItem => item.Company_MDB)
-                                </td>
-                                <td data-label="Product ID">
-                                    @Html.DisplayFor(modelItem => item.ProductDetailID)
-                                </td>
-                                <td data-label="Product Code">
-                                    @Html.DisplayFor(modelItem => item.ProductCode)
-                                </td>
-                                <td data-label="Product Name">
-                                    @Html.DisplayFor(modelItem => item.ProductName)
-                                </td>
-                                <td data-label="" style="text-align:right">
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductDetailID })
-                                </td>
-                            </tr>
-                            }
+                                <tr>
+                                    <td data-label="Client">
+                                        @Html.DisplayFor(modelItem => item.Company_MDB)
+                                    </td>
+                                    <td data-label="Product ID">
+                                        @Html.DisplayFor(modelItem => item.ProductDetailID)
+                                    </td>
+                                    <td data-label="Product Code">
+                                        @Html.DisplayFor(modelItem => item.ProductCode)
+                                    </td>
+                                    <td data-label="Product Name">
+                                        @Html.DisplayFor(modelItem => item.ProductName)
+                                    </td>
+                                    <td data-label="" style="text-align:right">
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.ProductDetailID })
+                                    </td>
+                                </tr>
+                        }</tbody>
                     </table>
                 </div>
                 <div class="col-md-12 text-center">

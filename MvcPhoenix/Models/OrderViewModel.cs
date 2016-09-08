@@ -322,25 +322,6 @@ namespace MvcPhoenix.Models
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
-
-        //public OrderMasterFull()
-        //{
-        //    approvalneeded = false;
-        //    samplerack = false;
-        //    coa = false;
-        //    tds = false;
-        //    lit = false;
-        //}
-
-        //public OrderMasterFull(int ClientID)
-        //{
-        //    customer = MvcPhoenix.Services.OrderService.ClientNameForDisplay(ClientID);
-        //    approvalneeded = false;
-        //    samplerack = false;
-        //    coa = false;
-        //    tds = false;
-        //    lit = false;
-        //}
     }
 
     public class OrderImportFile

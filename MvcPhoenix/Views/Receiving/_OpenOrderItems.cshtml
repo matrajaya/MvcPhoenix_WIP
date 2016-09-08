@@ -2,48 +2,48 @@
 
 <div class="panel panel-primary">
     <div class="panel-body">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <label class="lead">Open Bulk Orders For Selected Master Code</label>
-            </div>
-            <div class="table-responsive">
-                <table id="myTable" class="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>OrderID</th>
-                            <th>Order Date</th>
-                            <th>Weight</th>
-                            <th>Status</th>
-                            <th>ETA</th>
-                            <th>Supplyid</th>
-                            <th>Notes</th>
-                            <th class="text-center">Close?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@item.bulkorderitemid</td>
-                                <td>@item.bulkorderid</td>
-                                <td>@fnDate(@item.orderdate)</td>
-                                <td>@item.weight</td>
-                                <td>@item.status</td>
-                                <td>@item.eta</td>
-                                <td>@item.supplyid</td>
-                                <td>@item.itemnotes</td>
-                                <td class="text-center">
-                                    <input type="checkbox" name='@fnID(@item.bulkorderitemid)' id='@fnID(@item.bulkorderitemid)' onchange="TagItemToBeClosed(this)">
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
 
-            <input id="rowcount" name="rowcount" type="hidden" value="@Model.Count()" readonly="readonly" style="width:20px;" />
+        <div class="col-md-12 text-center">
+            <label class="lead">Open Bulk Orders For Selected Master Code</label>
         </div>
+
+        <div class="table-responsive">
+            <table id="myTable" class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>OrderID</th>
+                        <th>Order Date</th>
+                        <th>Weight</th>
+                        <th>Status</th>
+                        <th>ETA</th>
+                        <th>Supplyid</th>
+                        <th>Notes</th>
+                        <th class="text-center">Close?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>@item.bulkorderitemid</td>
+                            <td>@item.bulkorderid</td>
+                            <td>@fnDate(@item.orderdate)</td>
+                            <td>@item.weight</td>
+                            <td>@item.status</td>
+                            <td>@item.eta</td>
+                            <td>@item.supplyid</td>
+                            <td>@item.itemnotes</td>
+                            <td class="text-center">
+                                <input type="checkbox" name='@fnID(@item.bulkorderitemid)' id='@fnID(@item.bulkorderitemid)' onchange="TagItemToBeClosed(this)">
+                            </td>
+                        </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+
+        <input id="rowcount" name="rowcount" type="hidden" value="@Model.Count()" readonly="readonly" style="width:20px;" />
     </div>
 </div>
 <div class="row">

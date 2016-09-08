@@ -33,51 +33,49 @@
 
     <div class="panel panel-primary">
         <div class="panel-body">
-            <div class="row">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                        <thead>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>CODE</th>
+                            <th>
+                                @Html.ActionLink("CLIENT", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>
+                            </th>
+                            <th>
+                                @Html.ActionLink("LOCATION", "Index", new { sortOrder = ViewBag.LocationSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
                             <tr>
-                                <th>ID</th>
-                                <th>CODE</th>
-                                <th>
-                                    @Html.ActionLink("CLIENT", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>
-                                </th>
-                                <th>
-                                    @Html.ActionLink("LOCATION", "Index", new { sortOrder = ViewBag.LocationSortParm, currentFilter = ViewBag.CurrentFilter }) <i class="fa fa-sort"></i>
-                                </th>
-                                <th></th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClientID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClientCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClientName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CMCLocation)
+                                </td>
+                                <td class="text-right">
+                                    @Html.ActionLink("View", "View", new { id = item.ClientID }) |
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ClientID })
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ClientID)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ClientCode)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ClientName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CMCLocation)
-                                    </td>
-                                    <td class="text-right">
-                                        @Html.ActionLink("View", "View", new { id = item.ClientID }) |
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.ClientID })
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    
+
     <div class="text-center">
         <label>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</label>
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

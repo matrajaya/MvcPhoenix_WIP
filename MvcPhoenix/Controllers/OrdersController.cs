@@ -360,9 +360,9 @@ namespace MvcPhoenix.Controllers
             return View();
         }
 
-        // Order Import Action
+        // Order Import Actions
 
-        #region Order Import Action
+        #region Order Import Actions
 
         [HttpGet]
         public ActionResult OrderImport()
@@ -449,7 +449,6 @@ namespace MvcPhoenix.Controllers
                     TempData["message"] = "Please select a client from the dropdown list";
                     
                 return RedirectToAction("Index");
-                //return RedirectToAction("OrderImport");
             }
 
             try
@@ -467,14 +466,12 @@ namespace MvcPhoenix.Controllers
             }
             catch (Exception)
             {
-                TempData["message"] = "Please make sure you browse and select atleast a file";
+                TempData["message"] = "Please make sure you browse and select at least a file";
             }
             return RedirectToAction("Index");
-            //return RedirectToAction("OrderImport");
         }
 
         // Return a list of clients that send files and have folders in Content/OrderImport
-        // Consider call to data access layer to retrieve clients from database.
         private IEnumerable<string> GetClients()
         {
             return new List<string>

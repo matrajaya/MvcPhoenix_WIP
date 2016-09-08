@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label>Pack on Receipt</label>
-                                        <input type="checkbox" checked="@Model.PP.packoutonreceipt " disabled="disabled">
+                                        <input type="checkbox" checked="@Model.PP.packoutonreceipt" disabled="disabled">
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                                         <ul class="list-unstyled list-3-col">
                                             <li><input type="checkbox" checked="@Model.PP.flammablestorageroom" disabled="disabled"> Flammable Room</li>
                                             <li><input type="checkbox" checked="@Model.PP.toxic" disabled="disabled"> Toxic</li>
-                                            <li><input type="checkbox" checked="@Model.PP.physicaltoxic" disabled="disabled"> Physical Toxic</li>
+                                            <li><input type="checkbox" checked="@Model.PP.physicaltoxic" disabled="disabled"> Physically Toxic</li>
                                             <li><input type="checkbox" checked="@Model.PP.freezerstorage" disabled="disabled" style="background-color:yellow;"> Freezable Storage</li>
                                             <li><input type="checkbox" checked="@Model.PP.freezablelist" disabled="disabled"> Freezable List</li>
                                             <li><input type="checkbox" checked="@Model.PP.refrigerate" disabled="disabled"> Refrigerate</li>
@@ -166,17 +166,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <ul class="list-unstyled list-2-col">
-                                            <li>
-                                                <label>Reorder Adjustment Days</label>
-                                                <input class="form-control" value="@Model.PP.reorderadjustmentdays" disabled="disabled" />
-                                            </li>
-                                            <li>
-                                                <label>Bulk Currently On Order (@Model.ClientUM)</label>
-                                                <input class="form-control" value="@Model.BulkWeightCurrentlyOnOrder" disabled="disabled" />
-                                            </li>
-                                        </ul>
+                                    <div class="col-md-6">
+                                        <label>Reorder Adjustment Days</label>
+                                        <input class="form-control" value="@Model.PP.reorderadjustmentdays" disabled="disabled" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Bulk Currently On Order (@Model.ClientUM)</label>
+                                        <input class="form-control" value="@Model.BulkWeightCurrentlyOnOrder" disabled="disabled" />
                                     </div>
                                 </div>
                             </div>
@@ -249,8 +245,8 @@
                 </div>
             </div>
         </div>
-                <!--End: Inventory Status Section-->
-                <!--Start: Replenishment Orders Section-->
+        <!--End: Inventory Status Section-->
+        <!--Start: Replenishment Orders Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#replenishorderpan"><i class="fa fa-file-text-o fa-fw"></i> Open Replenishment Orders</h3>
@@ -261,8 +257,8 @@
                 </div>
             </div>
         </div>
-                <!--End: Replenishment Orders Section-->
-                <!--Start: Bulk Stock Section-->
+        <!--End: Replenishment Orders Section-->
+        <!--Start: Bulk Stock Section-->
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#bulkstockpan"><i class="fa fa-file-text-o fa-fw"></i> Bulk Stock*</h3>
@@ -294,7 +290,7 @@
             <div id="inventorylogpan" class="panel-body collapse in">
                 <div class="row">
                     <div class="pull-right col-md-3">
-                        <input type="button" value="Create New Log" class="btn btn-primary btn-block" onclick="alert('Processing... Sorry In Progress')"/>
+                        <input type="button" value="Create New Log" class="btn btn-primary btn-block" onclick="alert('Processing... Sorry In Progress')" />
                     </div>
                 </div>
                 @{Html.RenderAction("ProductLogList", "Inventory", new { id = @Model.PP.productdetailid });}

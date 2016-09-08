@@ -80,7 +80,6 @@
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -88,20 +87,15 @@
             @Html.Action("OrderImport")
         </div>
     </div>
-
     <!-- End: Search Order -->
     <!--Start: Display Results-->
     <div class="panel panel-primary">
         <div class="panel-body">
-            <div class="row">
-                <div id="dvSearchResults" class="table-responsive">
-                    <!-- First time this view loads, pass the default list vm built into the ActionResult Index() -->
-                    @Html.Partial("~/Views/Orders/_IndexPartial.cshtml", Model)
-                </div>
+            <div id="dvSearchResults">
+                <!-- First time this view loads, pass the default list vm built into the ActionResult Index() -->
+                @Html.Partial("~/Views/Orders/_IndexPartial.cshtml", Model)
             </div>
         </div>
     </div>
     <!--End: Display Results-->
-    <!--Advanced Search Modal-->
-    <!--./Advanced Search Modal-->
-</div> <!-- container-fluid -->
+</div> 
