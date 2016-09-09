@@ -3,7 +3,6 @@ using PagedList;
 using Rotativa;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers

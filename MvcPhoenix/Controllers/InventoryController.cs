@@ -34,14 +34,14 @@ namespace MvcPhoenix.Controllers
             MvcPhoenix.Services.InventoryService.fnSaveInventory(vm);
             return RedirectToAction("Edit", new { id = vm.PP.productdetailid });
         }
-		
+
         public ActionResult EditBulk(int id)   // redirect to bulk edit
         {
             //ViewBag.SearchName = null;
             var vm = MvcPhoenix.Services.BulkService.fnFillBulkContainerFromDB(id);
             return View("~/Views/Bulk/Edit.cshtml", vm);
         }
-        
+
         public ActionResult EditBulkOrder(int id)
         {
             return RedirectToAction("Edit", "Replenishments", new { id = id });
@@ -142,42 +142,42 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BulkOrdersList(int id)  // id=productdetailid
         {
-			using(db)
+            using (db)
             {
                 var pd = db.tblProductDetail.Find(id);
                 var pmx = db.tblProductMaster.Find(pd.ProductMasterID);
-				var vm = (from items in db.tblBulkOrderItem
-                      join orders in db.tblBulkOrder on items.BulkOrderID equals orders.BulkOrderID
-                      join pm in db.tblProductMaster on items.ProductMasterID equals pm.ProductMasterID
-                      //where items.ProductMasterID == id && items.Status == "OP"
-					  where items.ProductMasterID == pmx.ProductMasterID && items.Status == "OP"
-                      orderby orders.OrderDate
-                      select new BulkOrderItemForInventory
-                      {
-                          bulkorderitemid = items.BulkOrderItemID,
-                          bulkorderid = items.BulkOrderID,
-                          productmasterid = items.ProductMasterID,
-                          mastercode = pm.MasterCode,
-                          mastername = pm.MasterName,
-                          weight = items.Weight,
-                          itemstatus = items.Status,
-                          eta = items.ETA,
-                          datereceived = items.DateReceived,
-                          itemnotes = items.ItemNotes,
-                          OrderDate = orders.OrderDate,
-                          SupplyID = orders.SupplyID,
-                          OrderStatus = orders.Status,
-                          OrderComment = orders.Comment
-                      }).ToList();
-					  
-				// 09/02 add viewbag
-				// we need the clientid to pass to replenishments controller if user wants to create a new bulk order
-				var pm2 = db.tblProductMaster.Find(id);
-				ViewBag.ProductDetailID = id;
+                var vm = (from items in db.tblBulkOrderItem
+                          join orders in db.tblBulkOrder on items.BulkOrderID equals orders.BulkOrderID
+                          join pm in db.tblProductMaster on items.ProductMasterID equals pm.ProductMasterID
+                          //where items.ProductMasterID == id && items.Status == "OP"
+                          where items.ProductMasterID == pmx.ProductMasterID && items.Status == "OP"
+                          orderby orders.OrderDate
+                          select new BulkOrderItemForInventory
+                          {
+                              bulkorderitemid = items.BulkOrderItemID,
+                              bulkorderid = items.BulkOrderID,
+                              productmasterid = items.ProductMasterID,
+                              mastercode = pm.MasterCode,
+                              mastername = pm.MasterName,
+                              weight = items.Weight,
+                              itemstatus = items.Status,
+                              eta = items.ETA,
+                              datereceived = items.DateReceived,
+                              itemnotes = items.ItemNotes,
+                              OrderDate = orders.OrderDate,
+                              SupplyID = orders.SupplyID,
+                              OrderStatus = orders.Status,
+                              OrderComment = orders.Comment
+                          }).ToList();
 
-				return PartialView("~/Views/Inventory/_ReplenishOrders.cshtml", vm);
-			}
-		}
+                // 09/02 add viewbag
+                // we need the clientid to pass to replenishments controller if user wants to create a new bulk order
+                var pm2 = db.tblProductMaster.Find(id);
+                ViewBag.ProductDetailID = id;
+
+                return PartialView("~/Views/Inventory/_ReplenishOrders.cshtml", vm);
+            }
+        }
 
         public ActionResult ProductLogList(int id)
         {

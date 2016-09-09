@@ -90,13 +90,13 @@ namespace MvcPhoenix.Models
 
     public class ProductProfile
     {
-		//constructor
+        //constructor
         public ProductProfile()
         {
             // pc: move the list items here and cleanup controller code
             active = true;
         }
-		
+
         public List<SelectListItem> ListOfPackagePartNumbers { get; set; }
         public List<ProductNote> ListOfProductNotes { get; set; }
         public List<Cas> ListOfCasNumbers { get; set; }
@@ -124,10 +124,13 @@ namespace MvcPhoenix.Models
         {
             [Display(Name = "Liter")]
             L,
+
             [Display(Name = "Kilogram")]
             KG,
+
             [Display(Name = "Pound")]
             LB,
+
             [Display(Name = "Gallon")]
             Gal,
         }
@@ -303,8 +306,8 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Label Notes (EPA, etc)")]
         public string labelnotesepa { get; set; }
-		
-		[Display(Name = "Active")]
+
+        [Display(Name = "Active")]
         public bool? active { get; set; }
 
         // **********************************************************************
@@ -558,6 +561,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "FreezableList")]
         public bool? freezablelist { get; set; }
+
         [Display(Name = "MSDSOTHERNUMBER")]
         public string msdsothernumber { get; set; }
 
@@ -743,11 +747,11 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Waste Code")]
         public string wastecode { get; set; }
-				
+
         [Display(Name = "Temperature Controlled Storage")]
         public bool? temperaturecontrolledstorage { get; set; }
-		
-		public bool? prepacked { get; set; }
+
+        public bool? prepacked { get; set; }
 
         public DateTime? CreateDateMaster { get; set; }
         public string CreateUserMaster { get; set; }

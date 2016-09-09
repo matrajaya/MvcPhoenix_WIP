@@ -18,10 +18,10 @@ namespace MvcPhoenix.Services
                               join cl in db.tblClient on pm.ClientID equals cl.ClientID
                               where t.ProductDetailID == id //&& t.InactiveSize == false
                               let PPN = (from pk in db.tblPackage where pk.PackageID == t.PackageID select pk.PartNumber).FirstOrDefault()
-							  let PPMaterial = (from pk1 in db.tblPackage where pk1.PackageID == t.PackageID select pk1.Description).FirstOrDefault()
+                              let PPMaterial = (from pk1 in db.tblPackage where pk1.PackageID == t.PackageID select pk1.Description).FirstOrDefault()
                               select new ShelfMasterViewModel
                               {
-								  clientum = cl.ClientUM,
+                                  clientum = cl.ClientUM,
                                   shelfid = t.ShelfID,
                                   productdetailid = t.ProductDetailID,
                                   clientid = cl.ClientID,
@@ -39,7 +39,7 @@ namespace MvcPhoenix.Services
                                   reorderqty = t.ReorderQty,
                                   notes = t.Notes,
                                   packagepartnumber = PPN,
-								  pkgmaterial=PPMaterial,
+                                  pkgmaterial = PPMaterial,
                                   hazardsurcharge = t.HazardSurcharge,
                                   flammablesurcharge = t.FlammableSurcharge,
                                   heatsurcharge = t.HeatSurcharge,
@@ -53,7 +53,7 @@ namespace MvcPhoenix.Services
                                   koshersurcharge = t.KosherSurcharge,
                                   labelsurcharge = t.LabelSurcharge,
                                   othersurcharge = t.OtherSurcharge,
-								  inactivesize = t.InactiveSize
+                                  inactivesize = t.InactiveSize
                               }).ToList();
                 foreach (var item in mylist)
                 {
@@ -69,7 +69,7 @@ namespace MvcPhoenix.Services
                 // copy a record, return the productdetailid
                 var dbrow = db.tblShelfMaster.Find(id);
                 int pdid = Convert.ToInt32(dbrow.ProductDetailID);
-                string s = String.Format("Insert into tblShelfMaster (ProductDetailID,Warehouse,Size,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge) Select ProductDetailID,Warehouse,Size,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge from tblShelfMaster where shelfid={0}",id);
+                string s = String.Format("Insert into tblShelfMaster (ProductDetailID,Warehouse,Size,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge) Select ProductDetailID,Warehouse,Size,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge from tblShelfMaster where shelfid={0}", id);
                 db.Database.ExecuteSqlCommand(s);
                 return pdid;
             }
@@ -148,7 +148,7 @@ namespace MvcPhoenix.Services
                 SM.labelsurcharge = dbSM.LabelSurcharge;
                 SM.othersurcharge = dbSM.OtherSurcharge;
                 SM.othersurchargeamt = dbSM.OtherSurchargeAmt;
-				SM.othersurchargedescription = dbSM.OtherSurchargeDescription;
+                SM.othersurchargedescription = dbSM.OtherSurchargeDescription;
                 SM.newitem = dbSM.NewItem;
                 SM.inactivesize = dbSM.InactiveSize;
                 SM.weboeinclude = dbSM.WebOEInclude;
@@ -197,7 +197,7 @@ namespace MvcPhoenix.Services
                 dbSM.LabelSurcharge = obj.labelsurcharge;
                 dbSM.OtherSurcharge = obj.othersurcharge;
                 dbSM.OtherSurchargeAmt = obj.othersurchargeamt;
-				dbSM.OtherSurchargeDescription = obj.othersurchargedescription;
+                dbSM.OtherSurchargeDescription = obj.othersurchargedescription;
                 dbSM.NewItem = obj.newitem;
                 dbSM.InactiveSize = obj.inactivesize;
                 dbSM.WebOEInclude = obj.weboeinclude;

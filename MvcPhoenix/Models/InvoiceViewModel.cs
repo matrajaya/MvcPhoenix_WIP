@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
@@ -22,7 +19,7 @@ namespace MvcPhoenix.Models
         public string warehouselocation { get; set; }
 
         public enum WHChoice
-        {   
+        {
             CT,
             CO,
             EU,
@@ -34,10 +31,10 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Client Name")]
         public string clientname { get; set; }
-        
+
         [Display(Name = "Created By")]
         public string createdby { get; set; }
-        
+
         [Display(Name = "Create Date")]
         public DateTimeOffset? createdate { get; set; }
 
@@ -60,7 +57,7 @@ namespace MvcPhoenix.Models
         public string status { get; set; }          // choices: NEW / REVIEWED / VERIFIED / EMAILED / CLOSED
 
         /// InvoiceStatusChoice is not being used for UX atm.
-        /// Will leave here in enum as a reference of options. 
+        /// Will leave here in enum as a reference of options.
         /// Most choices are used in services and controllers.
         /// Might use choice when creating admin ux for invoice filter
         public enum InvoiceStatusChoice
@@ -77,7 +74,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Invoice Period")]
         public string invoiceperiod { get; set; }
-        
+
         [Display(Name = "PO Number")]
         public string ponumber { get; set; }
 
@@ -116,10 +113,10 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Next Day")]
         public int? sampleshipnextday { get; set; }
-        
+
         [Display(Name = "Second Day")]
         public int? sampleshipsecondday { get; set; }
-        
+
         [Display(Name = "Other")]
         public int? sampleshipother { get; set; }
 
@@ -131,10 +128,10 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Total Cost of Processing Samples")]
         public decimal? totalcostsamples { get; set; }
-        
+
         [Display(Name = "Total Freight")]
         public decimal? totalfreight { get; set; }
-        
+
         [Display(Name = "Total Freight Hazardous Surcharge")]
         public decimal? totalfrtHzdSchg { get; set; }
 
@@ -152,51 +149,61 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Samples")]
         public int? samplesqty { get; set; }
+
         public decimal? samplesrate { get; set; }
         public decimal? samplescharge { get; set; }
 
         [Display(Name = "Revenue")]
         public int? revenueqty { get; set; }
+
         public decimal? revenuerate { get; set; }
         public decimal? revenuecharge { get; set; }
 
         [Display(Name = "Non-Revenue")]
         public int? nonrevenueqty { get; set; }
+
         public decimal? nonrevenuerate { get; set; }
         public decimal? nonrevenuecharge { get; set; }
 
         [Display(Name = "Manual Entry")]
         public int? manualentryqty { get; set; }
+
         public decimal? manualentryrate { get; set; }
         public decimal? manualentrycharge { get; set; }
 
         [Display(Name = "Follow Up Orders")]
         public int? followupqty { get; set; }
+
         public decimal? followuprate { get; set; }
         public decimal? followupcharge { get; set; }
 
         [Display(Name = "Label Printed")]
         public int? labelprtqty { get; set; }
+
         public decimal? labelprtrate { get; set; }
         public decimal? labelprtcharge { get; set; }
 
         [Display(Name = "Re-Label Printed")]
         public int? relabelprtqty { get; set; }
+
         public decimal? relabelprtrate { get; set; }
         public decimal? relabelprtcharge { get; set; }
 
         [Display(Name = "Re-Label Labor Fee")]
         public int? relabelfeeqty { get; set; }
+
         public decimal? relabelfeerate { get; set; }
         public decimal? relabelfeecharge { get; set; }
 
         [Display(Name = "Product Set-Up Changes")]
         public int? productsetupqty { get; set; }
+
         public decimal? productsetuprate { get; set; }
         public decimal? productsetupcharge { get; set; }
 
         [Display(Name = "Credit Card Order Processing Fee")]
         public int? ccprocessqty { get; set; }
+
         public decimal? ccprocessrate { get; set; }
         public decimal? ccprocesscharge { get; set; }
 
@@ -220,11 +227,13 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Same Day Rush Shipment")]
         public int? rushshipqty { get; set; }
+
         public decimal? rushshiprate { get; set; }
         public decimal? rushshipcharge { get; set; }
 
         [Display(Name = "Empty Pails")]
         public int? emptypailsqty { get; set; }
+
         public decimal? emptypailsrate { get; set; }
         public decimal? emptypailscharge { get; set; }
 
@@ -233,6 +242,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Inactive Stock Storage Surcharge")]
         public int? inactivestockqty { get; set; }
+
         public decimal? inactivestockrate { get; set; }
         public decimal? inactivestockcharge { get; set; }
 

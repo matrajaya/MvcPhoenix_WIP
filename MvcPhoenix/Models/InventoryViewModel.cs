@@ -8,8 +8,8 @@ namespace MvcPhoenix.Models
     public class Inventory
     {
         // build this as a composite view model
-		public bool? vmMasterNotesAlert { get; set; }
-		
+        public bool? vmMasterNotesAlert { get; set; }
+
         public ProductProfile PP { get; set; }
         public string ClientCode { get; set; }
         public string Division { get; set; }
@@ -48,6 +48,7 @@ namespace MvcPhoenix.Models
     {
         // detail
         public int bulkorderitemid { get; set; }
+
         public int? bulkorderid { get; set; }
         public int? productmasterid { get; set; }
         public string mastercode { get; set; }
@@ -60,6 +61,7 @@ namespace MvcPhoenix.Models
 
         // master
         public DateTime? OrderDate { get; set; }
+
         public string SupplyID { get; set; }
         public string OrderStatus { get; set; }
         public string OrderComment { get; set; }
@@ -69,6 +71,7 @@ namespace MvcPhoenix.Models
     {
         // All fields from tblStock so this class can be used by CRUD
         public int? StockID { get; set; }
+
         public int? BulkID { get; set; }
         public int? ShelfID { get; set; }
 

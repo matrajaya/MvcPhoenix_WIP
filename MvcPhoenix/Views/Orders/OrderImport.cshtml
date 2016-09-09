@@ -16,8 +16,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group col-md-6">
-                                @Html.DropDownListFor(m => m.Client, Model.Clients, "- Please select a Client -", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Client)
+                            @Html.DropDownListFor(m => m.Client, Model.Clients, "- Please select a Client -", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Client)
                         </div>
                         <div class="col-md-6">
                             <div class="col-md-12">
@@ -26,10 +26,10 @@
 
                             @if (TempData["message"] != null)
                             {
-                                    <div class="alert alert-success fade in">
-                                        <a id ="alertclose" href="#" class="close" data-dismiss="alert">&times;</a>
-                                        <strong>@Html.Encode(TempData["message"]).</strong>
-                                    </div>
+                                <div class="alert alert-success fade in">
+                                    <a id="alertclose" href="#" class="close" data-dismiss="alert">&times;</a>
+                                    <strong>@Html.Encode(TempData["message"]).</strong>
+                                </div>
                             }
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <span class="btn btn-warning btn-block btn-file" onclick="$('#alertclose').click();">
-                                <i class="fa fa-folder-open fa-fw"></i> Browse Files&hellip; <input type="file" name="Files" id="Files" multiple/>
+                                <i class="fa fa-folder-open fa-fw"></i> Browse Files&hellip; <input type="file" name="Files" id="Files" multiple />
                             </span>
                         </div>
                         <div class="col-md-6">

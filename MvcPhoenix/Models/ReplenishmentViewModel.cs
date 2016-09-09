@@ -54,7 +54,7 @@ namespace MvcPhoenix.Models
 
         public string mastercode { get; set; }
         public string mastername { get; set; }
-        
+
         public List<SelectListItem> ListOfProductMasters { get; set; }
 
         [Display(Name = "Weight")]
@@ -92,6 +92,7 @@ namespace MvcPhoenix.Models
     {
         //public string searchname { get; set; }
         public int bulkid { get; set; }
+
         public string warehouse { get; set; }
         public DateTime? receivedate { get; set; }
         public DateTime? expirationdate { get; set; }
@@ -107,14 +108,14 @@ namespace MvcPhoenix.Models
         public string clientname { get; set; }
         public decimal? currentweight { get; set; }
     }
-    
+
     public class SuggestedBulkOrderItem
     {
         // corresponds to a record in tblSuggestedBulk
         public int id { get; set; }
 
         public int? clientid { get; set; }
-        
+
         public string clientname { get; set; }
         public string logofilename { get; set; }
 

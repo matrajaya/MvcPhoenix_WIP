@@ -447,8 +447,8 @@ namespace MvcPhoenix.Controllers
 
                 default:
                     TempData["message"] = "Please select a client from the dropdown list";
-                    
-                return RedirectToAction("Index");
+
+                    return RedirectToAction("Index");
             }
 
             try
@@ -517,6 +517,6 @@ namespace MvcPhoenix.Controllers
             return selectList;
         }
 
-        #endregion Order Import Action
+        #endregion Order Import Actions
     }
 }

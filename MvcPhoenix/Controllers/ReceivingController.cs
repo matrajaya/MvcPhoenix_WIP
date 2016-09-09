@@ -1,11 +1,10 @@
 ﻿using MvcPhoenix.Models;
 using MvcPhoenix.Services;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Rotativa;
-using PagedList;
 
 namespace MvcPhoenix.Controllers
 {

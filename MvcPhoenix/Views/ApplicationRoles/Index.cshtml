@@ -60,7 +60,7 @@
                 </div>
         </div>
     </div>
-    
+
     <div class="text-center">
         <label>@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</label>
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

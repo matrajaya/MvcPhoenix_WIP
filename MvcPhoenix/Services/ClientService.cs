@@ -13,8 +13,8 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = (from t in db.tblClient 
-                         where t.ClientID == CP.ClientID 
+                var q = (from t in db.tblClient
+                         where t.ClientID == CP.ClientID
                          select t).FirstOrDefault();
 
                 CP.ClientID = q.ClientID;

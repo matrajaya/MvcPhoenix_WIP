@@ -8,6 +8,5 @@ namespace MvcPhoenix.Controllers
 {
     public class MiscController : Controller
     {
-        
     }
 }

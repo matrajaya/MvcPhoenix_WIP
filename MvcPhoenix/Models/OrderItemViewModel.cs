@@ -28,10 +28,10 @@ namespace MvcPhoenix.Models
 
         // select ShelfID,Size from tblShelfMaster where ProductDetailID=xxx
         public List<SelectListItem> ListOfShelfIDs { get; set; }
-        
+
         [Display(Name = "Item ID")]
         public int ItemID { get; set; }
-                
+
         [Display(Name = "Order ID")]
         public Nullable<int> OrderID { get; set; }
 
@@ -44,16 +44,16 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Mnemonic")]
         public string Mnemonic { get; set; }
-                
+
         public int? AllocatedBulkID { get; set; }
         public int? AllocatedStockID { get; set; }
 
         public string ImportItemID { get; set; }
-        
+
         // Remove later
         //public Nullable<int> ProfileID { get; set; }
         //public List<SelectListItem> ListOfProfileIDs { get; set; }
-                
+
         [Display(Name = "Lot Number")]
         public string LotNumber { get; set; }
 
@@ -64,7 +64,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Size")]
         [Required(ErrorMessage = "Size Required")]
         public string Size { get; set; }
-                
+
         [Display(Name = "SRSize")]
         public string SRSize { get; set; }
 
@@ -83,7 +83,7 @@ namespace MvcPhoenix.Models
         // Status is a text field !!!
         [Display(Name = "Status")]
         public string Status { get; set; }
-        
+
         //[Display(Name = "Add a Status")]
         public Nullable<int> StatusID { get; set; }
 
@@ -114,7 +114,7 @@ namespace MvcPhoenix.Models
         public Nullable<int> LineItem { get; set; }
 
         public string SPSCharge { get; set; }
-        
+
         [Display(Name = "Carrier Inv Rec'd")]
         public Nullable<bool> CarrierInvoiceRcvd { get; set; }
 
@@ -144,10 +144,10 @@ namespace MvcPhoenix.Models
 
         public List<SelectListItem> ListOfStatusNotesIDs { get; set; }
         public string UpdateResult { get; set; }
-        
+
         // Remove later
         public string PartialMode { get; set; }
-       
+
         //public Nullable<int> CMCOrder { get; set; }
         //public string LegacyCMCOrder { get; set; }
         //public string CustOrdNum { get; set; }
@@ -167,13 +167,14 @@ namespace MvcPhoenix.Models
         //public Nullable<decimal> WasteOrderTotalWeight { get; set; }
         //public string CustStatus { get; set; }
         //public Nullable<int> LegacyID { get; set; }
-        
+
         //06/08/2016
         [Display(Name = "Item Notes")]
         public string ItemNotes { get; set; }
 
         // 5/20/2016
         public string AlertNotesOrderEntry { get; set; }
+
         public string AlertNotesShipping { get; set; }
         public string AlertNotesOther { get; set; }
         public string AlertNotesPackOut { get; set; }

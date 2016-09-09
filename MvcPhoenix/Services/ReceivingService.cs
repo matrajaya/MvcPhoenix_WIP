@@ -1,10 +1,11 @@
 ﻿using MvcPhoenix.EF;
 using MvcPhoenix.Models;
 using System;
-using System.Web;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+
 namespace MvcPhoenix.Services
 {
     public class ReceivingService
@@ -158,29 +159,29 @@ namespace MvcPhoenix.Services
             {
                 obj.isknownmaterial = true;
 
-				var x = (from t in db.tblBulk where t.ProductMasterID == id select t).ToList();
+                var x = (from t in db.tblBulk where t.ProductMasterID == id select t).ToList();
                 obj.pm_sumofcurrentweight = 0;
-                foreach(var row in x)
+                foreach (var row in x)
                 {
                     obj.pm_sumofcurrentweight = obj.pm_sumofcurrentweight + row.CurrentWeight;
                 }
-				
+
                 var dbPM = db.tblProductMaster.Find(id);
                 // assign ProductMaster fields for R/O
-				obj.pm_MasterNotes = dbPM.MasterNotes;
+                obj.pm_MasterNotes = dbPM.MasterNotes;
                 obj.pm_HandlingOther = dbPM.HandlingOther;
                 obj.pm_OtherHandlingInstr = dbPM.OtherHandlingInstr;
                 obj.pm_refrigerate = dbPM.Refrigerate;
                 obj.pm_flammablestorageroom = dbPM.FlammableStorageRoom;
                 obj.pm_freezablelist = dbPM.FreezableList;
                 obj.pm_refrigeratedlist = dbPM.RefrigeratedList;
-				
+
                 //var qCL = (from t in db.tblClient where t.ClientID == qPM.ClientID select t).FirstOrDefault();
                 var dbClient = db.tblClient.Find(dbPM.ClientID);
 
                 obj.bulkid = -1;    // for insert later
                 obj.clientid = dbClient.ClientID;
-				obj.warehouse = dbClient.CMCLocation;
+                obj.warehouse = dbClient.CMCLocation;
                 obj.clientname = dbClient.ClientName;
                 obj.logofilename = dbClient.LogoFileName;
                 obj.productmasterid = id;
@@ -240,7 +241,7 @@ namespace MvcPhoenix.Services
                            where t.BulkID == id
                            select new BulkContainerViewModel
                                {
-								   pm_sumofcurrentweight=(from x in db.tblBulk where x.ProductMasterID==t.ProductMasterID select x.CurrentWeight).Sum(),
+                                   pm_sumofcurrentweight = (from x in db.tblBulk where x.ProductMasterID == t.ProductMasterID select x.CurrentWeight).Sum(),
                                    isknownmaterial = true,
                                    bulkid = t.BulkID,
                                    productmasterid = t.ProductMasterID,
@@ -479,7 +480,7 @@ namespace MvcPhoenix.Services
                     if (incoming.bulkid == -1)
                     {
                         var newrec = new EF.tblBulk { ProductMasterID = incoming.productmasterid };
-						newrec.CreateDate = System.DateTime.Now;
+                        newrec.CreateDate = System.DateTime.Now;
                         newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                         db.tblBulk.Add(newrec);
                         db.SaveChanges();
@@ -506,7 +507,7 @@ namespace MvcPhoenix.Services
                     qry.COAIncluded = incoming.coaincluded;
                     qry.MSDSIncluded = incoming.msdsincluded;
                     qry.ContainerNotes = incoming.containernotes;
-					qry.CurrentWeight = incoming.receiveweight;
+                    qry.CurrentWeight = incoming.receiveweight;
                     qry.QCDate = incoming.qcdate;
                     qry.ReturnLocation = incoming.returnlocation;
                     qry.NoticeDate = incoming.noticedate;
@@ -514,7 +515,7 @@ namespace MvcPhoenix.Services
                     qry.ReceivedAsCode = incoming.receivedascode;
                     qry.ReceivedAsName = incoming.receivedasname;
                     qry.OtherStorage = incoming.otherstorage;
-					qry.UpdateDate = System.DateTime.Now;
+                    qry.UpdateDate = System.DateTime.Now;
                     qry.UpdateUser = HttpContext.Current.User.Identity.Name;
                     db.SaveChanges();
 

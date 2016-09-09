@@ -6,8 +6,8 @@ namespace MvcPhoenix.Models
 {
     public class ShelfMasterViewModel
     {
-		public string clientum { get; set; }
-		
+        public string clientum { get; set; }
+
         [Display(Name = "ShelfID")]
         public int shelfid { get; set; }
 
@@ -93,8 +93,8 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Other SurchargeAmt")]
         public decimal? othersurchargeamt { get; set; }
-		
-		[Display(Name = "Other Description")]
+
+        [Display(Name = "Other Description")]
         public string othersurchargedescription { get; set; }
 
         [Display(Name = "New Item")]

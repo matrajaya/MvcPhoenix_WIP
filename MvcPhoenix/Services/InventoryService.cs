@@ -21,28 +21,28 @@ namespace MvcPhoenix.Services
                 vm.PP = ProductsService.FillFromPD(PP);
                 PP = ProductsService.FillFromPM(PP);
                 PP = ProductsService.fnFillOtherPMProps(PP);
-				
-				vm.vmMasterNotesAlert = PP.masternotesalert;    // cannot get View to properly handle this when buried in PP
-                vm.ClientCode = (from t in db.tblClient 
-                                 where t.ClientID == PP.clientid 
+
+                vm.vmMasterNotesAlert = PP.masternotesalert;    // cannot get View to properly handle this when buried in PP
+                vm.ClientCode = (from t in db.tblClient
+                                 where t.ClientID == PP.clientid
                                  select t.ClientCode).FirstOrDefault();
 
-                vm.ClientUM = (from t in db.tblClient 
-                               where t.ClientID == id 
+                vm.ClientUM = (from t in db.tblClient
+                               where t.ClientID == id
                                select t.ClientUM).FirstOrDefault();
 
-                vm.Division = (from t in db.tblDivision 
-                               where t.DivisionID == PP.divisionid 
+                vm.Division = (from t in db.tblDivision
+                               where t.DivisionID == PP.divisionid
                                select t.Division).FirstOrDefault();
 
-                var q = (from t in db.tblBulkOrderItem 
-                         where t.ProductMasterID == id && t.Status == "OP" 
+                var q = (from t in db.tblBulkOrderItem
+                         where t.ProductMasterID == id && t.Status == "OP"
                          select t).FirstOrDefault();
 
                 vm.BackOrderPending = q == null ? false : true;
 
-                var q1 = (from t in db.tblBulkOrderItem 
-                          where t.ProductMasterID == id && t.Status == "OP" 
+                var q1 = (from t in db.tblBulkOrderItem
+                          where t.ProductMasterID == id && t.Status == "OP"
                           select new { tot = t.Qty * t.Weight }).ToList();
 
                 var q2 = (from x in q1 select x.tot).Sum();
@@ -77,8 +77,8 @@ namespace MvcPhoenix.Services
                 return vm;
             }
         }
-		
-		public static void fnSaveInventory(Inventory vm)
+
+        public static void fnSaveInventory(Inventory vm)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
@@ -90,7 +90,7 @@ namespace MvcPhoenix.Services
                 db.SaveChanges();
             }
         }
-		
+
         public static decimal StatusLevelShelf(int? id, string status)
         {
             // add up weight for a status and productdetailid
@@ -111,11 +111,11 @@ namespace MvcPhoenix.Services
                         break;
 
                     case "OTHER":
-                        var ListOfStatus = (from t in db.tblStock 
+                        var ListOfStatus = (from t in db.tblStock
                                             select t.ShelfStatus).Distinct().ToList();
 
-                        var q2 = (from x in mylist 
-                                  where !ListOfStatus.Contains(x.stat) 
+                        var q2 = (from x in mylist
+                                  where !ListOfStatus.Contains(x.stat)
                                   select x.tot).Sum();
 
                         retval = Convert.ToDecimal(q2);
@@ -135,13 +135,14 @@ namespace MvcPhoenix.Services
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var mylist = (from t in db.vwBulkLevel 
-                              where t.ProductDetailID == id 
-                              select new { 
-                                  stat = t.BulkStatus, 
-                                  tot = (t.Qty == null ? 1 : t.Qty) * (t.CurrentWeight == null ? 0 : t.CurrentWeight) 
+                var mylist = (from t in db.vwBulkLevel
+                              where t.ProductDetailID == id
+                              select new
+                              {
+                                  stat = t.BulkStatus,
+                                  tot = (t.Qty == null ? 1 : t.Qty) * (t.CurrentWeight == null ? 0 : t.CurrentWeight)
                               });
-                
+
                 decimal retval;
 
                 switch (status)
@@ -272,8 +273,8 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                var q = (from t in db.tblStock 
-                         where t.StockID == vm.StockID 
+                var q = (from t in db.tblStock
+                         where t.StockID == vm.StockID
                          select t).FirstOrDefault();
 
                 q.Warehouse = vm.Warehouse;
@@ -295,7 +296,7 @@ namespace MvcPhoenix.Services
             {
                 // for each sm, insert tblStock
                 vm.BulkContainer.bulkid = fnNewBulkID();
-                
+
                 var dbBulk = db.tblBulk.Find(vm.BulkContainer.bulkid);
                 var dbPD = db.tblProductDetail.Find(vm.ProductDetailID);
 
@@ -331,8 +332,8 @@ namespace MvcPhoenix.Services
                         newstock.Warehouse = vm.BulkContainer.warehouse;
                         newstock.QtyOnHand = ThisQty;
 
-                        var sm = (from t in db.tblShelfMaster 
-                                  where t.ShelfID == ThisShelfID 
+                        var sm = (from t in db.tblShelfMaster
+                                  where t.ShelfID == ThisShelfID
                                   select t).FirstOrDefault();   // needed for default bin
 
                         dbBulk.ReceiveWeight = dbBulk.ReceiveWeight + (ThisQty * sm.UnitWeight);

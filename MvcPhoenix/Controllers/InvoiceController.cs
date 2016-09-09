@@ -1,10 +1,8 @@
 ﻿using MvcPhoenix.Models;
 using PagedList;
-using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
@@ -82,7 +80,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
-            /// string client, string division, 
+            /// string client, string division,
             /// Assign invoice period based on current date: Get: ClientID, BillingGroup, Period
             /// Automated business rules from service
             /// Assign Invoice ID = -1 and go to edit action
@@ -93,14 +91,14 @@ namespace MvcPhoenix.Controllers
 
             InvoiceViewModel obj = new InvoiceViewModel();
             obj = InvoiceService.CreateInvoice(ClientID, DivisionID, InvoicePeriod);
-            
+
             return View("Edit", obj);
         }
 
         public ActionResult Edit(int id)
         {
             var vm = InvoiceService.FillInvoice(id);
-            
+
             return View(vm);
         }
 
@@ -123,6 +121,5 @@ namespace MvcPhoenix.Controllers
             var vm = InvoiceService.FillInvoice(id);
             return View(vm);
         }
-        
     }
 }

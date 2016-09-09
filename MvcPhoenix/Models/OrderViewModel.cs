@@ -9,10 +9,13 @@ namespace MvcPhoenix.Models
     public class OrderMasterFull
     {
         public List<SelectListItem> ListOfDivisions { get; set; }
+
         // public List<SelectListItem> ListOfOrderTypes { get; set; } Discussion on streamlining and trimming current selections. Enum list below
         public List<SelectListItem> ListOfSalesReps { get; set; }
+
         // public List<SelectListItem> ListOfOrderSources { get; set; } Discussion on streamlining and trimming current selections. Enum list below
         public List<SelectListItem> ListOfCountries { get; set; }
+
         public List<SelectListItem> ListOfEndUses { get; set; }
         public List<SelectListItem> ListOfShipVias { get; set; }
 
@@ -67,10 +70,13 @@ namespace MvcPhoenix.Models
         {
             [Display(Name = "Sample")]
             S,
+
             [Display(Name = "Dormant")]
             D,
+
             [Display(Name = "Return")]
             R,
+
             [Display(Name = "Commercial")]
             C
         }
@@ -144,7 +150,7 @@ namespace MvcPhoenix.Models
         public string source { get; set; }
 
         [Display(Name = "Order Source")]
-        public string ordersource { get; set; } 
+        public string ordersource { get; set; }
 
         public enum OrderSourceChoice
         {

@@ -640,7 +640,7 @@ namespace MvcPhoenix.Models
             {
                 var newrecord = new EF.tblProductDetail { }; // dont need to insert any fields, just need the new PK
 
-                db.tblProductDetail.Add(newrecord); 
+                db.tblProductDetail.Add(newrecord);
                 db.SaveChanges();
 
                 int newpk = newrecord.ProductDetailID;
