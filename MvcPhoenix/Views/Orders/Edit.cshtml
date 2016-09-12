@@ -293,18 +293,17 @@
                     }
                     @if (Model.orderid > 1)
                     {
-                        <div>
-                            <span class="pull-left" style="padding-bottom: 10px;">
-                                @Ajax.ActionLink("Add an item to this order", "CreateItem", "Orders", new { id = Model.orderid }, new AjaxOptions
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                @Ajax.ActionLink("Add Order Item", "CreateItem", "Orders", new { id = Model.orderid }, new AjaxOptions
                                 {
                                     UpdateTargetId = "dialogPlaceholder",
                                     InsertionMode = InsertionMode.Replace,
                                     HttpMethod = "GET",
                                     OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                                }, new { @class = "btn btn-primary" })
-                            </span>
+                                }, new { @class = "btn btn-primary btn-block" })
+                            </div>
                         </div>
-                        <div class="clearfix"></div>
 
                         <div id="dvOrderItemsList">
                             @Html.Action("fnOrderItemsList", "Orders", new { id = Model.orderid })
@@ -325,15 +324,17 @@
                     }
                     @if (Model.orderid > 1)
                     {
-                        <span class="pull-left" style="padding-bottom: 10px;">
-                            @Ajax.ActionLink("Add a transaction to this order", "CreateTrans", "Orders", new { id = Model.orderid }, new AjaxOptions
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                @Ajax.ActionLink("Add Order Transaction", "CreateTrans", "Orders", new { id = Model.orderid }, new AjaxOptions
                             {
                                 UpdateTargetId = "dialogPlaceholder",
                                 InsertionMode = InsertionMode.Replace,
                                 HttpMethod = "GET",
                                 OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                            }, new { @class = "btn btn-primary" })
-                        </span>
+                            }, new { @class = "btn btn-primary btn-block" })
+                            </div>
+                        </div>
                     }
                 </div>
                 <div class="clearfix"></div>

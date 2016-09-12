@@ -1,10 +1,19 @@
 ﻿@model MvcPhoenix.Models.OrderTrans
 
+<style>
+    .date-picker {
+        z-index: 1151 !important;
+    }
+</style>
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Order Transaction <small>@Model.ordertransid</small></h4>
+                <div class="modal-title">
+                    <div class="row">
+                        <div class="col-md-12"><label>Order Transaction:</label> <em>@Model.ordertransid</em></div>
+                    </div>
+                </div>
             </div>
             <div id="dialogPlaceholderBody" class="modal-body">
 
@@ -22,20 +31,19 @@
                     @Html.HiddenFor(m => m.clientid)
                     @Html.HiddenFor(m => m.createdate)
                     @Html.HiddenFor(m => m.createuser)
+
                     <div class="row">
                         <div class="col-md-6 form-group">
                             @Html.LabelFor(m => m.transtype, new { @class = "control-label" })
-                            @Html.DropDownListFor(m => m.transtype, Model.ListOfOrderTransTypes, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.transtype, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderTrans.OrderTransTypesChoice))), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.transtype)
                         </div>
-
                         <div class="col-md-6 form-group">
                             @Html.LabelFor(m => m.transdate, new { @class = "control-label" })
                             @Html.TextBoxFor(m => m.transdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                             @Html.ValidationMessageFor(m => m.transdate)
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-6 form-group">
                             @Html.LabelFor(m => m.orderitemid, new { @class = "control-label" })
@@ -53,7 +61,6 @@
                             @Html.ValidationMessageFor(m => m.transamount)
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-12 form-group">
                             @Html.LabelFor(m => m.comments, new { @class = "control-label" })
@@ -61,14 +68,11 @@
                             @Html.ValidationMessageFor(m => m.comments)
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-4 form-group">
-                            <span class="pull-left">
-                                <input type="submit" value="Save" class="btn btn-md btn-success" />
-                            </span>
+                            <input type="submit" value="Save" class="btn btn-md btn-success btn-block" />
                         </div>
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-4">
                             @Ajax.ActionLink("Delete Trans", "DeleteTrans", "Orders", new { id = Model.ordertransid }, new AjaxOptions
                                        {
                                            HttpMethod = "GET",
@@ -76,18 +80,15 @@
                                            InsertionMode = InsertionMode.Replace,
                                            OnSuccess = "UpdateAndClose",
                                            Confirm = "Are you sure you want to delete this item?",
-                                       }, new { @class = "btn btn-danger" })
+                                       }, new { @class = "btn btn-danger btn-block" })
                         </div>
-                        <div class="col-md-4 form-group pull-right">
-                            <span class="pull-right">
-                                <input type="button" value="Close" onclick="$('#dialogPlaceholderModal').modal('hide')" class="btn btn-primary" />
-                            </span>
+                        <div class="col-md-4 pull-right">
+                            <input type="button" value="Close" onclick="$('#dialogPlaceholderModal').modal('hide')" class="btn btn-primary btn-block" />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 form-group">
-                            <span id="dialogResult" class="text-center" style="font-weight:bold;">
-                            </span>
+                        <div class="col-md-12">
+                            <span id="dialogResult" style="font-weight:bold; padding-top:10px;"></span>
                         </div>
                     </div>
                 }
@@ -95,8 +96,8 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
 
+<script type="text/javascript">
     function UpdateAndClose() {
         $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.orderid })');
         $('#dialogPlaceholderModal').modal('hide')
@@ -106,6 +107,7 @@
         $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.orderid })');
     }
 </script>
+
 @functions
 {
     // used to let user select the orderitemid to apply this trans to

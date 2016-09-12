@@ -48,8 +48,8 @@ namespace MvcPhoenix.Controllers
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
 
             var vm = OrderService.fnFillOrder(id);
+
             return new ViewAsPdf(vm) { CustomSwitches = footer };
-            //return View(vm);
         }
 
         [HttpPost]
@@ -111,13 +111,20 @@ namespace MvcPhoenix.Controllers
         {
             OrderItem vm = new OrderItem();
             vm = OrderService.fnFillOrderItem(id);
+
             return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
         }
 
         [HttpPost]
-        public ActionResult SaveItem(OrderItem incoming)
+        public ActionResult SaveItem(OrderItem incoming, string productdetailid)
         {
+            if (productdetailid == "0" || productdetailid == "")
+            {
+                return Content("Please Select a Product");
+            }
+
             int pk = OrderService.fnSaveItem(incoming);
+
             return Content("Item Saved at " + System.DateTime.Now.ToString());
         }
 
@@ -183,14 +190,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveTrans(OrderTrans vm)
         {
             int pk = OrderService.fnSaveTrans(vm);
-            return Content("Trans Saved at " + System.DateTime.Now.ToString());
+            return Content("Transaction Saved at " + System.DateTime.Now.ToString());
         }
 
         [HttpGet]
         public ActionResult DeleteTrans(int id)
         {
             OrderService.fnDeleteTrans(id);
-            return Content("Trans Deleted at " + System.DateTime.Now.ToString());
+            return Content("Transaction Deleted at " + System.DateTime.Now.ToString());
         }
 
         [HttpGet]

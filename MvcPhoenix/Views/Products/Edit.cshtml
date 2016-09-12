@@ -74,11 +74,11 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Equivalents</label><br />
-                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control", @style = "overflow:auto", @size = 10 })
+                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control", @style = "overflow:auto", @size = 8 })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cross Reference List</label><br />
-                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control", @style = "overflow:auto", @size = 10 })
+                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control", @style = "overflow:auto", @size = 8 })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Active Date</label>
@@ -89,28 +89,40 @@
                         @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.sgrevisiondate)
                     </div>
-                    <div class="col-md-6">
-                        <ul class="list-unstyled list-2-col">
-                            <li>
-                                @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline" })
-                                <label class="control-label">Accuracy Verified</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct, new { @class = "checkbox-inline" })
-                                <label class="control-label">Global Product</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
-                                <label class="control-label">Discontinued</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("active", Model.active != null && (bool)Model.active, new { @class = "checkbox-inline" })
-                                <label class="control-label">Active</label>
-                            </li>
-                        </ul>
-                        <div class="form-group">
-                            <label>Accuracy Verified By</label>
-                            @Html.TextBoxFor(m => m.accuracyverifiedby, new { @class = "form-control" })
+                    <div class="col-md-6" style="vertical-align:bottom;">
+                        <div class="panel panel-primary">
+                            <div class="panel-body" style="margin-bottom:-10px;">
+                                <ul class="list-unstyled list-2-col">
+                                    <li>
+                                        @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct, new { @class = "checkbox-inline" })
+                                        <label class="control-label">Global Product</label>
+                                    </li>
+                                    <li>
+                                        @if (Model.accuracyverified == true)
+                                        {
+                                            @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                            <label class="control-label">Accuracy Verified</label>
+                                        }
+                                        else
+                                        {
+                                            @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline" })
+                                            <label class="control-label">Verify Accuracy</label>
+                                        }
+                                    </li>
+                                    <li>
+                                        @Html.CheckBox("active", Model.active != null && (bool)Model.active, new { @class = "checkbox-inline" })
+                                        <label class="control-label">Active</label>
+                                    </li>
+                                    <li>
+                                        @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued, new { @class = "checkbox-inline" })
+                                        <label class="control-label">Discontinued</label>
+                                    </li>
+                                </ul>
+                                @if (Model.accuracyverified == true)
+                                {
+                                    <label>Accuracy Verified By:</label> <em>@Html.DisplayFor(m => m.accuracyverifiedby)</em>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -143,8 +155,8 @@
             </div>
             <div id="special" class="panel-body collapse">
                 <div class="row">
-                    <div class="col-md-6">
-                        <ul class="list-unstyled list-2-col">
+                    <div class="col-md-9">
+                        <ul class="list-unstyled list-3-col">
                             <li>@Html.CheckBox("cleanroomgmp", Model.cleanroomgmp != null && (bool)Model.cleanroomgmp) Clean Room GMP</li>
                             <li>@Html.CheckBox("nitrogenblanket", Model.nitrogenblanket != null && (bool)Model.nitrogenblanket) Nitrogen Blanket</li>
                             <li>@Html.CheckBox("moisturesensitive", Model.moisturesensitive != null && (bool)Model.moisturesensitive) Moisture Sensitive</li>
@@ -154,32 +166,42 @@
                             <li>@Html.CheckBox("refrigerate", Model.refrigerate != null && (bool)Model.refrigerate) Refrig Storage</li>
                             <li>@Html.CheckBox("noreorder", Model.noreorder != null && (bool)Model.noreorder) Do Not Reorder</li>
                             <li>@Html.CheckBox("temperaturecontrolledstorage", Model.temperaturecontrolledstorage != null && (bool)Model.temperaturecontrolledstorage) Temp Controlled Storage</li>
-                        </ul>
-                    </div>
-
-                    <div class="col-md-6">
-                        <ul class="list-unstyled list-2-col">
-                            <li>
-                                Torque: @Html.TextBoxFor(m => m.torquerequirements, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.torquerequirements)
-                            </li>
                             <li>@Html.CheckBox("freezablelist", Model.freezablelist != null && (bool)Model.freezablelist) Freezable List</li>
                             <li>@Html.CheckBox("flammableground", Model.flammableground != null && (bool)Model.flammableground) Flammable Ground</li>
                             <li>@Html.CheckBox("flammablestorageroom", Model.flammablestorageroom != null && (bool)Model.flammablestorageroom) Flammable Storage</li>
                             <li>
-                                Flash Point: @Html.TextBoxFor(m => m.flashpoint, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.flashpoint)
-                            </li>
-                            <li>
                                 <b>Req By:</b>
-                                Client @Html.CheckBox("clientreq", Model.clientreq != null && (bool)Model.clientreq)
-                                CMC @Html.CheckBox("cmcreq", Model.cmcreq != null && (bool)Model.cmcreq)
-                            </li>
-                            <li>
-                                Other: @Html.TextBoxFor(m => m.otherpkg, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.otherpkg)
+                                <ul>
+                                    <li>Client @Html.CheckBox("clientreq", Model.clientreq != null && (bool)Model.clientreq)</li>
+                                    <li>CMC @Html.CheckBox("cmcreq", Model.cmcreq != null && (bool)Model.cmcreq)</li>
+                                </ul>
                             </li>
                         </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <table>
+                            <tr>
+                                <td style="padding-right:40px;">Torque: </td>
+                                <td>
+                                    @Html.TextBoxFor(m => m.torquerequirements, new { @class = "form-control pull-right" })
+                                    @Html.ValidationMessageFor(m => m.torquerequirements)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Flash Point: </td>
+                                <td>
+                                    @Html.TextBoxFor(m => m.flashpoint, new { @class = "form-control pull-right" })
+                                    @Html.ValidationMessageFor(m => m.flashpoint)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Other: </td>
+                                <td>
+                                    @Html.TextBoxFor(m => m.otherpkg, new { @class = "form-control pull-right" })
+                                    @Html.ValidationMessageFor(m => m.otherpkg)
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
                 <div class="row">
@@ -217,7 +239,7 @@
                     </div>
                     <div class="form-group col-md-1">
                         <label>Unit</label>
-                        @Html.DropDownListFor(m => m.customsvalueunit, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.ProductProfile.ValueUnit))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.customsvalueunit, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.ProductProfile.ValueUnitChoice))), new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -628,9 +650,9 @@
                 </div>
                 <hr />
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <label>Protective Equipment</label>
-                        <ul class="list-unstyled list-3-col">
+                        <ul class="list-unstyled list-2-col">
                             <li>@Html.CheckBox("hood", Model.hood != null && (bool)Model.hood) Hood</li>
                             <li>@Html.CheckBox("safetyglasses", Model.safetyglasses != null && (bool)Model.safetyglasses) Safety Glasses</li>
                             <li>@Html.CheckBox("apron", Model.apron != null && (bool)Model.apron) Apron</li>
@@ -640,16 +662,18 @@
                             <li>@Html.CheckBox("fullsuit", Model.fullsuit != null && (bool)Model.fullsuit) Full Suit</li>
                             <li>@Html.CheckBox("dustfilter", Model.dustfilter != null && (bool)Model.dustfilter) Dust Filter</li>
                             <li>@Html.CheckBox("cleanroomequipment", Model.cleanroomequipment != null && (bool)Model.cleanroomequipment) Clean Room Equip</li>
-                            <li>
-                                Glove Type
-                                @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.glovetype)
-                            </li>
-                            <li>
-                                Other Equipment
-                                @Html.TextBoxFor(m => m.otherequipmentdescription, new { @class = "form-control", @placeholder = "Other Equipment" })
-                            </li>
                         </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Glove Type</label>
+                            @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.glovetype)
+                        </div>
+                        <div class="form-group">
+                            <label>Other Equipment</label>
+                            @Html.TextBoxFor(m => m.otherequipmentdescription, new { @class = "form-control", @placeholder = "Other Equipment" })
+                        </div>
                     </div>
                 </div>
             </div>

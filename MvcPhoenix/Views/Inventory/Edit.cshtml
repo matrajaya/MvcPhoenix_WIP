@@ -127,12 +127,12 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <ul class="list-unstyled list-3-col">
-                                            <li><input type="checkbox" checked="@Model.PP.flammablestorageroom" disabled="disabled"> Flammable Room</li>
-                                            <li><input type="checkbox" checked="@Model.PP.toxic" disabled="disabled"> Toxic</li>
-                                            <li><input type="checkbox" checked="@Model.PP.physicaltoxic" disabled="disabled"> Physically Toxic</li>
-                                            <li><input type="checkbox" checked="@Model.PP.freezerstorage" disabled="disabled" style="background-color:yellow;"> Freezable Storage</li>
-                                            <li><input type="checkbox" checked="@Model.PP.freezablelist" disabled="disabled"> Freezable List</li>
-                                            <li><input type="checkbox" checked="@Model.PP.refrigerate" disabled="disabled"> Refrigerate</li>
+                                            <li><p><input type="checkbox" checked="@Model.PP.flammablestorageroom" disabled="disabled"> Flammable Room</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.PP.toxic" disabled="disabled"> Toxic</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.PP.physicaltoxic" disabled="disabled"> Physically Toxic</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.PP.freezerstorage" disabled="disabled" style="background-color:yellow;"> Freezable Storage</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.PP.freezablelist" disabled="disabled"> Freezable List</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.PP.refrigerate" disabled="disabled"> Refrigerate</p></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -298,12 +298,12 @@
                 <hr />
                 <div class="row">
                     <div class="col-md-12 form-group">
-                        <label>Inventory Master Note</label>
+                        <label>Receiving Inventory Note</label>
                         <span class="pull-right form-inline">
-                            @Html.CheckBox("vmMasterNotesAlert", Model.vmMasterNotesAlert != null && (bool)Model.vmMasterNotesAlert, new { @class = "checkbox-inline" })
-                            <em>Include this note upon receipt of product</em>
+                            @*@Html.CheckBox("vmMasterNotesAlert", Model.vmMasterNotesAlert != null && (bool)Model.vmMasterNotesAlert, new { @class = "checkbox-inline" })*@
+                            <em>This note is shown upon receipt of product</em>
                         </span>
-                        @Html.TextAreaFor(m => m.PP.masternotes, new { @class = "form-control", @rows = "4" })
+                        @Html.TextAreaFor(m => m.PP.alertnotesreceiving, new { @class = "form-control", @rows = "4" })
                     </div>
                     <div class="pull-right col-md-3">
                         <input type="submit" value="Save Note" class="btn btn-success btn-block" />

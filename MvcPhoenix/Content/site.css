@@ -248,19 +248,11 @@ ul.alert-dropdown {
     column-count: 3;
 }
 
-    .list-3-col > li {
-        padding-bottom: 10px;
-    }
-
 .list-2-col {
     -moz-column-count: 2;
     -webkit-column-count: 2;
     column-count: 2;
 }
-
-    .list-2-col > li {
-        padding-bottom: 10px;
-    }
 
 .vertical-line {
     position: absolute;
@@ -291,5 +283,5 @@ iframe {
 }
 
 .table-responsive > table {
-        font-size: .85em;
-    }
+    font-size: .85em;
+}

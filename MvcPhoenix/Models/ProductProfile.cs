@@ -90,11 +90,9 @@ namespace MvcPhoenix.Models
 
     public class ProductProfile
     {
-        //constructor
-        public ProductProfile()
+        public ProductProfile()     //constructor
         {
-            // pc: move the list items here and cleanup controller code
-            active = true;
+            active = true;          // pc: move the list items here and cleanup controller code
         }
 
         public List<SelectListItem> ListOfPackagePartNumbers { get; set; }
@@ -116,26 +114,6 @@ namespace MvcPhoenix.Models
 
         public DateTime? detaillastupdate { get; set; }
 
-        // -------------------------------------------- Iffy added 06/10/2016
-        [Display(Name = "Active Date")]
-        public DateTime? activedate { get; set; }
-
-        public enum ValueUnit
-        {
-            [Display(Name = "Liter")]
-            L,
-
-            [Display(Name = "Kilogram")]
-            KG,
-
-            [Display(Name = "Pound")]
-            LB,
-
-            [Display(Name = "Gallon")]
-            Gal,
-        }
-
-        // ------------------------------------------- pc Fields added 03/15/2016
         [Display(Name = "Alert Notes - Shipping")]
         public string alertnotesshipping { get; set; }
 
@@ -183,20 +161,12 @@ namespace MvcPhoenix.Models
         [Display(Name = "RCRAOSNAME")]
         public string rcranosname { get; set; }
 
-        // ------------------------------------------- pc Fields added 03/15/2016
-
-        // **********************************************************************
-
         [Display(Name = "ProductDetailID")]
         [Required]
         public int productdetailid { get; set; }
 
         [Display(Name = "DivisionID")]
         public int? divisionid { get; set; }
-
-        // pc 03/15/2016 removed per cd,ii
-        //[Display(Name = "BusArea")]
-        //public string busarea { get; set; }
 
         [Display(Name = "ProductCode")]
         [Required]
@@ -260,6 +230,21 @@ namespace MvcPhoenix.Models
         [Display(Name = "Customs Value Unit")]
         public string customsvalueunit { get; set; }
 
+        public enum ValueUnitChoice
+        {
+            [Display(Name = "Liter")]
+            L,
+
+            [Display(Name = "Kilogram")]
+            KG,
+
+            [Display(Name = "Pound")]
+            LB,
+
+            [Display(Name = "Gallon")]
+            Gal,
+        }
+
         [Display(Name = "Global Product")]
         public bool? globalproduct { get; set; }
 
@@ -310,10 +295,11 @@ namespace MvcPhoenix.Models
         [Display(Name = "Active")]
         public bool? active { get; set; }
 
-        // **********************************************************************
+        [Display(Name = "Active Date")]
+        public DateTime? activedate { get; set; }
 
-        [Display(Name = "ProductMasterID")]
         [Required]
+        [Display(Name = "ProductMasterID")]
         public int? productmasterid { get; set; }
 
         [Required]
@@ -339,8 +325,6 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "DENSITY")]
         public decimal? density { get; set; }
-
-        // *********************************************************
 
         [Display(Name = "SUPPLYID")]
         public string supplyid { get; set; }

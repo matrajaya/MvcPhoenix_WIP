@@ -29,16 +29,22 @@
         </div>
         <div id="" class="panel-body">
             <div class="row">
-                <div class="col-md-12 form-group">
+                <div class="col-md-4 form-group">
                     @Ajax.ActionLink("+ Add Shelf Size", "Create", "ShelfMaster", new { id = @ViewBag.ParentID }, new AjaxOptions
                     {
                         InsertionMode = InsertionMode.Replace,
                         HttpMethod = "GET",
                         UpdateTargetId = "dvEditPlaceholder",
                         OnFailure = "alert('error')"
-                    })
-
-                    <span class="pull-right">Total: @Model.Count() Sizes</span>
+                    }, new { @class = "btn btn-primary btn-block" })
+                </div>
+                <div class="col-md-8 text-right"><label>Total:</label> <em>@Model.Count() Sizes</em></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="dvEditPlaceholder">
+                        @*Placeholder for edit partial*@
+                    </div>
                 </div>
             </div>
             <div class="table-responsive">
@@ -46,7 +52,6 @@
                     <thead>
                         <tr>
                             <th>Size</th>
-                            <th>Unit Wt</th>
                             <th>UM</th>
                             <th>Pkg</th>
                             <th>WH</th>
@@ -76,7 +81,6 @@
                         {
                             <tr>
                                 <td><strong>@item.size</strong></td>
-                                <td>@item.unitweight</td>
                                 <td>@item.clientum</td>
                                 <td>@item.packagepartnumber <br />@item.pkgmaterial</td>
                                 <td>@item.warehouse</td>
@@ -114,7 +118,7 @@
         </div>
     </div>
 
-    <div id="dvEditPlaceholder">
-        <!-- Placeholder for edit partial -->
-    </div>
+    @*<div id="dvEditPlaceholder">
+         Placeholder for edit partial 
+    </div>*@
 </div>

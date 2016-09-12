@@ -1,0 +1,36 @@
+﻿@model List<MvcPhoenix.Models.ShelfMasterViewModel>
+
+<div id="dvShelfMasterList">
+
+    <label>Shelf Size Info</label> <label id="noprint"> | </label> @Html.ActionLink("Manage", "Index", "ShelfMaster", new { id = @ViewBag.ParentID }, null)
+
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Size</th>
+                    <th>UM</th>
+                    <th>Material</th>
+                    <th>Part #</th>
+                    <th>WH</th>
+                    <th>Bin</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@item.size</strong></td>
+                        <td>@item.clientum</td>
+                        <td>@item.pkgmaterial</td>
+                        <td>@item.packageid</td>
+                        <td>@item.warehouse</td>
+                        <td style="width: 5%;">@item.bin</td>
+                        <td style="width: 40%;">@item.notes</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

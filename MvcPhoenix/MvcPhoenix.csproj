@@ -1301,6 +1301,7 @@
     <Content Include="Views\Inventory\_RecentBulkReceived.cshtml" />
     <Content Include="Views\Inventory\PrePackStock.cshtml" />
     <Content Include="Views\Inventory\_ProductLogNotes.cshtml" />
+    <Content Include="Views\Products\_ShelfSize.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

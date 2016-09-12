@@ -8,7 +8,7 @@ namespace MvcPhoenix.Models
     public class Inventory
     {
         // build this as a composite view model
-        public bool? vmMasterNotesAlert { get; set; }
+        //public bool? vmMasterNotesAlert { get; set; } this may not be needed - Iffy
 
         public ProductProfile PP { get; set; }
         public string ClientCode { get; set; }

@@ -26,7 +26,7 @@
                     @Html.ValidationMessageFor(m => m.warehouse)
                 </div>
                 <div class="col-md-3 form-group">
-                    <label>Bin/Location</label>
+                    <label>Bin</label>
                     @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.bin)
                 </div>
@@ -97,13 +97,13 @@
                                 </li>
                             </ul>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Other Surcharge Amt</label>
-                                    @Html.TextBoxFor(m => m.othersurchargeamt, new { @class = "form-control"})
-                                </div>
-                                <div class="col-md-6">
+                                <div class="col-md-7">
                                     <label>Other Surcharge Description</label>
                                     @Html.TextBoxFor(m => m.othersurchargedescription, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-5">
+                                    <label>Other Surcharge Amt</label>
+                                    @Html.TextBoxFor(m => m.othersurchargeamt, new { @class = "form-control"})
                                 </div>
                             </div>
                         </div>
@@ -114,39 +114,37 @@
                         <label>Notes</label>
                         @Html.TextAreaFor(m => m.notes, new { @class = "form-control", @rows = 9 })
                     </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label>Customer Code</label>
+                    @Html.TextBoxFor(m => m.custcode, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Sort Order</label>
+                    @Html.TextBoxFor(m => m.sortorder, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 form-group">
                     <ul class="list-unstyled list-2-col">
                         <li>
-                            @Html.CheckBox("inactivesize", Model.inactivesize != null && (bool)Model.inactivesize, new { @class = "checkbox-inline" })
                             <label>Inactive Size</label>
+                            @Html.CheckBox("inactivesize", Model.inactivesize != null && (bool)Model.inactivesize, new { @class = "checkbox" })
                         </li>
                         <li>
-                            @Html.CheckBox("weboeinclude", Model.weboeinclude != null && (bool)Model.weboeinclude, new { @class = "checkbox-inline" })
                             <label>WebOE Include</label>
+                            @Html.CheckBox("weboeinclude", Model.weboeinclude != null && (bool)Model.weboeinclude, new { @class = "checkbox" })
                         </li>
                     </ul>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-4 form-group">
-                    <label>Sort Order</label>
-                    @Html.TextBoxFor(m => m.sortorder, new { @class = "form-control" })
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>Customer Code</label>
-                    @Html.TextBoxFor(m => m.custcode, new { @class = "form-control" })
-                </div>
-                <div class="col-md-4 form-group">
-                    <label>New Item</label>
-                    @Html.TextBoxFor(m => m.newitem, new { @class = "form-control" })
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 form-group">
+                <div class="col-md-6">
                     <input name="submitbutton" type="submit" class="btn btn-success btn-block" value="Save" />
                 </div>
-                <div class="col-md-6 form-group">
+                <div class="col-md-6">
                     <input name="submitbutton" type="submit" class="btn btn-warning btn-block" value="Cancel" />
                 </div>
             </div>

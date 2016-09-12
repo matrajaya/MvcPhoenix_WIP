@@ -32,6 +32,26 @@ namespace MvcPhoenix.Models
 
         public List<SelectListItem> ListOfOrderTransTypes { get; set; }
 
+        public enum OrderTransTypesChoice
+        {
+            BIOC,
+            BLND,
+            CLEN,
+            FLAM,
+            FREZ,
+            HAZD,
+            HEAT,
+            KOSH,
+            LABL,
+            MISC,
+            MEMO,
+            NALG,
+            NITR,
+            REFR,
+            SAMP,
+            OTHR
+        }
+
         [Display(Name = "Date")]
         [DataType(DataType.DateTime)]
         public DateTime? transdate { get; set; }

@@ -22,7 +22,7 @@ namespace MvcPhoenix.Services
                 PP = ProductsService.FillFromPM(PP);
                 PP = ProductsService.fnFillOtherPMProps(PP);
 
-                vm.vmMasterNotesAlert = PP.masternotesalert;    // cannot get View to properly handle this when buried in PP
+                //vm.vmMasterNotesAlert = PP.masternotesalert;    // cannot get View to properly handle this when buried in PP
                 vm.ClientCode = (from t in db.tblClient
                                  where t.ClientID == PP.clientid
                                  select t.ClientCode).FirstOrDefault();
@@ -82,11 +82,13 @@ namespace MvcPhoenix.Services
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                // TODO fix why masternotesalert value is always null ???
+                // It seems alerts should be on the product master level since. Discuss... - Iffy
+                // product master level = receivingalertnote, packoutalertnote
+                // product detail level = orderalertnote, shippingalertnote
+                // var pm = db.tblProductMaster.Find(pd.ProductMasterID);
                 var pd = db.tblProductDetail.Find(vm.PP.productdetailid);
-                var pm = db.tblProductMaster.Find(pd.ProductMasterID);
-                pm.MasterNotes = vm.PP.masternotes;
-                pm.MasterNotesAlert = vm.vmMasterNotesAlert;
+                pd.AlertNotesReceiving = vm.PP.alertnotesreceiving;
+                
                 db.SaveChanges();
             }
         }

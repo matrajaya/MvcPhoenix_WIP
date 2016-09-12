@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 // ************** ProductsService.cs ********************
@@ -164,8 +165,6 @@ namespace MvcPhoenix.Models
                 PP.customsvalue = qd.CustomsValue;
                 PP.customsvalueunit = qd.CustomsValueUnit;
                 PP.globalproduct = qd.GlobalProduct;
-                // added by II 10/23/2015
-                PP.accuracyverified = qd.AccuracyVerified;
                 PP.polymerizationhazard = qd.PolymerizationHazard;
                 PP.sdscontactname = qd.SDSContactName;
                 PP.sdscontactphone = qd.SDSContactPhone;
@@ -178,8 +177,6 @@ namespace MvcPhoenix.Models
                 PP.epahazardouswaste = qd.EPAHazardousWaste;
                 PP.nonrcrawaste = qd.NonRCRAWaste;
                 PP.wasteprofilenumber = qd.WasteProfileNumber;
-
-                // fields add by Iffy 10/28 (already in Master ???)
                 PP.shippingchemicalname = qd.ShippingChemicalName;
                 PP.labelnotesepa = qd.LabelNotesEPA;
 
@@ -215,19 +212,19 @@ namespace MvcPhoenix.Models
                 PP.seahazcl = qd.SEAHAZCL;
                 PP.seashipname = qd.SEASHIPNAME;
                 PP.seanosname = qd.SEANOSNAME;
+
                 // Additional sea fields
                 PP.seashipnamed = qd.SEASHIPNAMED;
                 PP.seahazmat = qd.SEAHAZMAT;
                 PP.seaemsno = qd.SEAEMSNO;
                 PP.seamfagno = qd.SEAMFAGNO;
 
-                //PP.detaillastupdate = qd.LastUpDate;
-
-                // ------------------------- pc fields added 3/16/2016
                 PP.alertnotesshipping = qd.AlertNotesShipping;
                 PP.alertnotesreceiving = qd.AlertNotesReceiving;
                 PP.alertnotespackout = qd.AlertNotesPackout;
                 PP.alertnotesorderentry = qd.AlertNotesOrderEntry;
+
+                PP.accuracyverified = qd.AccuracyVerified;
                 PP.accuracyverifiedby = qd.AccuracyVerifiedBy;
                 PP.rcraunnumber = qd.RCRAUNNumber;
                 PP.rcrapkgrp = qd.RCRAPKGRP;
@@ -254,11 +251,8 @@ namespace MvcPhoenix.Models
                 var q = (from t in db.tblProductMaster where t.ProductMasterID == PP.productmasterid select t).FirstOrDefault();
                 PP.productmasterid = q.ProductMasterID;
                 PP.clientid = q.ClientID;
-                //PP.sglegacyid = q.SGLegacyID;
-                //PP.sdlegacyid = q.SDLegacyID;
                 PP.mastercode = q.MasterCode;
                 PP.mastername = q.MasterName;
-                //PP.masterdivisionid = q.MasterDivisionID;
                 PP.supplyid = q.SUPPLYID;
                 PP.discontinued = q.Discontinued;
                 PP.noreorder = q.NoReorder;
@@ -443,7 +437,6 @@ namespace MvcPhoenix.Models
                 q.CustomsValue = PP.customsvalue;
                 q.CustomsValueUnit = PP.customsvalueunit;
                 q.GlobalProduct = PP.globalproduct;
-                q.AccuracyVerified = PP.accuracyverified;
                 q.PolymerizationHazard = PP.polymerizationhazard;
                 q.SDSContactName = PP.sdscontactname;
                 q.SDSContactPhone = PP.sdscontactphone;
@@ -492,7 +485,6 @@ namespace MvcPhoenix.Models
                 q.AlertNotesReceiving = PP.alertnotesreceiving;
                 q.AlertNotesPackout = PP.alertnotespackout;
                 q.AlertNotesOrderEntry = PP.alertnotesorderentry;
-                q.AccuracyVerifiedBy = PP.accuracyverifiedby;
                 q.RCRAUNNumber = PP.rcraunnumber;
                 q.RCRAPKGRP = PP.rcrapkgrp;
                 q.RCRAHAZSUBCL = PP.rcrahazsubcl;
@@ -502,6 +494,12 @@ namespace MvcPhoenix.Models
                 q.RCRASHIPNAME = PP.rcrashipname;
                 q.RCRANOSNAME = PP.rcranosname;
                 q.Active = PP.active;
+
+                q.AccuracyVerified = PP.accuracyverified;
+                if (q.AccuracyVerified == true)
+                {
+                    q.AccuracyVerifiedBy = HttpContext.Current.User.Identity.Name;
+                }
 
                 db.SaveChanges();
             }
