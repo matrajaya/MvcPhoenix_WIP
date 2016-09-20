@@ -45,10 +45,10 @@
                 <div class="table-responsive">
                     <table class="table table-hover table-striped">
                         <tr>
-                            <th>MasterCode</th>
+                            <th>Master Code</th>
                             <th>Name</th>
                             <th>Current Weight on Hand</th>
-                            <th>@Html.LabelFor(m => m.bulkstatus)</th>
+                            <th>Bulk Status</th>
                         </tr>
                         <tr>
                             <td>@Model.MasterCode</td>
@@ -57,18 +57,18 @@
                             <td>@Html.DisplayFor(m => m.bulkstatus, new { @class = "form-control" })</td>
                         </tr>
                         <tr>
-                            <th colspan="4">MasterNotes</th>
+                            <th colspan="4">Master Notes</th>
                         </tr>
                         <tr>
-                            <td colspan="4">@Model.pm_MasterNotes</td>
+                            <td colspan="4">@Model.pm_MasterNotes &nbsp;</td>
                         </tr>
                         <tr>
                             <th colspan="2">Handling Other</th>
-                            <th colspan="2">Other Handling Instr</th>
+                            <th colspan="2">Other Handling Instructions</th>
                         </tr>
                         <tr>
-                            <td colspan="2">@Model.pm_HandlingOther</td>
-                            <td colspan="2">@Model.pm_OtherHandlingInstr</td>
+                            <td colspan="2">@Model.pm_HandlingOther &nbsp;</td>
+                            <td colspan="2">@Model.pm_OtherHandlingInstr &nbsp;</td>
                         </tr>
                         <tr>
                             <th>Refrigerate</th>
@@ -150,22 +150,22 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         <label>Date Of Manufacture</label>
                         @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.mfgdate)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         <label>Expiration Date</label>
                         @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = " date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.expirationdate)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         <label>Cease Ship Date</label>
                         @Html.TextBoxFor(m => m.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.ceaseshipdate)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="col-md-3">
                         <label>QC Date</label>
                         @Html.TextBoxFor(m => m.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.qcdate)
@@ -253,7 +253,8 @@
                 <input id="btnSave" type="submit" value="Save Changes" class="btn btn-success btn-block" />
             </div>
             <div class="form-group col-md-6">
-                @Html.ActionLink("Cancel", "Index", "Receiving", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel This Process?')" })
+                <input type="button" class="btn btn-danger btn-block" onclick="location.href = 'javascript:history.back()';" value="Cancel Order" />
+                @*@Html.ActionLink("Cancel", "Index", "Receiving", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel This Process?')" })*@
             </div>
         </div>
         <div class="row">

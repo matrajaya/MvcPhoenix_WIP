@@ -10,10 +10,10 @@
 
                 @using (Ajax.BeginForm("SaveProductNote", "Products", new AjaxOptions
                 {
-                HttpMethod = "POST",
-                UpdateTargetId = "dialogResult",
-                OnSuccess = "UpdateProductNotesList",
-                InsertionMode = InsertionMode.Replace
+                    HttpMethod = "POST",
+                    UpdateTargetId = "dialogResult",
+                    OnSuccess = "UpdateProductNotesList",
+                    InsertionMode = InsertionMode.Replace
                 }))
                 {
                     @Html.HiddenFor(m => m.productnoteid)
@@ -21,13 +21,7 @@
                     <div class="row">
                         <div class="col-md-12 form-group">
                             @Html.LabelFor(m => m.notedate)
-                            @Html.TextBoxFor(m => m.notedate, "{0:dd MMM yyy}", new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 form-group">
-                            @Html.LabelFor(m => m.notes)
-                            @Html.TextAreaFor(m => m.notes, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.notedate, "{0:dd MMM yyy}", new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
                     <div class="row">
@@ -37,32 +31,36 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 form-group">
-                            <input type="submit" value="Save" class="btn btn-success btn-block" />
-                        </div>
-                        <div class="col-md-6 form-group">
-                            @Ajax.ActionLink("Close", null, null, new AjaxOptions
-                            {   HttpMethod = "GET",
-                                OnComplete = "$('#dialogPlaceholderModal').modal('hide')"
-                            },   new { @class = "btn btn-danger btn-block" })
+                        <div class="col-md-12 form-group">
+                            @Html.LabelFor(m => m.notes)
+                            @Html.TextAreaFor(m => m.notes, new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 form-group">
-                            <span id="dialogResult">
-                                <!-- Placeholder for message from controller -->
-                            </span>
+                        <div class="col-md-6">
+                            <input type="submit" value="Save" class="btn btn-success btn-block" />
+                        </div>
+                        <div class="col-md-6">
+                            @Ajax.ActionLink("Close", null, null, new AjaxOptions
+                            {
+                                HttpMethod = "GET",
+                                OnComplete = "$('#dialogPlaceholderModal').modal('hide')"
+                            }, new { @class = "btn btn-danger btn-block" })
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p id="dialogResult">@*Placeholder for message from controller*@</p>
+                        </div>
+                    </div>
                 }
             </div>
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
-    function UpdateProductNotesList()
-    {
+    function UpdateProductNotesList() {
         // Update the list
         $("#dvLogNotes").load('@Url.Action("ProductLogList", "Products", new { id = @Model.productdetailid })');
 

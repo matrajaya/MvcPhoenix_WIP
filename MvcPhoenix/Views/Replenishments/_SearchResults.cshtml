@@ -4,11 +4,7 @@
 {
     <div class="panel panel-primary">
         <div class="panel-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <label class="lead">Nothing Found. Try Again.</label>
-                </div>
-            </div>
+            <label class="lead">Nothing Found. Try Again.</label>
         </div>
     </div>
 }
@@ -24,7 +20,7 @@
                         <tr>
                             <th>Client</th>
                             <th>Order ID</th>
-                            <th>SupplyID</th>
+                            <th>Supply ID</th>
                             <th>Order Date</th>
                             <th class="text-center">Item Cnt</th>
                             <th class="text-center">Open Cnt</th>
@@ -35,7 +31,7 @@
                     </thead>
                     <tbody>
                         @foreach (var item in @Model)
-                            {
+                        {
                             <tr>
                                 <td>@item.clientname</td>
                                 <td>@item.bulkorderid.ToString()</td>
@@ -47,12 +43,13 @@
                                 <td>@item.emailsent</td>
                                 <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = @item.bulkorderid })</td>
                             </tr>
-                            }
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-12">
             <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>

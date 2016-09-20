@@ -34,7 +34,7 @@
                 <td>@item.lotnumber</td>
                 <td>@item.um</td>
                 <td>@item.receiveweight.ToString()</td>
-                <td>@Html.ActionLink("Edit", "EditBulkContainer", new { id = @item.bulkid })</td>
+                <td>@Html.ActionLink("Edit", "EditContainerReceipt", new { controller = "Receiving", id = @item.bulkid }, new { target = "_blank" })</td>
             </tr>
         }
     </tbody>

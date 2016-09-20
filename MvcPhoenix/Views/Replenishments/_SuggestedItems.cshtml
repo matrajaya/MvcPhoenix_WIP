@@ -6,43 +6,65 @@
 
 <div class="panel panel-primary">
     <div class="panel-body">
-        <div class="row">
-            <div class="col-md-12">
-                <label>Suggested Items | </label>
-                @Ajax.ActionLink("+ Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
-               {
-                   InsertionMode = InsertionMode.Replace,
-                   HttpMethod = "GET",
-                   UpdateTargetId = "dialogPlaceholder",
-                   OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-               })
+
+        @if (Model.Count == 0)
+        {
+            <div class="row">
+                <div class="col-md-8">
+                    <label class="lead">No Order Recommendations at @System.DateTime.Now.ToString()</label>
+                </div>
+                <div class="col-md-4">
+                    @Ajax.ActionLink("Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
+                       {
+                           InsertionMode = InsertionMode.Replace,
+                           HttpMethod = "GET",
+                           UpdateTargetId = "dialogPlaceholder",
+                           OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                       }, new { @class = "btn btn-primary btn-block"})
+                </div>
             </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th class="text-center"><i class="fa fa-fw fa-trash-o"></i></th>
-                        <th>#</th>
-                        <th>Mastercode</th>
-                        <th>Division</th>
-                        <th>Name</th>
-                        <th>SupplyID</th>
-                        <th>Bulk Shipped<br />Per Day</th>
-                        <th>Shelf Shipped<br />Per Day</th>
-                        <th>Days<br />Til Expiry</th>
-                        <th>Lead<br />Time</th>
-                        <th>Reorder<br />Weight</th>
-                        <th>Notes</th>
-                        <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                        {
+        }
+
+        @if (Model.Count > 0)
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Suggested Items | </label>
+                    @Ajax.ActionLink("+ Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
+                       {
+                           InsertionMode = InsertionMode.Replace,
+                           HttpMethod = "GET",
+                           UpdateTargetId = "dialogPlaceholder",
+                           OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                       })
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead>
                         <tr>
-                            <td>
-                                @Ajax.ActionLink(" ", "DeleteSuggestedItem", "Replenishments", new { id = @item.id },
+                            <th class="text-center"><i class="fa fa-fw fa-trash-o"></i></th>
+                            <th>#</th>
+                            <th>Master Code</th>
+                            <th>Division</th>
+                            <th>Name</th>
+                            <th>Supply ID</th>
+                            <th>Bulk Shipped<br />Per Day</th>
+                            <th>Shelf Shipped<br />Per Day</th>
+                            <th>Days<br />Til Expiry</th>
+                            <th>Lead<br />Time</th>
+                            <th>Reorder<br />Weight</th>
+                            <th>Notes</th>
+                            <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Ajax.ActionLink(" ", "DeleteSuggestedItem", "Replenishments", new { id = @item.id },
                                 new AjaxOptions
                                 {
                                     UpdateTargetId = "dvItemsList",
@@ -50,46 +72,42 @@
                                     HttpMethod = "GET",
                                     OnSuccess = "updateItemsList"
                                 }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
-                            </td>
-                            <td>@(Model.IndexOf(item) + 1)</td>
-                            <td>@item.mastercode</td>
-                            <td>@item.division</td>
-                            <td>@item.mastername</td>
-                            <td>@item.supplyid</td>
-                            <td>@item.bulkshippedperday</td>
-                            <td>@item.shelfshippedperday</td>
-                            <td>@item.usethisdaystilexpiration</td>
-                            <td>@item.averageleadtime</td>
-                            <td>@item.reorderweight</td>
-                            <td>@item.reordernotes</td>
-                            <td>
-                                @Ajax.ActionLink("Edit", "EditSuggestedItem", "Replenishments", new { id = @item.id },
+                                </td>
+                                <td>@(Model.IndexOf(item) + 1)</td>
+                                <td>@item.mastercode</td>
+                                <td>@item.division</td>
+                                <td>@item.mastername</td>
+                                <td>@item.supplyid</td>
+                                <td>@item.bulkshippedperday</td>
+                                <td>@item.shelfshippedperday</td>
+                                <td>@item.usethisdaystilexpiration</td>
+                                <td>@item.averageleadtime</td>
+                                <td>@item.reorderweight</td>
+                                <td>@item.reordernotes</td>
+                                <td>
+                                    @Ajax.ActionLink("Edit", "EditSuggestedItem", "Replenishments", new { id = @item.id },
                                 new AjaxOptions
                                 {
                                     UpdateTargetId = "dialogPlaceholder",
                                     InsertionMode = InsertionMode.Replace,
                                     OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
                                 })
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         }
-                </tbody>
-            </table>
-        </div>
-        <div class="row">
-            @if (Model.Count == 0)
-            {
-                <div class="col-md-12">
-                    <label style="margin-top:20px;">No Order Recommendations at @System.DateTime.Now.ToString()</label>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    @Html.ActionLink("Print Preview", "PrintSuggested", "Replenishments", null, new { @class = "btn btn-sm btn-block btn-primary", target = "_blank" })
                 </div>
-            }
-            @if (Model.Count > 0)
-            {
-                <div class="col-md-3">@Html.ActionLink("Print Preview", "PrintSuggested", "Replenishments", null, new { @class = "btn btn-sm btn-block btn-primary", target = "_blank" })</div>
-                <div class="col-md-3">@Html.ActionLink("Create Replenishment Orders(s)", "CreateBulkOrders", "Replenishments", null, new { @class = "btn btn-sm btn-block btn-primary", onclick = "return confirm('Create Order(s)?')" })</div>
-                <div class="clearfix"></div>
-            }
-        </div>
+                <div class="col-md-6">
+                    @Html.ActionLink("Create Replenishment Orders(s)", "CreateBulkOrders", "Replenishments", null, new { @class = "btn btn-sm btn-block btn-primary", onclick = "return confirm('Create Order(s)?')" })
+                </div>
+            </div>
+        }
     </div>
 </div>
 

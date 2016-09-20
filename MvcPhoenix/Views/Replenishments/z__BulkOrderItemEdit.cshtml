@@ -9,7 +9,6 @@
     OnSuccess = "RefreshItemsGrid"
 }))
 {
-
     <!-- DO NOT REMOVE -->
     <input type="hidden" id="bulkorderitemid" name="bulkorderitemid" value="@Model.bulkorderitemid" />
     <input type="hidden" id="bulkorderid" name="bulkorderid" value="@Model.bulkorderid" />
@@ -22,17 +21,17 @@
 
     <div class="row">
         <div class="col-md-6 form-group">
-            @Html.LabelFor(m => m.productmasterid)
+            <label>Master Code</label>
             @Html.DropDownListFor(m => m.productmasterid, Model.ListOfProductMasters, new { @class = "form-control" })
             @Html.ValidationMessageFor(m=>m.productmasterid)
         </div>
         <div class="col-md-3 form-group">
-            @Html.LabelFor(m => m.weight)
+            <label>Weight</label>
             @Html.TextBoxFor(m => m.weight, new { type = "number", @class = "form-control" })
             @Html.ValidationMessageFor(m => m.weight)
         </div>
         <div class="col-md-3 form-group">
-            @Html.LabelFor(m => m.itemstatus)
+            <label>Status</label>
             @Html.DropDownListFor(m => m.itemstatus, Model.ListOfItemStatusIDs, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.itemstatus)
         </div>
@@ -40,20 +39,21 @@
 
     <div class="row">
         <div class="col-md-6 form-group">
-            @Html.LabelFor(m => m.eta)
+            <label>ETA</label>
             @Html.TextBoxFor(m => m.eta, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
             @Html.ValidationMessageFor(m => m.eta)
         </div>
         <div class="col-md-6 form-group">
-            @Html.LabelFor(m => m.datereceived)
-            @Html.TextBoxFor(m => m.datereceived, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+            <label>Date Received</label>
+            @*@Html.TextBoxFor(m => m.datereceived, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly", @type = "date" })*@
+            <input class="form-control date-picker" id="datereceived" name="searchorderdate" type="date" required />
             @Html.ValidationMessageFor(m => m.datereceived)
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12 form-group">
-            @Html.LabelFor(m => m.itemnotes)
+            <label>Item Notes</label>
             @Html.TextAreaFor(m => m.itemnotes, new { maxlength = 150, @class = "form-control" })
             @Html.ValidationMessageFor(m => m.itemnotes)
         </div>

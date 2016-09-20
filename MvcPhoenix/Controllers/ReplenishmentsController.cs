@@ -58,12 +58,14 @@ namespace MvcPhoenix.Controllers
             // Always save the Bulk Order then maybe re-direct to SendEmail
             string btn = Request.Form["btnSave"];
             int pk = ReplenishmentsService.fnSaveBulkOrder(obj);
+            
             if (btn == "Send Email")
             {
-                var EmailModel = ReplenishmentsService.fnCreateEmail(obj);
-                return View("~/Views/Replenishments/Email.cshtml", EmailModel);
+                return RedirectToAction("Email", obj);
             }
+
             TempData["SaveResult"] = "Order Saved at " + DateTime.Now.ToString();
+
             return RedirectToAction("Edit", new { id = pk });
         }
 
@@ -77,12 +79,26 @@ namespace MvcPhoenix.Controllers
 
         #region Email -----------------------------------------------------------
 
+        public ActionResult Email(BulkOrder obj)
+        {
+            var EmailModel = ReplenishmentsService.fnCreateEmail(obj);
+            return View("Email", EmailModel);
+        }
+
         [HttpPost]
-        public ActionResult SendEmail(BulkOrderEmailViewModel obj)
+        public ActionResult Email(BulkOrderEmailViewModel obj)
         {
             ReplenishmentsService.fnSendEmail(obj);
-            return RedirectToAction("Edit", new { id = obj.bulkorderid });
+            return RedirectToAction("Index");
         }
+
+        //[HttpPost]
+        //public ActionResult SendEmail(BulkOrderEmailViewModel obj)
+        //{
+        //    ReplenishmentsService.fnSendEmail(obj);
+        //    //return RedirectToAction("Edit", new { id = obj.bulkorderid });
+        //    return View("Index");
+        //}
 
         #endregion Email -----------------------------------------------------------
 
@@ -108,15 +124,21 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveItem(BulkOrderItem obj)
         {
-            int pk = ReplenishmentsService.fnSaveItem(obj);
-            return Content("Item Saved at " + DateTime.Now.ToString());
+            // Catch form if no master code is selected
+            if (obj.productmasterid == 0)
+            {
+                return Content("Please Select Master Code");
+            }
+            else { 
+                int pk = ReplenishmentsService.fnSaveItem(obj);
+                return Content("Item Saved at " + DateTime.Now.ToString());
+            }
         }
 
         [HttpGet]
         public ActionResult DeleteItem(int id)
         {
             int pk = ReplenishmentsService.fnDeleteItem(id);
-            //return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", obj);
             return Content("Deleted");
         }
 
@@ -134,7 +156,6 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CreateFromInventory(int id) // id=productdetailid
         {
-            // pc 09/02/16 add action to respond to request from Inventory
             using (db)
             {
                 var pd = db.tblProductDetail.Find(id);

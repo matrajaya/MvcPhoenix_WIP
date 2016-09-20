@@ -1,7 +1,6 @@
 ﻿@model MvcPhoenix.Models.SuggestedBulkOrderItem
-@*@using (Ajax.BeginForm("SaveSuggItem", "BulkOrders",*@
 
-@using (Ajax.BeginForm("SaveSuggItem", "Replenishments",
+@using (Ajax.BeginForm("SaveSuggestedItem", "Replenishments",
     new AjaxOptions
     {
         HttpMethod = "POST",
@@ -27,8 +26,8 @@
     <div class="row">
         <div class="col-md-12 form-group">
             <label>Item Notes</label>
-            @Html.TextAreaFor(m => m.notes, new { @class = "form-control"})
-            @Html.ValidationMessageFor(m => m.notes)
+            @Html.TextAreaFor(m => m.reordernotes, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.reordernotes)
         </div>
     </div>
     <div class="row">
@@ -47,8 +46,6 @@
 <script type="text/javascript">
     function UpdateGrid() {
         // The target div is NOT in this View, its in the parent (I dont like this)
-        // no good IIS var URL = "/BulkOrders/UpdateGrid";
-        @*var URL = '@Url.Action("UpdateGrid", "BulkOrders")';*@
         var URL = '@Url.Action("UpdateGrid", "Replenishments")';
         $('#dvGridPlaceHolder').load(URL);
         $('#modalouter').modal('hide')

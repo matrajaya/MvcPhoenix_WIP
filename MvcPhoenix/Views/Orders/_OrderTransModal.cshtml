@@ -1,10 +1,5 @@
 ﻿@model MvcPhoenix.Models.OrderTrans
 
-<style>
-    .date-picker {
-        z-index: 1151 !important;
-    }
-</style>
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -40,7 +35,7 @@
                         </div>
                         <div class="col-md-6 form-group">
                             @Html.LabelFor(m => m.transdate, new { @class = "control-label" })
-                            @Html.TextBoxFor(m => m.transdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                            @Html.TextBoxFor(m => m.transdate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
                             @Html.ValidationMessageFor(m => m.transdate)
                         </div>
                     </div>

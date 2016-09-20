@@ -11,7 +11,7 @@
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
-                @ViewBag.Title : @Model.bulkorderid.ToString()
+                @ViewBag.Title: @Model.bulkorderid.ToString()
             </h1>
         </div>
     </div>
@@ -27,38 +27,39 @@
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Order Header</h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="margin-bottom:-20px;">
                     @using (Html.BeginForm("Save", "Replenishments"))
                     {
                         <!-- DO NOT REMOVE -->
                         <input type="hidden" id="clientid" name="clientid" value="@Model.clientid" />
                         <input type="hidden" id="bulkorderid" name="bulkorderid" value="@Model.bulkorderid" />
+                        <input type="hidden" id="orderdate" name="orderdate" value="@Model.orderdate" />
 
                         <div class="row">
                             <div class="col-md-3 form-group">
-                                @Html.LabelFor(m => m.orderdate)
+                                <label>Order Date</label>
                                 <label class="form-control">@String.Format("{0:dd MMM yyyy}", @Model.orderdate)</label>
                             </div>
                             <div class="col-md-3 form-group">
-                                @Html.LabelFor(m => m.supplyid)
+                                <label>Supplier</label>
                                 @Html.DropDownListFor(m => m.supplyid, Model.ListOfSupplyIDs, new { onchange = "GetSupplyIDEmail()", @class = "form-control" })
                             </div>
                             <div class="col-md-3 form-group">
-                                @Html.LabelFor(m => m.bulksupplieremail)
+                                <label>Supplier Email</label>
                                 @Html.TextBoxFor(m => m.bulksupplieremail, new { @class = "form-control" })
                             </div>
                             <div class="col-md-3 form-group">
-                                @Html.LabelFor(m => m.emailsent)
-                                @Html.TextBoxFor(m => m.emailsent, "{0:dd MMM yyyy HH:mm:ss}", new { disabled = "disabled", type = "text", @class = "form-control" })
+                                <label>Last Email Sent Date</label>
+                                @Html.TextBoxFor(m => m.emailsent, new { @class = "form-control", @disabled = "disabled" })
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group">
-                                @Html.LabelFor(m => m.ordercomment)
+                                <label>Order Comments</label>
                                 @Html.TextAreaFor(m => m.ordercomment, new { rows = "4", maxlength = 1000, @class = "form-control", placeholder = "Enter any order level comments here; 1000 chars max" })
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row form-group">
                             <div class="col-md-4">
                                 <input id="btnSave" name="btnSave" type="submit" value="Save Changes" class="btn btn-success btn-block" />
                             </div>
@@ -73,7 +74,7 @@
                         <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
                             <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Saving...
                         </div>
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 text-center form-group">
                             <strong>
                                 <span id="dvOrderSaveResult">
                                     @TempData["SaveResult"]
@@ -95,12 +96,17 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <script type="text/javascript">
     function GetSupplyIDEmail() {
-        // pull email address from tblBulkSupplier
         var myurl = '@Url.Action("GetSupplyIDEmail", "Replenishments")';
-        $.get(myurl, { clientid: $("#clientid").val(), supplyid: $("#supplyid").val() }, function (result) { $("#bulksupplieremail").val(result) });
+
+        $.get(myurl,
+            { clientid: $("#clientid").val(), supplyid: $("#supplyid").val() },
+            function (result) {
+            $("#bulksupplieremail").val(result)
+        });
     }
 </script>

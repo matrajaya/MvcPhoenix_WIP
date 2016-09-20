@@ -1,7 +1,7 @@
 ﻿using MvcPhoenix.EF;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Net.Mail;
 using System.Web.Mvc;
 
 // ************** ApplicationService.cs *****************
@@ -12,50 +12,86 @@ namespace MvcPhoenix.Models
 {
     public class ApplicationService
     {
-        private static string SmtpHostName = "192.168.0.27";
-        private static string SmtpUserName = "??";
-        private static string SmtpPassword = "??";
-        private static int SmtpPort = 25;
-        //static EF.CMCSQL03Entities thisdb = new EF.CMCSQL03Entities();
-
-        public static void fnInsertLog(string UserName, int ClientID, string CalledFrom, string Notes)
+        public static void EmailSmtpSend(string from, string to, string subject, string body)
         {
-            // to be developed - takes parameters and inserts a record into new tblLog
-        }
+            const string hostName = "secure.emailsrvr.com";
+            const string userName = "mailman@chemicalmarketing.com";
+            const string password = "SamPles!23";
+            const int port = 587;
 
-        public static void fnSimpleSendSmtp(string FromAddress, string ToAddress, string Subject, string Body)
-        {
             var msg = new System.Net.Mail.MailMessage();
-            msg.To.Add(new System.Net.Mail.MailAddress(ToAddress));
-            msg.From = new System.Net.Mail.MailAddress(FromAddress);
-            msg.Subject = Subject;
-            msg.Body = Body;
+
+            msg.From = new MailAddress(from);
+            msg.To.Add(new MailAddress(to));
+            msg.Bcc.Add(new MailAddress(from)); //send email copy to self
+            msg.Subject = subject;
+            msg.Body = body;
             msg.IsBodyHtml = true;
+
             using (var smtp = new System.Net.Mail.SmtpClient())
             {
                 var credential = new System.Net.NetworkCredential
                 {
-                    UserName = SmtpUserName,
-                    Password = SmtpPassword
+                    UserName = userName,
+                    Password = password,
                 };
+
                 smtp.Credentials = credential;
-                smtp.Host = SmtpHostName;
-                smtp.Port = SmtpPort;
-                //smtp.EnableSsl = true;
+                smtp.Host = hostName;
+                smtp.Port = port;
+                smtp.EnableSsl = true;
+
                 smtp.Send(msg);
             }
         }
 
-        public static string GetTemplateFromFile(string FileName)
-        {
-            // Easy way to use a .HTML file as an email template
-            string sFileName = HttpContext.Current.Server.MapPath("/Templates/" + FileName);
-            System.IO.StreamReader obj = new System.IO.StreamReader(sFileName);
-            obj = System.IO.File.OpenText(sFileName);
-            string FileContents = obj.ReadToEnd();
-            obj.Close();
-            return FileContents;
-        }
+        //public static void fnInsertLog(string UserName, int ClientID, string CalledFrom, string Notes)
+        //{
+        //    // to be developed - takes parameters and inserts a record into new tblLog
+        //}
+
+        //private static string SmtpHostName = "192.168.0.27";
+        //private static string SmtpUserName = "??";
+        //private static string SmtpPassword = "??";
+        //private static int SmtpPort = 25;
+        //static EF.CMCSQL03Entities thisdb = new EF.CMCSQL03Entities();
+
+        //public static void fnSimpleSendSmtp(string FromAddress, string ToAddress, string Subject, string Body)
+        //{
+        //    var msg = new System.Net.Mail.MailMessage();
+
+        //    msg.To.Add(new System.Net.Mail.MailAddress(ToAddress));
+        //    msg.From = new System.Net.Mail.MailAddress(FromAddress);
+        //    msg.Subject = Subject;
+        //    msg.Body = Body;
+        //    msg.IsBodyHtml = true;
+
+        //    using (var smtp = new System.Net.Mail.SmtpClient())
+        //    {
+        //        var credential = new System.Net.NetworkCredential
+        //        {
+        //            UserName = SmtpUserName,
+        //            Password = SmtpPassword
+        //        };
+
+        //        smtp.Credentials = credential;
+        //        smtp.Host = SmtpHostName;
+        //        smtp.Port = SmtpPort;
+        //        //smtp.EnableSsl = true;
+        //        smtp.Send(msg);
+        //    }
+        //}
+
+        //public static string GetTemplateFromFile(string FileName)
+        //{
+        //    // Easy way to use a .HTML file as an email template
+        //    string sFileName = HttpContext.Current.Server.MapPath("/Templates/" + FileName);
+        //    System.IO.StreamReader obj = new System.IO.StreamReader(sFileName);
+        //    obj = System.IO.File.OpenText(sFileName);
+        //    string FileContents = obj.ReadToEnd();
+        //    obj.Close();
+        //    return FileContents;
+        //}
 
         #region generic select lists
 
@@ -290,18 +326,6 @@ namespace MvcPhoenix.Models
         //    return Json(obj,JsonRequestBehavior.AllowGet);
 
         //}
-
-        //Insert here
-
-        //Insert here
-
-        //Insert here
-
-        //Insert here
-
-        //Insert here
-
-        //Insert here
 
         #endregion specific select lists
     }

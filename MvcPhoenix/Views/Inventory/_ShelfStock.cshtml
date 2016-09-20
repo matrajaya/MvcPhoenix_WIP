@@ -1,60 +1,70 @@
 ﻿@model List<MvcPhoenix.Models.StockViewModel>
 @using MvcPhoenix.Models
 
-<div class="row" style="padding-bottom:15px;">
-    <div class="col-md-3 pull-right">
-        @Html.ActionLink("Create New Stock", "CreatePrePackStock", "Inventory", new { id = @ViewBag.ParentID }, new { @class = "btn btn-primary btn-block form-control" })
-    </div>
-    <div class="clearfix"></div>
-</div>
 
-<div class="table-responsive">
-    <table class="table table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Product<br />Code</th>
-                <th>Warehouse</th>
-                <th>Size</th>
-                <th>Unit<br />Weight</th>
-                <th>Lot#</th>
-                <th>Exp<br />Date</th>
-                <th>Qty<br />On Hand</th>
-                <th>Qty<br />Allocated</th>
-                <th>Status</th>
-                <th>Current<br />Bin</th>
-                <th>Shelf<br />ID</th>
-                <th>Stock<br />ID</th>
-                <th class="text-center"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var row in @Model)
-            {
+@if (Model.Count < 1)
+{
+    <label class="lead">No Shelf Stock Found.</label>
+    <span class="col-md-3 pull-right row">
+        @Html.ActionLink("Create New Stock", "CreatePrePackStock", "Inventory", new { id = @ViewBag.ParentID }, new { @class = "btn btn-primary btn-block form-control" })
+    </span>
+}
+
+@if (Model.Count > 0)
+{
+    <div class="row form-group">
+        <div class="col-md-3 pull-right">
+            @Html.ActionLink("Create New Stock", "CreatePrePackStock", "Inventory", new { id = @ViewBag.ParentID }, new { @class = "btn btn-primary btn-block form-control" })
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
                 <tr>
-                    <td>@row.ProductCode</td>
-                    <td>@row.Warehouse</td>
-                    <td>@row.Size</td>
-                    <td>@row.UnitWeight</td>
-                    <td>@row.LotNumber</td>
-                    <td>@String.Format("{0:dd MMM yyyy}", @row.ExpirationDate)</td>
-                    <td>@row.QtyOnHand</td>
-                    <td>@row.QtyAllocated</td>
-                    <td>@row.ShelfStatus</td>
-                    <td>@row.Bin</td>
-                    <td>@row.ShelfID</td>
-                    <td>@row.StockID</td>
-                    <td class="text-center">
-                        @if (@row.QtyOnHand > 0)
-                        {
-                            @Html.ActionLink("Edit", "EditStock", "Inventory", new { id = @row.StockID })
-                        }
-                        else
-                        {
-                            @:&nbsp;
-                        }
-                    </td>
+                    <th>Product<br />Code</th>
+                    <th>Warehouse</th>
+                    <th>Size</th>
+                    <th>Unit<br />Weight</th>
+                    <th>Lot#</th>
+                    <th>Exp<br />Date</th>
+                    <th>Qty<br />On Hand</th>
+                    <th>Qty<br />Allocated</th>
+                    <th>Status</th>
+                    <th>Current<br />Bin</th>
+                    <th>Shelf<br />ID</th>
+                    <th>Stock<br />ID</th>
+                    <th class="text-center"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var row in @Model)
+                {
+                    <tr>
+                        <td>@row.ProductCode</td>
+                        <td>@row.Warehouse</td>
+                        <td>@row.Size</td>
+                        <td>@row.UnitWeight</td>
+                        <td>@row.LotNumber</td>
+                        <td>@String.Format("{0:dd MMM yyyy}", @row.ExpirationDate)</td>
+                        <td>@row.QtyOnHand</td>
+                        <td>@row.QtyAllocated</td>
+                        <td>@row.ShelfStatus</td>
+                        <td>@row.Bin</td>
+                        <td>@row.ShelfID</td>
+                        <td>@row.StockID</td>
+                        <td class="text-center">
+                            @if (@row.QtyOnHand > 0)
+                            {
+                                @Html.ActionLink("Edit", "EditStock", "Inventory", new { id = @row.StockID })
+                            }
+                            else
+                            {
+                                @:&nbsp;
+                        }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -122,10 +122,6 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Postal, Version=1.0.0.0, Culture=neutral, PublicKeyToken=45719375b8b4d528, processorArchitecture=MSIL">
-      <HintPath>..\packages\Postal.Mvc5.1.2.0\lib\net45\Postal.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="RazorEngine, Version=3.4.1.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
@@ -1230,7 +1226,6 @@
     <Content Include="Views\Replenishments\Create.cshtml" />
     <Content Include="Views\Replenishments\Edit.cshtml" />
     <Content Include="Views\Replenishments\Index.cshtml" />
-    <Content Include="Views\Replenishments\_BulkOrderItemEdit.cshtml" />
     <Content Include="Views\Replenishments\_BulkOrderItems.cshtml" />
     <Content Include="Views\Replenishments\_SearchResults.cshtml" />
     <Content Include="Views\Replenishments\_SuggestedItemEdit.cshtml" />
@@ -1271,9 +1266,6 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Orders\Index.cshtml" />
-    <Content Include="Views\Emails\Web.config" />
-    <Content Include="Views\Emails\_ViewStart.cshtml" />
-    <Content Include="Views\Emails\Example.cshtml" />
     <Content Include="Views\Home\Email.cshtml" />
     <Content Include="Views\Orders\_OrderTransModal.cshtml" />
     <Content Include="Views\Orders\_OrderItemModal.cshtml" />

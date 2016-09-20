@@ -234,13 +234,10 @@ namespace MvcPhoenix.Models
         {
             [Display(Name = "Liter")]
             L,
-
             [Display(Name = "Kilogram")]
             KG,
-
             [Display(Name = "Pound")]
             LB,
-
             [Display(Name = "Gallon")]
             Gal,
         }

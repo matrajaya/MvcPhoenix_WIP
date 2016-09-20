@@ -17,8 +17,11 @@
     </div>
 
     <div class="form-group row">
-        <div class="col-md-12">
+        <div class="col-md-5">
             <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Products Index", "Index")
+        </div>
+        <div class="col-md-7">
+            <label><i class="fa fa-fw fa-star" style="color:gold"></i> - Master Level Fields</label>
             <span class="pull-right label label-info">Product ID: @Model.productdetailid</span>
         </div>
         <div class="col-md-12">
@@ -100,13 +103,13 @@
                                     <li>
                                         @if (Model.accuracyverified == true)
                                         {
-                                            @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline", @disabled = "disabled" })
-                                            <label class="control-label">Accuracy Verified</label>
+                                        @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline", @disabled = "disabled" })
+                                        <label class="control-label">Accuracy Verified</label>
                                         }
                                         else
                                         {
-                                            @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline" })
-                                            <label class="control-label">Verify Accuracy</label>
+                                        @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified, new { @class = "checkbox-inline" })
+                                        <label class="control-label">Verify Accuracy</label>
                                         }
                                     </li>
                                     <li>
@@ -120,7 +123,7 @@
                                 </ul>
                                 @if (Model.accuracyverified == true)
                                 {
-                                    <label>Accuracy Verified By:</label> <em>@Html.DisplayFor(m => m.accuracyverifiedby)</em>
+                                <label>Accuracy Verified By:</label> <em>@Html.DisplayFor(m => m.accuracyverifiedby)</em>
                                 }
                             </div>
                         </div>
@@ -259,25 +262,43 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-10">
+                    <div class="col-md-10">
                         <label>Rejection Criterion</label>
                         @Html.TextAreaFor(m => m.rejectioncriterion, new { @class = "form-control", @rows = 1 })
                         @Html.ValidationMessageFor(m => m.rejectioncriterion)
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="col-md-2">
                         <label>Plant Lead Time</label>
                         @Html.TextBoxFor(m => m.leadtime, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.leadtime)
                     </div>
                 </div>
-                <div class="row">
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#alertnotepan"><i class="fa fa-suitcase fa-fw"></i> Alert Notes</h3>
+            </div>
+            <div id="alertnotepan" class="panel-body collapse">
+                <div class="row form-group">
                     <div class="col-md-6">
                         <label>Sample Request Alert Note</label>
                         @Html.TextAreaFor(m => m.alertnotesorderentry, new { @class = "form-control" })
                     </div>
                     <div class="col-md-6">
-                        <label>Receiving Alert Note</label>
+                        <label>Receiving Alert Note <i class="fa fa-fw fa-star" style="color:gold"></i></label>
                         @Html.TextAreaFor(m => m.alertnotesreceiving, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Shipping Alert Note</label>
+                        @Html.TextAreaFor(m => m.alertnotesshipping, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Packout Request Alert Note <i class="fa fa-fw fa-star" style="color:gold"></i></label>
+                        @Html.TextAreaFor(m => m.alertnotespackout, new { @class = "form-control" })
                     </div>
                 </div>
             </div>
@@ -344,7 +365,7 @@
                     </div>
                     <div class="col-md-2">
                         <label>Tech Sheet Available</label>
-                        <p>@Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet)</p>
+                        @Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet, new { @class = "checkbox" })
                     </div>
                 </div>
             </div>
@@ -352,7 +373,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#ghs"><i class="fa fa-suitcase fa-fw"></i> GHS Information*- Work In Progress</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#ghs"><i class="fa fa-suitcase fa-fw"></i> GHS Information* <i class="fa fa-fw fa-star" style="color:gold"></i></h3>
             </div>
             <div id="ghs" class="panel-body collapse">
                 <div class="row">
@@ -487,7 +508,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#health"><i class="fa fa-suitcase fa-fw"></i> Health Hazard Information</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#health"><i class="fa fa-suitcase fa-fw"></i> Health Hazard Information <i class="fa fa-fw fa-star" style="color:gold"></i></h3>
             </div>
             <div id="health" class="panel-body collapse">
                 <div class="row">
@@ -601,7 +622,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#infoingredients"><i class="fa fa-suitcase fa-fw"></i> Ingredients Information (CAS / EC)</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#infoingredients"><i class="fa fa-suitcase fa-fw"></i> Ingredients Information (CAS / EC) <i class="fa fa-fw fa-star" style="color:gold"></i></h3>
             </div>
             <div id="infoingredients" class="panel-body collapse">
                 <div class="row">
@@ -618,7 +639,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#protection"><i class="fa fa-suitcase fa-fw"></i> Chemical Properties & Protection Gear</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#protection"><i class="fa fa-suitcase fa-fw"></i> Chemical Properties & Protection Gear <i class="fa fa-fw fa-star" style="color:gold"></i></h3>
             </div>
             <div id="protection" class="panel-body collapse">
                 <div class="row">

@@ -10,6 +10,7 @@
         UpdateTargetId = "dialogPlaceholder",
         OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
     })
+    <span class="pull-right">@Model.Count items</span>
 
     <div class="table-responsive">
         <table class="table table-hover table-striped">
@@ -32,13 +33,12 @@
                     <tr>
                         <td>
                             @Ajax.ActionLink(" ", "DeleteItem", "Replenishments", new { id = @item.bulkorderitemid },
-                    new AjaxOptions
-                    {
-                        Confirm = "Delete Item?",
-                        HttpMethod = "GET",
-                        OnSuccess = "UpdateItemsList"
-                    },
-                      new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                            new AjaxOptions
+                            {
+                                Confirm = "Delete Item?",
+                                HttpMethod = "GET",
+                                OnSuccess = "UpdateItemsList"
+                            }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
                         </td>
                         <td>@item.mastercode</td>
                         <td>@item.mastername</td>
@@ -51,7 +51,7 @@
                     </tr>
                 }
             </tbody>
-</table>
+        </table>
     </div>
 </div>
 
