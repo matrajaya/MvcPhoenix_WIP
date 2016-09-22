@@ -650,7 +650,9 @@ namespace MvcPhoenix.Services
                     }
                 }
                 q.AlertNotesShipping = dbPD.AlertNotesShipping;
-                q.AlertNotesPackout = dbPD.AlertNotesPackout;
+                var dbPM = db.tblProductMaster.Find(dbPD.ProductMasterID);
+                q.AlertNotesPackout = dbPM.AlertNotesPackout;
+				
                 q.AlertNotesOrderEntry = dbPD.AlertNotesOrderEntry;  // comes from profiles
 
                 if (dbPD.AIRUNNUMBER == "UN3082" | dbPD.AIRUNNUMBER == "UN3077" | dbPD.GRNUNNUMBER == "UN3082" | dbPD.GRNUNNUMBER == "UN3077")

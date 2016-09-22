@@ -526,6 +526,7 @@
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ClientViewModel.cs" />
+    <Compile Include="Models\GHSViewModels.cs" />
     <Compile Include="Models\InventoryViewModel.cs" />
     <Compile Include="Models\InvoiceViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -543,6 +544,7 @@
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\BulkService.cs" />
     <Compile Include="Services\ClientService.cs" />
+    <Compile Include="Services\GHSService.cs" />
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Services\OrderService.cs" />

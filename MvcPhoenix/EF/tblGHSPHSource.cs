@@ -16,8 +16,7 @@ namespace MvcPhoenix.EF
     {
         public int PHsourceID { get; set; }
         public string PHNumber { get; set; }
-        public string PHLanguage { get; set; }
-        public string Warehouse { get; set; }
+        public string Language { get; set; }
         public string PHStatement { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }

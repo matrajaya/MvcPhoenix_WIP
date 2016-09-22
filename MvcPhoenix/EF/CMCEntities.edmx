@@ -607,8 +607,8 @@
             <PropertyRef Name="PHDetailID" />
           </Key>
           <Property Name="PHDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PHsourceID" Type="int" />
           <Property Name="ProductDetailID" Type="int" />
+          <Property Name="PHNumber" Type="nvarchar" MaxLength="25" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -620,8 +620,7 @@
           </Key>
           <Property Name="PHsourceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PHNumber" Type="nvarchar" MaxLength="25" />
-          <Property Name="PHLanguage" Type="nvarchar" MaxLength="2" />
-          <Property Name="Warehouse" Type="nvarchar" MaxLength="2" />
+          <Property Name="Language" Type="nvarchar" MaxLength="2" />
           <Property Name="PHStatement" Type="nvarchar" MaxLength="1000" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
@@ -1284,8 +1283,6 @@
           <Property Name="UpdateDate" Type="datetime" />
           <Property Name="UpdateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="AlertNotesShipping" Type="nvarchar" MaxLength="1000" />
-          <Property Name="AlertNotesReceiving" Type="nvarchar" MaxLength="1000" />
-          <Property Name="AlertNotesPackout" Type="nvarchar" MaxLength="1000" />
           <Property Name="AlertNotesOrderEntry" Type="nvarchar" MaxLength="1000" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="MasterCode_MDB" Type="nvarchar" MaxLength="20" />
@@ -1421,6 +1418,8 @@
           <Property Name="DustFilter" Type="bit" />
           <Property Name="TemperatureControlledStorage" Type="bit" />
           <Property Name="PrePacked" Type="bit" />
+          <Property Name="AlertNotesReceiving" Type="nvarchar" MaxLength="1000" />
+          <Property Name="AlertNotesPackout" Type="nvarchar" MaxLength="1000" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -2765,8 +2764,8 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
             <PropertyRef Name="PHDetailID" />
           </Key>
           <Property Name="PHDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PHsourceID" Type="Int32" />
           <Property Name="ProductDetailID" Type="Int32" />
+          <Property Name="PHNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
@@ -2778,8 +2777,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           </Key>
           <Property Name="PHsourceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PHNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="PHLanguage" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Name="PHStatement" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
@@ -3442,8 +3440,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="AlertNotesShipping" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="AlertNotesReceiving" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="AlertNotesPackout" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="AlertNotesOrderEntry" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -3579,6 +3575,8 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="DustFilter" Type="Boolean" />
           <Property Name="TemperatureControlledStorage" Type="Boolean" />
           <Property Name="PrePacked" Type="Boolean" />
+          <Property Name="AlertNotesReceiving" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AlertNotesPackout" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
@@ -4679,8 +4677,8 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="PHNumber" ColumnName="PHNumber" />
                 <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
-                <ScalarProperty Name="PHsourceID" ColumnName="PHsourceID" />
                 <ScalarProperty Name="PHDetailID" ColumnName="PHDetailID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4693,8 +4691,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="PHStatement" ColumnName="PHStatement" />
-                <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
-                <ScalarProperty Name="PHLanguage" ColumnName="PHLanguage" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
                 <ScalarProperty Name="PHNumber" ColumnName="PHNumber" />
                 <ScalarProperty Name="PHsourceID" ColumnName="PHsourceID" />
               </MappingFragment>
@@ -5291,8 +5288,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
                 <ScalarProperty Name="AlertNotesOrderEntry" ColumnName="AlertNotesOrderEntry" />
-                <ScalarProperty Name="AlertNotesPackout" ColumnName="AlertNotesPackout" />
-                <ScalarProperty Name="AlertNotesReceiving" ColumnName="AlertNotesReceiving" />
                 <ScalarProperty Name="AlertNotesShipping" ColumnName="AlertNotesShipping" />
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
@@ -5388,6 +5383,8 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
                 <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="AlertNotesPackout" ColumnName="AlertNotesPackout" />
+                <ScalarProperty Name="AlertNotesReceiving" ColumnName="AlertNotesReceiving" />
                 <ScalarProperty Name="PrePacked" ColumnName="PrePacked" />
                 <ScalarProperty Name="TemperatureControlledStorage" ColumnName="TemperatureControlledStorage" />
                 <ScalarProperty Name="DustFilter" ColumnName="DustFilter" />

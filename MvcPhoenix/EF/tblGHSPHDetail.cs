@@ -15,8 +15,8 @@ namespace MvcPhoenix.EF
     public partial class tblGHSPHDetail
     {
         public int PHDetailID { get; set; }
-        public Nullable<int> PHsourceID { get; set; }
         public Nullable<int> ProductDetailID { get; set; }
+        public string PHNumber { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

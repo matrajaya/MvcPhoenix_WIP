@@ -82,12 +82,9 @@ namespace MvcPhoenix.Services
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                // It seems alerts should be on the product master level since. Discuss... - Iffy
-                // product master level = receivingalertnote, packoutalertnote
-                // product detail level = orderalertnote, shippingalertnote
-                // var pm = db.tblProductMaster.Find(pd.ProductMasterID);
                 var pd = db.tblProductDetail.Find(vm.PP.productdetailid);
-                pd.AlertNotesReceiving = vm.PP.alertnotesreceiving;
+				var pm = db.tblProductMaster.Find(pd.ProductMasterID);
+                pm.AlertNotesReceiving = vm.PP.alertnotesreceiving;
                 
                 db.SaveChanges();
             }

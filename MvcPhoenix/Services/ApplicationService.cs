@@ -45,54 +45,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-        //public static void fnInsertLog(string UserName, int ClientID, string CalledFrom, string Notes)
-        //{
-        //    // to be developed - takes parameters and inserts a record into new tblLog
-        //}
-
-        //private static string SmtpHostName = "192.168.0.27";
-        //private static string SmtpUserName = "??";
-        //private static string SmtpPassword = "??";
-        //private static int SmtpPort = 25;
-        //static EF.CMCSQL03Entities thisdb = new EF.CMCSQL03Entities();
-
-        //public static void fnSimpleSendSmtp(string FromAddress, string ToAddress, string Subject, string Body)
-        //{
-        //    var msg = new System.Net.Mail.MailMessage();
-
-        //    msg.To.Add(new System.Net.Mail.MailAddress(ToAddress));
-        //    msg.From = new System.Net.Mail.MailAddress(FromAddress);
-        //    msg.Subject = Subject;
-        //    msg.Body = Body;
-        //    msg.IsBodyHtml = true;
-
-        //    using (var smtp = new System.Net.Mail.SmtpClient())
-        //    {
-        //        var credential = new System.Net.NetworkCredential
-        //        {
-        //            UserName = SmtpUserName,
-        //            Password = SmtpPassword
-        //        };
-
-        //        smtp.Credentials = credential;
-        //        smtp.Host = SmtpHostName;
-        //        smtp.Port = SmtpPort;
-        //        //smtp.EnableSsl = true;
-        //        smtp.Send(msg);
-        //    }
-        //}
-
-        //public static string GetTemplateFromFile(string FileName)
-        //{
-        //    // Easy way to use a .HTML file as an email template
-        //    string sFileName = HttpContext.Current.Server.MapPath("/Templates/" + FileName);
-        //    System.IO.StreamReader obj = new System.IO.StreamReader(sFileName);
-        //    obj = System.IO.File.OpenText(sFileName);
-        //    string FileContents = obj.ReadToEnd();
-        //    obj.Close();
-        //    return FileContents;
-        //}
-
         #region generic select lists
 
         public static List<SelectListItem> fnClientIDs()
@@ -229,20 +181,6 @@ namespace MvcPhoenix.Models
 
         #region specific select lists
 
-        //public static List<SelectListItem> fnBolComments(int id)
-        //{
-        //    using (var db = new CMCSQL03Entities())
-        //    {
-        //        List<SelectListItem> mylist = new List<SelectListItem>();
-        //        mylist = (from t in db.tblBOLComment
-        //                  where t.ClientID == id
-        //                  orderby t.BOLComment
-        //                  select new SelectListItem { Value = t.BOLCommentID.ToString(), Text = t.BOLComment }).ToList();
-        //        mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select BOL Comment" });
-        //        return mylist;
-        //    }
-        //}
-
         public static List<SelectListItem> fnBulkSuppliers(int id)
         {
             using (var db = new CMCSQL03Entities())
@@ -299,33 +237,6 @@ namespace MvcPhoenix.Models
                 return mylist;
             }
         }
-
-        //public partial class DTO_Application
-        //{
-        //}
-
-        //Insert here
-        //public ActionResult LookupUN(string UN)
-        //{
-        //    //string test="Group1";
-        //    DTO_UN obj = new DTO_UN();
-        //    using (var db = new EF.CMCSQL03Entities())
-        //     {
-        //         var q = (from t in db.tblUN where t.UNNumber == UN select t).FirstOrDefault();
-        //         if (q != null)
-        //         {
-        //             obj.hazardclass = q.HazardClass;
-        //             obj.propershippingname = q.ProperShippingName;
-        //             obj.nosname = q.NOSName;
-        //             obj.labelreq = q.LabelReq;
-        //             obj.subclass = q.SubClass;
-        //             obj.subsidlabelreq = q.SubSidLabelReq;
-        //             obj.packinggroup = q.PackingGroup;
-        //         }
-        //     }
-        //    return Json(obj,JsonRequestBehavior.AllowGet);
-
-        //}
 
         #endregion specific select lists
     }

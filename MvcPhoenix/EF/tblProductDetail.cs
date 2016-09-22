@@ -100,8 +100,6 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateUser { get; set; }
         public string AlertNotesShipping { get; set; }
-        public string AlertNotesReceiving { get; set; }
-        public string AlertNotesPackout { get; set; }
         public string AlertNotesOrderEntry { get; set; }
         public string Company_MDB { get; set; }
         public string MasterCode_MDB { get; set; }

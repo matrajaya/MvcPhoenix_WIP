@@ -220,8 +220,8 @@ namespace MvcPhoenix.Models
                 PP.seamfagno = qd.SEAMFAGNO;
 
                 PP.alertnotesshipping = qd.AlertNotesShipping;
-                PP.alertnotesreceiving = qd.AlertNotesReceiving;
-                PP.alertnotespackout = qd.AlertNotesPackout;
+                //PP.alertnotesreceiving = qd.AlertNotesReceiving;
+                //PP.alertnotespackout = qd.AlertNotesPackout;
                 PP.alertnotesorderentry = qd.AlertNotesOrderEntry;
 
                 PP.accuracyverified = qd.AccuracyVerified;
@@ -367,6 +367,10 @@ namespace MvcPhoenix.Models
                 PP.dustfilter = q.DustFilter;
                 PP.temperaturecontrolledstorage = q.TemperatureControlledStorage;
                 PP.prepacked = q.PrePacked;
+				
+				PP.alertnotesreceiving = q.AlertNotesReceiving;
+                PP.alertnotespackout = q.AlertNotesPackout;
+				
                 PP.CreateDateMaster = q.CreateDate;
                 PP.CreateUserMaster = q.CreateUser;
                 PP.UpdateDateMaster = q.UpdateDate;
@@ -482,8 +486,8 @@ namespace MvcPhoenix.Models
                 q.SEAEMSNO = PP.seaemsno;
                 q.SEAMFAGNO = PP.seamfagno;
                 q.AlertNotesShipping = PP.alertnotesshipping;
-                q.AlertNotesReceiving = PP.alertnotesreceiving;
-                q.AlertNotesPackout = PP.alertnotespackout;
+                //q.AlertNotesReceiving = PP.alertnotesreceiving;
+                //q.AlertNotesPackout = PP.alertnotespackout;
                 q.AlertNotesOrderEntry = PP.alertnotesorderentry;
                 q.RCRAUNNumber = PP.rcraunnumber;
                 q.RCRAPKGRP = PP.rcrapkgrp;
@@ -627,6 +631,9 @@ namespace MvcPhoenix.Models
                 q.DustFilter = pm.dustfilter;
                 q.TemperatureControlledStorage = pm.temperaturecontrolledstorage;
                 q.PrePacked = pm.prepacked;
+				
+				q.AlertNotesReceiving = pm.alertnotesreceiving;
+                q.AlertNotesPackout = pm.alertnotespackout;
 
                 db.SaveChanges();
             }

@@ -139,6 +139,8 @@ namespace MvcPhoenix.EF
         public Nullable<bool> DustFilter { get; set; }
         public Nullable<bool> TemperatureControlledStorage { get; set; }
         public Nullable<bool> PrePacked { get; set; }
+        public string AlertNotesReceiving { get; set; }
+        public string AlertNotesPackout { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string Location_MDB { get; set; }
