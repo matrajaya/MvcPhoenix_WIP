@@ -84,7 +84,11 @@ namespace MvcPhoenix.Services
             {
                 var pd = db.tblProductDetail.Find(vm.PP.productdetailid);
 				var pm = db.tblProductMaster.Find(pd.ProductMasterID);
+
+                pm.AlertNotesPackout = vm.PP.alertnotespackout;
                 pm.AlertNotesReceiving = vm.PP.alertnotesreceiving;
+                pd.AlertNotesOrderEntry = vm.PP.alertnotesorderentry;
+                pd.AlertNotesShipping = vm.PP.alertnotesshipping;
                 
                 db.SaveChanges();
             }

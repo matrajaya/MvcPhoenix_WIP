@@ -178,6 +178,7 @@ namespace MvcPhoenix.Controllers
             {
                 var obj = (from t in db.tblProductNotes
                            where t.ProductDetailID == id
+                           orderby t.NoteDate descending
                            select new ProductNote
                            {
                                productnoteid = t.ProductNoteID,
@@ -185,7 +186,9 @@ namespace MvcPhoenix.Controllers
                                notedate = t.NoteDate,
                                notes = t.Notes,
                                reasoncode = t.ReasonCode,
-                               ListOfReasonCodes = (from r in db.tblReasonCode orderby r.Reason select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                               ListOfReasonCodes = (from r in db.tblReasonCode 
+                                                    orderby r.Reason 
+                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
                            }).ToList();
                 ViewBag.ParentKey = id;
                 return PartialView("~/Views/Products/_LogNotes.cshtml", obj);

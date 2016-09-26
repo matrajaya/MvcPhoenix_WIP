@@ -141,8 +141,8 @@ namespace MvcPhoenix.Models
                 var qd = (from t in db.tblProductDetail where t.ProductDetailID == PP.productdetailid select t).FirstOrDefault();
                 PP.productdetailid = qd.ProductDetailID;
                 PP.productmasterid = qd.ProductMasterID;
-                //PP.sglegacyid = qd.SGLegacyID;
                 PP.divisionid = qd.DivisionID;
+                //PP.sglegacyid = qd.SGLegacyID;
                 //PP.busarea = qd.BusArea;
                 PP.productcode = qd.ProductCode;
                 PP.productname = qd.ProductName;
@@ -220,8 +220,6 @@ namespace MvcPhoenix.Models
                 PP.seamfagno = qd.SEAMFAGNO;
 
                 PP.alertnotesshipping = qd.AlertNotesShipping;
-                //PP.alertnotesreceiving = qd.AlertNotesReceiving;
-                //PP.alertnotespackout = qd.AlertNotesPackout;
                 PP.alertnotesorderentry = qd.AlertNotesOrderEntry;
 
                 PP.accuracyverified = qd.AccuracyVerified;
@@ -486,8 +484,6 @@ namespace MvcPhoenix.Models
                 q.SEAEMSNO = PP.seaemsno;
                 q.SEAMFAGNO = PP.seamfagno;
                 q.AlertNotesShipping = PP.alertnotesshipping;
-                //q.AlertNotesReceiving = PP.alertnotesreceiving;
-                //q.AlertNotesPackout = PP.alertnotespackout;
                 q.AlertNotesOrderEntry = PP.alertnotesorderentry;
                 q.RCRAUNNumber = PP.rcraunnumber;
                 q.RCRAPKGRP = PP.rcrapkgrp;
@@ -498,7 +494,6 @@ namespace MvcPhoenix.Models
                 q.RCRASHIPNAME = PP.rcrashipname;
                 q.RCRANOSNAME = PP.rcranosname;
                 q.Active = PP.active;
-
                 q.AccuracyVerified = PP.accuracyverified;
                 if (q.AccuracyVerified == true)
                 {
@@ -631,7 +626,6 @@ namespace MvcPhoenix.Models
                 q.DustFilter = pm.dustfilter;
                 q.TemperatureControlledStorage = pm.temperaturecontrolledstorage;
                 q.PrePacked = pm.prepacked;
-				
 				q.AlertNotesReceiving = pm.alertnotesreceiving;
                 q.AlertNotesPackout = pm.alertnotespackout;
 
@@ -721,7 +715,6 @@ namespace MvcPhoenix.Models
         public static ProductNote fnCreateProductNote(int id)
         {
             ProductNote PN = new ProductNote();
-
             using (var db = new EF.CMCSQL03Entities())
             {
                 PN.productnoteid = -1;
@@ -811,7 +804,6 @@ namespace MvcPhoenix.Models
         public static Cas fnGetCAS(int id)
         {
             Cas CS = new Cas();
-
             using (var db = new EF.CMCSQL03Entities())
             {
                 var q = (from t in db.tblCAS
@@ -873,6 +865,7 @@ namespace MvcPhoenix.Models
             {
                 db.Database.ExecuteSqlCommand("Delete from tblCAS Where CASID=" + id);
             }
+
             return id;
         }
 

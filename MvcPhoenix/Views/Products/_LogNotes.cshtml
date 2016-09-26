@@ -1,7 +1,7 @@
 ﻿@model List<MvcPhoenix.Models.ProductNote>
 
 <div id="dvLogNotes">
-    <div class="row form-group">
+    <div class="row">
         <div class="col-md-3 pull-right">
             @Ajax.ActionLink("+ Add New Log", "CreateProductNote", "Products", new { id = @ViewBag.ParentKey }, new AjaxOptions
             {

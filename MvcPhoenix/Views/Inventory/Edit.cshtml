@@ -56,7 +56,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#generalinfopan"><i class="fa fa-file-text-o fa-fw"></i>General Product Information</h3>
             </div>
-            <div id="generalinfopan" class="panel-body collapse in">
+            <div id="generalinfopan" class="panel-body collapse in" style="margin-bottom:-20px;">
                 <div class="row">
                     <div class="col-md-3 form-group">
                         <label>Product Code</label>
@@ -78,19 +78,17 @@
                             @Html.ListBox("List of Equivalents", @Model.PP.ListOfEquivalents, new { @class = "form-control", @size = 8 })
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 form-group">
                         <label>Specific Gravity</label>
                         <input class="form-control" value="@Model.PP.specificgravity" disabled="disabled" />
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 form-group">
                         <label>Density</label>
                         <input class="form-control" value="@Model.PP.density" disabled="disabled" />
                     </div>
-                    <div class="col-md-3">
-                        <div class="alert alert-danger">
-                            <label>Discontinued</label>
-                            <input type="checkbox" checked="@Model.PP.discontinued" disabled="disabled">
-                        </div>
+                    <div class="col-md-3 form-group">
+                        <label>Discontinued</label>
+                        <input type="checkbox" checked="@Model.PP.discontinued" disabled="disabled" class="checkbox">
                     </div>
                     <div class="col-md-9">
                         <div class="panel panel-info">
@@ -110,7 +108,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label>Pack on Receipt</label>
-                                        <input type="checkbox" checked="@Model.PP.packoutonreceipt" disabled="disabled">
+                                        <input type="checkbox" checked="@Model.PP.packoutonreceipt" disabled="disabled" class="checkbox">
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +121,7 @@
                             <div class="panel-heading">
                                 <h3 class="panel-title">Storage Location</h3>
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body" style="margin-bottom:-20px;">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <ul class="list-unstyled list-3-col">
@@ -142,13 +140,12 @@
                 </div>
             </div>
         </div>
-                <!--End: General Product Information Section-->
-                <!--Start: Inventory Status Section-->
+
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#inventorystatpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Status</h3>
             </div>
-            <div id="inventorystatpan" class="panel-body collapse in">
+            <div id="inventorystatpan" class="panel-body collapse in" style="margin-bottom:-20px;">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="panel panel-info">
@@ -178,7 +175,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-8">
                         <div class="panel panel-info">
                             <div class="panel-heading">
@@ -245,20 +241,16 @@
                 </div>
             </div>
         </div>
-        <!--End: Inventory Status Section-->
-        <!--Start: Replenishment Orders Section-->
+
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#replenishorderpan"><i class="fa fa-file-text-o fa-fw"></i> Open Replenishment Orders</h3>
             </div>
-            <div id="replenishorderpan" class="panel-body collapse in">
-                <div id="">
-                    @{Html.RenderAction("BulkOrdersList", "Inventory", new { id = @Model.PP.productdetailid });}
-                </div>
+            <div id="replenishorderpan" class="panel-body collapse in" style="margin-bottom:-20px;">
+                @{Html.RenderAction("BulkOrdersList", "Inventory", new { id = @Model.PP.productdetailid });}
             </div>
         </div>
-        <!--End: Replenishment Orders Section-->
-        <!--Start: Bulk Stock Section-->
+
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#bulkstockpan"><i class="fa fa-file-text-o fa-fw"></i> Bulk Stock*</h3>
@@ -269,8 +261,7 @@
                 </div>
             </div>
         </div>
-                <!--End: Bulk Stock Section-->
-                <!--Start: Shelf Stock Section-->
+
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#shelfstockpan"><i class="fa fa-file-text-o fa-fw"></i> Shelf Stock</h3>
@@ -281,38 +272,61 @@
                 </div>
             </div>
         </div>
-                <!--End: Shelf Stock Section-->
-                <!--Start: Inventory Log Section-->
+
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#inventorylogpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Log</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#alertnotepan"><i class="fa fa-suitcase fa-fw"></i> Alert Notes</h3>
             </div>
-            <div id="inventorylogpan" class="panel-body collapse in">
-                <div class="row">
-                    <div class="pull-right col-md-3">
-                        <input type="button" value="Create New Log" class="btn btn-primary btn-block" onclick="alert('Processing... Sorry In Progress')" />
+            <div id="alertnotepan" class="panel-body collapse in">
+                <div class="row form-group">
+                    <div class="col-md-6 form-group">
+                        <label>Sample Request Alert Note</label>
+                        <span class="pull-right form-inline">
+                            <em>shown if added in an order request</em>
+                        </span>
+                        @Html.TextAreaFor(m => m.PP.alertnotesorderentry, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Receiving Alert Note <i class="fa fa-fw fa-star" style="color:gold"></i></label>
+                        <span class="pull-right form-inline">
+                            <em>shown upon receipt of bulk</em>
+                        </span>
+                        @Html.TextAreaFor(m => m.PP.alertnotesreceiving, new { @class = "form-control" })
                     </div>
                 </div>
-                @{Html.RenderAction("ProductLogList", "Inventory", new { id = @Model.PP.productdetailid });}
-
-                <hr />
                 <div class="row">
-                    <div class="col-md-12 form-group">
-                        <label>Receiving Inventory Note</label>
+                    <div class="col-md-6 form-group">
+                        <label>Shipping Alert Note</label>
                         <span class="pull-right form-inline">
-                            @*@Html.CheckBox("vmMasterNotesAlert", Model.vmMasterNotesAlert != null && (bool)Model.vmMasterNotesAlert, new { @class = "checkbox-inline" })*@
-                            <em>This note is shown upon receipt of product</em>
+                            <em>shown upon shipment</em>
                         </span>
-                        @Html.TextAreaFor(m => m.PP.alertnotesreceiving, new { @class = "form-control", @rows = "4" })
+                        @Html.TextAreaFor(m => m.PP.alertnotesshipping, new { @class = "form-control" })
                     </div>
+                    <div class="col-md-6 form-group">
+                        <label>Packout Request Alert Note <i class="fa fa-fw fa-star" style="color:gold"></i></label>
+                        <span class="pull-right form-inline">
+                            <em>shown during packout process</em>
+                        </span>
+                        @Html.TextAreaFor(m => m.PP.alertnotespackout, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
                     <div class="pull-right col-md-3">
                         <input type="submit" value="Save Note" class="btn btn-success btn-block" />
                     </div>
                 </div>
             </div>
         </div>
-                <!--End: Inventory Note Section-->
-                <!--Start: Product Log Section-->
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#inventorylogpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Log*</h3>
+            </div>
+            <div id="inventorylogpan" class="panel-body collapse in">
+                @{Html.RenderAction("InventoryLogList", "Inventory", new { id = @Model.PP.productdetailid });}
+            </div>
+        </div>
+
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#lognotespan"><i class="fa fa-file-text-o fa-fw"></i> Product Log</h3>
@@ -321,7 +335,6 @@
                 @{Html.RenderAction("ProductLogList", "Inventory", new { id = @Model.PP.productdetailid });}
             </div>
         </div>
-                <!--End: Log Notes Section-->
 
         <div class="form-group row">
             <div class="col-lg-12">

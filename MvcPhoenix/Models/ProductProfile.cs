@@ -111,7 +111,6 @@ namespace MvcPhoenix.Models
 
         // retire these 2 later
         public DateTime? masterlastupdate { get; set; }
-
         public DateTime? detaillastupdate { get; set; }
 
         [Display(Name = "Alert Notes - Shipping")]

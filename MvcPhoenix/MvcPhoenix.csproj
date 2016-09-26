@@ -270,6 +270,7 @@
     <Compile Include="Controllers\ReceivingController.cs" />
     <Compile Include="Controllers\ReplenishmentsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\GHSController.cs" />
     <Compile Include="Controllers\ShelfMasterController.cs" />
     <Compile Include="DataLayer\ApplicationDbContext.cs" />
     <Compile Include="DataLayer\ApplicationUserConfiguration.cs" />
@@ -1296,6 +1297,12 @@
     <Content Include="Views\Inventory\PrePackStock.cshtml" />
     <Content Include="Views\Inventory\_ProductLogNotes.cshtml" />
     <Content Include="Views\Products\_ShelfSize.cshtml" />
+    <Content Include="Views\Inventory\_InventoryLogNotes.cshtml" />
+    <Content Include="Views\Inventory\_InventoryLogNotesModal.cshtml" />
+    <Content Include="Views\GHS\_Edit.cshtml" />
+    <Content Include="Views\GHS\Index.cshtml" />
+    <Content Include="Views\Products\_GHSInfo.cshtml" />
+    <Content Include="Views\GHS\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

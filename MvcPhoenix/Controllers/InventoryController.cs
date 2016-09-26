@@ -37,7 +37,6 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult EditBulk(int id)   // redirect to bulk edit
         {
-            //ViewBag.SearchName = null;
             var vm = MvcPhoenix.Services.BulkService.fnFillBulkContainerFromDB(id);
             return View("~/Views/Bulk/Edit.cshtml", vm);
         }
@@ -179,12 +178,13 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public ActionResult ProductLogList(int id)
+        public ActionResult InventoryLogList(int id) // placeholder for now
         {
             using (var db = new EF.CMCSQL03Entities())
             {
                 var obj = (from t in db.tblProductNotes
                            where t.ProductDetailID == id
+                           orderby t.NoteDate descending
                            select new ProductNote
                            {
                                productnoteid = t.ProductNoteID,
@@ -192,7 +192,33 @@ namespace MvcPhoenix.Controllers
                                notedate = t.NoteDate,
                                notes = t.Notes,
                                reasoncode = t.ReasonCode,
-                               ListOfReasonCodes = (from r in db.tblReasonCode orderby r.Reason select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                               ListOfReasonCodes = (from r in db.tblReasonCode 
+                                                    orderby r.Reason 
+                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                           }).ToList();
+                ViewBag.ParentKey = id;
+
+                return PartialView("~/Views/Inventory/_InventoryLogNotes.cshtml", obj); 
+            }
+        }
+
+        public ActionResult ProductLogList(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var obj = (from t in db.tblProductNotes
+                           where t.ProductDetailID == id
+                           orderby t.NoteDate descending
+                           select new ProductNote
+                           {
+                               productnoteid = t.ProductNoteID,
+                               productdetailid = t.ProductDetailID,
+                               notedate = t.NoteDate,
+                               notes = t.Notes,
+                               reasoncode = t.ReasonCode,
+                               ListOfReasonCodes = (from r in db.tblReasonCode 
+                                                    orderby r.Reason 
+                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
                            }).ToList();
                 ViewBag.ParentKey = id;
 
