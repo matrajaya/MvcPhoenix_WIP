@@ -44,6 +44,7 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblDivision> tblDivision { get; set; }
         public virtual DbSet<tblEndUse> tblEndUse { get; set; }
         public virtual DbSet<tblEndUseForCustoms> tblEndUseForCustoms { get; set; }
+        public virtual DbSet<tblGHS> tblGHS { get; set; }
         public virtual DbSet<tblGHSPHDetail> tblGHSPHDetail { get; set; }
         public virtual DbSet<tblGHSPHSource> tblGHSPHSource { get; set; }
         public virtual DbSet<tblHSCode> tblHSCode { get; set; }

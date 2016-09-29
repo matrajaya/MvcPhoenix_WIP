@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MvcPhoenix.Models
 {
     public class GHSViewModel   // full joined viewmodel, all tables
     {
+        // PD fields
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+
         // detail fields
         public int PHDetailID { get; set; }
         public int? ProductDetailID { get; set; }
@@ -14,13 +20,10 @@ namespace MvcPhoenix.Models
         public string Language { get; set; }
         public string PHStatement { get; set; }
 
-        // PD fields
-        public string ProductCode { get; set; }
-        public string ProductName { get; set; }
-
         public string GHSSignalWord { get; set; }
-        public enum GhsSignalWordChoice 
-        { 
+        public enum GHSSignalWordChoice 
+        {
+            None,
             Caution,
             Warning,
             Danger
@@ -31,8 +34,9 @@ namespace MvcPhoenix.Models
         public string GHSSymbol3 { get; set; }
         public string GHSSymbol4 { get; set; }
         public string GHSSymbol5 { get; set; }
-        public enum GhsSymbolChoice
+        public enum GHSSymbolChoice
         {
+            None,
             Explosive,
             Flammable,
             Oxidizing,
@@ -44,12 +48,36 @@ namespace MvcPhoenix.Models
             Environmental_Hazard
         }
 
+        [StringLength(250, ErrorMessage = "Other Label Information cannot be longer than 250 characters.")]
         public string OtherLabelInfo { get; set; }
+
+        // TODO: Add to tblGHS table
+        //public DateTime? CreateDate { get; set; }
+        //public string CreateUser { get; set; }
+        //public DateTime? UpdateDate { get; set; }
+        //public string UpdateUser { get; set; }
+
+        //public List<GHSPHSource> ListOfPHSourceItems { get; set; }
+        //public List<GHSPHDetail> ListOfGHSPHDetailItems { get; set; }
     }
 
-    public class GHSPHDetail    //crud
+    public class vmGHSDetail
     {
-        public GHSPHDetail()    //constructor
+        public int PHDetailID { get; set; }
+        public int ProductDetailID { get; set; }
+        public string PHNumber { get; set; }
+        public string Language { get; set; }
+        public string PHStatement { get; set; }
+
+        public DateTime? CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
+    }
+
+    public class GHSPHDetail
+    {
+        public GHSPHDetail()
         {
             // set default values here
         }
@@ -66,15 +94,14 @@ namespace MvcPhoenix.Models
 
         // PD fields
         public string ProductCode { get; set; }
-
         public string ProductName { get; set; }
 
         //public List<GHSPHSource> ListOfPHSourceItems { get; set; }
     }
 
-    public class GHSPHSource    //crud
+    public class GHSPHSource
     {
-        public GHSPHSource()    //constructor
+        public GHSPHSource()
         {
             // set default values here
         }

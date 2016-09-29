@@ -602,6 +602,19 @@
           <Property Name="EndUseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EndUse" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="tblGHS">
+          <Key>
+            <PropertyRef Name="ProductDetailID" />
+          </Key>
+          <Property Name="ProductDetailID" Type="int" Nullable="false" />
+          <Property Name="SignalWord" Type="nvarchar" MaxLength="50" />
+          <Property Name="Symbol1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Symbol2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Symbol3" Type="nvarchar" MaxLength="50" />
+          <Property Name="Symbol4" Type="nvarchar" MaxLength="50" />
+          <Property Name="Symbol5" Type="nvarchar" MaxLength="50" />
+          <Property Name="OtherLabelInfo" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="tblGHSPHDetail">
           <Key>
             <PropertyRef Name="PHDetailID" />
@@ -1921,6 +1934,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="tblDivision" EntityType="Self.tblDivision" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEndUse" EntityType="Self.tblEndUse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblEndUseForCustoms" EntityType="Self.tblEndUseForCustoms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblGHS" EntityType="Self.tblGHS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblGHSPHDetail" EntityType="Self.tblGHSPHDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblGHSPHSource" EntityType="Self.tblGHSPHSource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblHSCode" EntityType="Self.tblHSCode" Schema="dbo" store:Type="Tables" />
@@ -2116,6 +2130,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="tblDivision" EntityType="CMCSQL03Model.tblDivision" />
           <EntitySet Name="tblEndUse" EntityType="CMCSQL03Model.tblEndUse" />
           <EntitySet Name="tblEndUseForCustoms" EntityType="CMCSQL03Model.tblEndUseForCustoms" />
+          <EntitySet Name="tblGHS" EntityType="CMCSQL03Model.tblGHS" />
           <EntitySet Name="tblGHSPHDetail" EntityType="CMCSQL03Model.tblGHSPHDetail" />
           <EntitySet Name="tblGHSPHSource" EntityType="CMCSQL03Model.tblGHSPHSource" />
           <EntitySet Name="tblHSCode" EntityType="CMCSQL03Model.tblHSCode" />
@@ -2758,6 +2773,19 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           </Key>
           <Property Name="EndUseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EndUse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblGHS">
+          <Key>
+            <PropertyRef Name="ProductDetailID" />
+          </Key>
+          <Property Name="ProductDetailID" Type="Int32" Nullable="false" />
+          <Property Name="SignalWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Symbol1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Symbol2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Symbol3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Symbol4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Symbol5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OtherLabelInfo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblGHSPHDetail">
           <Key>
@@ -4667,6 +4695,20 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
               <MappingFragment StoreEntitySet="tblEndUseForCustoms">
                 <ScalarProperty Name="EndUse" ColumnName="EndUse" />
                 <ScalarProperty Name="EndUseID" ColumnName="EndUseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblGHS">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblGHS">
+              <MappingFragment StoreEntitySet="tblGHS">
+                <ScalarProperty Name="OtherLabelInfo" ColumnName="OtherLabelInfo" />
+                <ScalarProperty Name="Symbol5" ColumnName="Symbol5" />
+                <ScalarProperty Name="Symbol4" ColumnName="Symbol4" />
+                <ScalarProperty Name="Symbol3" ColumnName="Symbol3" />
+                <ScalarProperty Name="Symbol2" ColumnName="Symbol2" />
+                <ScalarProperty Name="Symbol1" ColumnName="Symbol1" />
+                <ScalarProperty Name="SignalWord" ColumnName="SignalWord" />
+                <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

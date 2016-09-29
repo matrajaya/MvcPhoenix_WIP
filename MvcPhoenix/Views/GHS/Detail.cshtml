@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MvcPhoenix.Models.vmGHSDetail>
+
+<div class="panel panel-primary" style="margin-bottom:-10px;">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="parent-hide"></th>
+                        <th class="parent-hide">Exclude</th>
+                        <th>P & H Code</th>
+                        <th>Language</th>
+                        <th>Statement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="parent-hide">
+                                    @Ajax.ActionLink(" ", "DeletePHDetail", new { id = item.PHDetailID }, new AjaxOptions
+                                   {
+                                       Confirm = "Are you sure you wish to delete?",
+                                       HttpMethod = "POST",
+                                       UpdateTargetId = "dvDetailPHCodes",
+                                       OnSuccess = "RefreshDetailPH"
+                                   }, new { @class = "fa fa-fw fa-lg fa-minus-circle", @style = "color: red; text-decoration: none;", @title = "Delete PH Code" })
+                                </td>
+                                <td class="parent-hide"><input type="checkbox"></td>
+                                <td>@item.PHNumber</td>
+                                <td>@item.Language</td>
+                                <td>@item.PHStatement</td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

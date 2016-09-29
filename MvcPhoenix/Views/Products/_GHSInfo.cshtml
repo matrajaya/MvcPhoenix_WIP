@@ -1,5 +1,12 @@
 ﻿@model MvcPhoenix.Models.GHSViewModel
 
+@* Hide unwanted columns from ghs/detail/id *@
+<style>
+    .parent-hide {
+        display: none;
+    }
+</style>
+
 <div id="dvGHSInformationDisplay">
     <div class="row">
         <div class="col-md-3 pull-right form-group">
@@ -10,66 +17,36 @@
     <div class="row form-group">
         <div class="col-md-2">
             <label>GHS Signal Word</label>
-            @Html.TextBoxFor(m => m.GHSSignalWord, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.GHSSignalWord, new { @class = "form-control", @disabled = "disabled" })
         </div>
         <div class="col-md-2">
             <label>GHS Symbol 1</label>
-            @Html.TextBoxFor(m => m.GHSSymbol1, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.GHSSymbol1, new { @class = "form-control", @disabled = "disabled" })
         </div>
         <div class="col-md-2">
             <label>GHS Symbol 2</label>
-            @Html.TextBoxFor(m => m.GHSSymbol2, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.GHSSymbol2, new { @class = "form-control", @disabled = "disabled" })
         </div>
         <div class="col-md-2">
             <label>GHS Symbol 3</label>
-            @Html.TextBoxFor(m => m.GHSSymbol3, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.GHSSymbol3, new { @class = "form-control", @disabled = "disabled" })
         </div>
         <div class="col-md-2">
             <label>GHS Symbol 4</label>
-            @Html.TextBoxFor(m => m.GHSSymbol4, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.GHSSymbol4, new { @class = "form-control", @disabled = "disabled" })
         </div>
         <div class="col-md-2">
             <label>GHS Symbol 5</label>
-            @Html.TextBoxFor(m => m.GHSSymbol5, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.GHSSymbol5, new { @class = "form-control", @disabled = "disabled" })
         </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
         <div class="col-md-12">
             <label>Other Label Information</label>
-            @Html.TextAreaFor(m => m.OtherLabelInfo, new { @class = "form-control" })
+            @Html.TextAreaFor(m => m.OtherLabelInfo, new { @class = "form-control", @disabled = "disabled" })
         </div>
     </div>
 
-    <hr />
-
-    <div class="table-responsive">
-        <table class="table table-hover table-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Exclude</th>
-                    <th>Code</th>
-                    <th>Language</th>
-                    <th>Statement</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-                    <td><input type="checkbox"></td>
-                    <td>H226</td>
-                    <td>EN</td>
-                    <td>IF ON SKIN (or hair): Remove/take off immediately all contaminated clothing. Rinse skin with water/shower.</td>
-                </tr>
-                <tr>
-                    <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-                    <td><input type="checkbox"></td>
-                    <td>H302</td>
-                    <td>EN</td>
-                    <td>Harmful if swallowed</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    @Html.Action("Detail", "GHS", Model.ProductDetailID)
 </div>

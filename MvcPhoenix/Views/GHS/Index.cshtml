@@ -1,17 +1,15 @@
 ﻿@model MvcPhoenix.Models.GHSViewModel
 @{
     ViewBag.Title = "GHS Information";
+    Model.ProductDetailID = @ViewBag.ParentID;
 }
 
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Content/images/logos/@ViewBag.logofilename" style="width: auto; height: 73px; float: right" alt="@ViewBag.clientname logo">
-        </div>
-        <div class="col-lg-12">
             <h1 class="page-header">
-                @ViewBag.Title <small>@ViewBag.productcode - @ViewBag.productname</small>
+                @ViewBag.Title: <small>@ViewBag.productcode - @ViewBag.productname</small>
             </h1>
         </div>
     </div>
@@ -25,97 +23,85 @@
 
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Global Harmonized System</h3>
+            <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Label Information - Global Harmonized System</h3>
         </div>
         <div class="panel-body">
-            <div class="row form-group">
-                <div class="col-md-2">
-                    <label>GHS Signal Word</label>
-                    @Html.DropDownListFor(m => m.GHSSignalWord, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GhsSignalWordChoice))), new { @class = "form-control" })
+            @using (Ajax.BeginForm("Save", "GHS", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                LoadingElementId = "dvspinner"
+            }))
+            {
+                @Html.HiddenFor(m => m.ProductDetailID)
+                <div class="row form-group">
+                    <div class="col-md-2">
+                        <label>GHS Signal Word</label>
+                        @Html.DropDownListFor(m => m.GHSSignalWord, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GHSSignalWordChoice))), new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <label>GHS Symbol 1</label>
+                        @Html.DropDownListFor(m => m.GHSSymbol1, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GHSSymbolChoice))), new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <label>GHS Symbol 2</label>
+                        @Html.DropDownListFor(m => m.GHSSymbol2, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GHSSymbolChoice))), new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <label>GHS Symbol 3</label>
+                        @Html.DropDownListFor(m => m.GHSSymbol3, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GHSSymbolChoice))), new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <label>GHS Symbol 4</label>
+                        @Html.DropDownListFor(m => m.GHSSymbol4, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GHSSymbolChoice))), new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <label>GHS Symbol 5</label>
+                        @Html.DropDownListFor(m => m.GHSSymbol5, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GHSSymbolChoice))), new { @class = "form-control" })
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <label>GHS Symbol 1</label>
-                    @Html.DropDownListFor(m => m.GHSSymbol1, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GhsSymbolChoice))), new { @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <label>GHS Symbol 2</label>
-                    @Html.DropDownListFor(m => m.GHSSymbol2, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GhsSymbolChoice))), new { @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <label>GHS Symbol 3</label>
-                    @Html.DropDownListFor(m => m.GHSSymbol3, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GhsSymbolChoice))), new { @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <label>GHS Symbol 4</label>
-                    @Html.DropDownListFor(m => m.GHSSymbol4, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GhsSymbolChoice))), new { @class = "form-control" })
-                </div>
-                <div class="col-md-2">
-                    <label>GHS Symbol 5</label>
-                    @Html.DropDownListFor(m => m.GHSSymbol5, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.GHSViewModel.GhsSymbolChoice))), new { @class = "form-control" })
-                </div>
-            </div>
 
-            <div class="row form-group">
-                <div class="col-md-12">
-                    <label>Other Label Information</label>
-                    @Html.TextAreaFor(m => m.OtherLabelInfo, new { @class = "form-control" })
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <label>Other Label Information</label>
+                        @Html.TextAreaFor(m => m.OtherLabelInfo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.OtherLabelInfo)
+                    </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-3 pull-right">
-                    <input type="submit" class="btn btn-primary btn-block" value="Save"/>
+                <div class="row">
+                    <div class="col-md-3 pull-right">
+                        <input type="submit" class="btn btn-primary btn-block" value="Save" />
+                    </div>
                 </div>
-            </div>
-
+            }
             <hr />
-
+            <div class="row">
+                <div class="col-md-12">
+                    <label>P & H Statements</label>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-3">
-                    <label>P & H Statements</label>
                     @using (Ajax.BeginForm("Search", "GHS", new AjaxOptions
-                            {
-                                UpdateTargetId = "dvSearchPHCodes",
-                                InsertionMode = InsertionMode.Replace,
-                                HttpMethod = "POST",
-                                LoadingElementId = "dvspinner"
-                            }))
                     {
-                        <div class="form-group">
-                            @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Search for statements", @required = "required" })
+                        UpdateTargetId = "dvSearchPHCodes",
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "POST",
+                        LoadingElementId = "dvspinner"
+                    }))
+                    {
+                        <div class="input-group">
+                            @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Search...", @required = "required" })
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+                            </span>
                         </div>
-                        <button type="submit" class="btn btn-info btn-block"><i class="fa fa-search"></i> Search</button>
                     }
                 </div>
-                <div class="table-responsive col-md-9">
-                    <table class="table table-striped">
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th>Label Exclude</th>
-                                <th>P & H Code</th>
-                                <th>Language</th>
-                                <th>Statement</th>
-                            </tr>
-                            <tr>
-                                <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-                                <td><input type="checkbox"></td>
-                                <td>H226</td>
-                                <td>EN</td>
-                                <td>IF ON SKIN (or hair): Remove/take off immediately all contaminated clothing. Rinse skin with water/shower.</td>
-                            </tr>
-                            <tr>
-                                <td><i class="fa fa-minus-circle fa-fw" style="color: red"></i></td>
-                                <td><input type="checkbox"></td>
-                                <td>H302</td>
-                                <td>EN</td>
-                                <td>Harmful if swallowed</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div id="dvDetailPHCodes" class="col-md-9">
+                    @Html.Action("Detail", "GHS", Model.ProductDetailID)
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -125,3 +111,9 @@
         <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
     </div>
 </div>
+
+<script type="text/javascript">
+    function RefreshDetailPH() {
+        $("#dvDetailPHCodes").load('@Url.Action("Detail", "GHS", new { id = @Html.Raw(Json.Encode(Model.ProductDetailID)) })');
+    }
+</script>

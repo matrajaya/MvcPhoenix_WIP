@@ -22,6 +22,9 @@ $(function () {
     $("form select").tooltipValidation({
         placement: "top"
     });
+    $("form textarea").tooltipValidation({
+        placement: "top"
+    });
 });
 
 $(function () {

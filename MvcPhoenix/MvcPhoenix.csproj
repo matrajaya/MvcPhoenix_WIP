@@ -346,6 +346,9 @@
     <Compile Include="EF\tblEndUseForCustoms.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblGHS.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblGHSPHDetail.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -1299,10 +1302,11 @@
     <Content Include="Views\Products\_ShelfSize.cshtml" />
     <Content Include="Views\Inventory\_InventoryLogNotes.cshtml" />
     <Content Include="Views\Inventory\_InventoryLogNotesModal.cshtml" />
-    <Content Include="Views\GHS\_Edit.cshtml" />
     <Content Include="Views\GHS\Index.cshtml" />
     <Content Include="Views\Products\_GHSInfo.cshtml" />
     <Content Include="Views\GHS\Search.cshtml" />
+    <Content Include="Views\GHS\Detail.cshtml" />
+    <Content Include="Views\GHS\CloneEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />
