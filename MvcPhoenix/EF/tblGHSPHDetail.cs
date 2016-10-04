@@ -21,5 +21,6 @@ namespace MvcPhoenix.EF
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateUser { get; set; }
+        public Nullable<bool> ExcludeFromLabel { get; set; }
     }
 }

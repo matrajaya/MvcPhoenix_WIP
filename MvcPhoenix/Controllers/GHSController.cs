@@ -63,6 +63,7 @@ namespace MvcPhoenix.Controllers
                                 {
                                     t.PHDetailID,
                                     t.ProductDetailID,
+                                    t.ExcludeFromLabel,
                                     t.PHNumber,
                                     tsrc.Language,
                                     tsrc.PHStatement
@@ -74,6 +75,7 @@ namespace MvcPhoenix.Controllers
                     {
                         PHDetailID = item.PHDetailID,
                         ProductDetailID = Convert.ToInt32(item.ProductDetailID),
+                        ExcludeFromLabel = item.ExcludeFromLabel,
                         PHNumber = item.PHNumber,
                         Language = item.Language,
                         PHStatement = item.PHStatement
@@ -199,6 +201,21 @@ namespace MvcPhoenix.Controllers
 
             return null;
         }
+        
+        [HttpPost]
+        public ActionResult ExcludePH(int id, bool isChecked)
+        {
+            
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var dtrcd = db.tblGHSPHDetail.Find(id);
+
+                dtrcd.ExcludeFromLabel = isChecked;
+                db.SaveChanges();
+            }
+
+            return null;
+        }
 
         public ActionResult DeletePHDetail(int id)
         {
@@ -213,6 +230,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Clone(int id) {
             GHSPHSource PHSrc = new GHSPHSource();
+            string[] Suffix = new string[] {"A","B","C","D","E","F","G","H","I","J"};
 
             using (var db = new EF.CMCSQL03Entities())
             {
@@ -220,8 +238,18 @@ namespace MvcPhoenix.Controllers
                           where t.PHsourceID == id
                           select t).FirstOrDefault();
 
+                int i = 0;
+                PHSrc.PHNumber = phsrc.PHNumber + "-" + Suffix[i];
+                var isExists = db.tblGHSPHSource.Any(r => r.PHNumber.Equals(PHSrc.PHNumber));
+
+                while (isExists)
+                {
+                    ++i;
+                    PHSrc.PHNumber = phsrc.PHNumber + "-" + Suffix[i];
+                    isExists = db.tblGHSPHSource.Any(r => r.PHNumber.Equals(PHSrc.PHNumber));
+                }
+
                 PHSrc.PHSourceID = phsrc.PHsourceID;
-                PHSrc.PHNumber = phsrc.PHNumber + "-A";
                 PHSrc.Language = phsrc.Language;
                 PHSrc.PHStatement = phsrc.PHStatement;
             }

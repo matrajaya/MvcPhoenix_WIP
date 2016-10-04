@@ -713,6 +713,7 @@
     <Content Include="Content\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-confirm.min.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\OrderImportFiles\AkzoNobel\dummy.txt" />
     <Content Include="Content\OrderImportFiles\Archroma\dummy.txt" />
@@ -1151,6 +1152,7 @@
       <DependentUpon>jquery-2.2.0.min.js</DependentUpon>
     </Content>
     <Content Include="Scripts\jquery-calx-2.2.6.min.js" />
+    <Content Include="Scripts\jquery-confirm.min.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js.map">
       <DependentUpon>jquery-ui-1.11.4.min.js</DependentUpon>
     </Content>

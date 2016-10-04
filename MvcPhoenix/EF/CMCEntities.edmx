@@ -626,6 +626,7 @@
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
           <Property Name="UpdateUser" Type="nvarchar" MaxLength="256" />
+          <Property Name="ExcludeFromLabel" Type="bit" />
         </EntityType>
         <EntityType Name="tblGHSPHSource">
           <Key>
@@ -2798,6 +2799,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ExcludeFromLabel" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblGHSPHSource">
           <Key>
@@ -4715,6 +4717,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySetMapping Name="tblGHSPHDetail">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblGHSPHDetail">
               <MappingFragment StoreEntitySet="tblGHSPHDetail">
+                <ScalarProperty Name="ExcludeFromLabel" ColumnName="ExcludeFromLabel" />
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />

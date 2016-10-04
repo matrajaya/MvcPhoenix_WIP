@@ -15,6 +15,7 @@ namespace MvcPhoenix
                         "~/Scripts/jquery-barcode.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/respond.js",
+                        "~/Scripts/jquery-confirm.min.js",
                         "~/Scripts/site.js",
                         "~/Scripts/modernizr-*"
                         ));
@@ -24,6 +25,7 @@ namespace MvcPhoenix
                         "~/Content/site.css",
                         "~/Content/font-awesome.css",
                         "~/Content/jquery-ui.css",
+                        "~/Content/jquery-confirm.min.css",
                         "~/Content/PagedList.css"
                         ));
         }

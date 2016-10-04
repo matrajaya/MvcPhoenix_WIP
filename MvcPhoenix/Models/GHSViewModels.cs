@@ -65,6 +65,7 @@ namespace MvcPhoenix.Models
     {
         public int PHDetailID { get; set; }
         public int ProductDetailID { get; set; }
+        public bool? ExcludeFromLabel { get; set; }
         public string PHNumber { get; set; }
         public string Language { get; set; }
         public string PHStatement { get; set; }
