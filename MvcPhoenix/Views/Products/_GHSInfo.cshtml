@@ -15,36 +15,40 @@
     </div>
 
     <div class="row form-group">
-        <div class="col-md-2">
-            <label>GHS Signal Word</label>
-            @Html.TextBoxFor(m => m.GHSSignalWord, new { @class = "form-control", @disabled = "disabled" })
-        </div>
-        <div class="col-md-2">
-            <label>GHS Symbol 1</label>
-            @Html.TextBoxFor(m => m.GHSSymbol1, new { @class = "form-control", @disabled = "disabled" })
-        </div>
-        <div class="col-md-2">
-            <label>GHS Symbol 2</label>
-            @Html.TextBoxFor(m => m.GHSSymbol2, new { @class = "form-control", @disabled = "disabled" })
-        </div>
-        <div class="col-md-2">
-            <label>GHS Symbol 3</label>
-            @Html.TextBoxFor(m => m.GHSSymbol3, new { @class = "form-control", @disabled = "disabled" })
-        </div>
-        <div class="col-md-2">
-            <label>GHS Symbol 4</label>
-            @Html.TextBoxFor(m => m.GHSSymbol4, new { @class = "form-control", @disabled = "disabled" })
-        </div>
-        <div class="col-md-2">
-            <label>GHS Symbol 5</label>
-            @Html.TextBoxFor(m => m.GHSSymbol5, new { @class = "form-control", @disabled = "disabled" })
-        </div>
+        <table>
+            <tr>
+                <td class="col-md-2">
+                    <label>GHS Signal Word</label>
+                    @Html.TextBoxFor(m => m.GHSSignalWord, new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td class="col-md-2">
+                    <label>GHS Symbol 1</label>
+                    @Html.TextBoxFor(m => m.GHSSymbol1, new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td class="col-md-2">
+                    <label>GHS Symbol 2</label>
+                    @Html.TextBoxFor(m => m.GHSSymbol2, new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td class="col-md-2">
+                    <label>GHS Symbol 3</label>
+                    @Html.TextBoxFor(m => m.GHSSymbol3, new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td class="col-md-2">
+                    <label>GHS Symbol 4</label>
+                    @Html.TextBoxFor(m => m.GHSSymbol4, new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td class="col-md-2">
+                    <label>GHS Symbol 5</label>
+                    @Html.TextBoxFor(m => m.GHSSymbol5, new { @class = "form-control", @disabled = "disabled" })
+                </td>
+            </tr>
+        </table>
     </div>
 
     <div class="row form-group">
         <div class="col-md-12">
-            <label>Other Label Information</label>
-            @Html.TextAreaFor(m => m.OtherLabelInfo, new { @class = "form-control", @disabled = "disabled" })
+            <label>Other Label Information</label><br />
+            @Html.DisplayFor(m => m.OtherLabelInfo, new { @class = "form-control", @disabled = "disabled" })
         </div>
     </div>
 

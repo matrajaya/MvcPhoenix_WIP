@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcPhoenix.Models
 {
-    public class GHSViewModel   // full joined viewmodel, all tables
+    public class GHSViewModel
     {
         // PD fields
         public string ProductCode { get; set; }
@@ -50,18 +50,9 @@ namespace MvcPhoenix.Models
 
         [StringLength(250, ErrorMessage = "Other Label Information cannot be longer than 250 characters.")]
         public string OtherLabelInfo { get; set; }
-
-        // TODO: Add to tblGHS table
-        //public DateTime? CreateDate { get; set; }
-        //public string CreateUser { get; set; }
-        //public DateTime? UpdateDate { get; set; }
-        //public string UpdateUser { get; set; }
-
-        //public List<GHSPHSource> ListOfPHSourceItems { get; set; }
-        //public List<GHSPHDetail> ListOfGHSPHDetailItems { get; set; }
     }
 
-    public class vmGHSDetail
+    public class GHSDetail
     {
         public int PHDetailID { get; set; }
         public int ProductDetailID { get; set; }
@@ -76,37 +67,8 @@ namespace MvcPhoenix.Models
         public string UpdateUser { get; set; }
     }
 
-    public class GHSPHDetail
-    {
-        public GHSPHDetail()
-        {
-            // set default values here
-        }
-
-        // CRUD fields
-        public int PHDetailID { get; set; }
-
-        public int? ProductDetailID { get; set; }
-        public string PHNumber { get; set; }
-        public DateTime? CreateDate { get; set; }
-        public string CreateUser { get; set; }
-        public DateTime? UpdateDate { get; set; }
-        public string UpdateUser { get; set; }
-
-        // PD fields
-        public string ProductCode { get; set; }
-        public string ProductName { get; set; }
-
-        //public List<GHSPHSource> ListOfPHSourceItems { get; set; }
-    }
-
     public class GHSPHSource
     {
-        public GHSPHSource()
-        {
-            // set default values here
-        }
-
         public int PHSourceID { get; set; }
         public string PHNumber { get; set; }
         public string Language { get; set; }
@@ -115,7 +77,5 @@ namespace MvcPhoenix.Models
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
-
-        // lists
     }
 }

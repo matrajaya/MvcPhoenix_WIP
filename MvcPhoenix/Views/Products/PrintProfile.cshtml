@@ -52,13 +52,17 @@
                 @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
             </td>
             <td>
+                <label>Profile Activation Date:</label>
+                @Html.TextBoxFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+            </td>
+            <td>
                 <label>Profile Revision Date:</label>
                 @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
             </td>
-            <td>
-                <label>MSDS Revision Date:</label>
-                @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
-            </td>
+            @*<td>
+                    <label>MSDS Revision Date:</label>
+                    @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                </td>*@
         </tr>
     </table>
 
@@ -69,7 +73,7 @@
                 <textarea rows="3" class="form-control">
                     @for (int i = 0; i < Model.ListOfEquivalents.Count(); i++)
                     {
-                        @Model.ListOfEquivalents[i];
+                    @Model.ListOfEquivalents[i];
                     }
                 </textarea>
             </td>
@@ -78,17 +82,20 @@
                 <textarea rows="3" class="form-control">
                     @for (int i = 0; i < Model.ListOfProductCodesXRefs.Count(); i++)
                     {
-                        @Model.ListOfProductCodesXRefs[i];
+                    @Model.ListOfProductCodesXRefs[i];
                     }
                 </textarea>
             </td>
-            <td width="16.67%">
+            <td width="14%">
                 @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct) Global Product
             </td>
-            <td width="16.67%">
+            <td width="14%">
                 @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified) Accuracy Verified
             </td>
-            <td width="16.67%">
+            <td width="14%">
+                @Html.CheckBox("active", Model.active != null && (bool)Model.active) Acive
+            </td>
+            <td width="14%">
                 @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued) Discontinued
             </td>
         </tr>
@@ -100,7 +107,7 @@
 <hr />
 
 <div class="form-group">
-    <h3> Special Handling & Storage</h3>
+    <h3>Handling / Storage / Customs</h3>
     <table>
         <tr>
             <td width="25%">@Html.CheckBox("cleanroomgmp", Model.cleanroomgmp != null && (bool)Model.cleanroomgmp) Clean Room GMP</td>
@@ -112,60 +119,110 @@
             <td>@Html.CheckBox("specialblend", Model.specialblend != null && (bool)Model.specialblend) Special Blend</td>
             <td>@Html.CheckBox("freezerstorage", Model.freezerstorage != null && (bool)Model.freezerstorage) Freezer Storage</td>
             <td>@Html.CheckBox("refrigerate", Model.refrigerate != null && (bool)Model.refrigerate) Refrig Storage</td>
-            <td>Torque: @Html.DisplayFor(m => m.torquerequirements)</td>
+            <td>@Html.CheckBox("temperaturecontrolledstorage", Model.temperaturecontrolledstorage != null && (bool)Model.temperaturecontrolledstorage) Temp Controlled Storage</td>
         </tr>
         <tr>
-            <td>Flash Point: @Html.DisplayFor(m => m.flashpoint)</td>
             <td>@Html.CheckBox("freezablelist", Model.freezablelist != null && (bool)Model.freezablelist) Freezable List</td>
             <td>@Html.CheckBox("flammableground", Model.flammableground != null && (bool)Model.flammableground) Flammable Ground</td>
             <td>@Html.CheckBox("flammablestorageroom", Model.flammablestorageroom != null && (bool)Model.flammablestorageroom) Flammable Storage</td>
+            <td>
+                <label>Req By:</label>
+                Client: @Html.CheckBox("clientreq", Model.clientreq != null && (bool)Model.clientreq)
+                CMC: @Html.CheckBox("cmcreq", Model.cmcreq != null && (bool)Model.cmcreq)
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td width="33%"><label>Torque: </label> @Html.DisplayFor(m => m.torquerequirements)</td>
+            <td width="33%"><label>Flash Point: </label> @Html.DisplayFor(m => m.flashpoint)</td>
+            <td width="33%"><label>Other: </label> @Html.TextBoxFor(m => m.otherpkg, new { @class = "form-control" })</td>
         </tr>
         <tr>
-            <td>@Html.CheckBox("heatpriortofilling", Model.heatpriortofilling != null && (bool)Model.heatpriortofilling) Heat Prior to Filing</td>
-            <td>@Html.TextBoxFor(m => m.heatinginstructions, new { @class = "form-control", @placeholder = "Heating Instructions" })</td>
-            <td>@Html.CheckBox("mixwell", Model.mixwell != null && (bool)Model.mixwell) Mix Well</td>
-            <td>@Html.TextBoxFor(m => m.mixinginstructions, new { @class = "form-control", @placeholder = "Mixing Instructions" })</td>
-        </tr>
-        <tr>
             <td>
-                <label>Req By:</label><br />
-                Client @Html.CheckBox("clientreq", Model.clientreq != null && (bool)Model.clientreq) CMC @Html.CheckBox("cmcreq", Model.cmcreq != null && (bool)Model.cmcreq)
+                @Html.CheckBox("heatpriortofilling", Model.heatpriortofilling != null && (bool)Model.heatpriortofilling) <label> Heat Prior to Filing</label><br />
+                @Html.DisplayFor(m => m.heatinginstructions, new { @class = "form-control", @placeholder = "Heating Instructions" })
             </td>
             <td>
-                <label>Other:</label>
-                @Html.TextBoxFor(m => m.otherpkg, new { @class = "form-control" })
+                @Html.CheckBox("mixwell", Model.mixwell != null && (bool)Model.mixwell) <label>Mix Well</label><br />
+                @Html.DisplayFor(m => m.mixinginstructions, new { @class = "form-control", @placeholder = "Mixing Instructions" })
             </td>
             <td>
-                <label>Other Instructions:</label>
+                <label>Other Instructions</label>
                 @Html.DisplayFor(m => m.otherhandlinginstr, new { @class = "form-control" })
             </td>
-            <td>
-                <label>Harmonized Code:</label>
-                @Html.TextBoxFor(m => m.harmonizedcode, new { @class = "form-control" })
-            </td>
         </tr>
+    </table>
+
+    <table>
         <tr>
             <td>
-                <label>Customs Value:</label><br />
-                @Html.DisplayFor(m => m.customsvalue) @Html.DisplayFor(m => m.customsvalueunit)
-            </td>
-            <td>
-                <label>Shipping SOP:</label>
-                @Html.DisplayFor(m => m.shippingnotes, new { @class = "form-control" })
-            </td>
-            <td>
-                <label>End Use:</label>
+                <label>End Use</label><br />
                 @Html.DisplayFor(m => m.enduse, new { @class = "form-control" })
             </td>
             <td>
-                <label>Cease Ship:</label>
+                <label>Harmonized Code</label><br />
+                @Html.TextBoxFor(m => m.harmonizedcode, new { @class = "form-control" })
+            </td>
+
+            <td>
+                <label>Customs Value</label><br />
+                @Html.DisplayFor(m => m.customsvalue) @Html.DisplayFor(m => m.customsvalueunit)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Shipping SOP</label><br />
+                @Html.DisplayFor(m => m.shippingnotes, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Country Of Origin</label><br />
+                @Html.DisplayFor(m => m.countryoforigin, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Cease Ship Days</label><br />
                 @Html.TextBoxFor(m => m.ceaseshipdifferential, new { @class = "form-control" })
             </td>
         </tr>
+        <tr>
+            <td colspan="2">
+                <label>Rejection Criterion:</label><br />
+                @Html.DisplayFor(m => m.rejectioncriterion)
+            </td>
+            <td>
+                <label>Plant Lead Time</label><br />
+                @Html.DisplayFor(m => m.leadtime)
+            </td>
+        </tr>
     </table>
     <table>
+    </table>
+</div>
+
+<hr />
+
+<div class="form-group">
+    <h3>Alert Notes</h3>
+    <table>
         <tr>
-            <td><label>Rejection Criterion:</label> @Html.DisplayFor(m => m.rejectioncriterion)</td>
+            <td>
+                <label>Sample Request Alert Note</label><br />
+                @Html.DisplayFor(m => m.alertnotesorderentry, new { @class = "form-control" })
+            </td>
+            <td width="50%">
+                <label>Receiving Alert Note</label><br />
+                @Html.DisplayFor(m => m.alertnotesreceiving, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Shipping Alert Note</label><br />
+                @Html.DisplayFor(m => m.alertnotesshipping, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Packout Alert Note</label><br />
+                @Html.DisplayFor(m => m.alertnotespackout, new { @class = "form-control" })
+            </td>
         </tr>
     </table>
 </div>
@@ -173,88 +230,60 @@
 <hr />
 
 <div class="form-group">
-    <h3> MSDS Information</h3>
+    <h3>SDS Document Information</h3>
     <table>
         <tr>
             <td>
-                <label>MSDS Revision Date</label>
+                <label>SDS Revision Date</label><br />
                 @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
             </td>
             <td>
-                <label>MSDS Rev. Number</label>
+                <label>SDS Rev. Number</label><br />
                 @Html.TextBoxFor(m => m.msdsrevisionnumber, new { @class = "form-control" })
             </td>
             <td>
-                <label>MSDS Other Number</label>
+                <label>Other Number</label><br />
                 @Html.TextBoxFor(m => m.msdsothernumber, new { @class = "form-control" })
             </td>
             <td>
-                <label>SDS Contact Name</label>
-                @Html.TextBoxFor(m => m.sdscontactname, new { @class = "form-control" })
+                <label>China Test Cert. Date</label><br />
+                @Html.TextBoxFor(m => m.chinacertificationdate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
             </td>
             <td>
-                <label>SDS Contact Phone</label>
-                @Html.TextBoxFor(m => m.sdscontactphone, new { @class = "form-control" })
+                <label>Shelf Life</label><br />
+                @Html.TextBoxFor(m => m.shlflife, new { @class = "form-control" })
             </td>
         </tr>
         <tr>
             <td>
-                <label>China Test Cert. Date</label>
-                @Html.TextBoxFor(m => m.chinacertificationdate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                <label>SDS Contact Name</label><br />
+                @Html.TextBoxFor(m => m.sdscontactname, new { @class = "form-control" })
             </td>
             <td>
-                <label>Label Contact Name</label>
+                <label>SDS Contact Phone</label><br />
+                @Html.TextBoxFor(m => m.sdscontactphone, new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Label Contact Name</label><br />
                 @Html.TextBoxFor(m => m.labelcontactname, new { @class = "form-control" })
             </td>
             <td>
-                <label>Label Contact Phone</label>
+                <label>Label Contact Phone</label><br />
                 @Html.TextBoxFor(m => m.labelcontactphone, new { @class = "form-control" })
             </td>
             <td>
-                <label>Hazard Class</label>
-                @Html.TextBoxFor(m => m.hazardclassground_sg, new { @class = "form-control" })
-            </td>
-            <td>
-                <label>Shelf Life</label>
-                @Html.TextBoxFor(m => m.shlflife, new { @class = "form-control" })
+                <label>Tech Sheet Available</label><br />
+                @Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet, new { @class = "form-control" })
             </td>
         </tr>
     </table>
-    <label>Technical Sheet Available</label> @Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet)
 </div>
 
 <hr />
 
 <div class="form-group">
-    <h3>GHS Information*- Work In Progress</h3>
-    <table>
-        <tr>
-            <td>
-                <label>GHS Signal Word</label>
-                <input type="text" class="form-control" value="Caution" />
-            </td>
-            <td>
-                <label>GHS Symbol 1</label>
-                <input type="text" class="form-control" value="Explosive" />
-            </td>
-            <td>
-                <label>GHS Symbol 2</label>
-                <input type="text" class="form-control" value="Flammable" />
-            </td>
-            <td>
-                <label>GHS Symbol 3</label>
-                <input type="text" class="form-control" value="Oxidizing" />
-            </td>
-            <td>
-                <label>GHS Symbol 4</label>
-                <input type="text" class="form-control" value="Compressed Gas" />
-            </td>
-            <td>
-                <label>GHS Symbol 5</label>
-                <input type="text" class="form-control" value="Corrosive" />
-            </td>
-        </tr>
-    </table>
+    <h3>GHS Information</h3>
+    @{Html.RenderAction("GHSDisplay", "GHS", new { id = @Model.productdetailid });}
 </div>
 
 <hr />
@@ -344,22 +373,22 @@
 </div>
 
 @if (!String.IsNullOrEmpty(Model.health) || !String.IsNullOrEmpty(Model.flammability) || !String.IsNullOrEmpty(Model.reactivity))
-    {
-<div class="form-group">
-    <h3>HMIS Ratings</h3>
-    <table style="border:solid 1px; text-align:center">
-        <tr>
-            <th width="33.3%" style="background-color: blue; color: white">Health</th>
-            <th width="33.3%" style="background-color: red; color: white">Flammability</th>
-            <th width="33.3%" style="background-color: yellow; color: gray">Reactivity</th>
-        </tr>
-        <tr>
-            <th style="text-align: center">@Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
-            <th style="text-align: center">@Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
-            <th style="text-align: center">@Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
-        </tr>
-    </table>
-</div>
+{
+    <div class="form-group">
+        <h3>HMIS Ratings</h3>
+        <table style="border:solid 1px; text-align:center">
+            <tr>
+                <th width="33.3%" style="background-color: blue; color: white">Health</th>
+                <th width="33.3%" style="background-color: red; color: white">Flammability</th>
+                <th width="33.3%" style="background-color: yellow; color: gray">Reactivity</th>
+            </tr>
+            <tr>
+                <th style="text-align: center">@Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                <th style="text-align: center">@Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                <th style="text-align: center">@Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+            </tr>
+        </table>
+    </div>
 }
 
 <hr />
@@ -368,6 +397,8 @@
     <h3> Ingredients Information (CAS)</h3>
     @{Html.RenderAction("CasList", "Products", new { id = @Model.productdetailid });}
 </div>
+
+<hr />
 
 <div class="form-group">
     <h3>Chemical Properties & Protection Gear</h3>
@@ -378,24 +409,26 @@
                 @Html.DisplayFor(m => m.normalappearence, new { @class = "form-control" })
             </td>
             <td width="15%">
-                <label>S.G.</label>
+                <label>S.G.</label><br />
                 @Html.TextBoxFor(m => m.specificgravity, new { @class = "form-control" })
             </td>
             <td width="15%">
-                <label>Density LBS/GAL</label>
+                <label>Density LBS/GAL</label><br />
                 @Html.TextBoxFor(m => m.density, new { @class = "form-control" })
             </td>
             <td width="15%">
-                <label>pH</label>
+                <label>pH</label><br />
                 @Html.TextBoxFor(m => m.phvalue, new { @class = "form-control" })
             </td>
             <td width="15%">
-                <label>Restricted Qty (lbs)</label>
-                @*@Html.TextBoxFor(m => m.restrictedamount, new { @class = "form-control" })*@
+                <label>Restricted Qty (lbs)</label><br />
+                @Html.TextBoxFor(m => m.restrictedtoamount, new { @class = "form-control" })
             </td>
         </tr>
     </table>
 </div>
+
+<hr />
 
 <div class="form-group">
     <h3>Protective Equipment</h3>
@@ -411,17 +444,16 @@
             <td width="35%">
                 <p>@Html.CheckBox("fullfacerespirator", Model.fullfacerespirator != null && (bool)Model.fullfacerespirator) Full Face Resp</p>
                 <p>@Html.CheckBox("fullsuit", Model.fullsuit != null && (bool)Model.fullsuit) Full Suit</p>
-                <p><input type="checkbox" /> Dustfilter*</p>
+                <p>@Html.CheckBox("dustfilter", Model.dustfilter != null && (bool)Model.dustfilter) Dustfilter</p>
                 <p>@Html.CheckBox("cleanroomequipment", Model.cleanroomequipment != null && (bool)Model.cleanroomequipment) Clean Room Equip</p>
-                <p>@Html.CheckBox("booties", Model.booties != null && (bool)Model.booties) Booties</p>
             </td>
             <td width="30%">
                 <p>
-                    <label>Glove Type</label>
+                    <label>Glove Type</label><br />
                     @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
                 </p>
                 <p>
-                    <label>Other Equipment</label>
+                    <label>Other Equipment</label><br />
                     @Html.TextBoxFor(m => m.otherequipmentdescription, new { @class = "form-control", @placeholder = "Other Equipment" })
                 </p>
             </td>
@@ -435,10 +467,10 @@
     <h3>Shipping Information</h3>
     <table>
         <tr>
-            <td><label>Waste Code:</label> @Html.TextBoxFor(m => m.wastecode, new { @class = "form-control" })</td>
+            <td><label>Waste Code:</label> @Html.DisplayFor(m => m.wastecode, new { @class = "form-control" })</td>
             <td>@Html.CheckBox("epahazardouswaste", Model.epahazardouswaste != null && (bool)Model.epahazardouswaste) EPA Hazardous Waste</td>
             <td>@Html.CheckBox("nonrcrawaste", Model.nonrcrawaste != null && (bool)Model.nonrcrawaste) Non-RCRA Waste</td>
-            <td><label>Waste Profile Number:</label> @Html.TextBoxFor(m => m.wasteprofilenumber, new { @class = "form-control" })</td>
+            <td><label>Waste Profile Number:</label> @Html.DisplayFor(m => m.wasteprofilenumber, new { @class = "form-control" })</td>
         </tr>
     </table>
     <table>
@@ -451,59 +483,59 @@
         </tr>
         <tr>
             <td>UN Number</td>
-            <td>@Html.TextBoxFor(m => m.grnunnumber, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.airunnumber, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.seaunnum, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.rcraunnumber, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnunnumber, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.airunnumber, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.seaunnum, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.rcraunnumber, new { @class = "form-control" })</td>
         </tr>
         <tr>
             <td>Proper Shipping Name</td>
-            <td>@Html.TextBoxFor(m => m.grnshipname, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.airshipname, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.seashipname, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.rcrashipname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnshipname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.airshipname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.seashipname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.rcrashipname, new { @class = "form-control" })</td>
         </tr>
         <tr>
             <td>NOS Name</td>
-            <td>@Html.TextBoxFor(m => m.grnosname, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.airnosname, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.seanosname, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.rcranosname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnosname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.airnosname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.seanosname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.rcranosname, new { @class = "form-control" })</td>
         </tr>
         <tr>
             <td>Hazard Class</td>
-            <td>@Html.TextBoxFor(m => m.grnhazcl, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.airhazcl, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.seahazcl, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.rcrahazcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnhazcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.airhazcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.seahazcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.rcrahazcl, new { @class = "form-control" })</td>
         </tr>
         <tr>
             <td>Hazard Sub Class</td>
-            <td>@Html.TextBoxFor(m => m.grnhazsubcl, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.airhazsubcl, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.seahazsubcl, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.rcrahazsubcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnhazsubcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.airhazsubcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.seahazsubcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.rcrahazsubcl, new { @class = "form-control" })</td>
         </tr>
         <tr>
             <td>Packing Group</td>
-            <td>@Html.TextBoxFor(m => m.grnpkgrp, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.airpkgrp, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.seapkgrp, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.rcrapkgrp, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnpkgrp, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.airpkgrp, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.seapkgrp, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.rcrapkgrp, new { @class = "form-control" })</td>
         </tr>
         <tr>
             <td>Label Required</td>
-            <td>@Html.TextBoxFor(m => m.grnlabel, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.airlabel, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.sealabel, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.rcralabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnlabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.airlabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.sealabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.rcralabel, new { @class = "form-control" })</td>
         </tr>
         <tr>
             <td>Subsidiary Label Required</td>
-            <td>@Html.TextBoxFor(m => m.grnsublabel, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.airsublabel, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.seasublabel, new { @class = "form-control" })</td>
-            <td>@Html.TextBoxFor(m => m.rcrasublabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnsublabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.airsublabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.seasublabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.rcrasublabel, new { @class = "form-control" })</td>
         </tr>
     </table>
 </div>
@@ -511,7 +543,7 @@
 <hr />
 
 <div class="form-group">
-    <h3>Notes</h3>
+    <h3>Product Log</h3>
     @{Html.RenderAction("ProductLogList", "Products", new { id = @Model.productdetailid });}
 </div>
 

@@ -53,7 +53,7 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                List<vmGHSDetail> model = new List<vmGHSDetail>();
+                List<GHSDetail> model = new List<GHSDetail>();
                 
                 var phdetail = (from t in db.tblGHSPHDetail
                                 join tsrc in db.tblGHSPHSource on t.PHNumber equals tsrc.PHNumber
@@ -71,7 +71,7 @@ namespace MvcPhoenix.Controllers
 
                 foreach (var item in phdetail) //retrieve each item and assign to model
                 {
-                    model.Add(new vmGHSDetail()
+                    model.Add(new GHSDetail()
                     {
                         PHDetailID = item.PHDetailID,
                         ProductDetailID = Convert.ToInt32(item.ProductDetailID),
@@ -227,7 +227,10 @@ namespace MvcPhoenix.Controllers
 
             return null;
         }
-
+        
+        /// <summary>
+        /// Generates temporary model values in clone modal
+        /// </summary>
         public ActionResult Clone(int id) {
             GHSPHSource PHSrc = new GHSPHSource();
             string[] Suffix = new string[] {"A","B","C","D","E","F","G","H","I","J"};
@@ -284,6 +287,10 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("AddPHDetail", new { id = obj.PHSourceID });
         }
 
+        /// <summary>
+        /// Displays readonly GHS information in Product detail.
+        /// Returns blank view if model is empty.
+        /// </summary>
         public ActionResult GHSDisplay(int? id)
         {
             ViewBag.ParentID = id;

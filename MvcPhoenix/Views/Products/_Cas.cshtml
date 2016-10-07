@@ -19,7 +19,7 @@
                     <th id="noprint"></th>
                     <th width="10%">CAS/EC Number</th>
                     <th>Chemical Name</th>
-                    <th>Exclude From Label</th>
+                    <th id="noprint">Exclude From Label</th>
                     <th>Less Than</th>
                     <th>Percentage</th>
                     <th>Reportable Qty</th>
@@ -44,7 +44,7 @@
                         </td>
                         <td>@item.casnumber</td>
                         <td>@item.chemicalname</td>
-                        <td><input type="checkbox" checked="@item.excludefromlabel" disabled="disabled"></td>
+                        <td id="noprint"><input type="checkbox" checked="@item.excludefromlabel" disabled="disabled"></td>
                         <td><input type="checkbox" checked="@item.lessthan" disabled="disabled"></td>
                         <td>@item.percentage</td>
                         <td><input type="checkbox" checked="@item.reportableqty" disabled="disabled"></td>
