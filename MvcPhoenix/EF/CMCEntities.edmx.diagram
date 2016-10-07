@@ -65,11 +65,11 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblUN" Width="1.5" PointX="26.75" PointY="21.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblUser" Width="1.5" PointX="26.75" PointY="25.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblWasteCode" Width="1.5" PointX="0.75" PointY="27.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.vwBulkLevel" Width="1.5" PointX="16.75" PointY="27.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.vwBulkTransForReplenishment" Width="1.5" PointX="28.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.vwProductsInfo" Width="1.5" PointX="28.75" PointY="3.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.vwShelfStockForReplenishment" Width="1.5" PointX="6.75" PointY="28.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.vwShelfTransForReplenishment" Width="1.5" PointX="8.75" PointY="28.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.vwBulkLevel" Width="1.5" PointX="17.375" PointY="27.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.vwBulkTransForReplenishment" Width="1.5" PointX="7.375" PointY="28.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.vwProductsInfo" Width="1.5" PointX="9.375" PointY="28.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.vwShelfStockForReplenishment" Width="1.5" PointX="29.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.vwShelfTransForReplenishment" Width="1.5" PointX="29.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

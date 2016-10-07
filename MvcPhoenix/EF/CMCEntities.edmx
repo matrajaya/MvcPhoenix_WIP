@@ -1267,7 +1267,7 @@
           <Property Name="AIRUNNUMBER" Type="nvarchar" MaxLength="7" />
           <Property Name="AIRPKGRP" Type="nvarchar" MaxLength="4" />
           <Property Name="AIRHAZSUBCL" Type="nvarchar" MaxLength="5" />
-          <Property Name="AIRLABEL" Type="nvarchar" MaxLength="4" />
+          <Property Name="AIRLABEL" Type="nvarchar" MaxLength="25" />
           <Property Name="AIRSUBLABEL" Type="nvarchar" MaxLength="25" />
           <Property Name="AIRHAZCL" Type="nvarchar" MaxLength="4" />
           <Property Name="AIRSHIPNAME" Type="nvarchar" MaxLength="75" />
@@ -3440,7 +3440,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="AIRUNNUMBER" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
           <Property Name="AIRPKGRP" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="AIRHAZSUBCL" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="AIRLABEL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="AIRLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="AIRSUBLABEL" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="AIRHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="AIRSHIPNAME" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />

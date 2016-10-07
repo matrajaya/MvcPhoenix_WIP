@@ -26,43 +26,39 @@
         <tr>
             <td width="25%">
                 <label>Client:</label><br />
-                @Html.TextBoxFor(m => m.clientname, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.clientname, new { @class = "form-control" })
             </td>
-            <td width="25%">
+            <td width="35%">
                 <label>Division:</label><br />
-                @Html.DropDownListFor(m => m.divisionid, Model.ListOfDivisions, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.divisionid, new { @class = "form-control" })
             </td>
-            <td width="25%">
+            <td width="20%">
                 <label>Business Unit:</label><br />
                 <input type="text" class="form-control" placeholder="bound to division table" />
                 @*@Html.TextBoxFor(m => m.busarea, new { @class = "form-control" })*@
             </td>
-            <td width="25%">
+            <td width="20%">
                 <label>Product ID:</label><br />
-                @Html.TextBoxFor(m => m.productdetailid, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.productdetailid, new { @class = "form-control" })
             </td>
         </tr>
         <tr>
             <td>
-                <label>Product Code:</label>
-                @Html.TextBoxFor(m => m.productcode, new { @class = "form-control" })
+                <label>Product Code:</label><br />
+                @Html.DisplayFor(m => m.productcode, new { @class = "form-control" })
             </td>
             <td>
-                <label>Product Name:</label>
-                @Html.TextBoxFor(m => m.productname, new { @class = "form-control" })
+                <label>Product Name:</label><br />
+                @Html.DisplayFor(m => m.productname, new { @class = "form-control" })
             </td>
             <td>
-                <label>Profile Activation Date:</label>
-                @Html.TextBoxFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                <label>Profile Activation Date:</label><br />
+                @Html.DisplayFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
             </td>
             <td>
-                <label>Profile Revision Date:</label>
+                <label>Profile Revision Date:</label><br />
                 @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
             </td>
-            @*<td>
-                    <label>MSDS Revision Date:</label>
-                    @Html.TextBoxFor(m => m.msdsrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
-                </td>*@
         </tr>
     </table>
 
@@ -86,17 +82,17 @@
                     }
                 </textarea>
             </td>
-            <td width="14%">
-                @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct) Global Product
+            <td>
+                Global @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct)
             </td>
-            <td width="14%">
-                @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified) Accuracy Verified
+            <td>
+                Active @Html.CheckBox("active", Model.active != null && (bool)Model.active)
             </td>
-            <td width="14%">
-                @Html.CheckBox("active", Model.active != null && (bool)Model.active) Acive
+            <td>
+                Verified @Html.CheckBox("accuracyverified", Model.accuracyverified != null && (bool)Model.accuracyverified)
             </td>
-            <td width="14%">
-                @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued) Discontinued
+            <td>
+                Discontinued @Html.CheckBox("discontinued", Model.discontinued != null && (bool)Model.discontinued)
             </td>
         </tr>
     </table>
@@ -140,15 +136,15 @@
         </tr>
         <tr>
             <td>
-                @Html.CheckBox("heatpriortofilling", Model.heatpriortofilling != null && (bool)Model.heatpriortofilling) <label> Heat Prior to Filing</label><br />
+                <label>Heat Prior to Filing </label> @Html.CheckBox("heatpriortofilling", Model.heatpriortofilling != null && (bool)Model.heatpriortofilling)<br />
                 @Html.DisplayFor(m => m.heatinginstructions, new { @class = "form-control", @placeholder = "Heating Instructions" })
             </td>
             <td>
-                @Html.CheckBox("mixwell", Model.mixwell != null && (bool)Model.mixwell) <label>Mix Well</label><br />
+                <label>Mix Well</label> @Html.CheckBox("mixwell", Model.mixwell != null && (bool)Model.mixwell) <br />
                 @Html.DisplayFor(m => m.mixinginstructions, new { @class = "form-control", @placeholder = "Mixing Instructions" })
             </td>
             <td>
-                <label>Other Instructions</label>
+                <label>Other Instructions</label><br/>
                 @Html.DisplayFor(m => m.otherhandlinginstr, new { @class = "form-control" })
             </td>
         </tr>
@@ -194,8 +190,6 @@
                 @Html.DisplayFor(m => m.leadtime)
             </td>
         </tr>
-    </table>
-    <table>
     </table>
 </div>
 
