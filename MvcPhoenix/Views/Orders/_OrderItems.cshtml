@@ -1,4 +1,6 @@
 ﻿@model List<MvcPhoenix.Models.OrderItem>
+@using MvcPhoenix.Extensions;
+
 @{
     ViewBag.Title = "Order Items";
 }
@@ -7,6 +9,7 @@
     <table id="mytable" class="table table-hover table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th>#</th>
                 <th>Product Code</th>
                 <th>Name</th>
@@ -25,6 +28,7 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td><div style="zoom:15%;">@Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.ProductName + "~" + @item.LotNumber + "~" + @item.Size))</div></td>
                     <td>@(Model.IndexOf(item) + 1)</td>
                     <td>@item.ProductCode</td>
                     <td>@item.ProductName</td>

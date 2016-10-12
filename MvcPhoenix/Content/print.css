@@ -1,0 +1,52 @@
+﻿/*Styles for _LayoutPrint.cshtml template*/
+body {
+    font-family: Segoe, Arial, Helvetica, sans-serif;
+}
+
+label {
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    page-break-inside: avoid;
+}
+
+tr {
+    padding-bottom: 5px;
+    vertical-align: top !important;
+}
+
+th, td {
+    padding: 5px;
+}
+
+h3 {
+    padding: 5px;
+    margin: 0;
+}
+
+p {
+    padding: 2px;
+    margin: 2px;
+}
+
+.form-group {
+    page-break-inside: avoid;
+}
+
+.form-control {
+    border-width: 0;
+    border-color: transparent;
+}
+
+/*footer {
+    page-break-after: always;
+}*/
+
+.noprint, #noprint, a, div.alert, header, .group-media, .btn, .footer, form, #comments, .nav, ul.links.list-inline, ul.action-links {
+    display: none !important;
+}

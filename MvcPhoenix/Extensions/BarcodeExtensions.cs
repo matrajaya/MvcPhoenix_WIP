@@ -1,0 +1,41 @@
+﻿using System;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Web;
+using System.Web.Mvc;
+using ZXing;
+using ZXing.Common;
+
+namespace MvcPhoenix.Extensions
+{
+    public static class HtmlExtensions
+    {
+        public static IHtmlString GenerateMatrixCode(this HtmlHelper html, string inputentry, int height = 250, int width = 250, int margin = 0)
+        {
+            var qrValue = inputentry;
+            var barcodeWriter = new BarcodeWriter
+            {
+                Format = BarcodeFormat.DATA_MATRIX,
+                Options = new EncodingOptions
+                {
+                    Height = height,
+                    Width = width,
+                    Margin = margin
+                }
+            };
+
+            using (var bitmap = barcodeWriter.Write(qrValue))
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Gif);
+
+                var img = new TagBuilder("img");
+                img.MergeAttribute("alt", "matrix barcode");
+                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
+                    Convert.ToBase64String(stream.ToArray())));
+
+                return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));
+            }
+        }
+    }
+}

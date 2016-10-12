@@ -26,7 +26,7 @@
                     <td style="text-align:center;">@item.transqty</td>
                     <td style="text-align:right;">@item.transamount</td>
                     <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
-                    <td width="50%">@item.comments</td>
+                    <td width="40%">@item.comments</td>
                     <td id="noprint" class="text-right">
                         @Ajax.ActionLink("Edit", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
                              {

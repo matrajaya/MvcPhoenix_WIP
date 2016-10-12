@@ -393,14 +393,12 @@
             </div>
             <div id="specialinstrpan" class="panel-body collapse in">
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="col-md-6">
                         <label>Special Instructions - Internal</label>
                         @Html.TextAreaFor(m => m.specialinternal, new { @class = "form-control", @rows = 10 })
                         @Html.ValidationMessageFor(m => m.specialinternal)
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label>Special Instructions - External</label>
                         @Html.TextAreaFor(m => m.special, new { @class = "form-control", @rows = 10 })
                         @Html.ValidationMessageFor(m => m.special)

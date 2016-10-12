@@ -6,14 +6,14 @@
 
 <script type="text/javascript">
     window.onload = function () {
-        $("#bcTarget").barcode(
+        $("#OrderBarcode").barcode(
             "@Model.orderid ~ @Model.clientid ~ @Model.clientname",
             "datamatrix",
             { moduleSize: 2, showHRI: false });
     };
 </script>
 
-<div id="bcTarget"></div>
+<div id="OrderBarcode"></div>
 
 <img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
 <h1 class="page-header">
@@ -295,12 +295,10 @@
     <h3>Special Instructions</h3>
     <table>
         <tr>
-            <td>
+            <td width="50%">
                 <label>Internal Notes</label><br />
                 @Html.DisplayFor(m => m.specialinternal, new { @class = "form-control" })
             </td>
-        </tr>
-        <tr>
             <td>
                 <label>External Notes</label><br />
                 @Html.DisplayFor(m => m.special, new { @class = "form-control" })

@@ -211,6 +211,12 @@
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="zxing">
+      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\net40\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation">
+      <HintPath>..\packages\ZXing.Net.0.14.0.1\lib\net40\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core">
@@ -487,6 +493,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\BarcodeExtensions.cs" />
     <Compile Include="Migrations\201601081550350_Initial.cs" />
     <Compile Include="Migrations\201601081550350_Initial.Designer.cs">
       <DependentUpon>201601081550350_Initial.cs</DependentUpon>
@@ -731,6 +738,7 @@
     <Content Include="Content\OrderImportFiles\Stepan\dummy.txt" />
     <Content Include="Content\OrderImportFiles\SunChem\dummy.txt" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\print.css" />
     <Content Include="Content\sdnlist.txt" />
     <Content Include="Content\site.css" />
     <Content Include="Content\themes\base\accordion.css" />
