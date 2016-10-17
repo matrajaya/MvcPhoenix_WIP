@@ -7,9 +7,6 @@ namespace MvcPhoenix.Models
 {
     public class OrderItem
     {
-        // from tblShelfMaster where ProductDetailID=xxx
-        //public List<SelectListItem> ListOfSizes { get; set; }
-
         public string CrudMode { get; set; }
         public int QtyAvailable { get; set; }
 
@@ -35,7 +32,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "Order ID")]
         public Nullable<int> OrderID { get; set; }
 
-        // Viewmodel only
         [Display(Name = "Client ID")]
         public int? ClientID { get; set; }
 
@@ -49,10 +45,6 @@ namespace MvcPhoenix.Models
         public int? AllocatedStockID { get; set; }
 
         public string ImportItemID { get; set; }
-
-        // Remove later
-        //public Nullable<int> ProfileID { get; set; }
-        //public List<SelectListItem> ListOfProfileIDs { get; set; }
 
         [Display(Name = "Lot Number")]
         public string LotNumber { get; set; }
@@ -80,15 +72,15 @@ namespace MvcPhoenix.Models
         [Display(Name = "Backordered")]
         public Nullable<bool> BackOrdered { get; set; }
 
-        // Status is a text field !!!
         [Display(Name = "Status")]
         public string Status { get; set; }
 
-        //[Display(Name = "Add a Status")]
         public Nullable<int> StatusID { get; set; }
 
         [Display(Name = "A-Status")]
         public string AllocateStatus { get; set; }
+
+        public bool? FreezableList { get; set; }
 
         public Nullable<bool> CSAllocate { get; set; }
 
@@ -104,7 +96,6 @@ namespace MvcPhoenix.Models
 
         public Nullable<bool> BackorderEmailSent { get; set; }
 
-        //public string Weight { get; set; }
         public decimal? Weight { get; set; }
 
         public string Warehouse { get; set; }
@@ -130,6 +121,14 @@ namespace MvcPhoenix.Models
         [Display(Name = "Air PckGrp")]
         public string AirPkGroup { get; set; }
 
+        [Display(Name = "Sea UN")]
+        public string SeaUnNumber { get; set; }
+
+        [Display(Name = "Sea PckGrp")]
+        public string SeaPkGroup { get; set; }
+
+        public string HarmonizedCode { get; set; }
+
         [Display(Name = "Ship Via")]
         public string Via { get; set; }
 
@@ -145,36 +144,16 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfStatusNotesIDs { get; set; }
         public string UpdateResult { get; set; }
 
+        public DateTime? CeaseShipDate { get; set; }
+        public DateTime? ExpirationDate { get; set; }
+
         // Remove later
-        public string PartialMode { get; set; }
+        //public string PartialMode { get; set; }
 
-        //public Nullable<int> CMCOrder { get; set; }
-        //public string LegacyCMCOrder { get; set; }
-        //public string CustOrdNum { get; set; }
-        //public string BusArea { get; set; }
-        //public Nullable<decimal> FRT { get; set; }
-        //public Nullable<decimal> FrtSurcharge { get; set; }
-        //public Nullable<decimal> DH { get; set; }
-        //public Nullable<decimal> Other { get; set; }
-        //public Nullable<decimal> TotalSurcharge { get; set; }
-        //public string SpecialRequest { get; set; }
-        //public string ProfitArea { get; set; }
-        //public Nullable<System.DateTime> ExpDate { get; set; }
-        //public string Currency { get; set; }
-        //public string UnitPrice { get; set; }
-        //public string CustCode { get; set; }
-        //public Nullable<bool> SAPClosed { get; set; }
-        //public Nullable<decimal> WasteOrderTotalWeight { get; set; }
-        //public string CustStatus { get; set; }
-        //public Nullable<int> LegacyID { get; set; }
-
-        //06/08/2016
         [Display(Name = "Item Notes")]
         public string ItemNotes { get; set; }
 
-        // 5/20/2016
         public string AlertNotesOrderEntry { get; set; }
-
         public string AlertNotesShipping { get; set; }
         public string AlertNotesOther { get; set; }
         public string AlertNotesPackOut { get; set; }

@@ -39,17 +39,113 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Orders/Edit.cshtml", vm);
         }
 
-        public ActionResult PrintOrder(int id)
+        private static string DocumentFooter()
         {
             string footer = "--footer-left \"Printed on: " +
                 DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") +
                 "                                                                                                                                    " +
                 " Page: [page]/[toPage]\"" +
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+            return footer;
+        }
 
+        public ActionResult PrintOrder(int id)
+        {
+            string footer = DocumentFooter();
             var vm = OrderService.fnFillOrder(id);
-
             return new ViewAsPdf(vm) { CustomSwitches = footer };
+        }
+
+        public ActionResult PrintPickPack(int id)
+        {
+            string footer = DocumentFooter();
+            var vm = OrderService.fnFillOrder(id);
+            return new ViewAsPdf(vm) { CustomSwitches = footer };
+        }
+
+        [HttpGet]
+        public ActionResult PrintPickOrderItems(int id)
+        {
+            var qry = PrintListOrderItems(id);
+            if (qry.Count > 0)
+            {
+                return PartialView("~/Views/Orders/_PrintPickOrderItems.cshtml", qry);
+            }
+
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult PrintPackOrderItems(int id)
+        {
+            var qry = PrintListOrderItems(id);
+            if (qry.Count > 0)
+            { 
+                return PartialView("~/Views/Orders/_PrintPackOrderItems.cshtml", qry); 
+            }
+
+            return null;
+        }
+
+        private List<OrderItem> PrintListOrderItems(int id)
+        {
+            var qry = (from t in db.tblOrderItem
+                       where t.OrderID == id && t.AllocateStatus == "A" && t.ShipDate == null
+                       orderby t.ProductCode
+                       select new MvcPhoenix.Models.OrderItem
+                       {
+                           OrderID = t.OrderID,
+                           ItemID = t.ItemID,
+                           ProductDetailID = t.ProductDetailID,
+                           ProductCode = t.ProductCode,
+                           ProductName = t.ProductName,
+                           Qty = t.Qty,
+                           Size = t.Size,
+                           ShipDate = t.ShipDate,
+                           CeaseShipDate = t.ShipDate, //Note TBD: ceaseshipdate = (stock:expiration_date) minus (profile:cease_ship_differential)
+                           LotNumber = t.LotNumber,
+                           Bin = t.Bin,
+                           AirUnNumber = t.AirUnNumber,
+                           GrnUnNumber = t.GrnUnNumber,
+                           SeaUnNumber = t.GrnUnNumber, //Note: Add SeaUnNumber field to tblOrderItem
+                           BackOrdered = t.BackOrdered,
+                           AllocateStatus = t.AllocateStatus,
+                           NonCMCDelay = t.NonCMCDelay,
+                           DelayReason = t.DelayReason,
+                           FreezableList = (from q in db.tblProductMaster where (q.MasterCode == t.ProductCode) select q.FreezableList).FirstOrDefault(),
+                           HarmonizedCode = (from q in db.tblProductDetail where (q.ProductDetailID == t.ProductDetailID) select q.HarmonizedCode).FirstOrDefault(),
+                           QtyAvailable = (from q in db.tblStock where q.ShelfID == t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL" select q).Count()
+                       }).ToList();
+            return qry;
+        }
+
+        [HttpGet]
+        public ActionResult PrintRemainingItems(int id)
+        {
+            var qry = (from t in db.tblOrderItem
+                        where t.OrderID == id && (t.ShipDate != null || t.AllocateStatus != "A")
+                        orderby t.ProductCode
+                        select new MvcPhoenix.Models.OrderItem
+                        {
+                            OrderID = t.OrderID,
+                            ItemID = t.ItemID,
+                            ProductDetailID = t.ProductDetailID,
+                            ProductCode = t.ProductCode,
+                            ProductName = t.ProductName,
+                            Qty = t.Qty,
+                            Size = t.Size,
+                            LotNumber = t.LotNumber,
+                            ShipDate = t.ShipDate,
+                            BackOrdered = t.BackOrdered,
+                            AllocateStatus = t.AllocateStatus
+                        }).ToList();
+                
+            if (qry.Count > 0)
+            { 
+                return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", qry); 
+            }
+
+            return null;
         }
 
         [HttpPost]

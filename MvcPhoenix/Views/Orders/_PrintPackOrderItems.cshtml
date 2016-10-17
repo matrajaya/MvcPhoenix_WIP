@@ -1,0 +1,44 @@
+﻿@model List<MvcPhoenix.Models.OrderItem>
+@using MvcPhoenix.Extensions;
+
+@{
+    ViewBag.Title = "Packing List Order Items";
+}
+
+<div class="table-responsive">
+    <table id="mytable" class="table table-hover table-striped">
+        <thead>
+            <tr style="border-top:solid 2px;border-bottom:solid 2px;">
+                <th>Code</th>
+                <th>Product Name</th>
+                <th>Qty</th>
+                <th>Size</th>
+                <th>Lot#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductCode</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Qty</td>
+                    <td>@item.Size</td>
+                    <td>@item.LotNumber</td>
+                </tr>
+                <tr style="border-bottom:solid 1px;">
+                    <td colspan="5">
+                        <table>
+                            <tr>
+                                <td>AIR: @item.AirUnNumber</td>
+                                <td>GROUND: @item.GrnUnNumber</td>
+                                <td>SEA: @item.GrnUnNumber</td>
+                                <td>Harm. Code: @item.HarmonizedCode</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

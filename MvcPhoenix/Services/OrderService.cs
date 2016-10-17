@@ -84,6 +84,7 @@ namespace MvcPhoenix.Services
 
                 var cl = db.tblClient.Find(q.ClientID);
                 o.clientname = cl.ClientName;
+                o.clientcode = cl.ClientCode;
                 o.logofilename = cl.LogoFileName;
 
                 // Fill lists buried in object

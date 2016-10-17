@@ -1,6 +1,6 @@
 ﻿@model MvcPhoenix.Models.ProductProfile
 @{
-    ViewBag.Title = "Product Profile:";
+    ViewBag.Title = "Product Profile";
     Layout = "~/Views/Shared/_LayoutPrint.cshtml";
 }
 
@@ -26,34 +26,34 @@
         <tr>
             <td width="25%">
                 <label>Client:</label><br />
-                @Html.DisplayFor(m => m.clientname, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.clientname)
             </td>
             <td width="35%">
                 <label>Division:</label><br />
-                @Html.DisplayFor(m => m.divisionid, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.divisionid)
             </td>
             <td width="20%">
                 <label>Business Unit:</label><br />
                 <input type="text" class="form-control" placeholder="bound to division table" />
-                @*@Html.TextBoxFor(m => m.busarea, new { @class = "form-control" })*@
+                @*@Html.DisplayFor(m => m.busarea)*@
             </td>
             <td width="20%">
                 <label>Product ID:</label><br />
-                @Html.DisplayFor(m => m.productdetailid, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.productdetailid)
             </td>
         </tr>
         <tr>
             <td>
                 <label>Product Code:</label><br />
-                @Html.DisplayFor(m => m.productcode, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.productcode)
             </td>
             <td>
                 <label>Product Name:</label><br />
-                @Html.DisplayFor(m => m.productname, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.productname)
             </td>
             <td>
                 <label>Profile Activation Date:</label><br />
-                @Html.DisplayFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
             </td>
             <td>
                 <label>Profile Revision Date:</label><br />
@@ -132,7 +132,7 @@
         <tr>
             <td width="33%"><label>Torque: </label> @Html.DisplayFor(m => m.torquerequirements)</td>
             <td width="33%"><label>Flash Point: </label> @Html.DisplayFor(m => m.flashpoint)</td>
-            <td width="33%"><label>Other: </label> @Html.TextBoxFor(m => m.otherpkg, new { @class = "form-control" })</td>
+            <td width="33%"><label>Other: </label> @Html.DisplayFor(m => m.otherpkg)</td>
         </tr>
         <tr>
             <td>
@@ -145,7 +145,7 @@
             </td>
             <td>
                 <label>Other Instructions</label><br/>
-                @Html.DisplayFor(m => m.otherhandlinginstr, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.otherhandlinginstr)
             </td>
         </tr>
     </table>
@@ -154,11 +154,11 @@
         <tr>
             <td>
                 <label>End Use</label><br />
-                @Html.DisplayFor(m => m.enduse, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.enduse)
             </td>
             <td>
                 <label>Harmonized Code</label><br />
-                @Html.TextBoxFor(m => m.harmonizedcode, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.harmonizedcode)
             </td>
 
             <td>
@@ -169,15 +169,15 @@
         <tr>
             <td>
                 <label>Shipping SOP</label><br />
-                @Html.DisplayFor(m => m.shippingnotes, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.shippingnotes)
             </td>
             <td>
                 <label>Country Of Origin</label><br />
-                @Html.DisplayFor(m => m.countryoforigin, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.countryoforigin)
             </td>
             <td>
                 <label>Cease Ship Days</label><br />
-                @Html.TextBoxFor(m => m.ceaseshipdifferential, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.ceaseshipdifferential)
             </td>
         </tr>
         <tr>
@@ -201,21 +201,21 @@
         <tr>
             <td>
                 <label>Sample Request Alert Note</label><br />
-                @Html.DisplayFor(m => m.alertnotesorderentry, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.alertnotesorderentry)
             </td>
             <td width="50%">
                 <label>Receiving Alert Note</label><br />
-                @Html.DisplayFor(m => m.alertnotesreceiving, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.alertnotesreceiving)
             </td>
         </tr>
         <tr>
             <td>
                 <label>Shipping Alert Note</label><br />
-                @Html.DisplayFor(m => m.alertnotesshipping, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.alertnotesshipping)
             </td>
             <td>
                 <label>Packout Alert Note</label><br />
-                @Html.DisplayFor(m => m.alertnotespackout, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.alertnotespackout)
             </td>
         </tr>
     </table>
@@ -233,11 +233,11 @@
             </td>
             <td>
                 <label>SDS Rev. Number</label><br />
-                @Html.TextBoxFor(m => m.msdsrevisionnumber, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.msdsrevisionnumber)
             </td>
             <td>
                 <label>Other Number</label><br />
-                @Html.TextBoxFor(m => m.msdsothernumber, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.msdsothernumber)
             </td>
             <td>
                 <label>China Test Cert. Date</label><br />
@@ -245,29 +245,29 @@
             </td>
             <td>
                 <label>Shelf Life</label><br />
-                @Html.TextBoxFor(m => m.shlflife, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.shlflife)
             </td>
         </tr>
         <tr>
             <td>
                 <label>SDS Contact Name</label><br />
-                @Html.TextBoxFor(m => m.sdscontactname, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.sdscontactname)
             </td>
             <td>
                 <label>SDS Contact Phone</label><br />
-                @Html.TextBoxFor(m => m.sdscontactphone, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.sdscontactphone)
             </td>
             <td>
                 <label>Label Contact Name</label><br />
-                @Html.TextBoxFor(m => m.labelcontactname, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.labelcontactname)
             </td>
             <td>
                 <label>Label Contact Phone</label><br />
-                @Html.TextBoxFor(m => m.labelcontactphone, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.labelcontactphone)
             </td>
             <td>
                 <label>Tech Sheet Available</label><br />
-                @Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet, new { @class = "form-control" })
+                @Html.CheckBox("technicalsheet", Model.technicalsheet != null && (bool)Model.technicalsheet)
             </td>
         </tr>
     </table>
@@ -377,9 +377,9 @@
                 <th width="33.3%" style="background-color: yellow; color: gray">Reactivity</th>
             </tr>
             <tr>
-                <th style="text-align: center">@Html.TextBoxFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
-                <th style="text-align: center">@Html.TextBoxFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
-                <th style="text-align: center">@Html.TextBoxFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                <th style="text-align: center">@Html.DisplayFor(m => m.health, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                <th style="text-align: center">@Html.DisplayFor(m => m.flammability, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
+                <th style="text-align: center">@Html.DisplayFor(m => m.reactivity, new { @maxlength = "1", @style = "border: 0px solid transparent; width: 15px; font-weight: bold;" })</th>
             </tr>
         </table>
     </div>
@@ -400,23 +400,23 @@
         <tr>
             <td width="40%">
                 <label>Normal Appearance</label><br />
-                @Html.DisplayFor(m => m.normalappearence, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.normalappearence)
             </td>
             <td width="15%">
                 <label>S.G.</label><br />
-                @Html.TextBoxFor(m => m.specificgravity, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.specificgravity)
             </td>
             <td width="15%">
                 <label>Density LBS/GAL</label><br />
-                @Html.TextBoxFor(m => m.density, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.density)
             </td>
             <td width="15%">
                 <label>pH</label><br />
-                @Html.TextBoxFor(m => m.phvalue, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.phvalue)
             </td>
             <td width="15%">
                 <label>Restricted Qty (lbs)</label><br />
-                @Html.TextBoxFor(m => m.restrictedtoamount, new { @class = "form-control" })
+                @Html.DisplayFor(m => m.restrictedtoamount)
             </td>
         </tr>
     </table>
@@ -444,11 +444,11 @@
             <td width="30%">
                 <p>
                     <label>Glove Type</label><br />
-                    @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
+                    @Html.DisplayFor(m => m.glovetype)
                 </p>
                 <p>
                     <label>Other Equipment</label><br />
-                    @Html.TextBoxFor(m => m.otherequipmentdescription, new { @class = "form-control", @placeholder = "Other Equipment" })
+                    @Html.DisplayFor(m => m.otherequipmentdescription)
                 </p>
             </td>
         </tr>
@@ -461,10 +461,10 @@
     <h3>Shipping Information</h3>
     <table>
         <tr>
-            <td><label>Waste Code:</label> @Html.DisplayFor(m => m.wastecode, new { @class = "form-control" })</td>
+            <td><label>Waste Code:</label> @Html.DisplayFor(m => m.wastecode)</td>
             <td>@Html.CheckBox("epahazardouswaste", Model.epahazardouswaste != null && (bool)Model.epahazardouswaste) EPA Hazardous Waste</td>
             <td>@Html.CheckBox("nonrcrawaste", Model.nonrcrawaste != null && (bool)Model.nonrcrawaste) Non-RCRA Waste</td>
-            <td><label>Waste Profile Number:</label> @Html.DisplayFor(m => m.wasteprofilenumber, new { @class = "form-control" })</td>
+            <td><label>Waste Profile Number:</label> @Html.DisplayFor(m => m.wasteprofilenumber)</td>
         </tr>
     </table>
     <table>
@@ -477,59 +477,59 @@
         </tr>
         <tr>
             <td>UN Number</td>
-            <td>@Html.DisplayFor(m => m.grnunnumber, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.airunnumber, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.seaunnum, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.rcraunnumber, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnunnumber)</td>
+            <td>@Html.DisplayFor(m => m.airunnumber)</td>
+            <td>@Html.DisplayFor(m => m.seaunnum)</td>
+            <td>@Html.DisplayFor(m => m.rcraunnumber)</td>
         </tr>
         <tr>
             <td>Proper Shipping Name</td>
-            <td>@Html.DisplayFor(m => m.grnshipname, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.airshipname, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.seashipname, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.rcrashipname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnshipname)</td>
+            <td>@Html.DisplayFor(m => m.airshipname)</td>
+            <td>@Html.DisplayFor(m => m.seashipname)</td>
+            <td>@Html.DisplayFor(m => m.rcrashipname)</td>
         </tr>
         <tr>
             <td>NOS Name</td>
-            <td>@Html.DisplayFor(m => m.grnosname, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.airnosname, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.seanosname, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.rcranosname, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnosname)</td>
+            <td>@Html.DisplayFor(m => m.airnosname)</td>
+            <td>@Html.DisplayFor(m => m.seanosname)</td>
+            <td>@Html.DisplayFor(m => m.rcranosname)</td>
         </tr>
         <tr>
             <td>Hazard Class</td>
-            <td>@Html.DisplayFor(m => m.grnhazcl, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.airhazcl, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.seahazcl, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.rcrahazcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnhazcl)</td>
+            <td>@Html.DisplayFor(m => m.airhazcl)</td>
+            <td>@Html.DisplayFor(m => m.seahazcl)</td>
+            <td>@Html.DisplayFor(m => m.rcrahazcl)</td>
         </tr>
         <tr>
             <td>Hazard Sub Class</td>
-            <td>@Html.DisplayFor(m => m.grnhazsubcl, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.airhazsubcl, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.seahazsubcl, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.rcrahazsubcl, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnhazsubcl)</td>
+            <td>@Html.DisplayFor(m => m.airhazsubcl)</td>
+            <td>@Html.DisplayFor(m => m.seahazsubcl)</td>
+            <td>@Html.DisplayFor(m => m.rcrahazsubcl)</td>
         </tr>
         <tr>
             <td>Packing Group</td>
-            <td>@Html.DisplayFor(m => m.grnpkgrp, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.airpkgrp, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.seapkgrp, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.rcrapkgrp, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnpkgrp)</td>
+            <td>@Html.DisplayFor(m => m.airpkgrp)</td>
+            <td>@Html.DisplayFor(m => m.seapkgrp)</td>
+            <td>@Html.DisplayFor(m => m.rcrapkgrp)</td>
         </tr>
         <tr>
             <td>Label Required</td>
-            <td>@Html.DisplayFor(m => m.grnlabel, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.airlabel, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.sealabel, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.rcralabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnlabel)</td>
+            <td>@Html.DisplayFor(m => m.airlabel)</td>
+            <td>@Html.DisplayFor(m => m.sealabel)</td>
+            <td>@Html.DisplayFor(m => m.rcralabel)</td>
         </tr>
         <tr>
             <td>Subsidiary Label Required</td>
-            <td>@Html.DisplayFor(m => m.grnsublabel, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.airsublabel, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.seasublabel, new { @class = "form-control" })</td>
-            <td>@Html.DisplayFor(m => m.rcrasublabel, new { @class = "form-control" })</td>
+            <td>@Html.DisplayFor(m => m.grnsublabel)</td>
+            <td>@Html.DisplayFor(m => m.airsublabel)</td>
+            <td>@Html.DisplayFor(m => m.seasublabel)</td>
+            <td>@Html.DisplayFor(m => m.rcrasublabel)</td>
         </tr>
     </table>
 </div>

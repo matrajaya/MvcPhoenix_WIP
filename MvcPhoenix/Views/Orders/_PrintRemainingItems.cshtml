@@ -1,0 +1,42 @@
+﻿@model List<MvcPhoenix.Models.OrderItem>
+@using MvcPhoenix.Extensions;
+
+@{
+    ViewBag.Title = "Excluded Order Items";
+}
+
+<div class="table-responsive">
+    <h3>Excluded Order Items</h3>
+    <table id="mytable" class="table table-hover table-striped" style="border:solid 1px;">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Product Name</th>
+                <th>Qty</th>
+                <th>Size</th>
+                <th>Lot#</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductCode</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Qty</td>
+                    <td>@item.Size</td>
+                    <td>@item.LotNumber</td>
+                    <td>
+                        @if (item.ShipDate != null)
+                        { <p>Shipped on @String.Format("{0:dd MMM yyyy}", item.ShipDate).</p> }
+                        @if (item.BackOrdered == true)
+                        { <p>Item Back Ordered. </p> }
+                        @if (item.AllocateStatus == null)
+                        { <p>Open.</p>}
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

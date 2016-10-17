@@ -33,6 +33,7 @@ namespace MvcPhoenix.Models
         public int? clientid { get; set; }
 
         public string clientname { get; set; }
+        public string clientcode { get; set; }
         public string logofilename { get; set; }
 
         [Display(Name = "Ord Status")]

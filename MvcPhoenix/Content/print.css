@@ -43,9 +43,13 @@ p {
     border-color: transparent;
 }
 
-/*footer {
+.pagebreak{
+    page-break-after:always;
+}
+
+footer {
     page-break-after: always;
-}*/
+}
 
 .noprint, #noprint, a, div.alert, header, .group-media, .btn, .footer, form, #comments, .nav, ul.links.list-inline, ul.action-links {
     display: none !important;

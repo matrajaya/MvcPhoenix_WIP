@@ -1,0 +1,482 @@
+﻿@model MvcPhoenix.Models.OrderMasterFull
+@using MvcPhoenix.Extensions;
+@{
+    ViewBag.Title = "Print Packing List";
+    Layout = "~/Views/Shared/_LayoutPrint.cshtml";
+}
+
+<div id="pickinglistdoc">
+    <div class="form-group">
+        <table>
+            <tr>
+                <td width="50%">
+                    <label>Sent From:</label>
+                    <p>
+                        @Html.DisplayFor(m => m.clientname)<br />
+                        Chemical Marketing Concepts Europe<br />
+                        Industrieweg 73<br />
+                        5145 PD Waalwijk The Netherlands<br />
+                        T: +31 416651977<br />
+                        F: +31 416651972
+                    </p>
+                </td>
+                <td>
+                    <div style="padding-bottom:20px;">
+                        <img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.clientname logo">
+                    </div>
+                    <table style="border:solid 1px;">
+                        <tr>
+                            <td style="text-align:center;"><h3>PICKING LIST</h3></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Ship To:</label>
+                    <table style="border:solid 1px;">
+                        <tr>
+                            <td>
+                                <p>
+                                    @Html.DisplayFor(m => m.company)<br />
+                                    @Html.DisplayFor(m => m.street)<br />
+                                    @Html.DisplayFor(m => m.street2)<br />
+                                    @Html.DisplayFor(m => m.street3)<br />
+                                    @Html.DisplayFor(m => m.city), @Html.DisplayFor(m => m.state) - @Html.DisplayFor(m => m.Zip)<br />
+                                    @Html.DisplayFor(m => m.country)<br />
+                                </p>
+                                <p>
+                                    <label>ATTN: </label>@Html.DisplayFor(m => m.attention)<br />
+                                    <label>Email: </label>@Html.DisplayFor(m => m.email)<br />
+                                    <label>Phone: </label>@Html.DisplayFor(m => m.phone)
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td style="text-align:right;"><label>CMC #: </label></td>
+                            <td>@Html.DisplayFor(m => m.cmcorder) / @Html.DisplayFor(m => m.orderid)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Customer #: </label></td>
+                            <td>@Html.DisplayFor(m => m.custordnum)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Customer Ref #: </label></td>
+                            <td>@Html.DisplayFor(m => m.custrefnum)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Web Order ID: </label></td>
+                            <td>@Html.DisplayFor(m => m.weborderid)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Order Date: </label></td>
+                            <td>@Html.TextBoxFor(m => m.orderdate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Ship Via: </label></td>
+                            <td>@Html.DisplayFor(m => m.shipvia)</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <td>
+                    <label>Requestor: </label>@Html.DisplayFor(m => m.req)<br />
+                    <label>Requestor's Email: </label>@Html.DisplayFor(m => m.reqemail)<br />
+                    <label>Requestor's Phone: </label>@Html.DisplayFor(m => m.reqphone)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(m => m.coa) Include COA <br />
+                    @Html.CheckBoxFor(m => m.tds) Include TDS
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Sales: </label>@Html.DisplayFor(m => m.salesrep)<br />
+                    <label>Sales Email: </label>@Html.DisplayFor(m => m.sales_email)<br />
+                    <label>Sales Phone: </label>@Html.DisplayFor(m => m.salesrepphone)<br />
+                </td>
+                <td>
+                    <label>Shipping Ref. #: </label> @Html.DisplayFor(m => m.clientcode)@Html.DisplayFor(m => m.orderid)<br />
+                    <div style="zoom:30%; float:left">@Html.GenerateLinearCode(Convert.ToString(@Html.DisplayFor(m => m.clientcode) + "" + @Model.orderid))</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.special)</em>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <h3>Current Shipment Contents</h3>
+        <div id="dvItems">
+            @if (Model.orderid > 1)
+            {
+                <div id="dvOrderItemsList">
+                    @Html.Action("PrintPickOrderItems", "Orders", new { id = Model.orderid })
+                </div>
+            }
+            else { <h3>No Pending Shipments.</h3>}
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <div id="dvItems">
+            @if (Model.orderid > 1)
+            {
+                <div id="dvOrderItemsList">
+                    @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<p class="pagebreak"></p>
+
+<div id="packinglistdoc">
+    <div class="form-group">
+        <table>
+            <tr>
+                <td width="50%">
+                    <label>Sent From:</label>
+                    <p>
+                        @Html.DisplayFor(m => m.clientname)<br />
+                        Chemical Marketing Concepts Europe<br />
+                        Industrieweg 73<br />
+                        5145 PD Waalwijk The Netherlands<br />
+                        T: +31 416651977<br />
+                        F: +31 416651972
+                    </p>
+                </td>
+                <td>
+                    <div style="padding-bottom:20px;">
+                        <img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.clientname logo">
+                    </div>
+                    <table style="border:solid 1px;">
+                        <tr>
+                            <td style="text-align:center;"><h3>PACKING LIST</h3></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Ship To:</label>
+                    <table style="border:solid 1px;">
+                        <tr>
+                            <td>
+                                <p>
+                                    @Html.DisplayFor(m => m.company)<br />
+                                    @Html.DisplayFor(m => m.street)<br />
+                                    @Html.DisplayFor(m => m.street2)<br />
+                                    @Html.DisplayFor(m => m.street3)<br />
+                                    @Html.DisplayFor(m => m.city), @Html.DisplayFor(m => m.state) - @Html.DisplayFor(m => m.Zip)<br />
+                                    @Html.DisplayFor(m => m.country)<br />
+                                </p>
+                                <p>
+                                    <label>ATTN: </label>@Html.DisplayFor(m => m.attention)<br />
+                                    <label>Email: </label>@Html.DisplayFor(m => m.email)<br />
+                                    <label>Phone: </label>@Html.DisplayFor(m => m.phone)
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td style="text-align:right;"><label>CMC #: </label></td>
+                            <td>@Html.DisplayFor(m => m.cmcorder) / @Html.DisplayFor(m=>m.orderid)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Customer #: </label></td>
+                            <td>@Html.DisplayFor(m => m.custordnum)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Customer Ref #: </label></td>
+                            <td>@Html.DisplayFor(m => m.custrefnum)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Web Order ID: </label></td>
+                            <td>@Html.DisplayFor(m => m.weborderid)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Order Date: </label></td>
+                            <td>@Html.TextBoxFor(m => m.orderdate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><label>Ship Via: </label></td>
+                            <td>@Html.DisplayFor(m => m.shipvia)</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <td>
+                    <label>Requestor: </label>@Html.DisplayFor(m => m.req)<br />
+                    <label>Requestor's Email: </label>@Html.DisplayFor(m => m.reqemail)<br />
+                    <label>Requestor's Phone: </label>@Html.DisplayFor(m => m.reqphone)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(m => m.coa) Include COA <br />
+                    @Html.CheckBoxFor(m => m.tds) Include TDS
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Sales: </label>@Html.DisplayFor(m => m.salesrep)<br />
+                    <label>Sales Email: </label>@Html.DisplayFor(m => m.sales_email)<br />
+                    <label>Sales Phone: </label>@Html.DisplayFor(m => m.salesrepphone)<br />
+                </td>
+                <td>
+                    <label>Shipping Ref. #: </label> @Html.DisplayFor(m => m.clientcode)@Html.DisplayFor(m => m.orderid)<br />
+                    <div style="zoom:30%; float:left">@Html.GenerateLinearCode(Convert.ToString(@Html.DisplayFor(m => m.clientcode) + "" + @Model.orderid))</div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.special)</em>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <h3>Current Shipment Contents</h3>
+        <div id="dvItems">
+            @if (Model.orderid > 1)
+            {
+                <div id="dvOrderItemsList">
+                    @Html.Action("PrintPackOrderItems", "Orders", new { id = Model.orderid })
+                </div>
+            }
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <div id="dvItems">
+            @if (Model.orderid > 1)
+            {
+                <div id="dvOrderItemsList">
+                    @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<p class="pagebreak"></p>
+
+<div id="eushippingdoc">
+    <div class="form-group">
+        <table style="margin:5px;">
+            <tr>
+                <td></td>
+                <td>
+                    <div style="padding-bottom:20px;">
+                        <img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.clientname logo">
+                    </div>
+                    <table style="border:solid 1px;">
+                        <tr>
+                            <td style="text-align:center;">
+                                <h3>SHIPPING REFERENCE</h3>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>.</td>
+                <td> </td>
+            </tr>
+            <tr>
+                <td width="50%">
+                    <table style="border:solid 1px;">
+                        <tr>
+                            <th style="border: solid 1px;border-bottom: solid 1px;">UN BOX</th>
+                            <th style="text-align:center;border-right: solid 1px;border-bottom: solid 1px;">DIMENSIONS (cm)</th>
+                            <th style="border-bottom: solid 1px;">WEIGHT (kg)</th>
+                        </tr>
+                        <tr>
+                            <td style="border-right: solid 1px;">_______</td>
+                            <td style="border-right: solid 1px;">_______ X _______ X _______</td>
+                            <td>__________</td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: solid 1px;">_______</td>
+                            <td style="border-right: solid 1px;">_______ X _______ X _______</td>
+                            <td>__________</td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: solid 1px;">_______</td>
+                            <td style="border-right: solid 1px;">_______ X _______ X _______</td>
+                            <td>__________</td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: solid 1px;">_______</td>
+                            <td style="border-right: solid 1px;">_______ X _______ X _______</td>
+                            <td>__________</td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: solid 1px;">_______</td>
+                            <td style="border-right: solid 1px;">_______ X _______ X _______</td>
+                            <td>__________</td>
+                        </tr>
+                        <tr>
+                            <td style="border-right: solid 1px;">_______</td>
+                            <td style="border-right: solid 1px;">_______ X _______ X _______</td>
+                            <td>__________</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table style="margin:20px;">
+                        <tr>
+                            <td><label>IATA FORM:</label></td>
+                            <td>YES</td>
+                            <td>NO</td>
+                        </tr>
+                        <tr>
+                            <td><label>INVOICE:</label></td>
+                            <td>YES</td>
+                            <td>NO</td>
+                        </tr>
+                        <tr>
+                            <td><label>A. TR. FORM:</label></td>
+                            <td>YES</td>
+                            <td>NO</td>
+                        </tr>
+                        <tr>
+                            <td><label>OTHER:</label></td>
+                            <td colspan="2">__________________________</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <table>
+        <tr>
+            <td width="65%" style="border:solid 1px;">
+                <table style="font-size:small;">
+                    <tr>
+                        <td colspan="4">
+                            <label style="font-size:1.5em;">Preferred Carrier Selection Matrix:</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Commercial Invoice:</td>
+                        <td>No</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Non-Haz Small:</td>
+                        <td>FX-IE</td>
+                        <td>Haz Carrier ADR LQ:</td>
+                        <td>UPS-HAZ</td>
+                    <tr>
+                        <td>Non-Haz Large:</td>
+                        <td>DHL-EXP</td>
+                        <td>Haz Carrier ADR</td>
+                        <td>WIBO ADR</td>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Haz IATA Small:</td>
+                        <td>FX-HAZ</td>
+                    <tr>
+                        <td>Non-Haz Incoterms:</td>
+                        <td></td>
+                        <td>Haz IATA Large:</td>
+                        <td>DHL-EXPHAZ</td>
+                    </tr>
+                    <tr>
+                        <td>Non-Haz Inco Ash + Imp:</td>
+                        <td>DDP</td>
+                        <td>Haz Incoterms:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Haz Incoterms DSM:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Haz Inco. Ash + Imp:</td>
+                        <td>DDP</td>
+                    </tr>
+                    <tr>
+                        <td>Notes algemeen:</td>
+                        <td colspan="3">Canary Islands met invoice</td>
+                    </tr>
+                    <tr>
+                        <td>Notes IATA / ADR:</td>
+                        <td colspan="3">Fedex not all cities</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="border:solid 1px;">
+                <table style="font-size:small;">
+                    <tr>
+                        <td colspan="2">
+                            <label style="font-size:1.5em;">Client Profile:</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Commercial Value:</td>
+                        <td>Per product</td>
+                    </tr>
+                    <tr>
+                        <td>COA Required:</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>TDS Required:</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>MSDS Language:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Freezable:</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Label Language:</td>
+                        <td>In de taal vh land, if GHS ready</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Client Shipping Rules: <br />Zendingen > 50 kg altijd overleggen met Arjan ** Importer of Record zie vervoerslijst Intranet</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
