@@ -1,4 +1,4 @@
-﻿@model MvcPhoenix.Models.ProductNote
+﻿@model MvcPhoenix.Models.InventoryLogNote
 
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -7,16 +7,14 @@
                 <h4 class="modal-title">Inventory Log Note</h4>
             </div>
             <div id="dialogPlaceholderBody" class="modal-body">
-                @using (Ajax.BeginForm("SaveProductNote", "Products", new AjaxOptions
+                @using (Ajax.BeginForm("SaveInventoryLogNote", "Inventory", new AjaxOptions
                 {
                     HttpMethod = "POST",
-                    UpdateTargetId = "dialogResult",
-                    OnSuccess = "UpdateProductNotesList",
-                    InsertionMode = InsertionMode.Replace
+                    OnSuccess = "CloseModalUpdate"
                 }))
                 {
                     @Html.HiddenFor(m => m.productnoteid)
-                    @Html.HiddenFor(m => m.productdetailid)
+                    @Html.HiddenFor(m => m.productmasterid)
                     <div class="row">
                         <div class="col-md-12 form-group">
                             @Html.LabelFor(m => m.notedate)
@@ -47,11 +45,6 @@
                             }, new { @class = "btn btn-danger btn-block" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p id="dialogResult">@*Placeholder for message from controller*@</p>
-                        </div>
-                    </div>
                 }
             </div>
         </div>
@@ -59,10 +52,8 @@
 </div>
 
 <script type="text/javascript">
-    function UpdateProductNotesList() {
-        // Update the list
-        $("#dvLogNotes").load('@Url.Action("ProductLogList", "Products", new { id = @Model.productdetailid })');
-        // Activate to hide the modal after list update
+    function CloseModalUpdate() {
+        UpdateInventoryNotesList();
         $("#dialogPlaceholderModal").modal('hide');
     }
 </script>

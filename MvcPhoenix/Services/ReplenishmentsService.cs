@@ -19,7 +19,7 @@ namespace MvcPhoenix.Services
                 var mylist = (from t in db.tblBulkOrder
                               join t2 in db.tblClient on t.ClientID equals t2.ClientID
                               let itemscount = (from items in db.tblBulkOrderItem where (items.BulkOrderID == t.BulkOrderID) select items).Count()
-                              let openitemscount = (from items in db.tblBulkOrderItem where (items.BulkOrderID == t.BulkOrderID) && (items.Status == "OP") select items).Count()
+                              let opencount = (from items in db.tblBulkOrderItem where (items.BulkOrderID == t.BulkOrderID) && (items.Status == "OP") select items).Count()
                               orderby t.BulkOrderID descending
                               select new MvcPhoenix.Models.BulkOrder
                               {
@@ -30,7 +30,6 @@ namespace MvcPhoenix.Services
                                   ordercomment = t.Comment,
                                   emailsent = t.EmailSent,
                                   clientname = t2.ClientName,
-                                  opencount = openitemscount,
                                   itemcount = itemscount,
                               }).ToList();
 
@@ -151,7 +150,7 @@ namespace MvcPhoenix.Services
 
                 obj.ListOfBulkOrderItem = (from oi in db.tblBulkOrderItem
                                            join pm in db.tblProductMaster on oi.ProductMasterID equals pm.ProductMasterID
-                                           where oi.BulkOrderID == id && oi.Status == "OP"
+                                           where oi.BulkOrderID == id
                                            select new BulkOrderItem
                                            {
                                                bulkorderitemid = oi.BulkOrderItemID,
@@ -461,7 +460,7 @@ namespace MvcPhoenix.Services
                 System.Diagnostics.Debug.WriteLine(s);
                 db.Database.ExecuteSqlCommand(s);
 
-                s = String.Format("Update {0} Set BulkShippedPastYear=(Select sum(TransQty*TransAmount) from vwBulkTransForReplenishment where transdate>DateAdd(day,-365,getdate()) and ProductMasterID={0}.ProductMasterID) where Username='{1}'", fnTempTable, username);
+                s = String.Format("Update {0} Set BulkShippedPastYear=(Select sum(LogQty*LogAmount) from vwBulkTransForReplenishment where logdate>DateAdd(day,-365,getdate()) and ProductMasterID={0}.ProductMasterID) where Username='{1}'", fnTempTable, username);
                 System.Diagnostics.Debug.WriteLine(s);
                 db.Database.ExecuteSqlCommand(s);
 
@@ -481,7 +480,7 @@ namespace MvcPhoenix.Services
                 System.Diagnostics.Debug.WriteLine(s);
                 db.Database.ExecuteSqlCommand(s);
 
-                s = String.Format("Update {0} Set ShelfShippedPastYear=(Select isnull(Sum(TransQty*TransAmount),0) from vwShelfTransForReplenishment Where transdate>DateAdd(day,-365,getdate()) And ProductMasterID={0}.ProductMasterID) where UserName='{1}'", fnTempTable, username);
+                s = String.Format("Update {0} Set ShelfShippedPastYear=(Select isnull(Sum(LogQty*LogAmount),0) from vwShelfTransForReplenishment Where logdate>DateAdd(day,-365,getdate()) And ProductMasterID={0}.ProductMasterID) where UserName='{1}'", fnTempTable, username);
                 System.Diagnostics.Debug.WriteLine(s);
                 db.Database.ExecuteSqlCommand(s);
 

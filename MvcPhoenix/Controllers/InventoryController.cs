@@ -1,4 +1,5 @@
 ﻿using MvcPhoenix.Models;
+using MvcPhoenix.Services;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -178,54 +179,6 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public ActionResult InventoryLogList(int id) // placeholder for now
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                var obj = (from t in db.tblProductNotes
-                           where t.ProductDetailID == id
-                           orderby t.NoteDate descending
-                           select new ProductNote
-                           {
-                               productnoteid = t.ProductNoteID,
-                               productdetailid = t.ProductDetailID,
-                               notedate = t.NoteDate,
-                               notes = t.Notes,
-                               reasoncode = t.ReasonCode,
-                               ListOfReasonCodes = (from r in db.tblReasonCode 
-                                                    orderby r.Reason 
-                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
-                           }).ToList();
-                ViewBag.ParentKey = id;
-
-                return PartialView("~/Views/Inventory/_InventoryLogNotes.cshtml", obj); 
-            }
-        }
-
-        public ActionResult ProductLogList(int id)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                var obj = (from t in db.tblProductNotes
-                           where t.ProductDetailID == id
-                           orderby t.NoteDate descending
-                           select new ProductNote
-                           {
-                               productnoteid = t.ProductNoteID,
-                               productdetailid = t.ProductDetailID,
-                               notedate = t.NoteDate,
-                               notes = t.Notes,
-                               reasoncode = t.ReasonCode,
-                               ListOfReasonCodes = (from r in db.tblReasonCode 
-                                                    orderby r.Reason 
-                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
-                           }).ToList();
-                ViewBag.ParentKey = id;
-
-                return PartialView("~/Views/Inventory/_ProductLogNotes.cshtml", obj);
-            }
-        }
-
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -276,5 +229,93 @@ namespace MvcPhoenix.Controllers
                 return View(productCodes.ToPagedList(pageNumber, pageSize));
             }
         }
+
+        #region Inventory Product Master Log Notes
+
+        /// <summary>
+        /// Takes in productdetailid but returns obj on master level.
+        /// Changes reflect in related equivalents.
+        /// </summary>
+        public ActionResult InventoryLogList(int id)
+        {
+            //id comes in as detail key
+            //find master id equiv
+            var masterid = GetProductMasterId(id);
+            var obj = InventoryService.ListInvPMLogNotes(masterid);
+            ViewBag.ParentKey = id;
+
+            return PartialView("~/Views/Inventory/_InventoryLogNotes.cshtml", obj);
+        }
+
+        private int? GetProductMasterId(int id)
+        {
+            var masterid = (from t in db.tblProductDetail
+                            where t.ProductDetailID == id
+                            select t.ProductMasterID).FirstOrDefault();
+
+            return masterid;
+        }
+        
+        /// <summary>
+        /// Take in product detail id
+        /// Get product master id and create record
+        /// </summary>
+        [HttpGet]
+        public ActionResult CreateInventoryLogNote(int id)
+        {
+            var masterid = Convert.ToInt32(GetProductMasterId(id));
+            var obj = InventoryService.fnCreateInventoryLogNote(masterid);
+
+            return PartialView("~/Views/Inventory/_InventoryLogNotesModal.cshtml", obj);
+        }
+
+        [HttpGet]
+        public ActionResult EditInventoryLogNote(int id)
+        {
+            var obj = InventoryService.fnGetInventoryNote(id);
+
+            return PartialView("~/Views/Inventory/_InventoryLogNotesModal.cshtml", obj);
+        }
+
+        [HttpPost]
+        public ActionResult SaveInventoryLogNote(InventoryLogNote obj)
+        {
+            int pk = InventoryService.fnSaveInventoryLogNote(obj);
+
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult DeleteInventoryLogNote(int id, int ParentID)
+        {
+            int pk = InventoryService.fnDeleteProductNote(id);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Displays log notes from product profile as readonly.
+        /// Notes are distinct to the detail level.
+        /// </summary>
+        public ActionResult ProductLogList(int id)
+        {
+            var obj = (from t in db.tblPPPDLogNote
+                       where t.ProductDetailID == id
+                       orderby t.NoteDate descending
+                       select new ProductNote
+                       {
+                           productnoteid = t.PPPDLogNoteID,
+                           productdetailid = t.ProductDetailID,
+                           notedate = t.NoteDate,
+                           notes = t.Notes,
+                           reasoncode = t.ReasonCode
+                       }).ToList();
+
+            ViewBag.ParentKey = id;
+
+            return PartialView("~/Views/Inventory/_ProductLogNotes.cshtml", obj);
+        }
+
+        #endregion Inventory Product Master Log Notes
     }
 }

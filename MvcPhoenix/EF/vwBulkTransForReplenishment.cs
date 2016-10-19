@@ -14,11 +14,11 @@ namespace MvcPhoenix.EF
     
     public partial class vwBulkTransForReplenishment
     {
-        public int InvTransID { get; set; }
-        public string TransType { get; set; }
-        public Nullable<System.DateTime> TransDate { get; set; }
-        public Nullable<int> TransQty { get; set; }
-        public Nullable<decimal> TransAmount { get; set; }
+        public int LogID { get; set; }
+        public string LogType { get; set; }
+        public Nullable<System.DateTime> LogDate { get; set; }
+        public Nullable<int> LogQty { get; set; }
+        public Nullable<decimal> LogAmount { get; set; }
         public string BulkStatus { get; set; }
         public Nullable<int> ProductMasterID { get; set; }
     }

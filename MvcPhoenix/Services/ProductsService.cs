@@ -78,11 +78,11 @@ namespace MvcPhoenix.Models
                 PP.ListOfSupplyIDs = (from t in db.tblBulkSupplier where t.ClientID == PP.clientid select new SelectListItem { Value = t.SupplyID, Text = t.SupplyID }).ToList();
                 PP.ListOfSupplyIDs.Insert(0, new SelectListItem { Value = "0", Text = "" });
 
-                PP.ListOfProductNotes = (from t in db.tblProductNotes
+                PP.ListOfProductNotes = (from t in db.tblPPPDLogNote
                                          where t.ProductDetailID == PP.productdetailid
                                          select new ProductNote
                                          {
-                                             productnoteid = t.ProductNoteID,
+                                             productnoteid = t.PPPDLogNoteID,
                                              productdetailid = t.ProductDetailID,
                                              notedate = t.NoteDate,
                                              notes = t.Notes,
@@ -365,10 +365,10 @@ namespace MvcPhoenix.Models
                 PP.dustfilter = q.DustFilter;
                 PP.temperaturecontrolledstorage = q.TemperatureControlledStorage;
                 PP.prepacked = q.PrePacked;
-				
-				PP.alertnotesreceiving = q.AlertNotesReceiving;
+
+                PP.alertnotesreceiving = q.AlertNotesReceiving;
                 PP.alertnotespackout = q.AlertNotesPackout;
-				
+
                 PP.CreateDateMaster = q.CreateDate;
                 PP.CreateUserMaster = q.CreateUser;
                 PP.UpdateDateMaster = q.UpdateDate;
@@ -626,7 +626,7 @@ namespace MvcPhoenix.Models
                 q.DustFilter = pm.dustfilter;
                 q.TemperatureControlledStorage = pm.temperaturecontrolledstorage;
                 q.PrePacked = pm.prepacked;
-				q.AlertNotesReceiving = pm.alertnotesreceiving;
+                q.AlertNotesReceiving = pm.alertnotesreceiving;
                 q.AlertNotesPackout = pm.alertnotespackout;
 
                 db.SaveChanges();
@@ -736,8 +736,8 @@ namespace MvcPhoenix.Models
             ProductNote PN = new ProductNote();
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = (from t in db.tblProductNotes where t.ProductNoteID == id select t).FirstOrDefault();
-                PN.productnoteid = q.ProductNoteID;
+                var q = (from t in db.tblPPPDLogNote where t.PPPDLogNoteID == id select t).FirstOrDefault();
+                PN.productnoteid = q.PPPDLogNoteID;
                 PN.productdetailid = q.ProductDetailID;
                 PN.reasoncode = q.ReasonCode;
                 PN.notedate = q.NoteDate;
@@ -757,14 +757,14 @@ namespace MvcPhoenix.Models
             {
                 if (PN.productnoteid == -1)
                 {
-                    var newrec = new EF.tblProductNotes();
-                    db.tblProductNotes.Add(newrec);
+                    var newrec = new EF.tblPPPDLogNote();
+                    db.tblPPPDLogNote.Add(newrec);
                     db.SaveChanges();
-                    PN.productnoteid = newrec.ProductNoteID;
+                    PN.productnoteid = newrec.PPPDLogNoteID;
                 }
 
-                var q = (from t in db.tblProductNotes
-                         where t.ProductNoteID == PN.productnoteid
+                var q = (from t in db.tblPPPDLogNote
+                         where t.PPPDLogNoteID == PN.productnoteid
                          select t).FirstOrDefault();
 
                 q.ProductDetailID = PN.productdetailid;
@@ -774,7 +774,7 @@ namespace MvcPhoenix.Models
 
                 db.SaveChanges();
 
-                return q.ProductNoteID;
+                return q.PPPDLogNoteID;
             }
         }
 

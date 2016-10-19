@@ -7,6 +7,7 @@ namespace MvcPhoenix.Models
 {
     public class OrderItem
     {
+        public int? QtyAllocated { get; set; }
         public string CrudMode { get; set; }
         public int QtyAvailable { get; set; }
 

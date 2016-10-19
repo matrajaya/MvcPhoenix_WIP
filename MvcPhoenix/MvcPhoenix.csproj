@@ -319,6 +319,9 @@
     <Compile Include="EF\tblCAS.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblCeaseShipOffSet.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblClient.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -379,7 +382,7 @@
     <Compile Include="EF\tblInvoiceMaster.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblInvTrans.cs">
+    <Compile Include="EF\tblInvPMLogNote.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblOrderImport.cs">
@@ -407,6 +410,9 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblPMNote.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblPPPDLogNote.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblPreferredCarrierList.cs">
@@ -461,9 +467,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblTier.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblTransType.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblUN.cs">

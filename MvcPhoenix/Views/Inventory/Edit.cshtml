@@ -320,7 +320,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#inventorylogpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Log*</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#inventorylogpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Log <i class="fa fa-fw fa-star" style="color:gold"></i></h3>
             </div>
             <div id="inventorylogpan" class="panel-body collapse in">
                 @{Html.RenderAction("InventoryLogList", "Inventory", new { id = @Model.PP.productdetailid });}

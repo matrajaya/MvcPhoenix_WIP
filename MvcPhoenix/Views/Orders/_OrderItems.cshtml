@@ -20,6 +20,7 @@
                 <th class="text-center">BO</th>
                 <th class="text-center">Delay</th>
                 <th class="text-center">Avail</th>
+                <th>Qty Allocated*</th>
                 <th class="text-center">A-Status</th>
                 <th id="noprint"></th>
             </tr>
@@ -39,7 +40,8 @@
                     <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
                     <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
                     <td class="text-center">@item.QtyAvailable.ToString()</td>
-                    <td class="text-center">@item.AllocateStatus</td>
+                    <td>@item.QtyAllocated</td>
+                    <td class="text-center">@item.AllocateStatus datetiime</td>
                     <td id="noprint" class="text-right">
                         @Ajax.ActionLink("Edit", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
                              {
@@ -64,7 +66,7 @@
                 <label>Available Stock Only</label>
                 <div class="row">
                     <div class="col-md-6">
-                        @Ajax.ActionLink("Allocate from Shelf", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = false },
+                        @Ajax.ActionLink("Allocate from Shelf", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = false },
                         new AjaxOptions
                              {
                                  UpdateTargetId = "dvAllocateResult",
@@ -75,7 +77,7 @@
                              }, new { @class = "btn btn-sm btn-primary btn-block" })
                     </div>
                     <div class="col-md-6">
-                        @Ajax.ActionLink("Allocate from Bulk", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = false },
+                        @Ajax.ActionLink("Allocate from Bulk", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeQCStock = false },
                         new AjaxOptions
                     {
                         UpdateTargetId = "dvAllocateResult",
@@ -95,7 +97,7 @@
                 <label>QC Stock</label>
                 <div class="row">
                     <div class="col-md-6">
-                        @Ajax.ActionLink("Allocate from Shelf", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = true },
+                        @Ajax.ActionLink("Allocate from Shelf", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = true },
                         new AjaxOptions
                              {
                                  UpdateTargetId = "dvAllocateResult",
@@ -106,7 +108,7 @@
                              }, new { @class = "btn btn-sm btn-primary btn-block" })
                     </div>
                     <div class="col-md-6">
-                        @Ajax.ActionLink("Allocate from Bulk", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeExpiredStock = true },
+                        @Ajax.ActionLink("Allocate from Bulk", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeQCStock = true },
                         new AjaxOptions
                     {
                         UpdateTargetId = "dvAllocateResult",

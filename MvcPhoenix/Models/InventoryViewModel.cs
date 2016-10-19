@@ -272,4 +272,24 @@ namespace MvcPhoenix.Models
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
     }
+
+    public class InventoryLogNote
+    {
+        [Display(Name = "Product Note ID")]
+        public int productnoteid { get; set; }
+
+        public int? productmasterid { get; set; }
+        public List<SelectListItem> fnListOfProductCodes { get; set; }
+
+        [Display(Name = "Note Date")]
+        public DateTime? notedate { get; set; }
+
+        [Display(Name = "Notes")]
+        public string notes { get; set; }
+
+        [Display(Name = "Reason Code")]
+        public string reasoncode { get; set; } //current represented as comments in table. Change later - Iffy
+
+        public List<SelectListItem> ListOfReasonCodes { get; set; }
+    }
 }

@@ -55,6 +55,7 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> ShipWt { get; set; }
         public Nullable<decimal> ShipDimWt { get; set; }
         public Nullable<System.DateTime> ExpirationDate { get; set; }
+        public Nullable<System.DateTime> CeaseShipDate { get; set; }
         public string ItemNotes { get; set; }
         public string AlertNotesShipping { get; set; }
         public string AlertNotesPackout { get; set; }

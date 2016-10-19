@@ -176,12 +176,12 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var obj = (from t in db.tblProductNotes
+                var obj = (from t in db.tblPPPDLogNote
                            where t.ProductDetailID == id
                            orderby t.NoteDate descending
                            select new ProductNote
                            {
-                               productnoteid = t.ProductNoteID,
+                               productnoteid = t.PPPDLogNoteID,
                                productdetailid = t.ProductDetailID,
                                notedate = t.NoteDate,
                                notes = t.Notes,

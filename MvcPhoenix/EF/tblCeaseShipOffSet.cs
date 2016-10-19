@@ -12,10 +12,11 @@ namespace MvcPhoenix.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tblTransType
+    public partial class tblCeaseShipOffSet
     {
-        public int ID { get; set; }
-        public string TransType { get; set; }
-        public string TransDescription { get; set; }
+        public int CeaseShipOffsetID { get; set; }
+        public Nullable<int> ClientID { get; set; }
+        public Nullable<int> CountryID { get; set; }
+        public Nullable<int> OffsetDays { get; set; }
     }
 }

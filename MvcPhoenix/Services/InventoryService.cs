@@ -10,6 +10,8 @@ namespace MvcPhoenix.Services
 {
     public class InventoryService
     {
+        private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+
         public static Inventory fnFillInventoryVM(int id)
         {
             using (var db = new CMCSQL03Entities())
@@ -375,5 +377,116 @@ namespace MvcPhoenix.Services
 
             return mylist;
         }
+
+
+        #region Inventory Product Master Log Notes
+
+        public static List<InventoryLogNote> ListInvPMLogNotes(int? masterid)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            { 
+                var obj = (from t in db.tblInvPMLogNote
+                       where t.ProductMasterID == masterid
+                       orderby t.NoteDate descending
+                       select new InventoryLogNote
+                       {
+                           productnoteid = t.InvPMLogNoteIDID,
+                           productmasterid = t.ProductMasterID,
+                           notedate = t.NoteDate,
+                           notes = t.Notes,
+                           reasoncode = t.Comment, //modify table field later - Iffy
+                           ListOfReasonCodes = (from r in db.tblReasonCode
+                                                orderby r.Reason
+                                                select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                       }).ToList();
+
+                return obj;
+            }
+        }
+
+        public static InventoryLogNote fnGetInventoryNote(int id)
+        {
+            InventoryLogNote obj = new InventoryLogNote();
+
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var q = (from t in db.tblInvPMLogNote 
+                         where t.InvPMLogNoteIDID == id
+                         select t).FirstOrDefault();
+
+                obj.productnoteid = q.InvPMLogNoteIDID;
+                obj.productmasterid = q.ProductMasterID;
+                obj.reasoncode = q.Comment;
+                obj.notedate = q.NoteDate;
+                obj.notes = q.Notes;
+                obj.ListOfReasonCodes = (from t in db.tblReasonCode
+                                        orderby t.Reason
+                                        select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
+
+                obj.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
+            }
+
+            return obj;
+        }
+
+        public static InventoryLogNote fnCreateInventoryLogNote(int id)
+        {
+            InventoryLogNote obj = new InventoryLogNote();
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                obj.productnoteid = -1;
+                obj.productmasterid = id;  // important
+                obj.reasoncode = null;
+                obj.notedate = DateTime.UtcNow;
+                obj.notes = null;
+                obj.ListOfReasonCodes = (from t in db.tblReasonCode
+                                        orderby t.Reason
+                                        select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
+
+                obj.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
+            }
+
+            return obj;
+        }
+
+        public static int fnSaveInventoryLogNote(InventoryLogNote obj)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                if (obj.productnoteid == -1)
+                {
+                    var newrec = new EF.tblInvPMLogNote();
+                    db.tblInvPMLogNote.Add(newrec);
+                    db.SaveChanges();
+                    obj.productnoteid = newrec.InvPMLogNoteIDID;
+                }
+
+                var q = (from t in db.tblInvPMLogNote
+                         where t.InvPMLogNoteIDID == obj.productnoteid
+                         select t).FirstOrDefault();
+
+                q.ProductMasterID = obj.productmasterid;
+                q.NoteDate = DateTime.UtcNow;
+                q.Notes = obj.notes;
+                q.Comment = obj.reasoncode;
+
+                db.SaveChanges();
+
+                return q.InvPMLogNoteIDID;
+            }
+        }
+
+        public static int fnDeleteProductNote(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                db.Database.ExecuteSqlCommand("Delete from tblInvPMLogNote Where InvPMLogNoteIDID=" + id);
+            }
+
+            return id;
+        }
+
+        #endregion
+
     }
 }

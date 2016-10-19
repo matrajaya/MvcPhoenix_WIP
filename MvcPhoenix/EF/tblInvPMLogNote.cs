@@ -12,29 +12,22 @@ namespace MvcPhoenix.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tblInvTrans
+    public partial class tblInvPMLogNote
     {
-        public int InvTransID { get; set; }
-        public Nullable<int> LegacyID { get; set; }
-        public string TransType { get; set; }
-        public Nullable<System.DateTime> TransDate { get; set; }
-        public Nullable<int> BulkID { get; set; }
-        public Nullable<int> StockID { get; set; }
-        public Nullable<int> TransQty { get; set; }
-        public Nullable<decimal> TransAmount { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public string TransNotes { get; set; }
-        public Nullable<bool> Posted { get; set; }
-        public string Status { get; set; }
+        public int InvPMLogNoteIDID { get; set; }
+        public Nullable<int> ProductMasterID { get; set; }
+        public Nullable<System.DateTime> NoteDate { get; set; }
+        public string Comment { get; set; }
+        public string Notes { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateUser { get; set; }
-        public string LogRecordStatus_MDB { get; set; }
+        public Nullable<int> LegacyID { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string ProductCode_MDB { get; set; }
         public string LotNumber_MDB { get; set; }
-        public string Size_MDB { get; set; }
+        public string Location_MDB { get; set; }
     }
 }

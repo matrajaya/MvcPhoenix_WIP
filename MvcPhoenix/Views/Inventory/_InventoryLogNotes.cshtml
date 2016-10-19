@@ -1,9 +1,9 @@
-﻿@model List<MvcPhoenix.Models.ProductNote>
+﻿@model List<MvcPhoenix.Models.InventoryLogNote>
 
 <div id="dvLogNotes">
     <div class="row">
         <div class="col-md-3 pull-right">
-            @Ajax.ActionLink("+ Add New Log", "CreateProductNote", "Products", new { id = @ViewBag.ParentKey }, new AjaxOptions
+            @Ajax.ActionLink("+ Add New Log", "CreateInventoryLogNote", "Inventory", new { id = @ViewBag.ParentKey }, new AjaxOptions
             {
                 InsertionMode = InsertionMode.Replace,
                 HttpMethod = "GET",
@@ -12,33 +12,51 @@
             }, new { @class = "btn btn-primary btn-block" })
         </div>
     </div>
+
     <div class="table-responsive">
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
-                    <th>Date</th>
+                    <th id="noprint">&nbsp;</th>
+                    <th width="10%">Date</th>
                     <th width="70%">Notes</th>
                     <th>Reason Code</th>
-                    <th></th>
+                    <th id="noprint"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
-            {
+                {
                     <tr>
+                        <td id="noprint">
+                            @Ajax.ActionLink(" ", "DeleteInventoryLogNote", "Inventory", new { id = @item.productnoteid, ParentID = Model[0].productmasterid }, new AjaxOptions
+                             {
+                                 Confirm = "Delete This Inventory Log Note?",
+                                 HttpMethod = "GET",
+                                 OnSuccess = "UpdateInventoryNotesList"
+                             }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                        </td>
                         <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
                         <td>@item.notes</td>
                         <td>@item.reasoncode</td>
-                        <td><a href="#">Edit</a></td>
+                        <td id="noprint">
+                            @Ajax.ActionLink("Edit", "EditInventoryLogNote", "Inventory", new { id = @item.productnoteid }, new AjaxOptions
+                               {
+                                   InsertionMode = InsertionMode.Replace,
+                                   HttpMethod = "GET",
+                                   UpdateTargetId = "dialogPlaceholder",
+                                   OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                               })
+                        </td>
                     </tr>
-            }
+                }
             </tbody>
         </table>
     </div>
 </div>
 
 <script type="text/javascript">
-    function UpdateProductNotesList() {
-        $("#dvLogNotes").load('@Url.Action("ProductLogList", "Products", new { id = @ViewBag.ParentKey })');
+    function UpdateInventoryNotesList() {
+        $("#dvLogNotes").load('@Url.Action("InventoryLogList", "Inventory", new { id = @ViewBag.ParentKey })');
     }
 </script>

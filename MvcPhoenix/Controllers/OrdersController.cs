@@ -180,7 +180,8 @@ namespace MvcPhoenix.Controllers
                                BackOrdered = t.BackOrdered,
                                AllocateStatus = t.AllocateStatus,
                                NonCMCDelay = t.NonCMCDelay,
-                               QtyAvailable = (from q in db.tblStock where q.ShelfID == t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL" select q).Count()
+                               QtyAllocated = (from q in db.tblStock where q.ShelfID == t.ShelfID && q.ShelfStatus == "AVAIL" select q.QtyAllocated).Sum(),
+                               QtyAvailable = (from q in db.tblStock where (q.ShelfID == t.ShelfID) && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL" select q).Count()
                            }).ToList();
                 if (qry.Count > 0)
                 { return PartialView("~/Views/Orders/_OrderItems.cshtml", qry); }
@@ -230,16 +231,16 @@ namespace MvcPhoenix.Controllers
             return Content("Item Deleted");
         }
 
-        public ActionResult AllocateFromShelf(int id, bool IncludeExpiredStock)
+        public ActionResult AllocateFromShelf(int id, bool IncludeQCStock)
         {
             // The view handles the partial updates
-            int AllocationCount = OrderService.fnAllocateShelf(id, IncludeExpiredStock);
+            int AllocationCount = OrderService.fnAllocateShelf(id, IncludeQCStock);
             return Content(AllocationCount.ToString() + " item(s) allocated");
         }
 
-        public ActionResult AllocateFromBulk(int id, bool IncludeExpiredStock)
+        public ActionResult AllocateFromBulk(int id, bool IncludeQCStock)
         {
-            int AllocationCount = OrderService.fnAllocateBulk(id, IncludeExpiredStock);
+            int AllocationCount = OrderService.fnAllocateBulk(id, IncludeQCStock);
             return Content(AllocationCount.ToString() + " item(s) allocated");
         }
 
