@@ -118,31 +118,19 @@
 
     <hr />
 
-    <div class="form-group">
-        <h3>Current Shipment Contents</h3>
-        <div id="dvItems">
-            @if (Model.orderid > 1)
-            {
-                <div id="dvOrderItemsList">
-                    @Html.Action("PrintPickOrderItems", "Orders", new { id = Model.orderid })
-                </div>
-            }
-            else { <h3>No Pending Shipments.</h3>}
-        </div>
-    </div>
+    <h3>Current Shipment Contents</h3>
+    
+        @if (Model.orderid > 1)
+        {
+            @Html.Action("PrintPickOrderItems", "Orders", new { id = Model.orderid })
+        }
 
     <hr />
 
-    <div class="form-group">
-        <div id="dvItems">
-            @if (Model.orderid > 1)
-            {
-                <div id="dvOrderItemsList">
-                    @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
-                </div>
-            }
-        </div>
-    </div>
+        @if (Model.orderid > 1)
+        {
+            @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
+        }
 </div>
 
 <p class="pagebreak"></p>
@@ -200,7 +188,7 @@
                     <table>
                         <tr>
                             <td style="text-align:right;"><label>CMC #: </label></td>
-                            <td>@Html.DisplayFor(m => m.cmcorder) / @Html.DisplayFor(m=>m.orderid)</td>
+                            <td>@Html.DisplayFor(m => m.cmcorder) / @Html.DisplayFor(m => m.orderid)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Customer #: </label></td>
@@ -260,29 +248,21 @@
 
     <hr />
 
-    <div class="form-group">
-        <h3>Current Shipment Contents</h3>
-        <div id="dvItems">
-            @if (Model.orderid > 1)
-            {
-                <div id="dvOrderItemsList">
-                    @Html.Action("PrintPackOrderItems", "Orders", new { id = Model.orderid })
-                </div>
-            }
-        </div>
+    <h3>Current Shipment Contents</h3>
+    <div id="dvItems">
+        @if (Model.orderid > 1)
+        {
+            @Html.Action("PrintPackOrderItems", "Orders", new { id = Model.orderid })
+        }
     </div>
 
     <hr />
 
-    <div class="form-group">
-        <div id="dvItems">
-            @if (Model.orderid > 1)
-            {
-                <div id="dvOrderItemsList">
-                    @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
-                </div>
-            }
-        </div>
+    <div id="dvItems">
+        @if (Model.orderid > 1)
+        {
+            @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
+        }
     </div>
 </div>
 
@@ -380,66 +360,10 @@
     <table>
         <tr>
             <td width="65%" style="border:solid 1px;">
-                <table style="font-size:small;">
-                    <tr>
-                        <td colspan="4">
-                            <label style="font-size:1.5em;">Preferred Carrier Selection Matrix:</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Commercial Invoice:</td>
-                        <td>No</td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Non-Haz Small:</td>
-                        <td>FX-IE</td>
-                        <td>Haz Carrier ADR LQ:</td>
-                        <td>UPS-HAZ</td>
-                    <tr>
-                        <td>Non-Haz Large:</td>
-                        <td>DHL-EXP</td>
-                        <td>Haz Carrier ADR</td>
-                        <td>WIBO ADR</td>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Haz IATA Small:</td>
-                        <td>FX-HAZ</td>
-                    <tr>
-                        <td>Non-Haz Incoterms:</td>
-                        <td></td>
-                        <td>Haz IATA Large:</td>
-                        <td>DHL-EXPHAZ</td>
-                    </tr>
-                    <tr>
-                        <td>Non-Haz Inco Ash + Imp:</td>
-                        <td>DDP</td>
-                        <td>Haz Incoterms:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Haz Incoterms DSM:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Haz Inco. Ash + Imp:</td>
-                        <td>DDP</td>
-                    </tr>
-                    <tr>
-                        <td>Notes algemeen:</td>
-                        <td colspan="3">Canary Islands met invoice</td>
-                    </tr>
-                    <tr>
-                        <td>Notes IATA / ADR:</td>
-                        <td colspan="3">Fedex not all cities</td>
-                    </tr>
-                </table>
+                @if (Model.country != null)
+                {
+                    @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.country })
+                }
             </td>
             <td style="border:solid 1px;">
                 <table style="font-size:small;">

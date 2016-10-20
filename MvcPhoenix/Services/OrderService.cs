@@ -88,10 +88,7 @@ namespace MvcPhoenix.Services
                 o.logofilename = cl.LogoFileName;
 
                 // Fill lists buried in object
-                //o.ListOfDivisions = fnListOfDivisions(q.ClientID);
-                //o.ListOfOrderTypes = fnListOfOrderTypes();
                 o.ListOfSalesReps = fnListOfSalesReps(o.clientid);
-                //o.ListOfOrderSources = fnListOfOrderSources();
                 o.ListOfCountries = fnListOfCountries();
                 o.ListOfEndUses = fnListOfEndUses(o.clientid);
                 o.ListOfShipVias = fnListOfShipVias();
@@ -108,13 +105,7 @@ namespace MvcPhoenix.Services
                 o.custsapnum = q.CustSapNum;
                 o.custrefnum = q.CustRefNum;
                 o.ordertype = q.OrderType;
-
                 o.orderdate = q.OrderDate;
-                //if (q.OrderDate.HasValue)
-                //{ o.orderdate = Convert.ToDateTime(q.OrderDate); }
-                //else
-                //{ o.orderdate = null; }
-
                 o.company = q.Company;
                 o.street = q.Street; o.street2 = q.Street2; o.street3 = q.Street3; o.city = q.City; o.state = q.State; o.Zip = q.Zip;
                 o.country = q.Country; o.attention = q.Attention; o.email = q.Email; o.salesrep = q.SalesRep; o.sales_email = q.SalesEmail;
@@ -135,8 +126,6 @@ namespace MvcPhoenix.Services
 
                 o.timing = q.Timing; o.volume = q.Volume; o.samplerack = Convert.ToBoolean(q.SampleRack); o.cmcuser = q.CMCUser;
                 o.customerreference = q.CustomerReference;
-                //o.division = q.Division;
-                //o.busarea = q.BusArea;
                 o.totalorderweight = q.TotalOrderWeight;
                 o.spstaxid = q.SPSTaxID; o.spscurrency = q.SPSCurrency; o.spsshippedwt = q.SPSShippedWt; o.spsfreightcost = q.SPSFreightCost;
                 o.invoicecompany = q.InvoiceCompany; o.invoicetitle = q.InvoiceTitle; o.invoicefirstname = q.InvoiceFirstName; o.invoicelastname = q.InvoiceLastName;
@@ -171,8 +160,6 @@ namespace MvcPhoenix.Services
                 o.CreateDate = q.CreateDate;
                 o.UpdateUser = q.UpdateUser;
                 o.UpdateDate = q.UpdateDate;
-
-                // pc 04/28/2016 add per cd, ii
                 o.billinggroup = q.BillingGroup;
 
                 o.IsSDN = q.IsSDN;
@@ -188,12 +175,8 @@ namespace MvcPhoenix.Services
                 MvcPhoenix.EF.tblOrderMaster newrec = new MvcPhoenix.EF.tblOrderMaster();
                 db.tblOrderMaster.Add(newrec);
                 db.SaveChanges();
+
                 return newrec.OrderID;
-                //    string sSQL = @"Insert into tblOrderMaster (ClientID,OrderDate) VALUES (@clientid,@orderdate)";
-                //    db.Database.ExecuteSqlCommand(sSQL,
-                //    new SqlParameter("clientid", o.clientid),
-                //    new SqlParameter("orderdate", o.orderdate)
-                //    );
             }
         }
 
@@ -207,8 +190,6 @@ namespace MvcPhoenix.Services
                 if (vm.orderid == -1)
                 {
                     vm.orderid = fnNewOrderID();
-                    //vm.CreateDate = System.DateTime.Now;
-                    //vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 }
 
                 // update time stamps
@@ -267,8 +248,6 @@ namespace MvcPhoenix.Services
                 q.SampleRack = Convert.ToBoolean(vm.samplerack);
                 q.CMCUser = vm.cmcuser;
                 q.CustomerReference = vm.customerreference;
-                //q.Division = vm.division;
-                //q.BusArea = vm.busarea;
                 q.TotalOrderWeight = (vm.totalorderweight);
                 q.SPSTaxID = vm.spstaxid;
                 q.SPSCurrency = vm.spscurrency;

@@ -1324,6 +1324,7 @@
     <Content Include="Views\Orders\_PrintPickOrderItems.cshtml" />
     <Content Include="Views\Orders\_PrintPackOrderItems.cshtml" />
     <Content Include="Views\Orders\_PrintRemainingItems.cshtml" />
+    <Content Include="Views\Orders\_PrintPreferredCarrierMatrix.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

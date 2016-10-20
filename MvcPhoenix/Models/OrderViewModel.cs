@@ -339,4 +339,25 @@ namespace MvcPhoenix.Models
 
         public IEnumerable<SelectListItem> Clients { get; set; }
     }
+
+    public class PreferredCarrierViewModel
+    {
+        public int ID { get; set; }
+        public string CountryCode { get; set; }
+        public string CountryName { get; set; }
+        public bool? CommInvoiceReq { get; set; }
+        public string NonHazSm { get; set; }
+        public string NonHazLg { get; set; }
+        public string NonHazIncoTerms { get; set; }
+        public string HazIATASm { get; set; }
+        public string HazIATALg { get; set; }
+        public string HazGroundLQ { get; set; }
+        public string HazGround { get; set; }
+        public string HazIncoterms { get; set; }
+        public string IncotermsAlt { get; set; }
+        public string NotesGeneral { get; set; }
+        public string NotesIATAADR { get; set; }
+        public string NonHazIncotermsAlt { get; set; }
+        public string HazIncotermsAlt { get; set; }
+    }
 }

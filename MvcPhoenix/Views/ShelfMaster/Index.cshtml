@@ -48,16 +48,13 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Size</th>
                             <th>UM</th>
-                            <th>Pkg</th>
                             <th>WH</th>
                             <th>Bin</th>
-                            <th>Min</th>
-                            <th>Max</th>
                             <th>Order</th>
                             <th>Haz</th>
                             <th>Flam</th>
@@ -82,11 +79,8 @@
                             <tr>
                                 <td><strong>@item.size</strong></td>
                                 <td>@item.clientum</td>
-                                <td>@item.packagepartnumber <br />@item.pkgmaterial</td>
                                 <td>@item.warehouse</td>
                                 <td>@item.bin</td>
-                                <td>@item.reordermin.ToString()</td>
-                                <td>@item.reordermax.ToString()</td>
                                 <td>@{if (item.reorderqty == null) { item.reorderqty = 0; } @item.reorderqty.ToString();}</td>
                                 <td><input type="checkbox" checked=@item.hazardsurcharge disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.flammablesurcharge" disabled="disabled"></td>
@@ -101,15 +95,28 @@
                                 <td><input type="checkbox" checked="@item.labelsurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.othersurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.inactivesize" disabled="disabled"></td>
-                                <td>@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new { onclick = "return confirm('Copy this Size?');" })</td>
-                                <td class="text-center">
+                                <td rowspan="3">@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new { onclick = "return confirm('Copy this Size?');" })</td>
+                                <td class="text-center" rowspan="3">
                                     @Ajax.ActionLink("Edit", "Edit", "ShelfMaster", new { id = @item.shelfid }, new AjaxOptions
-                           {
-                               InsertionMode = InsertionMode.Replace,
-                               HttpMethod = "GET",
-                               UpdateTargetId = "dvEditPlaceholder",
-                           })
+                                       {
+                                           InsertionMode = InsertionMode.Replace,
+                                           HttpMethod = "GET",
+                                           UpdateTargetId = "dvEditPlaceholder",
+                                       })
                                 </td>
+                            </tr>
+                            <tr style="border:none;">
+                                <td colspan="22">
+                                    <label>Pkg: </label> @item.packagepartnumber - @item.pkgmaterial
+                                </td>
+                            </tr>
+                            <tr style="border:none;">
+                                <td colspan="22">
+                                    <label>Notes: </label> @item.notes
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
                             </tr>
                         }
                     </tbody>
@@ -117,8 +124,4 @@
             </div>
         </div>
     </div>
-
-    @*<div id="dvEditPlaceholder">
-         Placeholder for edit partial 
-    </div>*@
 </div>

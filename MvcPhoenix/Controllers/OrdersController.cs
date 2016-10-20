@@ -39,6 +39,16 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Orders/Edit.cshtml", vm);
         }
 
+        [HttpPost]
+        public ActionResult Save(OrderMasterFull vm)
+        {
+            int pk = OrderService.fnSaveOrder(vm);
+            TempData["SaveResult"] = "Order Information updated at " + DateTime.Now;
+            return RedirectToAction("Edit", new { id = pk });
+        }
+
+        #region Printing Actions
+
         private static string DocumentFooter()
         {
             string footer = "--footer-left \"Printed on: " +
@@ -80,8 +90,8 @@ namespace MvcPhoenix.Controllers
         {
             var qry = PrintListOrderItems(id);
             if (qry.Count > 0)
-            { 
-                return PartialView("~/Views/Orders/_PrintPackOrderItems.cshtml", qry); 
+            {
+                return PartialView("~/Views/Orders/_PrintPackOrderItems.cshtml", qry);
             }
 
             return null;
@@ -123,38 +133,61 @@ namespace MvcPhoenix.Controllers
         public ActionResult PrintRemainingItems(int id)
         {
             var qry = (from t in db.tblOrderItem
-                        where t.OrderID == id && (t.ShipDate != null || t.AllocateStatus != "A")
-                        orderby t.ProductCode
-                        select new MvcPhoenix.Models.OrderItem
-                        {
-                            OrderID = t.OrderID,
-                            ItemID = t.ItemID,
-                            ProductDetailID = t.ProductDetailID,
-                            ProductCode = t.ProductCode,
-                            ProductName = t.ProductName,
-                            Qty = t.Qty,
-                            Size = t.Size,
-                            LotNumber = t.LotNumber,
-                            ShipDate = t.ShipDate,
-                            BackOrdered = t.BackOrdered,
-                            AllocateStatus = t.AllocateStatus
-                        }).ToList();
-                
+                       where t.OrderID == id && (t.ShipDate != null || t.AllocateStatus != "A")
+                       orderby t.ProductCode
+                       select new MvcPhoenix.Models.OrderItem
+                       {
+                           OrderID = t.OrderID,
+                           ItemID = t.ItemID,
+                           ProductDetailID = t.ProductDetailID,
+                           ProductCode = t.ProductCode,
+                           ProductName = t.ProductName,
+                           Qty = t.Qty,
+                           Size = t.Size,
+                           LotNumber = t.LotNumber,
+                           ShipDate = t.ShipDate,
+                           BackOrdered = t.BackOrdered,
+                           AllocateStatus = t.AllocateStatus
+                       }).ToList();
+
             if (qry.Count > 0)
-            { 
-                return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", qry); 
+            {
+                return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", qry);
             }
 
             return null;
         }
 
-        [HttpPost]
-        public ActionResult Save(OrderMasterFull vm)
+        public ActionResult PrintPreferredCarrierMatrix(string Country)
         {
-            int pk = OrderService.fnSaveOrder(vm);
-            TempData["SaveResult"] = "Order Information updated at " + DateTime.Now;
-            return RedirectToAction("Edit", new { id = pk });
+            PreferredCarrierViewModel modelobj = new PreferredCarrierViewModel();
+            var qry = (from t in db.tblPreferredCarrierList
+                       where t.CountryName.Contains(Country)
+                       select t).FirstOrDefault();
+
+            modelobj.CountryCode = qry.CountryCode;
+            modelobj.CountryName = qry.CountryName;
+            modelobj.CommInvoiceReq = qry.CommInvoiceReq;
+            modelobj.NonHazSm = qry.NonHaz_Sm;
+            modelobj.NonHazLg = qry.NonHaz_Lg;
+            modelobj.NonHazIncoTerms = qry.NonHaz_IncoTerms;
+            modelobj.HazIATASm = qry.HazIATA_Sm;
+            modelobj.HazIATALg = qry.HazIATA_Lg;
+            modelobj.HazGroundLQ = qry.HazGround_LQ;
+            modelobj.HazGround = qry.HazGround;
+            modelobj.HazIncoterms = qry.Haz_Incoterms;
+            modelobj.IncotermsAlt = qry.Incoterms_Alt;
+            modelobj.NotesGeneral = qry.Notes_General;
+            modelobj.NotesIATAADR = qry.Notes_IATA_ADR;
+            modelobj.NonHazIncotermsAlt = qry.NonHazIncoterms_Alt;
+            modelobj.HazIncotermsAlt = qry.HazIncoterms_Alt;
+
+            if (qry == null) { return null; }
+            
+            return PartialView("~/Views/Orders/_PrintPreferredCarrierMatrix.cshtml", modelobj);
         }
+
+        #endregion Printing Actions
 
         [HttpGet]
         public ActionResult fnOrderItemsList(int id)
@@ -463,8 +496,6 @@ namespace MvcPhoenix.Controllers
         {
             return View();
         }
-
-        // Order Import Actions
 
         #region Order Import Actions
 
