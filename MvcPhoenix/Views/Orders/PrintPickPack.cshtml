@@ -116,21 +116,19 @@
         </table>
     </div>
 
-    <hr />
-
-    <h3>Current Shipment Contents</h3>
-    
+    <div class="form-group">
         @if (Model.orderid > 1)
         {
             @Html.Action("PrintPickOrderItems", "Orders", new { id = Model.orderid })
         }
+    </div>
 
-    <hr />
-
+    <div class="form-group">
         @if (Model.orderid > 1)
         {
             @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
         }
+    </div>
 </div>
 
 <p class="pagebreak"></p>
@@ -245,20 +243,15 @@
             </tr>
         </table>
     </div>
-
-    <hr />
-
-    <h3>Current Shipment Contents</h3>
-    <div id="dvItems">
+    
+    <div class="form-group">
         @if (Model.orderid > 1)
         {
             @Html.Action("PrintPackOrderItems", "Orders", new { id = Model.orderid })
         }
     </div>
 
-    <hr />
-
-    <div id="dvItems">
+    <div class="form-group">
         @if (Model.orderid > 1)
         {
             @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
@@ -362,14 +355,14 @@
             <td width="65%" style="border:solid 1px;">
                 @if (Model.country != null)
                 {
-                    @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.country })
+                @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.country })
                 }
             </td>
             <td style="border:solid 1px;">
                 <table style="font-size:small;">
                     <tr>
                         <td colspan="2">
-                            <label style="font-size:1.5em;">Client Profile:</label>
+                            <label style="font-size:1.5em;">Client Profile: *</label>
                         </td>
                     </tr>
                     <tr>
