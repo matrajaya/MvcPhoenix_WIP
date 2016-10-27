@@ -38,6 +38,34 @@ namespace MvcPhoenix.Extensions
             }
         }
 
+        public static IHtmlString GenerateMatrixCodeLabelSm(this HtmlHelper html, string inputentry, int height = 50, int width = 50, int margin = 0)
+        {
+            var qrValue = inputentry;
+            var barcodeWriter = new BarcodeWriter
+            {
+                Format = BarcodeFormat.DATA_MATRIX,
+                Options = new EncodingOptions
+                {
+                    Height = height,
+                    Width = width,
+                    Margin = margin
+                }
+            };
+
+            using (var bitmap = barcodeWriter.Write(qrValue))
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Gif);
+
+                var img = new TagBuilder("img");
+                img.MergeAttribute("alt", "matrix barcode");
+                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
+                    Convert.ToBase64String(stream.ToArray())));
+
+                return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));
+            }
+        }
+
         public static IHtmlString GenerateLinearCode(this HtmlHelper html, string inputentry, int height = 210, int width = 900, int margin = 0)
         {
             var qrValue = inputentry;

@@ -31,12 +31,8 @@
                     <td>
                         @if (item.ShipDate != null)
                         { <p>Shipped on @String.Format("{0:dd MMM yyyy}", item.ShipDate).</p> }
-                        @*@if (item.BackOrdered == true)
-                            { <p>Item Back Ordered. </p> }*@
                         @if (item.AllocateStatus == null)
                         { <p>Open.</p>}
-                        @if (item.Status != null)
-                        { <p>@item.Status.</p>}
                     </td>
                 </tr>
             }

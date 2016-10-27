@@ -1,6 +1,8 @@
 ﻿using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using PagedList;
+using Rotativa;
+using Rotativa.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -317,5 +319,23 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion Inventory Product Master Log Notes
+
+        #region Label Printing
+
+        /// <summary>
+        /// Generates Label as PDF
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PrintLabel()
+        {
+            return new ViewAsPdf() {
+                PageMargins = new Margins(2, 2, 0, 2),
+                PageWidth = 200,
+                PageHeight = 75,
+                CustomSwitches = "--disable-smart-shrinking"
+            };
+        }
+
+        #endregion
     }
 }

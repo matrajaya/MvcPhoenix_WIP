@@ -1,6 +1,7 @@
 ﻿/*Styles for _LayoutPrint.cshtml template*/
 body {
     font-family: Segoe, Arial, Helvetica, sans-serif;
+    image-resolution:600dpi;
 }
 
 label {
