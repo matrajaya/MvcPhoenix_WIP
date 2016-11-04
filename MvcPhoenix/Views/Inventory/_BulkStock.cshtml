@@ -50,7 +50,7 @@
                     <td>@String.Format("{0:dd MMM yyyy}", @row.mfgdate)</td>
                     <td>@String.Format("{0:dd MMM yyyy}", @row.wasteaccumstartdate)</td>
                     <td>@row.bulklabelnote</td>
-                    <td>@Html.ActionLink("Edit", "EditBulk", "Inventory", new { id = row.bulkid }, null)</td>
+                    <td>@Html.ActionLink(" ", "EditBulk", "Inventory", new { id = row.bulkid }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Bulk Stock" })</td>
                 </tr>
             }
         </tbody>

@@ -1326,6 +1326,8 @@
     <Content Include="Views\Orders\_PrintRemainingItems.cshtml" />
     <Content Include="Views\Orders\_PrintPreferredCarrierMatrix.cshtml" />
     <Content Include="Views\Inventory\PrintLabel.cshtml" />
+    <Content Include="Views\Inventory\ShelfStockLabel.cshtml" />
+    <Content Include="Views\Inventory\_ShelfStockModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

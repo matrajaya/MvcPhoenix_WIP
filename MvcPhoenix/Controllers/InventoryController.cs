@@ -322,13 +322,26 @@ namespace MvcPhoenix.Controllers
 
         #region Label Printing
 
-        /// <summary>
+        public ActionResult ShelfStockLabel(int id)
+        {
+            var vm = Services.InventoryService.fnFillStockViewModel(id);
+
+            return new ViewAsPdf(vm)
+            {
+                //FileName = vm.ProductCode + vm.LotNumber + vm.Size + ".pdf",
+                PageMargins = new Margins(2, 2, 0, 2),
+                PageWidth = 200,
+                PageHeight = 75,
+                CustomSwitches = "--disable-smart-shrinking"
+            };
+        }
+
         /// Generates Label as PDF
-        /// </summary>
-        /// <returns></returns>
         public ActionResult PrintLabel()
         {
-            return new ViewAsPdf() {
+            return new ViewAsPdf()
+            {
+                //FileName = "Label.pdf",
                 PageMargins = new Margins(2, 2, 0, 2),
                 PageWidth = 200,
                 PageHeight = 75,

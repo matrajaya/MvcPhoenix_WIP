@@ -31,6 +31,11 @@
                     <a href="#_" type="button" onclick="$('.panel-body').collapse('show');" value="open all"> Open All</a> |
                     <a href="#__" type="button" onclick="$('.panel-body').collapse('hide');" value="close all"> Close All</a>
                 </div>
+                <div style="text-align:center;">
+                    <div class="pull-right">
+                        <a class="btn btn-sm btn-success" href="@Url.Action("PrintLabel","Inventory")" target="_blank"><i class="fa fa-tag"></i> Shelf Label</a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -264,7 +269,7 @@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#shelfstockpan"><i class="fa fa-file-text-o fa-fw"></i> Shelf Stock</h3>
+                <h3 class="panel-title" data-toggle="collapse" data-target="#shelfstockpan"><i class="fa fa-file-text-o fa-fw"></i> Shelf Stock*</h3>
             </div>
             <div id="shelfstockpan" class="panel-body collapse in">
                 <div id="">
