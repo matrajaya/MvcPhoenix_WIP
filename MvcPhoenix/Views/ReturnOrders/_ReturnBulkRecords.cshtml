@@ -1,0 +1,66 @@
+﻿@model List<MvcPhoenix.Models.ReturnBulkViewModel>
+
+
+@if (ViewBag.ShowTheMarkAllBulkButton == true)
+    {
+        <div class="text-left">
+            @Ajax.ActionLink("+ Add All Bulk Items", "MarkAllBulkRecordsForReturn", "ReturnOrders", null,
+            new AjaxOptions { OnSuccess = "UpdateAllPartials" }, new { @class = "btn btn-success" })
+        </div>
+    }
+
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <div class="table-responsive" style="@ViewBag.TableStyle">
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="6" class="text-center info">@ViewBag.TableHeader ( @ViewBag.RecordCount items )</th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Master Code</th>
+                        <th>Location/<br />Lot</th>
+                        <th class="text-center">Weight/<br />Size</th>
+                        <th>Expiry</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @if (item.markedforreturn != true || item.markedforreturn == null)
+                            {
+                                <td>
+                                    @Ajax.ActionLink(" ", "MarkBulkRecordForReturn", "ReturnOrders", new { id = @item.bulkid },
+                                new AjaxOptions
+                                {
+                                    InsertionMode = InsertionMode.Replace,
+                                    OnSuccess = "UpdateBulkPartials"
+                                }, new { @class = "btn btn-primary fa fa-plus", @title = "Add to order" })
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @Ajax.ActionLink(" ", "UnMarkBulkRecordForReturn", "ReturnOrders", new { id = @item.bulkid },
+                                new AjaxOptions
+                                {
+                                    InsertionMode = InsertionMode.Replace,
+                                    OnSuccess = "UpdateBulkPartials"
+                                }, new { @class = "btn btn-danger fa fa-times", @title = "Remove from order" })
+                                </td>
+                            }
+                            <td>@item.MasterCode<br />@item.MasterName</td>
+                            <td>@item.warehouse: @item.bin<br />@item.lotnumber</td>
+                            <td class="text-center">@item.currentweight<br />@item.um</td>
+                            <td>@String.Format("{0:dd-MMM-yyyy}", @item.expirationdate)</td>
+                            <td>@item.bulkstatus</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

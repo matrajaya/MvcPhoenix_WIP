@@ -11,47 +11,55 @@
             <tr>
                 <th></th>
                 <th>#</th>
+                <th>PK</th>
+                <th>Sh-ID</th>
+                <th>Bl-ID</th>
                 <th>Product Code</th>
                 <th>Name</th>
                 <th>Size</th>
                 <th>Lot#</th>
-                <th>Qty</th>
-                <th>Ship Date</th>
+                <th class="text-center">Qty</th>
+                <th class="text-center">Avail<br />Qty</th>
+                <th class="text-center">Ship Date</th>
                 <th class="text-center">BO</th>
                 <th class="text-center">Delay</th>
-                <th class="text-center">Avail</th>
-                <th>Qty Allocated*</th>
+                <th class="text-center">CS<br />Status</th>
                 <th class="text-center">A-Status</th>
+                <th class="text-center">Allocated<br />Date</th>
                 <th id="noprint"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td><div style="zoom:15%;">@Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.ProductName + "~" + @item.LotNumber + "~" + @item.Size))</div></td>
-                    <td>@(Model.IndexOf(item) + 1)</td>
-                    <td>@item.ProductCode</td>
-                    <td>@item.ProductName</td>
-                    <td>@item.Size</td>
-                    <td>@item.LotNumber</td>
-                    <td class="text-center">@item.Qty</td>
-                    <td>@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
-                    <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
-                    <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
-                    <td class="text-center">@item.QtyAvailable.ToString()</td>
-                    <td>@item.QtyAllocated</td>
-                    <td class="text-center">@item.AllocateStatus datetiime</td>
-                    <td id="noprint" class="text-right">
-                        @Ajax.ActionLink("Edit", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
+            <tr>
+                <td><div style="zoom:15%;">@Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.ProductName + "~" + @item.LotNumber + "~" + @item.Size))</div></td>
+                <td>@(Model.IndexOf(item) + 1)</td>
+                <td>@item.ItemID</td>
+                <td>@item.ShelfID</td>
+                <td>@item.BulkID</td>
+                <td>@item.ProductCode</td>
+                <td>@item.ProductName</td>
+                <td>@item.Size</td>
+                <td>@item.LotNumber</td>
+                <td class="text-center">@item.Qty</td>
+                <td class="text-center">@item.QtyAvailable</td>
+                <td>@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
+                <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
+                <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
+                <td class="text-center"><input type="checkbox" checked="@item.CSAllocate" readonly="readonly" onclick="return false" /></td>
+                <td class="text-center">@item.AllocateStatus</td>
+                <td class="text-center">@item.AllocatedDate</td>
+                <td id="noprint" class="text-right">
+                    @Ajax.ActionLink(" ", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",
                                  InsertionMode = InsertionMode.Replace,
                                  HttpMethod = "GET",
                                  OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                             }, new { @class = "btn btn-xs btn-primary" })
-                    </td>
-                </tr>
+                             }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Order Item" })
+                </td>
+            </tr>
             }
         </tbody>
     </table>
@@ -60,13 +68,13 @@
 <!-- Start Allocate Buttons -->
 @*dvAllocateResult is in Edit.cshtml to provide a place to stick a message after allocation*@
 <div class="row" id="noprint">
-    <div class="col-md-6">
+    <div class="col-md-offset-6 col-md-6">
         <div class="panel panel-primary" style="margin-bottom:-10px;">
             <div class="panel-body" style="margin:-5px">
-                <label>Available Stock Only</label>
+                <label>Shelf Allocate</label>
                 <div class="row">
                     <div class="col-md-6">
-                        @Ajax.ActionLink("Allocate from Shelf", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = false },
+                        @Ajax.ActionLink("Available Stock", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = false },
                         new AjaxOptions
                              {
                                  UpdateTargetId = "dvAllocateResult",
@@ -74,30 +82,10 @@
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateItemsList",
                                  OnFailure = "alert('Error- Could not allocate order')"
-                             }, new { @class = "btn btn-sm btn-primary btn-block" })
+                             }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From Available Shelf Stock" })
                     </div>
                     <div class="col-md-6">
-                        @Ajax.ActionLink("Allocate from Bulk", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeQCStock = false },
-                        new AjaxOptions
-                    {
-                        UpdateTargetId = "dvAllocateResult",
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        OnSuccess = "UpdateItemsList",
-                        OnFailure = "alert('Error- Could not allocate order')",
-                    }, new { @class = "btn btn-sm btn-primary btn-block" })
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="panel panel-primary" style="margin-bottom:-10px;">
-            <div class="panel-body" style="margin:-5px">
-                <label>QC Stock</label>
-                <div class="row">
-                    <div class="col-md-6">
-                        @Ajax.ActionLink("Allocate from Shelf", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = true },
+                        @Ajax.ActionLink("QC Stock", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = true },
                         new AjaxOptions
                              {
                                  UpdateTargetId = "dvAllocateResult",
@@ -105,18 +93,7 @@
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateItemsList",
                                  OnFailure = "alert('Error- Could not allocate order')",
-                             }, new { @class = "btn btn-sm btn-primary btn-block" })
-                    </div>
-                    <div class="col-md-6">
-                        @Ajax.ActionLink("Allocate from Bulk", "AllocateFromBulk", "Orders", new { id = Model[0].OrderID, IncludeQCStock = true },
-                        new AjaxOptions
-                    {
-                        UpdateTargetId = "dvAllocateResult",
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        OnSuccess = "UpdateItemsList",
-                        OnFailure = "alert('Error- Could not allocate order')",
-                    }, new { @class = "btn btn-sm btn-primary btn-block" })
+                             }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From QC Shelf Stock" })
                     </div>
                 </div>
             </div>
@@ -126,8 +103,7 @@
 <!-- End Allocate Buttons -->
 
 <script type="text/javascript">
-    function UpdateItemsList()
-    {
+    function UpdateItemsList() {
         $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { id = @Model[0].OrderID })');
     }
 </script>

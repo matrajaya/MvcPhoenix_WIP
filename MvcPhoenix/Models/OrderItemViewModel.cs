@@ -7,11 +7,11 @@ namespace MvcPhoenix.Models
 {
     public class OrderItem
     {
-        public int? QtyAllocated { get; set; }
+        public int? BulkID { get; set; } // for return orders
+        public DateTime? AllocatedDate { get; set; } // updated via allocation
         public string CrudMode { get; set; }
-        public int QtyAvailable { get; set; }
+        public int? QtyAvailable { get; set; }  // QtyOnHand - QtyAllocated for display purposes only
 
-        // select ProductDetailID,ProductCode from tblProductDetail where ClientID=xx
         [Display(Name = "Product Code")]
         [Required(ErrorMessage = "Select Product Code")]
         public int? ProductDetailID { get; set; }
@@ -147,9 +147,6 @@ namespace MvcPhoenix.Models
 
         public DateTime? CeaseShipDate { get; set; }
         public DateTime? ExpirationDate { get; set; }
-
-        // Remove later
-        //public string PartialMode { get; set; }
 
         [Display(Name = "Item Notes")]
         public string ItemNotes { get; set; }

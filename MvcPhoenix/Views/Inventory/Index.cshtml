@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 form-group">
+        <div class="col-md-8 form-group">
             @using (Html.BeginForm("Search", "Inventory"))
             {
                 <div class="input-group">
@@ -24,6 +24,9 @@
                     </span>
                 </div>
             }
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Create Return Order", "Index", "ReturnOrders", null, new { @class = "btn btn-primary btn-block" })
         </div>
     </div>
 

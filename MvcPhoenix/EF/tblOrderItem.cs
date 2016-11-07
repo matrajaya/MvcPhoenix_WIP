@@ -17,6 +17,7 @@ namespace MvcPhoenix.EF
         public int ItemID { get; set; }
         public Nullable<int> OrderID { get; set; }
         public Nullable<int> ShelfID { get; set; }
+        public Nullable<int> BulkID { get; set; }
         public Nullable<int> ProductDetailID { get; set; }
         public Nullable<int> AllocatedBulkID { get; set; }
         public Nullable<int> AllocatedStockID { get; set; }
@@ -35,6 +36,7 @@ namespace MvcPhoenix.EF
         public string Status { get; set; }
         public string AllocateStatus { get; set; }
         public Nullable<bool> CSAllocate { get; set; }
+        public Nullable<System.DateTime> AllocatedDate { get; set; }
         public string Bin { get; set; }
         public string CustProdCode { get; set; }
         public string CustProdName { get; set; }

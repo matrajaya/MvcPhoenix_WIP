@@ -306,17 +306,24 @@ namespace MvcPhoenix.Services
                 // string sCommand = "";
                 var q = (from t in db.tblOrderMaster where t.OrderID == vm.orderid select t).FirstOrDefault();
 
-                var qCountry = (from t in db.tblCountry where t.Country == vm.country && t.DoNotShip == true select t).FirstOrDefault();
+                var qCountry = (from t in db.tblCountry 
+                                where t.Country == vm.country && t.DoNotShip == true 
+                                select t).FirstOrDefault();
+
                 if (qCountry != null)
                 {
                     // flag the order record and the item records that are yet to be allocated
                     q.IsSDN = true;
-                    var orderitems = (from t in db.tblOrderItem where t.OrderID == vm.orderid && t.AllocateStatus == null select t).ToList();
+                    var orderitems = (from t in db.tblOrderItem 
+                                      where t.OrderID == vm.orderid && t.AllocateStatus == null 
+                                      select t).ToList();
+
                     foreach (var item in orderitems)
                     {
                         item.CSAllocate = false;
                         db.SaveChanges();
                     }
+
                     ShowAlert = true;
                 }
 
@@ -324,17 +331,21 @@ namespace MvcPhoenix.Services
                 {
                     // flag the order record and the item records that are yet to be allocated (again maybe)
                     q.IsSDN = true;
-                    var orderitems = (from t in db.tblOrderItem where t.OrderID == vm.orderid && t.AllocateStatus == null select t).ToList();
+                    var orderitems = (from t in db.tblOrderItem 
+                                      where t.OrderID == vm.orderid && t.AllocateStatus == null 
+                                      select t).ToList();
+
                     foreach (var item in orderitems)
                     {
                         item.CSAllocate = false;
                         db.SaveChanges();
                     }
+
                     ShowAlert = true;
                 }
 
                 var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet 
-										where t.ClientID == vm.clientid && t.CountryID == qCountry.CountryID 
+										where t.ClientID == vm.clientid //&& t.CountryID == qCountry.CountryID - Phil will inspect
 										select t).FirstOrDefault();
 
                 if(qCeaseShipOffset != null)
@@ -353,8 +364,8 @@ namespace MvcPhoenix.Services
 
         public static bool fnIsSDN(OrderMasterFull vm)
         {
-            // TODO finish the lookup and return T/F
             var filecontent = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/sdnlist.txt"));
+
             if (filecontent.Contains(vm.company))
             {
                 return true;
@@ -393,7 +404,6 @@ namespace MvcPhoenix.Services
                 vm.ProductName = null;
 
                 vm.ShelfID = -1;
-                //vm.ListOfShelfIDs = filled by a ajax call to return a <select> tag
                 vm.Size = null;
                 vm.SRSize = null;
                 vm.Qty = 1;
@@ -421,8 +431,13 @@ namespace MvcPhoenix.Services
             // id=productdetailid
             using (var db = new EF.CMCSQL03Entities())
             {
-                var qry = (from t in db.tblShelfMaster where t.ProductDetailID == id orderby t.Size select t);
+                var qry = (from t in db.tblShelfMaster 
+							where t.ProductDetailID == id 
+							orderby t.Size 
+							select t);
+							
                 string s = "<option value='0' selected=true>Select Size</option>";
+				
                 if (qry.Count() > 0)
                 {
                     foreach (var item in qry)
@@ -434,8 +449,9 @@ namespace MvcPhoenix.Services
                 {
                     s = s + "<option value='0'>No Sizes Found</option>";
                 }
+				
                 s = s + "<option value='99'>Special Request</option>";
-                //s = s + "</select>";
+				
                 return s;
             }
         }
@@ -447,6 +463,7 @@ namespace MvcPhoenix.Services
                 EF.tblOrderItem newrec = new EF.tblOrderItem();
                 db.tblOrderItem.Add(newrec);
                 db.SaveChanges();
+				
                 return newrec.ItemID;
             }
         }
@@ -502,7 +519,7 @@ namespace MvcPhoenix.Services
                 vm.AlertNotesOther = q.AlertNotesOther;
 
                 // Look for a reason to set the item R/O
-                if (q.ShipDate != null)
+                if (q.ShipDate != null || q.AllocateStatus == "A" )
                 {
                     vm.CrudMode = "RO";
                 }
@@ -593,7 +610,9 @@ namespace MvcPhoenix.Services
                 }
 
                 q.AlertNotesShipping = dbPD.AlertNotesShipping;
+				
                 var dbPM = db.tblProductMaster.Find(dbPD.ProductMasterID);
+				
                 q.AlertNotesPackout = dbPM.AlertNotesPackout;
 				
                 q.AlertNotesOrderEntry = dbPD.AlertNotesOrderEntry;  // comes from profiles
@@ -712,7 +731,8 @@ namespace MvcPhoenix.Services
 
                             db.SaveChanges();
 
-                            break;						
+                            break;
+							
 						}
 
                     }
@@ -742,8 +762,7 @@ namespace MvcPhoenix.Services
                                     join b in db.tblBulk on t.BulkID equals b.BulkID
 									orderby b.CeaseShipDate
                                     where t.ShelfID == item.ShelfID
-                                    select
-                                        new
+                                    select new
                                         {
                                             StockID = t.StockID,
                                             Warehouse = t.Warehouse,
@@ -806,7 +825,7 @@ namespace MvcPhoenix.Services
                             AllocationCount = AllocationCount + 1;
                             // update tblstock record (need to use separate qry)
                             var q = db.tblStock.Find(row.StockID);
-                            q.QtyAllocated = q.QtyAllocated + item.Qty;
+                            q.QtyAllocated = (q.QtyAllocated ?? 0)  + item.Qty;
 
                             // update tblorderitem record
                             item.AllocatedStockID = row.StockID;
@@ -816,6 +835,7 @@ namespace MvcPhoenix.Services
                             item.Bin = row.Bin;
 							item.ExpirationDate = row.ExpirationDate;
                             item.CeaseShipDate = row.CeaseShipDate;
+							item.AllocatedDate = System.DateTime.Now;
 
                             db.SaveChanges();
 
@@ -896,6 +916,7 @@ namespace MvcPhoenix.Services
                 var d = (from t in db.tblOrderTrans 
                          where t.OrderTransID == vm.ordertransid 
                          select t).FirstOrDefault();
+						 
                 d.OrderID = vm.orderid;
                 d.OrderItemID = vm.orderitemid;
                 d.ClientID = vm.clientid;
@@ -1006,9 +1027,25 @@ namespace MvcPhoenix.Services
                 }
 
                 // Other charges from shelfmaster
-                var sm = (from t in db.tblShelfMaster 
-                          where t.ShelfID == oi.ShelfID 
-                          select t).FirstOrDefault();
+                
+                // pc 10/27/16 Need to know if we are trying to price a Bulk or Stock item
+                // assume a shelfmaster, then change to bulk if necessary
+                var sm = (from t in db.tblShelfMaster where t.ShelfID == oi.ShelfID select t).FirstOrDefault(); 
+
+                if (oi.BulkID != null)
+                {
+                    // find a SM record to use to surcharge this order item
+                    var bl = (from t in db.tblBulk where t.BulkID == oi.BulkID select t).FirstOrDefault();
+                    var pm = (from t in db.tblProductMaster where t.ProductMasterID == bl.ProductMasterID select t).FirstOrDefault();
+                    var pd = (from t in db.tblProductDetail where t.ProductMasterID == bl.ProductMasterID && t.ProductCode == pm.MasterCode select t).FirstOrDefault();
+                    sm = (from t in db.tblShelfMaster where t.ProductDetailID==pd.ProductDetailID && t.Size==oi.Size select t).FirstOrDefault(); 
+                    if(sm == null)
+                    {
+                        // go no further
+                        return;
+                    }
+                    // this should rest me on a shelfmaster that is really the bulk size sample  
+                }
 
                 var qrySurcharges = (from t in db.tblSurcharge 
                                      where t.ClientID == o.ClientID 
@@ -1016,257 +1053,99 @@ namespace MvcPhoenix.Services
 
                 if (sm.HazardSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'HAZD' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "HAZD";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = qrySurcharges.Haz;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+					fnInsertOrderTrans(oi.ItemID, "HAZD", qrySurcharges.Haz);
                 }
 
                 if (sm.FlammableSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'FLAM' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "FLAM";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = qrySurcharges.Flam;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "FLAM", qrySurcharges.Flam);
                 }
 
                 if (sm.HeatSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'HEAT' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "HEAT";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = qrySurcharges.Heat;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "HEAT", qrySurcharges.Heat);
                 }
 
                 if (sm.RefrigSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'REFR' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "REFR";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = qrySurcharges.Refrig;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+					fnInsertOrderTrans(oi.ItemID, "REFR", qrySurcharges.Refrig);
                 }
 
                 if (sm.FreezerSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'FREZ' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "FREZ";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = qrySurcharges.Freezer;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "FREZ", qrySurcharges.Freezer);
                 }
 
                 if (sm.CleanSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'CLEN' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "CLEN";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = qrySurcharges.Clean;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "CLEN", qrySurcharges.Clean);
                 }
 
                 if (sm.BlendSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'BLND' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "BLND";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = 0;
-                    newrec.Comments = "Missing tblSurcharge record for BLND";
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "BLND",0);
                 }
 
                 if (sm.NalgeneSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'NALG' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "NALG";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = qrySurcharges.Nalgene;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "NALG", qrySurcharges.Nalgene);
                 }
 
                 if (sm.NitrogenSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'NITR' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "NITR";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = 0;
-                    newrec.Comments = "Missing tblSurcharge record for NITR";
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "NITR", 0);
                 }
 
                 if (sm.BiocideSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'BIOC' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "BIOC";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = 0;
-                    newrec.Comments = "Missing tblSurcharge record for BIOC";
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "BIOC", 0);
                 }
 
                 if (sm.KosherSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'KOSH' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "KOSH";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = 0;
-                    newrec.Comments = "Missing tblSurcharge record for KOSH";
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "KOSH", 0);
                 }
 
                 if (sm.LabelSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'LABL' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "LABL";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = qrySurcharges.LabelFee;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+                    fnInsertOrderTrans(oi.ItemID, "LABL", qrySurcharges.LabelFee);
                 }
 
                 if (sm.OtherSurcharge == true)
                 {
-                    s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'OTHR' And CreateUser='System'";
-                    db.Database.ExecuteSqlCommand(s);
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.TransDate = System.DateTime.Now;
-                    newrec.TransType = "OTHR";
-                    newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = sm.OtherSurchargeAmt;
-                    newrec.CreateDate = System.DateTime.Now;
-                    newrec.CreateUser = "System";
-                    db.tblOrderTrans.Add(newrec);
-                    db.SaveChanges();
+					fnInsertOrderTrans(oi.ItemID, "OTHR", sm.OtherSurchargeAmt);
                 }
             }
         }
 
+
+        public static void fnInsertOrderTrans(int? ItemID,string TransType,decimal? TransAmount)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                string s = String.Format("Delete from tblOrderTrans where OrderItemID={0} and Transtype = '{1}' And CreateUser='System'", ItemID, TransType);
+                db.Database.ExecuteSqlCommand(s);
+                var oi = (from t in db.tblOrderItem where t.ItemID == ItemID select t).FirstOrDefault();
+                var o = (from t in db.tblOrderMaster where t.OrderID == oi.OrderID select t).FirstOrDefault();
+                EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                newrec.TransDate = System.DateTime.Now;
+                newrec.OrderItemID = ItemID;
+                newrec.OrderID = oi.OrderID;
+                newrec.ClientID = o.ClientID;
+                newrec.TransDate = System.DateTime.Now;
+                newrec.TransType = TransType;
+                newrec.TransQty = oi.Qty;
+                newrec.TransAmount =TransAmount;
+                newrec.CreateDate = System.DateTime.Now;
+                newrec.CreateUser = "System";
+                db.tblOrderTrans.Add(newrec);
+                db.SaveChanges();
+            }
+
+
+        }
+		
+		
         public static void fnArchiveOrderMaster(int id)
         {
             // stash a copy before update
@@ -1306,6 +1185,31 @@ namespace MvcPhoenix.Services
             }
         }
 
+//private static List<SelectListItem> fnListOfOrderTransTypes()
+        //{
+        //    List<SelectListItem> mylist = new List<SelectListItem>();
+        //    mylist.Add(new SelectListItem { Text = "BIOC", Value = "BIOC" });
+        //    mylist.Add(new SelectListItem { Text = "BLND", Value = "BLND" });
+        //    mylist.Add(new SelectListItem { Text = "CLEN", Value = "CLEN" });
+        //    mylist.Add(new SelectListItem { Text = "FLAM", Value = "FLAM" });
+        //    mylist.Add(new SelectListItem { Text = "FREZ", Value = "FREZ" });
+        //    mylist.Add(new SelectListItem { Text = "HAZD", Value = "HAZD" });
+        //    mylist.Add(new SelectListItem { Text = "HEAT", Value = "HEAT" });
+        //    mylist.Add(new SelectListItem { Text = "KOSH", Value = "KOSH" });
+        //    mylist.Add(new SelectListItem { Text = "LABL", Value = "LABL" });
+        //    mylist.Add(new SelectListItem { Text = "MISC", Value = "MISC" });
+        //    mylist.Add(new SelectListItem { Text = "MEMO", Value = "MEMO" });
+        //    mylist.Add(new SelectListItem { Text = "NALG", Value = "NALG" });
+        //    mylist.Add(new SelectListItem { Text = "NITR", Value = "NITR" });
+        //    mylist.Add(new SelectListItem { Text = "REFR", Value = "REFR" });
+        //    mylist.Add(new SelectListItem { Text = "SAMP", Value = "SAMP" });
+        //    mylist.Add(new SelectListItem { Text = "OTHR", Value = "OTHR" });
+        //    mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Type" });
+
+        //    return mylist;
+        //}
+
+		
         //fnListOfBillingGroups
         public static List<SelectListItem> fnListOfBillingGroups(int? id)
         {
@@ -1575,7 +1479,10 @@ namespace MvcPhoenix.Services
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 
-                mylist = (from t in db.tblStatusNotes orderby t.Note select new SelectListItem { Value = t.Note, Text = t.Note }).ToList();
+                mylist = (from t in db.tblStatusNotes 
+							orderby t.Note 
+							select new SelectListItem { Value = t.Note, Text = t.Note }).ToList();
+							
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;

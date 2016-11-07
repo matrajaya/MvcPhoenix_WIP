@@ -63,6 +63,7 @@
           <Property Name="OtherStorage" Type="nvarchar" MaxLength="50" />
           <Property Name="RestrictedQty" Type="bit" />
           <Property Name="RestrictedAmt" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="MarkedForReturn" Type="bit" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="35" />
           <Property Name="MasterCode_MDB" Type="nvarchar" MaxLength="20" />
@@ -939,6 +940,7 @@
           <Property Name="ItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderID" Type="int" />
           <Property Name="ShelfID" Type="int" />
+          <Property Name="BulkID" Type="int" />
           <Property Name="ProductDetailID" Type="int" />
           <Property Name="AllocatedBulkID" Type="int" />
           <Property Name="AllocatedStockID" Type="int" />
@@ -957,6 +959,7 @@
           <Property Name="Status" Type="nvarchar" MaxLength="1000" />
           <Property Name="AllocateStatus" Type="nvarchar" MaxLength="1" />
           <Property Name="CSAllocate" Type="bit" />
+          <Property Name="AllocatedDate" Type="datetime" />
           <Property Name="Bin" Type="nvarchar" MaxLength="20" />
           <Property Name="CustProdCode" Type="nvarchar" MaxLength="25" />
           <Property Name="CustProdName" Type="nvarchar" MaxLength="50" />
@@ -1655,6 +1658,7 @@
           <Property Name="LotNumber_MDB" Type="nvarchar" MaxLength="25" />
           <Property Name="MasterCode_MDB" Type="nvarchar" MaxLength="20" />
           <Property Name="WasteAccumStartDate" Type="datetime" />
+          <Property Name="MarkedForReturn" Type="bit" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -1830,6 +1834,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="OtherStorage" Type="nvarchar" MaxLength="50" />
           <Property Name="RestrictedQty" Type="bit" />
           <Property Name="RestrictedAmt" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="MarkedForReturn" Type="bit" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="35" />
           <Property Name="MasterCode_MDB" Type="nvarchar" MaxLength="20" />
@@ -2035,6 +2040,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
     [vwBulkLevel].[OtherStorage] AS [OtherStorage], 
     [vwBulkLevel].[RestrictedQty] AS [RestrictedQty], 
     [vwBulkLevel].[RestrictedAmt] AS [RestrictedAmt], 
+    [vwBulkLevel].[MarkedForReturn] AS [MarkedForReturn], 
     [vwBulkLevel].[Company_MDB] AS [Company_MDB], 
     [vwBulkLevel].[Division_MDB] AS [Division_MDB], 
     [vwBulkLevel].[MasterCode_MDB] AS [MasterCode_MDB], 
@@ -2251,6 +2257,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="OtherStorage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RestrictedQty" Type="Boolean" />
           <Property Name="RestrictedAmt" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="MarkedForReturn" Type="Boolean" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
           <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -3127,6 +3134,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="ItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderID" Type="Int32" />
           <Property Name="ShelfID" Type="Int32" />
+          <Property Name="BulkID" Type="Int32" />
           <Property Name="ProductDetailID" Type="Int32" />
           <Property Name="AllocatedBulkID" Type="Int32" />
           <Property Name="AllocatedStockID" Type="Int32" />
@@ -3145,6 +3153,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="Status" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="AllocateStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
           <Property Name="CSAllocate" Type="Boolean" />
+          <Property Name="AllocatedDate" Type="DateTime" Precision="3" />
           <Property Name="Bin" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CustProdCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="CustProdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3843,6 +3852,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="LotNumber_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="WasteAccumStartDate" Type="DateTime" Precision="3" />
+          <Property Name="MarkedForReturn" Type="Boolean" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
@@ -4016,6 +4026,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="OtherStorage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RestrictedQty" Type="Boolean" />
           <Property Name="RestrictedAmt" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="MarkedForReturn" Type="Boolean" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
           <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -4137,6 +4148,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
                 <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="MarkedForReturn" ColumnName="MarkedForReturn" />
                 <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
                 <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
                 <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
@@ -5123,6 +5135,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="CustProdName" ColumnName="CustProdName" />
                 <ScalarProperty Name="CustProdCode" ColumnName="CustProdCode" />
                 <ScalarProperty Name="Bin" ColumnName="Bin" />
+                <ScalarProperty Name="AllocatedDate" ColumnName="AllocatedDate" />
                 <ScalarProperty Name="CSAllocate" ColumnName="CSAllocate" />
                 <ScalarProperty Name="AllocateStatus" ColumnName="AllocateStatus" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -5141,6 +5154,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="AllocatedStockID" ColumnName="AllocatedStockID" />
                 <ScalarProperty Name="AllocatedBulkID" ColumnName="AllocatedBulkID" />
                 <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
+                <ScalarProperty Name="BulkID" ColumnName="BulkID" />
                 <ScalarProperty Name="ShelfID" ColumnName="ShelfID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
@@ -5803,6 +5817,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="MarkedForReturn" ColumnName="MarkedForReturn" />
                 <ScalarProperty Name="WasteAccumStartDate" ColumnName="WasteAccumStartDate" />
                 <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
                 <ScalarProperty Name="LotNumber_MDB" ColumnName="LotNumber_MDB" />
@@ -5962,6 +5977,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
                 <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="MarkedForReturn" ColumnName="MarkedForReturn" />
                 <ScalarProperty Name="RestrictedAmt" ColumnName="RestrictedAmt" />
                 <ScalarProperty Name="RestrictedQty" ColumnName="RestrictedQty" />
                 <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />

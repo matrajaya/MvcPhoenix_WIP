@@ -57,6 +57,7 @@ namespace MvcPhoenix.EF
         public string OtherStorage { get; set; }
         public Nullable<bool> RestrictedQty { get; set; }
         public Nullable<decimal> RestrictedAmt { get; set; }
+        public Nullable<bool> MarkedForReturn { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string MasterCode_MDB { get; set; }

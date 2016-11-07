@@ -28,7 +28,7 @@
                     <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
                     <td width="40%">@item.comments</td>
                     <td id="noprint" class="text-right">
-                        @Ajax.ActionLink("Edit", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
+                        @Ajax.ActionLink(" ", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",
                                  InsertionMode = InsertionMode.Replace,
@@ -36,7 +36,7 @@
                                  OnBegin = "$('#dialogPlaceholder').empty()",
                                  OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
                              },
-                           new { @class = "btn btn-xs btn-primary" })
+                        new { @class = "btn btn-primary fa fa-pencil", @title = "Edit This Order Transaction" })
                     </td>
                 </tr>
             }

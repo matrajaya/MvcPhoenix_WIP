@@ -16,7 +16,10 @@ namespace MvcPhoenix.Controllers
         public ActionResult Index()
         {
             var orderslist = OrderService.fnOrdersSearchResults();
-            orderslist = (from t in orderslist orderby t.orderdate descending select t).Take(10).ToList();  // refine for here
+            orderslist = (from t in orderslist
+                          orderby t.orderdate descending
+                          select t).Take(10).ToList();  // refine for here
+
             TempData["SearchResultsMessage"] = "Last 10 Orders";
             List<SelectListItem> clientlist = new List<SelectListItem>();
             clientlist = OrderService.fnListOfClientIDs();
@@ -122,9 +125,15 @@ namespace MvcPhoenix.Controllers
                            AllocateStatus = t.AllocateStatus,
                            NonCMCDelay = t.NonCMCDelay,
                            DelayReason = t.DelayReason,
-                           FreezableList = (from q in db.tblProductMaster where (q.MasterCode == t.ProductCode) select q.FreezableList).FirstOrDefault(),
-                           HarmonizedCode = (from q in db.tblProductDetail where (q.ProductDetailID == t.ProductDetailID) select q.HarmonizedCode).FirstOrDefault(),
-                           QtyAvailable = (from q in db.tblStock where q.ShelfID == t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL" select q).Count()
+                           FreezableList = (from q in db.tblProductMaster
+                                            where (q.MasterCode == t.ProductCode)
+                                            select q.FreezableList).FirstOrDefault(),
+                           HarmonizedCode = (from q in db.tblProductDetail
+                                             where (q.ProductDetailID == t.ProductDetailID)
+                                             select q.HarmonizedCode).FirstOrDefault(),
+                           QtyAvailable = (from q in db.tblStock
+                                           where q.ShelfID == t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL"
+                                           select q).Count()
                        }).ToList();
             return qry;
         }
@@ -183,7 +192,7 @@ namespace MvcPhoenix.Controllers
             modelobj.HazIncotermsAlt = qry.HazIncoterms_Alt;
 
             if (qry == null) { return null; }
-            
+
             return PartialView("~/Views/Orders/_PrintPreferredCarrierMatrix.cshtml", modelobj);
         }
 
@@ -202,6 +211,8 @@ namespace MvcPhoenix.Controllers
                            {
                                OrderID = t.OrderID,
                                ItemID = t.ItemID,
+                               ShelfID = t.ShelfID,
+                               BulkID = t.BulkID,
                                ProductDetailID = t.ProductDetailID,
                                ProductCode = t.ProductCode,
                                Mnemonic = t.Mnemonic,
@@ -212,9 +223,12 @@ namespace MvcPhoenix.Controllers
                                ShipDate = t.ShipDate,
                                BackOrdered = t.BackOrdered,
                                AllocateStatus = t.AllocateStatus,
+                               CSAllocate = t.CSAllocate,
                                NonCMCDelay = t.NonCMCDelay,
-                               QtyAllocated = (from q in db.tblStock where q.ShelfID == t.ShelfID && q.ShelfStatus == "AVAIL" select q.QtyAllocated).Sum(),
-                               QtyAvailable = (from q in db.tblStock where (q.ShelfID == t.ShelfID) && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL" select q).Count()
+                               QtyAvailable = (from x in db.tblStock
+                                               where (x.ShelfID != null) && (x.ShelfID == t.ShelfID) && (x.ShelfStatus == "AVAIL")
+                                               select (x.QtyOnHand - x.QtyAllocated)).Sum(),
+                               AllocatedDate = t.AllocatedDate
                            }).ToList();
                 if (qry.Count > 0)
                 { return PartialView("~/Views/Orders/_OrderItems.cshtml", qry); }
@@ -377,7 +391,9 @@ namespace MvcPhoenix.Controllers
         {
             //var orderslist = fnOrdersSearchResults();
             var orderslist = OrderService.fnOrdersSearchResults();
-            orderslist = (from t in orderslist orderby t.orderid descending select t).Take(10).ToList();
+            orderslist = (from t in orderslist
+                          orderby t.orderid descending
+                          select t).Take(10).ToList();
             TempData["SearchResultsMessage"] = "Last 10 Orders";
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
@@ -403,7 +419,10 @@ namespace MvcPhoenix.Controllers
                 return RedirectToAction("Index");
             }
             int id = Convert.ToInt32(fc["orderid"]);
-            var qry = (from t in db.tblOrderMaster where t.OrderID == id select t).FirstOrDefault();
+            var qry = (from t in db.tblOrderMaster
+                       where t.OrderID == id
+                       select t).FirstOrDefault();
+
             if (qry != null)
             {
                 return RedirectToAction("Edit", new { id = id });
@@ -423,7 +442,11 @@ namespace MvcPhoenix.Controllers
             //var orderslist = fnOrdersSearchResults();
             var orderslist = OrderService.fnOrdersSearchResults();
             int pk = Convert.ToInt32(fc["ClientID"]);
-            orderslist = (from t in orderslist where t.clientid == pk orderby t.orderid descending select t).Take(20).ToList();
+            orderslist = (from t in orderslist
+                          where t.clientid == pk
+                          orderby t.orderid descending
+                          select t).Take(20).ToList();
+
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
@@ -438,7 +461,11 @@ namespace MvcPhoenix.Controllers
             DateTime mydate = Convert.ToDateTime(fc["searchorderdate"]);
             //var orderslist = fnOrdersSearchResults();
             var orderslist = OrderService.fnOrdersSearchResults();
-            orderslist = (from t in orderslist where t.orderdate.Value.Date == mydate.Date orderby t.orderid descending select t).ToList();
+            orderslist = (from t in orderslist
+                          where t.orderdate.Value.Date == mydate.Date
+                          orderby t.orderid descending
+                          select t).ToList();
+
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
@@ -453,7 +480,10 @@ namespace MvcPhoenix.Controllers
             var mycompany = fc["searchcompany"];
             //var orderslist = fnOrdersSearchResults();
             var orderslist = OrderService.fnOrdersSearchResults();
-            orderslist = (from t in orderslist where t.company != null && t.company.Contains(mycompany) select t).ToList();
+            orderslist = (from t in orderslist
+                          where t.company != null && t.company.Contains(mycompany)
+                          select t).ToList();
+
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
@@ -468,7 +498,10 @@ namespace MvcPhoenix.Controllers
             var myzipcode = fc["searchzipcode"];
             //var orderslist = fnOrdersSearchResults();
             var orderslist = OrderService.fnOrdersSearchResults();
-            orderslist = (from t in orderslist where t.Zip != null && t.Zip.Contains(myzipcode) select t).ToList();
+            orderslist = (from t in orderslist
+                          where t.Zip != null && t.Zip.Contains(myzipcode)
+                          select t).ToList();
+
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
@@ -483,7 +516,10 @@ namespace MvcPhoenix.Controllers
             var mysalesrep = fc["searchsalesrep"];
             //var orderslist = fnOrdersSearchResults();
             var orderslist = OrderService.fnOrdersSearchResults();
-            orderslist = (from t in orderslist where t.salesrep != null && t.salesrep.Contains(mysalesrep) select t).ToList();
+            orderslist = (from t in orderslist
+                          where t.salesrep != null && t.salesrep.Contains(mysalesrep)
+                          select t).ToList();
+
             TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {

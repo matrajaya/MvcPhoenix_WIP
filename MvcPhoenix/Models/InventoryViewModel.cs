@@ -267,6 +267,8 @@ namespace MvcPhoenix.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? wasteaccumstartdate { get; set; }
 
+        public bool? markedforreturn { get; set; }
+
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
