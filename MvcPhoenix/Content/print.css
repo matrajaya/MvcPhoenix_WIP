@@ -1,7 +1,13 @@
 ﻿/*Styles for _LayoutPrint.cshtml template*/
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 body {
-    font-family: Segoe, Arial, Helvetica, sans-serif;
-    image-resolution:600dpi;
+    /*font-family: Segoe, Arial, Helvetica, sans-serif;*/
+    font-family: 'Roboto', sans-serif;
+    image-resolution: 203dpi;
+    text-rendering: optimizeLegibility !important;
+    text-rendering: geometricPrecision !important;
 }
 
 label {
@@ -44,8 +50,8 @@ p {
     border-color: transparent;
 }
 
-.pagebreak{
-    page-break-after:always;
+.pagebreak {
+    page-break-after: always;
 }
 
 footer {

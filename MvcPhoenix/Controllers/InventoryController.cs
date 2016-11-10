@@ -339,13 +339,15 @@ namespace MvcPhoenix.Controllers
         /// Generates Label as PDF
         public ActionResult PrintLabel()
         {
+            var pagecopies = 2;
+
             return new ViewAsPdf()
             {
                 //FileName = "Label.pdf",
                 PageMargins = new Margins(2, 2, 0, 2),
                 PageWidth = 200,
                 PageHeight = 75,
-                CustomSwitches = "--disable-smart-shrinking"
+                CustomSwitches = "--disable-smart-shrinking --copies "+pagecopies+""
             };
         }
 
