@@ -306,16 +306,16 @@ namespace MvcPhoenix.Services
                 // string sCommand = "";
                 var q = (from t in db.tblOrderMaster where t.OrderID == vm.orderid select t).FirstOrDefault();
 
-                var qCountry = (from t in db.tblCountry 
-                                where t.Country == vm.country && t.DoNotShip == true 
+                var qCountry = (from t in db.tblCountry
+                                where t.Country == vm.country && t.DoNotShip == true
                                 select t).FirstOrDefault();
 
                 if (qCountry != null)
                 {
                     // flag the order record and the item records that are yet to be allocated
                     q.IsSDN = true;
-                    var orderitems = (from t in db.tblOrderItem 
-                                      where t.OrderID == vm.orderid && t.AllocateStatus == null 
+                    var orderitems = (from t in db.tblOrderItem
+                                      where t.OrderID == vm.orderid && t.AllocateStatus == null
                                       select t).ToList();
 
                     foreach (var item in orderitems)
@@ -331,8 +331,8 @@ namespace MvcPhoenix.Services
                 {
                     // flag the order record and the item records that are yet to be allocated (again maybe)
                     q.IsSDN = true;
-                    var orderitems = (from t in db.tblOrderItem 
-                                      where t.OrderID == vm.orderid && t.AllocateStatus == null 
+                    var orderitems = (from t in db.tblOrderItem
+                                      where t.OrderID == vm.orderid && t.AllocateStatus == null
                                       select t).ToList();
 
                     foreach (var item in orderitems)
@@ -344,15 +344,22 @@ namespace MvcPhoenix.Services
                     ShowAlert = true;
                 }
 
-                var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet 
-										where t.ClientID == vm.clientid //&& t.CountryID == qCountry.CountryID - Phil will inspect
-										select t).FirstOrDefault();
-
-                if(qCeaseShipOffset != null)
+                if (vm.country != "0")
                 {
-                    q.CeaseShipOffset = qCeaseShipOffset.OffsetDays;
+                    var qCountry2 = (from t in db.tblCountry 
+                                     where t.Country == vm.country 
+                                     select t).FirstOrDefault(); // need the ID
+
+                    var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet 
+                                            where t.ClientID == vm.clientid && t.CountryID == qCountry2.CountryID 
+                                            select t).FirstOrDefault();
+
+                    if (qCeaseShipOffset != null)
+                    {
+                        q.CeaseShipOffset = qCeaseShipOffset.OffsetDays;
+                    }
                 }
-				
+
                 db.SaveChanges();
 
                 if (ShowAlert == true)
@@ -370,17 +377,17 @@ namespace MvcPhoenix.Services
             {
                 return true;
             }
-            
+
             if (!String.IsNullOrEmpty(vm.street) && filecontent.Contains(vm.street))
             {
                 return true;
             }
-            
+
             if (!String.IsNullOrEmpty(vm.attention) && filecontent.Contains(vm.attention))
             {
                 return true;
             }
-            
+
             return false;
         }
 
@@ -431,13 +438,13 @@ namespace MvcPhoenix.Services
             // id=productdetailid
             using (var db = new EF.CMCSQL03Entities())
             {
-                var qry = (from t in db.tblShelfMaster 
-							where t.ProductDetailID == id 
-							orderby t.Size 
-							select t);
-							
+                var qry = (from t in db.tblShelfMaster
+                           where t.ProductDetailID == id
+                           orderby t.Size
+                           select t);
+
                 string s = "<option value='0' selected=true>Select Size</option>";
-				
+
                 if (qry.Count() > 0)
                 {
                     foreach (var item in qry)
@@ -449,9 +456,9 @@ namespace MvcPhoenix.Services
                 {
                     s = s + "<option value='0'>No Sizes Found</option>";
                 }
-				
+
                 s = s + "<option value='99'>Special Request</option>";
-				
+
                 return s;
             }
         }
@@ -463,7 +470,7 @@ namespace MvcPhoenix.Services
                 EF.tblOrderItem newrec = new EF.tblOrderItem();
                 db.tblOrderItem.Add(newrec);
                 db.SaveChanges();
-				
+
                 return newrec.ItemID;
             }
         }
@@ -519,7 +526,7 @@ namespace MvcPhoenix.Services
                 vm.AlertNotesOther = q.AlertNotesOther;
 
                 // Look for a reason to set the item R/O
-                if (q.ShipDate != null || q.AllocateStatus == "A" )
+                if (q.ShipDate != null || q.AllocateStatus == "A")
                 {
                     vm.CrudMode = "RO";
                 }
@@ -540,9 +547,9 @@ namespace MvcPhoenix.Services
                     vm.CreateDate = System.DateTime.Now;
                     vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 }
-                
-                var q = (from t in db.tblOrderItem 
-                         where t.ItemID == vm.ItemID 
+
+                var q = (from t in db.tblOrderItem
+                         where t.ItemID == vm.ItemID
                          select t).FirstOrDefault();
 
                 q.OrderID = vm.OrderID;
@@ -581,12 +588,12 @@ namespace MvcPhoenix.Services
             // pull values for ProductCode, ProductName, Size
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = (from t in db.tblOrderItem 
-                         where t.ItemID == vm.ItemID 
+                var q = (from t in db.tblOrderItem
+                         where t.ItemID == vm.ItemID
                          select t).FirstOrDefault();
 
-                var dbPD = (from t in db.tblProductDetail 
-                            where t.ProductDetailID == vm.ProductDetailID 
+                var dbPD = (from t in db.tblProductDetail
+                            where t.ProductDetailID == vm.ProductDetailID
                             select t).FirstOrDefault();
 
                 q.ProductCode = dbPD.ProductCode;
@@ -598,8 +605,8 @@ namespace MvcPhoenix.Services
                 }
                 else
                 {
-                    var dbSM = (from t in db.tblShelfMaster 
-                                where t.ShelfID == vm.ShelfID 
+                    var dbSM = (from t in db.tblShelfMaster
+                                where t.ShelfID == vm.ShelfID
                                 select t).FirstOrDefault();
 
                     if (dbSM != null)
@@ -610,16 +617,16 @@ namespace MvcPhoenix.Services
                 }
 
                 q.AlertNotesShipping = dbPD.AlertNotesShipping;
-				
+
                 var dbPM = db.tblProductMaster.Find(dbPD.ProductMasterID);
-				
+
                 q.AlertNotesPackout = dbPM.AlertNotesPackout;
-				
+
                 q.AlertNotesOrderEntry = dbPD.AlertNotesOrderEntry;  // comes from profiles
 
                 if (dbPD.AIRUNNUMBER == "UN3082" | dbPD.AIRUNNUMBER == "UN3077" | dbPD.GRNUNNUMBER == "UN3082" | dbPD.GRNUNNUMBER == "UN3077")
-                { 
-                    q.AlertNotesOther = "Products with UN3082 and UN3077 may be shipped as non hazardous if under 5 kg"; 
+                {
+                    q.AlertNotesOther = "Products with UN3082 and UN3077 may be shipped as non hazardous if under 5 kg";
                 }
 
                 db.SaveChanges();
@@ -644,8 +651,7 @@ namespace MvcPhoenix.Services
                 }
             }
         }
-		
-		
+
         public static int fnAllocateBulk(int OrderID, bool IncludeQCStock)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -673,23 +679,23 @@ namespace MvcPhoenix.Services
                                        Qty = t.Qty,
                                        LotNumber = t.LotNumber,
                                        CurrentWeight = t.CurrentWeight,
-                                       CeaseShipDate=t.CeaseShipDate,
+                                       CeaseShipDate = t.CeaseShipDate,
                                        BulkStatus = t.BulkStatus,
                                        Bin = t.Bin
                                    }).ToList();
 
-					var qOffset = db.tblOrderMaster.Find(OrderID);
+                    var qOffset = db.tblOrderMaster.Find(OrderID);
                     int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
                     if (iOffset != 0)
                     {
                         // if there's an offset on the order record, add that to today to build in extra time
                         DateTime dCease = System.DateTime.Now.AddDays(iOffset);
-                        
-                        tblbulk = (from t in tblbulk 
-                                   where t.CeaseShipDate > dCease 
+
+                        tblbulk = (from t in tblbulk
+                                   where t.CeaseShipDate > dCease
                                    select t).ToList();
                     }
-					
+
                     if (IncludeQCStock == true)
                     {
                         tblbulk = (from t in tblbulk
@@ -714,7 +720,7 @@ namespace MvcPhoenix.Services
                     foreach (var row in tblbulk)
                     {
                         // update tblstock record (need to use separate qry)
-						if(row.CurrentWeight >= item.Qty*item.Weight)
+                        if (row.CurrentWeight >= item.Qty * item.Weight)
                         {
                             AllocationCount = AllocationCount + 1;
                             var q = db.tblBulk.Find(row.BulkID);
@@ -725,16 +731,14 @@ namespace MvcPhoenix.Services
                             item.AllocateStatus = "A";
                             item.Bin = row.Bin;
                             item.ExpirationDate = q.ExpirationDate;
-						    item.CeaseShipDate = q.CeaseShipDate;
-                        
+                            item.CeaseShipDate = q.CeaseShipDate;
+
                             fnInsertLogRecord("BS-ALC", System.DateTime.Now, null, row.BulkID, item.Qty, item.Weight, System.DateTime.Now, HttpContext.Current.User.Identity.Name, null, null);
 
                             db.SaveChanges();
 
                             break;
-							
-						}
-
+                        }
                     }
                 }
 
@@ -748,7 +752,7 @@ namespace MvcPhoenix.Services
             {
                 int AllocationCount = 0;
                 var items = (from t in db.tblOrderItem
-							join om in db.tblOrderMaster on t.OrderID equals om.OrderID
+                             join om in db.tblOrderMaster on t.OrderID equals om.OrderID
                              where t.OrderID == OrderID && t.ShipDate == null && t.AllocateStatus == null && t.CSAllocate == true
                              select t).ToList();
                 if (items == null)
@@ -760,63 +764,62 @@ namespace MvcPhoenix.Services
                 {
                     var tblstock = (from t in db.tblStock
                                     join b in db.tblBulk on t.BulkID equals b.BulkID
-									orderby b.CeaseShipDate
+                                    orderby b.CeaseShipDate
                                     where t.ShelfID == item.ShelfID
                                     select new
                                         {
                                             StockID = t.StockID,
                                             Warehouse = t.Warehouse,
                                             QtyOnHand = t.QtyOnHand,
-                                            QtyAllocated =  t.QtyAllocated ?? 0,
+                                            QtyAllocated = t.QtyAllocated ?? 0,
                                             Bin = t.Bin,
                                             ShelfStatus = t.ShelfStatus,
                                             ExpirationDate = b.ExpirationDate,
-                                            CeaseShipDate=b.CeaseShipDate,
+                                            CeaseShipDate = b.CeaseShipDate,
                                             LotNumber = b.LotNumber
                                         }
                                     ).ToList();
 
-
-					var qOffset= db.tblOrderMaster.Find(items[0].OrderID);
+                    var qOffset = db.tblOrderMaster.Find(items[0].OrderID);
                     int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
-                    
+
                     // change to take negative numbers
-                    if(iOffset != 0)
+                    if (iOffset != 0)
                     {
                         // if there's an offset on the order record, add that to today to build in extra time
                         DateTime dCease = System.DateTime.Now.AddDays(iOffset);
-                        tblstock = (from t in tblstock 
-                                    where t.CeaseShipDate > dCease 
+                        tblstock = (from t in tblstock
+                                    where t.CeaseShipDate > dCease
                                     select t).ToList();
                     }
 
                     if (item.LotNumber != null) // specific lot number requested
                     {
-                        tblstock = (from t in tblstock 
-                                    where t.LotNumber == item.LotNumber 
+                        tblstock = (from t in tblstock
+                                    where t.LotNumber == item.LotNumber
                                     select t).ToList();
                     }
 
-                    if(IncludeQCStock == true)
+                    if (IncludeQCStock == true)
                     {
-                        tblstock = (from t in tblstock 
-                                    where t.ShelfStatus == "AVAIL" || t.ShelfStatus == "QC" 
+                        tblstock = (from t in tblstock
+                                    where t.ShelfStatus == "AVAIL" || t.ShelfStatus == "QC"
                                     select t).ToList();
                     }
                     else
                     {
-                        tblstock = (from t in tblstock 
-                                    where t.ShelfStatus == "AVAIL" 
+                        tblstock = (from t in tblstock
+                                    where t.ShelfStatus == "AVAIL"
                                     select t).ToList();
                     }
-                    
+
                     // Do something with the Profiles alert message (add to tblOrderItem on creation?
                     // Do something with the Special Transport Provision Alert - add to tblOrderitem on creation?
 
-					tblstock = (from t in tblstock
-                               orderby t.CeaseShipDate ascending
-                               select t).ToList();
-							   
+                    tblstock = (from t in tblstock
+                                orderby t.CeaseShipDate ascending
+                                select t).ToList();
+
                     // Page thru tblstock rows looking for the first record that has enough qty then bailout
                     foreach (var row in tblstock)
                     {
@@ -825,7 +828,7 @@ namespace MvcPhoenix.Services
                             AllocationCount = AllocationCount + 1;
                             // update tblstock record (need to use separate qry)
                             var q = db.tblStock.Find(row.StockID);
-                            q.QtyAllocated = (q.QtyAllocated ?? 0)  + item.Qty;
+                            q.QtyAllocated = (q.QtyAllocated ?? 0) + item.Qty;
 
                             // update tblorderitem record
                             item.AllocatedStockID = row.StockID;
@@ -833,9 +836,9 @@ namespace MvcPhoenix.Services
                             item.LotNumber = row.LotNumber;
                             item.AllocateStatus = "A";
                             item.Bin = row.Bin;
-							item.ExpirationDate = row.ExpirationDate;
+                            item.ExpirationDate = row.ExpirationDate;
                             item.CeaseShipDate = row.CeaseShipDate;
-							item.AllocatedDate = System.DateTime.Now;
+                            item.AllocatedDate = System.DateTime.Now;
 
                             db.SaveChanges();
 
@@ -853,7 +856,7 @@ namespace MvcPhoenix.Services
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-				EF.tblInvLog newrec = new EF.tblInvLog();
+                EF.tblInvLog newrec = new EF.tblInvLog();
                 newrec.LogType = vLogType;
                 newrec.LogDate = vLogDate;
                 newrec.StockID = vStockID;
@@ -913,10 +916,10 @@ namespace MvcPhoenix.Services
                 vm.updatedate = System.DateTime.Now;
                 vm.updateuser = HttpContext.Current.User.Identity.Name;
 
-                var d = (from t in db.tblOrderTrans 
-                         where t.OrderTransID == vm.ordertransid 
+                var d = (from t in db.tblOrderTrans
+                         where t.OrderTransID == vm.ordertransid
                          select t).FirstOrDefault();
-						 
+
                 d.OrderID = vm.orderid;
                 d.OrderItemID = vm.orderitemid;
                 d.ClientID = vm.clientid;
@@ -957,7 +960,7 @@ namespace MvcPhoenix.Services
                 vm.createuser = qry.CreateUser;
                 vm.updatedate = qry.UpdateDate;
                 vm.updateuser = qry.UpdateUser;
-                
+
                 return vm;
             }
         }
@@ -1004,8 +1007,8 @@ namespace MvcPhoenix.Services
                 else
                 {
                     // Assume this is a SR size ??????????????????????
-                    var tierSpecialRequest = (from t in db.tblTier 
-                                              where t.ClientID == o.ClientID && t.Size == "1SR" && t.Tier == "1" 
+                    var tierSpecialRequest = (from t in db.tblTier
+                                              where t.ClientID == o.ClientID && t.Size == "1SR" && t.Tier == "1"
                                               select t).FirstOrDefault();
 
                     if (tierSpecialRequest != null)
@@ -1027,10 +1030,10 @@ namespace MvcPhoenix.Services
                 }
 
                 // Other charges from shelfmaster
-                
+
                 // pc 10/27/16 Need to know if we are trying to price a Bulk or Stock item
                 // assume a shelfmaster, then change to bulk if necessary
-                var sm = (from t in db.tblShelfMaster where t.ShelfID == oi.ShelfID select t).FirstOrDefault(); 
+                var sm = (from t in db.tblShelfMaster where t.ShelfID == oi.ShelfID select t).FirstOrDefault();
 
                 if (oi.BulkID != null)
                 {
@@ -1038,22 +1041,22 @@ namespace MvcPhoenix.Services
                     var bl = (from t in db.tblBulk where t.BulkID == oi.BulkID select t).FirstOrDefault();
                     var pm = (from t in db.tblProductMaster where t.ProductMasterID == bl.ProductMasterID select t).FirstOrDefault();
                     var pd = (from t in db.tblProductDetail where t.ProductMasterID == bl.ProductMasterID && t.ProductCode == pm.MasterCode select t).FirstOrDefault();
-                    sm = (from t in db.tblShelfMaster where t.ProductDetailID==pd.ProductDetailID && t.Size==oi.Size select t).FirstOrDefault(); 
-                    if(sm == null)
+                    sm = (from t in db.tblShelfMaster where t.ProductDetailID == pd.ProductDetailID && t.Size == oi.Size select t).FirstOrDefault();
+                    if (sm == null)
                     {
                         // go no further
                         return;
                     }
-                    // this should rest me on a shelfmaster that is really the bulk size sample  
+                    // this should rest me on a shelfmaster that is really the bulk size sample
                 }
 
-                var qrySurcharges = (from t in db.tblSurcharge 
-                                     where t.ClientID == o.ClientID 
+                var qrySurcharges = (from t in db.tblSurcharge
+                                     where t.ClientID == o.ClientID
                                      select t).FirstOrDefault();
 
                 if (sm.HazardSurcharge == true)
                 {
-					fnInsertOrderTrans(oi.ItemID, "HAZD", qrySurcharges.Haz);
+                    fnInsertOrderTrans(oi.ItemID, "HAZD", qrySurcharges.Haz);
                 }
 
                 if (sm.FlammableSurcharge == true)
@@ -1068,7 +1071,7 @@ namespace MvcPhoenix.Services
 
                 if (sm.RefrigSurcharge == true)
                 {
-					fnInsertOrderTrans(oi.ItemID, "REFR", qrySurcharges.Refrig);
+                    fnInsertOrderTrans(oi.ItemID, "REFR", qrySurcharges.Refrig);
                 }
 
                 if (sm.FreezerSurcharge == true)
@@ -1083,7 +1086,7 @@ namespace MvcPhoenix.Services
 
                 if (sm.BlendSurcharge == true)
                 {
-                    fnInsertOrderTrans(oi.ItemID, "BLND",0);
+                    fnInsertOrderTrans(oi.ItemID, "BLND", 0);
                 }
 
                 if (sm.NalgeneSurcharge == true)
@@ -1113,13 +1116,12 @@ namespace MvcPhoenix.Services
 
                 if (sm.OtherSurcharge == true)
                 {
-					fnInsertOrderTrans(oi.ItemID, "OTHR", sm.OtherSurchargeAmt);
+                    fnInsertOrderTrans(oi.ItemID, "OTHR", sm.OtherSurchargeAmt);
                 }
             }
         }
 
-
-        public static void fnInsertOrderTrans(int? ItemID,string TransType,decimal? TransAmount)
+        public static void fnInsertOrderTrans(int? ItemID, string TransType, decimal? TransAmount)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
@@ -1135,17 +1137,14 @@ namespace MvcPhoenix.Services
                 newrec.TransDate = System.DateTime.Now;
                 newrec.TransType = TransType;
                 newrec.TransQty = oi.Qty;
-                newrec.TransAmount =TransAmount;
+                newrec.TransAmount = TransAmount;
                 newrec.CreateDate = System.DateTime.Now;
                 newrec.CreateUser = "System";
                 db.tblOrderTrans.Add(newrec);
                 db.SaveChanges();
             }
-
-
         }
-		
-		
+
         public static void fnArchiveOrderMaster(int id)
         {
             // stash a copy before update
@@ -1169,7 +1168,7 @@ namespace MvcPhoenix.Services
                 mylist = (from t in db.tblClient
                           orderby t.ClientName
                           select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
 
                 return mylist;
@@ -1185,7 +1184,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-//private static List<SelectListItem> fnListOfOrderTransTypes()
+        //private static List<SelectListItem> fnListOfOrderTransTypes()
         //{
         //    List<SelectListItem> mylist = new List<SelectListItem>();
         //    mylist.Add(new SelectListItem { Text = "BIOC", Value = "BIOC" });
@@ -1209,19 +1208,18 @@ namespace MvcPhoenix.Services
         //    return mylist;
         //}
 
-		
         //fnListOfBillingGroups
         public static List<SelectListItem> fnListOfBillingGroups(int? id)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblDivision
                           where t.ClientID == id
                           orderby t.Division
                           select new SelectListItem { Value = t.Division, Text = t.Division }).Distinct().ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return mylist;
@@ -1246,11 +1244,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblShelfMaster
                           where t.ProductDetailID == id
                           select new SelectListItem { Value = t.ShelfID.ToString(), Text = t.Size }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = " -- Select Size --" });
                 mylist.Add(new SelectListItem { Value = "99", Text = "SR" });
 
@@ -1268,7 +1266,7 @@ namespace MvcPhoenix.Services
                           where t.ClientID == id
                           orderby t.CustProductCode
                           select new SelectListItem { Value = t.CustProductCode, Text = t.CustProductCode + " : " + t.CMCProductCode }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Client Product Code" });
 
                 return mylist;
@@ -1280,11 +1278,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblOrderMaster
                           orderby t.OrderID descending
                           select new SelectListItem { Value = t.OrderID.ToString(), Text = t.OrderID.ToString() }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1296,11 +1294,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblOrderType
                           orderby t.OrderType
                           select new SelectListItem { Value = t.OrderType, Text = t.OrderType }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1312,11 +1310,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblCountry
                           orderby t.Country
                           select new SelectListItem { Value = t.Country, Text = t.Country }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1328,13 +1326,13 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblClientContact
                           where t.ContactType == "SalesRep"
                           where t.ClientID == id
                           orderby t.FullName
                           select new SelectListItem { Value = t.FullName, Text = t.FullName }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1346,13 +1344,13 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblClientContact
                           where t.ContactType == "Requestor"
                           where t.ClientID == id
                           orderby t.FullName
                           select new SelectListItem { Value = t.FullName, Text = t.FullName }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1364,14 +1362,14 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblEndUse
                           where t.ClientID == id
                           orderby t.EndUse
                           select new SelectListItem { Value = t.EndUse, Text = t.EndUse }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-                
+
                 return mylist;
             }
         }
@@ -1381,11 +1379,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblCarrier
                           orderby t.CarrierName
                           select new SelectListItem { Value = t.CarrierName, Text = t.CarrierName }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1397,11 +1395,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblOrderSource
                           orderby t.Source
                           select new SelectListItem { Value = t.Source, Text = t.Source }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1413,12 +1411,12 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblDivision
                           where t.ClientID == id
                           orderby t.Division
                           select new SelectListItem { Value = t.Division, Text = t.Division }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1435,7 +1433,7 @@ namespace MvcPhoenix.Services
                           where m.ClientID == id
                           orderby t.ProductCode
                           select new SelectListItem { Value = t.ProductDetailID.ToString(), Text = t.ProductCode + " " + t.ProductName }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1447,11 +1445,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist = (from t in db.tblCarrier
                           orderby t.CarrierName
                           select new SelectListItem { Value = t.CarrierName, Text = t.CarrierName }).ToList();
-                
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
@@ -1463,7 +1461,7 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
+
                 mylist.Add(new SelectListItem { Value = "S1", Text = "S1" });
                 mylist.Add(new SelectListItem { Value = "S2", Text = "S2" });
                 mylist.Add(new SelectListItem { Value = "S3", Text = "S3" });
@@ -1478,11 +1476,11 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
-                
-                mylist = (from t in db.tblStatusNotes 
-							orderby t.Note 
-							select new SelectListItem { Value = t.Note, Text = t.Note }).ToList();
-							
+
+                mylist = (from t in db.tblStatusNotes
+                          orderby t.Note
+                          select new SelectListItem { Value = t.Note, Text = t.Note }).ToList();
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
