@@ -33,7 +33,8 @@
                 </div>
                 <div style="text-align:center;">
                     <div class="pull-right">
-                        <a class="btn btn-sm btn-success" href="@Url.Action("PrintLabel","Inventory")" target="_blank"><i class="fa fa-tag"></i> Shelf Label</a>
+                        @*<a class="btn btn-sm btn-success" href="@Url.Action("PrintLabel","Inventory")" target="_blank"><i class="fa fa-tag"></i> Shelf Label</a>*@
+                        <a href="#" class="btn btn-sm btn-success" onclick="jsWebClientPrint.print('sid=@Session.SessionID');"><i class="fa fa-tag"></i> Shelf Label</a>
                     </div>
                 </div>
             </div>
@@ -349,3 +350,6 @@
         </div>
     }
 </div>
+
+@* Register the WebClientPrint script code. The param is the URL for the PrintFile method in the Controller. *@
+@Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateScript(Url.Action("LabelPrint", "Inventory", null, Request.Url.Scheme)))

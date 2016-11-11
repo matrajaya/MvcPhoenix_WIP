@@ -1,5 +1,6 @@
 ﻿using MvcPhoenix.Models;
 using MvcPhoenix.Services;
+using Neodynamic.SDK.Web;
 using PagedList;
 using Rotativa;
 using Rotativa.Options;
@@ -337,18 +338,52 @@ namespace MvcPhoenix.Controllers
         }
 
         /// Generates Label as PDF
+        //public ActionResult PrintLabel()
+        //{
+        //    var pagecopies = 2;
+
+        //    return new ViewAsPdf()
+        //    {
+        //        //FileName = "Label.pdf",
+        //        PageMargins = new Margins(2, 2, 0, 2),
+        //        PageWidth = 200,
+        //        PageHeight = 75,
+        //        CustomSwitches = "--disable-smart-shrinking --copies "+pagecopies+""
+        //    };
+        //}
+
+        [AllowAnonymous]
         public ActionResult PrintLabel()
         {
+            // Generate label as simple view if using buildpdf action
+            return View();
+        }
+        
+        /// <summary>
+        /// Anonymous access is required for the callback from client print
+        /// </summary>
+        [AllowAnonymous]
+        public void LabelPrint()
+        {
             var pagecopies = 2;
+            string printerName = "AThermalZebraNet";
 
-            return new ViewAsPdf()
+            var actionPDF = new Rotativa.ActionAsPdf("PrintLabel")
             {
                 //FileName = "Label.pdf",
                 PageMargins = new Margins(2, 2, 0, 2),
                 PageWidth = 200,
                 PageHeight = 75,
-                CustomSwitches = "--disable-smart-shrinking --copies "+pagecopies+""
+                CustomSwitches = "--disable-smart-shrinking --load-error-handling ignore --copies " + pagecopies + ""
             };
+
+            byte[] pdfContent = actionPDF.BuildPdf(ControllerContext);
+            string fileName = "thermallabel.pdf"; //create a temp file name for our PDF report...
+            PrintFile file = new PrintFile(pdfContent, fileName); //Create a PrintFile object with the pdf report
+            ClientPrintJob cpj = new ClientPrintJob(); //Create a ClientPrintJob and send it back to the client!
+            cpj.PrintFile = file; //set file to print...
+            cpj.ClientPrinter = new InstalledPrinter(printerName); //set client printer...
+            cpj.SendToClient(System.Web.HttpContext.Current.Response); //send it...
         }
 
         #endregion

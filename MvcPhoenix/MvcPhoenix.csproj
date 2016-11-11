@@ -51,6 +51,7 @@
         </ObjectGroup>
       </Objects>
     </PublishDatabaseSettings>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -109,6 +110,10 @@
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\MicosoftReportViewerWebForms_v11.1.0.1\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Neodynamic.SDK.WebClientPrint, Version=2.0.2000.0, Culture=neutral, PublicKeyToken=93565f9c313b0a45, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Neodynamic\WebClientPrint for ASP.NET\v2.0\Bin\For .NET 2.0-3.5-4.x (AnyCPU)\Neodynamic.SDK.WebClientPrint.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -557,6 +562,11 @@
     <Compile Include="Models\ReturnOrderViewModels.cs" />
     <Compile Include="Models\ShelfMasterViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\BulkService.cs" />
     <Compile Include="Services\ClientService.cs" />
@@ -1370,6 +1380,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601291957209_FieldLengths.resx">
       <DependentUpon>201601291957209_FieldLengths.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
