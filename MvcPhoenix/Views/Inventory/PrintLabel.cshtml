@@ -5,34 +5,36 @@
 }
 
 <style>
-    body{
-        margin:0;
+    body {
+        margin: 0;
     }
-    table{
-        border:0;
-        margin:0;
-        padding:0;
+
+    table {
+        border: 0;
+        margin: 0;
+        padding: 0;
     }
-    td{
-        margin:0;
-        padding:0 !important; /*overide print.css*/
+
+    td {
+        margin: 0;
+        padding: 0 !important; /*overide print.css*/
     }
 </style>
 
 <div style="padding:3px 3px 3px 3px;">
-    <div style="zoom:255%;"> @*Maintains label layout structure on 2 x 0.75 label*@
-        <table>
-            <tr>
-                <td>
+    <table>
+        <tr>
+            <td>
+                <div style="zoom:255%;">@*Maintains label layout structure on 2 x 0.75 label*@
                     107265 <br />
-                    RHODIASOLV IRIS EXTRA WORDS @*FEW TO TEST OVERFLOW50*@<br />
+                    RHODIASOLV IRIS EXTRA WORDS<br />
                     L1605009<br />
                     QT <span style="float:right;">PID:465090</span>
-                </td>
-                <td valign="middle">
-                    <div style="zoom:100%; float:right;padding:7px 2px 0 5px">@Html.GenerateMatrixCodeLabelSm(Convert.ToString("107265~L1605009~QT"))</div>
-                </td>
-            </tr>
-        </table>
-    </div>
+                </div>
+            </td>
+            <td valign="middle">
+                <div>@Html.GenerateMatrixCodeLabelSm(Convert.ToString("650640~TE454~5.0L~EXTRUDATES 1.8/230"))</div>
+            </td>
+        </tr>
+    </table>
 </div>

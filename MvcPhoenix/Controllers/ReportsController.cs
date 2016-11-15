@@ -99,7 +99,7 @@ namespace MvcPhoenix.Controllers
             reportViewer.SizeToReportContent = true;
             reportViewer.Width = Unit.Percentage(100);
             reportViewer.Height = Unit.Percentage(100);
-            reportViewer.ServerReport.ReportServerUrl = new Uri("http://DEV_SERV:80/ReportServer_CMC/");
+            reportViewer.ServerReport.ReportServerUrl = new Uri("http://DEVSERV:80/ReportServer_CMC/");
 
             return reportViewer;
         }

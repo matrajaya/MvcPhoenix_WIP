@@ -367,6 +367,7 @@ namespace MvcPhoenix.Controllers
         {
             var pagecopies = 2;
             string printerName = "AThermalZebraNet";
+            //string printerName = @"\\CMCNMPS1\RcvShelf";
 
             var actionPDF = new Rotativa.ActionAsPdf("PrintLabel")
             {

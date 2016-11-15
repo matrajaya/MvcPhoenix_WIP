@@ -4,6 +4,9 @@
     ViewBag.LogoFileName = @Model.ClientCode + ".gif";
 }
 
+@* WCPP-detection meta tag for IE10 *@
+@Html.Raw(Neodynamic.SDK.Web.WebClientPrint.GetWcppDetectionMetaTag())
+
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="row">
@@ -34,7 +37,23 @@
                 <div style="text-align:center;">
                     <div class="pull-right">
                         @*<a class="btn btn-sm btn-success" href="@Url.Action("PrintLabel","Inventory")" target="_blank"><i class="fa fa-tag"></i> Shelf Label</a>*@
-                        <a href="#" class="btn btn-sm btn-success" onclick="jsWebClientPrint.print('sid=@Session.SessionID');"><i class="fa fa-tag"></i> Shelf Label</a>
+                        <a href="#" class="btn btn-sm btn-success" onclick="jsWebClientPrint.print('sid=@Session.SessionID');"><i class="fa fa-print"></i> Shelf Label</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*Display if client plugin is not detected*@
+        <div id="msgInstallWCPP" style="display:none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-warning">
+                        <div class="panel-body">
+                            You need a plugin to print labels automatically to the defined printer:
+                            <a class="btn btn-xs btn-success" href="http://www.neodynamic.com/downloads/wcpp/wcpp-2.0.16.1000-win.exe" target="_blank">
+                                <i class="fa fa-fw fa-download"></i> Download &amp; Install Plugin
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -350,6 +369,25 @@
         </div>
     }
 </div>
+
+<script type="text/javascript">
+    var wcppPingDelay_ms = 1000;
+
+    function wcppDetectOnSuccess() {
+        @* Check WCPP *@
+        var wcppVer = arguments[0];
+        if (wcppVer.substring(0, 1) != "2")
+            wcppDetectOnFailure();
+    }
+
+    function wcppDetectOnFailure() {
+        @* WCPP is not installed. Ask user to install it *@
+        $('#msgInstallWCPP').show();
+    }
+</script>
+
+@* WCPP detection script *@
+@Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateWcppDetectionScript())
 
 @* Register the WebClientPrint script code. The param is the URL for the PrintFile method in the Controller. *@
 @Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateScript(Url.Action("LabelPrint", "Inventory", null, Request.Url.Scheme)))

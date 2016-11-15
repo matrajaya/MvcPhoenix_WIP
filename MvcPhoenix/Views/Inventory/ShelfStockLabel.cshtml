@@ -6,30 +6,33 @@
 }
 
 <style>
-    body{
-        margin:0;
+    body {
+        margin: 0;
     }
-    table{
-        border:0;
-        margin:0;
-        padding:0;
+
+    table {
+        border: 0;
+        margin: 0;
+        padding: 0;
     }
 </style>
 
 <div style="padding:3px 3px 3px 3px;">
-    <div style="zoom:250%;"> @*Maintains label layout structure on 2 x 0.75 label*@
-        <table>
-            <tr>
-                <td>
+    <table>
+        <tr>
+            <td>
+                <div style="zoom:255%;">@*Maintains label layout structure on 2 x 0.75 label*@                    
                     @Model.ProductCode<br />
                     @Model.ProductName<br />
                     @Model.LotNumber<br />
                     @Model.Size <span style="float:right;">PID: PP*</span>
-                </td>
-                <td valign="middle" width="20%">
-                    <div style="zoom:100%; float:right;">@Html.GenerateMatrixCodeLabelSm(Convert.ToString(@Model.ProductCode + "~" + @Model.LotNumber +"~" + @Model.Size))</div>
-                </td>
-            </tr>
-        </table>
-    </div>
+                </div>
+            </td>
+            <td valign="middle">
+                <div style="float:right;">
+                    @Html.GenerateMatrixCodeLabelSm(Convert.ToString(@Model.ProductCode + "~" + @Model.LotNumber + "~" + @Model.Size + "~" + @Model.ProductName))
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>

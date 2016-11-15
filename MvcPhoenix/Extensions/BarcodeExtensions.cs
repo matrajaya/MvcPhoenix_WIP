@@ -31,14 +31,14 @@ namespace MvcPhoenix.Extensions
 
                 var img = new TagBuilder("img");
                 img.MergeAttribute("alt", "matrix barcode");
-                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
+                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}", 
                     Convert.ToBase64String(stream.ToArray())));
 
                 return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));
             }
         }
 
-        public static IHtmlString GenerateMatrixCodeLabelSm(this HtmlHelper html, string inputentry, int height = 50, int width = 50, int margin = 0)
+        public static IHtmlString GenerateMatrixCodeLabelSm(this HtmlHelper html, string inputentry, int height = 144, int width = 144, int margin = 0)
         {
             var qrValue = inputentry;
             var barcodeWriter = new BarcodeWriter
@@ -59,7 +59,7 @@ namespace MvcPhoenix.Extensions
 
                 var img = new TagBuilder("img");
                 img.MergeAttribute("alt", "matrix barcode");
-                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
+                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}", 
                     Convert.ToBase64String(stream.ToArray())));
 
                 return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));
@@ -76,7 +76,8 @@ namespace MvcPhoenix.Extensions
                 {
                     Height = height,
                     Width = width,
-                    Margin = margin
+                    Margin = margin,
+                    PureBarcode = true
                 }
             };
 
@@ -87,7 +88,7 @@ namespace MvcPhoenix.Extensions
 
                 var img = new TagBuilder("img");
                 img.MergeAttribute("alt", "code39 barcode");
-                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
+                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}", 
                     Convert.ToBase64String(stream.ToArray())));
 
                 return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));
