@@ -323,20 +323,6 @@ namespace MvcPhoenix.Controllers
 
         #region Label Printing
 
-        public ActionResult ShelfStockLabel(int id)
-        {
-            var vm = Services.InventoryService.fnFillStockViewModel(id);
-
-            return new ViewAsPdf(vm)
-            {
-                //FileName = vm.ProductCode + vm.LotNumber + vm.Size + ".pdf",
-                PageMargins = new Margins(2, 2, 0, 2),
-                PageWidth = 200,
-                PageHeight = 75,
-                CustomSwitches = "--disable-smart-shrinking"
-            };
-        }
-
         /// Generates Label as PDF
         //public ActionResult PrintLabel()
         //{
@@ -355,23 +341,19 @@ namespace MvcPhoenix.Controllers
         [AllowAnonymous]
         public ActionResult PrintLabel()
         {
-            // Generate label as simple view if using buildpdf action
+            // Generate plain html label
             return View();
         }
         
-        /// <summary>
-        /// Anonymous access is required for the callback from client print
-        /// </summary>
+        // Anonymous access is required for the callback from client print
         [AllowAnonymous]
         public void LabelPrint()
         {
-            var pagecopies = 2;
-            string printerName = "AThermalZebraNet";
-            //string printerName = @"\\CMCNMPS2\RcvShelf";
-
+            int pagecopies = 1;
+            string printerName = @"AThermalZebraNet";                           // @"\\CMCNMPS2\RcvShelf";
+            
             var actionPDF = new Rotativa.ActionAsPdf("PrintLabel")
             {
-                //FileName = "Label.pdf",
                 PageMargins = new Margins(2, 2, 0, 2),
                 PageWidth = 200,
                 PageHeight = 75,
@@ -379,12 +361,67 @@ namespace MvcPhoenix.Controllers
             };
 
             byte[] pdfContent = actionPDF.BuildPdf(ControllerContext);
-            string fileName = "thermallabel.pdf"; //create a temp file name for our PDF report...
-            PrintFile file = new PrintFile(pdfContent, fileName); //Create a PrintFile object with the pdf report
-            ClientPrintJob cpj = new ClientPrintJob(); //Create a ClientPrintJob and send it back to the client!
-            cpj.PrintFile = file; //set file to print...
-            cpj.ClientPrinter = new InstalledPrinter(printerName); //set client printer...
-            cpj.SendToClient(System.Web.HttpContext.Current.Response); //send it...
+
+            string fileName = "thermallabel.pdf";                               // Create a temp file name for our PDF report...
+            PrintFile file = new PrintFile(pdfContent, fileName);               // Create a PrintFile object with the pdf report
+
+            ClientPrintJob cpj = new ClientPrintJob();                          // Create a ClientPrintJob and send it back to the client!
+            cpj.PrintFile = file;                                               // Set file to print...
+            cpj.ClientPrinter = new InstalledPrinter(printerName);              // Set client printer...//cpj.ClientPrinter = new NetworkPrinter("10.0.0.8", 9100);
+            cpj.SendToClient(System.Web.HttpContext.Current.Response);          // Send it...
+        }
+
+        // Web client call to ShelfStockPrint generates pdf and sends pdf stream to printer
+        // stream pdf to printer
+        [AllowAnonymous]
+        public void ShelfStockPrint(string Shelfstockid, string pagecopies)
+        {
+            int id = Convert.ToInt32(Shelfstockid);
+            string printerName = @"AThermalZebraNet";                           // Set printer name or UNC eg; @"\\CMCNMPS2\RcvShelf"
+
+            var actionPDF = new Rotativa.ActionAsPdf("PrintShelfStockLabel", new { id })
+            {
+                PageMargins = new Margins(2, 2, 0, 2),
+                PageWidth = 200,
+                PageHeight = 75,
+                CustomSwitches = "--disable-smart-shrinking --load-error-handling ignore --copies " + pagecopies + ""
+            };
+
+            byte[] pdfContent = actionPDF.BuildPdf(ControllerContext);          // PDF stream content
+
+            string fileName = Shelfstockid + ".pdf";                            // Set file and extension name
+            PrintFile file = new PrintFile(pdfContent, fileName);               // Build file
+
+            ClientPrintJob cpj = new ClientPrintJob();                          // Create a ClientPrintJob and send it back to the client!
+            cpj.PrintFile = file;                                               // Set file to print
+            cpj.ClientPrinter = new InstalledPrinter(printerName);              // Set client printer
+            //cpj.ClientPrinter = new NetworkPrinter("192.168.0.60", 9100);     // Set IP printer: ipaddress, port
+            cpj.SendToClient(System.Web.HttpContext.Current.Response);          // Send it
+        }
+
+        // Generate label as html view
+        // Used as template for pdf stream in ShelfStockPrint
+        [AllowAnonymous]
+        public ActionResult PrintShelfStockLabel(int id)
+        {
+            var vm = Services.InventoryService.fnFillStockViewModel(id);
+
+            return View(vm);
+        }
+
+        // Generate PDF
+        public ActionResult ShelfStockLabel(int id)
+        {
+            var vm = Services.InventoryService.fnFillStockViewModel(id);
+
+            return new ViewAsPdf(vm)
+            {
+                // FileName = vm.ProductCode + vm.LotNumber + vm.Size + ".pdf",     // download using filename
+                PageMargins = new Margins(2, 2, 0, 2),
+                PageWidth = 200,
+                PageHeight = 75,
+                CustomSwitches = "--disable-smart-shrinking"
+            };
         }
 
         #endregion

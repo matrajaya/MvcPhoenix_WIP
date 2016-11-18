@@ -1,4 +1,19 @@
-﻿// Calx on change helper used in Invoice RT calculation
+﻿// Check and confirm that user has WCPP installed locally
+var wcppPingDelay_ms = 1000;
+
+function wcppDetectOnSuccess() {
+    //Check WCPP
+    var wcppVer = arguments[0];
+    if (wcppVer.substring(0, 1) != "2")
+        wcppDetectOnFailure();
+}
+
+function wcppDetectOnFailure() {
+    //WCPP is not installed. Ask user to install it
+    $('#msgInstallWCPP').show();
+}
+
+// Calx on change helper used in Invoice RT calculation
 $('#show_formula').click(function (e) {
     e.preventDefault();
 

@@ -265,7 +265,9 @@
     <div class="form-group">
         <table style="margin:5px;">
             <tr>
-                <td></td>
+                <td>
+                    <h3>@Model.clientcode: @Model.cmcorder / @Model.orderid</h3>
+                </td>
                 <td>
                     <div style="padding-bottom:20px;">
                         <img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.clientname logo">
@@ -353,11 +355,16 @@
     <table>
         <tr>
             <td width="65%" style="border:solid 1px;">
-                @if (Model.country != null)
+                @try
                 {
-                @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.country })
+                    @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.country })
+                }
+                catch (Exception)
+                {
+                    <h2>Sorry, the destination country was not found. :(</h2>
                 }
             </td>
+
             <td style="border:solid 1px;">
                 <table style="font-size:small;">
                     <tr>

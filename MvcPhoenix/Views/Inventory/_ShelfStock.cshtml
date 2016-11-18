@@ -41,7 +41,8 @@
                 {
                     <tr>
                         <td class="text-center">
-                            @Html.ActionLink(" ", "ShelfStockLabel", "Inventory", new { id = @row.StockID }, new { @class = "btn btn-success fa fa-tag", @title = "Print Shelf Stock Label", @target = "_blank" })
+                            <a href="#" class="btn btn-info fa fa-print" onclick="printLabel(@row.StockID, @row.QtyOnHand)" title="Print label to shared printer"></a>
+                            @Html.ActionLink(" ", "ShelfStockLabel", "Inventory", new { id = @row.StockID }, new { @class = "btn btn-success fa fa-file-pdf-o", @title = "Preview label in browser", @target = "_blank" })
                         </td>
                         <td>@row.ProductCode</td>
                         <td>@row.Warehouse</td>
@@ -71,3 +72,16 @@
         </table>
     </div>
 }
+
+@* Register the WebClientPrint script code. *@
+@Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateScript(Url.Action("ShelfStockPrint", "Inventory", null, Request.Url.Scheme)))
+
+<script type="text/javascript">
+    function printLabel(arg1, arg2) {
+
+        this.shelfstockid = arg1;
+        this.pagecopies = arg2;
+
+        jsWebClientPrint.print('Shelfstockid=' + this.shelfstockid + '&pagecopies=' + this.pagecopies);
+    }
+</script>

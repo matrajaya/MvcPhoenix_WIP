@@ -1343,6 +1343,8 @@
     <Content Include="Views\ReturnOrders\Index.cshtml" />
     <Content Include="Views\ReturnOrders\_ReturnBulkRecords.cshtml" />
     <Content Include="Views\ReturnOrders\_ReturnStockRecords.cshtml" />
+    <Content Include="Views\Shared\_ShowDownloadWCPP.cshtml" />
+    <Content Include="Views\Inventory\PrintShelfStockLabel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

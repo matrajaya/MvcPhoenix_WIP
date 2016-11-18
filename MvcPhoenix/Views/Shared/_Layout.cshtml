@@ -11,9 +11,11 @@
     <script src="~/Scripts/jquery-calx-2.2.6.min.js"></script>
 </head>
 <body>
+    @* WCPP-detection meta tag for IE10 *@
+    @Html.Raw(Neodynamic.SDK.Web.WebClientPrint.GetWcppDetectionMetaTag())
+
     <div id="wrapper">
-        <!--Begin: Top-banner and Navigation-->
-        @*<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">*@
+        @* Begin: Top-banner and Navigation *@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="icon-bar"></span>
@@ -23,7 +25,7 @@
             @Html.ActionLink("Phoenix/SiMPLE", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             @Html.Partial("_LoginPartial")
 
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            @* Sidebar Menu Items - These collapse to the responsive navigation menu on small screens *@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 @if (Session["MyMenu"] == null)
                 {
@@ -31,10 +33,11 @@
                 }
                 @Session["MyMenu"]
             </div>
-            <!-- End Sidebar Menu Items -->
+            @* End Sidebar Menu Items *@
         </nav>
-        <!--End: Top-banner and Navigation-->
-        <!-- Begin: Generate View Content -->
+        @* End: Top-banner and Navigation *@
+
+        @* Begin: Generate View Content *@
         <div id="page-wrapper">
             <div class="container-fluid">
                 <div class="container body-content" style="padding-top: 20px;">
@@ -56,10 +59,13 @@
                 </div>
             </div>
         </div>
-        <!-- End: Generate View Content -->
+        @* End: Generate View Content *@
     </div>
 
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
+
+    @* WCPP detection script *@
+    @Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateWcppDetectionScript())
 </body>
 </html>

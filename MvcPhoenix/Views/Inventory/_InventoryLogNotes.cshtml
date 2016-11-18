@@ -40,13 +40,13 @@
                         <td>@item.notes</td>
                         <td>@item.reasoncode</td>
                         <td id="noprint">
-                            @Ajax.ActionLink("Edit", "EditInventoryLogNote", "Inventory", new { id = @item.productnoteid }, new AjaxOptions
+                            @Ajax.ActionLink(" ", "EditInventoryLogNote", "Inventory", new { id = @item.productnoteid }, new AjaxOptions
                                {
                                    InsertionMode = InsertionMode.Replace,
                                    HttpMethod = "GET",
                                    UpdateTargetId = "dialogPlaceholder",
                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-                               })
+                               }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Inventory Log" })
                         </td>
                     </tr>
                 }
