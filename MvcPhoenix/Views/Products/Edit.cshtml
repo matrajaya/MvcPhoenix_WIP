@@ -12,6 +12,14 @@
         <div class="col-lg-12">
             <h1 class="page-header">
                 @ViewBag.Title <small>@Model.productcode - @Model.productname</small>
+                @if (@Model.productcode == @Model.mastercode)
+                {
+                    <span class="fa-stack fa-lg" style="font-size:small">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-spin fa-star fa-stack-2x" style="color:gold"></i>
+                        <i class="fa fa-medium fa-stack-1x"></i>
+                    </span>
+                }
             </h1>
         </div>
     </div>

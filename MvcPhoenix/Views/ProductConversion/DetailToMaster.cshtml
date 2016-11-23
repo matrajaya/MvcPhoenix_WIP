@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Convert Product: Equivalent to Master";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
+    </div>
+    <div class="col-lg-12">
+        <h1 class="page-header">@ViewBag.Title</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Client Selection</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        @Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { @class = "form-control", onchange = "UpdateProductCodeDD()" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Product Code Selection</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="dvPlaceholderProductCode">
+                            <select name="productdetailid" id='productdetailid' class='form-control' onchange="loadDetailPartial()">
+                                <option>Select Product Code</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvDetailPartialPlaceholder" class="row">
+    <!-- placeholder for _ProductCodePartial.cshtml -->
+</div>
+
+<script type="text/javascript">
+    function UpdateProductCodeDD() {
+        $("#dvDetailPartialPlaceholder").empty();
+        var myclientid = $('#clientid').val();
+        var myurl = '@Url.Action("BuildProductCodeDropDown", "ProductConversion")';
+        $("#productdetailid").load(myurl, { id: myclientid });
+    }
+
+    function loadDetailPartial() {
+        var myproductdetailid = $('#productdetailid').val();
+        var myurl1 = '@Url.Action("LoadDetailPartial", "ProductConversion")';
+        $("#dvDetailPartialPlaceholder").load(myurl1, { productdetailid: myproductdetailid });
+        $("#dvContinue").addClass("hidden");
+    }
+</script>

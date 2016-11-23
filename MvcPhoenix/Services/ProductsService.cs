@@ -414,6 +414,8 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 var q = db.tblProductDetail.Find(PP.productdetailid);
+				q.UpdateDate = System.DateTime.Now;
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
                 q.ProductCode = PP.productcode;
                 q.ProductDetailID = PP.productdetailid;
                 q.ProductMasterID = PP.productmasterid;
@@ -509,6 +511,8 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 var q = db.tblProductMaster.Find(pm.productmasterid);
+				q.UpdateDate = System.DateTime.Now;
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
                 q.ClientID = pm.clientid;
                 q.MasterCode = pm.mastercode;
                 q.MasterName = pm.mastername;
@@ -638,6 +642,8 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 var newrecord = new EF.tblProductDetail { }; // dont need to insert any fields, just need the new PK
+				newrecord.CreateDate = System.DateTime.Now;
+                newrecord.CreateUser = HttpContext.Current.User.Identity.Name;
 
                 db.tblProductDetail.Add(newrecord);
                 db.SaveChanges();
@@ -665,8 +671,11 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 var newrecord = new EF.tblProductMaster { };// dont need to insert any fields, just need the new PK
+				newrecord.CreateDate = System.DateTime.Now;
+                newrecord.CreateUser = HttpContext.Current.User.Identity.Name;
 
                 db.tblProductMaster.Add(newrecord);
+				
                 db.SaveChanges();
 
                 int newpk = newrecord.ProductMasterID;

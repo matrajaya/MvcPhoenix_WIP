@@ -277,6 +277,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MiscController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\ProductConversionController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ReceivingController.cs" />
     <Compile Include="Controllers\ReplenishmentsController.cs" />
@@ -1345,6 +1346,8 @@
     <Content Include="Views\ReturnOrders\_ReturnStockRecords.cshtml" />
     <Content Include="Views\Shared\_ShowDownloadWCPP.cshtml" />
     <Content Include="Views\Inventory\PrintShelfStockLabel.cshtml" />
+    <Content Include="Views\ProductConversion\DetailToMaster.cshtml" />
+    <Content Include="Views\ProductConversion\_ProductDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

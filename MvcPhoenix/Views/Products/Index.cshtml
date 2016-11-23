@@ -32,12 +32,12 @@
                         <p>This will create a product with a mastercode type attribute</p><br />
                         @using (Html.BeginForm("Create", "Products"))
                         {
-                        <div class="input-group">
-                            @Html.DropDownList("clientid2", fnClientIDs(), new { @class = "form-control" })
-                            <span class="input-group-btn">
-                                <input type="submit" id="btnNew" value="Create" class="btn btn-success" />
-                            </span>
-                        </div>
+                            <div class="input-group">
+                                @Html.DropDownList("clientid2", fnClientIDs(), new { @class = "form-control" })
+                                <span class="input-group-btn">
+                                    <input type="submit" id="btnNew" value="Create" class="btn btn-success" />
+                                </span>
+                            </div>
                         }
                     </div>
                 </div>
@@ -47,19 +47,19 @@
                         <label>Create Equivalent Product Profile</label>
                         @using (Html.BeginForm("Equiv", "Products"))
                         {
-                        <div class="form-group">
-                            @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
-                        </div>
-                        <div class="input-group">
-                            <div id="dvProductMasterIDs3">
-                                <select name="productdetailid3" id='productdetailid3' class='form-control'>
-                                    <option value="0"></option>
-                                </select>
+                            <div class="form-group">
+                                @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
                             </div>
-                            <span class="input-group-btn">
-                                <input type="submit" id="btnEquiv" value="Create" class="btn btn-success" />
-                            </span>
-                        </div>
+                            <div class="input-group">
+                                <div id="dvProductMasterIDs3">
+                                    <select name="productdetailid3" id='productdetailid3' class='form-control'>
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+                                <span class="input-group-btn">
+                                    <input type="submit" id="btnEquiv" value="Create" class="btn btn-success" />
+                                </span>
+                            </div>
                         }
                     </div>
                 </div>
@@ -68,7 +68,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-suitcase fa-fw"></i> Edit</h3>
@@ -119,6 +119,16 @@
                             }
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-wrench fa-fw"></i> Utility Box</h3>
+                </div>
+                <div class="panel-body">
+                    @Html.ActionLink("Convert Equivalent to Product Master", "DetailToMaster", "ProductConversion", null, new { @class = "btn btn-block btn-primary" })
                 </div>
             </div>
         </div>

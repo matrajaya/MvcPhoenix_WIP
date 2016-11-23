@@ -1,0 +1,64 @@
+﻿@model MvcPhoenix.Models.ProductProfile
+
+@{}
+
+<div class="col-md-6">
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <p class="lead">Please Read</p>
+            <p>This process will promote an equivalent product to replace its product master by setting the master code and name to the selected equivalent product code and name.</p>
+            <p>By clicking the continue button this process will be executed. </p>
+            <p><b>Note:</b> You may have to relabel the bulk containers to reflect this change.</p>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-primary">
+        <div class="panel-body">
+
+            <p class="lead">Selected Product</p>
+            <table>
+                <tr>
+                    <td style="width:120px"><b>Product Code</b></td>
+                    <td>@Model.productcode</td>
+                </tr>
+                <tr>
+                    <td><b>Product Name</b></td>
+                    <td>@Model.productname</td>
+                </tr>
+                <tr>
+                    <td><b>Master Code</b></td>
+                    <td>@Model.mastercode</td>
+                </tr>
+                <tr>
+                    <td><b>Master Name</b></td>
+                    <td>@Model.mastername</td>
+                </tr>
+                <tr>
+                    <td><b>Division</b></td>
+                    <td>@ViewBag.Division</td>
+                </tr>
+            </table>
+
+            <hr />
+            <table>
+                <tr>
+                    <td style="width:120px"><b>Sizes</b></td>
+                    <td>
+                        @foreach (var item in @Model.ListOfShelfItems)
+                        {
+                            @item.size @:&nbsp;&nbsp;
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-center">
+        @Html.ActionLink("Continue with conversion of " + @Model.productcode, "ConvertDetailToMaster", "ProductConversion",
+                            new { id = Model.productdetailid },
+                            new { @class = "btn btn-success btn-block", onclick = "return confirm('Are You Sure?');" })
+    </div>
+</div>
