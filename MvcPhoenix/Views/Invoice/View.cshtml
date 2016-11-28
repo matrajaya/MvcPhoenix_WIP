@@ -111,7 +111,7 @@
                             </table>
 
                             <div class="pull-right">
-                                <button class="btn btn-warning"><i class="fa fa-cloud-download fa-fw"></i> Download Invoice</button>
+                                <a class="btn btn-warning" href="@Url.Action("PrintInvoice","Invoice", new { id = @Model.invoiceid })" target="_blank"><i class="fa fa-cloud-download fa-fw"></i> Download Invoice</a>
                             </div>
                         </div>
                     </div>

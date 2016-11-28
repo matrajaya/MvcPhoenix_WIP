@@ -1,5 +1,6 @@
 ﻿using MvcPhoenix.Models;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,6 +121,23 @@ namespace MvcPhoenix.Controllers
         {
             var vm = InvoiceService.FillInvoice(id);
             return View(vm);
+        }
+
+        public ActionResult PrintInvoice(int id)
+        {
+            string footer = DocumentFooter();
+            var vm = InvoiceService.FillInvoice(id);
+            return new ViewAsPdf(vm) { CustomSwitches = footer };
+        }
+
+        private static string DocumentFooter()
+        {
+            string footer = "--footer-left \"Printed on: " +
+                DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") +
+                "                                                                                                                                    " +
+                " Page: [page]/[toPage]\"" +
+                " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+            return footer;
         }
     }
 }

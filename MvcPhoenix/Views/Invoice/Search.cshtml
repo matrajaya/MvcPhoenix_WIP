@@ -44,7 +44,10 @@
                                     <td data-label="Period">@item.InvoicePeriod</td>
                                     <td data-label="Location" style="text-align:center;">@item.WarehouseLocation</td>
                                     <td data-label="Status">@item.Status</td>
-                                    <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = item.InvoiceID }) | @Html.ActionLink("View", "View", new { id = item.InvoiceID })</td>
+                                    <td class="text-right">
+                                        @Html.ActionLink(" ", "Edit", new { id = item.InvoiceID }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Invoice" })
+                                        @Html.ActionLink(" ", "View", new { id = item.InvoiceID }, new { @class = "btn btn-primary fa fa-eye", @title = "View Invoice" })
+                                </td>
                                 </tr>
                             }
                         </table>

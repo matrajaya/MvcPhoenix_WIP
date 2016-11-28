@@ -57,7 +57,7 @@
     </div>
 
     <div class="text-center">
-        @Html.ActionLink("Continue with conversion of " + @Model.productcode, "ConvertDetailToMaster", "ProductConversion",
+        @Html.ActionLink("Continue with promotion of " + @Model.productcode, "ConvertDetailToMaster", "ProductConversion",
                             new { id = Model.productdetailid },
                             new { @class = "btn btn-success btn-block", onclick = "return confirm('Are You Sure?');" })
     </div>

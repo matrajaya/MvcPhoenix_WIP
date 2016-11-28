@@ -105,7 +105,10 @@
                                     <td>@item.invoiceperiod</td>
                                     <td style="text-align:center;">@item.warehouselocation</td>
                                     <td>@item.status</td>
-                                    <td class="text-right">@Html.ActionLink("Edit", "Edit", new { id = item.invoiceid }) | @Html.ActionLink("View", "View", new { id = item.invoiceid })</td>
+                                    <td class="text-right">
+                                        @Html.ActionLink(" ", "Edit", new { id = item.invoiceid }, new { @class = "btn btn-primary fa fa-pencil", @title =  "Edit Invoice" })
+                                        @Html.ActionLink(" ", "View", new { id = item.invoiceid }, new { @class = "btn btn-primary fa fa-eye", @title = "View Invoice" })
+                                </td>
                                 </tr>
                             }
                         </tbody>

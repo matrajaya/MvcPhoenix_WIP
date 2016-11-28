@@ -1,0 +1,280 @@
+﻿@model MvcPhoenix.Models.InvoiceViewModel
+@{
+    ViewBag.Title = "Invoice";
+    Layout = "~/Views/Shared/_LayoutPrint.cshtml";
+}
+
+<style>
+    .table-cell-right tr td:last-child{
+         text-align:right;
+    }
+</style>
+
+<div class="form-group">
+    <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
+    <h1 class="page-header">
+        @ViewBag.Title: <small>@Html.DisplayFor(m => m.invoiceid) for @Html.DisplayFor(m => m.clientname) - @Html.DisplayFor(m => m.billinggroup)</small>
+    </h1>
+</div>
+
+<hr />
+
+<div class="form-group">
+    <table>
+        <tr>
+            <th width="28%">TERMS</th>
+            <th width="35%">BILL TO</th>
+            <th>REMIT TO</th>
+        </tr>
+        <tr>
+            <td>
+                <b>Invoice Number:</b> @Html.DisplayFor(m => m.invoiceid)<br>
+                <b>Invoice Date:</b> @Model.invoicedate.Value.ToString("d")<br>
+                <b>PO Number:</b> @Html.DisplayFor(m => m.ponumber)<br />
+                <b>@Html.DisplayFor(m => m.netterm)</b>
+            </td>
+            <td>
+                @Html.Raw(Model.billto)
+            </td>
+            <td>
+                @Html.Raw(Model.remitto)
+            </td>
+        </tr>
+    </table>
+</div>
+
+<hr />
+
+<div class="form-group">
+    <table>
+        <tr>
+            <th width="55%">Master Invoice</th>
+            <th>Total Shipping Performance</th>
+        </tr>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <th>Number of Samples</th>
+                        <th>@Html.DisplayFor(m => m.totalsamples)</th>
+                    </tr>
+                    <tr>
+                        <th>Totals Cost of Processing Samples</th>
+                        <td>@Html.DisplayFor(m => m.totalcostsamples)</td>
+                    </tr>
+                    <tr>
+                        <th>Freight</th>
+                        <td>@Html.DisplayFor(m => m.totalfreight)</td>
+                    </tr>
+                    <tr>
+                        <th>Freight Harzardous Surcharge</th>
+                        <td>@Html.DisplayFor(m => m.totalfrtHzdSchg)</td>
+                    </tr>
+                    <tr>
+                        <th>Administrative Charges</th>
+                        <td>@Html.DisplayFor(m => m.totaladmincharge)</td>
+                    </tr>
+                    <tr>
+                        <th>Total Due</th>
+                        <th>@Html.DisplayFor(m => m.totaldue)</th>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table class="table-cell-right">
+                    <tr>
+                        <th>Same Day</th>
+                        <td>@Html.DisplayFor(m => m.sampleshipsameday)</td>
+                    </tr>
+                    <tr>
+                        <th>Next Day</th>
+                        <td>@Html.DisplayFor(m => m.sampleshipnextday)</td>
+                    </tr>
+                    <tr>
+                        <th>Second Day</th>
+                        <td>@Html.DisplayFor(m => m.sampleshipsecondday)</td>
+                    </tr>
+                    <tr>
+                        <th>Other</th>
+                        <td>@Html.DisplayFor(m => m.sampleshipother)</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<hr />
+
+<div class="form-group">
+    <table class="table-cell-right">
+        <tr>
+            <th width="75%">Billing Worksheet</th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <span class="pull-right">
+                    <b>Location: </b>@Html.DisplayFor(m => m.warehouselocation) |
+                    <b>Currency: </b>@Html.DisplayFor(m => m.currency) |
+                    <b>Tier: </b>@Html.DisplayFor(m => m.tier)
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>Charge Item</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th style="text-align:right">Charge</th>
+        </tr>
+        <tr>
+            <td>Samples</td>
+            <td>@Html.DisplayFor(m => m.samplesqty)</td>
+            <td>@Html.DisplayFor(m => m.samplesrate)</td>
+            <td>@Html.DisplayFor(m => m.samplescharge)</td>
+        </tr>
+        <tr>
+            <td>Revenue</td>
+            <td>@Html.DisplayFor(m => m.revenueqty)</td>
+            <td>@Html.DisplayFor(m => m.revenuerate)</td>
+            <td>@Html.DisplayFor(m => m.revenuecharge)</td>
+        </tr>
+        <tr>
+            <td>Non-Revenue</td>
+            <td>@Html.DisplayFor(m => m.nonrevenueqty)</td>
+            <td>@Html.DisplayFor(m => m.nonrevenuerate)</td>
+            <td>@Html.DisplayFor(m => m.nonrevenuecharge)</td>
+        </tr>
+        <tr>
+            <td>Manual Order Entry</td>
+            <td>@Html.DisplayFor(m => m.manualentryqty)</td>
+            <td>@Html.DisplayFor(m => m.manualentryrate)</td>
+            <td>@Html.DisplayFor(m => m.manualentrycharge)</td>
+        </tr>
+        <tr>
+            <td>Follow Up Orders</td>
+            <td>@Html.DisplayFor(m => m.followupqty)</td>
+            <td>@Html.DisplayFor(m => m.followuprate)</td>
+            <td>@Html.DisplayFor(m => m.followupcharge)</td>
+        </tr>
+        <tr>
+            <td>Label Print Fee</td>
+            <td>@Html.DisplayFor(m => m.labelprtqty)</td>
+            <td>@Html.DisplayFor(m => m.labelprtrate)</td>
+            <td>@Html.DisplayFor(m => m.labelprtcharge)</td>
+        </tr>
+        <tr>
+            <td>Label Stock Fee</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.labelstock)</td>
+        </tr>
+        <tr>
+            <td>Re-Label Print Fee</td>
+            <td>@Html.DisplayFor(m => m.relabelprtqty)</td>
+            <td>@Html.DisplayFor(m => m.relabelprtrate)</td>
+            <td>@Html.DisplayFor(m => m.relabelprtcharge)</td>
+        </tr>
+        <tr>
+            <td>Re-Label Labor Fee</td>
+            <td>@Html.DisplayFor(m => m.relabelfeeqty)</td>
+            <td>@Html.DisplayFor(m => m.relabelfeerate)</td>
+            <td>@Html.DisplayFor(m => m.relabelfeecharge)</td>
+        </tr>
+        <tr>
+            <td>Product Set-up Changes</td>
+            <td>@Html.DisplayFor(m => m.productsetupqty)</td>
+            <td>@Html.DisplayFor(m => m.productsetuprate)</td>
+            <td>@Html.DisplayFor(m => m.productsetupcharge)</td>
+        </tr>
+
+        <tr>
+            <td>Credit Card Order Proecessing Fee</td>
+            <td>@Html.DisplayFor(m => m.ccprocessqty)</td>
+            <td>@Html.DisplayFor(m => m.ccprocessrate)</td>
+            <td>@Html.DisplayFor(m => m.ccprocesscharge)</td>
+        </tr>
+        <tr>
+            <td>Credit Card Credit</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.cccredit)</td>
+        </tr>
+        <tr>
+            <td>Global Processing Fee</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.globalprocesscharge)</td>
+        </tr>
+        <tr>
+            <td>Misc Credits</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.misccreditcharge)</td>
+        </tr>
+        <tr>
+            <td>IT Project Support Fee</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.itsupportcharge)</td>
+        </tr>
+        <tr>
+            <td>Empty Drum Disposal</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.emptydrumcharge)</td>
+        </tr>
+        <tr>
+            <td>Same Day Rush Shipment</td>
+            <td>@Html.DisplayFor(m => m.rushshipqty)</td>
+            <td>@Html.DisplayFor(m => m.rushshiprate)</td>
+            <td>@Html.DisplayFor(m => m.rushshipcharge)</td>
+        </tr>
+        <tr>
+            <td>Empty Pails</td>
+            <td>@Html.DisplayFor(m => m.emptypailsqty)</td>
+            <td>@Html.DisplayFor(m => m.emptypailsrate)</td>
+            <td>@Html.DisplayFor(m => m.emptypailscharge)</td>
+        </tr>
+        <tr>
+            <td>Empty Pails Freight</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.emptypailsfgtcharge)</td>
+        </tr>
+        <tr>
+            <td>Inactive Stock Storage Surcharge</td>
+            <td>@Html.DisplayFor(m => m.inactivestockqty)</td>
+            <td>@Html.DisplayFor(m => m.inactivestockrate)</td>
+            <td>@Html.DisplayFor(m => m.inactivestockcharge)</td>
+        </tr>
+        <tr>
+            <td>Other HM 181 Packaging</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.hm181pkgcharge)</td>
+        </tr>
+        <tr>
+            <td>Documentation & Handling Fee</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.dochandlingcharge)</td>
+        </tr>
+        <tr>
+            <td>Minimal Sample Charge</td>
+            <td></td>
+            <td></td>
+            <td>@Html.DisplayFor(m => m.minimalsamplecharge)</td>
+        </tr>
+        <tr>
+            <th>Grand Total</th>
+            <td></td>
+            <td></td>
+            <th style="text-align:right">@Html.DisplayFor(m => m.grandtotal)</th>
+        </tr>
+    </table>
+
+    @if (Model.verifiedaccuracy == true)
+    {
+        <p><em>Invoice accuracy verified by @Html.DisplayFor(m => m.verifiedby) on @Html.DisplayFor(m => m.verifieddate)</em></p>
+    }
+</div>
