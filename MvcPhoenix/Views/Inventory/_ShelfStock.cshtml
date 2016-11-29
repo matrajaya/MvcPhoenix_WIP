@@ -20,9 +20,9 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
-                    <th class="text-center"><i class="fa fa-print"></i></th>
+                    <th id="noprint" class="text-center"><i class="fa fa-print"></i></th>
                     <th>Product<br />Code</th>
-                    <th>Warehouse</th>
+                    <th>WH</th>
                     <th>Size</th>
                     <th>Unit<br />Weight</th>
                     <th>Lot#</th>
@@ -33,14 +33,14 @@
                     <th>Current<br />Bin</th>
                     <th>Shelf<br />ID</th>
                     <th>Stock<br />ID</th>
-                    <th class="text-center"></th>
+                    <th id="noprint" class="text-center"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var row in @Model)
                 {
                     <tr>
-                        <td class="text-center">
+                        <td id="noprint" class="text-center">
                             <a href="#" class="btn btn-info fa fa-print" onclick="printLabel(@row.StockID, @row.QtyOnHand)" title="Print label to shared printer"></a>
                             @Html.ActionLink(" ", "ShelfStockLabel", "Inventory", new { id = @row.StockID }, new { @class = "btn btn-success fa fa-file-pdf-o", @title = "Preview label in browser", @target = "_blank" })
                         </td>
@@ -56,10 +56,16 @@
                         <td>@row.Bin</td>
                         <td>@row.ShelfID</td>
                         <td>@row.StockID</td>
-                        <td class="text-center">
+                        <td id="noprint" class="text-center">
                             @if (@row.QtyOnHand > 0)
                             {
-                                @Html.ActionLink(" ", "EditStock", "Inventory", new { id = @row.StockID }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Shelf Stock" })
+                                @Ajax.ActionLink(" ", "EditStock", "Inventory", new { id = @row.StockID }, new AjaxOptions
+                                 {
+                                     UpdateTargetId = "dialogPlaceholder",
+                                     InsertionMode = InsertionMode.Replace,
+                                     HttpMethod = "GET",
+                                     OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                                 }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Shelf Stock" })
                             }
                             else
                             {

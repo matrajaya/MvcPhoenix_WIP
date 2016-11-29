@@ -3,11 +3,13 @@
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
+
             <div class="modal-header">
-                <label class="modal-title">Suggested Replenishment Order Item</label>
+                <h4>Suggested Replenishment Order Item</h4>
             </div>
 
             <div id="dialogPlaceholderBody" class="modal-body">
+
                 @using (Ajax.BeginForm("SaveSuggestedItem", "Replenishments", new AjaxOptions {
                     UpdateTargetId = "dvupdateresult",
                     InsertionMode = InsertionMode.Replace,

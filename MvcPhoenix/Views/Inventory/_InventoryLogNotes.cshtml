@@ -34,7 +34,7 @@
                                  Confirm = "Delete This Inventory Log Note?",
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateInventoryNotesList"
-                             }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                             }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;", @title = "Delete Inventory Log" })
                         </td>
                         <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
                         <td>@item.notes</td>

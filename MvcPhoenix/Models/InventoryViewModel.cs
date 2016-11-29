@@ -7,9 +7,6 @@ namespace MvcPhoenix.Models
 {
     public class Inventory
     {
-        // build this as a composite view model
-        //public bool? vmMasterNotesAlert { get; set; } this may not be needed - Iffy
-
         public ProductProfile PP { get; set; }
         public string ClientCode { get; set; }
         public string Division { get; set; }
@@ -83,9 +80,16 @@ namespace MvcPhoenix.Models
         public string Warehouse { get; set; }
         public int? QtyOnHand { get; set; }
         public int? QtyAllocated { get; set; }
+
+        [StringLength(15, ErrorMessage = "[Max 15]")]
         public string Bin { get; set; }
+
         public string ShelfStatus { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? WasteAccumStartDate { get; set; }
+
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
@@ -99,6 +103,7 @@ namespace MvcPhoenix.Models
         public DateTime? ExpirationDate { get; set; }
         public DateTime? MfgDate { get; set; }
         public DateTime? QCDate { get; set; }
+        public DateTime? CeaseShipDate { get; set; }
     }
 
     public class PrePackStock

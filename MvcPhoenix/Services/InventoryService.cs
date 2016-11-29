@@ -85,13 +85,13 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 var pd = db.tblProductDetail.Find(vm.PP.productdetailid);
-				var pm = db.tblProductMaster.Find(pd.ProductMasterID);
+                var pm = db.tblProductMaster.Find(pd.ProductMasterID);
 
                 pm.AlertNotesPackout = vm.PP.alertnotespackout;
                 pm.AlertNotesReceiving = vm.PP.alertnotesreceiving;
                 pd.AlertNotesOrderEntry = vm.PP.alertnotesorderentry;
                 pd.AlertNotesShipping = vm.PP.alertnotesshipping;
-                
+
                 db.SaveChanges();
             }
         }
@@ -211,6 +211,7 @@ namespace MvcPhoenix.Services
                               ExpirationDate = bk.ExpirationDate,
                               MfgDate = bk.MfgDate,
                               QCDate = bk.QCDate,
+                              CeaseShipDate = bk.CeaseShipDate,
                               Size = sm.Size,
                               UnitWeight = sm.UnitWeight,
                               UpdateDate = t.UpdateDate,
@@ -284,7 +285,6 @@ namespace MvcPhoenix.Services
 
                 q.Warehouse = vm.Warehouse;
                 q.QtyOnHand = vm.QtyOnHand;
-                q.QtyAllocated = vm.QtyAllocated;
                 q.Bin = vm.Bin;
                 q.ShelfStatus = vm.ShelfStatus;
                 q.WasteAccumStartDate = vm.WasteAccumStartDate;
@@ -378,27 +378,26 @@ namespace MvcPhoenix.Services
             return mylist;
         }
 
-
         #region Inventory Product Master Log Notes
 
         public static List<InventoryLogNote> ListInvPMLogNotes(int? masterid)
         {
             using (var db = new EF.CMCSQL03Entities())
-            { 
+            {
                 var obj = (from t in db.tblInvPMLogNote
-                       where t.ProductMasterID == masterid
-                       orderby t.NoteDate descending
-                       select new InventoryLogNote
-                       {
-                           productnoteid = t.InvPMLogNoteIDID,
-                           productmasterid = t.ProductMasterID,
-                           notedate = t.NoteDate,
-                           notes = t.Notes,
-                           reasoncode = t.Comment, //modify table field later - Iffy
-                           ListOfReasonCodes = (from r in db.tblReasonCode
-                                                orderby r.Reason
-                                                select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
-                       }).ToList();
+                           where t.ProductMasterID == masterid
+                           orderby t.NoteDate descending
+                           select new InventoryLogNote
+                           {
+                               productnoteid = t.InvPMLogNoteIDID,
+                               productmasterid = t.ProductMasterID,
+                               notedate = t.NoteDate,
+                               notes = t.Notes,
+                               reasoncode = t.Comment, //modify table field later - Iffy
+                               ListOfReasonCodes = (from r in db.tblReasonCode
+                                                    orderby r.Reason
+                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                           }).ToList();
 
                 return obj;
             }
@@ -410,7 +409,7 @@ namespace MvcPhoenix.Services
 
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = (from t in db.tblInvPMLogNote 
+                var q = (from t in db.tblInvPMLogNote
                          where t.InvPMLogNoteIDID == id
                          select t).FirstOrDefault();
 
@@ -420,8 +419,8 @@ namespace MvcPhoenix.Services
                 obj.notedate = q.NoteDate;
                 obj.notes = q.Notes;
                 obj.ListOfReasonCodes = (from t in db.tblReasonCode
-                                        orderby t.Reason
-                                        select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
+                                         orderby t.Reason
+                                         select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
 
                 obj.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
             }
@@ -440,8 +439,8 @@ namespace MvcPhoenix.Services
                 obj.notedate = DateTime.UtcNow;
                 obj.notes = null;
                 obj.ListOfReasonCodes = (from t in db.tblReasonCode
-                                        orderby t.Reason
-                                        select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
+                                         orderby t.Reason
+                                         select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
 
                 obj.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
             }
@@ -486,7 +485,6 @@ namespace MvcPhoenix.Services
             return id;
         }
 
-        #endregion
-
+        #endregion Inventory Product Master Log Notes
     }
 }

@@ -90,7 +90,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditStock(int id)
         {
             var vm = Services.InventoryService.fnFillStockViewModel(id);
-            return View("~/Views/Inventory/_ShelfStockModal.cshtml", vm);
+            return PartialView("~/Views/Inventory/_ShelfStockModal.cshtml", vm);
         }
 
         public ActionResult CreatePrePackStock(int id) //id=productdetailid
@@ -98,7 +98,9 @@ namespace MvcPhoenix.Controllers
             var pd = db.tblProductDetail.Find(id);
             var pm = db.tblProductMaster.Find(pd.ProductMasterID);
             var cl = db.tblClient.Find(pm.ClientID);
+
             PrePackStock vm = new PrePackStock();
+
             vm.ProductDetailID = id;
             vm.BulkContainer = new BulkContainerViewModel();
             vm.BulkContainer.logofilename = cl.LogoFileName;
@@ -122,6 +124,7 @@ namespace MvcPhoenix.Controllers
                                            bin = t.Bin,
                                            size = t.Size
                                        }).ToList();
+
             vm.ShelfMasterCount = vm.ListOfShelfMasterIDs.Count();
 
             return View("~/Views/Inventory/PrePackStock.cshtml", vm);
@@ -258,7 +261,7 @@ namespace MvcPhoenix.Controllers
 
             return masterid;
         }
-        
+
         /// <summary>
         /// Take in product detail id
         /// Get product master id and create record
@@ -344,14 +347,14 @@ namespace MvcPhoenix.Controllers
             // Generate plain html label
             return View();
         }
-        
+
         // Anonymous access is required for the callback from client print
         [AllowAnonymous]
         public void LabelPrint()
         {
             int pagecopies = 1;
             string printerName = @"AThermalZebraNet";                           // @"\\CMCNMPS2\RcvShelf";
-            
+
             var actionPDF = new Rotativa.ActionAsPdf("PrintLabel")
             {
                 PageMargins = new Margins(2, 2, 0, 2),
@@ -424,6 +427,6 @@ namespace MvcPhoenix.Controllers
             };
         }
 
-        #endregion
+        #endregion Label Printing
     }
 }

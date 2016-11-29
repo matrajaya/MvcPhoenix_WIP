@@ -3,13 +3,11 @@
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
+
             <div class="modal-header">
-                <div class="modal-title">
-                    <div class="row">
-                        <div class="col-md-12"><label>Order Transaction:</label> <em>@Model.ordertransid</em></div>
-                    </div>
-                </div>
+                <h4><label>Order Transaction:</label> <em>@Model.ordertransid</em></h4>
             </div>
+
             <div id="dialogPlaceholderBody" class="modal-body">
 
                 @using (Ajax.BeginForm("SaveTrans", "Orders", new AjaxOptions

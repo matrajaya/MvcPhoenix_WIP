@@ -8,12 +8,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <div class="modal-title">
-                    <div class="row">
-                        <div class="col-md-6"><label>Order Item:</label> <em>@Html.DisplayFor(m => m.ItemID)</em></div>
-                        <div class="col-md-6 text-right">@HeaderMessageMode</div>
-                    </div>
-                </div>
+                <h4>Order Item: @Html.DisplayFor(m => m.ItemID) <span class="pull-right"><em>@HeaderMessageMode</em></span></h4>
             </div>
 
             <div id="dialogPlaceholderBody" class="modal-body">
@@ -34,20 +29,27 @@
                     @Html.HiddenFor(m => m.UpdateUser)
 
                     <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label>Product Code</label>
-                            @if (@Model.CrudMode == "RO")
-                            {
+                        @if (@Model.CrudMode == "RO")
+                        {
+                            <div class="col-md-12 form-group">
+                                <label>Product Code</label>
                                 @Html.TextBoxFor(m => m.ProductCode, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            
+                            <div class="col-md-12 form-group">
+                                <label>Product Name</label>
                                 @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control", disabled = "disabled" })
                                 @Html.HiddenFor(m => m.ProductDetailID)
-                            }
-                            @if (@Model.CrudMode == "RW")
-                            {
-                                @Html.DropDownListFor(m => m.ProductDetailID, Model.ListOfProductDetailIDs, new { onchange = "fnGetSizes()", @class = "form-control"})
+                            </div>
+                        }
+
+                        @if (@Model.CrudMode == "RW")
+                        {
+                            <div class="col-md-12 form-group">
+                                @Html.DropDownListFor(m => m.ProductDetailID, Model.ListOfProductDetailIDs, new { onchange = "fnGetSizes()", @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.ProductDetailID)
-                            }
-                        </div>
+                            </div>
+                        }
                     </div>
 
                     <div class="row">
@@ -158,7 +160,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4 form-group">
-                            <input type="submit" value="Save" class="btn btn-success btn-block"/>
+                            <input type="submit" value="Save" class="btn btn-success btn-block" />
                         </div>
                         <div class="col-md-4 form-group">
                             @if (@Model.CrudMode == "RW")
