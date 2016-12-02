@@ -20,7 +20,7 @@
 <div style="padding:3px 3px 3px 3px;">
     <table>
         <tr>
-            <td>
+            <td width="70%">
                 <div style="zoom:255%;">@*Maintains label layout structure on 2 x 0.75 label*@                    
                     @Model.ProductCode<br />
                     @Model.ProductName<br />
@@ -29,7 +29,7 @@
                 </div>
             </td>
             <td valign="middle">
-                <div style="float:right;">
+                <div style="padding:20px;">
                     @Html.GenerateMatrixCodeLabelSm(Convert.ToString(@Model.ProductCode + "~" + @Model.LotNumber + "~" + @Model.Size))
                 </div>
             </td>

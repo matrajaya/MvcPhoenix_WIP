@@ -109,9 +109,6 @@ namespace MvcPhoenix.Models
 
         public string logofilename { get; set; }
 
-        // retire these 2 later
-        public DateTime? masterlastupdate { get; set; }
-        public DateTime? detaillastupdate { get; set; }
 
         [Display(Name = "Alert Notes - Shipping")]
         public string alertnotesshipping { get; set; }
@@ -732,7 +729,9 @@ namespace MvcPhoenix.Models
         public bool? temperaturecontrolledstorage { get; set; }
 
         public bool? prepacked { get; set; }
-
+		
+		public DateTime? wasteaccumstartdate { get; set; }
+        public DateTime? productsetupdate { get; set; }
         public DateTime? CreateDateMaster { get; set; }
         public string CreateUserMaster { get; set; }
         public DateTime? UpdateDateMaster { get; set; }

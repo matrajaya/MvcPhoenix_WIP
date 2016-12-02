@@ -12,7 +12,7 @@ namespace MvcPhoenix.Extensions
     {
         public static IHtmlString GenerateMatrixCode(this HtmlHelper html, string inputentry, int height = 250, int width = 250, int margin = 0)
         {
-            var qrValue = inputentry;
+            var qrValue = inputentry + "          "; // 10 trailing spaces added to guard against unpredictabilty.
             var barcodeWriter = new BarcodeWriter
             {
                 Format = BarcodeFormat.DATA_MATRIX,
@@ -31,7 +31,7 @@ namespace MvcPhoenix.Extensions
 
                 var img = new TagBuilder("img");
                 img.MergeAttribute("alt", "matrix barcode");
-                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}", 
+                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
                     Convert.ToBase64String(stream.ToArray())));
 
                 return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));
@@ -59,7 +59,7 @@ namespace MvcPhoenix.Extensions
 
                 var img = new TagBuilder("img");
                 img.MergeAttribute("alt", "matrix barcode");
-                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}", 
+                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
                     Convert.ToBase64String(stream.ToArray())));
 
                 return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));
@@ -88,7 +88,7 @@ namespace MvcPhoenix.Extensions
 
                 var img = new TagBuilder("img");
                 img.MergeAttribute("alt", "code39 barcode");
-                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}", 
+                img.Attributes.Add("src", String.Format("data:image/gif;base64,{0}",
                     Convert.ToBase64String(stream.ToArray())));
 
                 return MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));

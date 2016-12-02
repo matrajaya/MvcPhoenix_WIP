@@ -11,7 +11,7 @@
         {
             <div class="row">
                 <div class="col-md-8">
-                    <label class="lead">No Order Recommendations at @System.DateTime.Now.ToString()</label>
+                    <label class="lead">No Order Recommendations found at @System.DateTime.Now.ToString()</label>
                 </div>
                 <div class="col-md-4">
                     @Ajax.ActionLink("Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
@@ -20,7 +20,7 @@
                            HttpMethod = "GET",
                            UpdateTargetId = "dialogPlaceholder",
                            OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-                       }, new { @class = "btn btn-primary btn-block"})
+                       }, new { @class = "btn btn-primary btn-block" })
                 </div>
             </div>
         }
@@ -65,13 +65,12 @@
                             <tr>
                                 <td>
                                     @Ajax.ActionLink(" ", "DeleteSuggestedItem", "Replenishments", new { id = @item.id },
-                                new AjaxOptions
-                                {
-                                    UpdateTargetId = "dvItemsList",
-                                    Confirm = "Delete Item?",
-                                    HttpMethod = "GET",
-                                    OnSuccess = "updateItemsList"
-                                }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                                    new AjaxOptions
+                                    {
+                                        Confirm = "Delete Item?",
+                                        HttpMethod = "GET",
+                                        OnSuccess = "updateItemsList"
+                                    }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
                                 </td>
                                 <td>@(Model.IndexOf(item) + 1)</td>
                                 <td>@item.mastercode</td>
@@ -86,12 +85,12 @@
                                 <td>@item.reordernotes</td>
                                 <td>
                                     @Ajax.ActionLink("Edit", "EditSuggestedItem", "Replenishments", new { id = @item.id },
-                                new AjaxOptions
-                                {
-                                    UpdateTargetId = "dialogPlaceholder",
-                                    InsertionMode = InsertionMode.Replace,
-                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-                                })
+                                    new AjaxOptions
+                                    {
+                                        UpdateTargetId = "dialogPlaceholder",
+                                        InsertionMode = InsertionMode.Replace,
+                                        OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                                    })
                                 </td>
                             </tr>
                         }
@@ -113,6 +112,7 @@
 
 <script type="text/javascript">
     function updateItemsList() {
-        $("#dvItemsList").load('@Url.Action("SuggestedItemsList", "Replenishments")');
+        // the <div> is in Create.cshtml
+        $("#dvGridPlaceHolder").load('@Url.Action("SuggestedItemsList", "Replenishments")');
     }
 </script>

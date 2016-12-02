@@ -488,16 +488,7 @@
     <Compile Include="EF\vwBulkLevel.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\vwBulkTransForReplenishment.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\vwProductsInfo.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\vwShelfStockForReplenishment.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\vwShelfTransForReplenishment.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">

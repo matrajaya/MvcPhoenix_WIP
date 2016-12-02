@@ -126,7 +126,6 @@ namespace MvcPhoenix.EF
         public Nullable<bool> PeroxideFormer { get; set; }
         public Nullable<decimal> SpecificGravity { get; set; }
         public Nullable<decimal> phValue { get; set; }
-        public Nullable<System.DateTime> LastUpDate { get; set; }
         public Nullable<bool> PhysicalToxic { get; set; }
         public string WasteCode { get; set; }
         public Nullable<System.DateTime> WasteAccumStartDate { get; set; }
@@ -141,6 +140,7 @@ namespace MvcPhoenix.EF
         public Nullable<bool> PrePacked { get; set; }
         public string AlertNotesReceiving { get; set; }
         public string AlertNotesPackout { get; set; }
+        public Nullable<System.DateTime> ProductSetupDate { get; set; }
         public string Company_MDB { get; set; }
         public string Division_MDB { get; set; }
         public string Location_MDB { get; set; }

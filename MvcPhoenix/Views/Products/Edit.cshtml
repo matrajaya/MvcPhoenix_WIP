@@ -14,7 +14,7 @@
                 @ViewBag.Title <small>@Model.productcode - @Model.productname</small>
                 @if (@Model.productcode == @Model.mastercode)
                 {
-                    <span class="fa-stack fa-lg" style="font-size:small">
+                    <span class="fa-stack fa-lg" style="font-size:small" title="Master Level Product">
                         <i class="fa fa-circle fa-stack-2x"></i>
                         <i class="fa fa-spin fa-star fa-stack-2x" style="color:gold"></i>
                         <i class="fa fa-medium fa-stack-1x"></i>
@@ -59,6 +59,14 @@
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.productdetailid)
         @Html.HiddenFor(m => m.prepacked)
+
+    <!-- Added 11/29 pc added so as not to lose migrated values -->
+    <!-- To Iffy: Need to be surfaced to user instead of hidden -->
+    @Html.HiddenFor(m => m.mastercode)
+    @Html.HiddenFor(m => m.mastername)
+    @Html.HiddenFor(m => m.supplyid)
+    @Html.HiddenFor(m => m.wasteaccumstartdate)
+    @Html.HiddenFor(m => m.productsetupdate)
 
         <div class="panel panel-primary">
             <div class="panel-heading">

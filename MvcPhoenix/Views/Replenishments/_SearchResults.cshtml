@@ -32,7 +32,9 @@
                     <tbody>
                         @foreach (var item in @Model)
                         {
-                            <tr>
+                            <!-- hightlight todays orders-->
+                            var myclass = (item.orderdate.Value.Date == System.DateTime.Now.Date) ? "text text-success" : "";
+                            <tr class="@myclass">
                                 <td>@item.clientname</td>
                                 <td>@item.bulkorderid.ToString()</td>
                                 <td>@item.supplyid</td>

@@ -58,7 +58,7 @@ namespace MvcPhoenix.Controllers
             // Always save the Bulk Order then maybe re-direct to SendEmail
             string btn = Request.Form["btnSave"];
             int pk = ReplenishmentsService.fnSaveBulkOrder(obj);
-            
+
             if (btn == "Send Email")
             {
                 return RedirectToAction("Email", obj);
@@ -129,7 +129,8 @@ namespace MvcPhoenix.Controllers
             {
                 return Content("Please Select Master Code");
             }
-            else { 
+            else
+            {
                 int pk = ReplenishmentsService.fnSaveItem(obj);
                 return Content("Item Saved at " + DateTime.Now.ToString());
             }
@@ -209,6 +210,19 @@ namespace MvcPhoenix.Controllers
         {
             SuggestedBulkOrderItem vm = new SuggestedBulkOrderItem();
             vm = ReplenishmentsService.fnFillSuggestedItemfromDB(id);
+
+            // limit the drop down items so user cannot change mastercode
+            using (db)
+            {
+                var q = (from t in db.tblSuggestedBulk
+                         where t.id == id
+                         select t).FirstOrDefault();
+
+                vm.ListOfProductMasters = (from t in vm.ListOfProductMasters
+                                           where Convert.ToInt32(t.Value) == q.ProductMasterID
+                                           select t).ToList();
+            }
+
             return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", vm);
         }
 

@@ -73,6 +73,13 @@ namespace MvcPhoenix.Controllers
         {
             string footer = DocumentFooter();
             var vm = OrderService.fnFillOrder(id);
+
+            var vm1 = (from t in db.tblClient
+                       where t.ClientID == vm.clientid
+                       select t.ShippingRules).FirstOrDefault();
+
+            ViewBag.ClientShippingRules = vm1;
+
             return new ViewAsPdf(vm) { CustomSwitches = footer };
         }
 

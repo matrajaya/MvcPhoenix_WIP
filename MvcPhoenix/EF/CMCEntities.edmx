@@ -306,6 +306,7 @@
           <Property Name="FreezableProcedure" Type="nvarchar(max)" />
           <Property Name="SurveyUsed" Type="bit" />
           <Property Name="CSBusinessRules" Type="nvarchar(max)" />
+          <Property Name="ShippingRules" Type="nvarchar(max)" />
           <Property Name="ShipConfirmEmail" Type="nvarchar(max)" />
           <Property Name="DelayConfirmEmail" Type="nvarchar(max)" />
           <Property Name="OrderConfirmEmail" Type="nvarchar(max)" />
@@ -616,7 +617,7 @@
           <Key>
             <PropertyRef Name="ProductDetailID" />
           </Key>
-          <Property Name="ProductDetailID" Type="int" Nullable="false" />
+          <Property Name="ProductDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SignalWord" Type="nvarchar" MaxLength="50" />
           <Property Name="Symbol1" Type="nvarchar" MaxLength="50" />
           <Property Name="Symbol2" Type="nvarchar" MaxLength="50" />
@@ -1316,6 +1317,7 @@
           <Property Name="RCRAHAZCL" Type="nvarchar" MaxLength="4" />
           <Property Name="RCRASHIPNAME" Type="nvarchar" MaxLength="255" />
           <Property Name="RCRANOSNAME" Type="nvarchar" MaxLength="255" />
+          <Property Name="ActiveDate" Type="datetime" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -1443,7 +1445,6 @@
           <Property Name="PeroxideFormer" Type="bit" />
           <Property Name="SpecificGravity" Type="numeric" Precision="8" Scale="2" />
           <Property Name="phValue" Type="numeric" Precision="8" Scale="2" />
-          <Property Name="LastUpDate" Type="datetime" />
           <Property Name="PhysicalToxic" Type="bit" />
           <Property Name="WasteCode" Type="nvarchar" MaxLength="20" />
           <Property Name="WasteAccumStartDate" Type="datetime" />
@@ -1458,6 +1459,7 @@
           <Property Name="PrePacked" Type="bit" />
           <Property Name="AlertNotesReceiving" Type="nvarchar" MaxLength="1000" />
           <Property Name="AlertNotesPackout" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ProductSetupDate" Type="datetime" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -1620,7 +1622,6 @@
           <Property Name="FieldTypeID" Type="int" />
           <Property Name="FieldType" Type="nvarchar" MaxLength="50" />
           <Property Name="FieldLength" Type="nvarchar" MaxLength="100" />
-          <Property Name="App" Type="nvarchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -1671,12 +1672,11 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClientID" Type="int" />
-          <Property Name="UserID" Type="int" />
           <Property Name="ProductMasterID" Type="int" />
           <Property Name="DivisionID" Type="int" />
           <Property Name="SupplyID" Type="nvarchar" MaxLength="25" />
           <Property Name="ShelfLife" Type="int" />
-          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ProductSetupDate" Type="datetime" />
           <Property Name="ProductMasterAge" Type="int" />
           <Property Name="BulkCurrentAvailable" Type="numeric" Precision="12" Scale="4" />
           <Property Name="ShelfCurrentAvailable" Type="numeric" Precision="12" Scale="4" />
@@ -1848,20 +1848,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="ProductDetailID" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'CMCSQL03.dbo.vwBulkTransForReplenishment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwBulkTransForReplenishment">
-          <Key>
-            <PropertyRef Name="LogID" />
-          </Key>
-          <Property Name="LogID" Type="int" Nullable="false" />
-          <Property Name="LogType" Type="nvarchar" MaxLength="6" />
-          <Property Name="LogDate" Type="datetime" />
-          <Property Name="LogQty" Type="int" />
-          <Property Name="LogAmount" Type="numeric" Precision="12" Scale="4" />
-          <Property Name="BulkStatus" Type="nvarchar" MaxLength="6" />
-          <Property Name="ProductMasterID" Type="int" />
-        </EntityType>
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vwProductsInfo">
           <Key>
@@ -1904,34 +1890,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="OtherSurchargeAmt" Type="smallmoney" />
           <Property Name="WebOEInclude" Type="bit" />
           <Property Name="PackagePartNumber_MDB" Type="nvarchar" MaxLength="8" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'CMCSQL03.dbo.vwShelfStockForReplenishment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwShelfStockForReplenishment">
-          <Key>
-            <PropertyRef Name="StockID" />
-            <PropertyRef Name="ProductMasterID" />
-          </Key>
-          <Property Name="StockID" Type="int" Nullable="false" />
-          <Property Name="QtyOnHand" Type="int" />
-          <Property Name="UnitWeight" Type="decimal" Precision="12" Scale="4" />
-          <Property Name="ProductMasterID" Type="int" Nullable="false" />
-          <Property Name="DivisionID" Type="int" />
-          <Property Name="ShelfStatus" Type="nvarchar" MaxLength="6" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwShelfTransForReplenishment">
-          <Key>
-            <PropertyRef Name="LogID" />
-          </Key>
-          <Property Name="LogID" Type="int" Nullable="false" />
-          <Property Name="LogType" Type="nvarchar" MaxLength="6" />
-          <Property Name="LogDate" Type="datetime" />
-          <Property Name="LogQty" Type="int" />
-          <Property Name="LogAmount" Type="numeric" Precision="12" Scale="4" />
-          <Property Name="ProductMasterID" Type="int" />
-          <Property Name="Status" Type="nvarchar" MaxLength="6" />
         </EntityType>
         <EntityContainer Name="CMCSQL03ModelStoreContainer">
           <EntitySet Name="tblBillingGroup" EntityType="Self.tblBillingGroup" Schema="dbo" store:Type="Tables" />
@@ -2054,17 +2012,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
     [vwBulkLevel].[ProductDetailID] AS [ProductDetailID]
     FROM [dbo].[vwBulkLevel] AS [vwBulkLevel]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vwBulkTransForReplenishment" EntityType="Self.vwBulkTransForReplenishment" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwBulkTransForReplenishment].[LogID] AS [LogID], 
-    [vwBulkTransForReplenishment].[LogType] AS [LogType], 
-    [vwBulkTransForReplenishment].[LogDate] AS [LogDate], 
-    [vwBulkTransForReplenishment].[LogQty] AS [LogQty], 
-    [vwBulkTransForReplenishment].[LogAmount] AS [LogAmount], 
-    [vwBulkTransForReplenishment].[BulkStatus] AS [BulkStatus], 
-    [vwBulkTransForReplenishment].[ProductMasterID] AS [ProductMasterID]
-    FROM [dbo].[vwBulkTransForReplenishment] AS [vwBulkTransForReplenishment]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="vwProductsInfo" EntityType="Self.vwProductsInfo" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vwProductsInfo].[ClientID] AS [ClientID], 
@@ -2104,27 +2051,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
     [vwProductsInfo].[WebOEInclude] AS [WebOEInclude], 
     [vwProductsInfo].[PackagePartNumber_MDB] AS [PackagePartNumber_MDB]
     FROM [dbo].[vwProductsInfo] AS [vwProductsInfo]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwShelfStockForReplenishment" EntityType="Self.vwShelfStockForReplenishment" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwShelfStockForReplenishment].[StockID] AS [StockID], 
-    [vwShelfStockForReplenishment].[QtyOnHand] AS [QtyOnHand], 
-    [vwShelfStockForReplenishment].[UnitWeight] AS [UnitWeight], 
-    [vwShelfStockForReplenishment].[ProductMasterID] AS [ProductMasterID], 
-    [vwShelfStockForReplenishment].[DivisionID] AS [DivisionID], 
-    [vwShelfStockForReplenishment].[ShelfStatus] AS [ShelfStatus]
-    FROM [dbo].[vwShelfStockForReplenishment] AS [vwShelfStockForReplenishment]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwShelfTransForReplenishment" EntityType="Self.vwShelfTransForReplenishment" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwShelfTransForReplenishment].[LogID] AS [LogID], 
-    [vwShelfTransForReplenishment].[LogType] AS [LogType], 
-    [vwShelfTransForReplenishment].[LogDate] AS [LogDate], 
-    [vwShelfTransForReplenishment].[LogQty] AS [LogQty], 
-    [vwShelfTransForReplenishment].[LogAmount] AS [LogAmount], 
-    [vwShelfTransForReplenishment].[ProductMasterID] AS [ProductMasterID], 
-    [vwShelfTransForReplenishment].[Status] AS [Status]
-    FROM [dbo].[vwShelfTransForReplenishment] AS [vwShelfTransForReplenishment]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -2194,10 +2120,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySet Name="tblUser" EntityType="CMCSQL03Model.tblUser" />
           <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
           <EntitySet Name="vwBulkLevel" EntityType="CMCSQL03Model.vwBulkLevel" />
-          <EntitySet Name="vwBulkTransForReplenishment" EntityType="CMCSQL03Model.vwBulkTransForReplenishment" />
           <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
-          <EntitySet Name="vwShelfStockForReplenishment" EntityType="CMCSQL03Model.vwShelfStockForReplenishment" />
-          <EntitySet Name="vwShelfTransForReplenishment" EntityType="CMCSQL03Model.vwShelfTransForReplenishment" />
         </EntityContainer>
         <EntityType Name="tblBillingGroup">
           <Key>
@@ -2500,6 +2423,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="FreezableProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SurveyUsed" Type="Boolean" />
           <Property Name="CSBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ShipConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DelayConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="OrderConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -2810,7 +2734,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Key>
             <PropertyRef Name="ProductDetailID" />
           </Key>
-          <Property Name="ProductDetailID" Type="Int32" Nullable="false" />
+          <Property Name="ProductDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SignalWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Symbol1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Symbol2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3510,6 +3434,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="RCRAHAZCL" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="RCRASHIPNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RCRANOSNAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ActiveDate" Type="DateTime" Precision="3" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
@@ -3637,7 +3562,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="PeroxideFormer" Type="Boolean" />
           <Property Name="SpecificGravity" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="phValue" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="LastUpDate" Type="DateTime" Precision="3" />
           <Property Name="PhysicalToxic" Type="Boolean" />
           <Property Name="WasteCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="WasteAccumStartDate" Type="DateTime" Precision="3" />
@@ -3652,6 +3576,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="PrePacked" Type="Boolean" />
           <Property Name="AlertNotesReceiving" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="AlertNotesPackout" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSetupDate" Type="DateTime" Precision="3" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
@@ -3814,7 +3739,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="FieldTypeID" Type="Int32" />
           <Property Name="FieldType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FieldLength" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="App" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -3865,12 +3789,11 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClientID" Type="Int32" />
-          <Property Name="UserID" Type="Int32" />
           <Property Name="ProductMasterID" Type="Int32" />
           <Property Name="DivisionID" Type="Int32" />
           <Property Name="SupplyID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="ShelfLife" Type="Int32" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ProductSetupDate" Type="DateTime" Precision="3" />
           <Property Name="ProductMasterAge" Type="Int32" />
           <Property Name="BulkCurrentAvailable" Type="Decimal" Precision="12" Scale="4" />
           <Property Name="ShelfCurrentAvailable" Type="Decimal" Precision="12" Scale="4" />
@@ -4039,18 +3962,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="MigrationNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ProductDetailID" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="vwBulkTransForReplenishment">
-          <Key>
-            <PropertyRef Name="LogID" />
-          </Key>
-          <Property Name="LogID" Type="Int32" Nullable="false" />
-          <Property Name="LogType" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-          <Property Name="LogDate" Type="DateTime" Precision="3" />
-          <Property Name="LogQty" Type="Int32" />
-          <Property Name="LogAmount" Type="Decimal" Precision="12" Scale="4" />
-          <Property Name="BulkStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-          <Property Name="ProductMasterID" Type="Int32" />
-        </EntityType>
         <EntityType Name="vwProductsInfo">
           <Key>
             <PropertyRef Name="ClientID" />
@@ -4092,30 +4003,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <Property Name="OtherSurchargeAmt" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="WebOEInclude" Type="Boolean" />
           <Property Name="PackagePartNumber_MDB" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="vwShelfStockForReplenishment">
-          <Key>
-            <PropertyRef Name="StockID" />
-            <PropertyRef Name="ProductMasterID" />
-          </Key>
-          <Property Name="StockID" Type="Int32" Nullable="false" />
-          <Property Name="QtyOnHand" Type="Int32" />
-          <Property Name="UnitWeight" Type="Decimal" Precision="12" Scale="4" />
-          <Property Name="ProductMasterID" Type="Int32" Nullable="false" />
-          <Property Name="DivisionID" Type="Int32" />
-          <Property Name="ShelfStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="vwShelfTransForReplenishment">
-          <Key>
-            <PropertyRef Name="LogID" />
-          </Key>
-          <Property Name="LogID" Type="Int32" Nullable="false" />
-          <Property Name="LogType" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-          <Property Name="LogDate" Type="DateTime" Precision="3" />
-          <Property Name="LogQty" Type="Int32" />
-          <Property Name="LogAmount" Type="Decimal" Precision="12" Scale="4" />
-          <Property Name="ProductMasterID" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -4393,6 +4280,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="OrderConfirmEmail" ColumnName="OrderConfirmEmail" />
                 <ScalarProperty Name="DelayConfirmEmail" ColumnName="DelayConfirmEmail" />
                 <ScalarProperty Name="ShipConfirmEmail" ColumnName="ShipConfirmEmail" />
+                <ScalarProperty Name="ShippingRules" ColumnName="ShippingRules" />
                 <ScalarProperty Name="CSBusinessRules" ColumnName="CSBusinessRules" />
                 <ScalarProperty Name="SurveyUsed" ColumnName="SurveyUsed" />
                 <ScalarProperty Name="FreezableProcedure" ColumnName="FreezableProcedure" />
@@ -5403,6 +5291,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
                 <ScalarProperty Name="RCRANOSNAME" ColumnName="RCRANOSNAME" />
                 <ScalarProperty Name="RCRASHIPNAME" ColumnName="RCRASHIPNAME" />
                 <ScalarProperty Name="RCRAHAZCL" ColumnName="RCRAHAZCL" />
@@ -5493,6 +5382,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
                 <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="ProductSetupDate" ColumnName="ProductSetupDate" />
                 <ScalarProperty Name="AlertNotesPackout" ColumnName="AlertNotesPackout" />
                 <ScalarProperty Name="AlertNotesReceiving" ColumnName="AlertNotesReceiving" />
                 <ScalarProperty Name="PrePacked" ColumnName="PrePacked" />
@@ -5507,7 +5397,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="WasteAccumStartDate" ColumnName="WasteAccumStartDate" />
                 <ScalarProperty Name="WasteCode" ColumnName="WasteCode" />
                 <ScalarProperty Name="PhysicalToxic" ColumnName="PhysicalToxic" />
-                <ScalarProperty Name="LastUpDate" ColumnName="LastUpDate" />
                 <ScalarProperty Name="phValue" ColumnName="phValue" />
                 <ScalarProperty Name="SpecificGravity" ColumnName="SpecificGravity" />
                 <ScalarProperty Name="PeroxideFormer" ColumnName="PeroxideFormer" />
@@ -5781,7 +5670,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
           <EntitySetMapping Name="tblSQlTable">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblSQlTable">
               <MappingFragment StoreEntitySet="tblSQlTable">
-                <ScalarProperty Name="App" ColumnName="App" />
                 <ScalarProperty Name="FieldLength" ColumnName="FieldLength" />
                 <ScalarProperty Name="FieldType" ColumnName="FieldType" />
                 <ScalarProperty Name="FieldTypeID" ColumnName="FieldTypeID" />
@@ -5864,12 +5752,11 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="ShelfCurrentAvailable" ColumnName="ShelfCurrentAvailable" />
                 <ScalarProperty Name="BulkCurrentAvailable" ColumnName="BulkCurrentAvailable" />
                 <ScalarProperty Name="ProductMasterAge" ColumnName="ProductMasterAge" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ProductSetupDate" ColumnName="ProductSetupDate" />
                 <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
                 <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
                 <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
                 <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
@@ -6024,19 +5911,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vwBulkTransForReplenishment">
-            <EntityTypeMapping TypeName="CMCSQL03Model.vwBulkTransForReplenishment">
-              <MappingFragment StoreEntitySet="vwBulkTransForReplenishment">
-                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-                <ScalarProperty Name="BulkStatus" ColumnName="BulkStatus" />
-                <ScalarProperty Name="LogAmount" ColumnName="LogAmount" />
-                <ScalarProperty Name="LogQty" ColumnName="LogQty" />
-                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
-                <ScalarProperty Name="LogType" ColumnName="LogType" />
-                <ScalarProperty Name="LogID" ColumnName="LogID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vwProductsInfo">
             <EntityTypeMapping TypeName="CMCSQL03Model.vwProductsInfo">
               <MappingFragment StoreEntitySet="vwProductsInfo">
@@ -6076,31 +5950,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwShelfTransForReplenishment' does no
                 <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwShelfStockForReplenishment">
-            <EntityTypeMapping TypeName="CMCSQL03Model.vwShelfStockForReplenishment">
-              <MappingFragment StoreEntitySet="vwShelfStockForReplenishment">
-                <ScalarProperty Name="ShelfStatus" ColumnName="ShelfStatus" />
-                <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
-                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-                <ScalarProperty Name="UnitWeight" ColumnName="UnitWeight" />
-                <ScalarProperty Name="QtyOnHand" ColumnName="QtyOnHand" />
-                <ScalarProperty Name="StockID" ColumnName="StockID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwShelfTransForReplenishment">
-            <EntityTypeMapping TypeName="CMCSQL03Model.vwShelfTransForReplenishment">
-              <MappingFragment StoreEntitySet="vwShelfTransForReplenishment">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-                <ScalarProperty Name="LogAmount" ColumnName="LogAmount" />
-                <ScalarProperty Name="LogQty" ColumnName="LogQty" />
-                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
-                <ScalarProperty Name="LogType" ColumnName="LogType" />
-                <ScalarProperty Name="LogID" ColumnName="LogID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

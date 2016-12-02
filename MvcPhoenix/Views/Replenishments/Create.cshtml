@@ -21,7 +21,9 @@
     @using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments", new AjaxOptions
     {
         LoadingElementId = "dvspinnercreate",
-        OnSuccess = "UpdateItemsPartial"
+        OnSuccess = "UpdateItemsPartial",
+		OnFailure="alert('Creation failed, please try again')",
+        OnBegin = "$('#dvGridPlaceHolder').empty();"
     }))
     {
         <div class="row">

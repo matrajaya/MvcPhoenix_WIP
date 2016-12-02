@@ -430,7 +430,15 @@
                                 @Html.Raw(HttpUtility.HtmlDecode(@Model.CSBusinessRules))
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                @Html.LabelFor(model => model.ShippingRules)
+                            </td>
 
+                            <td>
+                                @Html.Raw(HttpUtility.HtmlDecode(@Model.ShippingRules))
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 @Html.LabelFor(model => model.ShipConfirmEmail)

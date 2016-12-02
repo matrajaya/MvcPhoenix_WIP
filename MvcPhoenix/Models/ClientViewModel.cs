@@ -177,6 +177,10 @@ namespace MvcPhoenix.Models
         [Display(Name = "Business Rules")]
         public string CSBusinessRules { get; set; }
 
+        [AllowHtml]
+        [Display(Name = "Shipping Rules")]
+        public string ShippingRules { get; set; }
+
         [Display(Name = "Ship Confirm Email")]
         public string ShipConfirmEmail { get; set; }
 

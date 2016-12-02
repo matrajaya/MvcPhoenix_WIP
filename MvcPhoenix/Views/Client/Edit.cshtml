@@ -302,6 +302,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>@Html.LabelFor(model => model.ShippingRules)</td>
+                                <td>
+                                    @Html.TextAreaFor(model => model.ShippingRules, new { @class = "form-control", @rows = "4" })
+                                </td>
+                            </tr>
+                            <tr>
                                 <td>@Html.LabelFor(model => model.WasteProcedure)</td>
                                 <td>
                                     @Html.TextAreaFor(model => model.WasteProcedure, new { @class = "form-control", @rows = "4" })
@@ -410,6 +416,7 @@
     CKEDITOR.inline('SDSUpdateMethod');
     CKEDITOR.inline('ExpDateRules');
     CKEDITOR.inline('CSBusinessRules');
+    CKEDITOR.inline('ShippingRules');
     CKEDITOR.inline('WasteProcedure');
     CKEDITOR.inline('InventoryBusinessRules');
     CKEDITOR.inline('FreezableProcedure');

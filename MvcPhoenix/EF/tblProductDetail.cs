@@ -95,6 +95,7 @@ namespace MvcPhoenix.EF
         public string RCRAHAZCL { get; set; }
         public string RCRASHIPNAME { get; set; }
         public string RCRANOSNAME { get; set; }
+        public Nullable<System.DateTime> ActiveDate { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

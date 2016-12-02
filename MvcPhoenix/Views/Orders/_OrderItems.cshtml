@@ -33,7 +33,7 @@
             @foreach (var item in Model)
             {
             <tr>
-                <td><div style="zoom:15%;">@Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.ProductName + "~" + @item.LotNumber + "~" + @item.Size))</div></td>
+                <td><div style="zoom:15%;">@Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.LotNumber + "~" + @item.Size))</div></td>
                 <td>@(Model.IndexOf(item) + 1)</td>
                 <td>@item.ItemID</td>
                 <td>@item.ShelfID</td>

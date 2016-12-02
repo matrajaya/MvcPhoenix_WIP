@@ -80,6 +80,7 @@ namespace MvcPhoenix.EF
         public string FreezableProcedure { get; set; }
         public Nullable<bool> SurveyUsed { get; set; }
         public string CSBusinessRules { get; set; }
+        public string ShippingRules { get; set; }
         public string ShipConfirmEmail { get; set; }
         public string DelayConfirmEmail { get; set; }
         public string OrderConfirmEmail { get; set; }

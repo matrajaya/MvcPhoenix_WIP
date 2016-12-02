@@ -63,6 +63,7 @@ namespace MvcPhoenix.Models
                 CP.FreezableProcedure = q.FreezableProcedure;
                 CP.SurveyUsed = q.SurveyUsed ?? false;
                 CP.CSBusinessRules = q.CSBusinessRules;
+                CP.ShippingRules = q.ShippingRules;
                 CP.ShipConfirmEmail = q.ShipConfirmEmail;
                 CP.DelayConfirmEmail = q.DelayConfirmEmail;
                 CP.OrderConfirmEmail = q.OrderConfirmEmail;
@@ -172,6 +173,7 @@ namespace MvcPhoenix.Models
                 q.FreezableProcedure = CP.FreezableProcedure;
                 q.SurveyUsed = CP.SurveyUsed;
                 q.CSBusinessRules = CP.CSBusinessRules;
+                q.ShippingRules = CP.ShippingRules;
                 q.ShipConfirmEmail = CP.ShipConfirmEmail;
                 q.DelayConfirmEmail = CP.DelayConfirmEmail;
                 q.OrderConfirmEmail = CP.OrderConfirmEmail;

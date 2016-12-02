@@ -87,9 +87,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
         public virtual DbSet<vwBulkLevel> vwBulkLevel { get; set; }
-        public virtual DbSet<vwBulkTransForReplenishment> vwBulkTransForReplenishment { get; set; }
         public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
-        public virtual DbSet<vwShelfStockForReplenishment> vwShelfStockForReplenishment { get; set; }
-        public virtual DbSet<vwShelfTransForReplenishment> vwShelfTransForReplenishment { get; set; }
     }
 }

@@ -197,8 +197,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-2">
-                                        @Html.LabelFor(model => model.CoverLetterRequired)
-                                        @Html.TextBoxFor(model => model.CoverLetterRequired, new { @class = "form-control" })
+                                        @Html.LabelFor(model => model.StdCoverLetterRequired)
+                                        @Html.TextBoxFor(model => model.StdCoverLetterRequired, new { @class = "form-control" })
                                     </div>
                                     <div class="form-group col-md-2">
                                         @Html.LabelFor(model => model.ExpDateOnLabel)
@@ -274,6 +274,19 @@
                             </div>
                             <div class="panel-body">
                                 @Html.TextAreaFor(model => model.CSBusinessRules, new { @class = "form-control", @rows = "6" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>@Html.LabelFor(model => model.ShippingRules)</strong>
+                            </div>
+                            <div class="panel-body">
+                                @Html.TextAreaFor(model => model.ShippingRules, new { @class = "form-control", @rows = "6" })
                             </div>
                         </div>
                     </div>

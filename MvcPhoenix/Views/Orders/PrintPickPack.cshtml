@@ -366,40 +366,9 @@
             </td>
 
             <td style="border:solid 1px;">
-                <table style="font-size:small;">
-                    <tr>
-                        <td colspan="2">
-                            <label style="font-size:1.5em;">Client Profile: *</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Commercial Value:</td>
-                        <td>Per product</td>
-                    </tr>
-                    <tr>
-                        <td>COA Required:</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>TDS Required:</td>
-                        <td>No</td>
-                    </tr>
-                    <tr>
-                        <td>MSDS Language:</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Freezable:</td>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <td>Label Language:</td>
-                        <td>In de taal vh land, if GHS ready</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Client Shipping Rules: <br />Zendingen > 50 kg altijd overleggen met Arjan ** Importer of Record zie vervoerslijst Intranet</td>
-                    </tr>
-                </table>
+                <h2>Client Profile:</h2>
+
+                @Html.Raw(@ViewBag.ClientShippingRules)
             </td>
         </tr>
     </table>

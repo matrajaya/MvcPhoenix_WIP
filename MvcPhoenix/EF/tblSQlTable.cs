@@ -20,6 +20,5 @@ namespace MvcPhoenix.EF
         public Nullable<int> FieldTypeID { get; set; }
         public string FieldType { get; set; }
         public string FieldLength { get; set; }
-        public string App { get; set; }
     }
 }

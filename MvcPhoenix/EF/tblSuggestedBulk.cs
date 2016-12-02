@@ -16,12 +16,11 @@ namespace MvcPhoenix.EF
     {
         public int id { get; set; }
         public Nullable<int> ClientID { get; set; }
-        public Nullable<int> UserID { get; set; }
         public Nullable<int> ProductMasterID { get; set; }
         public Nullable<int> DivisionID { get; set; }
         public string SupplyID { get; set; }
         public Nullable<int> ShelfLife { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<System.DateTime> ProductSetupDate { get; set; }
         public Nullable<int> ProductMasterAge { get; set; }
         public Nullable<decimal> BulkCurrentAvailable { get; set; }
         public Nullable<decimal> ShelfCurrentAvailable { get; set; }
