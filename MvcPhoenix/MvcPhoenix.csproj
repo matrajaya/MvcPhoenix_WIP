@@ -332,9 +332,6 @@
     <Compile Include="EF\tblClient.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblClient2.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblClientContact.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -474,6 +471,9 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblTier.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblTransType.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblUN.cs">
@@ -1340,6 +1340,10 @@
     <Content Include="Views\ProductConversion\DetailToMaster.cshtml" />
     <Content Include="Views\ProductConversion\_ProductDetail.cshtml" />
     <Content Include="Views\Invoice\PrintInvoice.cshtml" />
+    <Content Include="Views\Reports\InvExpiryReport.cshtml" />
+    <Content Include="Views\Reports\InvTotalInStock.cshtml" />
+    <Content Include="Views\Reports\InvOutOfStock.cshtml" />
+    <Content Include="Views\Reports\InvOpenReplenishment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

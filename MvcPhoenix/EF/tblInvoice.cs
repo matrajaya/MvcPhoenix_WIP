@@ -30,6 +30,8 @@ namespace MvcPhoenix.EF
         public string Status { get; set; }
         public Nullable<System.DateTimeOffset> InvoiceDate { get; set; }
         public string InvoicePeriod { get; set; }
+        public Nullable<System.DateTime> InvoiceStartDate { get; set; }
+        public Nullable<System.DateTime> InvoiceEndDate { get; set; }
         public string PONumber { get; set; }
         public string NetTerm { get; set; }
         public string BillTo { get; set; }
@@ -38,6 +40,10 @@ namespace MvcPhoenix.EF
         public Nullable<int> Tier { get; set; }
         public string OrderType { get; set; }
         public string Comments { get; set; }
+        public Nullable<decimal> sys_samplecharges { get; set; }
+        public Nullable<decimal> sys_freightcharges { get; set; }
+        public Nullable<decimal> sys_surcharges { get; set; }
+        public Nullable<decimal> sys_usercharges { get; set; }
         public Nullable<int> SampleShipSameDay { get; set; }
         public Nullable<int> SampleShipNextDay { get; set; }
         public Nullable<int> SampleShipSecondDay { get; set; }

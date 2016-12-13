@@ -41,6 +41,8 @@
         //@Html.HiddenFor(m => m.ponumber)
         @Html.HiddenFor(m => m.netterm)
         @Html.HiddenFor(m => m.invoiceperiod)
+        @Html.HiddenFor(m => m.invoicestartdate)
+        @Html.HiddenFor(m => m.invoiceenddate)
 
         <div class="row">
             <div class="col-md-4">
@@ -79,41 +81,66 @@
                 <div class="panel panel-primary">
                     <div class="panel-body">
                         <div class="row">
+                            <div class="col-md-12">
+                                <b>Invoice Period:</b> @Html.DisplayFor(m => m.invoiceperiod)
+                                <span class="pull-right">
+                                    <b title="Invoice Range">@Html.DisplayFor(m => m.invoicestartdate) - @Html.DisplayFor(m => m.invoiceenddate)</b>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div id="masterinvoicecalc" class="table-responsive col-md-6">
                                 <h3>Master Invoice</h3>
                                 <table class="table table-hover table-striped">
                                     <tr>
                                         <th>Number of Samples</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totalsamples, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.TextBoxFor(m => m.totalsamples, "{0:N0}", new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.totalsamples)
                                             @Html.ValidationMessageFor(m => m.totalsamples)
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Totals Cost of Processing Samples</th>
+                                        <th>
+                                            Totals Cost of Processing Samples
+                                            <i class="fa fa-question-circle" title="SAMP, HAZD, FLAM, HEAT, REFR, FREZ, CLEN, BLND, NALG, NITR, BIOC, KOSH, LABL"></i>
+                                        </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totalcostsamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "A1" })
+                                            @Html.TextBoxFor(m => m.totalcostsamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "A1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.totalcostsamples)
                                             @Html.ValidationMessageFor(m => m.totalcostsamples)
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Freight</th>
+                                        <th>
+                                            Freight
+                                            <i class="fa fa-question-circle" title="CFRT"></i>
+                                        </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px", @data_cell = "B1" })
+                                            @Html.TextBoxFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px", @data_cell = "B1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.totalfreight)
                                             @Html.ValidationMessageFor(m => m.totalfreight)
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Freight Harzardous Surcharge</th>
+                                        <th>
+                                            Freight Harzardous Surcharge
+                                            <i class="fa fa-question-circle" title="SFRT"></i>
+                                        </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totalfrtHzdSchg, new { @class = "pull-right", @style = "width: 100px", @data_cell = "C1" })
+                                            @Html.TextBoxFor(m => m.totalfrtHzdSchg, new { @class = "pull-right", @style = "width: 100px", @data_cell = "C1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.totalfrtHzdSchg)
                                             @Html.ValidationMessageFor(m => m.totalfrtHzdSchg)
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Administrative Charges</th>
+                                        <th>
+                                            Administrative Charges
+                                            <i class="fa fa-question-circle" title="All Others"></i>
+                                        </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px", @data_cell = "D1" })
+                                            @Html.TextBoxFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px", @data_cell = "D1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.totaladmincharge)
                                             @Html.ValidationMessageFor(m => m.totaladmincharge)
                                         </td>
                                     </tr>
@@ -121,6 +148,7 @@
                                         <th>Total Due</th>
                                         <th>
                                             @Html.TextBoxFor(m => m.totaldue, new { @class = "pull-right", @style = "width: 100px", @readonly = "readonly", @data_cell = "E1" })
+                                            @Html.HiddenFor(m => m.totaldue)
                                             @Html.ValidationMessageFor(m => m.totaldue)
                                         </th>
                                     </tr>
@@ -133,28 +161,32 @@
                                     <tr>
                                         <th>Same Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.sampleshipsameday, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.TextBoxFor(m => m.sampleshipsameday, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.sampleshipsameday)
                                             @Html.ValidationMessageFor(m => m.sampleshipsameday)
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Next Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.sampleshipnextday, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.TextBoxFor(m => m.sampleshipnextday, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.sampleshipnextday)
                                             @Html.ValidationMessageFor(m => m.sampleshipnextday)
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Second Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.sampleshipsecondday, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.TextBoxFor(m => m.sampleshipsecondday, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.sampleshipsecondday)
                                             @Html.ValidationMessageFor(m => m.sampleshipsecondday)
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Other</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.sampleshipother, new { @class = "pull-right", @style = "width: 100px" })
+                                            @Html.TextBoxFor(m => m.sampleshipother, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.sampleshipother)
                                             @Html.ValidationMessageFor(m => m.sampleshipother)
                                         </td>
                                     </tr>
@@ -185,15 +217,15 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <ul class="nav nav-tabs pull-right">
-                                    <li class="active"><a data-toggle="tab" href="#samplestab">Samples</a></li>
-                                    <li><a data-toggle="tab" href="#internationaltab">International</a></li>
-                                    <li><a data-toggle="tab" href="#revenuetab">Revenue</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        @*<div class="row">
+                                <div class="col-md-12">
+                                    <ul class="nav nav-tabs pull-right">
+                                        <li class="active"><a data-toggle="tab" href="#samplestab">Samples</a></li>
+                                        <li><a data-toggle="tab" href="#internationaltab">International</a></li>
+                                        <li><a data-toggle="tab" href="#revenuetab">Revenue</a></li>
+                                    </ul>
+                                </div>
+                            </div>*@
                         <div class="tab-content">
                             <div id="samplestab" class="tab-pane fade in active">
                                 <div class="table-responsive" id="billingworksheetcalc">
@@ -555,7 +587,7 @@
 
     $('#billingworksheetcalc').calx({
         data: {
-            C1: { formula: 'A1*B1' },
+            //C1: { formula: 'A1*B1' },
             C2: { formula: 'A2*B2' },
             C3: { formula: 'A3*B3' },
             C4: { formula: 'A4*B4' },

@@ -1001,6 +1001,7 @@ namespace MvcPhoenix.Services
                     newrec.CreateDate = System.DateTime.Now;
                     //newrec.CreateDate = System.DateTimeOffset.UtcNow;
                     newrec.CreateUser = "System";
+					newrec.BillingGroup = o.BillingGroup;
                     db.tblOrderTrans.Add(newrec);
                     db.SaveChanges();
                 }
@@ -1024,6 +1025,7 @@ namespace MvcPhoenix.Services
                         newrec.Comments = "Special Request";
                         newrec.CreateDate = System.DateTime.Now;
                         newrec.CreateUser = "System";
+						newrec.BillingGroup = o.BillingGroup;
                         db.tblOrderTrans.Add(newrec);
                         db.SaveChanges();
                     }
@@ -1134,6 +1136,7 @@ namespace MvcPhoenix.Services
                 newrec.OrderItemID = ItemID;
                 newrec.OrderID = oi.OrderID;
                 newrec.ClientID = o.ClientID;
+				newrec.BillingGroup = o.BillingGroup;
                 newrec.TransDate = System.DateTime.Now;
                 newrec.TransType = TransType;
                 newrec.TransQty = oi.Qty;
@@ -1183,30 +1186,6 @@ namespace MvcPhoenix.Services
                 return 1;
             }
         }
-
-        //private static List<SelectListItem> fnListOfOrderTransTypes()
-        //{
-        //    List<SelectListItem> mylist = new List<SelectListItem>();
-        //    mylist.Add(new SelectListItem { Text = "BIOC", Value = "BIOC" });
-        //    mylist.Add(new SelectListItem { Text = "BLND", Value = "BLND" });
-        //    mylist.Add(new SelectListItem { Text = "CLEN", Value = "CLEN" });
-        //    mylist.Add(new SelectListItem { Text = "FLAM", Value = "FLAM" });
-        //    mylist.Add(new SelectListItem { Text = "FREZ", Value = "FREZ" });
-        //    mylist.Add(new SelectListItem { Text = "HAZD", Value = "HAZD" });
-        //    mylist.Add(new SelectListItem { Text = "HEAT", Value = "HEAT" });
-        //    mylist.Add(new SelectListItem { Text = "KOSH", Value = "KOSH" });
-        //    mylist.Add(new SelectListItem { Text = "LABL", Value = "LABL" });
-        //    mylist.Add(new SelectListItem { Text = "MISC", Value = "MISC" });
-        //    mylist.Add(new SelectListItem { Text = "MEMO", Value = "MEMO" });
-        //    mylist.Add(new SelectListItem { Text = "NALG", Value = "NALG" });
-        //    mylist.Add(new SelectListItem { Text = "NITR", Value = "NITR" });
-        //    mylist.Add(new SelectListItem { Text = "REFR", Value = "REFR" });
-        //    mylist.Add(new SelectListItem { Text = "SAMP", Value = "SAMP" });
-        //    mylist.Add(new SelectListItem { Text = "OTHR", Value = "OTHR" });
-        //    mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Type" });
-
-        //    return mylist;
-        //}
 
         //fnListOfBillingGroups
         public static List<SelectListItem> fnListOfBillingGroups(int? id)

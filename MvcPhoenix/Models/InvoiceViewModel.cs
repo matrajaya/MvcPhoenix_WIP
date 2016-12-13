@@ -6,6 +6,12 @@ namespace MvcPhoenix.Models
 {
     public class InvoiceViewModel
     {
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime? invoicestartdate { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime? invoiceenddate { get; set; }
+		
         [Display(Name = "Invoice ID")]
         public int invoiceid { get; set; }
 
@@ -254,7 +260,5 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Minimal Sample Charge")]
         public decimal? minimalsamplecharge { get; set; }
-
-        // Consider month choice for period or possible code magic and date manipulation
     }
 }

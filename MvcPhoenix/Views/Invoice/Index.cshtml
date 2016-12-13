@@ -45,20 +45,28 @@
                     <div class="row">
                         @using (Html.BeginForm("Create", "Invoice", new { }))
                         {
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label>Client</label>
                                 @Html.DropDownList("ClientID", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
                             </div>
                             <div class="col-md-3">
                                 <label>Billing Group</label>
-                                <select name='billinggroupid' id='billinggroupid' class='form-control' required></select>
+                                <select name="billinggroupid" id="billinggroupid" class="form-control" required></select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label>Invoice Period</label>
-                                <input name="invoiceperiod" id="invoiceperiod" class="form-control date-picker" required />
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input name="startdate" id="startdate" class="form-control date-picker" placeholder="Start Date" required />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="enddate" id="enddate" class="form-control date-picker" placeholder="End Date" required />
+                                    </div>
+                                </div>
+                                <input id="invoiceperiod" name="invoiceperiod" type="text" hidden />
                             </div>
                             <div class="col-md-2">
-                                <label class="invisible">Create</label>
+                                <label class="invisible">Generate</label>
                                 <input type="submit" class="btn btn-success btn-block form-control" value="Generate" />
                             </div>
                         }
@@ -106,9 +114,9 @@
                                     <td style="text-align:center;">@item.warehouselocation</td>
                                     <td>@item.status</td>
                                     <td class="text-right">
-                                        @Html.ActionLink(" ", "Edit", new { id = item.invoiceid }, new { @class = "btn btn-primary fa fa-pencil", @title =  "Edit Invoice" })
+                                        @Html.ActionLink(" ", "Edit", new { id = item.invoiceid }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Invoice" })
                                         @Html.ActionLink(" ", "View", new { id = item.invoiceid }, new { @class = "btn btn-primary fa fa-eye", @title = "View Invoice" })
-                                </td>
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -129,20 +137,37 @@
 <script type="text/javascript">
     function OnChangeClientID() {
         var url = '@Url.Action("BuildBillingGroupDDL", "Invoice")';
-        var data = $('#ClientID').val()
+        var data = $('#ClientID').val();
         $("#billinggroupid").load(url, { id: data });
     }
 
+    // Set invoice period based on start date selection
     $(function () {
-        $('.date-picker').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            maxDate: "+0D",
-            dateFormat: 'MM, yy',
+        $("#invoiceperiod").datepicker({ dateFormat: "MM, yy" });
+
+        $("#startdate").datepicker({
+            dateFormat: "dd-M-yy",
             onClose: function (dateText, inst) {
-                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                $('#invoiceperiod').datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1))
             }
         });
+    });
+
+    // Form validation on invoice generation
+    $("form").on("submit", function () {
+        var startdate = new Date($('#startdate').val());
+        var enddate = new Date($('#enddate').val());
+
+        // Check validity of date selection
+        if (isNaN(startdate.getDate()) || isNaN(enddate.getDate())) {
+            alert("Your invoice date selection is invalid");
+            return false;
+        }
+
+        // Validate start and end dates are in correct timesequence
+        if (startdate > enddate) {
+            alert("Oh no! Your date selection is in the wrong order");
+            return false;
+        }
     });
 </script>

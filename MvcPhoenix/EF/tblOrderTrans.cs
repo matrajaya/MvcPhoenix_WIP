@@ -19,13 +19,13 @@ namespace MvcPhoenix.EF
         public Nullable<int> ClientID { get; set; }
         public Nullable<int> OrderID { get; set; }
         public Nullable<int> OrderItemID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public string UserName { get; set; }
+        public Nullable<int> InvoiceID { get; set; }
+        public string BillingGroup { get; set; }
         public string TransType { get; set; }
         public Nullable<System.DateTime> TransDate { get; set; }
+        public Nullable<System.DateTime> ChargeDate { get; set; }
         public Nullable<int> TransQty { get; set; }
         public Nullable<decimal> TransAmount { get; set; }
-        public Nullable<System.DateTime> ChargeDate { get; set; }
         public string Comments { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
@@ -36,7 +36,6 @@ namespace MvcPhoenix.EF
         public string BusinessUnit_MDB { get; set; }
         public string ChargeSource_MDB { get; set; }
         public string Company_MDB { get; set; }
-        public string Location_MDB { get; set; }
         public string CustomerReference_MDB { get; set; }
     }
 }

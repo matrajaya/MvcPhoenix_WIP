@@ -1,5 +1,6 @@
 ﻿using Microsoft.Reporting.WebForms;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 
@@ -11,6 +12,8 @@ namespace MvcPhoenix.Controllers
         {
             return View();
         }
+
+        #region Product Coordinators Reports
 
         public ActionResult Cas()
         {
@@ -91,6 +94,59 @@ namespace MvcPhoenix.Controllers
 
             return View();
         }
+
+        #endregion
+
+        #region Inventory Reports
+
+        public ActionResult InvExpiryReport()
+        {
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryExpiryReport";
+            
+            ReportParameter[] reportParameter = new ReportParameter[4];
+            reportParameter[0] = new ReportParameter("Client", "1");
+            reportParameter[1] = new ReportParameter("Warehouse", "EU");
+            reportParameter[2] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
+            reportParameter[3] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());
+
+            reportViewer.ServerReport.SetParameters(reportParameter);
+            ViewBag.ReportViewer = reportViewer;
+
+            return View();
+        }
+
+        public ActionResult InvTotalInStock()
+        {
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryTotalInvInStock";
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            ViewBag.ReportViewer = reportViewer;
+
+            return View();
+        }
+        
+        public ActionResult InvOutOfStock()
+        {
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryTotalInvOutOfStock";
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            ViewBag.ReportViewer = reportViewer;
+
+            return View();
+        }
+        
+        public ActionResult InvOpenReplenishment()
+        {
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryOpenReplenishment";
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            ViewBag.ReportViewer = reportViewer;
+
+            return View();
+        }
+
+        #endregion
 
         private static ReportViewer rptViewerSettings()
         {

@@ -84,14 +84,16 @@ namespace MvcPhoenix.Controllers
             /// string client, string division,
             /// Assign invoice period based on current date: Get: ClientID, BillingGroup, Period
             /// Automated business rules from service
-            /// Assign Invoice ID = -1 and go to edit action
+            /// Assign Invoice ID = -1 ansd go to edit action
             /// Ephemeral until the user executes save action
             int ClientID = Convert.ToInt32(fc["ClientID"]);
             int DivisionID = Convert.ToInt32(fc["billinggroupid"]);
             string InvoicePeriod = fc["invoiceperiod"];
+            DateTime StartDate = Convert.ToDateTime(fc["startdate"]);
+            DateTime EndDate = Convert.ToDateTime(fc["enddate"]);
 
             InvoiceViewModel obj = new InvoiceViewModel();
-            obj = InvoiceService.CreateInvoice(ClientID, DivisionID, InvoicePeriod);
+            obj = InvoiceService.CreateInvoice(ClientID, DivisionID, InvoicePeriod, StartDate, EndDate);
 
             return View("Edit", obj);
         }
