@@ -1275,14 +1275,6 @@
     <Content Include="Views\ShelfMaster\Index.cshtml" />
     <Content Include="Views\ShelfMaster\_Edit.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
-    <Content Include="Views\Reports\Cas.cshtml" />
-    <Content Include="Views\Reports\ClientHarmonized.cshtml" />
-    <Content Include="Views\Reports\ClientMSDSDate.cshtml" />
-    <Content Include="Views\Reports\ClientPackages.cshtml" />
-    <Content Include="Views\Reports\ClientProductsList.cshtml" />
-    <Content Include="Views\Reports\HazardList.cshtml" />
-    <Content Include="Views\Reports\SampleGuideInfo.cshtml" />
-    <Content Include="Views\Reports\SGRevDate.cshtml" />
     <Content Include="Views\Products\PrintProfile.cshtml" />
     <Content Include="Views\Shared\_LayoutPrint.cshtml" />
     <Content Include="Views\Orders\Edit.cshtml">
@@ -1340,10 +1332,7 @@
     <Content Include="Views\ProductConversion\DetailToMaster.cshtml" />
     <Content Include="Views\ProductConversion\_ProductDetail.cshtml" />
     <Content Include="Views\Invoice\PrintInvoice.cshtml" />
-    <Content Include="Views\Reports\InvExpiryReport.cshtml" />
-    <Content Include="Views\Reports\InvTotalInStock.cshtml" />
-    <Content Include="Views\Reports\InvOutOfStock.cshtml" />
-    <Content Include="Views\Reports\InvOpenReplenishment.cshtml" />
+    <Content Include="Views\Reports\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />
