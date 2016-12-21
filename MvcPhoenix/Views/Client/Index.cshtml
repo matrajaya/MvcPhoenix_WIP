@@ -28,7 +28,41 @@
                 }
             </div>
         </div>
-        <div class="clearfix"></div>
+        <div class="col-md-3 pull-right">
+            <label class="invisible">.</label>
+            <input type="button" class="btn btn-block btn-primary" data-toggle="collapse" data-target="#createclient" value="+ Add Client" />
+        </div>
+    </div>
+
+    <div id="createclient" class="panel panel-primary collapse">
+        <div class="panel-body">
+            <div class="row">
+                @using (Html.BeginForm("Create", "Client", FormMethod.Post, new { }))
+                {
+                    <div class="col-md-6">
+                        <label>Client Name</label>
+                        <input type="text" name="clientname" id="clientname" class="form-control" required />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Client Code ABV.</label>
+                        <input type="text" name="clientcode" id="clientcode" class="form-control" style="text-transform:uppercase" maxlength="4" required />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Location</label>
+                        <select name="whlocation" id="whlocation" class="form-control" required>
+                            <option value="AP">AP</option>
+                            <option value="CO">CO</option>
+                            <option value="CT">CT</option>
+                            <option value="EU">EU</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="invisible">Create Client</label>
+                        <input type="submit" class="btn btn-success btn-block form-control" value="Create" />
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 
     <div class="panel panel-primary">

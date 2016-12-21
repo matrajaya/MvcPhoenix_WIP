@@ -125,6 +125,38 @@ namespace MvcPhoenix.Models
             }
         }
 
+        public static void CreateClient(int clientid, string clientname, string clientcode, string whlocation)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var q = db.tblClient.Find(clientid);
+                q.ClientName = clientname;
+                q.ClientCode = clientcode;
+                q.CMCLocation = whlocation;
+
+                q.ClientReference = clientcode;
+                q.ClientEntityName = clientname;
+
+                switch (whlocation)
+                {
+                    case "AP":
+                        q.ClientCurrency = "CNY";
+                        q.ClientUM = "KG";
+                        break;
+                    case "EU":
+                        q.ClientCurrency = "EUR";
+                        q.ClientUM = "KG";
+                        break;
+                    default:
+                        q.ClientCurrency = "USD";
+                        q.ClientUM = "LB";
+                        break;
+                }
+
+                db.SaveChanges();
+            }
+        }
+
         public static void SaveClient(ClientProfile CP)
         {
             using (var db = new EF.CMCSQL03Entities())

@@ -1150,6 +1150,7 @@
     <Content Include="Scripts\bootstrap.min.js.map">
       <DependentUpon>bootstrap.min.js</DependentUpon>
     </Content>
+    <Content Include="Content\Files\1602_Product_Maintenance_Template_rev1_2016.xls" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1292,7 +1293,6 @@
     <Content Include="Views\Client\_EndUseModal.cshtml" />
     <Content Include="Views\Client\_Suppliers.cshtml" />
     <Content Include="Views\Client\_SuppliersModal.cshtml" />
-    <Content Include="Views\Client\Create.cshtml" />
     <Content Include="Views\Client\View.cshtml" />
     <Content Include="Views\Orders\_AdvancedSearchModal.cshtml" />
     <Content Include="Views\Documents\Index.cshtml" />

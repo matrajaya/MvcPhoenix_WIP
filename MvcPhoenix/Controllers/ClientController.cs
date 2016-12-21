@@ -63,10 +63,18 @@ namespace MvcPhoenix.Controllers
             return View(clients.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: Client/Create
-        public ActionResult Create()
+        // POST: Client/Create
+        [HttpPost]
+        public ActionResult Create(FormCollection fc)
         {
-            return View();
+            int ClientID = ClientService.NewClientId();
+            string ClientName = fc["clientname"];
+            string ClientCode = fc["clientcode"].ToUpper();
+            string WHLocation = fc["whlocation"];
+
+            ClientService.CreateClient(ClientID, ClientName, ClientCode, WHLocation);
+
+            return RedirectToAction("Edit", new { id = ClientID });
         }
 
         // GET: Client/Edit/id

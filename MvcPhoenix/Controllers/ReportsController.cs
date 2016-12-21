@@ -209,11 +209,89 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Reports/View.cshtml");
         }
 
+        public ActionResult OrdersSummary(string client = "1")
+        {
+            ViewBag.Title = "Orders: Summary Report (Daily Run)";
+
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersSummary";
+
+            ReportParameter[] reportParameter = new ReportParameter[3];
+            reportParameter[0] = new ReportParameter("Client", client);
+            //reportParameter[1] = new ReportParameter("Warehouse", "EU");
+            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+
+            reportViewer.ServerReport.SetParameters(reportParameter);
+            ViewBag.ReportViewer = reportViewer;
+
+            return View("~/Views/Reports/View.cshtml");
+        }
+
+        public ActionResult FreightSummary(string client = "1")
+        {
+            ViewBag.Title = "Orders: Air & Truck Freight Summary";
+
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersFreightSum";
+
+            ReportParameter[] reportParameter = new ReportParameter[3];
+            reportParameter[0] = new ReportParameter("Client", client);
+            //reportParameter[1] = new ReportParameter("Warehouse", "EU");
+            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+
+            reportViewer.ServerReport.SetParameters(reportParameter);
+            ViewBag.ReportViewer = reportViewer;
+
+            return View("~/Views/Reports/View.cshtml");
+        }
+
+        #endregion
+
+        #region Product Management Reports
+        
+        public ActionResult ProductsSetup(string client = "1")
+        {
+            ViewBag.Title = "Products: Setup Report";
+
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSetupReport";
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", client));
+            ViewBag.ReportViewer = reportViewer;
+
+            return View("~/Views/Reports/View.cshtml");
+        }
+
+        public ActionResult ProductsProfileList(string client = "1")
+        {
+            ViewBag.Title = "Products: Profiles List Export";
+
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsProfileListExport";
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", client));
+            ViewBag.ReportViewer = reportViewer;
+
+            return View("~/Views/Reports/View.cshtml");
+        }
+
+        public ActionResult ProductsSampleGuideExport(string client = "1")
+        {
+            ViewBag.Title = "Products: Sample Guide Export";
+
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSampleGuideExport";
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", client));
+            ViewBag.ReportViewer = reportViewer;
+
+            return View("~/Views/Reports/View.cshtml");
+        }
+
         #endregion
 
         /// <summary>
         /// Report Viewer Settings.
-        /// Acts as connector to Report Server and configuration for reportst displayed.
+        /// Acts as connector to Report Server and configuration for reports displayed.
         /// </summary>
         private static ReportViewer rptViewerSettings()
         {
