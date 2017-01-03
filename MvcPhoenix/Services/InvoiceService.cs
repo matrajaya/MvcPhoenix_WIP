@@ -285,7 +285,7 @@ namespace MvcPhoenix.Models
                 if (division > 0)
                 {
                     var div = db.tblDivision.Find(division);
-                    obj.billinggroup = div.Division;
+                    obj.billinggroup = div.DivisionName;
                 }
                 else { 
                     obj.billinggroup = "All"; 
@@ -634,7 +634,7 @@ namespace MvcPhoenix.Models
             {
                 var qry = (from t in db.tblDivision
                            where t.ClientID == clientid
-                           orderby t.DivisionID, t.Division
+                           orderby t.DivisionID, t.DivisionName
                            select t);
 
                 string s = "<option value='0' selected=true>Select Billing Group</option>";
@@ -643,7 +643,7 @@ namespace MvcPhoenix.Models
                 {
                     foreach (var item in qry)
                     {
-                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.Division + "</option>";
+                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.DivisionName + "</option>";
                     }
                 }
                 else

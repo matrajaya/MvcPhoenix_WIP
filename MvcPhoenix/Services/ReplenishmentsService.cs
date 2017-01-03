@@ -384,7 +384,7 @@ namespace MvcPhoenix.Services
             {
                 var qry = (from t in db.tblDivision
                            where t.ClientID == id
-                           orderby t.Division, t.BusinessUnit
+                           orderby t.DivisionName, t.BusinessUnit
                            select t);
 
                 string s = "<option value='0'>All Divisions</option>";
@@ -393,7 +393,7 @@ namespace MvcPhoenix.Services
                 {
                     foreach (var item in qry)
                     {
-                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.Division + " - " + item.BusinessUnit + "</option>";
+                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.DivisionName + " - " + item.BusinessUnit + "</option>";
                     }
                 }
                 else
@@ -692,7 +692,7 @@ namespace MvcPhoenix.Services
                                   logofilename = c.LogoFileName,
                                   mastercode = pm.MasterCode,
                                   mastername = pm.MasterName,
-                                  division = x.Division
+                                  division = x.DivisionName
                               }).ToList();
 
                 mylist = (from t in mylist
@@ -917,7 +917,7 @@ namespace MvcPhoenix.Services
 
                 mylist = (from c in db.tblDivision
                           where c.ClientID == clientid
-                          select new SelectListItem { Value = c.DivisionID.ToString(), Text = c.Division }).ToList();
+                          select new SelectListItem { Value = c.DivisionID.ToString(), Text = c.DivisionName }).ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Division" });
 

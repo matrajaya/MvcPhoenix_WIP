@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using MvcPhoenix.Models;
 
 // ************** ClientService.cs ********************
 // This class contains Client Management service methods
 // ******************************************************
 
-namespace MvcPhoenix.Models
+namespace MvcPhoenix.Services
 {
     public class ClientService
     {
@@ -143,10 +147,12 @@ namespace MvcPhoenix.Models
                         q.ClientCurrency = "CNY";
                         q.ClientUM = "KG";
                         break;
+
                     case "EU":
                         q.ClientCurrency = "EUR";
                         q.ClientUM = "KG";
                         break;
+
                     default:
                         q.ClientCurrency = "USD";
                         q.ClientUM = "LB";
@@ -235,6 +241,35 @@ namespace MvcPhoenix.Models
                 q.NonHazDHServLvl4 = CP.NonHazDHServLvl4;
 
                 db.SaveChanges();
+            }
+        }
+
+        public static Division FillDivisionDetails(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                Division vm = new Division();
+
+                var qry = (from t in db.tblDivision
+                           where t.DivisionID == id
+                           select t).FirstOrDefault();
+
+                vm.DivisionID = qry.DivisionID;
+                vm.ClientID = qry.ClientID;
+                vm.DivisionName = qry.DivisionName;
+                vm.BusinessUnit = qry.BusinessUnit;
+                vm.WasteRateOffSpec = qry.WasteRate_OffSpec;
+                vm.WasteRateEmpty = qry.WasteRate_Empty;
+                vm.Inactive = qry.Inactive;
+                vm.ContactLabelName = qry.ContactLabelName;
+                vm.ContactLabelPhone = qry.ContactLabelPhone;
+                vm.ContactMSDSName = qry.ContactMSDSName;
+                vm.ContactMSDSPhone = qry.ContactMSDSPhone;
+                vm.EmergencyNumber = qry.EmergencyNumber;
+                vm.MainContactName = qry.MainContactName;
+                vm.MainContactNumber = qry.MainContactNumber;
+
+                return vm;
             }
         }
     }

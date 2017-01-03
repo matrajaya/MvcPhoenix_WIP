@@ -484,6 +484,7 @@
           <Property Name="DivisionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClientID" Type="int" />
           <Property Name="Division" Type="nvarchar" MaxLength="50" />
+          <Property Name="DivisionName" Type="nvarchar" MaxLength="50" />
           <Property Name="BusinessUnit" Type="nvarchar" MaxLength="25" />
           <Property Name="Abbr" Type="nvarchar" MaxLength="5" />
           <Property Name="WasteRate_OffSpec" Type="numeric" Precision="10" Scale="2" />
@@ -539,9 +540,10 @@
         </EntityType>
         <EntityType Name="tblGHS">
           <Key>
-            <PropertyRef Name="ProductDetailID" />
+            <PropertyRef Name="GHSID" />
           </Key>
-          <Property Name="ProductDetailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GHSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductDetailID" Type="int" Nullable="false" />
           <Property Name="SignalWord" Type="nvarchar" MaxLength="50" />
           <Property Name="Symbol1" Type="nvarchar" MaxLength="50" />
           <Property Name="Symbol2" Type="nvarchar" MaxLength="50" />
@@ -2539,6 +2541,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="DivisionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClientID" Type="Int32" />
           <Property Name="Division" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DivisionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BusinessUnit" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Abbr" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="WasteRate_OffSpec" Type="Decimal" Precision="10" Scale="2" />
@@ -2594,9 +2597,10 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
         </EntityType>
         <EntityType Name="tblGHS">
           <Key>
-            <PropertyRef Name="ProductDetailID" />
+            <PropertyRef Name="GHSID" />
           </Key>
-          <Property Name="ProductDetailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GHSID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductDetailID" Type="Int32" Nullable="false" />
           <Property Name="SignalWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Symbol1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Symbol2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -4410,6 +4414,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="WasteRate_OffSpec" ColumnName="WasteRate_OffSpec" />
                 <ScalarProperty Name="Abbr" ColumnName="Abbr" />
                 <ScalarProperty Name="BusinessUnit" ColumnName="BusinessUnit" />
+                <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
                 <ScalarProperty Name="Division" ColumnName="Division" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
@@ -4448,6 +4453,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="Symbol1" ColumnName="Symbol1" />
                 <ScalarProperty Name="SignalWord" ColumnName="SignalWord" />
                 <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
+                <ScalarProperty Name="GHSID" ColumnName="GHSID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

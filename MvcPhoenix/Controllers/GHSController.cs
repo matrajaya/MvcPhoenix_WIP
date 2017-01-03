@@ -31,7 +31,9 @@ namespace MvcPhoenix.Controllers
                     var ghs = (from t in db.tblGHS
                                where t.ProductDetailID == id
                                select t).FirstOrDefault();
-
+                    
+                    GHS.GHSID = ghs.GHSID;
+                    GHS.ProductDetailID = ghs.ProductDetailID;
                     GHS.GHSSignalWord = ghs.SignalWord;
                     GHS.GHSSymbol1 = ghs.Symbol1;
                     GHS.GHSSymbol2 = ghs.Symbol2;
@@ -90,7 +92,7 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = db.tblGHS.Find(obj.ProductDetailID);
+                var q = db.tblGHS.Find(obj.GHSID);
 
                 if (q != null)
                 {
@@ -108,7 +110,7 @@ namespace MvcPhoenix.Controllers
                 {
                     var newrecord = new EF.tblGHS
                     {
-                        ProductDetailID = Convert.ToInt32(obj.ProductDetailID),
+                        ProductDetailID = obj.ProductDetailID,
                         SignalWord = obj.GHSSignalWord,
                         Symbol1 = obj.GHSSymbol1,
                         Symbol2 = obj.GHSSymbol2,

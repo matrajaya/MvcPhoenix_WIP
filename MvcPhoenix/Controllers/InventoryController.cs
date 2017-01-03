@@ -348,7 +348,7 @@ namespace MvcPhoenix.Controllers
             return View();
         }
 
-        // Anonymous access is required for the callback from client print
+        // Anonymous access is REQUIRED for the callback from client print
         [AllowAnonymous]
         public void LabelPrint()
         {
@@ -380,7 +380,7 @@ namespace MvcPhoenix.Controllers
         public void ShelfStockPrint(string Shelfstockid, string pagecopies)
         {
             int id = Convert.ToInt32(Shelfstockid);
-            string printerName = @"AThermalZebraNet";                           // Set printer name or UNC eg; @"\\CMCNMPS2\RcvShelf"
+            string printerName = @"AThermalZebraNet";                           // Set printer name as installed on local pc or UNC eg; @"\\CMCNMPS2\RcvShelf"
 
             var actionPDF = new Rotativa.ActionAsPdf("PrintShelfStockLabel", new { id })
             {

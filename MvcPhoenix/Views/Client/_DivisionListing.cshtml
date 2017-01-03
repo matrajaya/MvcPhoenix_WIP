@@ -1,0 +1,72 @@
+﻿@model List<MvcPhoenix.Models.Division>
+@using MvcPhoenix.Extensions;
+
+@{
+    ViewBag.Title = "Divisions Listing";
+    Layout = null;
+}
+
+@*Load Details Edit Panel*@
+@*@Html.Action("EditDivision", "Client")*@
+
+<div id="dvDivisionList">
+    <div class="row">
+        <div class="col-md-3 pull-right">
+            @Ajax.ActionLink("+ Add New Division", "CreateDivision", "Client", new { id = ViewBag.ClientId }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "GET",
+            UpdateTargetId = "dialogPlaceholder",
+            OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+        }, new { @class = "btn btn-primary btn-block" })
+        </div>
+    </div>
+    <div class="form-group table-responsive">
+        <table class=" table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Division Name</th>
+                    <th>Business Unit</th>
+                    <th>Main Contact</th>
+                    <th>Phone</th>
+                    <th>Label Contact</th>
+                    <th>Phone</th>
+                    <th>MSDS Contact</th>
+                    <th>Phone</th>
+                    <th>Emergency</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DivisionID</td>
+                    <td>@item.DivisionName</td>
+                    <td>@item.BusinessUnit</td>
+                    <td>@item.MainContactName</td>
+                    <td>@item.MainContactNumber</td>
+                    <td>@item.ContactLabelName</td>
+                    <td>@item.ContactLabelPhone</td>
+                    <td>@item.ContactMSDSName</td>
+                    <td>@item.ContactMSDSPhone</td>
+                    <td>@item.EmergencyNumber</td>
+                    <td>
+                        @Ajax.ActionLink("Edit", "EditDivision", "Client", new { id = @item.DivisionID }, new AjaxOptions
+                   {
+                       InsertionMode = InsertionMode.Replace,
+                       HttpMethod = "GET",
+                       UpdateTargetId = "dialogPlaceholder",
+                       OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                   })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function UpdateDivisionList() {
+        $("#dvDivisionList").load('@Url.Action("ListDivisions", "Client", new { id = @ViewBag.ClientId })');
+    }
+</script>

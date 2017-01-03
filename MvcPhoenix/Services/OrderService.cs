@@ -284,7 +284,7 @@ namespace MvcPhoenix.Services
                 q.UpdateDate = vm.UpdateDate;
                 q.CreateUser = vm.CreateUser;
                 q.CreateDate = vm.CreateDate;
-                q.BillingGroup = vm.billinggroup;
+                q.BillingGroup = vm.billinggroup;           // divisionname + businessunit. Rethink changing to divisionid since it is more unique now.
 
                 // reset the value
                 q.IsSDN = false;
@@ -1196,8 +1196,8 @@ namespace MvcPhoenix.Services
 
                 mylist = (from t in db.tblDivision
                           where t.ClientID == id
-                          orderby t.Division
-                          select new SelectListItem { Value = t.Division, Text = t.Division }).Distinct().ToList();
+                          orderby t.DivisionName
+                          select new SelectListItem { Value = t.DivisionName, Text = t.DivisionName + " / " + t.BusinessUnit }).Distinct().ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
 
@@ -1393,8 +1393,8 @@ namespace MvcPhoenix.Services
 
                 mylist = (from t in db.tblDivision
                           where t.ClientID == id
-                          orderby t.Division
-                          select new SelectListItem { Value = t.Division, Text = t.Division }).ToList();
+                          orderby t.DivisionName
+                          select new SelectListItem { Value = t.DivisionName + " / " + t.BusinessUnit, Text = t.DivisionName + " / " + t.BusinessUnit }).ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 

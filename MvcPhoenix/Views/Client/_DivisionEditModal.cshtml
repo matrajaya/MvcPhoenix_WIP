@@ -1,0 +1,208 @@
+﻿@model MvcPhoenix.Models.Division
+
+<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4>Edit Division / Business Unit</h4>
+            </div>
+
+            <div id="dialogPlaceholderBody" class="modal-body">
+
+                @using (Ajax.BeginForm("SaveDivision", "Client", new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "dialogResult",
+                    OnSuccess = "UpdateDivisionList",
+                    InsertionMode = InsertionMode.Replace
+
+                }))
+                {
+                    @Html.HiddenFor(m => m.DivisionID)
+                    @Html.HiddenFor(m => m.ClientID)
+
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="checkbox-inline">
+                                <label>Inactive</label>@Html.CheckBox("Inactive", Model.Inactive != null && (bool)Model.Inactive, new { @class = "checkbox", @type = "checkbox" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label>Division Name</label>
+                            @Html.TextBoxFor(m => m.DivisionName, new { @class = "form-control", autofocus = "" })
+                            @Html.ValidationMessageFor(m => m.DivisionName)
+                        </div>
+                        <div class="col-md-6">
+                            <label>Business Unit</label>
+                            @Html.TextBoxFor(m => m.BusinessUnit, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.BusinessUnit)
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label>Main Contact</label>
+                            @Html.TextBoxFor(m => m.MainContactName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.MainContactName)
+                        </div>
+                        <div class="col-md-6">
+                            <label>Main Phone</label>
+                            @Html.TextBoxFor(m => m.MainContactNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.MainContactNumber)
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label>Label Contact</label>
+                            @Html.TextBoxFor(m => m.ContactLabelName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ContactLabelName)
+                        </div>
+                        <div class="col-md-6">
+                            <label>Label Contact Phone</label>
+                            @Html.TextBoxFor(m => m.ContactLabelPhone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ContactLabelPhone)
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <label>MSDS Contact</label>
+                            @Html.TextBoxFor(m => m.ContactMSDSName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ContactMSDSName)
+                        </div>
+                        <div class="col-md-6">
+                            <label>MSDS Contact Phone</label>
+                            @Html.TextBoxFor(m => m.ContactMSDSPhone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ContactMSDSPhone)
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-4">
+                            <label>Emergency Phone</label>
+                            @Html.TextBoxFor(m => m.EmergencyNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.EmergencyNumber)
+                        </div>
+                        <div class="col-md-4">
+                            <label>Waste Rate - Off Spec</label>
+                            @Html.TextBoxFor(m => m.WasteRateOffSpec, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.WasteRateOffSpec)
+                        </div>
+                        <div class="col-md-4">
+                            <label>Waste Rate - Empty</label>
+                            @Html.TextBoxFor(m => m.WasteRateEmpty, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.WasteRateEmpty)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 pull-left">
+                            <strong><em>Division ID: @Html.ValueFor(m => m.DivisionID)</em></strong>
+                        </div>
+                        <div class="col-md-3 pull-right">
+                            <input type="submit" class="btn btn-block btn-success" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function UpdateDivisionList() {
+        // Update the list
+        $("#dvDivisionList").load('@Url.Action("ListDivisions", "Client", new { id = @Model.ClientID })');
+
+        // Activate to hide the modal after list update
+        $("#dialogPlaceholderModal").modal('hide');
+    }
+</script>
+
+@*<div id="divisioneditpanel" class="panel panel-primary collapse in">
+        <div class="panel-body">
+            @using (Ajax.BeginForm("SaveDivision", "Client", new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    LoadingElementId = "dvspinner"
+                }))
+            {
+                @Html.HiddenFor(m => m.DivisionID)
+                @Html.HiddenFor(m => m.ClientID)
+
+                <div class="row form-group">
+                    <div class="col-md-4">
+                        <label>Division Name - <em>ID: @Html.ValueFor(m => m.DivisionID)</em></label>
+                        @Html.TextBoxFor(m => m.DivisionName, new { @class = "form-control", autofocus = "" })
+                        @Html.ValidationMessageFor(m => m.DivisionName)
+                    </div>
+                    <div class="col-md-4">
+                        <label>Business Unit</label>
+                        @Html.TextBoxFor(m => m.BusinessUnit, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.BusinessUnit)
+                    </div>
+                    <div class="col-md-3">
+                        <label>Emergency Phone</label>
+                        @Html.TextBoxFor(m => m.EmergencyNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.EmergencyNumber)
+                    </div>
+                    <div class="col-md-1">
+                        <label>Inactive</label>
+                        @Html.TextBoxFor(m => m.Inactive, new { @class = "checkbox", @type = "checkbox" })
+                        @Html.ValidationMessageFor(m => m.Inactive)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>Main Contact</label>
+                        @Html.TextBoxFor(m => m.MainContactName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MainContactName)
+                    </div>
+                    <div class="col-md-3">
+                        <label>Main Phone</label>
+                        @Html.TextBoxFor(m => m.MainContactNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MainContactNumber)
+                    </div>
+                    <div class="col-md-3">
+                        <label>Label Contact</label>
+                        @Html.TextBoxFor(m => m.ContactLabelName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactLabelName)
+                    </div>
+                    <div class="col-md-3">
+                        <label>Label Contact Phone</label>
+                        @Html.TextBoxFor(m => m.ContactLabelPhone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactLabelPhone)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>MSDS Contact</label>
+                        @Html.TextBoxFor(m => m.ContactMSDSName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactMSDSName)
+                    </div>
+                    <div class="col-md-3">
+                        <label>MSDS Contact Phone</label>
+                        @Html.TextBoxFor(m => m.ContactMSDSPhone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ContactMSDSPhone)
+                    </div>
+                    <div class="col-md-3">
+                        <label>Waste Rate - Off Spec</label>
+                        @Html.TextBoxFor(m => m.WasteRateOffSpec, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.WasteRateOffSpec)
+                    </div>
+                    <div class="col-md-3">
+                        <label>Waste Rate - Empty</label>
+                        @Html.TextBoxFor(m => m.WasteRateEmpty, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.WasteRateEmpty)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 pull-right">
+                        <input type="submit" class="btn btn-block btn-success" />
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+            <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
+        </div>
+    </div>*@

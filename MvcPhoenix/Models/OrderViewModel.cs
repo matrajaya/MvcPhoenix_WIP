@@ -220,14 +220,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Customer Ref")]
         public string customerreference { get; set; }
 
-        //[Display(Name = "Division")]
-        //public string division { get; set; }
-
-        //[Display(Name = "Bus Area")]
-        //public string busarea { get; set; }
-
-        // 04/28/2016 Above fields replaced with new field / per cd, ii
-        [Display(Name = "Billing Group")]
+        [Display(Name = "Billing Group")]           // Propose changing to standard divisionid instead
         public string billinggroup { get; set; }
 
         [Display(Name = "Total Order Weight")]

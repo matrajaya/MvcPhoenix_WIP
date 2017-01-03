@@ -203,7 +203,7 @@ namespace MvcPhoenix.Controllers
                               bin = t.Bin,
                               markedforreturn = t.MarkedForReturn,
                               divisionid = pd.DivisionID,
-                              divisionname = dv.Division
+                              divisionname = dv.DivisionName
                           }).ToList();
                 return vm;
             }
@@ -235,7 +235,7 @@ namespace MvcPhoenix.Controllers
                                   ShelfStatus = t.ShelfStatus,
                                   markedforreturn = t.MarkedForReturn,
                                   divisionid = pd.DivisionID,
-                                  divisionname = dv.Division
+                                  divisionname = dv.DivisionName
                               }).ToList();
                 return vm;
             }
@@ -295,8 +295,8 @@ namespace MvcPhoenix.Controllers
                            join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
                            join dv in db.tblDivision on pd.DivisionID equals dv.DivisionID
                            where pm.ClientID == id
-                           orderby dv.Division, dv.BusinessUnit
-                           select new { dvID = dv.DivisionID, dvDivisionName = dv.Division, dvBusinessUnit = dv.BusinessUnit }).Distinct().ToList();
+                           orderby dv.DivisionName, dv.BusinessUnit
+                           select new { dvID = dv.DivisionID, dvDivisionName = dv.DivisionName, dvBusinessUnit = dv.BusinessUnit }).Distinct().ToList();
                 
                 string s = "<option value='0'>All Divisions</option>";
                 

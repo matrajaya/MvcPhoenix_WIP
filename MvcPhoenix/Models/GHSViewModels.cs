@@ -6,13 +6,15 @@ namespace MvcPhoenix.Models
 {
     public class GHSViewModel
     {
+        public int GHSID { get; set; }
+
         // PD fields
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
 
         // detail fields
         public int PHDetailID { get; set; }
-        public int? ProductDetailID { get; set; }
+        public int ProductDetailID { get; set; }
         public string PHNumber { get; set; }
 
         // source fields

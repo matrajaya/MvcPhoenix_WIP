@@ -83,14 +83,9 @@
                         @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", disabled = "true" })
                         @Html.ValidationMessageFor(m => m.clientname)
                     </div>
-                    <div class="col-md-3 form-group">
-                        @Html.LabelFor(m => m.billinggroup, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-6 form-group">
+                        <label>Billing Group (Division / Business Unit)</label>
                         @Html.DropDownListFor(m => m.billinggroup, Model.ListOfBillingGroups, new { @class = "form-control" })
-                    </div>
-                    <div class="col-md-3">
-                        <label class="control-label">Client Source</label>
-                        @Html.TextBoxFor(m => m.source, new { @class = "form-control", @disabled = "disabled" })
-                        @Html.ValidationMessageFor(m => m.source)
                     </div>
                 </div>
                 <div class="row">
@@ -104,14 +99,19 @@
                         @Html.TextBoxFor(m => m.custordnum, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.custordnum)
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label><abbr title="S = Samples&#13;D = Dormant&#13;R = Returns&#13;C = Commercial&#13;">Order Type <i class="fa fa-fw fa-question-circle" rel="tooltip"></i></abbr></label>
                         @Html.DropDownListFor(m => m.ordertype, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderMasterFull.OrderTypeChoice))), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ordertype)
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="control-label">Order Source</label>
                         @Html.DropDownListFor(m => m.source, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderMasterFull.OrderSourceChoice))), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.source)
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">Client Source</label>
+                        @Html.TextBoxFor(m => m.source, new { @class = "form-control", @disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.source)
                     </div>
                 </div>

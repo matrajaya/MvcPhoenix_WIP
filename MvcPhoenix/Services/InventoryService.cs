@@ -35,7 +35,7 @@ namespace MvcPhoenix.Services
 
                 vm.Division = (from t in db.tblDivision
                                where t.DivisionID == PP.divisionid
-                               select t.Division).FirstOrDefault();
+                               select t.DivisionName).FirstOrDefault();
 
                 var q = (from t in db.tblBulkOrderItem
                          where t.ProductMasterID == id && t.Status == "OP"

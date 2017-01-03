@@ -263,4 +263,115 @@ namespace MvcPhoenix.Models
         [Display(Name = "Non-Hazard D&H Service Level 4")]
         public int? NonHazDHServLvl4 { get; set; }
     }
+
+    public class Division
+    {
+        [Display(Name = "Division ID")]
+        public int DivisionID { get; set; }
+
+        [Display(Name = "Client ID")]
+        public int? ClientID { get; set; }
+
+        [Display(Name = "Division Name")]
+        public string DivisionName { get; set; }
+
+        [Display(Name = "Business Unit")]
+        public string BusinessUnit { get; set; }
+
+        [Display(Name = "")]
+        public string Abbr { get; set; }
+
+        [Display(Name = "Waste Rate Off Spec")]
+        public decimal? WasteRateOffSpec { get; set; }
+
+        [Display(Name = "Waste Rate Empty")]
+        public decimal? WasteRateEmpty { get; set; }
+
+        [Display(Name = "Inactive")]
+        public bool? Inactive { get; set; }
+
+        [Display(Name = "")]
+        public int? LegacyID { get; set; }
+
+        [Display(Name = "")]
+        public string Location_MDB { get; set; }
+
+        [Display(Name = "")]
+        public string Company_MDB { get; set; }
+
+        [Display(Name = "Label Contact Name")]
+        public string ContactLabelName { get; set; }
+
+        [Display(Name = "Label Contact Phone")]
+        public string ContactLabelPhone { get; set; }
+
+        [Display(Name = "MSDS Contact Name")]
+        public string ContactMSDSName { get; set; }
+
+        [Display(Name = "MSDS Contact Phone")]
+        public string ContactMSDSPhone { get; set; }
+
+        [Display(Name = "Emergency Phone")]
+        public string EmergencyNumber { get; set; }
+
+        [Display(Name = "")]
+        public string UPSHazBook { get; set; }
+
+        [Display(Name = "")]
+        public string ExtMSDS { get; set; }
+
+        [Display(Name = "")]
+        public string ExtLabel { get; set; }
+
+        [Display(Name = "Main Contact Name")]
+        public string MainContactName { get; set; }
+
+        [Display(Name = "Main Contact Phone")]
+        public string MainContactNumber { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyName { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyStreet1 { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyStreet2 { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyStreet3 { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyPostalCode { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyCity { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyCountry { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyTelephone { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyFax { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyEmergencyTelephone { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyEmail { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyWebsite { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyLogo { get; set; }
+
+        [Display(Name = "")]
+        public string CompanyLogo2 { get; set; }
+
+        [Display(Name = "")]
+        public bool? IncludeExpDtOnLabel { get; set; }
+    }
 }

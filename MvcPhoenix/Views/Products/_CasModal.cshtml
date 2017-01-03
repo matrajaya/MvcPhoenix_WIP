@@ -83,13 +83,7 @@
                             <input class="btn btn-success btn-block" type="submit" value="Save" />
                         </div>
                         <div class="col-md-6 form-group">
-                            @Ajax.ActionLink("Close", "CasList", "Products", new { id = @Model.productdetailid },
-                              new AjaxOptions
-                         {
-                             HttpMethod = "GET",
-                             OnComplete = "$('#dialogPlaceholderModal').modal('hide')"
-                         },
-                                 new { @class = "btn btn-danger btn-block" })
+                            <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Close</button>
                         </div>
                     </div>
 

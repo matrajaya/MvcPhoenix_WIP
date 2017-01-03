@@ -14,6 +14,7 @@ namespace MvcPhoenix.EF
     
     public partial class tblGHS
     {
+        public int GHSID { get; set; }
         public int ProductDetailID { get; set; }
         public string SignalWord { get; set; }
         public string Symbol1 { get; set; }

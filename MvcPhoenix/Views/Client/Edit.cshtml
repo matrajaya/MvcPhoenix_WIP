@@ -61,13 +61,13 @@
             </div>
         </div>
 
-        <!-- Client Information -->
+        @* Client Information *@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#clientinfopanel"><i class="fa fa-book fa-fw"></i> Client Information</h3>
             </div>
             <div id="clientinfopanel" class="panel-body collapse in">
-                <div class="table-responsive">
+                <div class="form-group table-responsive">
                     <table class="table table-hover table-striped">
                         <tbody>
                             <tr>
@@ -334,61 +334,12 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
 
-        @*<!-- Contacts Management -->
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title" data-toggle="collapse" data-target="#contactpanel"><i class="fa fa-book fa-fw"></i> Contacts</h3>
-                </div>
-                <div id="contactpanel" class="panel-body collapse in">
-                    <div class="row">
-                        <div id="">
-                            @Html.Partial("~/Views/Client/_Contacts.cshtml")
-                        </div>
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-9">
+                        <input type="submit" class="btn btn-success btn-block" value="Save Changes" />
                     </div>
                 </div>
-            </div>
-
-            <!-- End Use Management -->
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title" data-toggle="collapse" data-target="#endusepanel"><i class="fa fa-book fa-fw"></i> End Use</h3>
-                </div>
-                <div id="endusepanel" class="panel-body collapse in">
-                    <div class="row">
-                        <div id="">
-                            @Html.Partial("~/Views/Client/_EndUse.cshtml")
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Suppliers Information -->
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title" data-toggle="collapse" data-target="#supplierpanel"><i class="fa fa-book fa-fw"></i>Suppliers</h3>
-                </div>
-                <div id="supplierpanel" class="panel-body collapse in">
-                    <div class="row">
-                        <div id="">
-                            @Html.Partial("~/Views/Client/_Suppliers.cshtml")
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-
-        <div class="form-group row">
-            <div class="col-md-12">
-                <input type="submit" class="btn btn-success btn-block" value="Save Changes" />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>
-                <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
             </div>
         </div>
 
@@ -398,6 +349,23 @@
             </div>
 
             <div id="dvSaveResult" class="col-md-12 text-center" style="font-weight:bold"></div>
+        </div>
+
+        @* Division *@
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#divisionpanel"><i class="fa fa-book fa-fw"></i> Divisions</h3>
+            </div>
+            <div id="divisionpanel" class="panel-body collapse in">
+                @Html.Action("ListDivisions", "Client", new { id = @Model.ClientID })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>
+                <span class="pull-right"><a href="#top">Back to Top</a> <i class="fa fa-arrow-circle-up"></i></span>
+            </div>
         </div>
 
     }

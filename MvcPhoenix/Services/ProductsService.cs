@@ -95,7 +95,8 @@ namespace MvcPhoenix.Models
 
                 PP.ListOfDivisions = (from t in db.tblDivision
 										where t.ClientID == PP.clientid
-										select new SelectListItem { Value = t.DivisionID.ToString(), Text = t.Division }).ToList();
+                                      orderby t.DivisionName
+                                      select new SelectListItem { Value = t.DivisionID.ToString(), Text = t.DivisionName + " / " + t.BusinessUnit }).ToList();
 										
                 PP.ListOfDivisions.Insert(0, (new SelectListItem { Value = "0", Text = "" }));
 

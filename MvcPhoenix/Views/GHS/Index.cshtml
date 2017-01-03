@@ -32,7 +32,9 @@
                 LoadingElementId = "dvspinner"
             }))
             {
+                @Html.HiddenFor(m => m.GHSID)
                 @Html.HiddenFor(m => m.ProductDetailID)
+
                 <div class="row form-group">
                     <div class="col-md-2">
                         <label>GHS Signal Word</label>

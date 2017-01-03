@@ -25,7 +25,7 @@ namespace MvcPhoenix.Controllers
                 vm = ProductsService.FillFromPM(vm);
                 vm = ProductsService.fnFillOtherPMProps(vm);
                 var vb = db.tblDivision.Find(vm.divisionid);
-                ViewBag.Division = vb.Division;    // not in PP
+                ViewBag.Division = vb.DivisionName;    // not in PP
                 return PartialView("~/Views/ProductConversion/_ProductDetail.cshtml", vm);
             }
             return RedirectToAction("Index");
