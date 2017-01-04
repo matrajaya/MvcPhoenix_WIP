@@ -34,7 +34,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblCarrier> tblCarrier { get; set; }
         public virtual DbSet<tblCAS> tblCAS { get; set; }
         public virtual DbSet<tblCeaseShipOffSet> tblCeaseShipOffSet { get; set; }
-        public virtual DbSet<tblClient> tblClient { get; set; }
         public virtual DbSet<tblClientContact> tblClientContact { get; set; }
         public virtual DbSet<tblClientIncidentalRate> tblClientIncidentalRate { get; set; }
         public virtual DbSet<tblClientInvoiceTrans> tblClientInvoiceTrans { get; set; }
@@ -88,5 +87,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
         public virtual DbSet<vwBulkLevel> vwBulkLevel { get; set; }
         public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
+        public virtual DbSet<tblClient> tblClient { get; set; }
     }
 }

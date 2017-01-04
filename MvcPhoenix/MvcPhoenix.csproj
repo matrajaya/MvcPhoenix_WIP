@@ -277,6 +277,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MiscController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PackOutController.cs" />
     <Compile Include="Controllers\ProductConversionController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\ReceivingController.cs" />
@@ -566,6 +567,7 @@
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\PackOutService.cs" />
     <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\ReceivingService.cs" />
     <Compile Include="Services\ReplenishmentsService.cs" />
@@ -1233,10 +1235,8 @@
     <Content Include="Views\Orders\OrderImport.cshtml" />
     <Content Include="Views\Orders\PrintOrder.cshtml" />
     <Content Include="Views\Orders\_IndexPartial.cshtml" />
-    <Content Include="Views\Orders\_ItemEditModal.cshtml" />
     <Content Include="Views\Orders\_OrderItems.cshtml" />
     <Content Include="Views\Orders\_OrderTrans.cshtml" />
-    <Content Include="Views\Orders\_TransEditModal.cshtml" />
     <Content Include="Views\Products\Create.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
@@ -1335,6 +1335,7 @@
     <Content Include="Views\Reports\View.cshtml" />
     <Content Include="Views\Client\_DivisionListing.cshtml" />
     <Content Include="Views\Client\_DivisionEditModal.cshtml" />
+    <Content Include="Views\Packout\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

@@ -2,22 +2,26 @@
 @{}
 
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-
-            <div class="modal-header">
-                <h4>Stock Item: @Model.StockID.ToString()</h4>
-            </div>
-
-            <div id="dialogPlaceholderBody" class="modal-body">
-                @using (Ajax.BeginForm("SaveStock", "Inventory", new AjaxOptions
+            @using (Ajax.BeginForm("SaveStock", "Inventory", new AjaxOptions
                 {
                     HttpMethod = "POST",
                     UpdateTargetId = "dialogResult",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "CloseUpdate"
                 }))
-                {
+            {
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Stock Item: @Model.StockID.ToString()</h4>
+                </div>
+
+                <div id="dialogPlaceholderBody" class="modal-body">
+
                     @Html.HiddenFor(m => m.StockID)
                     @Html.HiddenFor(m => m.ProductDetailID)
 
@@ -115,27 +119,22 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-6">
                             <label>Update Date</label>
                             @Html.TextBoxFor(m => m.UpdateDate, new { @class = "form-control", @disabled = "disabled" })
                         </div>
-                        <div class="col-md-6 form-group">
-                            <label>Update User</label>
+                        <div class="col-md-6">
+                            <label>Update By</label>
                             @Html.TextBoxFor(m => m.UpdateUser, new { @class = "form-control", @disabled = "disabled" })
                         </div>
                     </div>
+                </div>
 
-                    <div class="row">
-                        <div class="col-md-4 form-group">
-                            <!-- update tblStock record -->
-                            <input class="btn btn-success btn-block" type="submit" value="Save" />
-                        </div>
-                        <div class="col-md-4 form-group pull-right">
-                            <a class="btn btn-danger btn-block" data-dismiss="modal">Close</a>
-                        </div>
-                    </div>
-                }
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            }
         </div>
     </div>
 </div>

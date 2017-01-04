@@ -108,5 +108,6 @@ namespace MvcPhoenix.EF
         public Nullable<int> NonHazDHServLvl2 { get; set; }
         public Nullable<int> NonHazDHServLvl3 { get; set; }
         public Nullable<int> NonHazDHServLvl4 { get; set; }
+        public string MDB_CMCBE { get; set; }
     }
 }

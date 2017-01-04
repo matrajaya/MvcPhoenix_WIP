@@ -273,7 +273,7 @@
             </div>
             <div id="bulkstockpan" class="panel-body collapse in">
                 <div id="">
-                    @{Html.RenderAction("BulkStockList", "Inventory", new { id = @Model.PP.productmasterid });}
+                    @{Html.RenderAction("BulkStockList", "Inventory", new { id = @Model.PP.productmasterid, productdetailid = @Model.PP.productdetailid });}
                 </div>
             </div>
         </div>

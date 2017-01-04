@@ -1,11 +1,14 @@
 ﻿@{}
 
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4>Advanced Search</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Advanced Search</h4>
             </div>
 
             <div id="dialogPlaceholderBody" class="modal-body">
@@ -13,13 +16,13 @@
                 @using (Ajax.BeginForm("LookupClientID", "Orders", FormMethod.Post, new AjaxOptions
                         {
                             UpdateTargetId = "dvSearchResults",
-                            InsertionMode = InsertionMode.Replace
-                            //OnSuccess = "$('#dialogPlaceholderModal').modal('hide')"
+                            InsertionMode = InsertionMode.Replace,
+                            OnSuccess = "$('#dialogPlaceholderModal').modal('hide')"
                         }))
                 {
                     <div class="input-group" style="padding: 5px;">
                         @Html.DropDownList("ClientID", MvcPhoenix.Services.OrderService.fnListOfClientIDs(), new { name = "ClientID", @class = "form-control" })
-                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Last 20" /></span>
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Last 20" /></span>
                     </div>
                 }
 
@@ -32,7 +35,7 @@
                 {
                     <div class="input-group" style="padding: 5px;">
                         <input class="form-control date-picker" id="searchorderdate" name="searchorderdate" type="date" required />
-                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
 
@@ -46,7 +49,7 @@
                 {
                     <div class="input-group" style="padding: 5px;">
                         @Html.TextBox("searchcompany", null, new { @class = "form-control", placeholder = "Ship To..." })
-                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
 
@@ -59,7 +62,7 @@
                 {
                     <div class="input-group" style="padding: 5px;">
                         @Html.TextBox("searchzipcode", null, new { @class = "form-control", placeholder = "Zip/postal code..." })
-                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
                 @using (Ajax.BeginForm("LookupSalesRep", "Orders", FormMethod.Post,
@@ -71,26 +74,13 @@
                 {
                     <div class="input-group" style="padding: 5px;">
                         @Html.TextBox("searchsalesrep", null, new { @class = "form-control", placeholder = "Sales rep name..." })
-                        <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Search" /></span>
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
-
-                <div class="clearfix"></div>
-                <br />
-
-                <div class="row">
-                    @*<div class="col-md-6 form-group">
-                            <span class="pull-left">
-                                <input type="submit" value="Search" class="btn btn-md btn-success" />
-                            </span>
-                        </div>*@
-
-                    <div class="col-md-12 form-group">
-                        <span class="pull-right">
-                            <input type="button" value="Close" onclick="$('#dialogPlaceholderModal').modal('hide')" class="btn btn-primary" />
-                        </span>
-                    </div>
-                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -50,7 +50,7 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("Edit", "Replenishments", new { id = id });
         }
 
-        public ActionResult BulkStockList(int id)  // return partial
+        public ActionResult BulkStockList(int id, int productdetailid)  // return partial
         {
             // fill a list<BulkContainerViewModel>
             var vm = new List<BulkContainerViewModel>();
@@ -63,7 +63,9 @@ namespace MvcPhoenix.Controllers
             {
                 vm.Add(MvcPhoenix.Services.BulkService.fnFillBulkContainerFromDB(row.BulkID));
             }
-
+			
+			// pc 12/27 added for use by CreateNewPackout so can return to Inv Edit
+            TempData["productdetailid"] = productdetailid;
             return PartialView("~/Views/Inventory/_BulkStock.cshtml", vm);
         }
 
