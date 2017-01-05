@@ -69,7 +69,7 @@
                             @Html.ValidationMessageFor(m => m.ContactLabelPhone)
                         </div>
                     </div>
-                    <div class="row form-group">
+                    <div class="row">
                         <div class="col-md-6 form-group">
                             <label>MSDS Contact</label>
                             @Html.TextBoxFor(m => m.ContactMSDSName, new { @class = "form-control" })
@@ -98,12 +98,6 @@
                             @Html.ValidationMessageFor(m => m.WasteRateEmpty)
                         </div>
                     </div>
-                    @*<div class="row">
-
-                            <div class="col-md-3 pull-right">
-                                <input type="submit" class="btn btn-block btn-success" />
-                            </div>
-                        </div>*@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

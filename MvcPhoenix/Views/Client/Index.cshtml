@@ -98,9 +98,9 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CMCLocation)
                                 </td>
-                                <td class="text-right">
-                                    @Html.ActionLink("View", "View", new { id = item.ClientID }) |
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.ClientID })
+                                <td style="text-align:right">
+                                    @Html.ActionLink(" ", "View", new { id = item.ClientID }, new { @class = "btn btn-primary fa fa-eye", @title = "View" }) |
+                                    @Html.ActionLink(" ", "Edit", new { id = item.ClientID }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
                                 </td>
                             </tr>
                         }

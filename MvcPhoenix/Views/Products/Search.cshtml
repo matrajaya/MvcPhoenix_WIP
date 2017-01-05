@@ -18,7 +18,6 @@
             else
             {
                 <label class="lead">Search Results For "@ViewBag.CurrentFilter"</label>
-
                 <div class="table-responsive">
                     <table class="table table-hover table-striped">
                         <thead>
@@ -46,8 +45,8 @@
                                     <td data-label="Product Name">
                                         @Html.DisplayFor(modelItem => item.ProductName)
                                     </td>
-                                    <td data-label="" style="text-align:right">
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.ProductDetailID })
+                                    <td style="text-align:right">
+                                        @Html.ActionLink(" ", "Edit", new { id = item.ProductDetailID }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
                                     </td>
                                 </tr>
                         }</tbody>

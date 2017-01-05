@@ -39,14 +39,14 @@
                         <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
                         <td>@item.notes</td>
                         <td>@item.reasoncode</td>
-                        <td id="noprint">
-                            @Ajax.ActionLink("Edit", "EditProductNote", "Products", new { id = @item.productnoteid }, new AjaxOptions
+                        <td id="noprint" style="text-align:right">
+                            @Ajax.ActionLink(" ", "EditProductNote", "Products", new { id = @item.productnoteid }, new AjaxOptions
                                {
                                    InsertionMode = InsertionMode.Replace,
                                    HttpMethod = "GET",
                                    UpdateTargetId = "dialogPlaceholder",
                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-                               })
+                               }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
                         </td>
                     </tr>
                 }

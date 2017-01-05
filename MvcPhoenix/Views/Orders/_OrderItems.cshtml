@@ -5,7 +5,7 @@
     ViewBag.Title = "Order Items";
 }
 
-<div class="table-responsive">
+<div class="table-responsive form-group">
     <table id="mytable" class="table table-hover table-striped">
         <thead>
             <tr>
@@ -32,34 +32,34 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td><div style="zoom:15%;">@Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.LotNumber + "~" + @item.Size))</div></td>
-                <td>@(Model.IndexOf(item) + 1)</td>
-                <td>@item.ItemID</td>
-                <td>@item.ShelfID</td>
-                <td>@item.BulkID</td>
-                <td>@item.ProductCode</td>
-                <td>@item.ProductName</td>
-                <td>@item.Size</td>
-                <td>@item.LotNumber</td>
-                <td class="text-center">@item.Qty</td>
-                <td class="text-center">@item.QtyAvailable</td>
-                <td>@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
-                <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
-                <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
-                <td class="text-center"><input type="checkbox" checked="@item.CSAllocate" readonly="readonly" onclick="return false" /></td>
-                <td class="text-center">@item.AllocateStatus</td>
-                <td class="text-center">@item.AllocatedDate</td>
-                <td id="noprint" class="text-right">
-                    @Ajax.ActionLink(" ", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
-                             {
-                                 UpdateTargetId = "dialogPlaceholder",
-                                 InsertionMode = InsertionMode.Replace,
-                                 HttpMethod = "GET",
-                                 OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                             }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Order Item" })
-                </td>
-            </tr>
+                <tr>
+                    <td><div style="zoom:15%;">@Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.LotNumber + "~" + @item.Size))</div></td>
+                    <td>@(Model.IndexOf(item) + 1)</td>
+                    <td>@item.ItemID</td>
+                    <td>@item.ShelfID</td>
+                    <td>@item.BulkID</td>
+                    <td>@item.ProductCode</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Size</td>
+                    <td>@item.LotNumber</td>
+                    <td class="text-center">@item.Qty</td>
+                    <td class="text-center">@item.QtyAvailable</td>
+                    <td>@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
+                    <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
+                    <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
+                    <td class="text-center"><input type="checkbox" checked="@item.CSAllocate" readonly="readonly" onclick="return false" /></td>
+                    <td class="text-center">@item.AllocateStatus</td>
+                    <td class="text-center">@item.AllocatedDate</td>
+                    <td id="noprint" class="text-right">
+                        @Ajax.ActionLink(" ", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
+                        {
+                            UpdateTargetId = "dialogPlaceholder",
+                            InsertionMode = InsertionMode.Replace,
+                            HttpMethod = "GET",
+                            OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                        }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

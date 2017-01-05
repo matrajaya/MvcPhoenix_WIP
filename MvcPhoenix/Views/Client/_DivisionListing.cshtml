@@ -51,14 +51,14 @@
                     <td>@item.ContactMSDSName</td>
                     <td>@item.ContactMSDSPhone</td>
                     <td>@item.EmergencyNumber</td>
-                    <td>
-                        @Ajax.ActionLink("Edit", "EditDivision", "Client", new { id = @item.DivisionID }, new AjaxOptions
+                    <td style="text-align:right">
+                        @Ajax.ActionLink(" ", "EditDivision", "Client", new { id = @item.DivisionID }, new AjaxOptions
                    {
                        InsertionMode = InsertionMode.Replace,
                        HttpMethod = "GET",
                        UpdateTargetId = "dialogPlaceholder",
                        OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-                   })
+                   }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
                     </td>
                 </tr>
             }

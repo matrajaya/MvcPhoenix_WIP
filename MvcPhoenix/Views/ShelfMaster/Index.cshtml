@@ -95,14 +95,14 @@
                                 <td><input type="checkbox" checked="@item.labelsurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.othersurcharge" disabled="disabled"></td>
                                 <td><input type="checkbox" checked="@item.inactivesize" disabled="disabled"></td>
-                                <td rowspan="3">@Html.ActionLink("Copy", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new { onclick = "return confirm('Copy this Size?');" })</td>
-                                <td class="text-center" rowspan="3">
-                                    @Ajax.ActionLink("Edit", "Edit", "ShelfMaster", new { id = @item.shelfid }, new AjaxOptions
+                                <td rowspan="3" style="text-align:right">
+                                    @Html.ActionLink(" ", "CloneShelfMaster", "ShelfMaster", new { id = @item.shelfid }, new { onclick = "return confirm('Copy this Size?');", @class = "btn btn-primary fa fa-files-o", @title = "Copy" }) |
+                                    @Ajax.ActionLink(" ", "Edit", "ShelfMaster", new { id = @item.shelfid }, new AjaxOptions
                                        {
                                            InsertionMode = InsertionMode.Replace,
                                            HttpMethod = "GET",
                                            UpdateTargetId = "dvEditPlaceholder",
-                                       })
+                                       }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
                                 </td>
                             </tr>
                             <tr style="border:none;">

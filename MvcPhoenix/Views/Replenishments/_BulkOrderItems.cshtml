@@ -47,7 +47,14 @@
                         <td>@String.Format("{0:dd MMM yyyy}", @item.eta)</td>
                         <td>@String.Format("{0:dd MMM yyyy}", @item.datereceived)</td>
                         <td>@item.itemnotes</td>
-                        <td>@Ajax.ActionLink("Edit", "EditItem", "Replenishments", new { id = @item.bulkorderitemid }, new AjaxOptions { UpdateTargetId = "dialogPlaceholder", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#dialogPlaceholderModal').modal('show')" })</td>
+                        <td style="text-align:right">
+                            @Ajax.ActionLink(" ", "EditItem", "Replenishments", new { id = @item.bulkorderitemid }, new AjaxOptions
+                               {
+                                   UpdateTargetId = "dialogPlaceholder",
+                                   InsertionMode = InsertionMode.Replace,
+                                   OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                               }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
+                        </td>
                     </tr>
                 }
             </tbody>

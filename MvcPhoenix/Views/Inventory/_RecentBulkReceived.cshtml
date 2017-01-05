@@ -15,7 +15,7 @@
             <th>Lot</th>
             <th>UM</th>
             <th>Rec'd<br />WT</th>
-            <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -34,7 +34,9 @@
                 <td>@item.lotnumber</td>
                 <td>@item.um</td>
                 <td>@item.receiveweight.ToString()</td>
-                <td>@Html.ActionLink("Edit", "EditContainerReceipt", new { controller = "Receiving", id = @item.bulkid }, new { target = "_blank" })</td>
+                <td style="text-align:right">
+                    @Html.ActionLink("Edit", "EditContainerReceipt", new { controller = "Receiving", id = @item.bulkid }, new { target = "_blank" })
+                </td>
             </tr>
         }
     </tbody>

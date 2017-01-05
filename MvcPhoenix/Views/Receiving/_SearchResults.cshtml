@@ -24,7 +24,7 @@
                 <th>Lot</th>
                 <th>UM</th>
                 <th>WT</th>
-                <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -43,7 +43,9 @@
                     <td>@item.lotnumber</td>
                     <td>@item.um</td>
                     <td>@item.currentweight.ToString()</td>
-                    <td>@Html.ActionLink("Edit", "Edit", new { id = @item.bulkid })</td>
+                    <td style="text-align:right">
+                        @Html.ActionLink(" ", "Edit", new { id = @item.bulkid }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
+                    </td>
                 </tr>
             }
         </tbody>

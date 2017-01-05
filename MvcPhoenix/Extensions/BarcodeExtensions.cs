@@ -12,7 +12,7 @@ namespace MvcPhoenix.Extensions
     {
         public static IHtmlString GenerateMatrixCode(this HtmlHelper html, string inputentry, int height = 250, int width = 250, int margin = 0)
         {
-            var qrValue = inputentry + "          "; // 10 trailing spaces added to guard against unpredictabilty.
+            var qrValue = inputentry + "               "; // 15 trailing spaces added to guard against unpredictabilty.
             var barcodeWriter = new BarcodeWriter
             {
                 Format = BarcodeFormat.DATA_MATRIX,
@@ -40,7 +40,7 @@ namespace MvcPhoenix.Extensions
 
         public static IHtmlString GenerateMatrixCodeLabelSm(this HtmlHelper html, string inputentry, int height = 144, int width = 144, int margin = 0)
         {
-            var qrValue = inputentry + "          "; // 10 trailing spaces added to guard against unpredictabilty.
+            var qrValue = inputentry + "               "; // 15 trailing spaces added to guard against unpredictabilty.
             var barcodeWriter = new BarcodeWriter
             {
                 Format = BarcodeFormat.DATA_MATRIX,

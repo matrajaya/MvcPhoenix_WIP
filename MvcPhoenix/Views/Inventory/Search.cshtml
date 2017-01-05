@@ -84,8 +84,8 @@
                                         <td data-label="Product Name">
                                             @Html.DisplayFor(modelItem => item.ProductName)
                                         </td>
-                                        <td data-label="">
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.ProductDetailID })
+                                        <td style="text-align:right">
+                                            @Html.ActionLink(" ", "Edit", new { id = item.ProductDetailID }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
                                         </td>
                                     </tr>
                                 }

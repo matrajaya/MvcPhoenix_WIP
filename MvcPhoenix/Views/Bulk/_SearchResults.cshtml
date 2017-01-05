@@ -20,7 +20,7 @@
                             <th>Status</th>
                             <th>Master Code</th>
                             <th>Master Name</th>
-                            <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,9 @@
                                 <td>@item.bulkstatus</td>
                                 <td>@item.MasterCode</td>
                                 <td>@item.MasterName</td>
-                                <td>@Html.ActionLink("Edit", "Edit", new { id = @item.bulkid })</td>
+                                <td style="text-align:right">
+                                    @Html.ActionLink(" ", "Edit", new { id = @item.bulkid }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
+                                </td>
                             </tr>
                         }
                     </tbody>

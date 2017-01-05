@@ -4,12 +4,12 @@
     <div class="row">
         <div class="col-md-3 pull-right">
             @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = ViewBag.ParentKey }, new AjaxOptions
-        {
-            InsertionMode = InsertionMode.Replace,
-            HttpMethod = "GET",
-            UpdateTargetId = "dialogPlaceholder",
-            OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-        }, new { @class = "btn btn-primary btn-block" })
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "GET",
+                    UpdateTargetId = "dialogPlaceholder",
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                }, new { @class = "btn btn-primary btn-block" })
         </div>
     </div>
     <div class="table-responsive">
@@ -40,7 +40,7 @@
                                  Confirm = "Delete This CAS/EC Entry?",
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateCasList"
-                             }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
+                             }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;", @title = "Delete" })
                         </td>
                         <td>@item.casnumber</td>
                         <td>@item.chemicalname</td>
@@ -51,14 +51,14 @@
                         <td>@item.reportableamount</td>
                         <td><input type="checkbox" checked="@item.restrictedqty" disabled="disabled"></td>
                         <td>@item.restrictedamount</td>
-                        <td id="noprint">
-                            @Ajax.ActionLink("Edit", "EditCAS", "Products", new { id = @item.casid }, new AjaxOptions
-                   {
-                       InsertionMode = InsertionMode.Replace,
-                       HttpMethod = "GET",
-                       UpdateTargetId = "dialogPlaceholder",
-                       OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-                   })
+                        <td id="noprint" style="text-align:right">
+                            @Ajax.ActionLink(" ", "EditCAS", "Products", new { id = @item.casid }, new AjaxOptions
+                               {
+                                   InsertionMode = InsertionMode.Replace,
+                                   HttpMethod = "GET",
+                                   UpdateTargetId = "dialogPlaceholder",
+                                   OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                               }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
                         </td>
                     </tr>
                 }
