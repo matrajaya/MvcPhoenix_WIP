@@ -6,23 +6,9 @@
     Layout = null;
 }
 
-@*Load Details Edit Panel*@
-@*@Html.Action("EditDivision", "Client")*@
-
 <div id="dvDivisionList">
-    <div class="row">
-        <div class="col-md-3 pull-right">
-            @Ajax.ActionLink("+ Add New Division", "CreateDivision", "Client", new { id = ViewBag.ClientId }, new AjaxOptions
-        {
-            InsertionMode = InsertionMode.Replace,
-            HttpMethod = "GET",
-            UpdateTargetId = "dialogPlaceholder",
-            OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-        }, new { @class = "btn btn-primary btn-block" })
-        </div>
-    </div>
     <div class="form-group table-responsive">
-        <table class=" table table-hover table-striped">
+        <table class="table table-hover table-striped">
             <thead>
                 <tr>
                     <th>ID</th>

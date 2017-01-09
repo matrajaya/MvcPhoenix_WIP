@@ -1,9 +1,8 @@
-﻿using System;
+﻿using MvcPhoenix.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using MvcPhoenix.Models;
 
 // ************** ClientService.cs ********************
 // This class contains Client Management service methods
@@ -244,6 +243,8 @@ namespace MvcPhoenix.Services
             }
         }
 
+        #region Division Services
+        
         public static Division FillDivisionDetails(int id)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -272,5 +273,57 @@ namespace MvcPhoenix.Services
                 return vm;
             }
         }
+        
+        #endregion
+
+        #region Supplier Services
+
+        public static Supplier FillSupplierDetails(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                Supplier vm = new Supplier();
+
+                var qry = (from t in db.tblSupplier
+                           where t.SupplierID == id
+                           select t).FirstOrDefault();
+
+                vm.SupplierID = qry.SupplierID;
+                vm.ClientID = qry.ClientID;
+                vm.SupplierCode = qry.SupplierCode;
+                vm.SupplierName = qry.SupplierName;
+                vm.ContactName = qry.ContactName;
+                vm.Address1 = qry.Address1;
+                vm.Address2 = qry.Address2;
+                vm.City = qry.City;
+                vm.State = qry.State;
+                vm.PostalCode = qry.PostalCode;
+                vm.Country = qry.Country;
+                vm.ListOfCountries = fnListOfCountries();
+                vm.Email = qry.Email;
+                vm.Phone = qry.Phone;
+                vm.Fax = qry.Fax;
+
+                return vm;
+            }
+        }
+
+        public static List<SelectListItem> fnListOfCountries()
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+
+                mylist = (from t in db.tblCountry
+                          orderby t.Country
+                          select new SelectListItem { Value = t.Country, Text = t.Country }).ToList();
+
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+
+                return mylist;
+            }
+        }
+
+        #endregion
     }
 }

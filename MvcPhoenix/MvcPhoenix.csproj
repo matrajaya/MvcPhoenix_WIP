@@ -465,6 +465,9 @@
     <Compile Include="EF\tblSuggestedBulk.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblSupplier.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblSurcharge.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>

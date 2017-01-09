@@ -108,10 +108,10 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("Edit", new { id = pk });
         }
 
+        #region Division Methods
+
         public ActionResult ListDivisions(int id)
         {
-            ViewBag.ClientId = id;
-
             using (db)
             {
                 var qry = (from t in db.tblDivision
@@ -241,5 +241,122 @@ namespace MvcPhoenix.Controllers
 
             return null;
         }
+
+        #endregion Division Methods
+
+        #region Supplier Methods
+
+        public ActionResult ListSuppliers(int id)
+        {
+            using (db)
+            {
+                var qry = (from t in db.tblSupplier
+                           where t.ClientID == id
+                           orderby t.SupplierName
+                           select new MvcPhoenix.Models.Supplier
+                           {
+                               SupplierID = t.SupplierID,
+                               ClientID = t.ClientID,
+                               SupplierCode = t.SupplierCode,
+                               SupplierName = t.SupplierName,
+                               ContactName = t.ContactName,
+                               Address1 = t.Address1,
+                               Address2 = t.Address2,
+                               City = t.City,
+                               State = t.State,
+                               PostalCode = t.PostalCode,
+                               Country = t.Country,
+                               Email = t.Email,
+                               Phone = t.Phone,
+                               Fax = t.Fax
+                           }).ToList();
+
+                if (qry.Count > 0)
+                {
+                    return PartialView("~/Views/Client/_Suppliers.cshtml", qry);
+                }
+
+                return null;
+            }
+        }
+
+        [HttpGet]
+        public ActionResult EditSupplier(int id)
+        {
+            Supplier vm = new Supplier();
+            vm = ClientService.FillSupplierDetails(id);
+            return PartialView("~/Views/Client/_SuppliersModal.cshtml", vm);
+        }
+
+        [HttpGet]
+        public ActionResult CreateSupplier(int id)
+        {
+            // id = clientid
+            var vm = EmptySupplier(id);
+            return PartialView("~/Views/Client/_SuppliersModal.cshtml", vm);
+        }
+
+        public static Supplier EmptySupplier(int id)
+        {
+            Supplier vm = new Supplier();
+            vm.SupplierID = -1;
+            vm.ListOfCountries = ClientService.fnListOfCountries();
+            vm.ClientID = id;
+
+            return vm;
+        }
+
+        public ActionResult SaveSupplier(Supplier obj)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var q = db.tblSupplier.Find(obj.SupplierID);
+
+                if (q != null)
+                {
+                    q.SupplierCode = obj.SupplierCode;
+                    q.SupplierName = obj.SupplierName;
+                    q.ContactName = obj.ContactName;
+                    q.Address1 = obj.Address1;
+                    q.Address2 = obj.Address2;
+                    q.City = obj.City;
+                    q.State = obj.State;
+                    q.PostalCode = obj.PostalCode;
+                    q.Country = obj.Country;
+                    q.Email = obj.Email;
+                    q.Phone = obj.Phone;
+                    q.Fax = obj.Fax;
+
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var newrecord = new EF.tblSupplier
+                    {
+                        SupplierID = Convert.ToInt32(obj.SupplierID),
+                        ClientID = Convert.ToInt32(obj.ClientID),
+                        SupplierCode = obj.SupplierCode,
+                        SupplierName = obj.SupplierName,
+                        ContactName = obj.ContactName,
+                        Address1 = obj.Address1,
+                        Address2 = obj.Address2,
+                        City = obj.City,
+                        State = obj.State,
+                        PostalCode = obj.PostalCode,
+                        Country = obj.Country,
+                        Email = obj.Email,
+                        Phone = obj.Phone,
+                        Fax = obj.Fax
+                    };
+
+                    db.tblSupplier.Add(newrecord);
+                    db.SaveChanges();
+                }
+            }
+
+            return null;
+        }
+
+        #endregion Supplier Methods
     }
 }

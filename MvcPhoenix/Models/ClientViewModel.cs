@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -278,7 +279,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Business Unit")]
         public string BusinessUnit { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Short Name")]
         public string Abbr { get; set; }
 
         [Display(Name = "Waste Rate Off Spec")]
@@ -290,14 +291,8 @@ namespace MvcPhoenix.Models
         [Display(Name = "Inactive")]
         public bool? Inactive { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Legacy Code")]
         public int? LegacyID { get; set; }
-
-        [Display(Name = "")]
-        public string Location_MDB { get; set; }
-
-        [Display(Name = "")]
-        public string Company_MDB { get; set; }
 
         [Display(Name = "Label Contact Name")]
         public string ContactLabelName { get; set; }
@@ -314,13 +309,13 @@ namespace MvcPhoenix.Models
         [Display(Name = "Emergency Phone")]
         public string EmergencyNumber { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "UPS Hazard Book")]
         public string UPSHazBook { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Ext MSDS")]
         public string ExtMSDS { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "External Label")]
         public string ExtLabel { get; set; }
 
         [Display(Name = "Main Contact Name")]
@@ -329,49 +324,99 @@ namespace MvcPhoenix.Models
         [Display(Name = "Main Contact Phone")]
         public string MainContactNumber { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Street 1")]
         public string CompanyStreet1 { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Street 2")]
         public string CompanyStreet2 { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Street 3")]
         public string CompanyStreet3 { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Postal Code")]
         public string CompanyPostalCode { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "City")]
         public string CompanyCity { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Country")]
         public string CompanyCountry { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Phone")]
         public string CompanyTelephone { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Fax")]
         public string CompanyFax { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Emergency Phone")]
         public string CompanyEmergencyTelephone { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Email")]
         public string CompanyEmail { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Website")]
         public string CompanyWebsite { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Logo")]
         public string CompanyLogo { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Logo 2")]
         public string CompanyLogo2 { get; set; }
 
-        [Display(Name = "")]
+        [Display(Name = "Include on Label")]
         public bool? IncludeExpDtOnLabel { get; set; }
+
+        public string Location_MDB { get; set; }
+        public string Company_MDB { get; set; }
+    }
+
+    public class Supplier
+    {
+        [Display(Name = "Supplier ID")]
+        public int SupplierID { get; set; }
+
+        [Display(Name = "Client ID")]
+        public int? ClientID { get; set; }
+
+        [Display(Name = "Supplier Code")]
+        public string SupplierCode { get; set; }
+
+        [Display(Name = "Supplier Name")]
+        public string SupplierName { get; set; }
+
+        [Display(Name = "Contact Name")]
+        public string ContactName { get; set; }
+
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Phone")]
+        public string Phone { get; set; }
+
+        [Display(Name = "Fax")]
+        public string Fax { get; set; }
+
+        [Display(Name = "Address 1")]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Address 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "City")]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        public string State { get; set; }
+
+        [Display(Name = "Postal Code")]
+        public string PostalCode { get; set; }
+
+        [Display(Name = "Country")]
+        public string Country { get; set; }
+
+        public List<SelectListItem> ListOfCountries { get; set; }
     }
 }
