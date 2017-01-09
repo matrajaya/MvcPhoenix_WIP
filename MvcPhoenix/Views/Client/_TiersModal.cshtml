@@ -1,0 +1,83 @@
+﻿@model MvcPhoenix.Models.Tier
+@{
+    ViewBag.Title = "Edit Tier";
+
+    if (Model.TierID == -1)
+    {
+        ViewBag.Title = "Add Tier";
+    }
+}
+
+<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("SaveTier", "Client", new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "dialogResult",
+                    OnSuccess = "UpdateTierList",
+                    InsertionMode = InsertionMode.Replace
+
+                }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">@ViewBag.Title</h4>
+                </div>
+                <div id="dialogPlaceholderBody" class="modal-body">
+                    @Html.HiddenFor(m => m.TierID)
+                    @Html.HiddenFor(m => m.ClientID)
+
+                    <div class="row form-group">
+                        <div class="col-md-6 pull-left">
+                            <strong><em>Tier ID: @Html.ValueFor(m => m.TierID)</em></strong>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Tier Level</label>
+                            @Html.TextBoxFor(m => m.TierLevel, new { @class = "form-control", autofocus = "" })
+                            @Html.ValidationMessageFor(m => m.TierLevel)
+                        </div>
+                    </div>
+                    <div class="row">                        
+                        <div class="col-md-6 form-group">
+                            <label>Size</label>
+                            @Html.TextBoxFor(m => m.Size, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Size)
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Price</label>
+                            @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Price)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Min Sample Amt</label>
+                            @Html.TextBoxFor(m => m.LoSampAmt, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LoSampAmt)
+                        </div>
+                        <div class="col-md-6">
+                            <label>Max Sample Amt</label>
+                            @Html.TextBoxFor(m => m.HiSampAmt, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.HiSampAmt)
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function UpdateTierList() {
+        // Update the list and close modal
+        $("#dvTierList").load('@Url.Action("ListTiers", "Client", new { id = @Model.ClientID })');
+        $("#dialogPlaceholderModal").modal('hide');
+    }
+</script>

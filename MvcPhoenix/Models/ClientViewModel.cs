@@ -419,4 +419,15 @@ namespace MvcPhoenix.Models
 
         public List<SelectListItem> ListOfCountries { get; set; }
     }
+
+    public class Tier
+    {
+        public int TierID { get; set; }
+        public int? ClientID { get; set; }
+        public string TierLevel { get; set; }
+        public string Size { get; set; }
+        public decimal? LoSampAmt { get; set; }
+        public decimal? HiSampAmt { get; set; }
+        public decimal? Price { get; set; }
+    }
 }

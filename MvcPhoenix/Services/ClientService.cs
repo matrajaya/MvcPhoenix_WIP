@@ -308,6 +308,34 @@ namespace MvcPhoenix.Services
             }
         }
 
+        #endregion
+
+        #region Tier Services
+
+        public static Tier FillTierDetails(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                Tier vm = new Tier();
+
+                var qry = (from t in db.tblTier
+                           where t.TierID == id
+                           select t).FirstOrDefault();
+
+                vm.TierID = qry.TierID;
+                vm.ClientID = qry.ClientID;
+                vm.TierLevel = qry.Tier;
+                vm.Size = qry.Size;
+                vm.LoSampAmt = qry.LoSampAmt;
+                vm.HiSampAmt = qry.HiSampAmt;
+                vm.Price = qry.Price;
+
+                return vm;
+            }
+        }
+
+        #endregion
+
         public static List<SelectListItem> fnListOfCountries()
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -323,7 +351,5 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
-
-        #endregion
     }
 }

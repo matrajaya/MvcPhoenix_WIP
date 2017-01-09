@@ -1290,10 +1290,6 @@
     <Content Include="Views\Orders\_OrderItemModal.cshtml" />
     <Content Include="Views\Client\Index.cshtml" />
     <Content Include="Views\Client\Edit.cshtml" />
-    <Content Include="Views\Client\_Contacts.cshtml" />
-    <Content Include="Views\Client\_ContactsModal.cshtml" />
-    <Content Include="Views\Client\_EndUse.cshtml" />
-    <Content Include="Views\Client\_EndUseModal.cshtml" />
     <Content Include="Views\Client\_Suppliers.cshtml" />
     <Content Include="Views\Client\_SuppliersModal.cshtml" />
     <Content Include="Views\Client\View.cshtml" />
@@ -1339,6 +1335,8 @@
     <Content Include="Views\Client\_DivisionListing.cshtml" />
     <Content Include="Views\Client\_DivisionEditModal.cshtml" />
     <Content Include="Views\Packout\Index.cshtml" />
+    <Content Include="Views\Client\_Tiers.cshtml" />
+    <Content Include="Views\Client\_TiersModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

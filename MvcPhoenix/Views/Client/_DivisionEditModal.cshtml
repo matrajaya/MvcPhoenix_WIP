@@ -1,4 +1,12 @@
 ﻿@model MvcPhoenix.Models.Division
+@{
+    ViewBag.Title = "Edit Division / Business Unit";
+
+    if (Model.DivisionID == -1)
+    {
+        ViewBag.Title = "Add Division / Business Unit";
+    }
+}
 
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog" role="document">
@@ -16,9 +24,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">Edit Division / Business Unit</h4>
+                    <h4 class="modal-title">@ViewBag.Title</h4>
                 </div>
-
                 <div id="dialogPlaceholderBody" class="modal-body">
                     @Html.HiddenFor(m => m.DivisionID)
                     @Html.HiddenFor(m => m.ClientID)
@@ -102,7 +109,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <span id="dialogResult" hidden></span>
                 </div>
             }
         </div>
@@ -111,10 +117,8 @@
 
 <script type="text/javascript">
     function UpdateDivisionList() {
-        // Update the list
+        // Update the list and close modal
         $("#dvDivisionList").load('@Url.Action("ListDivisions", "Client", new { id = @Model.ClientID })');
-
-        // Activate to hide the modal after list update
         $("#dialogPlaceholderModal").modal('hide');
     }
 </script>

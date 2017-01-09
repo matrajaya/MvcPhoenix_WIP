@@ -351,7 +351,7 @@
             <div id="dvSaveResult" class="col-md-12 text-center" style="font-weight:bold"></div>
         </div>
 
-        @* Division *@
+        @* Divisions *@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#divisionpanel"><i class="fa fa-book fa-fw"></i> Divisions</h3>
@@ -368,11 +368,13 @@
                         }, new { @class = "btn btn-primary btn-block" })
                     </div>
                 </div>
-                @Html.Action("ListDivisions", "Client", new { id = @Model.ClientID })
+                <div id="dvDivisionList">
+                    @Html.Action("ListDivisions", "Client", new { id = @Model.ClientID })
+                </div>
             </div>
         </div>
 
-        @* Supplier *@
+        @* Suppliers *@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#supplierpanel"><i class="fa fa-book fa-fw"></i> Suppliers</h3>
@@ -389,7 +391,32 @@
                     }, new { @class = "btn btn-primary btn-block" })
                     </div>
                 </div>
-                @Html.Action("ListSuppliers", "Client", new { id = @Model.ClientID })
+                <div id="dvSupplierList">
+                    @Html.Action("ListSuppliers", "Client", new { id = @Model.ClientID })
+                </div>
+            </div>
+        </div>
+
+        @* Tiers *@
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" data-toggle="collapse" data-target="#tierpanel"><i class="fa fa-book fa-fw"></i> Tiers</h3>
+            </div>
+            <div id="tierpanel" class="panel-body collapse in">
+                <div class="row">
+                    <div class="col-md-3">
+                        @Ajax.ActionLink("+ Add New Tier", "CreateTier", "Client", new { id = Model.ClientID }, new AjaxOptions
+                    {
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "GET",
+                        UpdateTargetId = "dialogPlaceholder",
+                        OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                    }, new { @class = "btn btn-primary btn-block" })
+                    </div>
+                </div>
+                <div id="dvTierList">
+                    @Html.Action("ListTiers", "Client", new { id = @Model.ClientID })
+                </div>
             </div>
         </div>
     }

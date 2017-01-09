@@ -1,4 +1,12 @@
 ﻿@model MvcPhoenix.Models.Supplier
+@{
+    ViewBag.Title = "Edit Supplier";
+
+    if (Model.SupplierID == -1)
+    {
+        ViewBag.Title = "Add Supplier";
+    }
+}
 
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog" role="document">
@@ -16,13 +24,11 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">Edit Supplier</h4>
+                    <h4 class="modal-title">@ViewBag.Title</h4>
                 </div>
-
                 <div id="dialogPlaceholderBody" class="modal-body">
                     @Html.HiddenFor(m => m.SupplierID)
                     @Html.HiddenFor(m => m.ClientID)
-
                     <div class="row form-group">
                         <div class="col-md-6 pull-left">
                             <strong><em>Supplier ID: @Html.ValueFor(m => m.SupplierID)</em></strong>
@@ -98,9 +104,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label>Country</label>
-                            @*@Html.TextBoxFor(m => m.Country, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Country)*@
-
                             @Html.DropDownListFor(m => m.Country, Model.ListOfCountries, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Country)
                         </div>
@@ -117,10 +120,8 @@
 
 <script type="text/javascript">
     function UpdateSupplierList() {
-        // Update the list
+        // Update the list and close modal
         $("#dvSupplierList").load('@Url.Action("ListSuppliers", "Client", new { id = @Model.ClientID })');
-
-        // Activate to hide the modal after list update
         $("#dialogPlaceholderModal").modal('hide');
     }
 </script>

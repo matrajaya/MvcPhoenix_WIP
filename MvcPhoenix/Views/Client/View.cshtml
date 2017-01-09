@@ -528,7 +528,6 @@
     </div>
 
     @* Division *@
-    @*Hide add and edit buttons*@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title" data-toggle="collapse" data-target="#divisionpanel"><i class="fa fa-book fa-fw"></i> Divisions</h3>
@@ -539,13 +538,22 @@
     </div>
 
     @* Supplier *@
-    @*Hide add and edit buttons*@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title" data-toggle="collapse" data-target="#supplierpanel"><i class="fa fa-book fa-fw"></i> Suppliers</h3>
         </div>
         <div id="supplierpanel" class="panel-body collapse in">
             @Html.Action("ListSuppliers", "Client", new { id = @Model.ClientID })
+        </div>
+    </div>
+
+    @* Tier *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#tierpanel"><i class="fa fa-book fa-fw"></i> Tiers</h3>
+        </div>
+        <div id="tierpanel" class="panel-body collapse in">
+            @Html.Action("ListTiers", "Client", new { id = @Model.ClientID })
         </div>
     </div>
 

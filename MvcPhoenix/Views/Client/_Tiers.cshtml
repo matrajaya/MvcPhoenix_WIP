@@ -1,0 +1,49 @@
+﻿@model List<MvcPhoenix.Models.Tier>
+@using MvcPhoenix.Extensions;
+
+@{
+    ViewBag.Title = "Tiers Listing";
+    Layout = null;
+}
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tier Level</th>
+                <th>Size</th>
+                <th>Min Sample Amt</th>
+                <th>Max Sample Amt</th>
+                <th>Price</th>
+                <th id="hideeditbutton"></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TierID</td>
+                <td>@item.TierLevel</td>
+                <td>@item.Size</td>
+                <td>@item.LoSampAmt</td>
+                <td>@item.HiSampAmt</td>
+                <td>@item.Price</td>
+                <td id="hideeditbutton" style="text-align:right">
+                    @Ajax.ActionLink(" ", "EditTier", "Client", new { id = @item.TierID }, new AjaxOptions
+                           {
+                               InsertionMode = InsertionMode.Replace,
+                               HttpMethod = "GET",
+                               UpdateTargetId = "dialogPlaceholder",
+                               OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                           }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script type="text/javascript">
+    function UpdateTierList() {
+        $("#dvTierList").load('@Url.Action("ListTiers", "Client", new { id = @ViewBag.ClientId })');
+    }
+</script>

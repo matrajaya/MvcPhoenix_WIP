@@ -358,5 +358,98 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion Supplier Methods
+
+        #region Tier Methods
+
+        public ActionResult ListTiers(int id)
+        {
+            using (db)
+            {
+                var qry = (from t in db.tblTier
+                           where t.ClientID == id
+                           orderby t.Tier
+                           select new MvcPhoenix.Models.Tier
+                           {
+                               TierID = t.TierID,
+                               ClientID = t.ClientID,
+                               TierLevel = t.Tier,
+                               Size = t.Size,
+                               LoSampAmt = t.LoSampAmt,
+                               HiSampAmt = t.HiSampAmt,
+                               Price = t.Price                               
+                           }).ToList();
+
+                if (qry.Count > 0)
+                {
+                    return PartialView("~/Views/Client/_Tiers.cshtml", qry);
+                }
+
+                return null;
+            }
+        }
+
+        [HttpGet]
+        public ActionResult EditTier(int id)
+        {
+            Tier vm = new Tier();
+            vm = ClientService.FillTierDetails(id);
+            return PartialView("~/Views/Client/_TiersModal.cshtml", vm);
+        }
+
+        [HttpGet]
+        public ActionResult CreateTier(int id)
+        {
+            // id = clientid
+            var vm = EmptyTier(id);
+            return PartialView("~/Views/Client/_TiersModal.cshtml", vm);
+        }
+
+        public static Tier EmptyTier(int id)
+        {
+            Tier vm = new Tier();
+            vm.TierID = -1;
+            vm.ClientID = id;
+
+            return vm;
+        }
+
+        public ActionResult SaveTier(Tier obj)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var q = db.tblTier.Find(obj.TierID);
+
+                if (q != null)
+                {
+                    q.Tier = obj.TierLevel;
+                    q.Size = obj.Size;
+                    q.LoSampAmt = obj.LoSampAmt;
+                    q.HiSampAmt = obj.HiSampAmt;
+                    q.Price = obj.Price;
+
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var newrecord = new EF.tblTier
+                    {
+                        TierID = Convert.ToInt32(obj.TierID),
+                        ClientID = Convert.ToInt32(obj.ClientID),
+                        Tier = obj.TierLevel,
+                        Size = obj.Size,
+                        LoSampAmt = obj.LoSampAmt,
+                        HiSampAmt = obj.HiSampAmt,
+                        Price = obj.Price
+                    };
+
+                    db.tblTier.Add(newrecord);
+                    db.SaveChanges();
+                }
+            }
+
+            return null;
+        }
+
+        #endregion Tier Methods
     }
 }
