@@ -21,7 +21,7 @@
                     <th>MSDS Contact</th>
                     <th>Phone</th>
                     <th>Emergency</th>
-                    <th></th>
+                    <th id="hideeditbutton"></th>
                 </tr>
             </thead>
             @foreach (var item in Model)
@@ -37,7 +37,7 @@
                     <td>@item.ContactMSDSName</td>
                     <td>@item.ContactMSDSPhone</td>
                     <td>@item.EmergencyNumber</td>
-                    <td style="text-align:right">
+                    <td id="hideeditbutton" style="text-align:right">
                         @Ajax.ActionLink(" ", "EditDivision", "Client", new { id = @item.DivisionID }, new AjaxOptions
                    {
                        InsertionMode = InsertionMode.Replace,
