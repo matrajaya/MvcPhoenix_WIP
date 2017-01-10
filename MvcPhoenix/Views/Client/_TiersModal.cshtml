@@ -34,19 +34,19 @@
                         <div class="col-md-6 pull-left">
                             <strong><em>Tier ID: @Html.ValueFor(m => m.TierID)</em></strong>
                         </div>
-                        <div class="col-md-6 form-group">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
                             <label>Tier Level</label>
                             @Html.TextBoxFor(m => m.TierLevel, new { @class = "form-control", autofocus = "" })
                             @Html.ValidationMessageFor(m => m.TierLevel)
                         </div>
-                    </div>
-                    <div class="row">                        
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-4 form-group">
                             <label>Size</label>
                             @Html.TextBoxFor(m => m.Size, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Size)
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-4 form-group">
                             <label>Price</label>
                             @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Price)

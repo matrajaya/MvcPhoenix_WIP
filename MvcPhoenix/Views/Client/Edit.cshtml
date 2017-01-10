@@ -350,76 +350,86 @@
 
             <div id="dvSaveResult" class="col-md-12 text-center" style="font-weight:bold"></div>
         </div>
+    }
 
-        @* Divisions *@
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#divisionpanel"><i class="fa fa-book fa-fw"></i> Divisions</h3>
-            </div>
-            <div id="divisionpanel" class="panel-body collapse in">
-                <div class="row">
-                    <div class="col-md-3">
-                        @Ajax.ActionLink("+ Add New Division", "CreateDivision", "Client", new { id = Model.ClientID }, new AjaxOptions
+    @* Divisions *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#divisionpanel"><i class="fa fa-book fa-fw"></i> Divisions</h3>
+        </div>
+        <div id="divisionpanel" class="panel-body collapse in">
+            <div class="row">
+                <div class="col-md-3">
+                    @Ajax.ActionLink("+ Add New Division", "CreateDivision", "Client", new { id = Model.ClientID }, new AjaxOptions
                         {
                             InsertionMode = InsertionMode.Replace,
                             HttpMethod = "GET",
                             UpdateTargetId = "dialogPlaceholder",
                             OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
                         }, new { @class = "btn btn-primary btn-block" })
-                    </div>
                 </div>
-                <div id="dvDivisionList">
-                    @Html.Action("ListDivisions", "Client", new { id = @Model.ClientID })
-                </div>
+            </div>
+            <div id="dvDivisionList">
+                @Html.Action("ListDivisions", "Client", new { id = @Model.ClientID })
             </div>
         </div>
+    </div>
 
-        @* Suppliers *@
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#supplierpanel"><i class="fa fa-book fa-fw"></i> Suppliers</h3>
-            </div>
-            <div id="supplierpanel" class="panel-body collapse in">
-                <div class="row">
-                    <div class="col-md-3">
-                        @Ajax.ActionLink("+ Add New Supplier", "CreateSupplier", "Client", new { id = Model.ClientID }, new AjaxOptions
+    @* Suppliers *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#supplierpanel"><i class="fa fa-book fa-fw"></i> Suppliers</h3>
+        </div>
+        <div id="supplierpanel" class="panel-body collapse in">
+            <div class="row">
+                <div class="col-md-3">
+                    @Ajax.ActionLink("+ Add New Supplier", "CreateSupplier", "Client", new { id = Model.ClientID }, new AjaxOptions
                     {
                         InsertionMode = InsertionMode.Replace,
                         HttpMethod = "GET",
                         UpdateTargetId = "dialogPlaceholder",
                         OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
                     }, new { @class = "btn btn-primary btn-block" })
-                    </div>
                 </div>
-                <div id="dvSupplierList">
-                    @Html.Action("ListSuppliers", "Client", new { id = @Model.ClientID })
-                </div>
+            </div>
+            <div id="dvSupplierList">
+                @Html.Action("ListSuppliers", "Client", new { id = @Model.ClientID })
             </div>
         </div>
+    </div>
 
-        @* Tiers *@
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title" data-toggle="collapse" data-target="#tierpanel"><i class="fa fa-book fa-fw"></i> Tiers</h3>
-            </div>
-            <div id="tierpanel" class="panel-body collapse in">
-                <div class="row">
-                    <div class="col-md-3">
-                        @Ajax.ActionLink("+ Add New Tier", "CreateTier", "Client", new { id = Model.ClientID }, new AjaxOptions
+    @* Tiers *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#tierpanel"><i class="fa fa-book fa-fw"></i> Tiers</h3>
+        </div>
+        <div id="tierpanel" class="panel-body collapse in">
+            <div class="row">
+                <div class="col-md-3">
+                    @Ajax.ActionLink("+ Add New Tier", "CreateTier", "Client", new { id = Model.ClientID }, new AjaxOptions
                     {
                         InsertionMode = InsertionMode.Replace,
                         HttpMethod = "GET",
                         UpdateTargetId = "dialogPlaceholder",
                         OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
                     }, new { @class = "btn btn-primary btn-block" })
-                    </div>
-                </div>
-                <div id="dvTierList">
-                    @Html.Action("ListTiers", "Client", new { id = @Model.ClientID })
                 </div>
             </div>
+            <div id="dvTierList">
+                @Html.Action("ListTiers", "Client", new { id = @Model.ClientID })
+            </div>
         </div>
-    }
+    </div>
+
+    @* Surcharges *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#tierpanel"><i class="fa fa-book fa-fw"></i> Surcharges</h3>
+        </div>
+        <div id="tierpanel" class="panel-body collapse in">
+            @Html.Action("DisplaySurcharges", "Client", new { clientid = @Model.ClientID })
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-lg-12">

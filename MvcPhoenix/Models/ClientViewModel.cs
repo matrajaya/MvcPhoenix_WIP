@@ -430,4 +430,24 @@ namespace MvcPhoenix.Models
         public decimal? HiSampAmt { get; set; }
         public decimal? Price { get; set; }
     }
+
+    public class Surcharge
+    {
+        public int SurchargeID { get; set; }
+        public int? ClientID { get; set; }
+        public decimal? Haz { get; set; }
+        public decimal? Flam { get; set; }
+        public decimal? Heat { get; set; }
+        public decimal? Refrig { get; set; }
+        public decimal? Freezer { get; set; }
+        public decimal? Clean { get; set; }
+        public decimal? Nalgene { get; set; }
+        public decimal? LabelFee { get; set; }
+
+        // US
+        public decimal? Nitrogen { get; set; }
+        public decimal? Biocide { get; set; }
+        public decimal? Blend { get; set; }
+        public decimal? Kosher { get; set; }
+    }
 }

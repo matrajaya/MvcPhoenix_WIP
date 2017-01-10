@@ -1337,6 +1337,7 @@
     <Content Include="Views\Packout\Index.cshtml" />
     <Content Include="Views\Client\_Tiers.cshtml" />
     <Content Include="Views\Client\_TiersModal.cshtml" />
+    <Content Include="Views\Client\_Surcharges.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

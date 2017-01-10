@@ -5,6 +5,7 @@ using System.Web;
 
 //pc add
 using System.Data.OleDb;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Services
 {
@@ -19,40 +20,37 @@ namespace MvcPhoenix.Services
         //https://www.connectionstrings.com/access/
 
 
-        public static string fnCreatePackOutOrder(int id, int Priority)
+        public static List<SelectListItem> fnMDBTest()
         {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist.Add(new SelectListItem { Value = "", Text = "" });
+                mylist = (from t in db.tblClient
+                          orderby t.MDB_CMCBE
+                          select new SelectListItem { Value = t.MDB_CMCBE, Text = t.MDB_CMCBE }).Distinct().ToList();
+                //mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Test MDB" });
+                mylist.Add(new SelectListItem { Value = "APP_DATA\\CMCBE.MDB", Text = "APP_DATA\\CMCBE.MDB" });
+                
+                return mylist;
+            }
+        }
 
 
+
+        public static int fnCreatePackOutOrder(int id, int Priority, string cmcmdb)
+        {
             // id= bulkid
-            // return messages to controller to handle
+            // return values
+            // 0 = error
+            //-1 = packout exists
+            // xx = new tblProductmasterID
 
-            // check status of bulk before beginning
-            //using (var db = new EF.CMCSQL03Entities())
-            //{
-            //    string s = "";
-            //    var qBulk = (from t in db.tblBulk where t.BulkID == id select t).FirstOrDefault();
-            //    switch (qBulk.BulkStatus)
-            //    {
-            //        case "QC":
-            //            s = String.Format("Update tblBulk set Packout=0 where Bulkid={0}", id);
-            //            db.Database.ExecuteSqlCommand(s);
-            //            return "BulkIsInQCStatus";
-            //            break;
-            //        case "HOLD":
-            //        case "TEST":
-            //        case "RETURN":
-            //            s = String.Format("Update tblBulk set Packout=0 where Bulkid={0}", id);
-            //            db.Database.ExecuteSqlCommand(s);
-            //            return "BulkIsInOtherStatus";
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //}
-
+            
 
             using (var db = new EF.CMCSQL03Entities())
             {
+                int retval = 0;
                 string s = "";
                 var b = db.tblBulk.Find(id);
                 var pmm = db.tblProductMaster.Find(b.ProductMasterID);
@@ -78,34 +76,23 @@ namespace MvcPhoenix.Services
                     }
 
                     // build and open connection to MDB
-                    string MDBpath = @client.MDB_CMCBE;
+                    //string MDBpath = @client.MDB_CMCBE;
+                    //string MDBpath = HttpContext.Current.Server.MapPath("~/App_data/CMCBE.MDB");
+                    //string MDBpath = cmcmdb;    //dev and testing, pull from View
+                    string MDBpath = "";
+
+                    if(cmcmdb=="APP_DATA\\CMCBE.MDB")
+                    {
+                        MDBpath = HttpContext.Current.Server.MapPath("~/App_data/CMCBE.mdb");
+                    }
+                    else
+                    {
+                        MDBpath = cmcmdb;
+                    }
+
                     string MDBconnstring = String.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Persist Security Info=False;", MDBpath);
                     conn.ConnectionString = MDBconnstring;
                     conn.Open();
-
-
-                    // ----------------------------------- DEVELOPMENT
-                    // delete last packout order to make dev easier
-                    //if (HttpContext.Current.Request.IsLocal)
-                    //{
-                    //    s = String.Format("Select top 1 Id from tblProductionMaster order by id desc");
-                    //    OleDbCommand cmd01 = new OleDbCommand();
-                    //    cmd01.Connection = conn;
-                    //    cmd01.CommandText = s;
-                    //    int PKDelete = Convert.ToInt32(cmd01.ExecuteScalar());
-                    //    s = String.Format("Delete * from tblProductionMaster where id={0}", PKDelete);
-                    //    OleDbCommand cmd02 = new OleDbCommand();
-                    //    cmd02.Connection = conn;
-                    //    cmd02.CommandText = s;
-                    //    cmd02.ExecuteNonQuery();
-                    //    s = String.Format("Delete * from tblProductionDetail where Masterid={0}", PKDelete);
-                    //    OleDbCommand cmd03 = new OleDbCommand();
-                    //    cmd03.Connection = conn;
-                    //    cmd03.CommandText = s;
-                    //    cmd03.ExecuteNonQuery();
-                    //    // ----------------------------------- DEVELOPMENT
-                    //}
-
 
                     // check for existing packout and bail out if one there
                     s = String.Format("Select Count(*) from tblProductionMaster where Company='{0}' and Division='{1}' and MasterCode='{2}' and (ProductionStage=10 or ProductionStage=20)", client.CMCLongCustomer, q[0].dv.DivisionName, q[0].pm.MasterCode);
@@ -115,7 +102,8 @@ namespace MvcPhoenix.Services
                     int ExistingCount = Convert.ToInt32(cmdExists.ExecuteScalar());
                     if (ExistingCount > 0)
                     {
-                        return "PackOutExists";
+                        retval= -1;
+                        return retval;
                     }
 
 
@@ -181,13 +169,14 @@ namespace MvcPhoenix.Services
                         cmdInsertDetail.Connection = conn;
                         cmdInsertDetail.CommandText = s;
                         cmdInsertDetail.ExecuteNonQuery();
-
+                        retval = dPK;
                     }
-
+                    //return retval;
                 }
 
-                return "Success";
+                return retval;
             }
+            //return retval;
         }
 
 
@@ -218,6 +207,58 @@ namespace MvcPhoenix.Services
                 default:
                     return 1;
             }
+        }
+
+        public static void stash()
+        {
+            // ----------------------------------- DEVELOPMENT
+            // delete last packout order to make dev easier
+            //if (HttpContext.Current.Request.IsLocal)
+            //{
+            //    s = String.Format("Select top 1 Id from tblProductionMaster order by id desc");
+            //    OleDbCommand cmd01 = new OleDbCommand();
+            //    cmd01.Connection = conn;
+            //    cmd01.CommandText = s;
+            //    int PKDelete = Convert.ToInt32(cmd01.ExecuteScalar());
+            //    s = String.Format("Delete * from tblProductionMaster where id={0}", PKDelete);
+            //    OleDbCommand cmd02 = new OleDbCommand();
+            //    cmd02.Connection = conn;
+            //    cmd02.CommandText = s;
+            //    cmd02.ExecuteNonQuery();
+            //    s = String.Format("Delete * from tblProductionDetail where Masterid={0}", PKDelete);
+            //    OleDbCommand cmd03 = new OleDbCommand();
+            //    cmd03.Connection = conn;
+            //    cmd03.CommandText = s;
+            //    cmd03.ExecuteNonQuery();
+            //    // ----------------------------------- DEVELOPMENT
+            //}
+
+
+
+            // check status of bulk before beginning
+            //using (var db = new EF.CMCSQL03Entities())
+            //{
+            //    string s = "";
+            //    var qBulk = (from t in db.tblBulk where t.BulkID == id select t).FirstOrDefault();
+            //    switch (qBulk.BulkStatus)
+            //    {
+            //        case "QC":
+            //            s = String.Format("Update tblBulk set Packout=0 where Bulkid={0}", id);
+            //            db.Database.ExecuteSqlCommand(s);
+            //            return "BulkIsInQCStatus";
+            //            break;
+            //        case "HOLD":
+            //        case "TEST":
+            //        case "RETURN":
+            //            s = String.Format("Update tblBulk set Packout=0 where Bulkid={0}", id);
+            //            db.Database.ExecuteSqlCommand(s);
+            //            return "BulkIsInOtherStatus";
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
+        
         }
 
 

@@ -112,58 +112,55 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult ListDivisions(int id)
         {
-            using (db)
+            var qry = (from t in db.tblDivision
+                       where t.ClientID == id
+                       orderby t.DivisionName
+                       select new MvcPhoenix.Models.Division
+                       {
+                           DivisionID = t.DivisionID,
+                           ClientID = t.ClientID,
+                           DivisionName = t.DivisionName,
+                           BusinessUnit = t.BusinessUnit,
+                           Abbr = t.Abbr,
+                           WasteRateOffSpec = t.WasteRate_OffSpec,
+                           WasteRateEmpty = t.WasteRate_Empty,
+                           Inactive = t.Inactive,
+                           LegacyID = t.LegacyID,
+                           Location_MDB = t.Location_MDB,
+                           Company_MDB = t.Company_MDB,
+                           ContactLabelName = t.ContactLabelName,
+                           ContactLabelPhone = t.ContactLabelPhone,
+                           ContactMSDSName = t.ContactMSDSName,
+                           ContactMSDSPhone = t.ContactMSDSPhone,
+                           EmergencyNumber = t.EmergencyNumber,
+                           UPSHazBook = t.UPSHazBook,
+                           ExtMSDS = t.ExtMSDS,
+                           ExtLabel = t.ExtLabel,
+                           MainContactName = t.MainContactName,
+                           MainContactNumber = t.MainContactNumber,
+                           CompanyName = t.CompanyName,
+                           CompanyStreet1 = t.CompanyStreet1,
+                           CompanyStreet2 = t.CompanyStreet2,
+                           CompanyStreet3 = t.CompanyStreet3,
+                           CompanyPostalCode = t.CompanyPostalCode,
+                           CompanyCity = t.CompanyCity,
+                           CompanyCountry = t.CompanyCountry,
+                           CompanyTelephone = t.CompanyTelephone,
+                           CompanyFax = t.CompanyFax,
+                           CompanyEmergencyTelephone = t.CompanyEmergencyTelephone,
+                           CompanyEmail = t.CompanyEmail,
+                           CompanyWebsite = t.CompanyWebsite,
+                           CompanyLogo = t.CompanyLogo,
+                           CompanyLogo2 = t.CompanyLogo2,
+                           IncludeExpDtOnLabel = t.IncludeExpDtOnLabel
+                       }).ToList();
+
+            if (qry.Count > 0)
             {
-                var qry = (from t in db.tblDivision
-                           where t.ClientID == id
-                           orderby t.DivisionName
-                           select new MvcPhoenix.Models.Division
-                           {
-                               DivisionID = t.DivisionID,
-                               ClientID = t.ClientID,
-                               DivisionName = t.DivisionName,
-                               BusinessUnit = t.BusinessUnit,
-                               Abbr = t.Abbr,
-                               WasteRateOffSpec = t.WasteRate_OffSpec,
-                               WasteRateEmpty = t.WasteRate_Empty,
-                               Inactive = t.Inactive,
-                               LegacyID = t.LegacyID,
-                               Location_MDB = t.Location_MDB,
-                               Company_MDB = t.Company_MDB,
-                               ContactLabelName = t.ContactLabelName,
-                               ContactLabelPhone = t.ContactLabelPhone,
-                               ContactMSDSName = t.ContactMSDSName,
-                               ContactMSDSPhone = t.ContactMSDSPhone,
-                               EmergencyNumber = t.EmergencyNumber,
-                               UPSHazBook = t.UPSHazBook,
-                               ExtMSDS = t.ExtMSDS,
-                               ExtLabel = t.ExtLabel,
-                               MainContactName = t.MainContactName,
-                               MainContactNumber = t.MainContactNumber,
-                               CompanyName = t.CompanyName,
-                               CompanyStreet1 = t.CompanyStreet1,
-                               CompanyStreet2 = t.CompanyStreet2,
-                               CompanyStreet3 = t.CompanyStreet3,
-                               CompanyPostalCode = t.CompanyPostalCode,
-                               CompanyCity = t.CompanyCity,
-                               CompanyCountry = t.CompanyCountry,
-                               CompanyTelephone = t.CompanyTelephone,
-                               CompanyFax = t.CompanyFax,
-                               CompanyEmergencyTelephone = t.CompanyEmergencyTelephone,
-                               CompanyEmail = t.CompanyEmail,
-                               CompanyWebsite = t.CompanyWebsite,
-                               CompanyLogo = t.CompanyLogo,
-                               CompanyLogo2 = t.CompanyLogo2,
-                               IncludeExpDtOnLabel = t.IncludeExpDtOnLabel
-                           }).ToList();
-
-                if (qry.Count > 0)
-                {
-                    return PartialView("~/Views/Client/_DivisionListing.cshtml", qry);
-                }
-
-                return null;
+                return PartialView("~/Views/Client/_DivisionListing.cshtml", qry);
             }
+
+            return null;
         }
 
         [HttpGet]
@@ -248,36 +245,33 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult ListSuppliers(int id)
         {
-            using (db)
+            var qry = (from t in db.tblSupplier
+                       where t.ClientID == id
+                       orderby t.SupplierName
+                       select new MvcPhoenix.Models.Supplier
+                       {
+                           SupplierID = t.SupplierID,
+                           ClientID = t.ClientID,
+                           SupplierCode = t.SupplierCode,
+                           SupplierName = t.SupplierName,
+                           ContactName = t.ContactName,
+                           Address1 = t.Address1,
+                           Address2 = t.Address2,
+                           City = t.City,
+                           State = t.State,
+                           PostalCode = t.PostalCode,
+                           Country = t.Country,
+                           Email = t.Email,
+                           Phone = t.Phone,
+                           Fax = t.Fax
+                       }).ToList();
+
+            if (qry.Count > 0)
             {
-                var qry = (from t in db.tblSupplier
-                           where t.ClientID == id
-                           orderby t.SupplierName
-                           select new MvcPhoenix.Models.Supplier
-                           {
-                               SupplierID = t.SupplierID,
-                               ClientID = t.ClientID,
-                               SupplierCode = t.SupplierCode,
-                               SupplierName = t.SupplierName,
-                               ContactName = t.ContactName,
-                               Address1 = t.Address1,
-                               Address2 = t.Address2,
-                               City = t.City,
-                               State = t.State,
-                               PostalCode = t.PostalCode,
-                               Country = t.Country,
-                               Email = t.Email,
-                               Phone = t.Phone,
-                               Fax = t.Fax
-                           }).ToList();
-
-                if (qry.Count > 0)
-                {
-                    return PartialView("~/Views/Client/_Suppliers.cshtml", qry);
-                }
-
-                return null;
+                return PartialView("~/Views/Client/_Suppliers.cshtml", qry);
             }
+
+            return null;
         }
 
         [HttpGet]
@@ -363,29 +357,26 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult ListTiers(int id)
         {
-            using (db)
+            var qry = (from t in db.tblTier
+                       where t.ClientID == id
+                       orderby t.Tier
+                       select new MvcPhoenix.Models.Tier
+                       {
+                           TierID = t.TierID,
+                           ClientID = t.ClientID,
+                           TierLevel = t.Tier,
+                           Size = t.Size,
+                           LoSampAmt = t.LoSampAmt,
+                           HiSampAmt = t.HiSampAmt,
+                           Price = t.Price
+                       }).ToList();
+
+            if (qry.Count > 0)
             {
-                var qry = (from t in db.tblTier
-                           where t.ClientID == id
-                           orderby t.Tier
-                           select new MvcPhoenix.Models.Tier
-                           {
-                               TierID = t.TierID,
-                               ClientID = t.ClientID,
-                               TierLevel = t.Tier,
-                               Size = t.Size,
-                               LoSampAmt = t.LoSampAmt,
-                               HiSampAmt = t.HiSampAmt,
-                               Price = t.Price                               
-                           }).ToList();
-
-                if (qry.Count > 0)
-                {
-                    return PartialView("~/Views/Client/_Tiers.cshtml", qry);
-                }
-
-                return null;
+                return PartialView("~/Views/Client/_Tiers.cshtml", qry);
             }
+
+            return null;
         }
 
         [HttpGet]
@@ -451,5 +442,90 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion Tier Methods
+
+        #region Surcharge methods
+
+        public ActionResult DisplaySurcharges(int? id)
+        {
+            ViewBag.ClientKey = id;
+
+            var qry = (from t in db.tblSurcharge
+                       where t.ClientID == id
+                       orderby t.SurchargeID
+                       select new MvcPhoenix.Models.Surcharge
+                       {
+                           SurchargeID = t.SurchargeID,
+                           ClientID = id,
+                           Haz = t.Haz,
+                           Flam = t.Flam,
+                           Clean = t.Clean,
+                           Heat = t.Heat,
+                           Refrig = t.Refrig,
+                           Freezer = t.Freezer,
+                           Nalgene = t.Nalgene,
+                           LabelFee = t.LabelFee
+                       }).FirstOrDefault();
+
+            if (qry != null)
+            {
+                return PartialView("~/Views/Client/_Surcharges.cshtml", qry);
+            }
+
+            return PartialView("~/Views/Client/_Surcharges.cshtml");
+        }
+
+        public ActionResult SaveSurcharges(Surcharge obj, int clientkey)
+        {
+            var q = db.tblSurcharge.Find(obj.SurchargeID);
+            var msg = "Save Successful!";
+
+            try
+            {
+
+                if (q != null)
+                {
+                    q.Haz = obj.Haz;
+                    q.Flam = obj.Flam;
+                    q.Clean = obj.Clean;
+                    q.Heat = obj.Heat;
+                    q.Refrig = obj.Refrig;
+                    q.Freezer = obj.Freezer;
+                    q.Nalgene = obj.Nalgene;
+                    q.LabelFee = obj.LabelFee;
+
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var newrecord = new EF.tblSurcharge
+                    {
+                        ClientID = Convert.ToInt32(clientkey),
+                        Haz = obj.Haz,
+                        Flam = obj.Flam,
+                        Clean = obj.Clean,
+                        Heat = obj.Heat,
+                        Refrig = obj.Refrig,
+                        Freezer = obj.Freezer,
+                        Nalgene = obj.Nalgene,
+                        LabelFee = obj.LabelFee
+                    };
+
+                    db.tblSurcharge.Add(newrecord);
+                    db.SaveChanges();
+
+                    msg = "New record added";
+                }
+            }
+            catch (Exception)
+            {
+                // catch if null or beyond reasonable bounds. Unforseen errors.
+                msg = "Something is wrong with your input..."; 
+            }
+
+            ViewBag.Message = "<label class='text-success'>" + msg + "</label>";
+            return Content(ViewBag.Message);
+        }
+
+        #endregion Surcharge methods
     }
 }

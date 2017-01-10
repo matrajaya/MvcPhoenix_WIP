@@ -18,7 +18,9 @@ namespace MvcPhoenix.Controllers
             {
                 TempData["productdetailid"] = productdetailid;    // to stash calling parameter into form for read on postback cause PDid not part of Bulk vm
                 var vm = Services.BulkService.fnFillBulkContainerFromDB(id);
-
+                //var q = (from t in db.tblClient where t.ClientID == vm.clientid select t).FirstOrDefault();
+                //ViewBag.MdbPath = q.MDB_CMCBE;
+                ViewBag.ListOfMDBS = Services.Packout.fnMDBTest();
                 return View("~/Views/PackOut/Index.cshtml",vm);
             }
 
@@ -27,6 +29,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult CreateNewPackout(BulkContainerViewModel vm, FormCollection fc)
         {
+            string cmcmdb = fc["CMCMDB"].ToString();
             int ReturnProductDetailID = Convert.ToInt32(fc["productdetailid"]);
             int Priority = Convert.ToInt32(fc["priority"]);
 
@@ -36,9 +39,11 @@ namespace MvcPhoenix.Controllers
                 return RedirectToAction("Index", new { id = vm.bulkid, productdetailid = ReturnProductDetailID });
             }
             
-            string PackOutResult = Services.Packout.fnCreatePackOutOrder(vm.bulkid,Priority);
+            //string PackOutResult = Services.Packout.fnCreatePackOutOrder(vm.bulkid,Priority);
+            int PackOutResult = Services.Packout.fnCreatePackOutOrder(vm.bulkid, Priority, cmcmdb);
 
-            if (PackOutResult == "PackOutExists")
+            //if (PackOutResult == "PackOutExists")
+            if (PackOutResult == -1)
             {
                 TempData["ResultMessage"] = "There is already an existing Pack Out order for the selected Bulk item";
                 return RedirectToAction("Index", new { id = vm.bulkid, productdetailid = ReturnProductDetailID });
@@ -53,10 +58,14 @@ namespace MvcPhoenix.Controllers
             //    TempData["ResultMessage"] = "The product you've selected is in HOLD,TEST, or RETURN status. You cannot create a packout";
             //    return RedirectToAction("Index", new { id = vm.bulkid, productdetailid = ReturnProductDetailID });
             //}
-            
-            else if(PackOutResult == "Success")
+
+            else if(PackOutResult == 0)
             {
-                TempData["ResultMessage"] = "New packout order successfully created: " + System.DateTime.Now.ToString();
+                TempData["ResultMessage"] = "An error occurred trying to create a Pack Out at " + System.DateTime.Now.ToString();
+            }
+            else
+            {
+                TempData["ResultMessage"] = String.Format("New packout order number {0} successfully created at {1}", PackOutResult.ToString(), System.DateTime.Now.ToString());
                 return RedirectToAction("Index", new { id = vm.bulkid, productdetailid = ReturnProductDetailID });
             }
             
