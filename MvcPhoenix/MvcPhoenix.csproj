@@ -435,9 +435,6 @@
     <Compile Include="EF\tblProductXRef.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblProfile_MDB.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblRates.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>

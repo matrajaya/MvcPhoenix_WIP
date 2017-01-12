@@ -55,7 +55,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "S.G.")]
         public string ProductSG { get; set; }
 
-        [Display(Name = "Density lbs/gal")]
+        [Display(Name = "Density")]
         public string ProductDensity { get; set; }
 
         [Display(Name = "ph Value")]
@@ -106,7 +106,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Freezer Storage")]
         public bool SHFreezerStorageOpt { get; set; }
 
-        [Display(Name = "Refridgerate Storage")]
+        [Display(Name = "Refrigerate Storage")]
         public bool SHRefridgeStorageOpt { get; set; }
 
         [Display(Name = "Flammable Storage")]

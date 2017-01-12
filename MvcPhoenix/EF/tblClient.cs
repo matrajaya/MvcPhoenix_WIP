@@ -88,6 +88,7 @@ namespace MvcPhoenix.EF
         public string ChargesSummary { get; set; }
         public string PartialDeliveryAllowed { get; set; }
         public string ClientStatus { get; set; }
+        public Nullable<bool> ActiveProfile { get; set; }
         public Nullable<System.DateTimeOffset> ActiveDate { get; set; }
         public Nullable<int> SurchageHazard { get; set; }
         public Nullable<int> SurchargeFlammable { get; set; }
@@ -109,5 +110,6 @@ namespace MvcPhoenix.EF
         public Nullable<int> NonHazDHServLvl3 { get; set; }
         public Nullable<int> NonHazDHServLvl4 { get; set; }
         public string MDB_CMCBE { get; set; }
+        public byte[] LogoFile { get; set; }
     }
 }

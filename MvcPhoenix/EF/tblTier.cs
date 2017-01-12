@@ -16,10 +16,10 @@ namespace MvcPhoenix.EF
     {
         public int TierID { get; set; }
         public Nullable<int> ClientID { get; set; }
-        public string Tier { get; set; }
+        public Nullable<int> TierLevel { get; set; }
         public string Size { get; set; }
-        public Nullable<decimal> LoSampAmt { get; set; }
-        public Nullable<decimal> HiSampAmt { get; set; }
+        public Nullable<int> LoSampAmt { get; set; }
+        public Nullable<int> HiSampAmt { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<int> LegacyID { get; set; }
         public string Company_MDB { get; set; }

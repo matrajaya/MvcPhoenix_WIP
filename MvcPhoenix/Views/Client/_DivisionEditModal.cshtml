@@ -9,7 +9,7 @@
 }
 
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             @using (Ajax.BeginForm("SaveDivision", "Client", new AjaxOptions
                 {
@@ -17,7 +17,6 @@
                     UpdateTargetId = "dialogResult",
                     OnSuccess = "UpdateDivisionList",
                     InsertionMode = InsertionMode.Replace
-
                 }))
             {
                 <div class="modal-header">
@@ -30,79 +29,157 @@
                     @Html.HiddenFor(m => m.DivisionID)
                     @Html.HiddenFor(m => m.ClientID)
 
-                    <div class="row form-group">
-                        <div class="col-md-6 pull-left">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
                             <strong><em>Division ID: @Html.ValueFor(m => m.DivisionID)</em></strong>
                         </div>
-                        <div class="col-md-6">
-                            <div class="checkbox-inline">
-                                <label>Inactive</label>@Html.CheckBox("Inactive", Model.Inactive != null && (bool)Model.Inactive, new { @class = "checkbox", @type = "checkbox" })
-                            </div>
+                        <div class="col-md-4 form-group">
+                            <label class="checkbox-inline">
+                                @Html.CheckBox("IncludeExpDtOnLabel", Model.IncludeExpDtOnLabel != null && (bool)Model.IncludeExpDtOnLabel, new { @class = "checkbox", @type = "checkbox" })
+                            </label>
+                            <label>Include Expiry On Label</label>
+                        </div>
+                        <div class="col-md-2 form-group text-right">
+                            <label class="checkbox-inline">
+                                @Html.CheckBox("Inactive", Model.Inactive != null && (bool)Model.Inactive, new { @class = "checkbox", @type = "checkbox" })
+                            </label>
+                            <label>Inactive</label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Division Name</label>
                             @Html.TextBoxFor(m => m.DivisionName, new { @class = "form-control", autofocus = "" })
                             @Html.ValidationMessageFor(m => m.DivisionName)
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Business Unit</label>
                             @Html.TextBoxFor(m => m.BusinessUnit, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.BusinessUnit)
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Main Contact</label>
                             @Html.TextBoxFor(m => m.MainContactName, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.MainContactName)
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Main Phone</label>
                             @Html.TextBoxFor(m => m.MainContactNumber, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.MainContactNumber)
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Label Contact</label>
                             @Html.TextBoxFor(m => m.ContactLabelName, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.ContactLabelName)
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-3 form-group">
                             <label>Label Contact Phone</label>
                             @Html.TextBoxFor(m => m.ContactLabelPhone, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.ContactLabelPhone)
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-3 form-group">
                             <label>MSDS Contact</label>
                             @Html.TextBoxFor(m => m.ContactMSDSName, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.ContactMSDSName)
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-3 form-group">
                             <label>MSDS Contact Phone</label>
                             @Html.TextBoxFor(m => m.ContactMSDSPhone, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.ContactMSDSPhone)
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-2 form-group">
                             <label>Emergency Phone</label>
                             @Html.TextBoxFor(m => m.EmergencyNumber, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.EmergencyNumber)
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2 form-group">
                             <label>Waste Rate - Off Spec</label>
                             @Html.TextBoxFor(m => m.WasteRateOffSpec, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.WasteRateOffSpec)
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2 form-group">
                             <label>Waste Rate - Empty</label>
                             @Html.TextBoxFor(m => m.WasteRateEmpty, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.WasteRateEmpty)
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>UPS Haz Book</label>
+                            @Html.TextBoxFor(m => m.UPSHazBook, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>Ext MSDS</label>
+                            @Html.TextBoxFor(m => m.ExtMSDS, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>Ext Label</label>
+                            @Html.TextBoxFor(m => m.ExtLabel, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <h4>Company Details</h4>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-5 form-group">
+                            <label>Company Name</label>
+                            @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-1 form-group">
+                            <label>Abbr</label>
+                            @Html.TextBoxFor(m => m.Abbr, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>Phone</label>
+                            @Html.TextBoxFor(m => m.CompanyTelephone, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>Fax</label>
+                            @Html.TextBoxFor(m => m.CompanyFax, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>Emergency Phone</label>
+                            @Html.TextBoxFor(m => m.CompanyEmergencyTelephone, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 form-group">
+                            <label>Address 1</label>
+                            @Html.TextBoxFor(m => m.CompanyStreet1, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Address 2</label>
+                            @Html.TextBoxFor(m => m.CompanyStreet2, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>Address 3</label>
+                            @Html.TextBoxFor(m => m.CompanyStreet3, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>Postal Code</label>
+                            @Html.TextBoxFor(m => m.CompanyPostalCode, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 form-group">
+                            <label>City</label>
+                            @Html.TextBoxFor(m => m.CompanyCity, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Country</label>
+                            @Html.DropDownListFor(m => m.CompanyCountry, Model.ListOfCountries, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CompanyCountry)
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Email</label>
+                            @Html.TextBoxFor(m => m.CompanyEmail, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Website</label>
+                            @Html.TextBoxFor(m => m.CompanyWebsite, new { @class = "form-control" })
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ using MvcPhoenix.Services;
 using PagedList;
 using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
@@ -100,10 +101,29 @@ namespace MvcPhoenix.Controllers
             return View(obj);
         }
 
+        // GET: Client/LogoFile/id
+        public ActionResult LogoFile(int id)
+        {
+            var fileToRetrieve = db.tblClient.Find(id);
+            return File(fileToRetrieve.LogoFile, "gif");
+        }
+
         [HttpPost]
-        public ActionResult SaveClientProfile(ClientProfile CPVM)
+        public ActionResult SaveClientProfile(ClientProfile CPVM, HttpPostedFileBase logoupload)
         {
             int pk = ClientService.fnSaveClientProfile(CPVM);
+
+            if (logoupload != null && logoupload.ContentLength > 0)
+            {
+                var qimg = db.tblClient.Find(CPVM.ClientID);
+
+                using (var reader = new System.IO.BinaryReader(logoupload.InputStream))
+                {
+                    qimg.LogoFile = reader.ReadBytes(logoupload.ContentLength);
+                }
+
+                db.SaveChanges();
+            }
 
             return RedirectToAction("Edit", new { id = pk });
         }
@@ -125,9 +145,6 @@ namespace MvcPhoenix.Controllers
                            WasteRateOffSpec = t.WasteRate_OffSpec,
                            WasteRateEmpty = t.WasteRate_Empty,
                            Inactive = t.Inactive,
-                           LegacyID = t.LegacyID,
-                           Location_MDB = t.Location_MDB,
-                           Company_MDB = t.Company_MDB,
                            ContactLabelName = t.ContactLabelName,
                            ContactLabelPhone = t.ContactLabelPhone,
                            ContactMSDSName = t.ContactMSDSName,
@@ -150,8 +167,6 @@ namespace MvcPhoenix.Controllers
                            CompanyEmergencyTelephone = t.CompanyEmergencyTelephone,
                            CompanyEmail = t.CompanyEmail,
                            CompanyWebsite = t.CompanyWebsite,
-                           CompanyLogo = t.CompanyLogo,
-                           CompanyLogo2 = t.CompanyLogo2,
                            IncludeExpDtOnLabel = t.IncludeExpDtOnLabel
                        }).ToList();
 
@@ -209,6 +224,24 @@ namespace MvcPhoenix.Controllers
                     q.WasteRate_OffSpec = obj.WasteRateOffSpec;
                     q.WasteRate_Empty = obj.WasteRateEmpty;
 
+                    q.Abbr = obj.Abbr;
+                    q.UPSHazBook = obj.UPSHazBook;
+                    q.ExtMSDS = obj.ExtMSDS;
+                    q.ExtLabel = obj.ExtLabel;
+                    q.CompanyName = obj.CompanyName;
+                    q.CompanyStreet1 = obj.CompanyStreet1;
+                    q.CompanyStreet2 = obj.CompanyStreet2;
+                    q.CompanyStreet3 = obj.CompanyStreet3;
+                    q.CompanyPostalCode = obj.CompanyPostalCode;
+                    q.CompanyCity = obj.CompanyCity;
+                    q.CompanyCountry = obj.CompanyCountry;
+                    q.CompanyTelephone = obj.CompanyTelephone;
+                    q.CompanyFax = obj.CompanyFax;
+                    q.CompanyEmergencyTelephone = obj.CompanyEmergencyTelephone;
+                    q.CompanyEmail = obj.CompanyEmail;
+                    q.CompanyWebsite = obj.CompanyWebsite;
+                    q.IncludeExpDtOnLabel = obj.IncludeExpDtOnLabel;
+
                     db.SaveChanges();
                 }
                 else
@@ -229,6 +262,24 @@ namespace MvcPhoenix.Controllers
                         ContactMSDSPhone = obj.ContactMSDSPhone,
                         WasteRate_OffSpec = obj.WasteRateOffSpec,
                         WasteRate_Empty = obj.WasteRateEmpty,
+
+                        Abbr = obj.Abbr,
+                        UPSHazBook = obj.UPSHazBook,
+                        ExtMSDS = obj.ExtMSDS,
+                        ExtLabel = obj.ExtLabel,
+                        CompanyName = obj.CompanyName,
+                        CompanyStreet1 = obj.CompanyStreet1,
+                        CompanyStreet2 = obj.CompanyStreet2,
+                        CompanyStreet3 = obj.CompanyStreet3,
+                        CompanyPostalCode = obj.CompanyPostalCode,
+                        CompanyCity = obj.CompanyCity,
+                        CompanyCountry = obj.CompanyCountry,
+                        CompanyTelephone = obj.CompanyTelephone,
+                        CompanyFax = obj.CompanyFax,
+                        CompanyEmergencyTelephone = obj.CompanyEmergencyTelephone,
+                        CompanyEmail = obj.CompanyEmail,
+                        CompanyWebsite = obj.CompanyWebsite,
+                        IncludeExpDtOnLabel = obj.IncludeExpDtOnLabel
                     };
 
                     db.tblDivision.Add(newrecord);
@@ -359,15 +410,15 @@ namespace MvcPhoenix.Controllers
         {
             var qry = (from t in db.tblTier
                        where t.ClientID == id
-                       orderby t.Tier
+                       orderby t.TierLevel
                        select new MvcPhoenix.Models.Tier
                        {
                            TierID = t.TierID,
                            ClientID = t.ClientID,
-                           TierLevel = t.Tier,
+                           TierLevel = t.TierLevel,
                            Size = t.Size,
-                           LoSampAmt = t.LoSampAmt,
-                           HiSampAmt = t.HiSampAmt,
+                           LoSampQty = t.LoSampAmt,
+                           HiSampQty = t.HiSampAmt,
                            Price = t.Price
                        }).ToList();
 
@@ -412,10 +463,10 @@ namespace MvcPhoenix.Controllers
 
                 if (q != null)
                 {
-                    q.Tier = obj.TierLevel;
+                    q.TierLevel = obj.TierLevel;
                     q.Size = obj.Size;
-                    q.LoSampAmt = obj.LoSampAmt;
-                    q.HiSampAmt = obj.HiSampAmt;
+                    q.LoSampAmt = obj.LoSampQty;
+                    q.HiSampAmt = obj.HiSampQty;
                     q.Price = obj.Price;
 
                     db.SaveChanges();
@@ -426,10 +477,10 @@ namespace MvcPhoenix.Controllers
                     {
                         TierID = Convert.ToInt32(obj.TierID),
                         ClientID = Convert.ToInt32(obj.ClientID),
-                        Tier = obj.TierLevel,
+                        TierLevel = obj.TierLevel,
                         Size = obj.Size,
-                        LoSampAmt = obj.LoSampAmt,
-                        HiSampAmt = obj.HiSampAmt,
+                        LoSampAmt = obj.LoSampQty,
+                        HiSampAmt = obj.HiSampQty,
                         Price = obj.Price
                     };
 
@@ -463,7 +514,10 @@ namespace MvcPhoenix.Controllers
                            Refrig = t.Refrig,
                            Freezer = t.Freezer,
                            Nalgene = t.Nalgene,
-                           LabelFee = t.LabelFee
+                           Nitrogen = t.Nitrogen,
+                           Biocide = t.Biocide,
+                           Blend = t.Blend,
+                           Kosher = t.Kosher
                        }).FirstOrDefault();
 
             if (qry != null)
@@ -481,7 +535,6 @@ namespace MvcPhoenix.Controllers
 
             try
             {
-
                 if (q != null)
                 {
                     q.Haz = obj.Haz;
@@ -491,7 +544,10 @@ namespace MvcPhoenix.Controllers
                     q.Refrig = obj.Refrig;
                     q.Freezer = obj.Freezer;
                     q.Nalgene = obj.Nalgene;
-                    q.LabelFee = obj.LabelFee;
+                    q.Nitrogen = obj.Nitrogen;
+                    q.Biocide = obj.Biocide;
+                    q.Blend = obj.Blend;
+                    q.Kosher = obj.Kosher;
 
                     db.SaveChanges();
                 }
@@ -507,7 +563,10 @@ namespace MvcPhoenix.Controllers
                         Refrig = obj.Refrig,
                         Freezer = obj.Freezer,
                         Nalgene = obj.Nalgene,
-                        LabelFee = obj.LabelFee
+                        Nitrogen = obj.Nitrogen,
+                        Biocide = obj.Biocide,
+                        Blend = obj.Blend,
+                        Kosher = obj.Kosher
                     };
 
                     db.tblSurcharge.Add(newrecord);
@@ -519,7 +578,7 @@ namespace MvcPhoenix.Controllers
             catch (Exception)
             {
                 // catch if null or beyond reasonable bounds. Unforseen errors.
-                msg = "Something is wrong with your input..."; 
+                msg = "Something is wrong with your input...";
             }
 
             ViewBag.Message = "<label class='text-success'>" + msg + "</label>";

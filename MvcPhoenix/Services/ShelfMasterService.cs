@@ -17,8 +17,12 @@ namespace MvcPhoenix.Services
                               join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
                               join cl in db.tblClient on pm.ClientID equals cl.ClientID
                               where t.ProductDetailID == id //&& t.InactiveSize == false
-                              let PPN = (from pk in db.tblPackage where pk.PackageID == t.PackageID select pk.PartNumber).FirstOrDefault()
-                              let PPMaterial = (from pk1 in db.tblPackage where pk1.PackageID == t.PackageID select pk1.Description).FirstOrDefault()
+                              let PPN = (from pk in db.tblPackage
+                                         where pk.PackageID == t.PackageID
+                                         select pk.PartNumber).FirstOrDefault()
+                              let PPMaterial = (from pk1 in db.tblPackage
+                                                where pk1.PackageID == t.PackageID
+                                                select pk1.Description).FirstOrDefault()
                               select new ShelfMasterViewModel
                               {
                                   clientum = cl.ClientUM,
@@ -26,12 +30,10 @@ namespace MvcPhoenix.Services
                                   productdetailid = t.ProductDetailID,
                                   clientid = cl.ClientID,
                                   clientname = cl.ClientName,
-                                  logofilename = cl.LogoFileName,
                                   productcode = pd.ProductCode,
                                   productname = pd.ProductName,
                                   size = t.Size,
                                   packageid = t.PackageID,
-                                  // ii busarea = t.BusArea,
                                   warehouse = t.Warehouse,
                                   bin = t.Bin,
                                   reordermin = t.ReorderMin,
@@ -174,7 +176,6 @@ namespace MvcPhoenix.Services
                 { obj.shelfid = fnNewShelfID(); }
 
                 var dbSM = db.tblShelfMaster.Find(obj.shelfid);
-                //SM.shelfid = dbSM.ShelfID;
                 dbSM.ProductDetailID = obj.productdetailid;
                 dbSM.Warehouse = obj.warehouse;
                 dbSM.Size = obj.size;
@@ -214,11 +215,13 @@ namespace MvcPhoenix.Services
         private static List<SelectListItem> fnWarehouseIDs()
         {
             List<SelectListItem> mylist = new List<SelectListItem>();
+
             mylist.Add(new SelectListItem { Value = null, Text = "" });
             mylist.Add(new SelectListItem { Value = "AP", Text = "AP" });
             mylist.Add(new SelectListItem { Value = "CT", Text = "CT" });
             mylist.Add(new SelectListItem { Value = "CO", Text = "CO" });
             mylist.Add(new SelectListItem { Value = "EU", Text = "EU" });
+
             return mylist;
         }
 
@@ -230,8 +233,14 @@ namespace MvcPhoenix.Services
                 mylist = (from t in db.tblTier
                           where t.ClientID == ClientID
                           orderby t.Size
-                          select new SelectListItem { Value = t.Size, Text = t.Size }).Distinct().ToList();
+                          select new SelectListItem
+                          {
+                              Value = t.Size,
+                              Text = t.Size
+                          }).Distinct().ToList();
+
                 mylist.Add(new SelectListItem { Value = "", Text = "" });
+
                 return mylist;
             }
         }
@@ -241,7 +250,11 @@ namespace MvcPhoenix.Services
             // This returns ONLY the <option> portion of the <select> tag
             using (var db = new EF.CMCSQL03Entities())
             {
-                var qry = (from t in db.tblPackage where t.Size == size orderby t.Size select t);
+                var qry = (from t in db.tblPackage
+                           where t.Size == size
+                           orderby t.Size
+                           select t);
+
                 string s = "<option value='0' selected=true>Select Package</option>";
                 if (qry.Count() > 0)
                 {
@@ -263,8 +276,14 @@ namespace MvcPhoenix.Services
                 mylist = (from t in db.tblPackage
                           where t.Size == size
                           orderby t.Size
-                          select new SelectListItem { Value = t.PackageID.ToString(), Text = t.PartNumber + "-" + t.Description }).ToList();
+                          select new SelectListItem
+                          {
+                              Value = t.PackageID.ToString(),
+                              Text = t.PartNumber + "-" + t.Description
+                          }).ToList();
+
                 mylist.Add(new SelectListItem { Value = "", Text = "" });
+
                 return mylist;
             }
         }

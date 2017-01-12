@@ -35,6 +35,11 @@ body {
     #page-wrapper {
         padding: 10px;
     }
+
+    .modal-xl {
+        width: 90%;
+        max-width:1200px;
+  }
 }
 
 /* Top Navigation */

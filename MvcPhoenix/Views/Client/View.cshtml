@@ -5,8 +5,8 @@
 }
 
 <style type="text/css">
-    #hideeditbutton{
-        display:none;
+    #hideeditbutton {
+        display: none;
     }
 </style>
 
@@ -14,7 +14,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Content/images/logos/@Model.LogoFileDir" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
+            <img src="~/Client/LogoFile?id=@Model.ClientID" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
@@ -59,475 +59,95 @@
             <h3 class="panel-title" data-toggle="collapse" data-target="#clientinfopanel"><i class="fa fa-book fa-fw"></i> Client Information</h3>
         </div>
         <div id="clientinfopanel" class="panel-body collapse in">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped">
-                    <tbody>
-                        <tr>
-                            <td width="30%">
-                                @Html.LabelFor(model => model.ClientID)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ClientID)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.LegacyID)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.LegacyID)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.GlobalClientID)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.GlobalClientID)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ClientCode)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ClientCode)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ClientName)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ClientName)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.CMCLocation)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.CMCLocation)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ClientReference)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ClientReference)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ClientEntityName)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ClientEntityName)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ClientCurrency)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ClientCurrency)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ClientUM)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => model.ClientUM)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ClientNetTerm)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(model => model.ClientNetTerm)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.LogoFileDir)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.LogoFileDir)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.InvoiceAddress)
-                            </td>
-
-                            <td>
-                                @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceAddress))
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.InvoiceEmailTo)
-                            </td>
-
-                            <td>
-                                @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceEmailTo))
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.KeyContactDir)
-                            </td>
-
-                            <td>
-                                @Html.Raw(HttpUtility.HtmlDecode(@Model.KeyContactDir))
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ClientContact)
-                            </td>
-
-                            <td>
-                                @Html.Raw(HttpUtility.HtmlDecode(@Model.ClientContact))
-                            </td>
-                        </tr>
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.CMCContact)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.CMCContact))
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.ClientUrl)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(model => model.ClientUrl)
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.ProductSetupDetails)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.ProductSetupDetails))
-                                </td>
-                            </tr>*@
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.SDSLanguage)
-                            </td>
-
-                            <td>
-                                @Html.Raw(HttpUtility.HtmlDecode(@Model.SDSLanguage))
-                            </td>
-                        </tr>
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.SDSUpdateMethod)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.SDSUpdateMethod))
-                                </td>
-                            </tr>*@
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.LabelLanguage)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.LabelLanguage)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.SDSRequired)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.SDSRequired)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.COARequired)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.COARequired)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.TDSRequired)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.TDSRequired)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.StdCoverLetterRequired)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.StdCoverLetterRequired)
-                            </td>
-                        </tr>
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.InventoryReports)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.InventoryReports))
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.CeaseShipPeriod)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(model => model.CeaseShipPeriod)
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.ReplenishmentLeadDays)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(model => model.ReplenishmentLeadDays)
-                                </td>
-                            </tr>*@
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ExpDateOnLabel)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ExpDateOnLabel)
-                            </td>
-                        </tr>
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.ExpDateRules)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.ExpDateRules))
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.WasteProcedure)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.WasteProcedure))
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.InventoryBusinessRules)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.InventoryBusinessRules))
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.SpecialReqAllowed)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.SpecialReqAllowed))
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.CommercialInvoiceValue)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(model => model.CommercialInvoiceValue)
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    @Html.LabelFor(model => model.FreezableProcedure)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.FreezableProcedure))
-                                </td>
-                            </tr>*@
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.SurveyUsed)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.SurveyUsed)
-                            </td>
-                        </tr>
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.CSBusinessRules)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.CSBusinessRules))
-                                </td>
-                            </tr>*@
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ShippingRules)
-                            </td>
-
-                            <td>
-                                @Html.Raw(HttpUtility.HtmlDecode(@Model.ShippingRules))
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ShipConfirmEmail)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ShipConfirmEmail)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.DelayConfirmEmail)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.DelayConfirmEmail)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.OrderConfirmEmail)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.OrderConfirmEmail)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.InvoiceSegregation)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.InvoiceSegregation)
-                            </td>
-                        </tr>
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.ChargesSummary)
-                                </td>
-
-                                <td>
-                                    @Html.Raw(HttpUtility.HtmlDecode(@Model.ChargesSummary))
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.PartialDeliveryAllowed)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(model => model.PartialDeliveryAllowed)
-                                </td>
-                            </tr>*@
-
-                        @*<tr>
-                                <td>
-                                    @Html.LabelFor(model => model.ClientStatus)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(model => model.ClientStatus)
-                                </td>
-                            </tr>*@
-
-                        <tr>
-                            <td>
-                                @Html.LabelFor(model => model.ActiveDate)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(model => model.ActiveDate)
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <label>Client ID</label>
+                    @Html.TextBoxFor(model => model.ClientID, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Legacy ID</label>
+                    @Html.TextBoxFor(model => model.LegacyID, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Global Client ID</label>
+                    @Html.TextBoxFor(model => model.GlobalClientID, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>CMC Location</label>
+                    @Html.TextBoxFor(m => m.CMCLocation, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Active Profile</label>
+                    @Html.CheckBox("ActiveProfile", Model.ActiveProfile != null && (bool)Model.ActiveProfile, new { @class = "checkbox", @disabled = "disabled" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Active Date</label>
+                    @Html.TextBoxFor(model => model.ActiveDate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                    @Html.ValidationMessageFor(model => model.ActiveDate)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label>Client Name</label>
+                    @Html.TextBoxFor(model => model.ClientName, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Client Code</label>
+                    @Html.TextBoxFor(model => model.ClientCode, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4 form-group">
+                    <label>Client Entity Name</label>
+                    @Html.TextBoxFor(model => model.ClientEntityName, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Client Reference</label>
+                    @Html.TextBoxFor(model => model.ClientReference, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <label>Client Currency</label>
+                    @Html.TextBoxFor(m => m.ClientCurrency, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Client UM</label>
+                    @Html.TextBoxFor(m => m.ClientUM, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2 form-group">
+                    <label>Client Net Term</label>
+                    @Html.TextBoxFor(model => model.ClientNetTerm, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3 form-group">
+                    <label>Invoice Email</label>
+                    <div style="border:solid 1px blue;">
+                        @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceEmailTo))
+                    </div>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label>Invoice Address</label>
+                    <div style="border:solid 1px blue;">
+                        @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceAddress))
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label>Logo</label>
+                    <div style="border:solid 1px blue;">
+                        <img src="~/Client/LogoFile?id=@Model.ClientID" alt="@Model.ClientName Logo" title="@Model.ClientName Logo">
+                    </div>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>Key Contact Directory</label>
+                    <div style="border:solid 1px blue;">
+                        @Html.Raw(HttpUtility.HtmlDecode(@Model.KeyContactDir))
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    @* Division *@
+    @* Divisions *@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title" data-toggle="collapse" data-target="#divisionpanel"><i class="fa fa-book fa-fw"></i> Divisions</h3>
@@ -537,7 +157,7 @@
         </div>
     </div>
 
-    @* Supplier *@
+    @* Suppliers *@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title" data-toggle="collapse" data-target="#supplierpanel"><i class="fa fa-book fa-fw"></i> Suppliers</h3>
@@ -547,13 +167,23 @@
         </div>
     </div>
 
-    @* Tier *@
+    @* Tiers *@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title" data-toggle="collapse" data-target="#tierpanel"><i class="fa fa-book fa-fw"></i> Tiers</h3>
         </div>
         <div id="tierpanel" class="panel-body collapse in">
             @Html.Action("ListTiers", "Client", new { id = @Model.ClientID })
+        </div>
+    </div>
+
+    @* Surcharges *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#tierpanel"><i class="fa fa-book fa-fw"></i> Surcharges</h3>
+        </div>
+        <div id="tierpanel" class="panel-body collapse in">
+            @Html.Action("DisplaySurcharges", "Client", new { clientid = @Model.ClientID })
         </div>
     </div>
 
@@ -564,3 +194,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Makes all input on page with form-control class readonly
+    $('.form-control').prop('readonly', true);
+    $('#SearchString').prop('readonly', false);
+</script>

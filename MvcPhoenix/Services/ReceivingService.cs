@@ -183,7 +183,6 @@ namespace MvcPhoenix.Services
                 obj.clientid = dbClient.ClientID;
                 obj.warehouse = dbClient.CMCLocation;
                 obj.clientname = dbClient.ClientName;
-                obj.logofilename = dbClient.LogoFileName;
                 obj.productmasterid = id;
                 obj.receivedate = DateTime.Now;
                 obj.bulkstatus = "RECD";
@@ -217,7 +216,6 @@ namespace MvcPhoenix.Services
                 obj.bulkid = -1;    // for insert later
                 obj.clientid = null;
                 obj.clientname = null;
-                obj.logofilename = null;
                 obj.productmasterid = null;
                 obj.receivedate = DateTime.Now;
                 obj.bulkstatus = "RECD";
@@ -278,8 +276,6 @@ namespace MvcPhoenix.Services
                 var qCL = (from t in db.tblClient where t.ClientID == qPM.ClientID select t).FirstOrDefault();
                 obj.clientid = qPM.ClientID;
                 obj.clientname = qCL.ClientName;
-
-                obj.logofilename = qCL.LogoFileName;
                 obj.ListOfWareHouses = fnWarehouseIDs();
                 obj.ListOfProductMasters = fnProductMasterIDs(qPM.ClientID, qPM.ProductMasterID);
                 obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
@@ -309,7 +305,6 @@ namespace MvcPhoenix.Services
                 obj.isknownmaterial = true;
                 obj.clientid = clientid;
                 obj.clientname = dbClient.ClientName;
-                obj.logofilename = dbClient.LogoFileName;
                 obj.bulkid = -1;    // for insert later
                 obj.receivedate = DateTime.Now;
                 obj.carrier = null;
@@ -325,15 +320,21 @@ namespace MvcPhoenix.Services
                 obj.qcdate = null;
                 obj.msdsincluded = null;
                 obj.coaincluded = null;
-
                 obj.productcode = dbProductDetail.ProductCode;
                 obj.productname = dbProductDetail.ProductName;
 
                 obj.ListOfShelfMasters = (from t in db.tblShelfMaster
                                           orderby t.ShelfID
                                           where t.ProductDetailID == productdetailid
-                                          select new ItemForPrePackViewModel { shelfid = t.ShelfID, size = t.Size, bin = t.Bin }).ToList();
+                                          select new ItemForPrePackViewModel
+                                          {
+                                              shelfid = t.ShelfID,
+                                              size = t.Size,
+                                              bin = t.Bin
+                                          }).ToList();
+
                 obj.ItemsCount = obj.ListOfShelfMasters.Count();
+
                 return obj;
             }
         }
@@ -345,8 +346,14 @@ namespace MvcPhoenix.Services
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 mylist = (from t in db.tblCarrier
                           orderby t.CarrierName
-                          select new SelectListItem { Value = t.CarrierName, Text = t.CarrierName }).ToList();
+                          select new SelectListItem
+                          {
+                              Value = t.CarrierName,
+                              Text = t.CarrierName
+                          }).ToList();
+
                 mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Carrier" });
+
                 return mylist;
             }
         }
@@ -358,8 +365,14 @@ namespace MvcPhoenix.Services
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 mylist = (from t in db.tblClient
                           orderby t.ClientName
-                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+                          select new SelectListItem
+                          {
+                              Value = t.ClientID.ToString(),
+                              Text = t.ClientName
+                          }).ToList();
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
+
                 return mylist;
             }
         }
@@ -367,11 +380,13 @@ namespace MvcPhoenix.Services
         private static List<SelectListItem> fnWarehouseIDs()
         {
             List<SelectListItem> mylist = new List<SelectListItem>();
+
             mylist.Add(new SelectListItem { Value = null, Text = "" });
             mylist.Add(new SelectListItem { Value = "AP", Text = "AP" });
             mylist.Add(new SelectListItem { Value = "CT", Text = "CT" });
             mylist.Add(new SelectListItem { Value = "CO", Text = "CO" });
             mylist.Add(new SelectListItem { Value = "EU", Text = "EU" });
+
             return mylist;
         }
 
@@ -386,7 +401,12 @@ namespace MvcPhoenix.Services
                     mylist = (from t in db.tblProductMaster
                               where t.ClientID == id
                               orderby t.MasterCode, t.MasterName
-                              select new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
+                              select new SelectListItem
+                              {
+                                  Value = t.ProductMasterID.ToString(),
+                                  Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25)
+                              }).ToList();
+
                     mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
                 }
                 else
@@ -394,7 +414,11 @@ namespace MvcPhoenix.Services
                     mylist = (from t in db.tblProductMaster
                               where t.ClientID == id && t.ProductMasterID == PmID
                               orderby t.MasterCode, t.MasterName
-                              select new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
+                              select new SelectListItem
+                              {
+                                  Value = t.ProductMasterID.ToString(),
+                                  Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25)
+                              }).ToList();
                 }
 
                 return mylist;
@@ -408,8 +432,14 @@ namespace MvcPhoenix.Services
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 mylist = (from t in db.tblBulk
                           orderby t.BulkStatus
-                          select new SelectListItem { Value = t.BulkStatus, Text = t.BulkStatus }).Distinct().ToList();
+                          select new SelectListItem
+                          {
+                              Value = t.BulkStatus,
+                              Text = t.BulkStatus
+                          }).Distinct().ToList();
+
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+
                 return mylist;
             }
         }
@@ -433,13 +463,25 @@ namespace MvcPhoenix.Services
                 using (var db = new EF.CMCSQL03Entities())
                 {
                     var newbulk = new EF.tblBulk();
-                    newbulk.ProductMasterID = vm.productmasterid; newbulk.ReceiveDate = vm.receivedate; newbulk.LotNumber = vm.lotnumber;
-                    newbulk.CeaseShipDate = vm.ceaseshipdate; newbulk.Carrier = vm.carrier; newbulk.ReceivedBy = vm.receivedby;
-                    newbulk.QCDate = vm.qcdate; newbulk.Warehouse = vm.warehouse; newbulk.MfgDate = vm.mfgdate;
-                    newbulk.COAIncluded = vm.coaincluded; newbulk.EnteredBy = vm.enteredby; newbulk.ExpirationDate = vm.expirationdate;
-                    newbulk.MSDSIncluded = vm.msdsincluded; newbulk.BulkStatus = "PP";
+
+                    newbulk.ProductMasterID = vm.productmasterid;
+                    newbulk.ReceiveDate = vm.receivedate;
+                    newbulk.LotNumber = vm.lotnumber;
+                    newbulk.CeaseShipDate = vm.ceaseshipdate;
+                    newbulk.Carrier = vm.carrier;
+                    newbulk.ReceivedBy = vm.receivedby;
+                    newbulk.QCDate = vm.qcdate;
+                    newbulk.Warehouse = vm.warehouse;
+                    newbulk.MfgDate = vm.mfgdate;
+                    newbulk.COAIncluded = vm.coaincluded;
+                    newbulk.EnteredBy = vm.enteredby;
+                    newbulk.ExpirationDate = vm.expirationdate;
+                    newbulk.MSDSIncluded = vm.msdsincluded;
+                    newbulk.BulkStatus = "PP";
+
                     db.tblBulk.Add(newbulk);
                     db.SaveChanges();
+
                     int newBulkID = newbulk.BulkID;
 
                     for (int i = 1; i <= vm.ItemsCount; i++)
@@ -450,11 +492,15 @@ namespace MvcPhoenix.Services
                         string sThisQty = fc["Value" + i.ToString()];
                         int ThisQty = Convert.ToInt32(sThisQty);
 
-                        //System.Diagnostics.Debug.WriteLine("Shelfid=" + ThisShelfID + " | Qty=" + ThisQty);
                         var newstock = new EF.tblStock();
-                        newstock.BulkID = newBulkID; newstock.ShelfID = ThisShelfID; newstock.CreateDate = DateTime.Now;
-                        newstock.Warehouse = vm.warehouse; newstock.QtyOnHand = ThisQty; //newStock.Bin = null; // ???
+
+                        newstock.BulkID = newBulkID; 
+                        newstock.ShelfID = ThisShelfID; 
+                        newstock.CreateDate = DateTime.Now;
+                        newstock.Warehouse = vm.warehouse; 
+                        newstock.QtyOnHand = ThisQty;
                         newstock.ShelfStatus = "PP";
+
                         db.tblStock.Add(newstock);
                         db.SaveChanges();
                     }
@@ -472,6 +518,7 @@ namespace MvcPhoenix.Services
         public static bool fnSaveBulkContainerKnown(BulkContainerViewModel incoming)
         {
             bool retval = true;
+
             try
             {
                 using (var db = new EF.CMCSQL03Entities())
@@ -479,15 +526,24 @@ namespace MvcPhoenix.Services
                     int pk = incoming.bulkid;
                     if (incoming.bulkid == -1)
                     {
-                        var newrec = new EF.tblBulk { ProductMasterID = incoming.productmasterid };
+                        var newrec = new EF.tblBulk 
+                        { 
+                            ProductMasterID = incoming.productmasterid 
+                        };
+
                         newrec.CreateDate = System.DateTime.Now;
                         newrec.CreateUser = HttpContext.Current.User.Identity.Name;
+                        
                         db.tblBulk.Add(newrec);
                         db.SaveChanges();
+
                         pk = newrec.BulkID;
                     }
 
-                    var qry = (from t in db.tblBulk where t.BulkID == pk select t).FirstOrDefault();
+                    var qry = (from t in db.tblBulk 
+                               where t.BulkID == pk 
+                               select t).FirstOrDefault();
+                    
                     qry.Warehouse = incoming.warehouse;
                     qry.ReceiveDate = incoming.receivedate;
                     qry.Carrier = incoming.carrier;
@@ -517,11 +573,12 @@ namespace MvcPhoenix.Services
                     qry.OtherStorage = incoming.otherstorage;
                     qry.UpdateDate = System.DateTime.Now;
                     qry.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    
                     db.SaveChanges();
 
                     // Close items tagged to be closed for this productmasterid (would be better to pass a comma delimited list of PKs)
                     db.Database.ExecuteSqlCommand("Update tblBulkOrderItem set Status='CL' where ToBeClosed=1 and productmasterid=" + incoming.productmasterid);
-                    //db.Database.ExecuteSqlCommand("Update tblBulkOrderItem set ToBeClosed=null where Status='CL' and ToBeClosed=1 and productmasterid=" + incoming.productmasterid);
+                    
                     retval = true;
                 }
             }
@@ -529,8 +586,6 @@ namespace MvcPhoenix.Services
             {
                 retval = false;
                 throw new Exception("Error occurred saving Bulk Container");
-                //System.Diagnostics.Debug.WriteLine(ex.Message);
-                //retval = false;
             }
             return retval;
         }
@@ -545,7 +600,6 @@ namespace MvcPhoenix.Services
                 {
                     var newitem = new EF.tblBulkUnKnown
                     {
-                        //IsKnownMaterial = incoming.isknownmaterial,
                         ProductMasterID = incoming.productmasterid,
                         Warehouse = incoming.warehouse,
                         ReceiveDate = incoming.receivedate,
@@ -573,8 +627,10 @@ namespace MvcPhoenix.Services
                         ReceivedAsCode = incoming.receivedascode,
                         ReceivedAsName = incoming.receivedasname
                     };
+
                     db.tblBulkUnKnown.Add(newitem);
                     db.SaveChanges();
+
                     retval = true;
                 }
             }

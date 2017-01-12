@@ -59,7 +59,7 @@ namespace MvcPhoenix.Controllers
                 
                 var phdetail = (from t in db.tblGHSPHDetail
                                 join tsrc in db.tblGHSPHSource on t.PHNumber equals tsrc.PHNumber
-                                where t.ProductDetailID == id && tsrc.Language == "EN"
+                                where t.ProductDetailID == id //&& tsrc.Language == "EN"
                                 orderby t.PHNumber ascending
                                 select new
                                 {
@@ -146,7 +146,7 @@ namespace MvcPhoenix.Controllers
                 ViewBag.SearchString = searchString;
 
                 var phCodes = from p in db.tblGHSPHSource 
-                              where p.Language == "EN" 
+                              //where p.Language == "EN" 
                               select p;
 
                 if (!String.IsNullOrEmpty(searchString))

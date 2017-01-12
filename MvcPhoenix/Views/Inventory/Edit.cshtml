@@ -1,7 +1,6 @@
 ﻿@model MvcPhoenix.Models.Inventory
 @{
     ViewBag.Title = "Edit Inventory";
-    ViewBag.LogoFileName = @Model.ClientCode + ".gif";
 }
 
 @*Display alert if client plugin is not detected*@
@@ -11,7 +10,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Content/images/logos/@ViewBag.LogoFileName" style="width: auto; height: 73px; float: right" alt="@Model.ClientCode logo">
+            <img src="~/Client/LogoFile?id=@Model.PP.clientid" style="width: auto; height: 73px; float: right" alt="@Model.PP.clientname logo">
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">

@@ -314,6 +314,7 @@
           <Property Name="ChargesSummary" Type="nvarchar(max)" />
           <Property Name="PartialDeliveryAllowed" Type="nvarchar(max)" />
           <Property Name="ClientStatus" Type="nvarchar(max)" />
+          <Property Name="ActiveProfile" Type="bit" />
           <Property Name="ActiveDate" Type="datetimeoffset" Precision="7" />
           <Property Name="SurchageHazard" Type="int" />
           <Property Name="SurchargeFlammable" Type="int" />
@@ -335,6 +336,7 @@
           <Property Name="NonHazDHServLvl3" Type="int" />
           <Property Name="NonHazDHServLvl4" Type="int" />
           <Property Name="MDB_CMCBE" Type="nvarchar" MaxLength="255" />
+          <Property Name="LogoFile" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="tblClientContact">
           <Key>
@@ -1428,31 +1430,6 @@
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
         </EntityType>
-        <EntityType Name="tblProfile_MDB">
-          <Key>
-            <PropertyRef Name="ProfileID" />
-          </Key>
-          <Property Name="ProfileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ClientID" Type="int" />
-          <Property Name="DivisionID" Type="int" />
-          <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
-          <Property Name="BusArea" Type="nvarchar" MaxLength="30" />
-          <Property Name="ProfArea" Type="nvarchar" MaxLength="15" />
-          <Property Name="ProductCode" Type="nvarchar" MaxLength="15" />
-          <Property Name="ProductName" Type="nvarchar" MaxLength="30" />
-          <Property Name="Mnemonic" Type="nvarchar" MaxLength="30" />
-          <Property Name="GroundHazard" Type="nvarchar" MaxLength="15" />
-          <Property Name="AirHazard" Type="nvarchar" MaxLength="15" />
-          <Property Name="Notes" Type="nvarchar" MaxLength="255" />
-          <Property Name="Discontinued" Type="bit" />
-          <Property Name="Alert" Type="nvarchar" MaxLength="200" />
-          <Property Name="CMCLocation" Type="nvarchar" MaxLength="3" />
-          <Property Name="CustCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="BillingCode" Type="nvarchar" MaxLength="15" />
-          <Property Name="LegacyID" Type="int" />
-          <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
-          <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
-        </EntityType>
         <EntityType Name="tblRates">
           <Key>
             <PropertyRef Name="ClientID" />
@@ -1667,6 +1644,10 @@
           <Property Name="Freezer" Type="numeric" Precision="8" Scale="2" />
           <Property Name="Nalgene" Type="numeric" Precision="8" Scale="2" />
           <Property Name="LabelFee" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="Nitrogen" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="Biocide" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="Blend" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="Kosher" Type="numeric" Precision="8" Scale="2" />
           <Property Name="LegacyID" Type="int" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -1685,10 +1666,10 @@
           </Key>
           <Property Name="TierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ClientID" Type="int" />
-          <Property Name="Tier" Type="nvarchar" MaxLength="2" />
+          <Property Name="TierLevel" Type="int" />
           <Property Name="Size" Type="nvarchar" MaxLength="10" />
-          <Property Name="LoSampAmt" Type="numeric" Precision="10" Scale="2" />
-          <Property Name="HiSampAmt" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="LoSampAmt" Type="int" />
+          <Property Name="HiSampAmt" Type="int" />
           <Property Name="Price" Type="numeric" Precision="10" Scale="2" />
           <Property Name="LegacyID" Type="int" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
@@ -1896,7 +1877,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblProductMaster" EntityType="Self.tblProductMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductNotes" EntityType="Self.tblProductNotes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductXRef" EntityType="Self.tblProductXRef" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblProfile_MDB" EntityType="Self.tblProfile_MDB" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRates" EntityType="Self.tblRates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblReasonCode" EntityType="Self.tblReasonCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblReportCriteria" EntityType="Self.tblReportCriteria" Schema="dbo" store:Type="Tables" />
@@ -2062,7 +2042,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
           <EntitySet Name="tblProductNotes" EntityType="CMCSQL03Model.tblProductNotes" />
           <EntitySet Name="tblProductXRef" EntityType="CMCSQL03Model.tblProductXRef" />
-          <EntitySet Name="tblProfile_MDB" EntityType="CMCSQL03Model.tblProfile_MDB" />
           <EntitySet Name="tblRates" EntityType="CMCSQL03Model.tblRates" />
           <EntitySet Name="tblReasonCode" EntityType="CMCSQL03Model.tblReasonCode" />
           <EntitySet Name="tblReportCriteria" EntityType="CMCSQL03Model.tblReportCriteria" />
@@ -2072,17 +2051,17 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblStatusNotes" EntityType="CMCSQL03Model.tblStatusNotes" />
           <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
           <EntitySet Name="tblSuggestedBulk" EntityType="CMCSQL03Model.tblSuggestedBulk" />
-          <EntitySet Name="tblSurcharge" EntityType="CMCSQL03Model.tblSurcharge" />
           <EntitySet Name="tblSystem" EntityType="CMCSQL03Model.tblSystem" />
-          <EntitySet Name="tblTier" EntityType="CMCSQL03Model.tblTier" />
           <EntitySet Name="tblTransType" EntityType="CMCSQL03Model.tblTransType" />
           <EntitySet Name="tblUN" EntityType="CMCSQL03Model.tblUN" />
           <EntitySet Name="tblUser" EntityType="CMCSQL03Model.tblUser" />
           <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
           <EntitySet Name="vwBulkLevel" EntityType="CMCSQL03Model.vwBulkLevel" />
           <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
-          <EntitySet Name="tblClient" EntityType="CMCSQL03Model.tblClient" />
           <EntitySet Name="tblSupplier" EntityType="CMCSQL03Model.tblSupplier" />
+          <EntitySet Name="tblSurcharge" EntityType="CMCSQL03Model.tblSurcharge" />
+          <EntitySet Name="tblTier" EntityType="CMCSQL03Model.tblTier" />
+          <EntitySet Name="tblClient" EntityType="CMCSQL03Model.tblClient" />
         </EntityContainer>
         <EntityType Name="tblBillingGroup">
           <Key>
@@ -3407,31 +3386,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblProfile_MDB">
-          <Key>
-            <PropertyRef Name="ProfileID" />
-          </Key>
-          <Property Name="ProfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="DivisionID" Type="Int32" />
-          <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BusArea" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="ProfArea" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="ProductCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="ProductName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="Mnemonic" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="GroundHazard" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="AirHazard" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Discontinued" Type="Boolean" />
-          <Property Name="Alert" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CMCLocation" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="CustCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BillingCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="Company_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tblRates">
           <Key>
             <PropertyRef Name="ClientID" />
@@ -3613,24 +3567,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="SessionID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblSurcharge">
-          <Key>
-            <PropertyRef Name="SurchargeID" />
-          </Key>
-          <Property Name="SurchargeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="Haz" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Flam" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Clean" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Heat" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Refrig" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Freezer" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Nalgene" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="LabelFee" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tblSystem">
           <Key>
             <PropertyRef Name="SystemID" />
@@ -3638,21 +3574,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="SystemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SystemItem" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="SystemValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblTier">
-          <Key>
-            <PropertyRef Name="TierID" />
-          </Key>
-          <Property Name="TierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="Tier" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="LoSampAmt" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="HiSampAmt" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="Company_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblTransType">
           <Key>
@@ -3807,6 +3728,62 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="WebOEInclude" Type="Boolean" />
           <Property Name="PackagePartNumber_MDB" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="tblSupplier">
+          <Key>
+            <PropertyRef Name="SupplierID" />
+          </Key>
+          <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="SupplierCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblSurcharge">
+          <Key>
+            <PropertyRef Name="SurchargeID" />
+          </Key>
+          <Property Name="SurchargeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="Haz" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Flam" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Clean" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Heat" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Refrig" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Freezer" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Nalgene" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="LabelFee" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Nitrogen" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Biocide" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Blend" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Kosher" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblTier">
+          <Key>
+            <PropertyRef Name="TierID" />
+          </Key>
+          <Property Name="TierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="TierLevel" Type="Int32" />
+          <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="LoSampAmt" Type="Int32" />
+          <Property Name="HiSampAmt" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="Company_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="tblClient">
           <Key>
             <PropertyRef Name="ClientID" />
@@ -3885,6 +3862,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="ChargesSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PartialDeliveryAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClientStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActiveProfile" Type="Boolean" />
           <Property Name="ActiveDate" Type="DateTimeOffset" Precision="7" />
           <Property Name="SurchageHazard" Type="Int32" />
           <Property Name="SurchargeFlammable" Type="Int32" />
@@ -3906,25 +3884,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="NonHazDHServLvl3" Type="Int32" />
           <Property Name="NonHazDHServLvl4" Type="Int32" />
           <Property Name="MDB_CMCBE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblSupplier">
-          <Key>
-            <PropertyRef Name="SupplierID" />
-          </Key>
-          <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="SupplierCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SupplierName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5298,32 +5258,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblProfile_MDB">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblProfile_MDB">
-              <MappingFragment StoreEntitySet="tblProfile_MDB">
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="BillingCode" ColumnName="BillingCode" />
-                <ScalarProperty Name="CustCode" ColumnName="CustCode" />
-                <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
-                <ScalarProperty Name="Alert" ColumnName="Alert" />
-                <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="AirHazard" ColumnName="AirHazard" />
-                <ScalarProperty Name="GroundHazard" ColumnName="GroundHazard" />
-                <ScalarProperty Name="Mnemonic" ColumnName="Mnemonic" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
-                <ScalarProperty Name="ProfArea" ColumnName="ProfArea" />
-                <ScalarProperty Name="BusArea" ColumnName="BusArea" />
-                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
-                <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblRates">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblRates">
               <MappingFragment StoreEntitySet="tblRates">
@@ -5514,47 +5448,12 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblSurcharge">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblSurcharge">
-              <MappingFragment StoreEntitySet="tblSurcharge">
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="LabelFee" ColumnName="LabelFee" />
-                <ScalarProperty Name="Nalgene" ColumnName="Nalgene" />
-                <ScalarProperty Name="Freezer" ColumnName="Freezer" />
-                <ScalarProperty Name="Refrig" ColumnName="Refrig" />
-                <ScalarProperty Name="Heat" ColumnName="Heat" />
-                <ScalarProperty Name="Clean" ColumnName="Clean" />
-                <ScalarProperty Name="Flam" ColumnName="Flam" />
-                <ScalarProperty Name="Haz" ColumnName="Haz" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="SurchargeID" ColumnName="SurchargeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblSystem">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblSystem">
               <MappingFragment StoreEntitySet="tblSystem">
                 <ScalarProperty Name="SystemValue" ColumnName="SystemValue" />
                 <ScalarProperty Name="SystemItem" ColumnName="SystemItem" />
                 <ScalarProperty Name="SystemID" ColumnName="SystemID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblTier">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblTier">
-              <MappingFragment StoreEntitySet="tblTier">
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="HiSampAmt" ColumnName="HiSampAmt" />
-                <ScalarProperty Name="LoSampAmt" ColumnName="LoSampAmt" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="Tier" ColumnName="Tier" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="TierID" ColumnName="TierID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5715,9 +5614,69 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblSupplier">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblSupplier">
+              <MappingFragment StoreEntitySet="tblSupplier">
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSurcharge">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblSurcharge">
+              <MappingFragment StoreEntitySet="tblSurcharge">
+                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="Kosher" ColumnName="Kosher" />
+                <ScalarProperty Name="Blend" ColumnName="Blend" />
+                <ScalarProperty Name="Biocide" ColumnName="Biocide" />
+                <ScalarProperty Name="Nitrogen" ColumnName="Nitrogen" />
+                <ScalarProperty Name="LabelFee" ColumnName="LabelFee" />
+                <ScalarProperty Name="Nalgene" ColumnName="Nalgene" />
+                <ScalarProperty Name="Freezer" ColumnName="Freezer" />
+                <ScalarProperty Name="Refrig" ColumnName="Refrig" />
+                <ScalarProperty Name="Heat" ColumnName="Heat" />
+                <ScalarProperty Name="Clean" ColumnName="Clean" />
+                <ScalarProperty Name="Flam" ColumnName="Flam" />
+                <ScalarProperty Name="Haz" ColumnName="Haz" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="SurchargeID" ColumnName="SurchargeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTier">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblTier">
+              <MappingFragment StoreEntitySet="tblTier">
+                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="HiSampAmt" ColumnName="HiSampAmt" />
+                <ScalarProperty Name="LoSampAmt" ColumnName="LoSampAmt" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="TierLevel" ColumnName="TierLevel" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="TierID" ColumnName="TierID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tblClient">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblClient">
               <MappingFragment StoreEntitySet="tblClient">
+                <ScalarProperty Name="LogoFile" ColumnName="LogoFile" />
                 <ScalarProperty Name="MDB_CMCBE" ColumnName="MDB_CMCBE" />
                 <ScalarProperty Name="NonHazDHServLvl4" ColumnName="NonHazDHServLvl4" />
                 <ScalarProperty Name="NonHazDHServLvl3" ColumnName="NonHazDHServLvl3" />
@@ -5739,6 +5698,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="SurchargeFlammable" ColumnName="SurchargeFlammable" />
                 <ScalarProperty Name="SurchageHazard" ColumnName="SurchageHazard" />
                 <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="ActiveProfile" ColumnName="ActiveProfile" />
                 <ScalarProperty Name="ClientStatus" ColumnName="ClientStatus" />
                 <ScalarProperty Name="PartialDeliveryAllowed" ColumnName="PartialDeliveryAllowed" />
                 <ScalarProperty Name="ChargesSummary" ColumnName="ChargesSummary" />
@@ -5813,26 +5773,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="GlobalClientID" ColumnName="GlobalClientID" />
                 <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblSupplier">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblSupplier">
-              <MappingFragment StoreEntitySet="tblSupplier">
-                <ScalarProperty Name="Fax" ColumnName="Fax" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address2" ColumnName="Address2" />
-                <ScalarProperty Name="Address1" ColumnName="Address1" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
-                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

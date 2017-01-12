@@ -150,7 +150,6 @@ namespace MvcPhoenix.Services
                            bulkorderid = t.BulkOrderID,
                            clientid = t.ClientID,
                            clientname = c.ClientName,
-                           logofilename = c.LogoFileName,
                            orderdate = t.OrderDate,
                            ordercomment = t.Comment,
                            supplyid = t.SupplyID,
@@ -193,6 +192,7 @@ namespace MvcPhoenix.Services
                 }
 
                 var dbrow = db.tblBulkOrder.Find(obj.bulkorderid);
+
                 dbrow.ClientID = obj.clientid;
                 dbrow.OrderDate = obj.orderdate;
                 dbrow.Comment = obj.ordercomment;
@@ -211,7 +211,6 @@ namespace MvcPhoenix.Services
 
             message.bulkorderid = vm.bulkorderid;
             message.clientname = vm.clientname;
-            message.logofilename = vm.logofilename;
             message.ToAddress = vm.bulksupplieremail;
             message.FromAddress = HttpContext.Current.User.Identity.Name;
             message.Subject = "CMC Replenishment Order: " + vm.bulkorderid;
@@ -279,7 +278,9 @@ namespace MvcPhoenix.Services
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
                 BulkOrderItem obj = new BulkOrderItem();
+
                 var dbBulkOrder = db.tblBulkOrder.Find(id);
+
                 obj.bulkorderitemid = -1;
                 obj.bulkorderid = id;
                 obj.productmasterid = null;
@@ -357,6 +358,7 @@ namespace MvcPhoenix.Services
                 var dbBulkOrder = db.tblBulkOrderItem.Find(id);
                 int pk = Convert.ToInt32(dbBulkOrder.BulkOrderID);
                 string s = "Delete from tblBulkOrderItem where BulkOrderItemID=" + id;
+
                 db.Database.ExecuteSqlCommand(s);
                 db.Dispose();
 
@@ -466,7 +468,6 @@ namespace MvcPhoenix.Services
                     newrec.AverageLeadTime = 0;
                     newrec.ReorderThis = false;
                     newrec.ReorderWeight = 0;
-
                     newrec.BulkOnOrder = false;
 
                     newrec.ProductMasterAge = (System.DateTime.Now.Date - row.ProductSetupDate.Value).Days;
@@ -489,7 +490,12 @@ namespace MvcPhoenix.Services
                                   join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
                                   join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
                                   where pm.ProductMasterID == row.ProductMasterID
-                                  select new { t.ShelfStatus, t.QtyOnHand, sm.UnitWeight }).ToList();
+                                  select new
+                                  {
+                                      t.ShelfStatus,
+                                      t.QtyOnHand,
+                                      sm.UnitWeight
+                                  }).ToList();
 
                     newrec.ShelfCurrentAvailable = (from t in qStock
                                                     where !sStockStatus.Contains(t.ShelfStatus)
@@ -502,7 +508,15 @@ namespace MvcPhoenix.Services
                     var qBulkLog = (from t in db.tblInvLog
                                     join bl in db.tblBulk on t.BulkID equals bl.BulkID
                                     where (bl.ProductMasterID == row.ProductMasterID) && (t.LogType == "BS-SHP")
-                                    select new { t.LogType, t.LogDate, t.LogQty, t.LogAmount, bl.BulkID, bl.BulkStatus, }).ToList();
+                                    select new
+                                    {
+                                        t.LogType,
+                                        t.LogDate,
+                                        t.LogQty,
+                                        t.LogAmount,
+                                        bl.BulkID,
+                                        bl.BulkStatus
+                                    }).ToList();
 
                     qBulkLog = (from t in qBulkLog
                                 where !sBulkStatus.Contains(t.BulkStatus)
@@ -530,7 +544,14 @@ namespace MvcPhoenix.Services
                                      join sm in db.tblShelfMaster on st.ShelfID equals sm.ShelfID
                                      join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
                                      where (pd.ProductMasterID == row.ProductMasterID) && (t.LogType == "SS-SHP")
-                                     select new { t.LogType, t.LogDate, t.LogQty, t.LogAmount, t.Status }).ToList();
+                                     select new
+                                     {
+                                         t.LogType,
+                                         t.LogDate,
+                                         t.LogQty,
+                                         t.LogAmount,
+                                         t.Status
+                                     }).ToList();
 
                     qShelfLog = (from t in qShelfLog
                                  where !sStockStatus.Contains(t.Status)
@@ -689,7 +710,6 @@ namespace MvcPhoenix.Services
                                   averageleadtime = t.AverageLeadTime,
                                   username = t.UserName,
                                   clientname = c.ClientName,
-                                  logofilename = c.LogoFileName,
                                   mastercode = pm.MasterCode,
                                   mastername = pm.MasterName,
                                   division = x.DivisionName
@@ -853,7 +873,11 @@ namespace MvcPhoenix.Services
 
                 mylist = (from t in db.tblClient
                           orderby t.ClientName
-                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+                          select new SelectListItem
+                          {
+                              Value = t.ClientID.ToString(),
+                              Text = t.ClientName
+                          }).ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
 
@@ -871,7 +895,11 @@ namespace MvcPhoenix.Services
                           where t.ClientID == clientid
                           orderby t.SUPPLYID
                           select
-                          new SelectListItem { Value = t.SUPPLYID, Text = t.SUPPLYID }).Distinct().ToList();
+                          new SelectListItem
+                          {
+                              Value = t.SUPPLYID,
+                              Text = t.SUPPLYID
+                          }).Distinct().ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "" });
 
@@ -889,7 +917,11 @@ namespace MvcPhoenix.Services
                 mylist = (from t in db.tblProductMaster
                           where t.ClientID == clientid
                           orderby t.MasterCode
-                          select new SelectListItem { Value = t.ProductMasterID.ToString(), Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25) }).ToList();
+                          select new SelectListItem
+                          {
+                              Value = t.ProductMasterID.ToString(),
+                              Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25)
+                          }).ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Master Code" });
 
@@ -917,7 +949,11 @@ namespace MvcPhoenix.Services
 
                 mylist = (from c in db.tblDivision
                           where c.ClientID == clientid
-                          select new SelectListItem { Value = c.DivisionID.ToString(), Text = c.DivisionName }).ToList();
+                          select new SelectListItem
+                          {
+                              Value = c.DivisionID.ToString(),
+                              Text = c.DivisionName
+                          }).ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Division" });
 

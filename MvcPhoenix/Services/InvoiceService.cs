@@ -343,8 +343,8 @@ namespace MvcPhoenix.Models
             {
                 // collect all Tier records for a client
                 var qTiers = (from t in db.tblTier 
-                              where t.ClientID == obj.clientid && t.Tier != "1" 
-                              orderby t.Tier 
+                              where t.ClientID == obj.clientid && t.TierLevel != 1 
+                              orderby t.TierLevel 
                               select t).ToList();
 
                 // For each Tier, go see if shipments in the date range qualify for Tier change

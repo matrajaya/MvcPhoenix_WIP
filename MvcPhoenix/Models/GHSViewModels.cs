@@ -39,7 +39,6 @@ namespace MvcPhoenix.Models
         public enum GHSSymbolChoice
         {
             None,
-            Explosive,
             Flammable,
             Oxidizing,
             Compressed_Gas,

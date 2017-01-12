@@ -105,7 +105,6 @@ namespace MvcPhoenix.Controllers
 
             vm.ProductDetailID = id;
             vm.BulkContainer = new BulkContainerViewModel();
-            vm.BulkContainer.logofilename = cl.LogoFileName;
             vm.BulkContainer.bulkid = -1;
             vm.BulkContainer.receivedate = System.DateTime.Now;
             vm.BulkContainer.warehouse = cl.CMCLocation;

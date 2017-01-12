@@ -15,7 +15,7 @@
 
 <div id="bcTarget"></div>
 
-<img src="~/Content/images/logos/@Model.logofilename" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+<img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
 <h1 class="page-header">
     @ViewBag.Title <small>@Model.productcode - @Model.productname</small>
 </h1>
@@ -407,7 +407,7 @@
                 @Html.DisplayFor(m => m.specificgravity)
             </td>
             <td width="15%">
-                <label>Density LBS/GAL</label><br />
+                <label>Density</label><br />
                 @Html.DisplayFor(m => m.density)
             </td>
             <td width="15%">

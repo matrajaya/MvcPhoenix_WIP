@@ -68,7 +68,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblProductNotes> tblProductNotes { get; set; }
         public virtual DbSet<tblProductXRef> tblProductXRef { get; set; }
-        public virtual DbSet<tblProfile_MDB> tblProfile_MDB { get; set; }
         public virtual DbSet<tblRates> tblRates { get; set; }
         public virtual DbSet<tblReasonCode> tblReasonCode { get; set; }
         public virtual DbSet<tblReportCriteria> tblReportCriteria { get; set; }
@@ -78,16 +77,16 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblStatusNotes> tblStatusNotes { get; set; }
         public virtual DbSet<tblStock> tblStock { get; set; }
         public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }
-        public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
         public virtual DbSet<tblSystem> tblSystem { get; set; }
-        public virtual DbSet<tblTier> tblTier { get; set; }
         public virtual DbSet<tblTransType> tblTransType { get; set; }
         public virtual DbSet<tblUN> tblUN { get; set; }
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
         public virtual DbSet<vwBulkLevel> vwBulkLevel { get; set; }
         public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
-        public virtual DbSet<tblClient> tblClient { get; set; }
         public virtual DbSet<tblSupplier> tblSupplier { get; set; }
+        public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
+        public virtual DbSet<tblTier> tblTier { get; set; }
+        public virtual DbSet<tblClient> tblClient { get; set; }
     }
 }

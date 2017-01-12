@@ -75,8 +75,6 @@ namespace MvcPhoenix.Services
                 var qCL = (from t in db.tblClient where t.ClientID == qPM.ClientID select t).FirstOrDefault();
                 obj.clientid = qPM.ClientID;
                 obj.clientname = qCL.ClientName;
-
-                obj.logofilename = qCL.LogoFileName;
                 obj.ListOfWareHouses = fnWarehouseIDs();
                 obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
                 obj.ListOfContainerTypeIDs = ReceivingService.fnContainerTypeIDs();

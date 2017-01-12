@@ -13,8 +13,8 @@
                 <th>ID</th>
                 <th>Tier Level</th>
                 <th>Size</th>
-                <th>Min Sample Amt</th>
-                <th>Max Sample Amt</th>
+                <th>Min Sample Qty</th>
+                <th>Max Sample Qty</th>
                 <th>Price</th>
                 <th id="hideeditbutton"></th>
             </tr>
@@ -25,8 +25,8 @@
                 <td>@item.TierID</td>
                 <td>@item.TierLevel</td>
                 <td>@item.Size</td>
-                <td>@item.LoSampAmt</td>
-                <td>@item.HiSampAmt</td>
+                <td>@item.LoSampQty</td>
+                <td>@item.HiSampQty</td>
                 <td>@item.Price</td>
                 <td id="hideeditbutton" style="text-align:right">
                     @Ajax.ActionLink(" ", "EditTier", "Client", new { id = @item.TierID }, new AjaxOptions

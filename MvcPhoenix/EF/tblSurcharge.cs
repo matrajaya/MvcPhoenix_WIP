@@ -24,6 +24,10 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> Freezer { get; set; }
         public Nullable<decimal> Nalgene { get; set; }
         public Nullable<decimal> LabelFee { get; set; }
+        public Nullable<decimal> Nitrogen { get; set; }
+        public Nullable<decimal> Biocide { get; set; }
+        public Nullable<decimal> Blend { get; set; }
+        public Nullable<decimal> Kosher { get; set; }
         public Nullable<int> LegacyID { get; set; }
         public string Company_MDB { get; set; }
         public string Location_MDB { get; set; }
