@@ -14,7 +14,7 @@ namespace MvcPhoenix.Models
 
         // detail fields
         public int PHDetailID { get; set; }
-        public int ProductDetailID { get; set; }
+        public int? ProductDetailID { get; set; }
         public string PHNumber { get; set; }
 
         // source fields

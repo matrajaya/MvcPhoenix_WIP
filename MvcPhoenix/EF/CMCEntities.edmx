@@ -80,18 +80,15 @@
             <PropertyRef Name="BulkOrderID" />
           </Key>
           <Property Name="BulkOrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LegacyID" Type="int" />
-          <Property Name="OrderNumber_MDB" Type="int" />
-          <Property Name="ClientID" Type="int" />
           <Property Name="LegacyOrderNumber" Type="int" />
           <Property Name="LegacyOrderNumber_Acc2" Type="int" />
+          <Property Name="ClientID" Type="int" />
           <Property Name="OrderDate" Type="datetime" />
           <Property Name="Comment" Type="nvarchar" MaxLength="1000" />
           <Property Name="Status" Type="nvarchar" MaxLength="5" />
           <Property Name="SupplyID" Type="nvarchar" MaxLength="25" />
           <Property Name="BulkSupplierEmail" Type="nvarchar" MaxLength="150" />
           <Property Name="EmailSent" Type="nvarchar" MaxLength="150" />
-          <Property Name="SessionID" Type="nvarchar" MaxLength="255" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -106,11 +103,9 @@
             <PropertyRef Name="BulkOrderItemID" />
           </Key>
           <Property Name="BulkOrderItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LegacyID" Type="int" />
           <Property Name="BulkOrderID" Type="int" />
           <Property Name="ProductMasterID" Type="int" />
           <Property Name="ToBeClosed" Type="bit" />
-          <Property Name="OrderNumber_MDB" Type="int" />
           <Property Name="LegacyOrderNumber" Type="int" />
           <Property Name="ProductCode" Type="nvarchar" MaxLength="20" />
           <Property Name="ProductName" Type="nvarchar" MaxLength="60" />
@@ -124,6 +119,7 @@
           <Property Name="SupplyID" Type="nvarchar" MaxLength="25" />
           <Property Name="ItemNotes" Type="nvarchar" MaxLength="1000" />
           <Property Name="ShelfLife" Type="numeric" Precision="12" Scale="6" />
+          <Property Name="LegacyID" Type="int" />
           <Property Name="Size_MDB" Type="nvarchar" MaxLength="10" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
         </EntityType>
@@ -546,7 +542,7 @@
             <PropertyRef Name="GHSID" />
           </Key>
           <Property Name="GHSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductDetailID" Type="int" Nullable="false" />
+          <Property Name="ProductDetailID" Type="int" />
           <Property Name="SignalWord" Type="nvarchar" MaxLength="50" />
           <Property Name="Symbol1" Type="nvarchar" MaxLength="50" />
           <Property Name="Symbol2" Type="nvarchar" MaxLength="50" />
@@ -1263,6 +1259,79 @@
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Active" Type="bit" />
         </EntityType>
+        <EntityType Name="tblProductionDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MasterID" Type="int" />
+          <Property Name="UM" Type="nvarchar" MaxLength="10" />
+          <Property Name="Unit Weight" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="SS_REORDMIN" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="SS_REORDMAX" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OnHand" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="AvgOfUnit Weight" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="RecQty" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="Status" Type="nvarchar" MaxLength="6" />
+          <Property Name="ProdCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="60" />
+          <Property Name="InvRequestedQty" Type="int" />
+          <Property Name="ProdActualQty" Type="int" />
+          <Property Name="LabelQty" Type="int" />
+          <Property Name="SpecialInstructions" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShelfStockLocation" Type="nvarchar" MaxLength="20" />
+          <Property Name="PackagePartNumber" Type="nvarchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="tblProductionMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LegacyID" Type="int" Nullable="false" />
+          <Property Name="CMCOrderNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="Company" Type="nvarchar" MaxLength="50" />
+          <Property Name="Division" Type="nvarchar" MaxLength="35" />
+          <Property Name="MasterCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="ProdName" Type="nvarchar" MaxLength="60" />
+          <Property Name="Shelf  Life" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="Lot Number" Type="nvarchar" MaxLength="25" />
+          <Property Name="Bulk Location" Type="nvarchar" MaxLength="20" />
+          <Property Name="Contents Weight" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="ExpDt" Type="datetime" />
+          <Property Name="RecDate" Type="datetime" />
+          <Property Name="Packout" Type="bit" />
+          <Property Name="Status" Type="nvarchar" MaxLength="6" />
+          <Property Name="Priority" Type="int" />
+          <Property Name="ProductionStage" Type="int" />
+          <Property Name="InvQtyLockedOut" Type="bit" />
+          <Property Name="BulkContainerEmpty" Type="bit" />
+          <Property Name="FinalDrumWeight" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="ProductionUserID" Type="nvarchar" MaxLength="5" />
+          <Property Name="ContainerCheckID" Type="nvarchar" MaxLength="5" />
+          <Property Name="LabelerID" Type="nvarchar" MaxLength="5" />
+          <Property Name="LabelCheckDate" Type="datetime" />
+          <Property Name="LabelPageCount" Type="int" />
+          <Property Name="LotNumberUsed" Type="nvarchar" MaxLength="25" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="Special" Type="nvarchar" MaxLength="255" />
+          <Property Name="AddedToShelfStock" Type="datetime" />
+          <Property Name="Heat Prior To Filling" Type="bit" />
+          <Property Name="AirUN" Type="nvarchar" MaxLength="255" />
+          <Property Name="CleanRoom" Type="bit" />
+          <Property Name="Moisture" Type="bit" />
+          <Property Name="CMCUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="CeaseShipDate" Type="datetime" />
+          <Property Name="ProdmastCreateDate" Type="datetime" />
+          <Property Name="BulkContainerNote" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="tblProductionStage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductionStageNumber" Type="int" />
+          <Property Name="ProductionStageDescription" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="tblProductMaster">
           <Key>
             <PropertyRef Name="ProductMasterID" />
@@ -1605,7 +1674,7 @@
           <Property Name="PrePackedBulk" Type="bit" />
           <Property Name="ReorderThis" Type="bit" />
           <Property Name="BulkOnOrder" Type="bit" />
-          <Property Name="ReorderWeight" Type="int" />
+          <Property Name="ReorderWeight" Type="numeric" Precision="8" Scale="2" />
           <Property Name="ReorderNotes" Type="nvarchar" MaxLength="255" />
           <Property Name="IsAddOn" Type="bit" />
           <Property Name="SessionID" Type="nvarchar" MaxLength="255" />
@@ -1874,6 +1943,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblPPPDLogNote" EntityType="Self.tblPPPDLogNote" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPreferredCarrierList" EntityType="Self.tblPreferredCarrierList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductDetail" EntityType="Self.tblProductDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProductionDetail" EntityType="Self.tblProductionDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProductionMaster" EntityType="Self.tblProductionMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProductionStage" EntityType="Self.tblProductionStage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductMaster" EntityType="Self.tblProductMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductNotes" EntityType="Self.tblProductNotes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductXRef" EntityType="Self.tblProductXRef" Schema="dbo" store:Type="Tables" />
@@ -2008,6 +2080,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblCarrier" EntityType="CMCSQL03Model.tblCarrier" />
           <EntitySet Name="tblCAS" EntityType="CMCSQL03Model.tblCAS" />
           <EntitySet Name="tblCeaseShipOffSet" EntityType="CMCSQL03Model.tblCeaseShipOffSet" />
+          <EntitySet Name="tblClient" EntityType="CMCSQL03Model.tblClient" />
           <EntitySet Name="tblClientContact" EntityType="CMCSQL03Model.tblClientContact" />
           <EntitySet Name="tblClientIncidentalRate" EntityType="CMCSQL03Model.tblClientIncidentalRate" />
           <EntitySet Name="tblClientInvoiceTrans" EntityType="CMCSQL03Model.tblClientInvoiceTrans" />
@@ -2039,6 +2112,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblPPPDLogNote" EntityType="CMCSQL03Model.tblPPPDLogNote" />
           <EntitySet Name="tblPreferredCarrierList" EntityType="CMCSQL03Model.tblPreferredCarrierList" />
           <EntitySet Name="tblProductDetail" EntityType="CMCSQL03Model.tblProductDetail" />
+          <EntitySet Name="tblProductionDetail" EntityType="CMCSQL03Model.tblProductionDetail" />
+          <EntitySet Name="tblProductionMaster" EntityType="CMCSQL03Model.tblProductionMaster" />
+          <EntitySet Name="tblProductionStage" EntityType="CMCSQL03Model.tblProductionStage" />
           <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
           <EntitySet Name="tblProductNotes" EntityType="CMCSQL03Model.tblProductNotes" />
           <EntitySet Name="tblProductXRef" EntityType="CMCSQL03Model.tblProductXRef" />
@@ -2051,17 +2127,16 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblStatusNotes" EntityType="CMCSQL03Model.tblStatusNotes" />
           <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
           <EntitySet Name="tblSuggestedBulk" EntityType="CMCSQL03Model.tblSuggestedBulk" />
+          <EntitySet Name="tblSupplier" EntityType="CMCSQL03Model.tblSupplier" />
+          <EntitySet Name="tblSurcharge" EntityType="CMCSQL03Model.tblSurcharge" />
           <EntitySet Name="tblSystem" EntityType="CMCSQL03Model.tblSystem" />
+          <EntitySet Name="tblTier" EntityType="CMCSQL03Model.tblTier" />
           <EntitySet Name="tblTransType" EntityType="CMCSQL03Model.tblTransType" />
           <EntitySet Name="tblUN" EntityType="CMCSQL03Model.tblUN" />
           <EntitySet Name="tblUser" EntityType="CMCSQL03Model.tblUser" />
           <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
           <EntitySet Name="vwBulkLevel" EntityType="CMCSQL03Model.vwBulkLevel" />
           <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
-          <EntitySet Name="tblSupplier" EntityType="CMCSQL03Model.tblSupplier" />
-          <EntitySet Name="tblSurcharge" EntityType="CMCSQL03Model.tblSurcharge" />
-          <EntitySet Name="tblTier" EntityType="CMCSQL03Model.tblTier" />
-          <EntitySet Name="tblClient" EntityType="CMCSQL03Model.tblClient" />
         </EntityContainer>
         <EntityType Name="tblBillingGroup">
           <Key>
@@ -2138,18 +2213,15 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
             <PropertyRef Name="BulkOrderID" />
           </Key>
           <Property Name="BulkOrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="OrderNumber_MDB" Type="Int32" />
-          <Property Name="ClientID" Type="Int32" />
           <Property Name="LegacyOrderNumber" Type="Int32" />
           <Property Name="LegacyOrderNumber_Acc2" Type="Int32" />
+          <Property Name="ClientID" Type="Int32" />
           <Property Name="OrderDate" Type="DateTime" Precision="3" />
           <Property Name="Comment" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="SupplyID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="BulkSupplierEmail" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="EmailSent" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="SessionID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
@@ -2164,11 +2236,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
             <PropertyRef Name="BulkOrderItemID" />
           </Key>
           <Property Name="BulkOrderItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LegacyID" Type="Int32" />
           <Property Name="BulkOrderID" Type="Int32" />
           <Property Name="ProductMasterID" Type="Int32" />
           <Property Name="ToBeClosed" Type="Boolean" />
-          <Property Name="OrderNumber_MDB" Type="Int32" />
           <Property Name="LegacyOrderNumber" Type="Int32" />
           <Property Name="ProductCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ProductName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
@@ -2182,6 +2252,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="SupplyID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="ItemNotes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="ShelfLife" Type="Decimal" Precision="12" Scale="6" />
+          <Property Name="LegacyID" Type="Int32" />
           <Property Name="Size_MDB" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -2293,6 +2364,108 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="ClientID" Type="Int32" />
           <Property Name="CountryID" Type="Int32" />
           <Property Name="OffsetDays" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tblClient">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="GlobalClientID" Type="Int32" />
+          <Property Name="ClientCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ClientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CMCLocation" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerReference" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="CMCLongCustomer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ClientCurrency" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ClientUM" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="ClientNetTerm" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="MSDS" Type="Boolean" />
+          <Property Name="TDS" Type="Boolean" />
+          <Property Name="COA" Type="Boolean" />
+          <Property Name="DocumentDirectory" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MSDS_Folder" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TDS_Folder" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="COA_Folder" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SP_ServiceSummary" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="SP_Detail1" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="SP_Detail2" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="SP_Detail3" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="SP_Detail4" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="SP_Detail5" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="SP_RevDate" Type="DateTime" Precision="0" />
+          <Property Name="SP_CommValue" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SP_COARequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SP_TDSRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SP_MSDSLanguage" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="SP_Freezable" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SP_LabelLanguage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SP_Expedite" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BOLComment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="LogoFileName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ClientReference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientEntityName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MSDSFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TDSFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="COAFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogoFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceEmailTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="KeyContactDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientContact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CMCContact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSetupDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDSLanguage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDSUpdateMethod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LabelLanguage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SDSRequired" Type="Boolean" />
+          <Property Name="COARequired" Type="Boolean" />
+          <Property Name="TDSRequired" Type="Boolean" />
+          <Property Name="StdCoverLetterRequired" Type="Boolean" />
+          <Property Name="SpecialReqAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InventoryReports" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CeaseShipPeriod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReplenishmentLeadDays" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExpDateOnLabel" Type="Boolean" />
+          <Property Name="ExpDateRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WasteProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InventoryBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CommercialInvoiceValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FreezableProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SurveyUsed" Type="Boolean" />
+          <Property Name="CSBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ShipConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DelayConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrderConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceSegregation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChargesSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PartialDeliveryAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClientStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActiveProfile" Type="Boolean" />
+          <Property Name="ActiveDate" Type="DateTimeOffset" Precision="7" />
+          <Property Name="SurchageHazard" Type="Int32" />
+          <Property Name="SurchargeFlammable" Type="Int32" />
+          <Property Name="SurchargeHeat" Type="Int32" />
+          <Property Name="SurchargeRefrigerate" Type="Int32" />
+          <Property Name="SurchargeFreeze" Type="Int32" />
+          <Property Name="SurchargeClean" Type="Int32" />
+          <Property Name="SurchargeNalgene" Type="Int32" />
+          <Property Name="SurchargeNitrogen" Type="Int32" />
+          <Property Name="SurchargeBiocide" Type="Int32" />
+          <Property Name="SurchargeBlend" Type="Int32" />
+          <Property Name="SurchargeKosher" Type="Int32" />
+          <Property Name="HazDHServLvl1" Type="Int32" />
+          <Property Name="HazDHServLvl2" Type="Int32" />
+          <Property Name="HazDHServLvl3" Type="Int32" />
+          <Property Name="HazDHServLvl4" Type="Int32" />
+          <Property Name="NonHazDHServLvl1" Type="Int32" />
+          <Property Name="NonHazDHServLvl2" Type="Int32" />
+          <Property Name="NonHazDHServLvl3" Type="Int32" />
+          <Property Name="NonHazDHServLvl4" Type="Int32" />
+          <Property Name="MDB_CMCBE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LogoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="tblClientContact">
           <Key>
@@ -2502,7 +2675,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
             <PropertyRef Name="GHSID" />
           </Key>
           <Property Name="GHSID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductDetailID" Type="Int32" Nullable="false" />
+          <Property Name="ProductDetailID" Type="Int32" />
           <Property Name="SignalWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Symbol1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Symbol2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3219,6 +3392,79 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" />
         </EntityType>
+        <EntityType Name="tblProductionDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MasterID" Type="Int32" />
+          <Property Name="UM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Unit_Weight" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="SS_REORDMIN" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="SS_REORDMAX" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OnHand" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="AvgOfUnit_Weight" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="RecQty" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="ProdCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="InvRequestedQty" Type="Int32" />
+          <Property Name="ProdActualQty" Type="Int32" />
+          <Property Name="LabelQty" Type="Int32" />
+          <Property Name="SpecialInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ShelfStockLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PackagePartNumber" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblProductionMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LegacyID" Type="Int32" Nullable="false" />
+          <Property Name="CMCOrderNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Division" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="MasterCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProdName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Shelf__Life" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Lot_Number" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Bulk_Location" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Contents_Weight" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ExpDt" Type="DateTime" Precision="3" />
+          <Property Name="RecDate" Type="DateTime" Precision="3" />
+          <Property Name="Packout" Type="Boolean" />
+          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="ProductionStage" Type="Int32" />
+          <Property Name="InvQtyLockedOut" Type="Boolean" />
+          <Property Name="BulkContainerEmpty" Type="Boolean" />
+          <Property Name="FinalDrumWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ProductionUserID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ContainerCheckID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="LabelerID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="LabelCheckDate" Type="DateTime" Precision="3" />
+          <Property Name="LabelPageCount" Type="Int32" />
+          <Property Name="LotNumberUsed" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Special" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddedToShelfStock" Type="DateTime" Precision="3" />
+          <Property Name="Heat_Prior_To_Filling" Type="Boolean" />
+          <Property Name="AirUN" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CleanRoom" Type="Boolean" />
+          <Property Name="Moisture" Type="Boolean" />
+          <Property Name="CMCUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
+          <Property Name="ProdmastCreateDate" Type="DateTime" Precision="3" />
+          <Property Name="BulkContainerNote" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblProductionStage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductionStageNumber" Type="Int32" />
+          <Property Name="ProductionStageDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="tblProductMaster">
           <Key>
             <PropertyRef Name="ProductMasterID" />
@@ -3561,11 +3807,52 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="PrePackedBulk" Type="Boolean" />
           <Property Name="ReorderThis" Type="Boolean" />
           <Property Name="BulkOnOrder" Type="Boolean" />
-          <Property Name="ReorderWeight" Type="Int32" />
+          <Property Name="ReorderWeight" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="ReorderNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="IsAddOn" Type="Boolean" />
           <Property Name="SessionID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblSupplier">
+          <Key>
+            <PropertyRef Name="SupplierID" />
+          </Key>
+          <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="SupplierCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SupplierName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblSurcharge">
+          <Key>
+            <PropertyRef Name="SurchargeID" />
+          </Key>
+          <Property Name="SurchargeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="Haz" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Flam" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Clean" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Heat" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Refrig" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Freezer" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Nalgene" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="LabelFee" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Nitrogen" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Biocide" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Blend" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Kosher" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblSystem">
           <Key>
@@ -3574,6 +3861,21 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="SystemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SystemItem" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="SystemValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblTier">
+          <Key>
+            <PropertyRef Name="TierID" />
+          </Key>
+          <Property Name="TierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="TierLevel" Type="Int32" />
+          <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="LoSampAmt" Type="Int32" />
+          <Property Name="HiSampAmt" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="Company_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblTransType">
           <Key>
@@ -3728,164 +4030,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="WebOEInclude" Type="Boolean" />
           <Property Name="PackagePartNumber_MDB" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblSupplier">
-          <Key>
-            <PropertyRef Name="SupplierID" />
-          </Key>
-          <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="SupplierCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SupplierName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblSurcharge">
-          <Key>
-            <PropertyRef Name="SurchargeID" />
-          </Key>
-          <Property Name="SurchargeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="Haz" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Flam" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Clean" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Heat" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Refrig" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Freezer" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Nalgene" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="LabelFee" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Nitrogen" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Biocide" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Blend" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Kosher" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblTier">
-          <Key>
-            <PropertyRef Name="TierID" />
-          </Key>
-          <Property Name="TierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="TierLevel" Type="Int32" />
-          <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="LoSampAmt" Type="Int32" />
-          <Property Name="HiSampAmt" Type="Int32" />
-          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="Company_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblClient">
-          <Key>
-            <PropertyRef Name="ClientID" />
-          </Key>
-          <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="GlobalClientID" Type="Int32" />
-          <Property Name="ClientCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="ClientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CMCLocation" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerReference" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="CMCLongCustomer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ClientCurrency" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="ClientUM" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="ClientNetTerm" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="MSDS" Type="Boolean" />
-          <Property Name="TDS" Type="Boolean" />
-          <Property Name="COA" Type="Boolean" />
-          <Property Name="DocumentDirectory" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MSDS_Folder" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="TDS_Folder" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="COA_Folder" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SP_ServiceSummary" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="SP_Detail1" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="SP_Detail2" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="SP_Detail3" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="SP_Detail4" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="SP_Detail5" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="SP_RevDate" Type="DateTime" Precision="0" />
-          <Property Name="SP_CommValue" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="SP_COARequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SP_TDSRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SP_MSDSLanguage" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
-          <Property Name="SP_Freezable" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SP_LabelLanguage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SP_Expedite" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="BOLComment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="LogoFileName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="ClientReference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClientEntityName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="MSDSFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TDSFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="COAFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LogoFileDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InvoiceAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InvoiceEmailTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="KeyContactDir" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClientContact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CMCContact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClientUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ProductSetupDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SDSLanguage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SDSUpdateMethod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LabelLanguage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SDSRequired" Type="Boolean" />
-          <Property Name="COARequired" Type="Boolean" />
-          <Property Name="TDSRequired" Type="Boolean" />
-          <Property Name="StdCoverLetterRequired" Type="Boolean" />
-          <Property Name="SpecialReqAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InventoryReports" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CeaseShipPeriod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ReplenishmentLeadDays" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ExpDateOnLabel" Type="Boolean" />
-          <Property Name="ExpDateRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WasteProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InventoryBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CommercialInvoiceValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FreezableProcedure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SurveyUsed" Type="Boolean" />
-          <Property Name="CSBusinessRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ShippingRules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ShipConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DelayConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OrderConfirmEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="InvoiceSegregation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ChargesSummary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PartialDeliveryAllowed" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClientStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ActiveProfile" Type="Boolean" />
-          <Property Name="ActiveDate" Type="DateTimeOffset" Precision="7" />
-          <Property Name="SurchageHazard" Type="Int32" />
-          <Property Name="SurchargeFlammable" Type="Int32" />
-          <Property Name="SurchargeHeat" Type="Int32" />
-          <Property Name="SurchargeRefrigerate" Type="Int32" />
-          <Property Name="SurchargeFreeze" Type="Int32" />
-          <Property Name="SurchargeClean" Type="Int32" />
-          <Property Name="SurchargeNalgene" Type="Int32" />
-          <Property Name="SurchargeNitrogen" Type="Int32" />
-          <Property Name="SurchargeBiocide" Type="Int32" />
-          <Property Name="SurchargeBlend" Type="Int32" />
-          <Property Name="SurchargeKosher" Type="Int32" />
-          <Property Name="HazDHServLvl1" Type="Int32" />
-          <Property Name="HazDHServLvl2" Type="Int32" />
-          <Property Name="HazDHServLvl3" Type="Int32" />
-          <Property Name="HazDHServLvl4" Type="Int32" />
-          <Property Name="NonHazDHServLvl1" Type="Int32" />
-          <Property Name="NonHazDHServLvl2" Type="Int32" />
-          <Property Name="NonHazDHServLvl3" Type="Int32" />
-          <Property Name="NonHazDHServLvl4" Type="Int32" />
-          <Property Name="MDB_CMCBE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LogoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3975,18 +4119,15 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
                 <ScalarProperty Name="EmailSent" ColumnName="EmailSent" />
                 <ScalarProperty Name="BulkSupplierEmail" ColumnName="BulkSupplierEmail" />
                 <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="LegacyOrderNumber_Acc2" ColumnName="LegacyOrderNumber_Acc2" />
                 <ScalarProperty Name="LegacyOrderNumber" ColumnName="LegacyOrderNumber" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="OrderNumber_MDB" ColumnName="OrderNumber_MDB" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="BulkOrderID" ColumnName="BulkOrderID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -3996,6 +4137,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
               <MappingFragment StoreEntitySet="tblBulkOrderItem">
                 <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
                 <ScalarProperty Name="Size_MDB" ColumnName="Size_MDB" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
                 <ScalarProperty Name="ItemNotes" ColumnName="ItemNotes" />
                 <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
@@ -4009,11 +4151,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
                 <ScalarProperty Name="LegacyOrderNumber" ColumnName="LegacyOrderNumber" />
-                <ScalarProperty Name="OrderNumber_MDB" ColumnName="OrderNumber_MDB" />
                 <ScalarProperty Name="ToBeClosed" ColumnName="ToBeClosed" />
                 <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
                 <ScalarProperty Name="BulkOrderID" ColumnName="BulkOrderID" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="BulkOrderItemID" ColumnName="BulkOrderItemID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4129,6 +4269,109 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="CountryID" ColumnName="CountryID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="CeaseShipOffsetID" ColumnName="CeaseShipOffsetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblClient">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblClient">
+              <MappingFragment StoreEntitySet="tblClient">
+                <ScalarProperty Name="LogoFile" ColumnName="LogoFile" />
+                <ScalarProperty Name="MDB_CMCBE" ColumnName="MDB_CMCBE" />
+                <ScalarProperty Name="NonHazDHServLvl4" ColumnName="NonHazDHServLvl4" />
+                <ScalarProperty Name="NonHazDHServLvl3" ColumnName="NonHazDHServLvl3" />
+                <ScalarProperty Name="NonHazDHServLvl2" ColumnName="NonHazDHServLvl2" />
+                <ScalarProperty Name="NonHazDHServLvl1" ColumnName="NonHazDHServLvl1" />
+                <ScalarProperty Name="HazDHServLvl4" ColumnName="HazDHServLvl4" />
+                <ScalarProperty Name="HazDHServLvl3" ColumnName="HazDHServLvl3" />
+                <ScalarProperty Name="HazDHServLvl2" ColumnName="HazDHServLvl2" />
+                <ScalarProperty Name="HazDHServLvl1" ColumnName="HazDHServLvl1" />
+                <ScalarProperty Name="SurchargeKosher" ColumnName="SurchargeKosher" />
+                <ScalarProperty Name="SurchargeBlend" ColumnName="SurchargeBlend" />
+                <ScalarProperty Name="SurchargeBiocide" ColumnName="SurchargeBiocide" />
+                <ScalarProperty Name="SurchargeNitrogen" ColumnName="SurchargeNitrogen" />
+                <ScalarProperty Name="SurchargeNalgene" ColumnName="SurchargeNalgene" />
+                <ScalarProperty Name="SurchargeClean" ColumnName="SurchargeClean" />
+                <ScalarProperty Name="SurchargeFreeze" ColumnName="SurchargeFreeze" />
+                <ScalarProperty Name="SurchargeRefrigerate" ColumnName="SurchargeRefrigerate" />
+                <ScalarProperty Name="SurchargeHeat" ColumnName="SurchargeHeat" />
+                <ScalarProperty Name="SurchargeFlammable" ColumnName="SurchargeFlammable" />
+                <ScalarProperty Name="SurchageHazard" ColumnName="SurchageHazard" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="ActiveProfile" ColumnName="ActiveProfile" />
+                <ScalarProperty Name="ClientStatus" ColumnName="ClientStatus" />
+                <ScalarProperty Name="PartialDeliveryAllowed" ColumnName="PartialDeliveryAllowed" />
+                <ScalarProperty Name="ChargesSummary" ColumnName="ChargesSummary" />
+                <ScalarProperty Name="InvoiceSegregation" ColumnName="InvoiceSegregation" />
+                <ScalarProperty Name="OrderConfirmEmail" ColumnName="OrderConfirmEmail" />
+                <ScalarProperty Name="DelayConfirmEmail" ColumnName="DelayConfirmEmail" />
+                <ScalarProperty Name="ShipConfirmEmail" ColumnName="ShipConfirmEmail" />
+                <ScalarProperty Name="ShippingRules" ColumnName="ShippingRules" />
+                <ScalarProperty Name="CSBusinessRules" ColumnName="CSBusinessRules" />
+                <ScalarProperty Name="SurveyUsed" ColumnName="SurveyUsed" />
+                <ScalarProperty Name="FreezableProcedure" ColumnName="FreezableProcedure" />
+                <ScalarProperty Name="CommercialInvoiceValue" ColumnName="CommercialInvoiceValue" />
+                <ScalarProperty Name="InventoryBusinessRules" ColumnName="InventoryBusinessRules" />
+                <ScalarProperty Name="WasteProcedure" ColumnName="WasteProcedure" />
+                <ScalarProperty Name="ExpDateRules" ColumnName="ExpDateRules" />
+                <ScalarProperty Name="ExpDateOnLabel" ColumnName="ExpDateOnLabel" />
+                <ScalarProperty Name="ReplenishmentLeadDays" ColumnName="ReplenishmentLeadDays" />
+                <ScalarProperty Name="CeaseShipPeriod" ColumnName="CeaseShipPeriod" />
+                <ScalarProperty Name="InventoryReports" ColumnName="InventoryReports" />
+                <ScalarProperty Name="SpecialReqAllowed" ColumnName="SpecialReqAllowed" />
+                <ScalarProperty Name="StdCoverLetterRequired" ColumnName="StdCoverLetterRequired" />
+                <ScalarProperty Name="TDSRequired" ColumnName="TDSRequired" />
+                <ScalarProperty Name="COARequired" ColumnName="COARequired" />
+                <ScalarProperty Name="SDSRequired" ColumnName="SDSRequired" />
+                <ScalarProperty Name="LabelLanguage" ColumnName="LabelLanguage" />
+                <ScalarProperty Name="SDSUpdateMethod" ColumnName="SDSUpdateMethod" />
+                <ScalarProperty Name="SDSLanguage" ColumnName="SDSLanguage" />
+                <ScalarProperty Name="ProductSetupDetails" ColumnName="ProductSetupDetails" />
+                <ScalarProperty Name="ClientUrl" ColumnName="ClientUrl" />
+                <ScalarProperty Name="CMCContact" ColumnName="CMCContact" />
+                <ScalarProperty Name="ClientContact" ColumnName="ClientContact" />
+                <ScalarProperty Name="KeyContactDir" ColumnName="KeyContactDir" />
+                <ScalarProperty Name="InvoiceEmailTo" ColumnName="InvoiceEmailTo" />
+                <ScalarProperty Name="InvoiceAddress" ColumnName="InvoiceAddress" />
+                <ScalarProperty Name="LogoFileDir" ColumnName="LogoFileDir" />
+                <ScalarProperty Name="COAFileDir" ColumnName="COAFileDir" />
+                <ScalarProperty Name="TDSFileDir" ColumnName="TDSFileDir" />
+                <ScalarProperty Name="MSDSFileDir" ColumnName="MSDSFileDir" />
+                <ScalarProperty Name="ClientEntityName" ColumnName="ClientEntityName" />
+                <ScalarProperty Name="ClientReference" ColumnName="ClientReference" />
+                <ScalarProperty Name="LogoFileName" ColumnName="LogoFileName" />
+                <ScalarProperty Name="BOLComment" ColumnName="BOLComment" />
+                <ScalarProperty Name="SP_Expedite" ColumnName="SP_Expedite" />
+                <ScalarProperty Name="SP_LabelLanguage" ColumnName="SP_LabelLanguage" />
+                <ScalarProperty Name="SP_Freezable" ColumnName="SP_Freezable" />
+                <ScalarProperty Name="SP_MSDSLanguage" ColumnName="SP_MSDSLanguage" />
+                <ScalarProperty Name="SP_TDSRequired" ColumnName="SP_TDSRequired" />
+                <ScalarProperty Name="SP_COARequired" ColumnName="SP_COARequired" />
+                <ScalarProperty Name="SP_CommValue" ColumnName="SP_CommValue" />
+                <ScalarProperty Name="SP_RevDate" ColumnName="SP_RevDate" />
+                <ScalarProperty Name="SP_Detail5" ColumnName="SP_Detail5" />
+                <ScalarProperty Name="SP_Detail4" ColumnName="SP_Detail4" />
+                <ScalarProperty Name="SP_Detail3" ColumnName="SP_Detail3" />
+                <ScalarProperty Name="SP_Detail2" ColumnName="SP_Detail2" />
+                <ScalarProperty Name="SP_Detail1" ColumnName="SP_Detail1" />
+                <ScalarProperty Name="SP_ServiceSummary" ColumnName="SP_ServiceSummary" />
+                <ScalarProperty Name="COA_Folder" ColumnName="COA_Folder" />
+                <ScalarProperty Name="TDS_Folder" ColumnName="TDS_Folder" />
+                <ScalarProperty Name="MSDS_Folder" ColumnName="MSDS_Folder" />
+                <ScalarProperty Name="DocumentDirectory" ColumnName="DocumentDirectory" />
+                <ScalarProperty Name="COA" ColumnName="COA" />
+                <ScalarProperty Name="TDS" ColumnName="TDS" />
+                <ScalarProperty Name="MSDS" ColumnName="MSDS" />
+                <ScalarProperty Name="ClientNetTerm" ColumnName="ClientNetTerm" />
+                <ScalarProperty Name="ClientUM" ColumnName="ClientUM" />
+                <ScalarProperty Name="ClientCurrency" ColumnName="ClientCurrency" />
+                <ScalarProperty Name="CMCLongCustomer" ColumnName="CMCLongCustomer" />
+                <ScalarProperty Name="CustomerReference" ColumnName="CustomerReference" />
+                <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="ClientCode" ColumnName="ClientCode" />
+                <ScalarProperty Name="GlobalClientID" ColumnName="GlobalClientID" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5088,6 +5331,82 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblProductionDetail">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionDetail">
+              <MappingFragment StoreEntitySet="tblProductionDetail">
+                <ScalarProperty Name="PackagePartNumber" ColumnName="PackagePartNumber" />
+                <ScalarProperty Name="ShelfStockLocation" ColumnName="ShelfStockLocation" />
+                <ScalarProperty Name="SpecialInstructions" ColumnName="SpecialInstructions" />
+                <ScalarProperty Name="LabelQty" ColumnName="LabelQty" />
+                <ScalarProperty Name="ProdActualQty" ColumnName="ProdActualQty" />
+                <ScalarProperty Name="InvRequestedQty" ColumnName="InvRequestedQty" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProdCode" ColumnName="ProdCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RecQty" ColumnName="RecQty" />
+                <ScalarProperty Name="AvgOfUnit_Weight" ColumnName="AvgOfUnit Weight" />
+                <ScalarProperty Name="OnHand" ColumnName="OnHand" />
+                <ScalarProperty Name="SS_REORDMAX" ColumnName="SS_REORDMAX" />
+                <ScalarProperty Name="SS_REORDMIN" ColumnName="SS_REORDMIN" />
+                <ScalarProperty Name="Unit_Weight" ColumnName="Unit Weight" />
+                <ScalarProperty Name="UM" ColumnName="UM" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProductionMaster">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionMaster">
+              <MappingFragment StoreEntitySet="tblProductionMaster">
+                <ScalarProperty Name="BulkContainerNote" ColumnName="BulkContainerNote" />
+                <ScalarProperty Name="ProdmastCreateDate" ColumnName="ProdmastCreateDate" />
+                <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
+                <ScalarProperty Name="CMCUser" ColumnName="CMCUser" />
+                <ScalarProperty Name="Moisture" ColumnName="Moisture" />
+                <ScalarProperty Name="CleanRoom" ColumnName="CleanRoom" />
+                <ScalarProperty Name="AirUN" ColumnName="AirUN" />
+                <ScalarProperty Name="Heat_Prior_To_Filling" ColumnName="Heat Prior To Filling" />
+                <ScalarProperty Name="AddedToShelfStock" ColumnName="AddedToShelfStock" />
+                <ScalarProperty Name="Special" ColumnName="Special" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LotNumberUsed" ColumnName="LotNumberUsed" />
+                <ScalarProperty Name="LabelPageCount" ColumnName="LabelPageCount" />
+                <ScalarProperty Name="LabelCheckDate" ColumnName="LabelCheckDate" />
+                <ScalarProperty Name="LabelerID" ColumnName="LabelerID" />
+                <ScalarProperty Name="ContainerCheckID" ColumnName="ContainerCheckID" />
+                <ScalarProperty Name="ProductionUserID" ColumnName="ProductionUserID" />
+                <ScalarProperty Name="FinalDrumWeight" ColumnName="FinalDrumWeight" />
+                <ScalarProperty Name="BulkContainerEmpty" ColumnName="BulkContainerEmpty" />
+                <ScalarProperty Name="InvQtyLockedOut" ColumnName="InvQtyLockedOut" />
+                <ScalarProperty Name="ProductionStage" ColumnName="ProductionStage" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Packout" ColumnName="Packout" />
+                <ScalarProperty Name="RecDate" ColumnName="RecDate" />
+                <ScalarProperty Name="ExpDt" ColumnName="ExpDt" />
+                <ScalarProperty Name="Contents_Weight" ColumnName="Contents Weight" />
+                <ScalarProperty Name="Bulk_Location" ColumnName="Bulk Location" />
+                <ScalarProperty Name="Lot_Number" ColumnName="Lot Number" />
+                <ScalarProperty Name="Shelf__Life" ColumnName="Shelf  Life" />
+                <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+                <ScalarProperty Name="MasterCode" ColumnName="MasterCode" />
+                <ScalarProperty Name="Division" ColumnName="Division" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="CMCOrderNumber" ColumnName="CMCOrderNumber" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProductionStage">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionStage">
+              <MappingFragment StoreEntitySet="tblProductionStage">
+                <ScalarProperty Name="ProductionStageDescription" ColumnName="ProductionStageDescription" />
+                <ScalarProperty Name="ProductionStageNumber" ColumnName="ProductionStageNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tblProductMaster">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductMaster">
               <MappingFragment StoreEntitySet="tblProductMaster">
@@ -5448,12 +5767,71 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tblSupplier">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblSupplier">
+              <MappingFragment StoreEntitySet="tblSupplier">
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSurcharge">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblSurcharge">
+              <MappingFragment StoreEntitySet="tblSurcharge">
+                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="Kosher" ColumnName="Kosher" />
+                <ScalarProperty Name="Blend" ColumnName="Blend" />
+                <ScalarProperty Name="Biocide" ColumnName="Biocide" />
+                <ScalarProperty Name="Nitrogen" ColumnName="Nitrogen" />
+                <ScalarProperty Name="LabelFee" ColumnName="LabelFee" />
+                <ScalarProperty Name="Nalgene" ColumnName="Nalgene" />
+                <ScalarProperty Name="Freezer" ColumnName="Freezer" />
+                <ScalarProperty Name="Refrig" ColumnName="Refrig" />
+                <ScalarProperty Name="Heat" ColumnName="Heat" />
+                <ScalarProperty Name="Clean" ColumnName="Clean" />
+                <ScalarProperty Name="Flam" ColumnName="Flam" />
+                <ScalarProperty Name="Haz" ColumnName="Haz" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="SurchargeID" ColumnName="SurchargeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tblSystem">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblSystem">
               <MappingFragment StoreEntitySet="tblSystem">
                 <ScalarProperty Name="SystemValue" ColumnName="SystemValue" />
                 <ScalarProperty Name="SystemItem" ColumnName="SystemItem" />
                 <ScalarProperty Name="SystemID" ColumnName="SystemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTier">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblTier">
+              <MappingFragment StoreEntitySet="tblTier">
+                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="HiSampAmt" ColumnName="HiSampAmt" />
+                <ScalarProperty Name="LoSampAmt" ColumnName="LoSampAmt" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="TierLevel" ColumnName="TierLevel" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="TierID" ColumnName="TierID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5610,168 +5988,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
                 <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblSupplier">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblSupplier">
-              <MappingFragment StoreEntitySet="tblSupplier">
-                <ScalarProperty Name="Fax" ColumnName="Fax" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address2" ColumnName="Address2" />
-                <ScalarProperty Name="Address1" ColumnName="Address1" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
-                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblSurcharge">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblSurcharge">
-              <MappingFragment StoreEntitySet="tblSurcharge">
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="Kosher" ColumnName="Kosher" />
-                <ScalarProperty Name="Blend" ColumnName="Blend" />
-                <ScalarProperty Name="Biocide" ColumnName="Biocide" />
-                <ScalarProperty Name="Nitrogen" ColumnName="Nitrogen" />
-                <ScalarProperty Name="LabelFee" ColumnName="LabelFee" />
-                <ScalarProperty Name="Nalgene" ColumnName="Nalgene" />
-                <ScalarProperty Name="Freezer" ColumnName="Freezer" />
-                <ScalarProperty Name="Refrig" ColumnName="Refrig" />
-                <ScalarProperty Name="Heat" ColumnName="Heat" />
-                <ScalarProperty Name="Clean" ColumnName="Clean" />
-                <ScalarProperty Name="Flam" ColumnName="Flam" />
-                <ScalarProperty Name="Haz" ColumnName="Haz" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="SurchargeID" ColumnName="SurchargeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblTier">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblTier">
-              <MappingFragment StoreEntitySet="tblTier">
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="HiSampAmt" ColumnName="HiSampAmt" />
-                <ScalarProperty Name="LoSampAmt" ColumnName="LoSampAmt" />
-                <ScalarProperty Name="Size" ColumnName="Size" />
-                <ScalarProperty Name="TierLevel" ColumnName="TierLevel" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="TierID" ColumnName="TierID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblClient">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblClient">
-              <MappingFragment StoreEntitySet="tblClient">
-                <ScalarProperty Name="LogoFile" ColumnName="LogoFile" />
-                <ScalarProperty Name="MDB_CMCBE" ColumnName="MDB_CMCBE" />
-                <ScalarProperty Name="NonHazDHServLvl4" ColumnName="NonHazDHServLvl4" />
-                <ScalarProperty Name="NonHazDHServLvl3" ColumnName="NonHazDHServLvl3" />
-                <ScalarProperty Name="NonHazDHServLvl2" ColumnName="NonHazDHServLvl2" />
-                <ScalarProperty Name="NonHazDHServLvl1" ColumnName="NonHazDHServLvl1" />
-                <ScalarProperty Name="HazDHServLvl4" ColumnName="HazDHServLvl4" />
-                <ScalarProperty Name="HazDHServLvl3" ColumnName="HazDHServLvl3" />
-                <ScalarProperty Name="HazDHServLvl2" ColumnName="HazDHServLvl2" />
-                <ScalarProperty Name="HazDHServLvl1" ColumnName="HazDHServLvl1" />
-                <ScalarProperty Name="SurchargeKosher" ColumnName="SurchargeKosher" />
-                <ScalarProperty Name="SurchargeBlend" ColumnName="SurchargeBlend" />
-                <ScalarProperty Name="SurchargeBiocide" ColumnName="SurchargeBiocide" />
-                <ScalarProperty Name="SurchargeNitrogen" ColumnName="SurchargeNitrogen" />
-                <ScalarProperty Name="SurchargeNalgene" ColumnName="SurchargeNalgene" />
-                <ScalarProperty Name="SurchargeClean" ColumnName="SurchargeClean" />
-                <ScalarProperty Name="SurchargeFreeze" ColumnName="SurchargeFreeze" />
-                <ScalarProperty Name="SurchargeRefrigerate" ColumnName="SurchargeRefrigerate" />
-                <ScalarProperty Name="SurchargeHeat" ColumnName="SurchargeHeat" />
-                <ScalarProperty Name="SurchargeFlammable" ColumnName="SurchargeFlammable" />
-                <ScalarProperty Name="SurchageHazard" ColumnName="SurchageHazard" />
-                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
-                <ScalarProperty Name="ActiveProfile" ColumnName="ActiveProfile" />
-                <ScalarProperty Name="ClientStatus" ColumnName="ClientStatus" />
-                <ScalarProperty Name="PartialDeliveryAllowed" ColumnName="PartialDeliveryAllowed" />
-                <ScalarProperty Name="ChargesSummary" ColumnName="ChargesSummary" />
-                <ScalarProperty Name="InvoiceSegregation" ColumnName="InvoiceSegregation" />
-                <ScalarProperty Name="OrderConfirmEmail" ColumnName="OrderConfirmEmail" />
-                <ScalarProperty Name="DelayConfirmEmail" ColumnName="DelayConfirmEmail" />
-                <ScalarProperty Name="ShipConfirmEmail" ColumnName="ShipConfirmEmail" />
-                <ScalarProperty Name="ShippingRules" ColumnName="ShippingRules" />
-                <ScalarProperty Name="CSBusinessRules" ColumnName="CSBusinessRules" />
-                <ScalarProperty Name="SurveyUsed" ColumnName="SurveyUsed" />
-                <ScalarProperty Name="FreezableProcedure" ColumnName="FreezableProcedure" />
-                <ScalarProperty Name="CommercialInvoiceValue" ColumnName="CommercialInvoiceValue" />
-                <ScalarProperty Name="InventoryBusinessRules" ColumnName="InventoryBusinessRules" />
-                <ScalarProperty Name="WasteProcedure" ColumnName="WasteProcedure" />
-                <ScalarProperty Name="ExpDateRules" ColumnName="ExpDateRules" />
-                <ScalarProperty Name="ExpDateOnLabel" ColumnName="ExpDateOnLabel" />
-                <ScalarProperty Name="ReplenishmentLeadDays" ColumnName="ReplenishmentLeadDays" />
-                <ScalarProperty Name="CeaseShipPeriod" ColumnName="CeaseShipPeriod" />
-                <ScalarProperty Name="InventoryReports" ColumnName="InventoryReports" />
-                <ScalarProperty Name="SpecialReqAllowed" ColumnName="SpecialReqAllowed" />
-                <ScalarProperty Name="StdCoverLetterRequired" ColumnName="StdCoverLetterRequired" />
-                <ScalarProperty Name="TDSRequired" ColumnName="TDSRequired" />
-                <ScalarProperty Name="COARequired" ColumnName="COARequired" />
-                <ScalarProperty Name="SDSRequired" ColumnName="SDSRequired" />
-                <ScalarProperty Name="LabelLanguage" ColumnName="LabelLanguage" />
-                <ScalarProperty Name="SDSUpdateMethod" ColumnName="SDSUpdateMethod" />
-                <ScalarProperty Name="SDSLanguage" ColumnName="SDSLanguage" />
-                <ScalarProperty Name="ProductSetupDetails" ColumnName="ProductSetupDetails" />
-                <ScalarProperty Name="ClientUrl" ColumnName="ClientUrl" />
-                <ScalarProperty Name="CMCContact" ColumnName="CMCContact" />
-                <ScalarProperty Name="ClientContact" ColumnName="ClientContact" />
-                <ScalarProperty Name="KeyContactDir" ColumnName="KeyContactDir" />
-                <ScalarProperty Name="InvoiceEmailTo" ColumnName="InvoiceEmailTo" />
-                <ScalarProperty Name="InvoiceAddress" ColumnName="InvoiceAddress" />
-                <ScalarProperty Name="LogoFileDir" ColumnName="LogoFileDir" />
-                <ScalarProperty Name="COAFileDir" ColumnName="COAFileDir" />
-                <ScalarProperty Name="TDSFileDir" ColumnName="TDSFileDir" />
-                <ScalarProperty Name="MSDSFileDir" ColumnName="MSDSFileDir" />
-                <ScalarProperty Name="ClientEntityName" ColumnName="ClientEntityName" />
-                <ScalarProperty Name="ClientReference" ColumnName="ClientReference" />
-                <ScalarProperty Name="LogoFileName" ColumnName="LogoFileName" />
-                <ScalarProperty Name="BOLComment" ColumnName="BOLComment" />
-                <ScalarProperty Name="SP_Expedite" ColumnName="SP_Expedite" />
-                <ScalarProperty Name="SP_LabelLanguage" ColumnName="SP_LabelLanguage" />
-                <ScalarProperty Name="SP_Freezable" ColumnName="SP_Freezable" />
-                <ScalarProperty Name="SP_MSDSLanguage" ColumnName="SP_MSDSLanguage" />
-                <ScalarProperty Name="SP_TDSRequired" ColumnName="SP_TDSRequired" />
-                <ScalarProperty Name="SP_COARequired" ColumnName="SP_COARequired" />
-                <ScalarProperty Name="SP_CommValue" ColumnName="SP_CommValue" />
-                <ScalarProperty Name="SP_RevDate" ColumnName="SP_RevDate" />
-                <ScalarProperty Name="SP_Detail5" ColumnName="SP_Detail5" />
-                <ScalarProperty Name="SP_Detail4" ColumnName="SP_Detail4" />
-                <ScalarProperty Name="SP_Detail3" ColumnName="SP_Detail3" />
-                <ScalarProperty Name="SP_Detail2" ColumnName="SP_Detail2" />
-                <ScalarProperty Name="SP_Detail1" ColumnName="SP_Detail1" />
-                <ScalarProperty Name="SP_ServiceSummary" ColumnName="SP_ServiceSummary" />
-                <ScalarProperty Name="COA_Folder" ColumnName="COA_Folder" />
-                <ScalarProperty Name="TDS_Folder" ColumnName="TDS_Folder" />
-                <ScalarProperty Name="MSDS_Folder" ColumnName="MSDS_Folder" />
-                <ScalarProperty Name="DocumentDirectory" ColumnName="DocumentDirectory" />
-                <ScalarProperty Name="COA" ColumnName="COA" />
-                <ScalarProperty Name="TDS" ColumnName="TDS" />
-                <ScalarProperty Name="MSDS" ColumnName="MSDS" />
-                <ScalarProperty Name="ClientNetTerm" ColumnName="ClientNetTerm" />
-                <ScalarProperty Name="ClientUM" ColumnName="ClientUM" />
-                <ScalarProperty Name="ClientCurrency" ColumnName="ClientCurrency" />
-                <ScalarProperty Name="CMCLongCustomer" ColumnName="CMCLongCustomer" />
-                <ScalarProperty Name="CustomerReference" ColumnName="CustomerReference" />
-                <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
-                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
-                <ScalarProperty Name="ClientCode" ColumnName="ClientCode" />
-                <ScalarProperty Name="GlobalClientID" ColumnName="GlobalClientID" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
               </MappingFragment>
             </EntityTypeMapping>

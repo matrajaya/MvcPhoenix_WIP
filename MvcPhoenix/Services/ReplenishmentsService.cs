@@ -840,6 +840,15 @@ namespace MvcPhoenix.Services
                             SupplyID = item.SupplyID
                         };
 
+						var bs = (from x in db.tblBulkSupplier 
+                                  where x.ClientID == item.ClientID && x.SupplyID == item.SupplyID 
+                                  select x).FirstOrDefault();
+                        
+                        if(bs != null)
+                        {
+                            newitem.BulkSupplierEmail = bs.Email;
+                        }
+
                         db1.tblBulkOrder.Add(newitem);
 
                         db1.SaveChanges();

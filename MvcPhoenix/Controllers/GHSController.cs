@@ -170,7 +170,7 @@ namespace MvcPhoenix.Controllers
                         break;
 
                     default:
-                        phCodes = phCodes.OrderBy(p => p.PHNumber);
+                        phCodes = phCodes.OrderBy(p => p.Language);
                         break;
                 }
 

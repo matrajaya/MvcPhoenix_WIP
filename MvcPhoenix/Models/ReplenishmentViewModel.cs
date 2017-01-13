@@ -131,7 +131,7 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfSupplyIDs { get; set; }
 
         [Display(Name = "Reorder Weight")]
-        public int? reorderweight { get; set; }
+        public decimal? reorderweight { get; set; }
 
         [Display(Name = "Item Notes")]
         public string reordernotes { get; set; }

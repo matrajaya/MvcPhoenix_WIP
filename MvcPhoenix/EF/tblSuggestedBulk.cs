@@ -40,7 +40,7 @@ namespace MvcPhoenix.EF
         public Nullable<bool> PrePackedBulk { get; set; }
         public Nullable<bool> ReorderThis { get; set; }
         public Nullable<bool> BulkOnOrder { get; set; }
-        public Nullable<int> ReorderWeight { get; set; }
+        public Nullable<decimal> ReorderWeight { get; set; }
         public string ReorderNotes { get; set; }
         public Nullable<bool> IsAddOn { get; set; }
         public string SessionID { get; set; }

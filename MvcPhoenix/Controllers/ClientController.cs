@@ -353,51 +353,75 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult SaveSupplier(Supplier obj)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            //using (var db = new EF.CMCSQL03Entities())
+            //{
+            var q = db.tblSupplier.Find(obj.SupplierID);
+
+            // Check for duplicate SupplierCode related to the Client
+            var suppliercodecheck = (from c in db.tblSupplier
+                                     where c.SupplierCode == obj.SupplierCode && c.ClientID == obj.ClientID
+                                     select c).Count();
+            try
             {
-                var q = db.tblSupplier.Find(obj.SupplierID);
-
-                if (q != null)
+                if (q.SupplierCode != obj.SupplierCode)
                 {
-                    q.SupplierCode = obj.SupplierCode;
-                    q.SupplierName = obj.SupplierName;
-                    q.ContactName = obj.ContactName;
-                    q.Address1 = obj.Address1;
-                    q.Address2 = obj.Address2;
-                    q.City = obj.City;
-                    q.State = obj.State;
-                    q.PostalCode = obj.PostalCode;
-                    q.Country = obj.Country;
-                    q.Email = obj.Email;
-                    q.Phone = obj.Phone;
-                    q.Fax = obj.Fax;
-
-                    db.SaveChanges();
-                }
-                else
-                {
-                    var newrecord = new EF.tblSupplier
+                    if (suppliercodecheck > 0)
                     {
-                        SupplierID = Convert.ToInt32(obj.SupplierID),
-                        ClientID = Convert.ToInt32(obj.ClientID),
-                        SupplierCode = obj.SupplierCode,
-                        SupplierName = obj.SupplierName,
-                        ContactName = obj.ContactName,
-                        Address1 = obj.Address1,
-                        Address2 = obj.Address2,
-                        City = obj.City,
-                        State = obj.State,
-                        PostalCode = obj.PostalCode,
-                        Country = obj.Country,
-                        Email = obj.Email,
-                        Phone = obj.Phone,
-                        Fax = obj.Fax
-                    };
-
-                    db.tblSupplier.Add(newrecord);
-                    db.SaveChanges();
+                        obj.SupplierCode += " - Duplicate";
+                    }
                 }
             }
+            catch (Exception)
+            {
+                // Catch NullReferenceException which is thrown when adding new supplier
+                if (suppliercodecheck > 0)
+                {
+                    obj.SupplierCode += " - Duplicate";
+                }
+            }
+
+
+            if (q != null)
+            {
+                q.SupplierCode = obj.SupplierCode;
+                q.SupplierName = obj.SupplierName;
+                q.ContactName = obj.ContactName;
+                q.Address1 = obj.Address1;
+                q.Address2 = obj.Address2;
+                q.City = obj.City;
+                q.State = obj.State;
+                q.PostalCode = obj.PostalCode;
+                q.Country = obj.Country;
+                q.Email = obj.Email;
+                q.Phone = obj.Phone;
+                q.Fax = obj.Fax;
+
+                db.SaveChanges();
+            }
+            else
+            {
+                var newrecord = new EF.tblSupplier
+                {
+                    SupplierID = Convert.ToInt32(obj.SupplierID),
+                    ClientID = Convert.ToInt32(obj.ClientID),
+                    SupplierCode = obj.SupplierCode,
+                    SupplierName = obj.SupplierName,
+                    ContactName = obj.ContactName,
+                    Address1 = obj.Address1,
+                    Address2 = obj.Address2,
+                    City = obj.City,
+                    State = obj.State,
+                    PostalCode = obj.PostalCode,
+                    Country = obj.Country,
+                    Email = obj.Email,
+                    Phone = obj.Phone,
+                    Fax = obj.Fax
+                };
+
+                db.tblSupplier.Add(newrecord);
+                db.SaveChanges();
+            }
+            //}
 
             return null;
         }

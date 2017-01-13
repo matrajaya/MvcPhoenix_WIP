@@ -15,18 +15,15 @@ namespace MvcPhoenix.EF
     public partial class tblBulkOrder
     {
         public int BulkOrderID { get; set; }
-        public Nullable<int> LegacyID { get; set; }
-        public Nullable<int> OrderNumber_MDB { get; set; }
-        public Nullable<int> ClientID { get; set; }
         public Nullable<int> LegacyOrderNumber { get; set; }
         public Nullable<int> LegacyOrderNumber_Acc2 { get; set; }
+        public Nullable<int> ClientID { get; set; }
         public Nullable<System.DateTime> OrderDate { get; set; }
         public string Comment { get; set; }
         public string Status { get; set; }
         public string SupplyID { get; set; }
         public string BulkSupplierEmail { get; set; }
         public string EmailSent { get; set; }
-        public string SessionID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

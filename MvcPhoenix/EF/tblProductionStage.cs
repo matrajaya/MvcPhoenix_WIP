@@ -12,16 +12,10 @@ namespace MvcPhoenix.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class tblGHS
+    public partial class tblProductionStage
     {
-        public int GHSID { get; set; }
-        public Nullable<int> ProductDetailID { get; set; }
-        public string SignalWord { get; set; }
-        public string Symbol1 { get; set; }
-        public string Symbol2 { get; set; }
-        public string Symbol3 { get; set; }
-        public string Symbol4 { get; set; }
-        public string Symbol5 { get; set; }
-        public string OtherLabelInfo { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> ProductionStageNumber { get; set; }
+        public string ProductionStageDescription { get; set; }
     }
 }

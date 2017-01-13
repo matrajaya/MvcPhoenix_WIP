@@ -20,7 +20,7 @@ namespace MvcPhoenix.Controllers
                 var vm = Services.BulkService.fnFillBulkContainerFromDB(id);
                 //var q = (from t in db.tblClient where t.ClientID == vm.clientid select t).FirstOrDefault();
                 //ViewBag.MdbPath = q.MDB_CMCBE;
-                ViewBag.ListOfMDBS = Services.Packout.fnMDBTest();
+                //ViewBag.ListOfMDBS = Services.Packout.fnMDBTest();
                 return View("~/Views/PackOut/Index.cshtml",vm);
             }
 
@@ -29,7 +29,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult CreateNewPackout(BulkContainerViewModel vm, FormCollection fc)
         {
-            string cmcmdb = fc["CMCMDB"].ToString();
+            //string cmcmdb = fc["CMCMDB"].ToString();
             int ReturnProductDetailID = Convert.ToInt32(fc["productdetailid"]);
             int Priority = Convert.ToInt32(fc["priority"]);
 
@@ -40,7 +40,8 @@ namespace MvcPhoenix.Controllers
             }
             
             //string PackOutResult = Services.Packout.fnCreatePackOutOrder(vm.bulkid,Priority);
-            int PackOutResult = Services.Packout.fnCreatePackOutOrder(vm.bulkid, Priority, cmcmdb);
+            //int PackOutResult = Services.Packout.fnCreatePackOutOrder(vm.bulkid, Priority, cmcmdb);
+			int PackOutResult = Services.Packout.fnCreatePackOutOrder(vm.bulkid, Priority);
 
             //if (PackOutResult == "PackOutExists")
             if (PackOutResult == -1)

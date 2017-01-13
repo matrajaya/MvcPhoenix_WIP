@@ -426,6 +426,15 @@
     <Compile Include="EF\tblProductDetail.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblProductionDetail.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblProductionMaster.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\tblProductionStage.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblProductMaster.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>

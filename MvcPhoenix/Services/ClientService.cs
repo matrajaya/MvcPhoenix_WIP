@@ -119,11 +119,9 @@ namespace MvcPhoenix.Services
                 q.ClientCurrency = CP.ClientCurrency;
                 q.ClientUM = CP.ClientUM;
                 q.ClientNetTerm = CP.ClientNetTerm;
-
                 q.InvoiceAddress = CP.InvoiceAddress;
                 q.InvoiceEmailTo = CP.InvoiceEmailTo;
                 q.KeyContactDir = CP.KeyContactDir;
-
                 q.ActiveDate = CP.ActiveDate;
                 q.ActiveProfile = CP.ActiveProfile;
 
