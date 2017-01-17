@@ -275,6 +275,7 @@ namespace MvcPhoenix.Models
                 PP.accuracyverified = qd.AccuracyVerified;
                 PP.accuracyverifiedby = qd.AccuracyVerifiedBy;
                 PP.active = qd.Active;
+                PP.activedate = qd.ActiveDate;
                 PP.CreateDateDetail = qd.CreateDate;
                 PP.CreateUserDetail = qd.CreateUser;
                 PP.UpdateDateDetail = qd.UpdateDate;
@@ -292,8 +293,13 @@ namespace MvcPhoenix.Models
                          where t.ProductMasterID == PP.productmasterid
                          select t).FirstOrDefault();
 
+                var c = (from t in db.tblClient
+                        where t.ClientID == q.ClientID
+                        select t).FirstOrDefault();
+
                 PP.productmasterid = q.ProductMasterID;
                 PP.clientid = q.ClientID;
+                PP.clientname = c.ClientName;
                 PP.mastercode = q.MasterCode;
                 PP.mastername = q.MasterName;
                 PP.supplyid = q.SUPPLYID;
@@ -547,6 +553,7 @@ namespace MvcPhoenix.Models
                 q.RCRASHIPNAME = PP.rcrashipname;
                 q.RCRANOSNAME = PP.rcranosname;
                 q.Active = PP.active;
+                q.ActiveDate = PP.activedate;
                 q.AccuracyVerified = PP.accuracyverified;
 
                 if (q.AccuracyVerified == true)
@@ -946,5 +953,88 @@ namespace MvcPhoenix.Models
         }
 
         #endregion CAS Methods
+
+        #region Client Product Cross Reference Methods
+        
+        public static ClientProductXRef fnGetXRef(int id)
+        {
+            ClientProductXRef CXRef = new ClientProductXRef();
+
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var q = (from t in db.tblProductXRef
+                         where t.ProductXRefID == id
+                         select t).FirstOrDefault();
+
+                CXRef.ProductXRefID = q.ProductXRefID;
+                CXRef.ClientID = q.ClientID;
+                CXRef.CMCProductCode = q.CMCProductCode;
+                CXRef.CMCSize = q.CMCSize;
+                // Note: We may have to put productid in tblProductXRef moving forward
+                CXRef.ClientProductCode = q.CustProductCode;
+                CXRef.ClientProductName = q.CustProductName;
+                CXRef.ClientSize = q.CustSize;
+
+                return CXRef;
+            }
+        }
+
+        public static int fnSaveXRefToDB(ClientProductXRef CXRef)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                if (CXRef.ProductXRefID == -1)
+                {
+                    var newrecord = new EF.tblProductXRef();
+                    db.tblProductXRef.Add(newrecord);
+                    db.SaveChanges();
+
+                    CXRef.ProductXRefID = newrecord.ProductXRefID;
+                }
+
+                var q = (from t in db.tblProductXRef
+                         where t.ProductXRefID == CXRef.ProductXRefID
+                         select t).FirstOrDefault();
+
+                q.ClientID = CXRef.ClientID;
+                q.CMCProductCode = CXRef.CMCProductCode;
+                q.CMCSize = CXRef.CMCSize;
+                q.CustProductCode = CXRef.ClientProductCode;
+                q.CustSize = CXRef.ClientSize;
+                q.CustProductName = CXRef.ClientProductName;
+
+                db.SaveChanges();
+
+                return q.ProductXRefID;
+            }
+        }
+
+        public static int fnDeleteXRef(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                db.Database.ExecuteSqlCommand("Delete from tblProductXRef Where ProductXRefID=" + id);
+            }
+
+            return id;
+        }
+
+        #endregion Client Product Cross Reference Methods
+
+        public static List<SelectListItem> fnListOfClients()
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+
+                mylist = (from t in db.tblClient
+                          orderby t.ClientName
+                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
+
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+
+                return mylist;
+            }
+        }
     }
 }

@@ -29,7 +29,8 @@
             @using (Ajax.BeginForm("Save", "GHS", new AjaxOptions
             {
                 HttpMethod = "POST",
-                LoadingElementId = "dvspinner"
+                LoadingElementId = "dvspinner",
+                OnSuccess = "successSaveDialog"
             }))
             {
                 @Html.HiddenFor(m => m.GHSID)
@@ -117,5 +118,9 @@
 <script type="text/javascript">
     function RefreshDetailPH() {
         $("#dvDetailPHCodes").load('@Url.Action("Detail", "GHS", new { id = @Html.Raw(Json.Encode(Model.ProductDetailID)) })');
+    }
+
+    function successSaveDialog() {
+        $.alert('GHS Information Saved!', 'Success');
     }
 </script>

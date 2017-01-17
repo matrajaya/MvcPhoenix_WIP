@@ -186,8 +186,8 @@ namespace MvcPhoenix.Controllers
                                notedate = t.NoteDate,
                                notes = t.Notes,
                                reasoncode = t.ReasonCode,
-                               ListOfReasonCodes = (from r in db.tblReasonCode 
-                                                    orderby r.Reason 
+                               ListOfReasonCodes = (from r in db.tblReasonCode
+                                                    orderby r.Reason
                                                     select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
                            }).ToList();
                 ViewBag.ParentKey = id;
@@ -285,5 +285,108 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion CAS
+
+        #region Client Product Cross Reference
+
+        [HttpGet]
+        public ActionResult XRefList(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var obj = (from t in db.tblProductXRef
+                           orderby t.ProductXRefID
+                           select new ClientProductXRef
+                           {
+                               ProductXRefID = t.ProductXRefID,
+                               ClientID = t.ClientID,
+                               ClientName = (from cn in db.tblClient
+                                             where cn.ClientID == t.ClientID
+                                             select cn.ClientName).FirstOrDefault(),
+
+                               ProductID = (from pd in db.tblProductDetail
+                                            where pd.ProductCode == t.CMCProductCode
+                                            select pd.ProductDetailID).FirstOrDefault(),
+
+                               ProductName = (from pd in db.tblProductDetail
+                                              where pd.ProductCode == t.CMCProductCode
+                                              select pd.ProductName).FirstOrDefault(),
+
+                               CMCProductCode = t.CMCProductCode,
+                               CMCSize = t.CMCSize,
+                               ClientProductCode = t.CustProductCode,
+                               ClientProductName = t.CustProductName,
+                               ClientSize = t.CustSize
+                           }).AsQueryable();
+
+                if (searchString != null)
+                {
+                    page = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+
+                ViewBag.CurrentFilter = searchString;
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    obj = obj.Where(x => x.ClientName.Contains(searchString)
+                        || x.ProductName.Contains(searchString)
+                        || x.CMCProductCode.Contains(searchString));
+                }
+
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        obj = obj.OrderByDescending(x => x.ClientName);
+                        break;
+
+                    default:
+                        obj = obj.OrderBy(x => x.ClientName);
+                        break;
+                }
+
+                int pageSize = 10;
+                int pageNumber = (page ?? 1);
+
+                return View("~/Views/Products/ClientXRef.cshtml", obj.ToPagedList(pageNumber, pageSize));
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CreateXRef()
+        {
+            ClientProductXRef CXRef = new ClientProductXRef();
+            CXRef.ProductXRefID = -1;
+            CXRef.ListOfClients = ProductsService.fnListOfClients();
+
+            return PartialView("~/Views/Products/_ClientXRefModal.cshtml", CXRef);
+        }
+
+        [HttpGet]
+        public ActionResult EditXRef(int id)
+        {
+            // id = ProductXRefID
+            var CXRef = ProductsService.fnGetXRef(id);
+            CXRef.ListOfClients = ProductsService.fnListOfClients();
+
+            return PartialView("~/Views/Products/_ClientXRefModal.cshtml", CXRef);
+        }
+
+        [HttpPost]
+        public ActionResult SaveXRef(ClientProductXRef CXRef)
+        {
+            int pk = ProductsService.fnSaveXRefToDB(CXRef);
+            return null;
+        }
+
+        public ActionResult DeleteXRef(int id)
+        {
+            int pk = ProductsService.fnDeleteXRef(id);
+            return null;
+        }
+
+        #endregion Client Product Cross Reference
     }
 }

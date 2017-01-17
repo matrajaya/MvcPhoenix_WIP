@@ -88,6 +88,24 @@ namespace MvcPhoenix.Models
         public bool? excludefromlabel { get; set; }
     }
 
+    public class ClientProductXRef
+    {
+        public int ProductXRefID {get;set;}
+        public int? ClientID {get;set;}
+        public string ClientName { get; set; }
+        public int? ProductID { get; set; }
+        public string ProductName { get; set; }
+        public string CMCProductCode {get;set;}
+        public string CMCSize  {get;set;}
+        public string ClientProductCode {get;set;}
+        public string ClientProductName {get;set;}
+        public string ClientSize {get;set;}
+
+        public List<SelectListItem> ListOfClients { get; set; }
+
+        // Consider adding productdetailid and cmclocation to tblProductXRef
+    }
+
     public class ProductProfile
     {
         public ProductProfile()     //constructor

@@ -92,7 +92,7 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var q = db.tblGHS.Find(obj.GHSID);
+                var q = (from t in db.tblGHS where t.ProductDetailID == obj.ProductDetailID select t).FirstOrDefault();
 
                 if (q != null)
                 {

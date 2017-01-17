@@ -128,7 +128,8 @@
                     <h3 class="panel-title"><i class="fa fa-wrench fa-fw"></i> Utility Box</h3>
                 </div>
                 <div class="panel-body">
-                    @Html.ActionLink("Convert Equivalent to Product Master", "DetailToMaster", "ProductConversion", null, new { @class = "btn btn-block btn-primary" })
+                    @Html.ActionLink("Convert Equivalent to Product Master", "DetailToMaster", "ProductConversion", null, new { @class = "btn btn-block btn-primary", @target = "_blank" })
+                    @Html.ActionLink("Set Client Product Cross-Reference", "XRefList", "Products", null, new { @class = "btn btn-block btn-primary", @target = "_blank" })
                 </div>
             </div>
         </div>
