@@ -5,38 +5,67 @@
             if (User.IsInRole("Admin"))
             {
                 <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-fw fa-dashboard"></i> Dashboards</a></li>
-                <li><a href="@Url.Action("Index", "Orders")"><i class="fa fa-fw fa-stack-exchange"></i> Orders</a></li>
-                <li><a href="@Url.Action("Index", "ReturnOrders")"><i class="fa fa-fw fa-recycle"></i> Returns</a></li>
-                <li><a href="@Url.Action("Index", "Invoice")"><i class="fa fa-fw fa-calculator"></i> Invoicing</a></li>
                 <li><a href="@Url.Action("Index", "Products")"><i class="fa fa-fw fa-briefcase"></i> Products</a></li>
-                <li><a href="@Url.Action("Index", "Inventory")"><i class="fa fa-fw fa-dropbox"></i> Inventory</a></li>
-                <li><a href="@Url.Action("Index", "Replenishments")"><i class="fa fa-fw fa-stack-overflow"></i> Replenishments</a></li>
-                <li><a href="@Url.Action("Index", "Bulk")"><i class="fa fa-fw fa-cubes"></i> Bulk Management</a></li>
-                <li><a href="@Url.Action("Index", "Receiving")"><i class="fa fa-fw fa-truck fa-flip-horizontal"></i> Receiving</a></li>
+                <li><a href="#" data-toggle="collapse" data-target="#csrmenunav"><i class="fa fa-fw fa-indent"></i> Customer Service Options</a></li>
+                <li>
+                    <ul id="csrmenunav" class="collapse">
+                        <li><a href="@Url.Action("Index", "Orders")"><i class="fa fa-fw fa-stack-exchange"></i> Orders</a></li>
+                        <li><a href="@Url.Action("Index", "ReturnOrders")"><i class="fa fa-fw fa-recycle"></i> Returns</a></li>
+                        <li><a href="@Url.Action("Index", "Invoice")"><i class="fa fa-fw fa-calculator"></i> Invoicing</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-toggle="collapse" data-target="#inventorymenunav"><i class="fa fa-fw fa-indent"></i> Inventory Options</a></li>
+                <li>
+                    <ul id="inventorymenunav" class="collapse">
+                        <li><a href="@Url.Action("Index", "Inventory")"><i class="fa fa-fw fa-dropbox"></i> Inventory Management</a></li>
+                        <li><a href="@Url.Action("Index", "Replenishments")"><i class="fa fa-fw fa-stack-overflow"></i> Replenishments</a></li>
+                        <li><a href="@Url.Action("Index", "Bulk")"><i class="fa fa-fw fa-cubes"></i> Bulk Management</a></li>
+                        <li><a href="@Url.Action("Index", "Receiving")"><i class="fa fa-fw fa-truck fa-flip-horizontal"></i> Receiving</a></li>
+                    </ul>
+                </li>
                 <li><a href="@Url.Action("Index", "Reports")"><i class="fa fa-fw fa-files-o"></i> Run Reports</a></li>
-                <li><a href="@Url.Action("Index", "Documents")"><i class="fa fa-fw fa-eject"></i> File Management</a></li>
-                <li><a href="@Url.Action("Index", "Client")"><i class="fa fa-fw fa-book"></i> Client Management</a></li>
-                <li><a href="@Url.Action("Index", "ApplicationUsers")"><i class="fa fa-fw fa-user-plus"></i> User Management</a></li>
-                <li><a href="@Url.Action("Index", "ApplicationRoles")"><i class="fa fa-fw fa-users"></i> Role Management</a></li>
-                <li><a href="@Url.Action("Index", "Elmah")"><i class="fa fa-fw fa-exclamation-circle"></i> System Health Log</a></li>
-                @*<li><a href="@Url.Action("Index", "")"><i class="fa fa-fw fa-"></i> </a></li>*@
+                <li><a href="#" data-toggle="collapse" data-target="#adminmenunav"><i class="fa fa-fw fa-indent"></i> Administration Options</a></li>
+                <li>
+                    <ul id="adminmenunav" class="collapse">
+                        <li><a href="@Url.Action("Index", "Documents")"><i class="fa fa-fw fa-eject"></i> File Management</a></li>
+                        <li><a href="@Url.Action("Index", "Client")"><i class="fa fa-fw fa-book"></i> Client Management</a></li>
+                        <li><a href="@Url.Action("Index", "ApplicationUsers")"><i class="fa fa-fw fa-user-plus"></i> User Management</a></li>
+                        <li><a href="@Url.Action("Index", "ApplicationRoles")"><i class="fa fa-fw fa-users"></i> Role Management</a></li>
+                        <li><a href="@Url.Action("Index", "Elmah")"><i class="fa fa-fw fa-exclamation-circle"></i> Application Error Log</a></li>
+                    </ul>
+                </li>
             }
             else if (User.IsInRole("Manager"))
             {
                 <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-fw fa-dashboard"></i> Dashboards</a></li>
-                <li><a href="@Url.Action("Index", "Orders")"><i class="fa fa-fw fa-stack-exchange"></i> Orders</a></li>
-                <li><a href="@Url.Action("Index", "ReturnOrders")"><i class="fa fa-fw fa-recycle"></i> Returns</a></li>
-                <li><a href="@Url.Action("Index", "Invoice")"><i class="fa fa-fw fa-calculator"></i> Invoicing</a></li>
                 <li><a href="@Url.Action("Index", "Products")"><i class="fa fa-fw fa-briefcase"></i> Products</a></li>
-                <li><a href="@Url.Action("Index", "Inventory")"><i class="fa fa-fw fa-dropbox"></i> Inventory</a></li>
-                <li><a href="@Url.Action("Index", "Replenishments")"><i class="fa fa-fw fa-stack-overflow"></i> Replenishments</a></li>
-                <li><a href="@Url.Action("Index", "Bulk")"><i class="fa fa-fw fa-cubes"></i> Bulk Management</a></li>
-                <li><a href="@Url.Action("Index", "Receiving")"><i class="fa fa-fw fa-truck fa-flip-horizontal"></i> Receiving</a></li>
+                <li><a href="#" data-toggle="collapse" data-target="#csrmenunav"><i class="fa fa-fw fa-indent"></i> Customer Service Options</a></li>
+                <li>
+                    <ul id="csrmenunav" class="collapse">
+                        <li><a href="@Url.Action("Index", "Orders")"><i class="fa fa-fw fa-stack-exchange"></i> Orders</a></li>
+                        <li><a href="@Url.Action("Index", "ReturnOrders")"><i class="fa fa-fw fa-recycle"></i> Returns</a></li>
+                        <li><a href="@Url.Action("Index", "Invoice")"><i class="fa fa-fw fa-calculator"></i> Invoicing</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" data-toggle="collapse" data-target="#inventorymenunav"><i class="fa fa-fw fa-indent"></i> Inventory Options</a></li>
+                <li>
+                    <ul id="inventorymenunav" class="collapse">
+                        <li><a href="@Url.Action("Index", "Inventory")"><i class="fa fa-fw fa-dropbox"></i> Inventory Management</a></li>
+                        <li><a href="@Url.Action("Index", "Replenishments")"><i class="fa fa-fw fa-stack-overflow"></i> Replenishments</a></li>
+                        <li><a href="@Url.Action("Index", "Bulk")"><i class="fa fa-fw fa-cubes"></i> Bulk Management</a></li>
+                        <li><a href="@Url.Action("Index", "Receiving")"><i class="fa fa-fw fa-truck fa-flip-horizontal"></i> Receiving</a></li>
+                    </ul>
+                </li>
                 <li><a href="@Url.Action("Index", "Reports")"><i class="fa fa-fw fa-files-o"></i> Run Reports</a></li>
-                <li><a href="@Url.Action("Index", "Documents")"><i class="fa fa-fw fa-eject"></i> File Management</a></li>
-                <li><a href="@Url.Action("Index", "Client")"><i class="fa fa-fw fa-book"></i> Client Management</a></li>
-                <li><a href="@Url.Action("Index", "ApplicationUsers")"><i class="fa fa-fw fa-user-plus"></i> User Management</a></li>
-                <li><a href="@Url.Action("Index", "ApplicationRoles")"><i class="fa fa-fw fa-users"></i> Role Management</a></li>
+                <li><a href="#" data-toggle="collapse" data-target="#adminmenunav"><i class="fa fa-fw fa-wrench"></i> Administration Options</a></li>
+                <li>
+                    <ul id="adminmenunav" class="collapse">
+                        <li><a href="@Url.Action("Index", "Documents")"><i class="fa fa-fw fa-eject"></i> File Management</a></li>
+                        <li><a href="@Url.Action("Index", "Client")"><i class="fa fa-fw fa-book"></i> Client Management</a></li>
+                        <li><a href="@Url.Action("Index", "ApplicationUsers")"><i class="fa fa-fw fa-user-plus"></i> User Management</a></li>
+                        <li><a href="@Url.Action("Index", "ApplicationRoles")"><i class="fa fa-fw fa-users"></i> Role Management</a></li>
+                    </ul>
+                </li>
             }
             else
             {
