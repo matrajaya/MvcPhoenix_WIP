@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.Extensions;
+using MvcPhoenix.Models;
 using PagedList;
 using Rotativa;
 using System;
@@ -11,7 +12,7 @@ namespace MvcPhoenix.Controllers
     {
         public ActionResult Index()
         {
-            return View("~/Views/Products/Index.cshtml");
+            return View();
         }
 
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
@@ -80,6 +81,7 @@ namespace MvcPhoenix.Controllers
             PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
+
             return View(PP);
         }
 
@@ -96,6 +98,7 @@ namespace MvcPhoenix.Controllers
             PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
+
             return new ViewAsPdf(PP) { CustomSwitches = footer };
         }
 
@@ -107,25 +110,130 @@ namespace MvcPhoenix.Controllers
             PP.productmasterid = -1;
             PP.productdetailid = -1;
             PP = ProductsService.fnFillOtherPMProps(PP);
-            return View(PP);
+
+            return View("~/Views/Products/Edit.cshtml", PP);
         }
 
+        //[HttpPost]
+        //public ActionResult Equiv(int productdetailid3)
+        //{
+        //    ProductProfile PP = new ProductProfile();
+        //    PP.productdetailid = -1;
+        //    PP.productmasterid = ProductsService.fnProductMasterID(productdetailid3);
+        //    PP = ProductsService.FillFromPM(PP);
+        //    PP = ProductsService.fnFillOtherPMProps(PP);
+
+        //    return View("~/Views/Products/Create.cshtml", PP);
+        //}
+
         [HttpPost]
-        public ActionResult Equiv(int productdetailid3)
+        public ActionResult Equivalent(int productdetailid3)
         {
+            // fill model to be replicated
             ProductProfile PP = new ProductProfile();
-            PP.productdetailid = -1;
-            PP.productmasterid = ProductsService.fnProductMasterID(productdetailid3);
+            PP.productdetailid = productdetailid3;
+            PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
-            return View("~/Views/Products/Create.cshtml", PP);
+
+            // create new record and clear select values for manual entry
+            PP.productdetailid = ProductsService.fnNewProductDetailID();
+            PP.productcode = "";
+            PP.productname = "";
+            PP.UpdateUserDetail = HttpContext.User.Identity.Name;
+            PP.UpdateDateDetail = DateTime.UtcNow;
+            // update log tracking info like user and date created/updated
+
+            // save model held in memory to db
+            int pk = ProductsService.fnSaveProductProfile(PP);
+
+            // find entries for shelfsize info, ghs, cas where id = productdetailid3
+            // clone these entries where id = PP.productdetailid
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                // Shelf
+                var shelf = (from s in db.tblShelfMaster
+                             where s.ProductDetailID == productdetailid3
+                             select s).ToList();
+
+                for (int i = 0; i < shelf.Count; i++)
+                {
+                    var newShelf = shelf[i].Clone();
+                    newShelf.ProductDetailID = PP.productdetailid;
+
+                    db.tblShelfMaster.Add(newShelf);
+                    db.SaveChanges();
+                }
+
+                // GHS
+                var ghs = (from g in db.tblGHS
+                           where g.ProductDetailID == productdetailid3
+                           select g).ToList();
+
+                for (int i = 0; i < ghs.Count; i++)
+                {
+                    var newGhs = ghs[i].Clone();
+                    newGhs.ProductDetailID = PP.productdetailid;
+
+                    db.tblGHS.Add(newGhs);
+                    db.SaveChanges();
+                }
+
+                // PH Detail
+                var ph = (from p in db.tblGHSPHDetail
+                          where p.ProductDetailID == productdetailid3
+                          select p).ToList();
+
+                for (int i = 0; i < ph.Count; i++)
+                {
+                    var newPh = ph[i].Clone();
+                    newPh.ProductDetailID = PP.productdetailid;
+
+                    db.tblGHSPHDetail.Add(newPh);
+                    db.SaveChanges();
+                }
+
+                // CAS
+                var cas = (from c in db.tblCAS
+                           where c.ProductDetailID == productdetailid3
+                           select c).ToList();
+
+                for (int i = 0; i < cas.Count; i++)
+                {
+                    var newCas = cas[i].Clone();
+                    newCas.ProductDetailID = PP.productdetailid;
+
+                    db.tblCAS.Add(newCas);
+                    db.SaveChanges();
+                }
+
+                // Product Notes Log
+                var pdln = new EF.tblPPPDLogNote();
+
+                pdln.ProductDetailID = PP.productdetailid;
+                pdln.NoteDate = DateTime.UtcNow;
+                pdln.Notes = "Equivalent created from " + productdetailid3;
+                pdln.ReasonCode = "New";
+                pdln.CreateDate = DateTime.UtcNow;
+                pdln.CreateUser = HttpContext.User.Identity.Name;
+                pdln.UpdateDate = DateTime.UtcNow;
+                pdln.UpdateUser = HttpContext.User.Identity.Name;
+
+                db.tblPPPDLogNote.Add(pdln);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Edit", new { id = pk });
         }
 
         [HttpPost]
         public ActionResult SaveProductProfile(ProductProfile PPVM)
         {
-            System.Threading.Thread.Sleep(500);    // dev, remove later
-            // the call to the service always returns a ProductDetailID
+            if (String.IsNullOrEmpty(PPVM.productcode) || String.IsNullOrEmpty(PPVM.productname) || String.IsNullOrEmpty(PPVM.mastercode) || String.IsNullOrEmpty(PPVM.mastername))
+            {
+               return View("Edit", PPVM);
+            }           
+
             int pk = ProductsService.fnSaveProductProfile(PPVM);
             return RedirectToAction("Edit", new { id = pk });
         }
@@ -137,6 +245,8 @@ namespace MvcPhoenix.Controllers
             // The returned string can be pushed into a message <div>
             return Content("Product De-Activated");
         }
+
+        #region Lookup UN Information
 
         [HttpGet]
         public ActionResult LookupUNGround(string id)
@@ -169,6 +279,8 @@ namespace MvcPhoenix.Controllers
             obj = ProductsService.fnGetUN(id);
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion Lookup UN Information
 
         #region LogNotes - ProductNotes
 
@@ -250,7 +362,9 @@ namespace MvcPhoenix.Controllers
                                lessthan = t.LessThan,
                                excludefromlabel = t.ExcludeFromLabel
                            }).ToList();
+
                 ViewBag.ParentKey = id;
+
                 return PartialView("~/Views/Products/_Cas.cshtml", obj);
             }
         }

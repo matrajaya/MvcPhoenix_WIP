@@ -40,33 +40,22 @@
             <div style="text-align:center;">
                 <span id="dvTopMessage" style="color:green;font-weight:bold;"> @TempData["SaveResult"]</span><!-- show message after save -->
                 <div class="pull-right">
-                    <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
+                    @if (@Model.productdetailid != -1)
+                    {
+                        <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
+                    }
                 </div>
             </div>
         </div>
     </div>
     <!-- /.Page Heading -->
-    @using (Ajax.BeginForm("SaveProductProfile", "Products",
-    new AjaxOptions
-    {
-        OnBegin = "$('#dvSaveResult').html('')",
-        HttpMethod = "POST",
-        LoadingElementId = "dvspinner"
-    }))
+    @using (@Html.BeginForm("SaveProductProfile", "Products", FormMethod.Post))
     {
     <!-- do not remove -->
         @Html.HiddenFor(m => m.productmasterid)
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.productdetailid)
         @Html.HiddenFor(m => m.prepacked)
-
-    <!-- Added 11/29 pc added so as not to lose migrated values -->
-    <!-- To Iffy: Need to be surfaced to user instead of hidden - Done but leave comment here -->
-        @*@Html.HiddenFor(m => m.mastercode)
-        @Html.HiddenFor(m => m.mastername)
-        @Html.HiddenFor(m => m.supplyid)
-        @Html.HiddenFor(m => m.wasteaccumstartdate)
-        @Html.HiddenFor(m => m.productsetupdate)*@
 
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -101,13 +90,29 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label>Master Code</label>
-                        @Html.TextBoxFor(m => m.mastercode, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.mastercode)
+                        @if (@Model.productdetailid != -1)
+                        {
+                            @Html.TextBoxFor(m => m.mastercode, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(m => m.mastercode)
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.mastercode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.mastercode)
+                        }
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Master Name</label>
-                        @Html.TextBoxFor(m => m.mastername, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.mastername)
+                        @if (@Model.productdetailid != -1)
+                        {
+                            @Html.TextBoxFor(m => m.mastername, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(m => m.mastername)
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.mastername, new { @class = "form-control"})
+                            @Html.ValidationMessageFor(m => m.mastername)
+                        }
                     </div>
                 </div>
                 <div class="row">
@@ -162,11 +167,11 @@
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Profile Revision Date</label>
-                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.sgrevisiondate)
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label>Supplier</label>
@@ -175,19 +180,26 @@
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Waste Accumulation Date</label>
-                        @Html.TextBoxFor(m => m.wasteaccumstartdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.wasteaccumstartdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.wasteaccumstartdate)
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Product Setup Date</label>
-                        @Html.TextBoxFor(m => m.productsetupdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @readonly = "readonly" })
+                        @Html.TextBoxFor(m => m.productsetupdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.productsetupdate)
                     </div>
                 </div>
                 <hr />
                 <div class="row">
                     <div class="col-md-12">
-                        @{Html.RenderAction("ShelfMasterList", "ShelfMaster", new { id = @Model.productdetailid });}
+                        @if (@Model.productdetailid != -1)
+                        {
+                            Html.RenderAction("ShelfMasterList", "ShelfMaster", new { id = @Model.productdetailid });
+                        }
+                        else
+                        {
+                            <label>Note: You can add shelf sizes after product is saved.</label>
+                        }
                     </div>
                 </div>
             </div>
@@ -431,7 +443,14 @@
             <div id="ghs" class="panel-body collapse">
                 <div class="row">
                     <div class="col-md-12">
-                        @{Html.RenderAction("GHSDisplay", "GHS", new { id = @Model.productdetailid });}
+                        @if (@Model.productdetailid != -1)
+                        {
+                            Html.RenderAction("GHSDisplay", "GHS", new { id = @Model.productdetailid });
+                        }
+                        else
+                        {
+                            <label>Note: GHS information can be added after you save the profile.</label>
+                        }
                     </div>
                 </div>
             </div>
@@ -558,9 +577,14 @@
             <div id="infoingredients" class="panel-body collapse">
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="dvCas">
-                            @{Html.RenderAction("CasList", "Products", new { id = @Model.productdetailid });}
-                        </div>
+                        @if (@Model.productdetailid != -1)
+                        {
+                            Html.RenderAction("CasList", "Products", new { id = @Model.productdetailid });
+                        }
+                        else
+                        {
+                            <label>Note: Ingredients information can be added after you save the profile.</label>
+                        }
                     </div>
                 </div>
             </div>
@@ -915,7 +939,14 @@
             <div id="misc" class="panel-body collapse">
                 <div class="row">
                     <div class="col-md-12">
-                        @{Html.RenderAction("ProductLogList", "Products", new { id = @Model.productdetailid });}
+                        @if (@Model.productdetailid != -1)
+                        {
+                            Html.RenderAction("ProductLogList", "Products", new { id = @Model.productdetailid });
+                        }
+                        else
+                        {
+                            <label>Note: Product log notes can be added after you save the profile.</label>
+                        }
                     </div>
                 </div>
             </div>
@@ -979,7 +1010,7 @@
                         $("#airsublabel").val(jsonobj.subsidlabelreq);
                         $("#airhazcl").val(jsonobj.hazardclass);
                         $("#airshipname").val(jsonobj.propershippingname);
-                        $("#airosname").val(jsonobj.nosname);
+                        $("#airnosname").val(jsonobj.nosname);
                     });
     }
 

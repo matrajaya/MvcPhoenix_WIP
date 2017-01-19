@@ -294,8 +294,8 @@ namespace MvcPhoenix.Models
                          select t).FirstOrDefault();
 
                 var c = (from t in db.tblClient
-                        where t.ClientID == q.ClientID
-                        select t).FirstOrDefault();
+                         where t.ClientID == q.ClientID
+                         select t).FirstOrDefault();
 
                 PP.productmasterid = q.ProductMasterID;
                 PP.clientid = q.ClientID;
@@ -443,24 +443,47 @@ namespace MvcPhoenix.Models
 
         public static int fnSaveProductProfile(ProductProfile PPVM)
         {
-            // Take a VM and insert/update records and return the ProductDetailID
-            int pkProductMaster = Convert.ToInt32(PPVM.productmasterid);
+            int pkProductMaster;
+            int pkProductDetail;
 
+            pkProductMaster = Convert.ToInt32(PPVM.productmasterid);
             if (pkProductMaster == -1)
             {
                 PPVM.productmasterid = fnNewProductMasterID();
+
+                pkProductDetail = Convert.ToInt32(PPVM.productdetailid);
+                if (pkProductDetail == -1)
+                {
+                    PPVM.productdetailid = fnNewProductDetailID();
+
+                    using (var db = new EF.CMCSQL03Entities())
+                    {
+                        var pdln = new EF.tblPPPDLogNote();
+
+                        pdln.ProductDetailID = PPVM.productdetailid;
+                        pdln.NoteDate = DateTime.UtcNow;
+                        pdln.Notes = "Master product created";
+                        pdln.ReasonCode = "New";
+                        pdln.CreateDate = DateTime.UtcNow;
+                        pdln.CreateUser = HttpContext.Current.User.Identity.Name;
+                        pdln.UpdateDate = DateTime.UtcNow;
+                        pdln.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                        db.tblPPPDLogNote.Add(pdln);
+                        db.SaveChanges();
+                    }
+                }
             }
 
-            ProductsService.SaveProductMaster(PPVM);
+            SaveProductMaster(PPVM);
 
-            int pkProductDetail = Convert.ToInt32(PPVM.productdetailid);
-
+            pkProductDetail = Convert.ToInt32(PPVM.productdetailid);
             if (pkProductDetail == -1)
             {
                 PPVM.productdetailid = fnNewProductDetailID();
             }
 
-            ProductsService.SaveProductDetail(PPVM);
+            SaveProductDetail(PPVM);
 
             return PPVM.productdetailid;
         }
@@ -471,7 +494,7 @@ namespace MvcPhoenix.Models
             {
                 var q = db.tblProductDetail.Find(PP.productdetailid);
 
-                q.UpdateDate = System.DateTime.Now;
+                q.UpdateDate = DateTime.UtcNow;
                 q.UpdateUser = HttpContext.Current.User.Identity.Name;
                 q.ProductCode = PP.productcode;
                 q.ProductDetailID = PP.productdetailid;
@@ -571,7 +594,7 @@ namespace MvcPhoenix.Models
             {
                 var q = db.tblProductMaster.Find(pm.productmasterid);
 
-                q.UpdateDate = System.DateTime.Now;
+                q.UpdateDate = DateTime.UtcNow;
                 q.UpdateUser = HttpContext.Current.User.Identity.Name;
                 q.ClientID = pm.clientid;
                 q.MasterCode = pm.mastercode;
@@ -955,7 +978,7 @@ namespace MvcPhoenix.Models
         #endregion CAS Methods
 
         #region Client Product Cross Reference Methods
-        
+
         public static ClientProductXRef fnGetXRef(int id)
         {
             ClientProductXRef CXRef = new ClientProductXRef();

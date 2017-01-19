@@ -102,7 +102,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-        private static int fnNewShelfID()
+        public static int fnNewShelfID()
         {
             using (var db = new EF.CMCSQL03Entities())
             {
@@ -110,7 +110,8 @@ namespace MvcPhoenix.Services
                 {
                     // dont need to insert any fields, just need the new PK
                 };
-                db.tblShelfMaster.Add(newrecord); db.SaveChanges();
+                db.tblShelfMaster.Add(newrecord); 
+                db.SaveChanges();
                 int newpk = newrecord.ShelfID;
                 return newpk;
             }

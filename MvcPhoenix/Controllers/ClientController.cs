@@ -183,6 +183,7 @@ namespace MvcPhoenix.Controllers
         {
             Division vm = new Division();
             vm = ClientService.FillDivisionDetails(id);
+
             return PartialView("~/Views/Client/_DivisionEditModal.cshtml", vm);
         }
 
@@ -191,6 +192,8 @@ namespace MvcPhoenix.Controllers
         {
             // id = clientid
             var vm = EmptyDivision(id);
+            vm.ListOfCountries = ClientService.fnListOfCountries();
+
             return PartialView("~/Views/Client/_DivisionEditModal.cshtml", vm);
         }
 
@@ -223,7 +226,6 @@ namespace MvcPhoenix.Controllers
                     q.ContactMSDSPhone = obj.ContactMSDSPhone;
                     q.WasteRate_OffSpec = obj.WasteRateOffSpec;
                     q.WasteRate_Empty = obj.WasteRateEmpty;
-
                     q.Abbr = obj.Abbr;
                     q.UPSHazBook = obj.UPSHazBook;
                     q.ExtMSDS = obj.ExtMSDS;

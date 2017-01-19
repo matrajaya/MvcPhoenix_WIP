@@ -45,7 +45,7 @@
                 <div class="col-md-6">
                     <div class="alert alert-warning">
                         <label>Create Equivalent Product Profile</label>
-                        @using (Html.BeginForm("Equiv", "Products"))
+                        @using (Html.BeginForm("Equivalent", "Products"))
                         {
                             <div class="form-group">
                                 @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })

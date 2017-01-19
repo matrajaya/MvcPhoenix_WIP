@@ -326,9 +326,11 @@ namespace MvcPhoenix.Models
         public bool? discontinued { get; set; }
 
         [Display(Name = "MasterCode")]
+        [Required]
         public string mastercode { get; set; }
 
         [Display(Name = "MasterName")]
+        [Required]
         public string mastername { get; set; }
 
         [Display(Name = "ShlfLife")]
@@ -423,8 +425,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Gloves")]
         public bool? gloves { get; set; }
-
-        [Required]
+                
         [Display(Name = "GloveType")]
         public string glovetype { get; set; }
 
