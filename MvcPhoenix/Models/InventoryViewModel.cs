@@ -126,6 +126,7 @@ namespace MvcPhoenix.Models
         public bool? pm_flammablestorageroom { get; set; }
         public bool? pm_freezablelist { get; set; }
         public bool? pm_refrigeratedlist { get; set; }
+		public string pm_alertnotesreceiving { get; set; }
         public bool? isknownmaterial { get; set; }
         public string closelist { get; set; }
         public int? clientid { get; set; }

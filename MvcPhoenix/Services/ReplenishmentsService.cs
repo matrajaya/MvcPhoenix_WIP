@@ -30,6 +30,7 @@ namespace MvcPhoenix.Services
                                   emailsent = t.EmailSent,
                                   clientname = t2.ClientName,
                                   itemcount = itemscount,
+								  opencount = opencount
                               }).ToList();
 
                 if (mode == "User")

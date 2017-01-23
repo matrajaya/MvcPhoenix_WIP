@@ -104,8 +104,8 @@ namespace MvcPhoenix.Services
             {
                 mylist = (from t in db.tblBulkOrderItem
                           join t2 in db.tblBulkOrder on t.BulkOrderID equals t2.BulkOrderID
-                          //where t.ProductMasterID == id
-                          where t.Status == "OP"
+                          where t.ProductMasterID == id
+                          && t.Status == "OP"
                           select
                           new OpenBulkOrderItems
                           {
@@ -175,8 +175,16 @@ namespace MvcPhoenix.Services
                 obj.pm_flammablestorageroom = dbPM.FlammableStorageRoom;
                 obj.pm_freezablelist = dbPM.FreezableList;
                 obj.pm_refrigeratedlist = dbPM.RefrigeratedList;
+				
+				if (!String.IsNullOrEmpty(dbPM.AlertNotesReceiving))
+                {
+                    obj.pm_alertnotesreceiving = dbPM.AlertNotesReceiving;
+                }
+                else
+                { 
+                    obj.pm_alertnotesreceiving = "No receiving alert for this product";
+                } 
 
-                //var qCL = (from t in db.tblClient where t.ClientID == qPM.ClientID select t).FirstOrDefault();
                 var dbClient = db.tblClient.Find(dbPM.ClientID);
 
                 obj.bulkid = -1;    // for insert later

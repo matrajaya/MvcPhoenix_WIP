@@ -40,12 +40,20 @@
         @Html.HiddenFor(m => m.productmasterid)
         @Html.HiddenFor(m => m.bulkstatus)
 
+		if(@Model.isknownmaterial==true)
+        { 
         <div class="panel panel-primary">
             <div class="panel-body collapse in">
                 <div class="table-responsive">
                     <table class="table table-hover table-striped">
                         <tr>
-                            <th>Master Code</th>
+							<th colspan="4">Receiving Notes - Alert</th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">@Model.pm_alertnotesreceiving</td>
+                        </tr>
+                        <tr>
+							<th>Master Code</th>
                             <th>Name</th>
                             <th>Current Weight on Hand</th>
                             <th>Bulk Status</th>
@@ -86,6 +94,7 @@
                 </div>
             </div>
         </div>
+		}
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#prodinfopan"><i class="fa fa-file-text-o fa-fw"></i> Product Batch / Lot Information</h3>
@@ -97,16 +106,12 @@
                         @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.clientname)
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label>Date Received</label>
                         @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.receivedate)
                     </div>
-                    <div class="form-group col-md-2">
-                        <label>Bin</label>
-                        @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label>Warehouse</label>
                         @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.warehouse)
