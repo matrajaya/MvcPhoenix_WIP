@@ -15,7 +15,8 @@ namespace MvcPhoenix.EF
     public partial class tblProductionMaster
     {
         public int ID { get; set; }
-        public int LegacyID { get; set; }
+        public Nullable<int> BulkID { get; set; }
+        public Nullable<int> LegacyID { get; set; }
         public string CMCOrderNumber { get; set; }
         public string Company { get; set; }
         public string Division { get; set; }

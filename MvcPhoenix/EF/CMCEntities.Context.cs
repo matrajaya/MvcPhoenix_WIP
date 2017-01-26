@@ -66,8 +66,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblPPPDLogNote> tblPPPDLogNote { get; set; }
         public virtual DbSet<tblPreferredCarrierList> tblPreferredCarrierList { get; set; }
         public virtual DbSet<tblProductDetail> tblProductDetail { get; set; }
-        public virtual DbSet<tblProductionDetail> tblProductionDetail { get; set; }
-        public virtual DbSet<tblProductionMaster> tblProductionMaster { get; set; }
         public virtual DbSet<tblProductionStage> tblProductionStage { get; set; }
         public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblProductNotes> tblProductNotes { get; set; }
@@ -91,5 +89,8 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
         public virtual DbSet<vwBulkLevel> vwBulkLevel { get; set; }
         public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
+        public virtual DbSet<tblPriority> tblPriority { get; set; }
+        public virtual DbSet<tblProductionDetail> tblProductionDetail { get; set; }
+        public virtual DbSet<tblProductionMaster> tblProductionMaster { get; set; }
     }
 }

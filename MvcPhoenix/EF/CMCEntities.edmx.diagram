@@ -46,8 +46,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblPPPDLogNote" Width="1.5" PointX="20.75" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblPreferredCarrierList" Width="1.5" PointX="10.75" PointY="21.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductDetail" Width="1.5" PointX="22.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblProductionDetail" Width="1.5" PointX="12.75" PointY="22.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblProductionMaster" Width="1.5" PointX="14.75" PointY="22.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductionStage" Width="1.5" PointX="22.75" PointY="17.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductMaster" Width="1.5" PointX="22.75" PointY="20.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductNotes" Width="1.5" PointX="0.75" PointY="23.75" />
@@ -71,6 +69,9 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblWasteCode" Width="1.5" PointX="28.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.vwBulkLevel" Width="1.5" PointX="28.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.vwProductsInfo" Width="1.5" PointX="28.75" PointY="14.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblPriority" Width="1.5" PointX="13.375" PointY="22.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblProductionDetail" Width="1.5" PointX="15.375" PointY="22.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblProductionMaster" Width="1.5" PointX="13.375" PointY="27.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

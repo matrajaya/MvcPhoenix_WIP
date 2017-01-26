@@ -542,7 +542,7 @@
             <PropertyRef Name="GHSID" />
           </Key>
           <Property Name="GHSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductDetailID" Type="int" />
+          <Property Name="ProductDetailID" Type="int" Nullable="false" />
           <Property Name="SignalWord" Type="nvarchar" MaxLength="50" />
           <Property Name="Symbol1" Type="nvarchar" MaxLength="50" />
           <Property Name="Symbol2" Type="nvarchar" MaxLength="50" />
@@ -1162,6 +1162,16 @@
           <Property Name="NonHazIncoterms_Alt" Type="nvarchar" MaxLength="100" />
           <Property Name="HazIncoterms_Alt" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="tblPriority">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PriorityNumber" Type="int" />
+          <Property Name="PriorityColor" Type="nvarchar" MaxLength="10" />
+          <Property Name="ColorCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="DayOfWeek" Type="nvarchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="tblProductDetail">
           <Key>
             <PropertyRef Name="ProductDetailID" />
@@ -1265,6 +1275,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MasterID" Type="int" />
+          <Property Name="ShelfID" Type="int" />
           <Property Name="UM" Type="nvarchar" MaxLength="10" />
           <Property Name="Unit Weight" Type="numeric" Precision="8" Scale="2" />
           <Property Name="SS_REORDMIN" Type="numeric" Precision="8" Scale="2" />
@@ -1287,7 +1298,8 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LegacyID" Type="int" Nullable="false" />
+          <Property Name="BulkID" Type="int" />
+          <Property Name="LegacyID" Type="int" />
           <Property Name="CMCOrderNumber" Type="nvarchar" MaxLength="100" />
           <Property Name="Company" Type="nvarchar" MaxLength="50" />
           <Property Name="Division" Type="nvarchar" MaxLength="35" />
@@ -1942,6 +1954,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblPMNote" EntityType="Self.tblPMNote" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPPPDLogNote" EntityType="Self.tblPPPDLogNote" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPreferredCarrierList" EntityType="Self.tblPreferredCarrierList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPriority" EntityType="Self.tblPriority" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductDetail" EntityType="Self.tblProductDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductionDetail" EntityType="Self.tblProductionDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductionMaster" EntityType="Self.tblProductionMaster" Schema="dbo" store:Type="Tables" />
@@ -2112,8 +2125,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblPPPDLogNote" EntityType="CMCSQL03Model.tblPPPDLogNote" />
           <EntitySet Name="tblPreferredCarrierList" EntityType="CMCSQL03Model.tblPreferredCarrierList" />
           <EntitySet Name="tblProductDetail" EntityType="CMCSQL03Model.tblProductDetail" />
-          <EntitySet Name="tblProductionDetail" EntityType="CMCSQL03Model.tblProductionDetail" />
-          <EntitySet Name="tblProductionMaster" EntityType="CMCSQL03Model.tblProductionMaster" />
           <EntitySet Name="tblProductionStage" EntityType="CMCSQL03Model.tblProductionStage" />
           <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
           <EntitySet Name="tblProductNotes" EntityType="CMCSQL03Model.tblProductNotes" />
@@ -2137,6 +2148,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
           <EntitySet Name="vwBulkLevel" EntityType="CMCSQL03Model.vwBulkLevel" />
           <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
+          <EntitySet Name="tblPriority" EntityType="CMCSQL03Model.tblPriority" />
+          <EntitySet Name="tblProductionDetail" EntityType="CMCSQL03Model.tblProductionDetail" />
+          <EntitySet Name="tblProductionMaster" EntityType="CMCSQL03Model.tblProductionMaster" />
         </EntityContainer>
         <EntityType Name="tblBillingGroup">
           <Key>
@@ -2675,7 +2689,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
             <PropertyRef Name="GHSID" />
           </Key>
           <Property Name="GHSID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductDetailID" Type="Int32" />
+          <Property Name="ProductDetailID" Type="Int32" Nullable="false" />
           <Property Name="SignalWord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Symbol1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Symbol2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3392,71 +3406,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" />
         </EntityType>
-        <EntityType Name="tblProductionDetail">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MasterID" Type="Int32" />
-          <Property Name="UM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Unit_Weight" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="SS_REORDMIN" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="SS_REORDMAX" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="OnHand" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="AvgOfUnit_Weight" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="RecQty" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-          <Property Name="ProdCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="ProductName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Name="InvRequestedQty" Type="Int32" />
-          <Property Name="ProdActualQty" Type="Int32" />
-          <Property Name="LabelQty" Type="Int32" />
-          <Property Name="SpecialInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ShelfStockLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="PackagePartNumber" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblProductionMaster">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LegacyID" Type="Int32" Nullable="false" />
-          <Property Name="CMCOrderNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Division" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-          <Property Name="MasterCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="ProdName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Name="Shelf__Life" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="Lot_Number" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Bulk_Location" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Contents_Weight" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ExpDt" Type="DateTime" Precision="3" />
-          <Property Name="RecDate" Type="DateTime" Precision="3" />
-          <Property Name="Packout" Type="Boolean" />
-          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-          <Property Name="Priority" Type="Int32" />
-          <Property Name="ProductionStage" Type="Int32" />
-          <Property Name="InvQtyLockedOut" Type="Boolean" />
-          <Property Name="BulkContainerEmpty" Type="Boolean" />
-          <Property Name="FinalDrumWeight" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="ProductionUserID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="ContainerCheckID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="LabelerID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="LabelCheckDate" Type="DateTime" Precision="3" />
-          <Property Name="LabelPageCount" Type="Int32" />
-          <Property Name="LotNumberUsed" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="Special" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AddedToShelfStock" Type="DateTime" Precision="3" />
-          <Property Name="Heat_Prior_To_Filling" Type="Boolean" />
-          <Property Name="AirUN" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CleanRoom" Type="Boolean" />
-          <Property Name="Moisture" Type="Boolean" />
-          <Property Name="CMCUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
-          <Property Name="ProdmastCreateDate" Type="DateTime" Precision="3" />
-          <Property Name="BulkContainerNote" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tblProductionStage">
           <Key>
             <PropertyRef Name="ID" />
@@ -4029,6 +3978,83 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="OtherSurchargeAmt" Type="Decimal" Precision="10" Scale="4" />
           <Property Name="WebOEInclude" Type="Boolean" />
           <Property Name="PackagePartNumber_MDB" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblPriority">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PriorityNumber" Type="Int32" />
+          <Property Name="PriorityColor" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ColorCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DayOfWeek" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblProductionDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MasterID" Type="Int32" />
+          <Property Name="ShelfID" Type="Int32" />
+          <Property Name="UM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Unit_Weight" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="SS_REORDMIN" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="SS_REORDMAX" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OnHand" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="AvgOfUnit_Weight" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="RecQty" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="ProdCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="InvRequestedQty" Type="Int32" />
+          <Property Name="ProdActualQty" Type="Int32" />
+          <Property Name="LabelQty" Type="Int32" />
+          <Property Name="SpecialInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ShelfStockLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PackagePartNumber" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblProductionMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BulkID" Type="Int32" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="CMCOrderNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Division" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="MasterCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ProdName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Shelf__Life" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Lot_Number" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Bulk_Location" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Contents_Weight" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ExpDt" Type="DateTime" Precision="3" />
+          <Property Name="RecDate" Type="DateTime" Precision="3" />
+          <Property Name="Packout" Type="Boolean" />
+          <Property Name="Status" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="ProductionStage" Type="Int32" />
+          <Property Name="InvQtyLockedOut" Type="Boolean" />
+          <Property Name="BulkContainerEmpty" Type="Boolean" />
+          <Property Name="FinalDrumWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ProductionUserID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ContainerCheckID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="LabelerID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="LabelCheckDate" Type="DateTime" Precision="3" />
+          <Property Name="LabelPageCount" Type="Int32" />
+          <Property Name="LotNumberUsed" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="Special" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="AddedToShelfStock" Type="DateTime" Precision="3" />
+          <Property Name="Heat_Prior_To_Filling" Type="Boolean" />
+          <Property Name="AirUN" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CleanRoom" Type="Boolean" />
+          <Property Name="Moisture" Type="Boolean" />
+          <Property Name="CMCUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
+          <Property Name="ProdmastCreateDate" Type="DateTime" Precision="3" />
+          <Property Name="BulkContainerNote" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5331,73 +5357,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblProductionDetail">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionDetail">
-              <MappingFragment StoreEntitySet="tblProductionDetail">
-                <ScalarProperty Name="PackagePartNumber" ColumnName="PackagePartNumber" />
-                <ScalarProperty Name="ShelfStockLocation" ColumnName="ShelfStockLocation" />
-                <ScalarProperty Name="SpecialInstructions" ColumnName="SpecialInstructions" />
-                <ScalarProperty Name="LabelQty" ColumnName="LabelQty" />
-                <ScalarProperty Name="ProdActualQty" ColumnName="ProdActualQty" />
-                <ScalarProperty Name="InvRequestedQty" ColumnName="InvRequestedQty" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ProdCode" ColumnName="ProdCode" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="RecQty" ColumnName="RecQty" />
-                <ScalarProperty Name="AvgOfUnit_Weight" ColumnName="AvgOfUnit Weight" />
-                <ScalarProperty Name="OnHand" ColumnName="OnHand" />
-                <ScalarProperty Name="SS_REORDMAX" ColumnName="SS_REORDMAX" />
-                <ScalarProperty Name="SS_REORDMIN" ColumnName="SS_REORDMIN" />
-                <ScalarProperty Name="Unit_Weight" ColumnName="Unit Weight" />
-                <ScalarProperty Name="UM" ColumnName="UM" />
-                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblProductionMaster">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionMaster">
-              <MappingFragment StoreEntitySet="tblProductionMaster">
-                <ScalarProperty Name="BulkContainerNote" ColumnName="BulkContainerNote" />
-                <ScalarProperty Name="ProdmastCreateDate" ColumnName="ProdmastCreateDate" />
-                <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
-                <ScalarProperty Name="CMCUser" ColumnName="CMCUser" />
-                <ScalarProperty Name="Moisture" ColumnName="Moisture" />
-                <ScalarProperty Name="CleanRoom" ColumnName="CleanRoom" />
-                <ScalarProperty Name="AirUN" ColumnName="AirUN" />
-                <ScalarProperty Name="Heat_Prior_To_Filling" ColumnName="Heat Prior To Filling" />
-                <ScalarProperty Name="AddedToShelfStock" ColumnName="AddedToShelfStock" />
-                <ScalarProperty Name="Special" ColumnName="Special" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="LotNumberUsed" ColumnName="LotNumberUsed" />
-                <ScalarProperty Name="LabelPageCount" ColumnName="LabelPageCount" />
-                <ScalarProperty Name="LabelCheckDate" ColumnName="LabelCheckDate" />
-                <ScalarProperty Name="LabelerID" ColumnName="LabelerID" />
-                <ScalarProperty Name="ContainerCheckID" ColumnName="ContainerCheckID" />
-                <ScalarProperty Name="ProductionUserID" ColumnName="ProductionUserID" />
-                <ScalarProperty Name="FinalDrumWeight" ColumnName="FinalDrumWeight" />
-                <ScalarProperty Name="BulkContainerEmpty" ColumnName="BulkContainerEmpty" />
-                <ScalarProperty Name="InvQtyLockedOut" ColumnName="InvQtyLockedOut" />
-                <ScalarProperty Name="ProductionStage" ColumnName="ProductionStage" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Packout" ColumnName="Packout" />
-                <ScalarProperty Name="RecDate" ColumnName="RecDate" />
-                <ScalarProperty Name="ExpDt" ColumnName="ExpDt" />
-                <ScalarProperty Name="Contents_Weight" ColumnName="Contents Weight" />
-                <ScalarProperty Name="Bulk_Location" ColumnName="Bulk Location" />
-                <ScalarProperty Name="Lot_Number" ColumnName="Lot Number" />
-                <ScalarProperty Name="Shelf__Life" ColumnName="Shelf  Life" />
-                <ScalarProperty Name="ProdName" ColumnName="ProdName" />
-                <ScalarProperty Name="MasterCode" ColumnName="MasterCode" />
-                <ScalarProperty Name="Division" ColumnName="Division" />
-                <ScalarProperty Name="Company" ColumnName="Company" />
-                <ScalarProperty Name="CMCOrderNumber" ColumnName="CMCOrderNumber" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblProductionStage">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionStage">
               <MappingFragment StoreEntitySet="tblProductionStage">
@@ -5989,6 +5948,86 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPriority">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblPriority">
+              <MappingFragment StoreEntitySet="tblPriority">
+                <ScalarProperty Name="DayOfWeek" ColumnName="DayOfWeek" />
+                <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
+                <ScalarProperty Name="PriorityColor" ColumnName="PriorityColor" />
+                <ScalarProperty Name="PriorityNumber" ColumnName="PriorityNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProductionDetail">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionDetail">
+              <MappingFragment StoreEntitySet="tblProductionDetail">
+                <ScalarProperty Name="PackagePartNumber" ColumnName="PackagePartNumber" />
+                <ScalarProperty Name="ShelfStockLocation" ColumnName="ShelfStockLocation" />
+                <ScalarProperty Name="SpecialInstructions" ColumnName="SpecialInstructions" />
+                <ScalarProperty Name="LabelQty" ColumnName="LabelQty" />
+                <ScalarProperty Name="ProdActualQty" ColumnName="ProdActualQty" />
+                <ScalarProperty Name="InvRequestedQty" ColumnName="InvRequestedQty" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProdCode" ColumnName="ProdCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RecQty" ColumnName="RecQty" />
+                <ScalarProperty Name="AvgOfUnit_Weight" ColumnName="AvgOfUnit Weight" />
+                <ScalarProperty Name="OnHand" ColumnName="OnHand" />
+                <ScalarProperty Name="SS_REORDMAX" ColumnName="SS_REORDMAX" />
+                <ScalarProperty Name="SS_REORDMIN" ColumnName="SS_REORDMIN" />
+                <ScalarProperty Name="Unit_Weight" ColumnName="Unit Weight" />
+                <ScalarProperty Name="UM" ColumnName="UM" />
+                <ScalarProperty Name="ShelfID" ColumnName="ShelfID" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProductionMaster">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionMaster">
+              <MappingFragment StoreEntitySet="tblProductionMaster">
+                <ScalarProperty Name="BulkContainerNote" ColumnName="BulkContainerNote" />
+                <ScalarProperty Name="ProdmastCreateDate" ColumnName="ProdmastCreateDate" />
+                <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
+                <ScalarProperty Name="CMCUser" ColumnName="CMCUser" />
+                <ScalarProperty Name="Moisture" ColumnName="Moisture" />
+                <ScalarProperty Name="CleanRoom" ColumnName="CleanRoom" />
+                <ScalarProperty Name="AirUN" ColumnName="AirUN" />
+                <ScalarProperty Name="Heat_Prior_To_Filling" ColumnName="Heat Prior To Filling" />
+                <ScalarProperty Name="AddedToShelfStock" ColumnName="AddedToShelfStock" />
+                <ScalarProperty Name="Special" ColumnName="Special" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="LotNumberUsed" ColumnName="LotNumberUsed" />
+                <ScalarProperty Name="LabelPageCount" ColumnName="LabelPageCount" />
+                <ScalarProperty Name="LabelCheckDate" ColumnName="LabelCheckDate" />
+                <ScalarProperty Name="LabelerID" ColumnName="LabelerID" />
+                <ScalarProperty Name="ContainerCheckID" ColumnName="ContainerCheckID" />
+                <ScalarProperty Name="ProductionUserID" ColumnName="ProductionUserID" />
+                <ScalarProperty Name="FinalDrumWeight" ColumnName="FinalDrumWeight" />
+                <ScalarProperty Name="BulkContainerEmpty" ColumnName="BulkContainerEmpty" />
+                <ScalarProperty Name="InvQtyLockedOut" ColumnName="InvQtyLockedOut" />
+                <ScalarProperty Name="ProductionStage" ColumnName="ProductionStage" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Packout" ColumnName="Packout" />
+                <ScalarProperty Name="RecDate" ColumnName="RecDate" />
+                <ScalarProperty Name="ExpDt" ColumnName="ExpDt" />
+                <ScalarProperty Name="Contents_Weight" ColumnName="Contents Weight" />
+                <ScalarProperty Name="Bulk_Location" ColumnName="Bulk Location" />
+                <ScalarProperty Name="Lot_Number" ColumnName="Lot Number" />
+                <ScalarProperty Name="Shelf__Life" ColumnName="Shelf  Life" />
+                <ScalarProperty Name="ProdName" ColumnName="ProdName" />
+                <ScalarProperty Name="MasterCode" ColumnName="MasterCode" />
+                <ScalarProperty Name="Division" ColumnName="Division" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="CMCOrderNumber" ColumnName="CMCOrderNumber" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="BulkID" ColumnName="BulkID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

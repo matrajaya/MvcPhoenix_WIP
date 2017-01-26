@@ -15,7 +15,7 @@
     <!-- /.Page Heading -->
 
     <div class="row">
-        <div class="col-md-6">
+        @*<div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <label><i class="fa fa-files-o fa-fw"></i> Initial Reports</label>
@@ -46,6 +46,44 @@
                         <li>
                             @Html.ActionLink("Sample Guide Rev. Date Report", "ClientSGRevDate") <i class="fa fa-question-circle" title="Initial Test Report"></i>
                         </li>
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label><i class="fa fa-files-o fa-fw"></i> Customer Service Reports</label>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled list-2-col">
+                        <li>
+                            @Html.ActionLink("Open Order Report", "OrdersOpen")
+                            <i class="fa fa-question-circle" title="Purpose &#013;* Daily check routine on open orders &#013;* Reports to compare stock versus backorders &#013;* Backorder release, check all open orders by product &#013;* Inform customer on pending backorders with full order details &#013; &#013;Report is not complete as many of the order details are mssing.&#013;We prefer the report, as created in MySampleCenter.com"></i>
+                        </li>
+                        <li>
+                            Back Order Report**
+                            <i class="fa fa-question-circle" title="Purpose &#013;* Comparing the open orders from the order entry database with the backorders in the Inventory database &#013;* Determining if a replenishment order is necessary and sufficient quantity is ordered."></i>
+                        </li>
+                        <li>
+                            @Html.ActionLink("Partial Deliveries Report", "OrdersExport")*
+                            <i class="fa fa-question-circle" title="Used for Partial Order Deliveries Pivot manipulation &#013; &#013;Purpose &#013;* Show how many orders involved partial deliveries and therefore backorders."></i>
+                        </li>
+                        <li>
+                            @Html.ActionLink("General Orders Export", "OrdersExport")
+                            <i class="fa fa-question-circle" title="Purpose &#013; &#013;* Total shipments over a period of time &#013;* Total shipped per product over a period of time &#013;* Total shipped per consignee over a period of time &#013;* Total costs per sample order, consignee, forwarder + combinations of these"></i>
+                        </li>
+                        <li>
+                            @Html.ActionLink("Orders Shipped Summary", "OrdersSummary")
+                            <i class="fa fa-question-circle" title="Purpose &#013; &#013;* Used to verify order shipments"></i>
+                        </li>
+                        <li>
+                            @Html.ActionLink("Air & Truck Freight Summary", "FreightSummary")
+                            <i class="fa fa-question-circle" title="Purpose &#013; &#013;* Used to verify order shipments"></i>
+                        </li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
                     </ul>
                 </div>
             </div>
@@ -92,43 +130,6 @@
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <label><i class="fa fa-files-o fa-fw"></i> Customer Service Reports</label>
-                </div>
-                <div class="panel-body">
-                    <ul class="list-unstyled list-2-col">
-                        <li>
-                            @Html.ActionLink("Open Order Report", "OrdersOpen")
-                            <i class="fa fa-question-circle" title="Purpose &#013;* Daily check routine on open orders &#013;* Reports to compare stock versus backorders &#013;* Backorder release, check all open orders by product &#013;* Inform customer on pending backorders with full order details &#013; &#013;Report is not complete as many of the order details are mssing.&#013;We prefer the report, as created in MySampleCenter.com"></i>
-                        </li>
-                        <li>
-                            Back Order Report**
-                            <i class="fa fa-question-circle" title="Purpose &#013;* Comparing the open orders from the order entry database with the backorders in the Inventory database &#013;* Determining if a replenishment order is necessary and sufficient quantity is ordered."></i>
-                        </li>
-                        <li>
-                            @Html.ActionLink("Partial Deliveries Report", "OrdersExport")*
-                            <i class="fa fa-question-circle" title="Used for Partial Order Deliveries Pivot manipulation &#013; &#013;Purpose &#013;* Show how many orders involved partial deliveries and therefore backorders."></i>
-                        </li>
-                        <li>
-                            @Html.ActionLink("General Orders Export", "OrdersExport")
-                            <i class="fa fa-question-circle" title="Purpose &#013; &#013;* Total shipments over a period of time &#013;* Total shipped per product over a period of time &#013;* Total shipped per consignee over a period of time &#013;* Total costs per sample order, consignee, forwarder + combinations of these"></i>
-                        </li>
-                        <li>
-                            @Html.ActionLink("Orders Shipped Summary","OrdersSummary")
-                            <i class="fa fa-question-circle" title="Purpose &#013; &#013;* Used to verify order shipments"></i>
-                        </li>
-                        <li>
-                            @Html.ActionLink("Air & Truck Freight Summary", "FreightSummary")
-                            <i class="fa fa-question-circle" title="Purpose &#013; &#013;* Used to verify order shipments"></i>
-                        </li>
-                        <li>&nbsp;</li>
-                        <li>&nbsp;</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
                     <label><i class="fa fa-files-o fa-fw"></i> Product Management Reports</label>
                 </div>
                 <div class="panel-body">
@@ -146,10 +147,31 @@
                             <i class="fa fa-question-circle" title="Purpose &#013;* Set up details from Sample Guide database &#013;* We prefer to have this combined with all set up details from all databases &#013;* We prefer to be able to set criteria before running the report"></i>
                         </li>
                         <li>
-                            <a href="~/Content/Files/1602_Product_Maintenance_Template_rev1_2016.xls">Product Maintainance Template</a>
-                            <i class="fa fa-question-circle" title="Link to Excel Sheet? &#013; &#013;Purpose &#013;* Keep track of product setup changes &#013;* Manually enter the product maintenance changes from the report rptSGChangeLog and calculate the total charge
-"></i>
+                            @Html.ActionLink("Products Sample Guide Rev.", "ProductsSGRevDate")
+                            <i class="fa fa-question-circle" title="Moved from initial reports"></i>
                         </li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <label><i class="fa fa-files-o fa-fw"></i> Report Templates</label>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled list-2-col">
+                        <li>
+                            <a href="~/Content/Files/1602_Product_Maintenance_Template_rev1_2016.xls">Product Maintainance Template</a>
+                            <i class="fa fa-question-circle" title="Link to Excel Sheet? &#013; &#013;Purpose &#013;* Keep track of product setup changes &#013;* Manually enter the product maintenance changes from the report rptSGChangeLog and calculate the total charge"></i>
+                        </li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
+                        <li>&nbsp;</li>
                         <li>&nbsp;</li>
                         <li>&nbsp;</li>
                         <li>&nbsp;</li>

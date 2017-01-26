@@ -138,12 +138,11 @@ namespace MvcPhoenix.Controllers
 
             // create new record and clear select values for manual entry
             PP.productdetailid = ProductsService.fnNewProductDetailID();
-            PP.productcode = "";
-            PP.productname = "";
+            PP.productcode = PP.productcode + "_equivalent";
+            PP.productname = PP.productname + "_equivalent";
             PP.UpdateUserDetail = HttpContext.User.Identity.Name;
             PP.UpdateDateDetail = DateTime.UtcNow;
-            // update log tracking info like user and date created/updated
-
+            
             // save model held in memory to db
             int pk = ProductsService.fnSaveProductProfile(PP);
 
@@ -212,7 +211,7 @@ namespace MvcPhoenix.Controllers
 
                 pdln.ProductDetailID = PP.productdetailid;
                 pdln.NoteDate = DateTime.UtcNow;
-                pdln.Notes = "Equivalent created from " + productdetailid3;
+                pdln.Notes = "Equivalent created from product id: " + productdetailid3;
                 pdln.ReasonCode = "New";
                 pdln.CreateDate = DateTime.UtcNow;
                 pdln.CreateUser = HttpContext.User.Identity.Name;

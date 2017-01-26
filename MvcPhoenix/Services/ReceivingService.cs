@@ -290,6 +290,15 @@ namespace MvcPhoenix.Services
                 obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
                 obj.ListOfCarriers = fnCarriers();
 
+                if (!String.IsNullOrEmpty(qPM.AlertNotesReceiving))
+                {
+                    obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
+                }
+                else
+                {
+                    obj.pm_alertnotesreceiving = "No receiving alert for this product";
+                }         
+     
                 obj.MasterCode = qPM.MasterCode;
                 obj.MasterName = qPM.MasterName;
                 obj.flammable = qPM.Flammable;

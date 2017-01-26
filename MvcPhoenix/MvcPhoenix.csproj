@@ -423,6 +423,9 @@
     <Compile Include="EF\tblPreferredCarrierList.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblPriority.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblProductDetail.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>

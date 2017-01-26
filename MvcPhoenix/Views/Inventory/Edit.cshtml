@@ -52,16 +52,16 @@
         <div class="panel panel-primary">
             <div class="panel-body">
                 <div class="row" style="padding-bottom:15px;">
-                    <div class="col-md-3"><b>Product ID:</b><div>@Model.PP.productdetailid</div></div>
-                    <div class="col-md-3"><b>Created On:*</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.CreateDateDetail)</div></div>
-                    <div class="col-md-3"><b>Last Update On:*</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.UpdateDateDetail)</div></div>
-                    <div class="col-md-3"><b>Last Update By:*</b><div>@Model.PP.UpdateUserDetail</div></div>
+                    <div class="col-md-3"><b>Product ID</b><div>@Model.PP.productdetailid</div></div>
+                    <div class="col-md-3"><b>Created On</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.CreateDateDetail)</div></div>
+                    <div class="col-md-3"><b>Last Update On</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.UpdateDateDetail)</div></div>
+                    <div class="col-md-3"><b>Last Update By</b><div>@Model.PP.UpdateUserDetail</div></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3"><b>Client:</b><div>@Model.PP.clientname</div></div>
-                    <div class="col-md-3"><b>Client Code:</b><div>@Model.ClientCode</div></div>
-                    <div class="col-md-3"><b>Division:</b><div>@Model.Division</div></div>
-                    <div class="col-md-3"><b>Supplier ID:</b><div>@Model.PP.supplyid</div></div>
+                    <div class="col-md-3"><b>Client</b><div>@Model.PP.clientname</div></div>
+                    <div class="col-md-3"><b>Client Code</b><div>@Model.ClientCode</div></div>
+                    <div class="col-md-3"><b>Division</b><div>@Model.Division</div></div>
+                    <div class="col-md-3"><b>Supplier ID</b><div>@Model.PP.supplyid</div></div>
                 </div>
             </div>
         </div>
@@ -74,12 +74,12 @@
             <div id="generalinfopan" class="panel-body collapse in" style="margin-bottom:-20px;">
                 <div class="row">
                     <div class="col-md-3 form-group">
-                        <label>Product Code</label>
-                        <input class="form-control" value="@Model.PP.productcode" disabled="disabled" />
-                    </div>
-                    <div class="col-md-3 form-group">
                         <label>Master Code</label>
                         <input class="form-control" value="@Model.PP.mastercode" disabled="disabled" />
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label>Product Code</label>
+                        <input class="form-control" value="@Model.PP.productcode" disabled="disabled" />
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Product Name</label>

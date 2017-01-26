@@ -5,11 +5,6 @@
     // controller will send this value, needed if user chooses to do a packout so can return to Inventory/Edit/productdetailid
     string PDid = TempData["productdetailid"].ToString();
 }
-@*<div class="row">
-    <div class="pull-right col-md-3">
-        <input type="button" class="btn btn-primary btn-block form-control" value="Packout Request" onclick="javascript:alert('Later, this will redirect to Create Packout')" />
-    </div>
-</div>*@
 
 <div class="table-responsive">
     <table class="table table-hover table-striped">
@@ -19,16 +14,16 @@
                 <th>WH</th>
                 <th width="8%">Bin</th>
                 <th>Lot Number</th>
-                <th class="text-center">Recd<br />Wt</th>
-                <th class="text-center">Current<br />Wt</th>
-                <th>Expiry<br />Date</th>
-                <th>Cease Ship<br />Date</th>
-                <th>QC<br />Date</th>
-                <th>Received<br />Date</th>
-                <th>Notice<br />Date</th>
-                <th>Waste<br />Start Date</th>
+                <th class="text-center">Received Wt</th>
+                <th class="text-center">Current Wt</th>
+                <th>Expiry Date</th>
+                <th>Cease Ship Date</th>
+                <th>QC Date</th>
+                <th>Received Date</th>
+                <th>Notice Date</th>
+                <th>Waste Start Date</th>
                 <th>Status</th>
-				<th></th>
+                <th width="100px"></th>
             </tr>
         </thead>
         <tbody>
@@ -39,8 +34,8 @@
                     <td>@row.warehouse</td>
                     <td>@row.bin</td>
                     <td>@row.lotnumber</td>
-                    <td class="text-center">@String.Format("{0:0}",row.receiveweight)</td>
-                    <td class="text-center">@String.Format("{0:0}",@row.currentweight)</td>
+                    <td class="text-center">@String.Format("{0:0}", row.receiveweight)</td>
+                    <td class="text-center">@String.Format("{0:0}", @row.currentweight)</td>
                     <td>@String.Format("{0:dd MMM yyyy}", @row.expirationdate)</td>
                     <td>@String.Format("{0:dd MMM yyyy}", @row.ceaseshipdate)</td>
                     <td>@String.Format("{0:dd MMM yyyy}", @row.qcdate)</td>
@@ -52,13 +47,13 @@
                         <span class="pull-right">
                             @if (row.bulkstatus == "AVAIL")
                             {
-                                @Html.ActionLink(" ", "Index", "Packout", new { id = row.bulkid, productdetailid = PDid }, new { @class = "btn btn-primary fa fa-gears", @title = "Packout Request" })
+                                @Html.ActionLink(" ", "Index", "Packout", new { id = row.bulkid, productdetailid = PDid }, new { @class = "btn btn-primary fa fa-gears", @title = "Packout Request", @target = "_blank" })
                             }
                             else
                             {
-                                <span><del>PackOut</del></span>
-                            } | 
-                            @Html.ActionLink(" ", "EditBulk", "Inventory", new { id = row.bulkid }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Bulk Stock" })
+                                <a class = "btn btn-danger fa fa-ban text-danger" title = "Packout Request Not Allowed"></a>
+                            } |
+                            @Html.ActionLink(" ", "EditBulk", "Inventory", new { id = row.bulkid }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Bulk Stock", @target = "_blank" })
                         </span>
                     </td>
                 </tr>

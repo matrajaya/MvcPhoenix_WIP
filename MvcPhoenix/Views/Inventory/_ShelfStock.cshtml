@@ -20,19 +20,19 @@
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
-                    <th id="noprint"></th>
-                    <th>Product<br />Code</th>
+                    <th id="noprint" width="100px"></th>
+                    <th>Product Code</th>
                     <th>WH</th>
                     <th>Size</th>
-                    <th>Unit<br />Weight</th>
+                    <th>Unit Weight</th>
                     <th>Lot#</th>
-                    <th>Exp<br />Date</th>
-                    <th>Qty<br />On Hand</th>
-                    <th>Qty<br />Allocated</th>
+                    <th>Qty On Hand</th>
+                    <th>Qty Allocated</th>
                     <th>Status</th>
-                    <th>Current<br />Bin</th>
-                    <th>Shelf<br />ID</th>
-                    <th>Stock<br />ID</th>
+                    <th>Current Bin</th>
+                    <th>Shelf ID</th>
+                    <th>Stock ID</th>
+                    <th>Bulk ID</th>
                     <th id="noprint" class="text-center"></th>
                 </tr>
             </thead>
@@ -51,13 +51,13 @@
                         <td>@row.Size</td>
                         <td>@row.UnitWeight</td>
                         <td>@row.LotNumber</td>
-                        <td>@String.Format("{0:dd MMM yyyy}", @row.ExpirationDate)</td>
                         <td>@row.QtyOnHand</td>
                         <td>@row.QtyAllocated</td>
                         <td>@row.ShelfStatus</td>
                         <td>@row.Bin</td>
                         <td>@row.ShelfID</td>
                         <td>@row.StockID</td>
+                        <td>@row.BulkID</td>
                         <td id="noprint">
                             <span class="pull-right">
                                 @if (@row.QtyOnHand > 0)

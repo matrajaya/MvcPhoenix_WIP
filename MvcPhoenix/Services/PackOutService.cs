@@ -51,6 +51,7 @@ namespace MvcPhoenix.Services
                                  select t).FirstOrDefault();
 
                 // fill master record values from bulk-pm-pd-dv
+                newMaster.BulkID = bulk.BulkID;
                 newMaster.CreateDate = System.DateTime.Now;
                 newMaster.ProdmastCreateDate = System.DateTime.Now;
                 newMaster.Company = client.CMCLongCustomer;
@@ -81,6 +82,7 @@ namespace MvcPhoenix.Services
                     // insert detail records from q
                     MvcPhoenix.EF.tblProductionDetail newdetail = new MvcPhoenix.EF.tblProductionDetail();
                     newdetail.MasterID = newMaster.ID;
+                    newdetail.ShelfID = row.sm.ShelfID;
 
                     var qLog = (from t in db.tblInvLog
                                 where t.LogType == "SS-SHP" && t.ProductDetailID == row.pd.ProductDetailID

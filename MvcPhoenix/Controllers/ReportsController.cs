@@ -126,11 +126,10 @@ namespace MvcPhoenix.Controllers
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryExpiryReport";
             
-            ReportParameter[] reportParameter = new ReportParameter[4];
+            ReportParameter[] reportParameter = new ReportParameter[3];
             reportParameter[0] = new ReportParameter("Client", "1");
-            reportParameter[1] = new ReportParameter("Warehouse", "EU");
-            reportParameter[2] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
-            reportParameter[3] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());
+            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
+            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());
 
             reportViewer.ServerReport.SetParameters(reportParameter);
             ViewBag.ReportViewer = reportViewer;
@@ -197,11 +196,10 @@ namespace MvcPhoenix.Controllers
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersExport";
 
-            ReportParameter[] reportParameter = new ReportParameter[4];
+            ReportParameter[] reportParameter = new ReportParameter[3];
             reportParameter[0] = new ReportParameter("Client", "1");
-            reportParameter[1] = new ReportParameter("Warehouse", "EU");
-            reportParameter[2] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
-            reportParameter[3] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());
+            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
+            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());
 
             reportViewer.ServerReport.SetParameters(reportParameter);
             ViewBag.ReportViewer = reportViewer;
@@ -282,6 +280,18 @@ namespace MvcPhoenix.Controllers
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSampleGuideExport";
             reportViewer.ServerReport.SetParameters(new ReportParameter("Client", client));
+            ViewBag.ReportViewer = reportViewer;
+
+            return View("~/Views/Reports/View.cshtml");
+        }
+
+        public ActionResult ProductsSGRevDate()
+        {
+            ViewBag.Title = "Products: Sample Guide Revision Date";
+
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSGRevDate";
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");

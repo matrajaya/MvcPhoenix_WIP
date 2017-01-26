@@ -6,15 +6,15 @@
             <th>ID</th>
             <th>Status</th>
             <th>Client</th>
-            <th>Rec'd</th>
+            <th>Received</th>
             <th>Expiry</th>
             <th>WH</th>
             <th>Carrier</th>
             <th>Master Code</th>
             <th>Name</th>
-            <th>Lot</th>
+            <th>Lot #</th>
             <th>UM</th>
-            <th>Rec'd<br />WT</th>
+            <th>Received WT</th>
             <th></th>
         </tr>
     </thead>
@@ -33,9 +33,9 @@
                 <td>@item.MasterName</td>
                 <td>@item.lotnumber</td>
                 <td>@item.um</td>
-                <td>@item.receiveweight.ToString()</td>
+                <td>@String.Format("{0:0.00}", @item.receiveweight)</td>
                 <td style="text-align:right">
-                    @Html.ActionLink("Edit", "EditContainerReceipt", new { controller = "Receiving", id = @item.bulkid }, new { target = "_blank" })
+                    @Html.ActionLink(" ", "EditContainerReceipt", new { controller = "Receiving", id = @item.bulkid }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Bulk Stock", target = "_blank" })
                 </td>
             </tr>
         }

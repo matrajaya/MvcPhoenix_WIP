@@ -16,6 +16,7 @@ namespace MvcPhoenix.EF
     {
         public int ID { get; set; }
         public Nullable<int> MasterID { get; set; }
+        public Nullable<int> ShelfID { get; set; }
         public string UM { get; set; }
         public Nullable<decimal> Unit_Weight { get; set; }
         public Nullable<decimal> SS_REORDMIN { get; set; }
