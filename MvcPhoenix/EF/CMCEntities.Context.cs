@@ -82,7 +82,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblStatusNotes> tblStatusNotes { get; set; }
         public virtual DbSet<tblStock> tblStock { get; set; }
         public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }
-        public virtual DbSet<tblSupplier> tblSupplier { get; set; }
         public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
         public virtual DbSet<tblTier> tblTier { get; set; }
         public virtual DbSet<tblTransType> tblTransType { get; set; }

@@ -317,21 +317,23 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult ListSuppliers(int id)
         {
-            var qry = (from t in db.tblSupplier
+            var qry = (from t in db.tblBulkSupplier
                        where t.ClientID == id
-                       orderby t.SupplierName
+                       orderby t.CompanyName
                        select new MvcPhoenix.Models.Supplier
                        {
-                           SupplierID = t.SupplierID,
+                           BulkSupplierID = t.BulkSupplierID,
                            ClientID = t.ClientID,
-                           SupplierCode = t.SupplierCode,
-                           SupplierName = t.SupplierName,
+                           SupplyID = t.SupplyID,
+                           SupplierCode = t.ShortName,
+                           SupplierName = t.CompanyName,
                            ContactName = t.ContactName,
                            Address1 = t.Address1,
                            Address2 = t.Address2,
+                           Address3 = t.Address3,
                            City = t.City,
                            State = t.State,
-                           PostalCode = t.PostalCode,
+                           PostalCode = t.Zip,
                            Country = t.Country,
                            Email = t.Email,
                            Phone = t.Phone,
@@ -365,7 +367,7 @@ namespace MvcPhoenix.Controllers
         public static Supplier EmptySupplier(int id)
         {
             Supplier vm = new Supplier();
-            vm.SupplierID = -1;
+            vm.BulkSupplierID = -1;
             vm.ListOfCountries = ClientService.fnListOfCountries();
             vm.ClientID = id;
 
@@ -374,44 +376,43 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult SaveSupplier(Supplier obj)
         {
-            //using (var db = new EF.CMCSQL03Entities())
-            //{
-            var q = db.tblSupplier.Find(obj.SupplierID);
+            var q = db.tblBulkSupplier.Find(obj.BulkSupplierID);
 
-            // Check for duplicate SupplierCode related to the Client
-            var suppliercodecheck = (from c in db.tblSupplier
-                                     where c.SupplierCode == obj.SupplierCode && c.ClientID == obj.ClientID
-                                     select c).Count();
+            // Check for duplicate SupplyID related to the Client
+            var supplyidcheck = (from c in db.tblBulkSupplier
+                                 where c.SupplyID == obj.SupplyID && c.ClientID == obj.ClientID
+                                 select c).Count();
             try
             {
-                if (q.SupplierCode != obj.SupplierCode)
+                if (q.SupplyID != obj.SupplyID)
                 {
-                    if (suppliercodecheck > 0)
+                    if (supplyidcheck > 0)
                     {
-                        obj.SupplierCode += " - Duplicate";
+                        obj.SupplyID += " - Duplicate";
                     }
                 }
             }
             catch (Exception)
             {
                 // Catch NullReferenceException which is thrown when adding new supplier
-                if (suppliercodecheck > 0)
+                if (supplyidcheck > 0)
                 {
-                    obj.SupplierCode += " - Duplicate";
+                    obj.SupplyID += " - Duplicate";
                 }
             }
 
-
             if (q != null)
             {
-                q.SupplierCode = obj.SupplierCode;
-                q.SupplierName = obj.SupplierName;
+                q.SupplyID = obj.SupplyID;
+                q.ShortName = obj.SupplierCode;
+                q.CompanyName = obj.SupplierName;
                 q.ContactName = obj.ContactName;
                 q.Address1 = obj.Address1;
                 q.Address2 = obj.Address2;
+                q.Address3 = obj.Address3;
                 q.City = obj.City;
                 q.State = obj.State;
-                q.PostalCode = obj.PostalCode;
+                q.Zip = obj.PostalCode;
                 q.Country = obj.Country;
                 q.Email = obj.Email;
                 q.Phone = obj.Phone;
@@ -421,28 +422,29 @@ namespace MvcPhoenix.Controllers
             }
             else
             {
-                var newrecord = new EF.tblSupplier
+                var newrecord = new EF.tblBulkSupplier
                 {
-                    SupplierID = Convert.ToInt32(obj.SupplierID),
+                    BulkSupplierID = Convert.ToInt32(obj.BulkSupplierID),
                     ClientID = Convert.ToInt32(obj.ClientID),
-                    SupplierCode = obj.SupplierCode,
-                    SupplierName = obj.SupplierName,
+                    SupplyID = obj.SupplyID,
+                    ShortName = obj.SupplierCode,
+                    CompanyName = obj.SupplierName,
                     ContactName = obj.ContactName,
                     Address1 = obj.Address1,
                     Address2 = obj.Address2,
+                    Address3 = obj.Address3,
                     City = obj.City,
                     State = obj.State,
-                    PostalCode = obj.PostalCode,
+                    Zip = obj.PostalCode,
                     Country = obj.Country,
                     Email = obj.Email,
                     Phone = obj.Phone,
                     Fax = obj.Fax
                 };
 
-                db.tblSupplier.Add(newrecord);
+                db.tblBulkSupplier.Add(newrecord);
                 db.SaveChanges();
             }
-            //}
 
             return null;
         }

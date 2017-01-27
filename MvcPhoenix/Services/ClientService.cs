@@ -188,20 +188,22 @@ namespace MvcPhoenix.Services
             {
                 Supplier vm = new Supplier();
 
-                var qry = (from t in db.tblSupplier
-                           where t.SupplierID == id
+                var qry = (from t in db.tblBulkSupplier
+                           where t.BulkSupplierID == id
                            select t).FirstOrDefault();
 
-                vm.SupplierID = qry.SupplierID;
+                vm.BulkSupplierID = qry.BulkSupplierID;
                 vm.ClientID = qry.ClientID;
-                vm.SupplierCode = qry.SupplierCode;
-                vm.SupplierName = qry.SupplierName;
+                vm.SupplyID = qry.SupplyID;
+                vm.SupplierCode = qry.ShortName;
+                vm.SupplierName = qry.CompanyName;
                 vm.ContactName = qry.ContactName;
                 vm.Address1 = qry.Address1;
                 vm.Address2 = qry.Address2;
+                vm.Address3 = qry.Address3;
                 vm.City = qry.City;
                 vm.State = qry.State;
-                vm.PostalCode = qry.PostalCode;
+                vm.PostalCode = qry.Zip;
                 vm.Country = qry.Country;
                 vm.ListOfCountries = fnListOfCountries();
                 vm.Email = qry.Email;

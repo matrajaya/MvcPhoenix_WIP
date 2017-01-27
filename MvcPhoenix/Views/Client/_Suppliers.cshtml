@@ -11,39 +11,35 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Code</th>
+                <th>SupplyID</th>
                 <th>Name</th>
                 <th>Contact</th>
                 <th>Address 1</th>
-                <th>Address 2</th>
                 <th>City</th>
                 <th>State</th>
                 <th>Postal Code</th>
                 <th>Country</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Fax</th>
                 <th id="hideeditbutton"></th>
             </tr>
         </thead>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.SupplierID</td>
-                <td>@item.SupplierCode</td>
+                <td>@item.BulkSupplierID</td>
+                <td>@item.SupplyID</td>
                 <td>@item.SupplierName</td>
                 <td>@item.ContactName</td>
                 <td>@item.Address1</td>
-                <td>@item.Address2</td>
                 <td>@item.City</td>
                 <td>@item.State</td>
                 <td>@item.PostalCode</td>
                 <td>@item.Country</td>
                 <td>@item.Email</td>
                 <td>@item.Phone</td>
-                <td>@item.Fax</td>
                 <td id="hideeditbutton" style="text-align:right">
-                    @Ajax.ActionLink(" ", "EditSupplier", "Client", new { id = @item.SupplierID }, new AjaxOptions
+                    @Ajax.ActionLink(" ", "EditSupplier", "Client", new { id = @item.BulkSupplierID }, new AjaxOptions
                            {
                                InsertionMode = InsertionMode.Replace,
                                HttpMethod = "GET",

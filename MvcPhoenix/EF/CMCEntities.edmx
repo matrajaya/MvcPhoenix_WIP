@@ -1693,25 +1693,6 @@
           <Property Name="SessionID" Type="nvarchar" MaxLength="255" />
           <Property Name="UserName" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="tblSupplier">
-          <Key>
-            <PropertyRef Name="SupplierID" />
-          </Key>
-          <Property Name="SupplierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ClientID" Type="int" />
-          <Property Name="SupplierCode" Type="nvarchar(max)" />
-          <Property Name="SupplierName" Type="nvarchar(max)" />
-          <Property Name="ContactName" Type="nvarchar(max)" />
-          <Property Name="Address1" Type="nvarchar(max)" />
-          <Property Name="Address2" Type="nvarchar(max)" />
-          <Property Name="City" Type="nvarchar(max)" />
-          <Property Name="State" Type="nvarchar(max)" />
-          <Property Name="PostalCode" Type="nvarchar(max)" />
-          <Property Name="Country" Type="nvarchar(max)" />
-          <Property Name="Email" Type="nvarchar(max)" />
-          <Property Name="Phone" Type="nvarchar(max)" />
-          <Property Name="Fax" Type="nvarchar(max)" />
-        </EntityType>
         <EntityType Name="tblSurcharge">
           <Key>
             <PropertyRef Name="SurchargeID" />
@@ -1964,7 +1945,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblStatusNotes" EntityType="Self.tblStatusNotes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStock" EntityType="Self.tblStock" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSuggestedBulk" EntityType="Self.tblSuggestedBulk" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblSupplier" EntityType="Self.tblSupplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSurcharge" EntityType="Self.tblSurcharge" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTier" EntityType="Self.tblTier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTransType" EntityType="Self.tblTransType" Schema="dbo" store:Type="Tables" />
@@ -2133,7 +2113,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblStatusNotes" EntityType="CMCSQL03Model.tblStatusNotes" />
           <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
           <EntitySet Name="tblSuggestedBulk" EntityType="CMCSQL03Model.tblSuggestedBulk" />
-          <EntitySet Name="tblSupplier" EntityType="CMCSQL03Model.tblSupplier" />
           <EntitySet Name="tblSurcharge" EntityType="CMCSQL03Model.tblSurcharge" />
           <EntitySet Name="tblTier" EntityType="CMCSQL03Model.tblTier" />
           <EntitySet Name="tblTransType" EntityType="CMCSQL03Model.tblTransType" />
@@ -3830,25 +3809,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="IsAddOn" Type="Boolean" />
           <Property Name="SessionID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblSupplier">
-          <Key>
-            <PropertyRef Name="SupplierID" />
-          </Key>
-          <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="SupplierCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SupplierName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ContactName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblSurcharge">
           <Key>
@@ -5788,26 +5748,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblSupplier">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblSupplier">
-              <MappingFragment StoreEntitySet="tblSupplier">
-                <ScalarProperty Name="Fax" ColumnName="Fax" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address2" ColumnName="Address2" />
-                <ScalarProperty Name="Address1" ColumnName="Address1" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
-                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -62,15 +62,14 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblStatusNotes" Width="1.5" PointX="24.75" PointY="22.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblStock" Width="1.5" PointX="24.75" PointY="25.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblSuggestedBulk" Width="1.5" PointX="26.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblSupplier" Width="1.5" PointX="26.75" PointY="7.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblSurcharge" Width="1.5" PointX="26.75" PointY="11.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblTier" Width="1.5" PointX="26.75" PointY="16.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblTransType" Width="1.5" PointX="26.75" PointY="20.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblUN" Width="1.5" PointX="26.75" PointY="23.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblUser" Width="1.5" PointX="2.75" PointY="27.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblWasteCode" Width="1.5" PointX="10.75" PointY="27.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.vwBulkLevel" Width="1.5" PointX="21.375" PointY="27.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.vwProductsInfo" Width="1.5" PointX="27.375" PointY="27.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblSurcharge" Width="1.5" PointX="26.75" PointY="7.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblTier" Width="1.5" PointX="26.75" PointY="12.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblTransType" Width="1.5" PointX="26.75" PointY="16.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblUN" Width="1.5" PointX="26.75" PointY="19.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblUser" Width="1.5" PointX="26.75" PointY="23.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblWasteCode" Width="1.5" PointX="2.75" PointY="27.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.vwBulkLevel" Width="1.5" PointX="10.75" PointY="27.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.vwProductsInfo" Width="1.5" PointX="20.75" PointY="27.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

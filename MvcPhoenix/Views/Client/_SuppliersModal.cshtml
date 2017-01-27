@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Edit Supplier";
 
-    if (Model.SupplierID == -1)
+    if (Model.BulkSupplierID == -1)
     {
         ViewBag.Title = "Add Supplier";
     }
@@ -27,23 +27,30 @@
                     <h4 class="modal-title">@ViewBag.Title</h4>
                 </div>
                 <div id="dialogPlaceholderBody" class="modal-body">
-                    @Html.HiddenFor(m => m.SupplierID)
+                    @Html.HiddenFor(m => m.BulkSupplierID)
                     @Html.HiddenFor(m => m.ClientID)
                     <div class="row form-group">
                         <div class="col-md-6 pull-left">
-                            <strong><em>Supplier ID: @Html.ValueFor(m => m.SupplierID)</em></strong>
+                            <strong><em>Bulk Supplier ID: @Html.ValueFor(m => m.BulkSupplierID)</em></strong>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-8 form-group">
+                        <div class="col-md-6 form-group">
+                            <label>Supply ID</label>
+                            @Html.TextBoxFor(m => m.SupplyID, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.SupplyID)
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label title="Short Name">Supplier Code</label>
+                            @Html.TextBoxFor(m => m.SupplierCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.SupplierCode)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
                             <label>Supplier Name</label>
                             @Html.TextBoxFor(m => m.SupplierName, new { @class = "form-control", autofocus = "" })
                             @Html.ValidationMessageFor(m => m.SupplierName)
-                        </div>
-                        <div class="col-md-4 form-group">
-                            <label>Supplier Code</label>
-                            @Html.TextBoxFor(m => m.SupplierCode, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.SupplierCode)
                         </div>
                     </div>
                     <div class="row">
@@ -78,10 +85,15 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-8 form-group">
                             <label>Address 2</label>
                             @Html.TextBoxFor(m => m.Address2, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Address2)
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>Address 3</label>
+                            @Html.TextBoxFor(m => m.Address3, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Address3)
                         </div>
                     </div>
                     <div class="row">

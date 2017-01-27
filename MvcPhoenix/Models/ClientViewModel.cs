@@ -278,46 +278,21 @@ namespace MvcPhoenix.Models
 
     public class Supplier
     {
-        [Display(Name = "Supplier ID")]
-        public int SupplierID { get; set; }
-
-        [Display(Name = "Client ID")]
+        public int BulkSupplierID { get; set; }
         public int? ClientID { get; set; }
-
-        [Display(Name = "Supplier Code")]
-        public string SupplierCode { get; set; }
-
-        [Display(Name = "Supplier Name")]
-        public string SupplierName { get; set; }
-
-        [Display(Name = "Contact Name")]
+        public string SupplyID { get; set; }
+        public string SupplierCode { get; set; } // ShortName
+        public string SupplierName { get; set; } // CompanyName
         public string ContactName { get; set; }
-
-        [Display(Name = "Email")]
         public string Email { get; set; }
-
-        [Display(Name = "Phone")]
         public string Phone { get; set; }
-
-        [Display(Name = "Fax")]
         public string Fax { get; set; }
-
-        [Display(Name = "Address 1")]
         public string Address1 { get; set; }
-
-        [Display(Name = "Address 2")]
         public string Address2 { get; set; }
-
-        [Display(Name = "City")]
+        public string Address3 { get; set; }
         public string City { get; set; }
-
-        [Display(Name = "State")]
         public string State { get; set; }
-
-        [Display(Name = "Postal Code")]
-        public string PostalCode { get; set; }
-
-        [Display(Name = "Country")]
+        public string PostalCode { get; set; } // Zip
         public string Country { get; set; }
 
         public List<SelectListItem> ListOfCountries { get; set; }

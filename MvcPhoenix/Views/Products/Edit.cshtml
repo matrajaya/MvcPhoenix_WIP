@@ -174,8 +174,8 @@
 
                 <div class="row">
                     <div class="col-md-6 form-group">
-                        <label>Supplier</label>
-                        @Html.TextBoxFor(m => m.supplyid, new { @class = "form-control" })
+                        <label>Supplier</label>                    
+                        @Html.DropDownListFor(m => m.supplyid, Model.ListOfSupplyIDs, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.supplyid)
                     </div>
                     <div class="col-md-3 form-group">
