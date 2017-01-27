@@ -50,6 +50,7 @@ namespace MvcPhoenix.EF
         public string CompanyWebsite { get; set; }
         public string CompanyLogo { get; set; }
         public string CompanyLogo2 { get; set; }
+        public byte[] LogoFile { get; set; }
         public Nullable<bool> IncludeExpDtOnLabel { get; set; }
     }
 }

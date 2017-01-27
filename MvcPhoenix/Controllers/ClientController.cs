@@ -206,7 +206,7 @@ namespace MvcPhoenix.Controllers
             return vm;
         }
 
-        public ActionResult SaveDivision(Division obj)
+        public ActionResult SaveDivision(Division obj, HttpPostedFileBase logouploaddivision)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
@@ -264,7 +264,6 @@ namespace MvcPhoenix.Controllers
                         ContactMSDSPhone = obj.ContactMSDSPhone,
                         WasteRate_OffSpec = obj.WasteRateOffSpec,
                         WasteRate_Empty = obj.WasteRateEmpty,
-
                         Abbr = obj.Abbr,
                         UPSHazBook = obj.UPSHazBook,
                         ExtMSDS = obj.ExtMSDS,
@@ -287,9 +286,29 @@ namespace MvcPhoenix.Controllers
                     db.tblDivision.Add(newrecord);
                     db.SaveChanges();
                 }
+
+                // Save logo file to division to be used as label logo
+                if (logouploaddivision != null && logouploaddivision.ContentLength > 0)
+                {
+                    var qimg = db.tblDivision.Find(obj.DivisionID);
+
+                    using (var reader = new System.IO.BinaryReader(logouploaddivision.InputStream))
+                    {
+                        qimg.LogoFile = reader.ReadBytes(logouploaddivision.ContentLength);
+                    }
+
+                    db.SaveChanges();
+                }
             }
 
-            return null;
+            return RedirectToAction("Edit", new { id = obj.ClientID });
+        }
+
+        // GET: Client/DivisionLogoFile/id
+        public ActionResult DivisionLogoFile(int id)
+        {
+            var fileToRetrieve = db.tblDivision.Find(id);
+            return File(fileToRetrieve.LogoFile, "gif");
         }
 
         #endregion Division Methods

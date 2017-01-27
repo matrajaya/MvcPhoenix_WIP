@@ -480,9 +480,6 @@
     <Compile Include="EF\tblSurcharge.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblSystem.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblTier.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>

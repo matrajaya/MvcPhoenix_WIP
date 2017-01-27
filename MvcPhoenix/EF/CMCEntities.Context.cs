@@ -65,7 +65,10 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblPMNote> tblPMNote { get; set; }
         public virtual DbSet<tblPPPDLogNote> tblPPPDLogNote { get; set; }
         public virtual DbSet<tblPreferredCarrierList> tblPreferredCarrierList { get; set; }
+        public virtual DbSet<tblPriority> tblPriority { get; set; }
         public virtual DbSet<tblProductDetail> tblProductDetail { get; set; }
+        public virtual DbSet<tblProductionDetail> tblProductionDetail { get; set; }
+        public virtual DbSet<tblProductionMaster> tblProductionMaster { get; set; }
         public virtual DbSet<tblProductionStage> tblProductionStage { get; set; }
         public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblProductNotes> tblProductNotes { get; set; }
@@ -81,7 +84,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }
         public virtual DbSet<tblSupplier> tblSupplier { get; set; }
         public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
-        public virtual DbSet<tblSystem> tblSystem { get; set; }
         public virtual DbSet<tblTier> tblTier { get; set; }
         public virtual DbSet<tblTransType> tblTransType { get; set; }
         public virtual DbSet<tblUN> tblUN { get; set; }
@@ -89,8 +91,5 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
         public virtual DbSet<vwBulkLevel> vwBulkLevel { get; set; }
         public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
-        public virtual DbSet<tblPriority> tblPriority { get; set; }
-        public virtual DbSet<tblProductionDetail> tblProductionDetail { get; set; }
-        public virtual DbSet<tblProductionMaster> tblProductionMaster { get; set; }
     }
 }
