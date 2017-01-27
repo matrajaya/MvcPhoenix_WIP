@@ -252,7 +252,7 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 var qry = (from t in db.tblPackage
-                           where t.Size == size
+                           //where t.Size == size
                            orderby t.Size
                            select t);
 
@@ -275,7 +275,7 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 mylist = (from t in db.tblPackage
-                          where t.Size == size
+                          //where t.Size == size
                           orderby t.Size
                           select new SelectListItem
                           {
