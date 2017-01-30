@@ -35,7 +35,7 @@
                         InsertionMode = InsertionMode.Replace,
                         HttpMethod = "GET",
                         UpdateTargetId = "dvEditPlaceholder",
-                        OnFailure = "alert('error')"
+                        OnFailure = "$.alert('error')"
                     }, new { @class = "btn btn-primary btn-block" })
                 </div>
                 <div class="col-md-8 text-right"><label>Total:</label> <em>@Model.Count() Sizes</em></div>

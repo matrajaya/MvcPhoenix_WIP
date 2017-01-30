@@ -81,7 +81,7 @@
                                  InsertionMode = InsertionMode.Replace,
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateItemsList",
-                                 OnFailure = "alert('Error- Could not allocate order')"
+                                 OnFailure = "$.alert('Error - Could not allocate order')"
                              }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From Available Shelf Stock" })
                     </div>
                     <div class="col-md-6">
@@ -92,7 +92,7 @@
                                  InsertionMode = InsertionMode.Replace,
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateItemsList",
-                                 OnFailure = "alert('Error- Could not allocate order')",
+                                 OnFailure = "$.alert('Error - Could not allocate order')",
                              }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From QC Shelf Stock" })
                     </div>
                 </div>

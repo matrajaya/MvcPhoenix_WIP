@@ -137,7 +137,7 @@
                         <label>Upload Logo</label>
                         <div class="input-group">
                             <span class="btn input-group-addon btn-file">
-                                <i class="fa fa-folder-o"></i> Select File <input type="file" id="logoupload" name="logoupload" accept="application/gif" style="" onchange="uploadvalidation()">
+                                <i class="fa fa-folder-o"></i> Select File <input type="file" id="logoupload" name="logoupload" accept="image/*" style="" onchange="uploadvalidation()">
                             </span>
                             <input type="text" id="LogoUploadFileName" name="LogoUploadFileName" class="form-control" />
                         </div>
@@ -278,13 +278,13 @@
             document.getElementById('LogoUploadFileName').value = (document.getElementById('logoupload').value).substring(12);
 
             if (fsize > 102400) {
-                alert("The max size allowed is 100kb. Your file size in kb is ~" + (fsize / 1024).toFixed(2));
+                $.alert("The max size allowed is 100kb. Your file size in kb is ~" + (fsize / 1024).toFixed(2));
                 document.getElementById('logoupload').value = "";
                 return false;
             }
         }
         else {
-            alert("File not supported! Only .gif and .jpg images are allowed.");
+            $.alert("File not supported! Only .gif and .jpg images are allowed.");
             document.getElementById('logoupload').value = "";
             return false;
         }

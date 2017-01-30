@@ -160,13 +160,13 @@
 
         // Check validity of date selection
         if (isNaN(startdate.getDate()) || isNaN(enddate.getDate())) {
-            alert("Your invoice date selection is invalid");
+            $.alert("Your invoice date selection is invalid");
             return false;
         }
 
         // Validate start and end dates are in correct timesequence
         if (startdate > enddate) {
-            alert("Oh no! Your date selection is in the wrong order");
+            $.alert("Oh no! Your date selection is in the wrong order");
             return false;
         }
     });
