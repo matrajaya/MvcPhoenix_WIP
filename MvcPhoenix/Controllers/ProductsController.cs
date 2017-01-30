@@ -113,19 +113,7 @@ namespace MvcPhoenix.Controllers
 
             return View("~/Views/Products/Edit.cshtml", PP);
         }
-
-        //[HttpPost]
-        //public ActionResult Equiv(int productdetailid3)
-        //{
-        //    ProductProfile PP = new ProductProfile();
-        //    PP.productdetailid = -1;
-        //    PP.productmasterid = ProductsService.fnProductMasterID(productdetailid3);
-        //    PP = ProductsService.FillFromPM(PP);
-        //    PP = ProductsService.fnFillOtherPMProps(PP);
-
-        //    return View("~/Views/Products/Create.cshtml", PP);
-        //}
-
+        
         [HttpPost]
         public ActionResult Equivalent(int productdetailid3)
         {
@@ -138,8 +126,6 @@ namespace MvcPhoenix.Controllers
 
             // create new record and clear select values for manual entry
             PP.productdetailid = ProductsService.fnNewProductDetailID();
-            PP.productcode = PP.productcode + "_equivalent";
-            PP.productname = PP.productname + "_equivalent";
             PP.UpdateUserDetail = HttpContext.User.Identity.Name;
             PP.UpdateDateDetail = DateTime.UtcNow;
             
