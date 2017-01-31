@@ -1,0 +1,138 @@
+﻿@model MvcPhoenix.Models.Contact
+@{
+    ViewBag.Title = "Edit Contact";
+
+    if (Model.ClientContactID == -1)
+    {
+        ViewBag.Title = "Add Contact";
+    }
+}
+
+<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("SaveContact", "Client", new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "dialogResult",
+                    OnSuccess = "UpdateContactList",
+                    InsertionMode = InsertionMode.Replace
+
+                }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">@ViewBag.Title</h4>
+                </div>
+                <div id="dialogPlaceholderBody" class="modal-body">
+                    @Html.HiddenFor(m => m.ClientContactID)
+                    @Html.HiddenFor(m => m.ClientID)
+                    <div class="row form-group">
+                        <div class="col-md-6 pull-left">
+                            <strong><em>Contact ID: @Html.ValueFor(m => m.ClientContactID)</em></strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Contact Type</label>
+                            @*@Html.TextBoxFor(m => m.ContactType, new { @class = "form-control" })*@
+                            @Html.DropDownListFor(m => m.ContactType, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.Contact.ContactTypeChoice))), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ContactType)
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label title="Account/Territory">Account</label>
+                            @Html.TextBoxFor(m => m.Account, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Account)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Contact Name</label>
+                            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", autofocus = "" })
+                            @Html.ValidationMessageFor(m => m.FullName)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Distributor</label>
+                            @Html.TextBoxFor(m => m.DistributorName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.DistributorName)
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Company</label>
+                            @Html.TextBoxFor(m => m.Company, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Company)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>Email</label>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Phone</label>
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Phone)
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Fax</label>
+                            @Html.TextBoxFor(m => m.Fax, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Fax)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 form-group">
+                            <label>Address 1</label>
+                            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Address1)
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>Address 2</label>
+                            @Html.TextBoxFor(m => m.Address2, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Address2)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label>City</label>
+                            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.City)
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>State</label>
+                            @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.State)
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label>Postal Code</label>
+                            @Html.TextBoxFor(m => m.Zip, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Zip)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Country</label>
+                            @Html.DropDownListFor(m => m.Country, Model.ListOfCountries, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Country)
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function UpdateContactList() {
+        // Update the list and close modal
+        $("#dvContactList").load('@Url.Action("ListContacts", "Client", new { id = @Model.ClientID })');
+        $("#dialogPlaceholderModal").modal('hide');
+    }
+</script>

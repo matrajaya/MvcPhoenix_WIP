@@ -19,7 +19,7 @@
                 <th>Type</th>
                 <th>CreatedBy</th>
                 <th>Items</th>
-                <th><i class="fa fa-fw fa-file-text-o"></i></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -34,7 +34,9 @@
                     <td>@item.CreateUser</td>
                     <td>@item.itemscount</td>
                     <td>
-                        <a class="btn btn-xs btn-primary" title="Edit" href="~/Orders/Edit/@item.orderid"><i class="fa fa-fw fa-pencil"></i></a>
+                        <span class="pull-right">
+                            <a class="btn btn-xs btn-primary" title="Edit Order" href="~/Orders/Edit/@item.orderid"><i class="fa fa-fw fa-pencil"></i></a>
+                        </span>
                     </td>
                 </tr>
             }

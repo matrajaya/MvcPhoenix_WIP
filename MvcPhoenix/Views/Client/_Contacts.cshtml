@@ -1,0 +1,51 @@
+﻿@model List<MvcPhoenix.Models.Contact>
+@using MvcPhoenix.Extensions;
+
+@{
+    ViewBag.Title = "Contacts Listing";
+    Layout = null;
+}
+
+<div class="table-responsive" id="dvContactList">
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ContactType</th>
+                <th>Account</th>
+                <th>FullName</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Country</th>
+                <th id="hideeditbutton"></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ClientContactID</td>
+                <td>@item.ContactType</td>
+                <td>@item.Account</td>
+                <td>@item.FullName</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@item.Country</td>
+                <td id="hideeditbutton" style="text-align:right">
+                    @Ajax.ActionLink(" ", "EditContact", "Client", new { id = @item.ClientContactID }, new AjaxOptions
+                           {
+                               InsertionMode = InsertionMode.Replace,
+                               HttpMethod = "GET",
+                               UpdateTargetId = "dialogPlaceholder",
+                               OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                           }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script type="text/javascript">
+    function UpdateContactList() {
+        $("#dvContactList").load('@Url.Action("ListContacts", "Client", new { id = @ViewBag.ClientId })');
+    }
+</script>

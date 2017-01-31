@@ -1343,6 +1343,8 @@
     <Content Include="Views\Client\_Surcharges.cshtml" />
     <Content Include="Views\Products\ClientXRef.cshtml" />
     <Content Include="Views\Products\_ClientXRefModal.cshtml" />
+    <Content Include="Views\Client\_ContactsModal.cshtml" />
+    <Content Include="Views\Client\_Contacts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

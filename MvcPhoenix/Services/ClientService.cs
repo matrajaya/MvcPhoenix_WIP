@@ -12,6 +12,8 @@ namespace MvcPhoenix.Services
 {
     public class ClientService
     {
+        #region Client Information Services
+
         public static ClientProfile FillFromDB(ClientProfile CP)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -129,6 +131,8 @@ namespace MvcPhoenix.Services
             }
         }
 
+        #endregion Client Information Services
+
         #region Division Services
 
         public static Division FillDivisionDetails(int id)
@@ -209,6 +213,42 @@ namespace MvcPhoenix.Services
                 vm.Email = qry.Email;
                 vm.Phone = qry.Phone;
                 vm.Fax = qry.Fax;
+
+                return vm;
+            }
+        }
+
+        #endregion Supplier Services
+
+        #region Client Contact Services
+
+        public static Contact FillContactDetails(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                Contact vm = new Contact();
+
+                var qry = (from t in db.tblClientContact
+                           where t.ClientContactID == id
+                           select t).FirstOrDefault();
+
+                vm.ClientContactID = qry.ClientContactID;
+                vm.ClientID = qry.ClientID;
+                vm.ContactType = qry.ContactType;
+                vm.Account = qry.Account;
+                vm.FullName = qry.FullName;
+                vm.Email = qry.Email;
+                vm.Phone = qry.Phone;
+                vm.Fax = qry.Fax;
+                vm.Company = qry.Company;
+                vm.DistributorName = qry.DistributorName;
+                vm.Address1 = qry.Address1;
+                vm.Address2 = qry.Address2;
+                vm.City = qry.City;
+                vm.State = qry.State;
+                vm.Zip = qry.Zip;
+                vm.Country = qry.Country;
+                vm.ListOfCountries = fnListOfCountries();
 
                 return vm;
             }

@@ -17,12 +17,20 @@ namespace MvcPhoenix.EF
         public int ClientContactID { get; set; }
         public Nullable<int> ClientID { get; set; }
         public string ContactType { get; set; }
+        public string Account { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
-        public string Account { get; set; }
-        public string Company { get; set; }
         public string Phone { get; set; }
+        public string Company { get; set; }
         public string Territory { get; set; }
+        public string Fax { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public string Country { get; set; }
+        public string DistributorName { get; set; }
         public Nullable<int> LegacyID { get; set; }
         public string Company_MDB { get; set; }
         public string Location_MDB { get; set; }

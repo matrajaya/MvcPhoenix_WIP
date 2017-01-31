@@ -12,6 +12,8 @@ namespace MvcPhoenix.Controllers
     {
         private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
 
+        #region Client Information Methods
+
         // GET: Client/Index
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -127,6 +129,8 @@ namespace MvcPhoenix.Controllers
 
             return RedirectToAction("Edit", new { id = pk });
         }
+
+        #endregion Client Information Methods
 
         #region Division Methods
 
@@ -450,6 +454,121 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion Supplier Methods
+
+        #region Client Contact Methods
+
+        public ActionResult ListContacts(int id)
+        {
+            var qry = (from t in db.tblClientContact
+                       where t.ClientID == id
+                       orderby t.ContactType, t.FullName
+                       select new MvcPhoenix.Models.Contact
+                       {
+                           ClientContactID = t.ClientContactID,
+                           ClientID = t.ClientID,
+                           ContactType = t.ContactType,
+                           Account = t.Account,
+                           FullName = t.FullName,
+                           Email = t.Email,
+                           Phone = t.Phone,
+                           Fax = t.Fax,
+                           Company = t.Company,
+                           DistributorName = t.DistributorName,
+                           Address1 = t.Address1,
+                           Address2 = t.Address2,
+                           City = t.City,
+                           State = t.State,
+                           Zip = t.Zip,
+                           Country = t.Country
+                       }).ToList();
+
+            if (qry.Count > 0)
+            {
+                return PartialView("~/Views/Client/_Contacts.cshtml", qry);
+            }
+
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult EditContact(int id)
+        {
+            Contact vm = new Contact();
+            vm = ClientService.FillContactDetails(id);
+            return PartialView("~/Views/Client/_ContactsModal.cshtml", vm);
+        }
+
+        [HttpGet]
+        public ActionResult CreateContact(int id)
+        {
+            // id = clientid
+            var vm = EmptyContact(id);
+            return PartialView("~/Views/Client/_ContactsModal.cshtml", vm);
+        }
+
+        public static Contact EmptyContact(int id)
+        {
+            Contact vm = new Contact();
+            vm.ClientContactID = -1;
+            vm.ListOfCountries = ClientService.fnListOfCountries();
+            vm.ClientID = id;
+
+            return vm;
+        }
+
+        public ActionResult SaveContact(Contact obj)
+        {
+            var q = db.tblClientContact.Find(obj.ClientContactID);
+
+            if (q != null)
+            {
+                q.ContactType = obj.ContactType;
+                q.Account = obj.Account;
+                q.FullName = obj.FullName;
+                q.Email = obj.Email;
+                q.Phone = obj.Phone;
+                q.Fax = obj.Fax;
+                q.Company = obj.Company;
+                q.DistributorName = obj.DistributorName;
+                q.Address1 = obj.Address1;
+                q.Address2 = obj.Address2;
+                q.City = obj.City;
+                q.State = obj.State;
+                q.Zip = obj.Zip;
+                q.Country = obj.Country;
+
+                db.SaveChanges();
+            }
+            else
+            {
+                var newrecord = new EF.tblClientContact
+                {
+                    ClientContactID = Convert.ToInt32(obj.ClientContactID),
+                    ClientID = Convert.ToInt32(obj.ClientID),
+                    ContactType = obj.ContactType,
+                    Account = obj.Account,
+                    FullName = obj.FullName,
+                    Email = obj.Email,
+                    Phone = obj.Phone,
+                    Fax = obj.Fax,
+                    Company = obj.Company,
+                    DistributorName = obj.DistributorName,
+                    Address1 = obj.Address1,
+                    Address2 = obj.Address2,
+                    City = obj.City,
+                    State = obj.State,
+                    Zip = obj.Zip,
+                    Country = obj.Country
+                };
+
+                db.tblClientContact.Add(newrecord);
+                db.SaveChanges();
+            }
+
+            return null;
+        }
+
+        #endregion Client Contact Methods
 
         #region Tier Methods
 
