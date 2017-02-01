@@ -488,7 +488,7 @@ namespace MvcPhoenix.Controllers
             //var orderslist = fnOrdersSearchResults();
             var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist
-                          where t.company != null && t.company.Contains(mycompany)
+                          where t.company != null && t.company.ToLower().Contains(mycompany.ToLower())
                           select t).ToList();
 
             TempData["SearchResultsMessage"] = "No Results Found";
