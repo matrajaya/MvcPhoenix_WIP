@@ -1,6 +1,7 @@
 ﻿using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace MvcPhoenix.Controllers
 {
@@ -19,8 +20,14 @@ namespace MvcPhoenix.Controllers
         {
             // for the partial in Products Edit
             var mylist = ShelfMasterService.fnListOfShelfMasters(id);
+
+            // Exclude inactive sizes from shared list
+            var mylistx = (from x in mylist 
+                           where x.inactivesize == false 
+                           select x).ToList();
+            
             ViewBag.ParentID = id;
-            return PartialView("~/Views/Products/_ShelfSize.cshtml", mylist);
+            return PartialView("~/Views/Products/_ShelfSize.cshtml", mylistx);
         }
 
         public ActionResult FillIndexViewBag(int id)
