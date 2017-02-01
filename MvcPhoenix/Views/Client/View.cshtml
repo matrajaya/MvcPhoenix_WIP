@@ -167,6 +167,29 @@
         </div>
     </div>
 
+    @* Contacts *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#contactpanel"><i class="fa fa-book fa-fw"></i> Contacts</h3>
+        </div>
+        <div id="contactpanel" class="panel-body collapse in">
+            <div class="row">
+                <div class="col-md-3">
+                    @Ajax.ActionLink("+ Add New Contact", "CreateContact", "Client", new { id = Model.ClientID }, new AjaxOptions
+                    {
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "GET",
+                        UpdateTargetId = "dialogPlaceholder",
+                        OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+                    }, new { @class = "btn btn-primary btn-block" })
+                </div>
+            </div>
+            <div id="dvSupplierList">
+                @Html.Action("ListContacts", "Client", new { id = @Model.ClientID })
+            </div>
+        </div>
+    </div>
+
     @* Tiers *@
     <div class="panel panel-primary">
         <div class="panel-heading">

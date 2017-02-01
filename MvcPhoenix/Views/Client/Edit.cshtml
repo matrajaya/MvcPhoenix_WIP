@@ -76,7 +76,7 @@
                     </div>
                     <div class="col-md-2 form-group">
                         <label>CMC Location</label>
-                        @Html.DropDownListFor(m => m.CMCLocation, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.ClientProfile.CMCLocationChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.CMCLocation, new SelectList(Enum.GetValues(typeof(ClientProfile.CMCLocationChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-2 form-group">
                         <label>Active Profile</label>
@@ -109,11 +109,11 @@
                 <div class="row">
                     <div class="col-md-2 form-group">
                         <label>Client Currency</label>
-                        @Html.DropDownListFor(m => m.ClientCurrency, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.ClientProfile.CurrencyChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.ClientCurrency, new SelectList(Enum.GetValues(typeof(ClientProfile.CurrencyChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-2 form-group">
                         <label>Client UM</label>
-                        @Html.DropDownListFor(m => m.ClientUM, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.ClientProfile.UMChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.ClientUM, new SelectList(Enum.GetValues(typeof(ClientProfile.UMChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-2 form-group">
                         <label>Client Net Term</label>

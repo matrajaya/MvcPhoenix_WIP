@@ -12,11 +12,10 @@
             <tr>
                 <th>ID</th>
                 <th>ContactType</th>
-                <th>Account</th>
                 <th>FullName</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Country</th>
+                <th>Account</th>
                 <th id="hideeditbutton"></th>
             </tr>
         </thead>
@@ -25,11 +24,10 @@
             <tr>
                 <td>@item.ClientContactID</td>
                 <td>@item.ContactType</td>
-                <td>@item.Account</td>
                 <td>@item.FullName</td>
                 <td>@item.Email</td>
                 <td>@item.Phone</td>
-                <td>@item.Country</td>
+                <td>@item.Account</td>
                 <td id="hideeditbutton" style="text-align:right">
                     @Ajax.ActionLink(" ", "EditContact", "Client", new { id = @item.ClientContactID }, new AjaxOptions
                            {

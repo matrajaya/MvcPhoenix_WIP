@@ -30,7 +30,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             @Html.LabelFor(m => m.transtype, new { @class = "control-label" })
-                            @Html.DropDownListFor(m => m.transtype, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderTrans.OrderTransTypesChoice))), new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.transtype, new SelectList(Enum.GetValues(typeof(OrderTrans.OrderTransTypesChoice))), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.transtype)
                         </div>
                         <div class="col-md-6 form-group">

@@ -101,12 +101,12 @@
                     </div>
                     <div class="col-md-2">
                         <label><abbr title="S = Samples&#13;D = Dormant&#13;R = Returns&#13;C = Commercial&#13;">Order Type <i class="fa fa-fw fa-question-circle" rel="tooltip"></i></abbr></label>
-                        @Html.DropDownListFor(m => m.ordertype, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderMasterFull.OrderTypeChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.ordertype, new SelectList(Enum.GetValues(typeof(OrderMasterFull.OrderTypeChoice))), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ordertype)
                     </div>
                     <div class="col-md-2">
                         <label class="control-label">Order Source</label>
-                        @Html.DropDownListFor(m => m.source, new SelectList(Enum.GetValues(typeof(MvcPhoenix.Models.OrderMasterFull.OrderSourceChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.source, new SelectList(Enum.GetValues(typeof(OrderMasterFull.OrderSourceChoice))), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.source)
                     </div>
                     <div class="col-md-2">
