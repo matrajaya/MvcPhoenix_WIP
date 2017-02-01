@@ -9,18 +9,12 @@ namespace MvcPhoenix.Models
     public class OrderMasterFull
     {
         public List<SelectListItem> ListOfDivisions { get; set; }
-
-        // public List<SelectListItem> ListOfOrderTypes { get; set; } Discussion on streamlining and trimming current selections. Enum list below
-        public List<SelectListItem> ListOfSalesReps { get; set; }
-
-        // public List<SelectListItem> ListOfOrderSources { get; set; } Discussion on streamlining and trimming current selections. Enum list below
         public List<SelectListItem> ListOfCountries { get; set; }
-
         public List<SelectListItem> ListOfEndUses { get; set; }
         public List<SelectListItem> ListOfShipVias { get; set; }
-
-        // pc 04/28/16 new dd bound per cd, ii
         public List<SelectListItem> ListOfBillingGroups { get; set; }
+        public List<SelectListItem> ListOfRequestors { get; set; }
+        public List<SelectListItem> ListOfSalesReps { get; set; }
 
         public int itemscount { get; set; }
         public int transcount { get; set; }
@@ -71,13 +65,10 @@ namespace MvcPhoenix.Models
         {
             [Display(Name = "Sample")]
             S,
-
             [Display(Name = "Dormant")]
             D,
-
             [Display(Name = "Return")]
             R,
-
             [Display(Name = "Commercial")]
             C
         }
@@ -317,7 +308,6 @@ namespace MvcPhoenix.Models
         public bool approvalneeded { get; set; }
 
         public bool? IsSDN { get; set; }
-
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
@@ -327,9 +317,7 @@ namespace MvcPhoenix.Models
     public class OrderImportFile
     {
         public IEnumerable<HttpPostedFileBase> Files { get; set; }
-
         public string Client { get; set; }
-
         public IEnumerable<SelectListItem> Clients { get; set; }
     }
 

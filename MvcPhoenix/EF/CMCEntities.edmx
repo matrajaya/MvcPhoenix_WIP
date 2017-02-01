@@ -344,9 +344,9 @@
           <Property Name="Account" Type="nvarchar" MaxLength="15" />
           <Property Name="FullName" Type="nvarchar" MaxLength="60" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
-          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="Company" Type="nvarchar" MaxLength="20" />
-          <Property Name="Territory" Type="nvarchar" MaxLength="20" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Territory_mdb" Type="nvarchar" MaxLength="20" />
           <Property Name="Fax" Type="nvarchar" MaxLength="50" />
           <Property Name="Address1" Type="nvarchar(max)" />
           <Property Name="Address2" Type="nvarchar(max)" />
@@ -524,7 +524,7 @@
           <Property Name="CompanyWebsite" Type="nvarchar" MaxLength="50" />
           <Property Name="CompanyLogo" Type="nvarchar" MaxLength="50" />
           <Property Name="CompanyLogo2" Type="nvarchar" MaxLength="50" />
-          <Property Name="LogoFile" Type="varbinary(max)" />
+          <Property Name="LogoFile" Type="varbinary" MaxLength="1" />
           <Property Name="IncludeExpDtOnLabel" Type="bit" />
         </EntityType>
         <EntityType Name="tblEndUse">
@@ -622,7 +622,7 @@
           <Property Name="ProductName" Type="nvarchar" MaxLength="60" />
           <Property Name="ShipDate" Type="datetime" />
           <Property Name="CurrentQtyAvailable" Type="int" />
-          <Property Name="CurrentWeightAvailable" Type="numeric" Precision="12" Scale="4" />
+          <Property Name="CurrentWeightAvailable" Type="numeric" Precision="18" Scale="4" />
           <Property Name="ExpirationDate" Type="datetime" />
           <Property Name="CeaseShipDate" Type="datetime" />
           <Property Name="OrderNumber" Type="nvarchar" MaxLength="20" />
@@ -2074,6 +2074,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblCAS" EntityType="CMCSQL03Model.tblCAS" />
           <EntitySet Name="tblCeaseShipOffSet" EntityType="CMCSQL03Model.tblCeaseShipOffSet" />
           <EntitySet Name="tblClient" EntityType="CMCSQL03Model.tblClient" />
+          <EntitySet Name="tblClientContact" EntityType="CMCSQL03Model.tblClientContact" />
           <EntitySet Name="tblClientIncidentalRate" EntityType="CMCSQL03Model.tblClientIncidentalRate" />
           <EntitySet Name="tblClientInvoiceTrans" EntityType="CMCSQL03Model.tblClientInvoiceTrans" />
           <EntitySet Name="tblCountry" EntityType="CMCSQL03Model.tblCountry" />
@@ -2128,7 +2129,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblWasteCode" EntityType="CMCSQL03Model.tblWasteCode" />
           <EntitySet Name="vwBulkLevel" EntityType="CMCSQL03Model.vwBulkLevel" />
           <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
-          <EntitySet Name="tblClientContact" EntityType="CMCSQL03Model.tblClientContact" />
         </EntityContainer>
         <EntityType Name="tblBillingGroup">
           <Key>
@@ -2459,6 +2459,31 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="MDB_CMCBE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LogoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
+        <EntityType Name="tblClientContact">
+          <Key>
+            <PropertyRef Name="ClientContactID" />
+          </Key>
+          <Property Name="ClientContactID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="ContactType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Account" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Territory_mdb" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DistributorName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="tblClientIncidentalRate">
           <Key>
             <PropertyRef Name="ClientID" />
@@ -2624,7 +2649,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="CompanyWebsite" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CompanyLogo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CompanyLogo2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LogoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="LogoFile" Type="Binary" MaxLength="1" FixedLength="false" />
           <Property Name="IncludeExpDtOnLabel" Type="Boolean" />
         </EntityType>
         <EntityType Name="tblEndUse">
@@ -2722,7 +2747,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="ProductName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="ShipDate" Type="DateTime" Precision="3" />
           <Property Name="CurrentQtyAvailable" Type="Int32" />
-          <Property Name="CurrentWeightAvailable" Type="Decimal" Precision="12" Scale="4" />
+          <Property Name="CurrentWeightAvailable" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
           <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
           <Property Name="OrderNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
@@ -3991,31 +4016,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="WebOEInclude" Type="Boolean" />
           <Property Name="PackagePartNumber_MDB" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblClientContact">
-          <Key>
-            <PropertyRef Name="ClientContactID" />
-          </Key>
-          <Property Name="ClientContactID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="ContactType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Account" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="FullName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Company" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Territory" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Address2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Zip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DistributorName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4358,6 +4358,32 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="GlobalClientID" ColumnName="GlobalClientID" />
                 <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblClientContact">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblClientContact">
+              <MappingFragment StoreEntitySet="tblClientContact">
+                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="DistributorName" ColumnName="DistributorName" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Territory_mdb" ColumnName="Territory_mdb" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ClientContactID" ColumnName="ClientContactID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5942,32 +5968,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblClientContact">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblClientContact">
-              <MappingFragment StoreEntitySet="tblClientContact">
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="DistributorName" ColumnName="DistributorName" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address2" ColumnName="Address2" />
-                <ScalarProperty Name="Address1" ColumnName="Address1" />
-                <ScalarProperty Name="Fax" ColumnName="Fax" />
-                <ScalarProperty Name="Territory" ColumnName="Territory" />
-                <ScalarProperty Name="Company" ColumnName="Company" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Account" ColumnName="Account" />
-                <ScalarProperty Name="ContactType" ColumnName="ContactType" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="ClientContactID" ColumnName="ClientContactID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

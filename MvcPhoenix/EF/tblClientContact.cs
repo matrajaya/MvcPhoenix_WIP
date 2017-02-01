@@ -20,9 +20,9 @@ namespace MvcPhoenix.EF
         public string Account { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
-        public string Phone { get; set; }
         public string Company { get; set; }
-        public string Territory { get; set; }
+        public string Phone { get; set; }
+        public string Territory_mdb { get; set; }
         public string Fax { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }

@@ -80,7 +80,8 @@ namespace MvcPhoenix.Services
                 var cl = db.tblClient.Find(q.ClientID);
                 o.clientname = cl.ClientName;
                 o.clientcode = cl.ClientCode;
-                o.ListOfSalesReps = fnListOfSalesReps(o.clientid);
+                o.ListOfSalesReps = fnListOfSalesReps(cl.ClientID);
+                o.ListOfRequestors = fnListOfRequestors(cl.ClientID);
                 o.ListOfCountries = fnListOfCountries();
                 o.ListOfEndUses = fnListOfEndUses(o.clientid);
                 o.ListOfShipVias = fnListOfShipVias();
@@ -197,7 +198,6 @@ namespace MvcPhoenix.Services
                 o.UpdateUser = q.UpdateUser;
                 o.UpdateDate = q.UpdateDate;
                 o.billinggroup = q.BillingGroup;
-
                 o.IsSDN = q.IsSDN;
 
                 return o;
@@ -1362,26 +1362,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static List<SelectListItem> fnListOfOrderTypes()
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblOrderType
-                          orderby t.OrderType
-                          select new SelectListItem
-                          {
-                              Value = t.OrderType,
-                              Text = t.OrderType
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
         public static List<SelectListItem> fnListOfCountries()
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -1409,12 +1389,12 @@ namespace MvcPhoenix.Services
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
                 mylist = (from t in db.tblClientContact
-                          where t.ContactType == "SalesRep"
                           where t.ClientID == id
+                          where t.ContactType == "SalesRep"
                           orderby t.FullName
                           select new SelectListItem
                           {
-                              Value = t.FullName,
+                              Value = t.ClientContactID.ToString(),
                               Text = t.FullName
                           }).ToList();
 
@@ -1431,18 +1411,39 @@ namespace MvcPhoenix.Services
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
                 mylist = (from t in db.tblClientContact
-                          where t.ContactType == "Requestor"
                           where t.ClientID == id
+                          where t.ContactType == "Requestor"
                           orderby t.FullName
                           select new SelectListItem
                           {
-                              Value = t.FullName,
+                              Value = t.ClientContactID.ToString(),
                               Text = t.FullName
                           }).ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
 
                 return mylist;
+            }
+        }
+
+        public static Contact fnGetClientContacts(int id)
+        {
+            // fill a json object for View use
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                Contact obj = new Contact();
+
+                var q = (from t in db.tblClientContact
+                         where t.ClientContactID == id
+                         select t).FirstOrDefault();
+
+                obj.FullName = q.FullName;
+                obj.Email = q.Email;
+                obj.Phone = q.Phone;
+                obj.Phone = q.Fax;
+                obj.Account = q.Account;
+
+                return obj;
             }
         }
 

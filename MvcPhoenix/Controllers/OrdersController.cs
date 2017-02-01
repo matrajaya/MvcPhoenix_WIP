@@ -534,13 +534,22 @@ namespace MvcPhoenix.Controllers
             }
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
+        
+        [HttpGet]
+        public ActionResult PullContactDetails(int id)
+        {
+            Contact obj = new Contact();
+            obj = OrderService.fnGetClientContacts(id);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+
+        #region Order Import Actions
 
         public ActionResult Import()
         {
             return View();
         }
-
-        #region Order Import Actions
 
         [HttpGet]
         public ActionResult OrderImport()
