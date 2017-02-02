@@ -99,7 +99,7 @@ namespace MvcPhoenix.Services
                     {
                         var newrec = new EF.tblBulk { ProductMasterID = incoming.productmasterid };
                         db.tblBulk.Add(newrec);
-                        newrec.CreateDate = System.DateTime.Now;
+                        newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                         db.SaveChanges();
                         pk = newrec.BulkID;
@@ -133,7 +133,7 @@ namespace MvcPhoenix.Services
                     qry.ReceivedAsCode = incoming.receivedascode;
                     qry.ReceivedAsName = incoming.receivedasname;
                     qry.OtherStorage = incoming.otherstorage;
-                    qry.UpdateDate = System.DateTime.Now;
+                    qry.UpdateDate = DateTime.UtcNow;
                     qry.UpdateUser = HttpContext.Current.User.Identity.Name;
                     db.SaveChanges();
                     retval = true;
@@ -143,8 +143,6 @@ namespace MvcPhoenix.Services
             {
                 retval = false;
                 throw new Exception("Error occurred saving Bulk Container");
-                //System.Diagnostics.Debug.WriteLine(ex.Message);
-                //retval = false;
             }
             return retval;
         }

@@ -77,7 +77,7 @@ namespace MvcPhoenix.Controllers
         {
             // WIP
             bool bUpdate = BulkService.fnSaveBulk(obj);
-            TempData["SaveResult"] = "Bulk Container Saved at " + System.DateTime.Now.ToString();
+            TempData["SaveResult"] = "Bulk Container Saved on " + DateTime.UtcNow.ToString();
             return RedirectToAction("Edit", new { id = obj.bulkid });
         }
     }

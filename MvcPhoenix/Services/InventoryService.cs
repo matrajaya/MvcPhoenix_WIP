@@ -288,7 +288,7 @@ namespace MvcPhoenix.Services
                 q.Bin = vm.Bin;
                 q.ShelfStatus = vm.ShelfStatus;
                 q.WasteAccumStartDate = vm.WasteAccumStartDate;
-                q.UpdateDate = System.DateTime.Now;
+                q.UpdateDate = DateTime.UtcNow;
                 q.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.SaveChanges();
@@ -316,7 +316,7 @@ namespace MvcPhoenix.Services
                 dbBulk.BulkStatus = vm.BulkContainer.bulkstatus;
                 dbBulk.Bin = vm.BulkContainer.bin;
                 dbBulk.Warehouse = vm.BulkContainer.warehouse;
-                dbBulk.CreateDate = System.DateTime.Now;
+                dbBulk.CreateDate = DateTime.UtcNow;
                 dbBulk.CreateUser = System.Web.HttpContext.Current.User.Identity.Name;
                 dbBulk.ReceiveWeight = 0;
                 dbBulk.CurrentWeight = 0;
@@ -344,7 +344,7 @@ namespace MvcPhoenix.Services
                         dbBulk.ReceiveWeight = dbBulk.ReceiveWeight + (ThisQty * sm.UnitWeight);
                         newstock.Bin = sm.Bin;
                         newstock.ShelfStatus = "AVAIL";
-                        newstock.CreateDate = DateTime.Now;
+                        newstock.CreateDate = DateTime.UtcNow;
                         newstock.CreateUser = HttpContext.Current.User.Identity.Name;
                         db.tblStock.Add(newstock);
 

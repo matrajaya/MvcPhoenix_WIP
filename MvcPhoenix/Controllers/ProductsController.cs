@@ -88,7 +88,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult PrintProfile(int id)
         {
             string footer = "--footer-left \"Printed on: " +
-                DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") +
+                DateTime.UtcNow.ToString("R") +
                 "                                                                                                                                    " +
                 " Page: [page]/[toPage]\"" +
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
@@ -126,6 +126,8 @@ namespace MvcPhoenix.Controllers
 
             // create new record and clear select values for manual entry
             PP.productdetailid = ProductsService.fnNewProductDetailID();
+            PP.productcode = PP.productcode + " Clone";
+            PP.productname = PP.productname + " Clone";
             PP.UpdateUserDetail = HttpContext.User.Identity.Name;
             PP.UpdateDateDetail = DateTime.UtcNow;
             
@@ -216,10 +218,12 @@ namespace MvcPhoenix.Controllers
         {
             if (String.IsNullOrEmpty(PPVM.productcode) || String.IsNullOrEmpty(PPVM.productname) || String.IsNullOrEmpty(PPVM.mastercode) || String.IsNullOrEmpty(PPVM.mastername))
             {
+                TempData["SaveResult"] = "Product Profile not saved. Missing product code/name";
                return View("Edit", PPVM);
             }           
 
             int pk = ProductsService.fnSaveProductProfile(PPVM);
+            TempData["SaveResult"] = "Product Profile updated on " + DateTime.UtcNow.ToString("R");
             return RedirectToAction("Edit", new { id = pk });
         }
 
@@ -312,7 +316,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveProductNote(ProductNote PN)
         {
             int pk = ProductsService.fnSaveProductNoteToDB(PN);
-            return Content("Data Updated at " + DateTime.Now);
+            return Content("Data Updated on " + DateTime.UtcNow.ToString("R"));
         }
 
         [HttpGet]
@@ -374,7 +378,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveCAS(Cas CS)
         {
             int pk = ProductsService.fnSaveCASToDB(CS);
-            return Content("Data Updated at " + DateTime.Now);
+            return Content("Data Updated on " + DateTime.UtcNow.ToString("R"));
         }
 
         public ActionResult DeleteCAS(int id)

@@ -106,10 +106,10 @@ namespace MvcPhoenix.Controllers
             vm.ProductDetailID = id;
             vm.BulkContainer = new BulkContainerViewModel();
             vm.BulkContainer.bulkid = -1;
-            vm.BulkContainer.receivedate = System.DateTime.Now;
+            vm.BulkContainer.receivedate = DateTime.UtcNow;
             vm.BulkContainer.warehouse = cl.CMCLocation;
             vm.BulkContainer.lotnumber = "lotnumber";
-            vm.BulkContainer.mfgdate = System.DateTime.Now;
+            vm.BulkContainer.mfgdate = DateTime.UtcNow;
             vm.BulkContainer.clientid = pm.ClientID;
             vm.BulkContainer.productmasterid = pm.ProductMasterID;
             vm.BulkContainer.bulkstatus = "AVAIL";

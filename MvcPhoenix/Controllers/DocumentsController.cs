@@ -86,7 +86,7 @@ namespace MvcPhoenix.Controllers
                 while (eventLog.Count > 0)
                 {
                     sb.AppendLine(new String('-', 80));
-                    sb.AppendLine("Event " + eventLog.Count + " - " + DateTime.Now.ToString("R"));
+                    sb.AppendLine("Event " + eventLog.Count + " - " + DateTime.UtcNow.ToString("R"));
                     sb.AppendLine("User: " + context.User.Identity.Name.ToString());
                     sb.AppendLine(eventLog.Pop());
                 }

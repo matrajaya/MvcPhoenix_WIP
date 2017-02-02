@@ -726,7 +726,7 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 var newrecord = new EF.tblProductDetail { }; // dont need to insert any fields, just need the new PK
-                newrecord.CreateDate = System.DateTime.Now;
+                newrecord.CreateDate = DateTime.UtcNow;
                 newrecord.CreateUser = HttpContext.Current.User.Identity.Name;
 
                 db.tblProductDetail.Add(newrecord);
@@ -755,7 +755,7 @@ namespace MvcPhoenix.Models
             using (var db = new EF.CMCSQL03Entities())
             {
                 var newrecord = new EF.tblProductMaster { };    // dont need to insert any fields, just need the new PK
-                newrecord.CreateDate = System.DateTime.Now;
+                newrecord.CreateDate = DateTime.UtcNow;
                 newrecord.CreateUser = HttpContext.Current.User.Identity.Name;
 
                 db.tblProductMaster.Add(newrecord);
@@ -812,7 +812,7 @@ namespace MvcPhoenix.Models
                 PN.productnoteid = -1;
                 PN.productdetailid = id;  // important
                 PN.reasoncode = null;
-                PN.notedate = DateTime.Now;
+                PN.notedate = DateTime.UtcNow;
                 PN.notes = null;
                 PN.ListOfReasonCodes = (from t in db.tblReasonCode
                                         orderby t.Reason

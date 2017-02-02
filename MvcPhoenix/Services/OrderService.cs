@@ -51,14 +51,14 @@ namespace MvcPhoenix.Services
                 var cl = db.tblClient.Find(vm.clientid);
                 vm.clientname = cl.ClientName;
                 vm.orderstatus = "z";
-                vm.orderdate = System.DateTime.Now;
+                vm.orderdate = DateTime.UtcNow;
                 vm.ListOfSalesReps = fnListOfSalesReps(id);
                 vm.ListOfCountries = fnListOfCountries();
                 vm.ListOfEndUses = fnListOfEndUses(id);
                 vm.ListOfShipVias = fnListOfShipVias();
                 vm.ListOfBillingGroups = fnListOfBillingGroups(id);
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
-                vm.CreateDate = System.DateTime.Now;
+                vm.CreateDate = DateTime.UtcNow;
 
                 vm.IsSDN = false;
                 return vm;
@@ -230,7 +230,7 @@ namespace MvcPhoenix.Services
 
                 // update time stamps
                 vm.UpdateUser = HttpContext.Current.User.Identity.Name;
-                vm.UpdateDate = System.DateTime.Now;
+                vm.UpdateDate = DateTime.UtcNow;
 
                 var q = (from t in db.tblOrderMaster
                          where t.OrderID == vm.orderid
@@ -441,7 +441,7 @@ namespace MvcPhoenix.Services
                 vm.OrderID = id;
                 var dbOrder = db.tblOrderMaster.Find(id);
                 vm.ClientID = dbOrder.ClientID;
-                vm.CreateDate = System.DateTime.Now;
+                vm.CreateDate = DateTime.UtcNow;
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 vm.ProductDetailID = -1;
                 vm.ListOfProductDetailIDs = fnListOfProductCodes(vm.ClientID);
@@ -577,7 +577,7 @@ namespace MvcPhoenix.Services
                 if (vm.ItemID == -1)
                 {
                     vm.ItemID = fnNewItemID();
-                    vm.CreateDate = System.DateTime.Now;
+                    vm.CreateDate = DateTime.UtcNow;
                     vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 }
 
@@ -588,7 +588,7 @@ namespace MvcPhoenix.Services
                 q.OrderID = vm.OrderID;
                 q.CreateDate = vm.CreateDate;
                 q.CreateUser = vm.CreateUser;
-                q.UpdateDate = System.DateTime.Now;
+                q.UpdateDate = DateTime.UtcNow;
                 q.UpdateUser = HttpContext.Current.User.Identity.Name;
                 q.ProductDetailID = vm.ProductDetailID;
                 q.ShelfID = vm.ShelfID;
@@ -723,7 +723,7 @@ namespace MvcPhoenix.Services
                     if (iOffset != 0)
                     {
                         // if there's an offset on the order record, add that to today to build in extra time
-                        DateTime dCease = System.DateTime.Now.AddDays(iOffset);
+                        DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
 
                         tblbulk = (from t in tblbulk
                                    where t.CeaseShipDate > dCease
@@ -768,7 +768,7 @@ namespace MvcPhoenix.Services
                             item.ExpirationDate = q.ExpirationDate;
                             item.CeaseShipDate = q.CeaseShipDate;
 
-                            fnInsertLogRecord("BS-ALC", System.DateTime.Now, null, row.BulkID, item.Qty, item.Weight, System.DateTime.Now, HttpContext.Current.User.Identity.Name, null, null);
+                            fnInsertLogRecord("BS-ALC", DateTime.UtcNow, null, row.BulkID, item.Qty, item.Weight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
 
                             db.SaveChanges();
 
@@ -824,7 +824,7 @@ namespace MvcPhoenix.Services
                     if (iOffset != 0)
                     {
                         // if there's an offset on the order record, add that to today to build in extra time
-                        DateTime dCease = System.DateTime.Now.AddDays(iOffset);
+                        DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
                         tblstock = (from t in tblstock
                                     where t.CeaseShipDate > dCease
                                     select t).ToList();
@@ -875,13 +875,13 @@ namespace MvcPhoenix.Services
                             item.Bin = row.Bin;
                             item.ExpirationDate = row.ExpirationDate;
                             item.CeaseShipDate = row.CeaseShipDate;
-                            item.AllocatedDate = System.DateTime.Now;
+                            item.AllocatedDate = DateTime.UtcNow;
 
                             db.SaveChanges();
 
                             break;
 
-                            fnInsertLogRecord("SS-ALC", System.DateTime.Now, row.StockID, null, item.Qty, null, System.DateTime.Now, HttpContext.Current.User.Identity.Name, null, null);
+                            fnInsertLogRecord("SS-ALC", DateTime.UtcNow, row.StockID, null, item.Qty, null, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
                         }
                     }
                 }
@@ -927,8 +927,8 @@ namespace MvcPhoenix.Services
 
                 vm.ordertransid = -1;
                 vm.orderid = id;
-                vm.createdate = System.DateTime.Now;
-                vm.transdate = System.DateTime.Now.Date;
+                vm.createdate = DateTime.UtcNow;
+                vm.transdate = DateTime.UtcNow.Date;
                 vm.createuser = HttpContext.Current.User.Identity.Name;
                 vm.clientid = cl.ClientID;
 
@@ -944,13 +944,13 @@ namespace MvcPhoenix.Services
                 {
                     EF.tblOrderTrans newrec = new EF.tblOrderTrans();
                     db.tblOrderTrans.Add(newrec);
-                    vm.createdate = System.DateTime.Now;
+                    vm.createdate = DateTime.UtcNow;
                     vm.createuser = HttpContext.Current.User.Identity.Name;
                     db.SaveChanges();
                     vm.ordertransid = newrec.OrderTransID;
                 }
 
-                vm.updatedate = System.DateTime.Now;
+                vm.updatedate = DateTime.UtcNow;
                 vm.updateuser = HttpContext.Current.User.Identity.Name;
 
                 var d = (from t in db.tblOrderTrans
@@ -1040,14 +1040,14 @@ namespace MvcPhoenix.Services
                 if (tierSize != null)
                 {
                     EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                    newrec.TransDate = System.DateTime.Now;
+                    newrec.TransDate = DateTime.UtcNow;
                     newrec.OrderItemID = oi.ItemID;
                     newrec.OrderID = oi.OrderID;
                     newrec.ClientID = o.ClientID;
                     newrec.TransType = "SAMP";
                     newrec.TransQty = oi.Qty;
                     newrec.TransAmount = tierSize.Price;
-                    newrec.CreateDate = System.DateTime.Now;
+                    newrec.CreateDate = DateTime.UtcNow;
                     newrec.CreateUser = "System";
                     newrec.BillingGroup = o.BillingGroup;
 
@@ -1064,7 +1064,7 @@ namespace MvcPhoenix.Services
                     if (tierSpecialRequest != null)
                     {
                         EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                        newrec.TransDate = System.DateTime.Now;
+                        newrec.TransDate = DateTime.UtcNow;
                         newrec.OrderItemID = oi.ItemID;
                         newrec.OrderID = oi.OrderID;
                         newrec.ClientID = o.ClientID;
@@ -1072,7 +1072,7 @@ namespace MvcPhoenix.Services
                         newrec.TransQty = oi.Qty;
                         newrec.TransAmount = tierSpecialRequest.Price;
                         newrec.Comments = "Special Request";
-                        newrec.CreateDate = System.DateTime.Now;
+                        newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = "System";
                         newrec.BillingGroup = o.BillingGroup;
 
@@ -1204,16 +1204,16 @@ namespace MvcPhoenix.Services
                          select t).FirstOrDefault();
 
                 EF.tblOrderTrans newrec = new EF.tblOrderTrans();
-                newrec.TransDate = System.DateTime.Now;
+                newrec.TransDate = DateTime.UtcNow;
                 newrec.OrderItemID = ItemID;
                 newrec.OrderID = oi.OrderID;
                 newrec.ClientID = o.ClientID;
                 newrec.BillingGroup = o.BillingGroup;
-                newrec.TransDate = System.DateTime.Now;
+                newrec.TransDate = DateTime.UtcNow;
                 newrec.TransType = TransType;
                 newrec.TransQty = oi.Qty;
                 newrec.TransAmount = TransAmount;
-                newrec.CreateDate = System.DateTime.Now;
+                newrec.CreateDate = DateTime.UtcNow;
                 newrec.CreateUser = "System";
 
                 db.tblOrderTrans.Add(newrec);

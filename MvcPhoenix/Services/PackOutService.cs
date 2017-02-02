@@ -52,8 +52,8 @@ namespace MvcPhoenix.Services
 
                 // fill master record values from bulk-pm-pd-dv
                 newMaster.BulkID = bulk.BulkID;
-                newMaster.CreateDate = System.DateTime.Now;
-                newMaster.ProdmastCreateDate = System.DateTime.Now;
+                newMaster.CreateDate = DateTime.UtcNow;
+                newMaster.ProdmastCreateDate = DateTime.UtcNow;
                 newMaster.Company = client.CMCLongCustomer;
                 newMaster.Division = "?";
                 newMaster.MasterCode = pmaster.MasterCode;
@@ -88,7 +88,7 @@ namespace MvcPhoenix.Services
                                 where t.LogType == "SS-SHP" && t.ProductDetailID == row.pd.ProductDetailID
                                 select t);
 
-                    DateTime? d1 = DateTime.Now.AddDays(-365);
+                    DateTime? d1 = DateTime.UtcNow.AddDays(-365);
 
                     var qSSPY = (from t in qLog
                                  where t.LogType == "SS-SHP" && t.ProductDetailID == row.pd.ProductDetailID && t.ShipDate >= d1
@@ -97,7 +97,7 @@ namespace MvcPhoenix.Services
                     int qShelfShippedPastYear = Convert.ToInt32((from t in qSSPY
                                                                  select t.LogQty).Sum());
 
-                    DateTime? d2 = DateTime.Now.AddDays(-120);
+                    DateTime? d2 = DateTime.UtcNow.AddDays(-120);
 
                     var qSSP4M = (from t in qLog
                                   where t.LogType == "SS-SHP" && t.ProductDetailID == row.pd.ProductDetailID && t.ShipDate >= d2
@@ -108,7 +108,7 @@ namespace MvcPhoenix.Services
 
                     decimal? dReorderMin = 0;
 
-                    if (row.pm.ProductSetupDate <= DateTime.Now.AddDays(-365))
+                    if (row.pm.ProductSetupDate <= DateTime.UtcNow.AddDays(-365))
                     {
                         dReorderMin = ((qShelfShippedPastYear / 12) * 2);
                     }

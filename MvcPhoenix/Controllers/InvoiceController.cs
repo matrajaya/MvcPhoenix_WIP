@@ -113,7 +113,7 @@ namespace MvcPhoenix.Controllers
             if (ModelState.IsValid)
             {
                 pk = InvoiceService.SaveInvoice(vm);
-                TempData["SaveResult"] = "Invoice updated at " + DateTime.Now;
+                TempData["SaveResult"] = "Invoice updated on " + DateTime.UtcNow.ToString("R");
             }
 
             return RedirectToAction("Edit", new { id = pk });
@@ -135,7 +135,7 @@ namespace MvcPhoenix.Controllers
         private static string DocumentFooter()
         {
             string footer = "--footer-left \"Printed on: " +
-                DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") +
+                DateTime.UtcNow.ToString("R") +
                 "                                                                                                                                    " +
                 " Page: [page]/[toPage]\"" +
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";

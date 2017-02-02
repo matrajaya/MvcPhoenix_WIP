@@ -348,7 +348,7 @@ namespace MvcPhoenix.Controllers
                     newitem.ItemNotes = "Return Bulk Order Item";
 
                     // Insert log record
-                    Services.OrderService.fnInsertLogRecord("BS-RTN", System.DateTime.Now, null, row.BulkID, 1, row.CurrentWeight, System.DateTime.Now, User.Identity.Name, null, null);
+                    Services.OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, row.BulkID, 1, row.CurrentWeight, DateTime.UtcNow, User.Identity.Name, null, null);
 
                     //update bulk record
                     row.CurrentWeight = 0;
@@ -388,7 +388,7 @@ namespace MvcPhoenix.Controllers
                     newitem.ItemNotes = "Return Shelf Order Item";
 
                     // Insert log record
-                    Services.OrderService.fnInsertLogRecord("SS-RTN", System.DateTime.Now, row.StockID, null, 1, sm.UnitWeight, System.DateTime.Now, User.Identity.Name, null, null);
+                    Services.OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, row.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, User.Identity.Name, null, null);
 
                     //update bulk record
                     row.QtyOnHand = 0;
@@ -435,9 +435,9 @@ namespace MvcPhoenix.Controllers
                 var cl = (from t in db.tblClient where t.ClientID == MyClientID select t).FirstOrDefault();
                 om.ClientID = MyClientID;
                 om.OrderType = "R";
-                om.OrderDate = System.DateTime.Now;
+                om.OrderDate = DateTime.UtcNow;
                 om.Company = cl.ClientName;
-                om.CreateDate = System.DateTime.Now;
+                om.CreateDate = DateTime.UtcNow;
                 om.CreateUser = System.Web.HttpContext.Current.User.Identity.Name;
                 db.SaveChanges();
             }

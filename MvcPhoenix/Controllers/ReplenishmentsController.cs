@@ -64,7 +64,7 @@ namespace MvcPhoenix.Controllers
                 return RedirectToAction("Email", obj);
             }
 
-            TempData["SaveResult"] = "Order Saved at " + DateTime.Now.ToString();
+            TempData["SaveResult"] = "Order Saved on " + DateTime.UtcNow.ToString("R");
 
             return RedirectToAction("Edit", new { id = pk });
         }
@@ -132,7 +132,7 @@ namespace MvcPhoenix.Controllers
             else
             {
                 int pk = ReplenishmentsService.fnSaveItem(obj);
-                return Content("Item Saved at " + DateTime.Now.ToString());
+                return Content("Item Saved on " + DateTime.UtcNow.ToString("R"));
             }
         }
 
@@ -237,7 +237,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveSuggestedItem(SuggestedBulkOrderItem obj)
         {
             int pk = ReplenishmentsService.fnSaveSuggestedItem(obj);
-            return Content("Item Saved at " + DateTime.Now.ToString());
+            return Content("Item Saved on " + DateTime.UtcNow.ToString("R"));
         }
 
         [HttpGet]

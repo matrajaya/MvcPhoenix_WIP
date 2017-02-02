@@ -138,9 +138,9 @@ namespace MvcPhoenix.Models
                 if (vm.invoiceid == -1)
                 {
                     vm.invoiceid = NewInvoiceID();
-                    vm.createdate = System.DateTime.Now;
+                    vm.createdate = DateTime.UtcNow;
                     vm.createdby = HttpContext.Current.User.Identity.Name;
-                    vm.invoicedate = System.DateTimeOffset.UtcNow;
+                    vm.invoicedate = DateTime.UtcNow;
                     vm.status = "NEW";
                 }
 
@@ -157,7 +157,7 @@ namespace MvcPhoenix.Models
 
                 // Capture user info in viewmodel
                 vm.updatedby = HttpContext.Current.User.Identity.Name;
-                vm.updatedate = System.DateTime.Now;
+                vm.updatedate = DateTime.UtcNow;
 
                 var q = (from t in db.tblInvoice 
                          where t.InvoiceID == vm.invoiceid 

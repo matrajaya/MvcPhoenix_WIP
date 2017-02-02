@@ -46,7 +46,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult Save(OrderMasterFull vm)
         {
             int pk = OrderService.fnSaveOrder(vm);
-            TempData["SaveResult"] = "Order Information updated at " + DateTime.Now;
+            TempData["SaveResult"] = "Order Information updated on " + DateTime.UtcNow.ToString("R");
             return RedirectToAction("Edit", new { id = pk });
         }
 
@@ -55,7 +55,7 @@ namespace MvcPhoenix.Controllers
         private static string DocumentFooter()
         {
             string footer = "--footer-left \"Printed on: " +
-                DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss") +
+                DateTime.UtcNow.ToString("R") +
                 "                                                                                                                                    " +
                 " Page: [page]/[toPage]\"" +
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
@@ -276,7 +276,7 @@ namespace MvcPhoenix.Controllers
 
             int pk = OrderService.fnSaveItem(incoming);
 
-            return Content("Item Saved at " + System.DateTime.Now.ToString());
+            return Content("Item Saved at " + DateTime.UtcNow.ToString("R"));
         }
 
         public ActionResult DeleteItem(int id)
@@ -341,14 +341,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveTrans(OrderTrans vm)
         {
             int pk = OrderService.fnSaveTrans(vm);
-            return Content("Transaction Saved at " + System.DateTime.Now.ToString());
+            return Content("Transaction Saved on " + DateTime.UtcNow.ToString("R"));
         }
 
         [HttpGet]
         public ActionResult DeleteTrans(int id)
         {
             OrderService.fnDeleteTrans(id);
-            return Content("Transaction Deleted at " + System.DateTime.Now.ToString());
+            return Content("Transaction Deleted on " + DateTime.UtcNow.ToString("R"));
         }
 
         [HttpGet]

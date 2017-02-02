@@ -257,7 +257,7 @@ namespace MvcPhoenix.Services
             using (var db = new EF.CMCSQL03Entities())
             {
                 var dbBulkOrder = db.tblBulkOrder.Find(obj.bulkorderid);
-                dbBulkOrder.EmailSent = String.Format("{0:dd MMM yyyy HH:mm:ss}", DateTime.Now.ToString());
+                dbBulkOrder.EmailSent = DateTime.UtcNow.ToString("R");
                 db.SaveChanges();
             }
         }
@@ -471,7 +471,7 @@ namespace MvcPhoenix.Services
                     newrec.ReorderWeight = 0;
                     newrec.BulkOnOrder = false;
 
-                    newrec.ProductMasterAge = (System.DateTime.Now.Date - row.ProductSetupDate.Value).Days;
+                    newrec.ProductMasterAge = (DateTime.UtcNow.Date - row.ProductSetupDate.Value).Days;
 
                     // get the bulk containers and setup critieria
                     string[] sBulkStatus = { "QC", "TEST", "WASTE" };
@@ -524,7 +524,7 @@ namespace MvcPhoenix.Services
                                 select t).ToList();
 
                     qBulkLog = (from t in qBulkLog
-                                where t.LogDate > DateTime.Now.AddDays(-365)
+                                where t.LogDate > DateTime.UtcNow.AddDays(-365)
                                 select t).ToList();
 
                     newrec.BulkShippedPastYear = (from t in qBulkLog
@@ -559,7 +559,7 @@ namespace MvcPhoenix.Services
                                  select t).ToList();
 
                     qShelfLog = (from t in qShelfLog
-                                 where t.LogDate > DateTime.Now.AddDays(-365)
+                                 where t.LogDate > DateTime.UtcNow.AddDays(-365)
                                  select t).ToList();
 
                     newrec.ShelfShippedPastYear = (from t in qShelfLog
@@ -586,10 +586,10 @@ namespace MvcPhoenix.Services
                     if (qBulkExpiration != null && qBulkExpiration.CeaseShipDate != null)
                     {
                         newrec.BulkLatestExpirationDate = qBulkExpiration.CeaseShipDate;
-                        newrec.BulkDaysTilExpiration = (newrec.BulkLatestExpirationDate.Value - System.DateTime.Now.Date).Days;
+                        newrec.BulkDaysTilExpiration = (newrec.BulkLatestExpirationDate.Value - DateTime.UtcNow.Date).Days;
 
                         newrec.ShelfLatestExpirationDate = qBulkExpiration.CeaseShipDate;
-                        newrec.ShelfDaysTilExpiration = (newrec.ShelfLatestExpirationDate.Value - System.DateTime.Now.Date).Days;
+                        newrec.ShelfDaysTilExpiration = (newrec.ShelfLatestExpirationDate.Value - DateTime.UtcNow.Date).Days;
 
                         newrec.UseThisExpirationDate = newrec.BulkLatestExpirationDate;
                     }
@@ -599,7 +599,7 @@ namespace MvcPhoenix.Services
                         newrec.UseThisExpirationDate = new DateTime(2099, 01, 01, 0, 0, 0);
                     }
 
-                    newrec.UseThisDaysTilExpiration = (newrec.UseThisExpirationDate.Value - System.DateTime.Now.Date).Days;
+                    newrec.UseThisDaysTilExpiration = (newrec.UseThisExpirationDate.Value - DateTime.UtcNow.Date).Days;
 
                     if (newrec.UseThisDaysTilExpiration > 998)
                     {
@@ -827,7 +827,7 @@ namespace MvcPhoenix.Services
                            select new { t.ClientID, t.SupplyID }).Distinct();
 
                 int SupplyIDCount = qry.Count();
-                DateTime myOrderDate = DateTime.Now;
+                DateTime myOrderDate = DateTime.UtcNow;
                 string BatchNumber = myOrderDate.ToString();
                 foreach (var item in qry)
                 {

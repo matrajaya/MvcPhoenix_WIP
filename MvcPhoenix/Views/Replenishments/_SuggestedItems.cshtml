@@ -11,7 +11,7 @@
         {
             <div class="row">
                 <div class="col-md-8">
-                    <label class="lead">No Order Recommendations found at @System.DateTime.Now.ToString()</label>
+                    <label class="lead">No Order Recommendations found at @DateTime.Now.ToString()</label>
                 </div>
                 <div class="col-md-4">
                     @Ajax.ActionLink("Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions

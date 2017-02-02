@@ -193,7 +193,7 @@ namespace MvcPhoenix.Controllers
                 {
                     PHNumber = srcrcd.PHNumber,
                     ProductDetailID = proddetid,
-                    CreateDate = DateTime.Now,
+                    CreateDate = DateTime.UtcNow,
                     CreateUser = HttpContext.User.Identity.Name
                 };
 
@@ -271,7 +271,7 @@ namespace MvcPhoenix.Controllers
                     PHNumber = obj.PHNumber,
                     Language = obj.Language,
                     PHStatement = obj.PHStatement,
-                    CreateDate = DateTime.Now,
+                    CreateDate = DateTime.UtcNow,
                     CreateUser = HttpContext.User.Identity.Name
                 };
 

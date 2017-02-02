@@ -39,11 +39,11 @@ namespace MvcPhoenix.Controllers
             }
             else if (PackOutResult == 0)
             {
-                TempData["ResultMessage"] = "An error occurred trying to create a Pack Out at " + System.DateTime.Now.ToString();
+                TempData["ResultMessage"] = "An error occurred trying to create a Pack Out on " + DateTime.UtcNow.ToString("R");
             }
             else
             {
-                TempData["ResultMessage"] = String.Format("New packout order number {0} successfully created at {1}", PackOutResult.ToString(), System.DateTime.Now.ToString());
+                TempData["ResultMessage"] = String.Format("New packout order number {0} successfully created on {1}", PackOutResult.ToString(), DateTime.UtcNow.ToString("R"));
                 return RedirectToAction("Index", new { id = vm.bulkid, productdetailid = ReturnProductDetailID });
             }
 

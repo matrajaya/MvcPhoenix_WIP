@@ -192,7 +192,7 @@ namespace MvcPhoenix.Services
                 obj.warehouse = dbClient.CMCLocation;
                 obj.clientname = dbClient.ClientName;
                 obj.productmasterid = id;
-                obj.receivedate = DateTime.Now;
+                obj.receivedate = DateTime.UtcNow;
                 obj.bulkstatus = "RECD";
 
                 obj.ListOfWareHouses = fnWarehouseIDs();
@@ -225,7 +225,7 @@ namespace MvcPhoenix.Services
                 obj.clientid = null;
                 obj.clientname = null;
                 obj.productmasterid = null;
-                obj.receivedate = DateTime.Now;
+                obj.receivedate = DateTime.UtcNow;
                 obj.bulkstatus = "RECD";
                 obj.MasterCode = null;
                 obj.MasterName = null;
@@ -323,7 +323,7 @@ namespace MvcPhoenix.Services
                 obj.clientid = clientid;
                 obj.clientname = dbClient.ClientName;
                 obj.bulkid = -1;    // for insert later
-                obj.receivedate = DateTime.Now;
+                obj.receivedate = DateTime.UtcNow;
                 obj.carrier = null;
                 obj.ListOfCarriers = fnCarriers();
                 obj.warehouse = null;
@@ -513,7 +513,7 @@ namespace MvcPhoenix.Services
 
                         newstock.BulkID = newBulkID; 
                         newstock.ShelfID = ThisShelfID; 
-                        newstock.CreateDate = DateTime.Now;
+                        newstock.CreateDate = DateTime.UtcNow;
                         newstock.Warehouse = vm.warehouse; 
                         newstock.QtyOnHand = ThisQty;
                         newstock.ShelfStatus = "PP";
@@ -548,7 +548,7 @@ namespace MvcPhoenix.Services
                             ProductMasterID = incoming.productmasterid 
                         };
 
-                        newrec.CreateDate = System.DateTime.Now;
+                        newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                         
                         db.tblBulk.Add(newrec);
@@ -588,7 +588,7 @@ namespace MvcPhoenix.Services
                     qry.ReceivedAsCode = incoming.receivedascode;
                     qry.ReceivedAsName = incoming.receivedasname;
                     qry.OtherStorage = incoming.otherstorage;
-                    qry.UpdateDate = System.DateTime.Now;
+                    qry.UpdateDate = DateTime.UtcNow;
                     qry.UpdateUser = HttpContext.Current.User.Identity.Name;
                     
                     db.SaveChanges();

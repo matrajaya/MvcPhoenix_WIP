@@ -141,7 +141,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SavePrePack(PrePackViewModel vm, FormCollection fc)
         {
             bool bSave = ReceivingService.fnSavePrePack(vm, fc);
-            return Content("Items Added to Shelf Stock: " + DateTime.Now.ToString());
+            return Content("Items Added to Shelf Stock on " + DateTime.UtcNow.ToString("R"));
         }
 
         [HttpGet]
