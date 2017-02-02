@@ -19,8 +19,10 @@
                 <tr>
                     <th id="noprint">&nbsp;</th>
                     <th width="10%">Date</th>
-                    <th width="70%">Notes</th>
+                    <th>Notes</th>
                     <th>Reason Code</th>
+                    <th>Updated On</th>
+                    <th>Updated By</th>
                     <th id="noprint"></th>
                 </tr>
             </thead>
@@ -39,14 +41,18 @@
                         <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
                         <td>@item.notes</td>
                         <td>@item.reasoncode</td>
+                        <td title="Created on @item.CreateDate">@item.UpdateDate</td>
+                        <td title="Created by @item.CreateUser">@item.UpdateUser</td>
                         <td id="noprint">
-                            @Ajax.ActionLink(" ", "EditInventoryLogNote", "Inventory", new { id = @item.productnoteid }, new AjaxOptions
+                            <span class="pull-right">
+                                @Ajax.ActionLink(" ", "EditInventoryLogNote", "Inventory", new { id = @item.productnoteid }, new AjaxOptions
                                {
                                    InsertionMode = InsertionMode.Replace,
                                    HttpMethod = "GET",
                                    UpdateTargetId = "dialogPlaceholder",
                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
                                }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Inventory Log" })
+                            </span>
                         </td>
                     </tr>
                 }

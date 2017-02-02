@@ -144,7 +144,11 @@ namespace MvcPhoenix.Models
                                              productdetailid = t.ProductDetailID,
                                              notedate = t.NoteDate,
                                              notes = t.Notes,
-                                             reasoncode = t.ReasonCode
+                                             reasoncode = t.ReasonCode,
+                                             UpdateDate = t.UpdateDate,
+                                             UpdateUser = t.UpdateUser,
+                                             CreateDate = t.CreateDate,
+                                             CreateUser = t.CreateUser
                                          }).ToList();
 
                 PP.ListOfCasNumbers = (from t in db.tblCAS
@@ -821,8 +825,11 @@ namespace MvcPhoenix.Models
                                             Value = t.Reason,
                                             Text = t.Reason
                                         }).ToList();
-
                 PN.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
+                PN.UpdateDate = DateTime.UtcNow;
+                PN.UpdateUser = HttpContext.Current.User.Identity.Name;
+                PN.CreateDate = DateTime.UtcNow;
+                PN.CreateUser = HttpContext.Current.User.Identity.Name;
             }
 
             return PN;
@@ -831,7 +838,6 @@ namespace MvcPhoenix.Models
         public static ProductNote fnGetProductNote(int id)
         {
             ProductNote PN = new ProductNote();
-
             using (var db = new EF.CMCSQL03Entities())
             {
                 var q = (from t in db.tblPPPDLogNote
@@ -850,8 +856,11 @@ namespace MvcPhoenix.Models
                                             Value = t.Reason,
                                             Text = t.Reason
                                         }).ToList();
-
                 PN.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
+                PN.UpdateDate = q.UpdateDate;
+                PN.UpdateUser = q.UpdateUser;
+                PN.CreateDate = q.CreateDate;
+                PN.CreateUser = q.CreateUser;
             }
 
             return PN;
@@ -864,8 +873,12 @@ namespace MvcPhoenix.Models
                 if (PN.productnoteid == -1)
                 {
                     var newrec = new EF.tblPPPDLogNote();
+                    newrec.CreateDate = DateTime.UtcNow;
+                    newrec.CreateUser = HttpContext.Current.User.Identity.Name;
+
                     db.tblPPPDLogNote.Add(newrec);
                     db.SaveChanges();
+
                     PN.productnoteid = newrec.PPPDLogNoteID;
                 }
 
@@ -877,6 +890,8 @@ namespace MvcPhoenix.Models
                 q.NoteDate = PN.notedate;
                 q.Notes = PN.notes;
                 q.ReasonCode = PN.reasoncode;
+                q.UpdateDate = DateTime.UtcNow;
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.SaveChanges();
 

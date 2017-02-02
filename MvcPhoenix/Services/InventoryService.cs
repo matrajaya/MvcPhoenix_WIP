@@ -386,7 +386,7 @@ namespace MvcPhoenix.Services
             {
                 var obj = (from t in db.tblInvPMLogNote
                            where t.ProductMasterID == masterid
-                           orderby t.NoteDate descending
+                           orderby t.InvPMLogNoteIDID descending
                            select new InventoryLogNote
                            {
                                productnoteid = t.InvPMLogNoteIDID,
@@ -396,7 +396,11 @@ namespace MvcPhoenix.Services
                                reasoncode = t.Comment, //modify table field later - Iffy
                                ListOfReasonCodes = (from r in db.tblReasonCode
                                                     orderby r.Reason
-                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList(),
+                               UpdateDate = t.UpdateDate,
+                               UpdateUser = t.UpdateUser,
+                               CreateDate = t.CreateDate,
+                               CreateUser = t.CreateUser
                            }).ToList();
 
                 return obj;
@@ -406,7 +410,6 @@ namespace MvcPhoenix.Services
         public static InventoryLogNote fnGetInventoryNote(int id)
         {
             InventoryLogNote obj = new InventoryLogNote();
-
             using (var db = new EF.CMCSQL03Entities())
             {
                 var q = (from t in db.tblInvPMLogNote
@@ -421,8 +424,11 @@ namespace MvcPhoenix.Services
                 obj.ListOfReasonCodes = (from t in db.tblReasonCode
                                          orderby t.Reason
                                          select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
-
                 obj.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
+                obj.UpdateDate = q.UpdateDate;
+                obj.UpdateUser = q.UpdateUser;
+                obj.CreateDate = q.CreateDate;
+                obj.CreateUser = q.CreateUser;
             }
 
             return obj;
@@ -441,8 +447,11 @@ namespace MvcPhoenix.Services
                 obj.ListOfReasonCodes = (from t in db.tblReasonCode
                                          orderby t.Reason
                                          select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
-
                 obj.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
+                obj.UpdateDate = DateTime.UtcNow;
+                obj.UpdateUser = HttpContext.Current.User.Identity.Name;
+                obj.CreateDate = DateTime.UtcNow;
+                obj.CreateUser = HttpContext.Current.User.Identity.Name;
             }
 
             return obj;
@@ -455,8 +464,12 @@ namespace MvcPhoenix.Services
                 if (obj.productnoteid == -1)
                 {
                     var newrec = new EF.tblInvPMLogNote();
+                    newrec.CreateDate = DateTime.UtcNow;
+                    newrec.CreateUser = HttpContext.Current.User.Identity.Name;
+
                     db.tblInvPMLogNote.Add(newrec);
                     db.SaveChanges();
+
                     obj.productnoteid = newrec.InvPMLogNoteIDID;
                 }
 
@@ -468,6 +481,8 @@ namespace MvcPhoenix.Services
                 q.NoteDate = DateTime.UtcNow;
                 q.Notes = obj.notes;
                 q.Comment = obj.reasoncode;
+                q.UpdateDate = DateTime.UtcNow;
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.SaveChanges();
 

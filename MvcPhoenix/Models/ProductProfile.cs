@@ -34,20 +34,16 @@ namespace MvcPhoenix.Models
 
     public class ProductNote
     {
-        [Display(Name = "Product Note ID")]
         public int productnoteid { get; set; }
-
         public int? productdetailid { get; set; }
         public List<SelectListItem> fnListOfProductCodes { get; set; }
-
-        [Display(Name = "Note Date")]
         public DateTime? notedate { get; set; }
-
-        [Display(Name = "Notes")]
         public string notes { get; set; }
-
-        [Display(Name = "Reason Code")]
         public string reasoncode { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
 
         public List<SelectListItem> ListOfReasonCodes { get; set; }
     }
@@ -90,16 +86,16 @@ namespace MvcPhoenix.Models
 
     public class ClientProductXRef
     {
-        public int ProductXRefID {get;set;}
-        public int? ClientID {get;set;}
+        public int ProductXRefID { get; set; }
+        public int? ClientID { get; set; }
         public string ClientName { get; set; }
         public int? ProductID { get; set; }
         public string ProductName { get; set; }
-        public string CMCProductCode {get;set;}
-        public string CMCSize  {get;set;}
-        public string ClientProductCode {get;set;}
-        public string ClientProductName {get;set;}
-        public string ClientSize {get;set;}
+        public string CMCProductCode { get; set; }
+        public string CMCSize { get; set; }
+        public string ClientProductCode { get; set; }
+        public string ClientProductName { get; set; }
+        public string ClientSize { get; set; }
 
         public List<SelectListItem> ListOfClients { get; set; }
 
@@ -126,7 +122,6 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfGloves { get; set; }
 
         public string logofilename { get; set; }
-
 
         [Display(Name = "Alert Notes - Shipping")]
         public string alertnotesshipping { get; set; }
@@ -248,10 +243,13 @@ namespace MvcPhoenix.Models
         {
             [Display(Name = "Liter")]
             L,
+
             [Display(Name = "Kilogram")]
             KG,
+
             [Display(Name = "Pound")]
             LB,
+
             [Display(Name = "Gallon")]
             Gal,
         }
@@ -425,7 +423,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Gloves")]
         public bool? gloves { get; set; }
-                
+
         [Display(Name = "GloveType")]
         public string glovetype { get; set; }
 
@@ -748,8 +746,8 @@ namespace MvcPhoenix.Models
         public bool? temperaturecontrolledstorage { get; set; }
 
         public bool? prepacked { get; set; }
-		
-		public DateTime? wasteaccumstartdate { get; set; }
+
+        public DateTime? wasteaccumstartdate { get; set; }
         public DateTime? productsetupdate { get; set; }
         public DateTime? CreateDateMaster { get; set; }
         public string CreateUserMaster { get; set; }

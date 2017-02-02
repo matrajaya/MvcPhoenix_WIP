@@ -24,19 +24,19 @@
                     @Html.HiddenFor(m => m.productdetailid)
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            @Html.LabelFor(m => m.notedate)
+                            <label>Date</label>
                             @Html.TextBoxFor(m => m.notedate, "{0:dd MMM yyy}", new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            @Html.LabelFor(m => m.reasoncode)
+                            <label>Reason</label>
                             @Html.DropDownListFor(m => m.reasoncode, Model.ListOfReasonCodes, new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @Html.LabelFor(m => m.notes)
+                            <label>Note</label>
                             @Html.TextAreaFor(m => m.notes, new { @class = "form-control" })
                         </div>
                     </div>

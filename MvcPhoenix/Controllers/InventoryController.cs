@@ -280,7 +280,6 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditInventoryLogNote(int id)
         {
             var obj = InventoryService.fnGetInventoryNote(id);
-
             return PartialView("~/Views/Inventory/_InventoryLogNotesModal.cshtml", obj);
         }
 
@@ -288,7 +287,6 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveInventoryLogNote(InventoryLogNote obj)
         {
             int pk = InventoryService.fnSaveInventoryLogNote(obj);
-
             return null;
         }
 
@@ -296,7 +294,6 @@ namespace MvcPhoenix.Controllers
         public ActionResult DeleteInventoryLogNote(int id, int ParentID)
         {
             int pk = InventoryService.fnDeleteProductNote(id);
-
             return null;
         }
 
@@ -315,7 +312,11 @@ namespace MvcPhoenix.Controllers
                            productdetailid = t.ProductDetailID,
                            notedate = t.NoteDate,
                            notes = t.Notes,
-                           reasoncode = t.ReasonCode
+                           reasoncode = t.ReasonCode,
+                           UpdateDate = t.UpdateDate,
+                           UpdateUser = t.UpdateUser,
+                           CreateDate = t.CreateDate,
+                           CreateUser = t.CreateUser
                        }).ToList();
 
             ViewBag.ParentKey = id;

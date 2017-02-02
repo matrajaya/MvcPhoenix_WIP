@@ -289,7 +289,11 @@ namespace MvcPhoenix.Controllers
                                reasoncode = t.ReasonCode,
                                ListOfReasonCodes = (from r in db.tblReasonCode
                                                     orderby r.Reason
-                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList()
+                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList(),
+                               UpdateDate = t.UpdateDate,
+                               UpdateUser = t.UpdateUser,
+                               CreateDate = t.CreateDate,
+                               CreateUser = t.CreateUser
                            }).ToList();
                 ViewBag.ParentKey = id;
                 return PartialView("~/Views/Products/_LogNotes.cshtml", obj);

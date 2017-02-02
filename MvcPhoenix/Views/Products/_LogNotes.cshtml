@@ -21,6 +21,8 @@
                     <th width="10%">Date</th>
                     <th>Notes</th>
                     <th>Reason Code</th>
+                    <th>Updated On</th>
+                    <th>Updated By</th>
                     <th id="noprint"></th>
                 </tr>
             </thead>
@@ -39,6 +41,8 @@
                         <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
                         <td>@item.notes</td>
                         <td>@item.reasoncode</td>
+                        <td title="Created on @item.CreateDate">@item.UpdateDate</td>
+                        <td title="Created by @item.CreateUser">@item.UpdateUser</td>
                         <td id="noprint" style="text-align:right">
                             @Ajax.ActionLink(" ", "EditProductNote", "Products", new { id = @item.productnoteid }, new AjaxOptions
                                {
