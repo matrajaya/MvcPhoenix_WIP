@@ -21,7 +21,7 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblCountry" Width="1.5" PointX="12.75" PointY="11.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblCustomer" Width="1.5" PointX="14.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblDhRate" Width="1.5" PointX="4.75" PointY="14.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblDivision" Width="1.5" PointX="14.75" PointY="5.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblDivision" Width="1.5" PointX="27.375" PointY="27.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblEndUse" Width="1.5" PointX="6.75" PointY="14.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblEndUseForCustoms" Width="1.5" PointX="12.75" PointY="14.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblGHS" Width="1.5" PointX="14.75" PointY="13.75" />

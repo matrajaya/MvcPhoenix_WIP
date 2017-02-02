@@ -128,6 +128,7 @@ namespace MvcPhoenix.Controllers
             PP.productdetailid = ProductsService.fnNewProductDetailID();
             PP.productcode = PP.productcode + " Clone";
             PP.productname = PP.productname + " Clone";
+            PP.sgrevisiondate = DateTime.UtcNow;
             PP.UpdateUserDetail = HttpContext.User.Identity.Name;
             PP.UpdateDateDetail = DateTime.UtcNow;
             
