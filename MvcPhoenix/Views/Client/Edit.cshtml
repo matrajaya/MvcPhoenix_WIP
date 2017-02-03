@@ -226,7 +226,7 @@
                     }, new { @class = "btn btn-primary btn-block" })
                 </div>
             </div>
-            <div id="dvSupplierList">
+            <div id="dvContactList">
                 @Html.Action("ListContacts", "Client", new { id = @Model.ClientID })
             </div>
         </div>
@@ -277,21 +277,7 @@
     CKEDITOR.inline('InvoiceAddress');
     CKEDITOR.inline('InvoiceEmailTo');
     CKEDITOR.inline('KeyContactDir');
-    CKEDITOR.inline('ClientContact');
-    CKEDITOR.inline('SDSLanguage');
-    CKEDITOR.inline('CMCContact');
-    CKEDITOR.inline('SpecialReqAllowed');
-    CKEDITOR.inline('ProductSetupDetails');
-    CKEDITOR.inline('InventoryReports');
-    CKEDITOR.inline('SDSUpdateMethod');
-    CKEDITOR.inline('ExpDateRules');
-    CKEDITOR.inline('CSBusinessRules');
-    CKEDITOR.inline('ShippingRules');
-    CKEDITOR.inline('WasteProcedure');
-    CKEDITOR.inline('InventoryBusinessRules');
-    CKEDITOR.inline('FreezableProcedure');
-    CKEDITOR.inline('ChargesSummary');
-
+    
     function uploadvalidation() {
         var fname = (document.getElementById('logoupload').value).substring(12);
         var fsize = document.getElementById('logoupload').files[0].size;

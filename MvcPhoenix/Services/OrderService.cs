@@ -53,14 +53,15 @@ namespace MvcPhoenix.Services
                 vm.orderstatus = "z";
                 vm.orderdate = DateTime.UtcNow;
                 vm.ListOfSalesReps = fnListOfSalesReps(id);
+                vm.ListOfRequestors = fnListOfRequestors(id);
                 vm.ListOfCountries = fnListOfCountries();
                 vm.ListOfEndUses = fnListOfEndUses(id);
                 vm.ListOfShipVias = fnListOfShipVias();
                 vm.ListOfBillingGroups = fnListOfBillingGroups(id);
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 vm.CreateDate = DateTime.UtcNow;
-
                 vm.IsSDN = false;
+
                 return vm;
             }
         }

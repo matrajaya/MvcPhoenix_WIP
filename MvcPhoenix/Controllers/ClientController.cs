@@ -289,6 +289,8 @@ namespace MvcPhoenix.Controllers
 
                     db.tblDivision.Add(newrecord);
                     db.SaveChanges();
+
+                    obj.DivisionID = newrecord.DivisionID;      // needed for logo upload in new division
                 }
 
                 // Save logo file to division to be used as label logo
