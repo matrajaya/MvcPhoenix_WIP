@@ -106,12 +106,22 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label>Master Code</label>
-                        @Html.TextBoxFor(m => m.mastercode, new { @class = "form-control", @readonly = "readonly" })
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.mastercode, new { @class = "form-control", @readonly = "readonly" })
+                            <span class="input-group-addon" title="Unlock field">
+                                <a onclick="document.getElementById('mastercode').readOnly = false;"><i class="fa fa-fw fa-unlock"></i></a>
+                            </span>
+                        </div>
                         @Html.ValidationMessageFor(m => m.mastercode)
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Master Name</label>
-                        @Html.TextBoxFor(m => m.mastername, new { @class = "form-control", @readonly = "readonly" })
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.mastername, new { @class = "form-control", @readonly = "readonly" })
+                            <span class="input-group-addon" title="Unlock field">
+                                <a onclick="document.getElementById('mastername').readOnly = false;"><i class="fa fa-fw fa-unlock"></i></a>
+                            </span>
+                        </div>
                         @Html.ValidationMessageFor(m => m.mastername)
                     </div>
                 </div>
