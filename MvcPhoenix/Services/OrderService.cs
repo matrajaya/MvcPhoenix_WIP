@@ -84,7 +84,7 @@ namespace MvcPhoenix.Services
                 o.ListOfSalesReps = fnListOfSalesReps(cl.ClientID);
                 o.ListOfRequestors = fnListOfRequestors(cl.ClientID);
                 o.ListOfCountries = fnListOfCountries();
-                o.ListOfEndUses = fnListOfEndUses(o.clientid);
+                o.ListOfEndUses = fnListOfEndUses(cl.ClientID);
                 o.ListOfShipVias = fnListOfShipVias();
                 o.ListOfBillingGroups = fnListOfBillingGroups(cl.ClientID);
                 o.orderid = q.OrderID;

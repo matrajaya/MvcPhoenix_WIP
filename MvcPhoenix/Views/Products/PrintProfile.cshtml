@@ -13,7 +13,7 @@
     };
 </script>
 
-<div id="bcTarget"></div>
+@*<div id="bcTarget"></div>*@
 
 <img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
 <h1 class="page-header">
@@ -29,17 +29,20 @@
                 @Html.DisplayFor(m => m.clientname)
             </td>
             <td width="35%">
-                <label>Division:</label><br />
-                @Html.DisplayFor(m => m.divisionid)
-            </td>
-            <td width="20%">
-                <label>Business Unit:</label><br />
-                <input type="text" class="form-control" placeholder="bound to division table" />
-                @*@Html.DisplayFor(m => m.busarea)*@
+                <label>Division/Business Unit</label><br />
+                @Html.DropDownListFor(m => m.divisionid, Model.ListOfDivisions, new { @class = "form-control" })
             </td>
             <td width="20%">
                 <label>Product ID:</label><br />
                 @Html.DisplayFor(m => m.productdetailid)
+            </td>
+            <td>
+                <label>Activation Date:</label><br />
+                @Html.TextBoxFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+            </td>
+            <td>
+                <label>Revision Date:</label><br />
+                @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
             </td>
         </tr>
         <tr>
@@ -52,12 +55,12 @@
                 @Html.DisplayFor(m => m.productname)
             </td>
             <td>
-                <label>Profile Activation Date:</label><br />
-                @Html.TextBoxFor(m => m.activedate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                <label>Master Code:</label><br />
+                @Html.DisplayFor(m => m.mastercode)
             </td>
-            <td>
-                <label>Profile Revision Date:</label><br />
-                @Html.TextBoxFor(m => m.sgrevisiondate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+            <td colspan="2">
+                <label>Master Name:</label><br />
+                @Html.DisplayFor(m => m.mastername)
             </td>
         </tr>
     </table>
@@ -66,21 +69,11 @@
         <tr>
             <td width="25%">
                 <label>Equivalents</label><br />
-                <textarea rows="3" class="form-control">
-                    @for (int i = 0; i < Model.ListOfEquivalents.Count(); i++)
-                    {
-                    @Model.ListOfEquivalents[i];
-                    }
-                </textarea>
+                @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control form-group", @style = "width:100%;" })
             </td>
             <td width="25%">
                 <label>Cross Reference List</label><br />
-                <textarea rows="3" class="form-control">
-                    @for (int i = 0; i < Model.ListOfProductCodesXRefs.Count(); i++)
-                    {
-                    @Model.ListOfProductCodesXRefs[i];
-                    }
-                </textarea>
+                @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control form-group", @style = "width:100%;" })                
             </td>
             <td>
                 Global @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct)

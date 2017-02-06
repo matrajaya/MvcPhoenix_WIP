@@ -104,6 +104,7 @@ namespace MvcPhoenix.Controllers
         }
 
         // GET: Client/LogoFile/id
+        [AllowAnonymous]
         public ActionResult LogoFile(int id)
         {
             var fileToRetrieve = db.tblClient.Find(id);
@@ -311,6 +312,7 @@ namespace MvcPhoenix.Controllers
         }
 
         // GET: Client/DivisionLogoFile/id
+        [AllowAnonymous]
         public ActionResult DivisionLogoFile(int id)
         {
             var fileToRetrieve = db.tblDivision.Find(id);
