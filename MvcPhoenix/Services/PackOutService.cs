@@ -16,10 +16,10 @@ namespace MvcPhoenix.Services
                 var pmaster = db.tblProductMaster.Find(bulk.ProductMasterID);
                 var client = db.tblClient.Find(pmaster.ClientID);
                 
+				// check to see if there is an open packout already 
                 var qPackout = (from t in db.tblProductionMaster
                                 where t.Company == client.CMCLongCustomer && t.MasterCode == pmaster.MasterCode && (t.ProductionStage == 10 | t.ProductionStage == 20)
                                 select t).FirstOrDefault();
-
                 if (qPackout != null)
                 {
                     retval = -1;
@@ -52,10 +52,11 @@ namespace MvcPhoenix.Services
 
                 // fill master record values from bulk-pm-pd-dv
                 newMaster.BulkID = bulk.BulkID;
+				newMaster.ClientID = client.ClientID;
                 newMaster.CreateDate = DateTime.UtcNow;
                 newMaster.ProdmastCreateDate = DateTime.UtcNow;
                 newMaster.Company = client.CMCLongCustomer;
-                newMaster.Division = "?";
+                newMaster.Division = "n/a";
                 newMaster.MasterCode = pmaster.MasterCode;
                 newMaster.ProdName = pmaster.MasterName;
                 newMaster.Lot_Number = bulk.LotNumber;
@@ -68,7 +69,7 @@ namespace MvcPhoenix.Services
                 newMaster.Packout = true;
                 newMaster.Priority = Priority;
                 newMaster.ProductionStage = 10;
-                newMaster.AirUN = "?";
+                newMaster.AirUN = "n/a";
                 newMaster.Status = bulk.BulkStatus;
                 newMaster.CMCUser = HttpContext.Current.User.Identity.Name;
                 newMaster.Heat_Prior_To_Filling = pmaster.HeatPriorToFilling;
@@ -84,6 +85,10 @@ namespace MvcPhoenix.Services
                     newdetail.MasterID = newMaster.ID;
                     newdetail.ShelfID = row.sm.ShelfID;
 
+					newdetail.InvRequestedQty = 0;
+                    newdetail.ProdActualQty = 0;
+                    newdetail.LabelQty = 0;
+					
                     var qLog = (from t in db.tblInvLog
                                 where t.LogType == "SS-SHP" && t.ProductDetailID == row.pd.ProductDetailID
                                 select t);

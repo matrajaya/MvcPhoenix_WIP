@@ -52,5 +52,6 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> CeaseShipDate { get; set; }
         public Nullable<System.DateTime> ProdmastCreateDate { get; set; }
         public string BulkContainerNote { get; set; }
+        public Nullable<int> ClientID { get; set; }
     }
 }

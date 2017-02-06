@@ -111,5 +111,8 @@ namespace MvcPhoenix.EF
         public Nullable<int> NonHazDHServLvl4 { get; set; }
         public string MDB_CMCBE { get; set; }
         public byte[] LogoFile { get; set; }
+        public Nullable<int> CSRNumber { get; set; }
+        public string CSRName { get; set; }
+        public string IC { get; set; }
     }
 }

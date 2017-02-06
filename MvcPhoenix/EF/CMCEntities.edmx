@@ -333,6 +333,9 @@
           <Property Name="NonHazDHServLvl4" Type="int" />
           <Property Name="MDB_CMCBE" Type="nvarchar" MaxLength="255" />
           <Property Name="LogoFile" Type="varbinary(max)" />
+          <Property Name="CSRNumber" Type="int" />
+          <Property Name="CSRName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IC" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tblClientContact">
           <Key>
@@ -1115,23 +1118,6 @@
           <Property Name="DOTSpec" Type="nvarchar" MaxLength="10" />
           <Property Name="UNSpec" Type="nvarchar" MaxLength="15" />
         </EntityType>
-        <EntityType Name="tblPMNote">
-          <Key>
-            <PropertyRef Name="PMNoteID" />
-          </Key>
-          <Property Name="PMNoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LegacyID" Type="int" />
-          <Property Name="ProductMasterID" Type="int" />
-          <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
-          <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProductCode_MDB" Type="nvarchar" MaxLength="20" />
-          <Property Name="NoteDate" Type="date" />
-          <Property Name="Comment" Type="nvarchar" MaxLength="50" />
-          <Property Name="Notes" Type="nvarchar" MaxLength="1000" />
-          <Property Name="LotNumber_MDB" Type="nvarchar" MaxLength="50" />
-          <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
-          <Property Name="MigrateStatus" Type="nvarchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="tblPPPDLogNote">
           <Key>
             <PropertyRef Name="PPPDLogNoteID" />
@@ -1344,6 +1330,7 @@
           <Property Name="CeaseShipDate" Type="datetime" />
           <Property Name="ProdmastCreateDate" Type="datetime" />
           <Property Name="BulkContainerNote" Type="nvarchar" MaxLength="20" />
+          <Property Name="ClientID" Type="int" />
         </EntityType>
         <EntityType Name="tblProductionStage">
           <Key>
@@ -1487,23 +1474,6 @@
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
-        </EntityType>
-        <EntityType Name="tblProductNotes">
-          <Key>
-            <PropertyRef Name="ProductNoteID" />
-          </Key>
-          <Property Name="ProductNoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductDetailID" Type="int" />
-          <Property Name="NoteDate" Type="datetime" />
-          <Property Name="Notes" Type="nvarchar(max)" />
-          <Property Name="ReasonCode" Type="nvarchar" MaxLength="25" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
-          <Property Name="UpdateDate" Type="datetime" />
-          <Property Name="UpdateUser" Type="nvarchar" MaxLength="256" />
-          <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
-          <Property Name="Division_MDB" Type="nvarchar" MaxLength="35" />
-          <Property Name="ProdCode_MDB" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="tblProductXRef">
           <Key>
@@ -1933,7 +1903,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblOrderType" EntityType="Self.tblOrderType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPackage" EntityType="Self.tblPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPackageType" EntityType="Self.tblPackageType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblPMNote" EntityType="Self.tblPMNote" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPPPDLogNote" EntityType="Self.tblPPPDLogNote" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPreferredCarrierList" EntityType="Self.tblPreferredCarrierList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPriority" EntityType="Self.tblPriority" Schema="dbo" store:Type="Tables" />
@@ -1942,7 +1911,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblProductionMaster" EntityType="Self.tblProductionMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductionStage" EntityType="Self.tblProductionStage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductMaster" EntityType="Self.tblProductMaster" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblProductNotes" EntityType="Self.tblProductNotes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductXRef" EntityType="Self.tblProductXRef" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRates" EntityType="Self.tblRates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblReasonCode" EntityType="Self.tblReasonCode" Schema="dbo" store:Type="Tables" />
@@ -2101,7 +2069,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblOrderType" EntityType="CMCSQL03Model.tblOrderType" />
           <EntitySet Name="tblPackage" EntityType="CMCSQL03Model.tblPackage" />
           <EntitySet Name="tblPackageType" EntityType="CMCSQL03Model.tblPackageType" />
-          <EntitySet Name="tblPMNote" EntityType="CMCSQL03Model.tblPMNote" />
           <EntitySet Name="tblPPPDLogNote" EntityType="CMCSQL03Model.tblPPPDLogNote" />
           <EntitySet Name="tblPreferredCarrierList" EntityType="CMCSQL03Model.tblPreferredCarrierList" />
           <EntitySet Name="tblPriority" EntityType="CMCSQL03Model.tblPriority" />
@@ -2110,7 +2077,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblProductionMaster" EntityType="CMCSQL03Model.tblProductionMaster" />
           <EntitySet Name="tblProductionStage" EntityType="CMCSQL03Model.tblProductionStage" />
           <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
-          <EntitySet Name="tblProductNotes" EntityType="CMCSQL03Model.tblProductNotes" />
           <EntitySet Name="tblProductXRef" EntityType="CMCSQL03Model.tblProductXRef" />
           <EntitySet Name="tblRates" EntityType="CMCSQL03Model.tblRates" />
           <EntitySet Name="tblReasonCode" EntityType="CMCSQL03Model.tblReasonCode" />
@@ -2458,6 +2424,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="NonHazDHServLvl4" Type="Int32" />
           <Property Name="MDB_CMCBE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LogoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CSRNumber" Type="Int32" />
+          <Property Name="CSRName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblClientContact">
           <Key>
@@ -2608,7 +2577,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="DhServiceLevel4" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Customerreference_MDB" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-        </EntityType>		
+        </EntityType>
         <EntityType Name="tblDivision">
           <Key>
             <PropertyRef Name="DivisionID" />
@@ -3240,23 +3209,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="DOTSpec" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="UNSpec" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblPMNote">
-          <Key>
-            <PropertyRef Name="PMNoteID" />
-          </Key>
-          <Property Name="PMNoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="ProductMasterID" Type="Int32" />
-          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="NoteDate" Type="DateTime" Precision="0" />
-          <Property Name="Comment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="LotNumber_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="MigrateStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tblPPPDLogNote">
           <Key>
             <PropertyRef Name="PPPDLogNoteID" />
@@ -3469,6 +3421,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
           <Property Name="ProdmastCreateDate" Type="DateTime" Precision="3" />
           <Property Name="BulkContainerNote" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ClientID" Type="Int32" />
         </EntityType>
         <EntityType Name="tblProductionStage">
           <Key>
@@ -3612,23 +3565,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="tblProductNotes">
-          <Key>
-            <PropertyRef Name="ProductNoteID" />
-          </Key>
-          <Property Name="ProductNoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductDetailID" Type="Int32" />
-          <Property Name="NoteDate" Type="DateTime" Precision="3" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ReasonCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-          <Property Name="ProdCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblProductXRef">
           <Key>
@@ -4261,6 +4197,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySetMapping Name="tblClient">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblClient">
               <MappingFragment StoreEntitySet="tblClient">
+                <ScalarProperty Name="IC" ColumnName="IC" />
+                <ScalarProperty Name="CSRName" ColumnName="CSRName" />
+                <ScalarProperty Name="CSRNumber" ColumnName="CSRNumber" />
                 <ScalarProperty Name="LogoFile" ColumnName="LogoFile" />
                 <ScalarProperty Name="MDB_CMCBE" ColumnName="MDB_CMCBE" />
                 <ScalarProperty Name="NonHazDHServLvl4" ColumnName="NonHazDHServLvl4" />
@@ -5169,24 +5108,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblPMNote">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblPMNote">
-              <MappingFragment StoreEntitySet="tblPMNote">
-                <ScalarProperty Name="MigrateStatus" ColumnName="MigrateStatus" />
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="LotNumber_MDB" ColumnName="LotNumber_MDB" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="NoteDate" ColumnName="NoteDate" />
-                <ScalarProperty Name="ProductCode_MDB" ColumnName="ProductCode_MDB" />
-                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="PMNoteID" ColumnName="PMNoteID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblPPPDLogNote">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblPPPDLogNote">
               <MappingFragment StoreEntitySet="tblPPPDLogNote">
@@ -5365,6 +5286,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySetMapping Name="tblProductionMaster">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionMaster">
               <MappingFragment StoreEntitySet="tblProductionMaster">
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="BulkContainerNote" ColumnName="BulkContainerNote" />
                 <ScalarProperty Name="ProdmastCreateDate" ColumnName="ProdmastCreateDate" />
                 <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
@@ -5548,24 +5470,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="SGLegacyID" ColumnName="SGLegacyID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblProductNotes">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductNotes">
-              <MappingFragment StoreEntitySet="tblProductNotes">
-                <ScalarProperty Name="ProdCode_MDB" ColumnName="ProdCode_MDB" />
-                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="ReasonCode" ColumnName="ReasonCode" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="NoteDate" ColumnName="NoteDate" />
-                <ScalarProperty Name="ProductDetailID" ColumnName="ProductDetailID" />
-                <ScalarProperty Name="ProductNoteID" ColumnName="ProductNoteID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

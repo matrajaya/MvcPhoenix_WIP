@@ -903,7 +903,7 @@ namespace MvcPhoenix.Models
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                db.Database.ExecuteSqlCommand("Delete from tblProductNotes Where ProductNoteID=" + id);
+                db.Database.ExecuteSqlCommand("Delete from tblPPPDLogNote Where PPPDLogNoteID=" + id);
             }
 
             return id;

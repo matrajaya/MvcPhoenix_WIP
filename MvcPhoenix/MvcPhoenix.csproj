@@ -414,9 +414,6 @@
     <Compile Include="EF\tblPackageType.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblPMNote.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblPPPDLogNote.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -439,9 +436,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblProductMaster.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblProductNotes.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblProductXRef.cs">
