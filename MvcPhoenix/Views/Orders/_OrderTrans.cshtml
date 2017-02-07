@@ -13,6 +13,8 @@
                 <th style="text-align:right;">Amount</th>
                 <th>Date</th>
                 <th>Comments</th>
+                <th>Updated By</th>
+                <th>Updated On</th>
                 <th id="noprint"></th>
             </tr>
         </thead>
@@ -26,7 +28,9 @@
                     <td style="text-align:center;">@item.transqty</td>
                     <td style="text-align:right;">@item.transamount</td>
                     <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
-                    <td width="40%">@item.comments</td>
+                    <td width="30%">@item.comments</td>
+                    <td title="Created By: @item.createuser">@item.updateuser</td>
+                    <td title="Created On: @String.Format("{0:dd MMM yyyy}", item.createdate)">@String.Format("{0:dd MMM yyyy}", item.updatedate)</td>
                     <td id="noprint" class="text-right">
                         @Ajax.ActionLink(" ", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
                              {

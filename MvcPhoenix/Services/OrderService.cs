@@ -548,6 +548,7 @@ namespace MvcPhoenix.Services
                 vm.CSAllocate = q.CSAllocate;
                 vm.AllocateStatus = q.AllocateStatus;
                 vm.NonCMCDelay = q.NonCMCDelay;
+                vm.BackOrdered = q.BackOrdered;
                 vm.CarrierInvoiceRcvd = q.CarrierInvoiceRcvd;
                 vm.DelayReason = q.DelayReason;
                 vm.Status = q.Status;
@@ -599,6 +600,7 @@ namespace MvcPhoenix.Services
                 q.CSAllocate = vm.CSAllocate;
                 q.AllocateStatus = vm.AllocateStatus;
                 q.NonCMCDelay = vm.NonCMCDelay;
+                q.BackOrdered = vm.BackOrdered;
                 q.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
                 q.Status = vm.Status;
                 q.DelayReason = vm.DelayReason;
@@ -1050,6 +1052,8 @@ namespace MvcPhoenix.Services
                     newrec.TransAmount = tierSize.Price;
                     newrec.CreateDate = DateTime.UtcNow;
                     newrec.CreateUser = "System";
+                    newrec.UpdateDate = DateTime.UtcNow;
+                    newrec.UpdateUser = "System";
                     newrec.BillingGroup = o.BillingGroup;
 
                     db.tblOrderTrans.Add(newrec);
@@ -1075,6 +1079,8 @@ namespace MvcPhoenix.Services
                         newrec.Comments = "Special Request";
                         newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = "System";
+                        newrec.UpdateDate = DateTime.UtcNow;
+                        newrec.UpdateUser = "System";
                         newrec.BillingGroup = o.BillingGroup;
 
                         db.tblOrderTrans.Add(newrec);
@@ -1216,6 +1222,8 @@ namespace MvcPhoenix.Services
                 newrec.TransAmount = TransAmount;
                 newrec.CreateDate = DateTime.UtcNow;
                 newrec.CreateUser = "System";
+                newrec.UpdateDate = DateTime.UtcNow;
+                newrec.UpdateUser = "System";
 
                 db.tblOrderTrans.Add(newrec);
                 db.SaveChanges();

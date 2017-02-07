@@ -129,24 +129,24 @@
                         @Html.ValidationMessageFor(m => m.company)
                     </div>
                     <div class="form-group col-md-6">
-                        @Html.LabelFor(m => m.attention, new { @class = "control-label" })
+                        <label class="control-label">Attention</label>
                         @Html.TextBoxFor(m => m.attention, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.attention)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        @Html.LabelFor(m => m.email, new { @class = "control-label" })
+                        <label class="control-label">Email</label>
                         @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.email)
                     </div>
                     <div class="form-group col-md-3">
-                        @Html.LabelFor(m => m.phone, new { @class = "control-label" })
+                        <label class="control-label">Phone</label>
                         @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.phone)
                     </div>
                     <div class="form-group col-md-3">
-                        @Html.LabelFor(m => m.fax, new { @class = "control-label" })
+                        <label class="control-label">Fax</label>
                         @Html.TextBoxFor(m => m.fax, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.fax)
                     </div>
@@ -157,37 +157,35 @@
                         @Html.TextBoxFor(m => m.street, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.street)
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
                         <label class="control-label">Address 2</label>
                         @Html.TextBoxFor(m => m.street2, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.street2)
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-2">
                         <label class="control-label">Address 3</label>
                         @Html.TextBoxFor(m => m.street3, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.street3)
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-md-3">
-                        @Html.LabelFor(m => m.city, new { @class = "control-label" })
+                        <label class="control-label">City</label>
                         @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.city)
                     </div>
-                    <div class="form-group col-md-3">
-                        @Html.LabelFor(m => m.Zip, htmlAttributes: new { @class = "control-label" })
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Zip</label>
                         @Html.TextBoxFor(m => m.Zip, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Zip)
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        @Html.LabelFor(m => m.state, new { @class = "control-label" })
+                    <div class="col-md-2">
+                        <label class="control-label">State</label>
                         @Html.TextBoxFor(m => m.state, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.state)
                     </div>
-                    <div class="col-md-6">
-                        @Html.LabelFor(m => m.country, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-5">
+                        <label class="control-label">Country</label>
                         @Html.DropDownListFor(m => m.country, Model.ListOfCountries, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.country)
                     </div>
@@ -269,7 +267,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        @Html.LabelFor(m => m.distributor, new { @class = "control-label" })
+                        <label class="control-label">Distributor</label>
                         @Html.TextBoxFor(m => m.distributor, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.distributor)
                     </div>
@@ -279,11 +277,11 @@
                         @Html.ValidationMessageFor(m => m.enduse)
                     </div>
                     <div class="col-md-3">
-                        @Html.LabelFor(m => m.approvalneeded, new { @class = "control-label" })
+                        <label class="control-label">Approval Needed</label>
                         @Html.CheckBoxFor(m => m.approvalneeded, new { @class = "checkbox" })
                     </div>
                     <div class="col-md-3">
-                        @Html.LabelFor(m => m.approvaldate, new { @class = "control-label" })
+                        <label class="control-label">Approval Date</label>
                         @Html.TextBoxFor(m => m.approvaldate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.approvaldate)
                     </div>
@@ -363,7 +361,7 @@
             <div id="shipmentspan" class="panel-body collapse in">
                 <div class="row">
                     <div class="col-md-4 form-group">
-                        <label class="control-label">Ship Via</label>
+                        <label class="control-label">Carrier/Ship Via</label>
                         @Html.DropDownListFor(m => m.shipvia, Model.ListOfShipVias, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.shipvia)
                     </div>
@@ -379,20 +377,25 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(m => m.timing, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-2">
+                        <label class="control-label">Timing</label>
                         @Html.TextBoxFor(m => m.timing, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.timing)
                     </div>
-                    <div class="col-md-4">
-                        @Html.LabelFor(m => m.spsfreightcost, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-2">
+                        <label class="control-label">Freight Cost</label>
                         @Html.TextBoxFor(m => m.spsfreightcost, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.spsfreightcost)
                     </div>
-                    <div class="col-md-4">
-                        @Html.LabelFor(m => m.spsshippedwt, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-2">
+                        <label class="control-label">Shipped Weight</label>
                         @Html.TextBoxFor(m => m.spsshippedwt, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.spsshippedwt)
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Tracking Number</label>
+                        @Html.TextBoxFor(m => m.tracking, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.tracking)
                     </div>
                 </div>
             </div>

@@ -235,10 +235,22 @@ namespace MvcPhoenix.Controllers
                                QtyAvailable = (from x in db.tblStock
                                                where (x.ShelfID != null) && (x.ShelfID == t.ShelfID) && (x.ShelfStatus == "AVAIL")
                                                select (x.QtyOnHand - x.QtyAllocated)).Sum(),
-                               AllocatedDate = t.AllocatedDate
+                               AllocatedDate = t.AllocatedDate,
+                               GrnUnNumber = (from a in db.tblProductDetail where (a.ProductDetailID == t.ProductDetailID) select a.GRNUNNUMBER).FirstOrDefault(),
+                               GrnPkGroup = (from b in db.tblProductDetail where (b.ProductDetailID == t.ProductDetailID) select b.GRNPKGRP).FirstOrDefault(),
+                               AirUnNumber = (from c in db.tblProductDetail where (c.ProductDetailID == t.ProductDetailID) select c.AIRUNNUMBER).FirstOrDefault(),
+                               AirPkGroup = (from d in db.tblProductDetail where (d.ProductDetailID == t.ProductDetailID) select d.AIRPKGRP).FirstOrDefault(),
+                               CreateDate = t.CreateDate,
+                               CreateUser = t.CreateUser,
+                               UpdateDate = t.UpdateDate,
+                               UpdateUser = t.UpdateUser
                            }).ToList();
+
                 if (qry.Count > 0)
-                { return PartialView("~/Views/Orders/_OrderItems.cshtml", qry); }
+                { 
+                    return PartialView("~/Views/Orders/_OrderItems.cshtml", qry); 
+                }
+
                 return null;
             }
         }
@@ -319,6 +331,10 @@ namespace MvcPhoenix.Controllers
                            transqty = t.TransQty,
                            transamount = t.TransAmount,
                            comments = t.Comments,
+                           createdate = t.CreateDate,
+                           createuser = t.CreateUser,
+                           updatedate = t.UpdateDate,
+                           updateuser = t.UpdateUser
                        }).ToList();
             return PartialView("~/Views/Orders/_OrderTrans.cshtml", qry);
         }
