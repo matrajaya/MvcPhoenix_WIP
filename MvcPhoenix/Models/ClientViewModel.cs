@@ -157,4 +157,11 @@ namespace MvcPhoenix.Models
         public decimal? Blend { get; set; }
         public decimal? Kosher { get; set; }
     }
+
+    public class EndUse
+    {
+        public int EndUseID { get; set; }
+        public int? ClientID { get; set; }
+        public string EndUseString { get; set; }
+    }
 }

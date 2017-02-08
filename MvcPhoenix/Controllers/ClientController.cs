@@ -756,5 +756,57 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion Surcharge methods
+
+        #region End Use Methods
+
+        public ActionResult ListEndUses(int id)
+        {
+            // id = clientid;
+            ViewBag.ClientKey = id;
+            var obj = (from t in db.tblEndUse
+                       where t.ClientID == id
+                       orderby t.EndUse
+                       select new MvcPhoenix.Models.EndUse
+                       {
+                           EndUseID = t.EndUseID,
+                           ClientID = t.ClientID,
+                           EndUseString = t.EndUse
+                       }).ToList();
+
+            if (obj.Count > 0)
+            {
+                return PartialView("~/Views/Client/_EndUses.cshtml", obj);
+            }
+
+            return null;
+        }
+
+        public ActionResult AddEndUse(int clientid, string endusestring)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var newrow = new EF.tblEndUse { };
+                newrow.ClientID = clientid;
+                newrow.EndUse = endusestring;
+
+                db.tblEndUse.Add(newrow);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ListEndUses", new { id = clientid });
+        }
+
+        public ActionResult DeleteEndUse(int id, int clientid)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                string s = @"DELETE FROM tblEndUse WHERE EndUseID=" + id.ToString();
+                db.Database.ExecuteSqlCommand(s);
+            }
+
+            return RedirectToAction("ListEndUses", new { id = clientid });
+        }
+
+        #endregion End Use Methods
     }
 }
