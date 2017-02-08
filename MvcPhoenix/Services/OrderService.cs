@@ -107,6 +107,7 @@ namespace MvcPhoenix.Services
                 o.state = q.State;
                 o.Zip = q.Zip;
                 o.country = q.Country;
+                o.CustomsRefNum = q.CustomsRefNum;
                 o.attention = q.Attention;
                 o.email = q.Email;
                 o.salesrep = q.SalesRep;
@@ -257,6 +258,7 @@ namespace MvcPhoenix.Services
                 q.Zip = vm.Zip;
                 q.Country = vm.country;
                 q.Attention = vm.attention;
+                q.CustomsRefNum = vm.CustomsRefNum;
                 q.Email = vm.email;
                 q.SalesRep = vm.salesrep;
                 q.SalesEmail = vm.sales_email;
@@ -323,8 +325,6 @@ namespace MvcPhoenix.Services
                 q.CreateUser = vm.CreateUser;
                 q.CreateDate = vm.CreateDate;
                 q.BillingGroup = vm.billinggroup;           // divisionname + businessunit. Rethink changing to divisionid since it is more unique now.
-
-                // reset the value
                 q.IsSDN = false;
 
                 db.SaveChanges();
@@ -910,12 +910,6 @@ namespace MvcPhoenix.Services
                 db.tblInvLog.Add(newrec);
                 db.SaveChanges();
             }
-        }
-
-        public static void fnProcessInvTrans(int id)
-        {
-            // read the tblInvTrans record and do something with it
-            // Pull fields to de-normalize it
         }
 
         public static OrderTrans fnCreateTrans(int id)

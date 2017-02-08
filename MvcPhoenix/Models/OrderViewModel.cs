@@ -107,6 +107,9 @@ namespace MvcPhoenix.Models
         [Display(Name = "Email")]
         public string email { get; set; }
 
+        [Display(Name = "Customs Reference Number")]
+        public string CustomsRefNum { get; set; }
+
         [Display(Name = "Sales Rep")]
         public string salesrep { get; set; }
 

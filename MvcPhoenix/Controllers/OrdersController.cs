@@ -310,6 +310,8 @@ namespace MvcPhoenix.Controllers
             return Content(AllocationCount.ToString() + " item(s) allocated");
         }
 
+        #region Order Transaction Methods
+        
         [HttpGet]
         public ActionResult fnOrderTransList(int id)
         {
@@ -366,6 +368,8 @@ namespace MvcPhoenix.Controllers
             OrderService.fnDeleteTrans(id);
             return Content("Transaction Deleted on " + DateTime.UtcNow.ToString("R"));
         }
+
+        #endregion Order Transaction Methods
 
         [HttpGet]
         public ActionResult OrdersNeedAllocation()

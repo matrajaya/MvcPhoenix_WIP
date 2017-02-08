@@ -37,6 +37,7 @@ namespace MvcPhoenix.EF
         public string Country { get; set; }
         public string Attention { get; set; }
         public string Email { get; set; }
+        public string CustomsRefNum { get; set; }
         public string SalesRep { get; set; }
         public string SalesEmail { get; set; }
         public string Req { get; set; }
