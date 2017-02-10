@@ -59,7 +59,7 @@
 
                     <div class="row">
                         <div class="col-md-5 form-group">
-                            @Html.LabelFor(m => m.LotNumber)
+                            <label>Lot Number</label>
                             @if (@Model.CrudMode == "RW")
                             {
                                 @Html.TextBoxFor(m => m.LotNumber, Model.LotNumber, new { @class = "form-control" })
@@ -91,7 +91,7 @@
                             }
                         </div>
                         <div class="col-md-2 form-group">
-                            @Html.LabelFor(m => m.SRSize)
+                            <label>SR Size</label>
                             @if (@Model.CrudMode == "RW")
                             {
                                 @Html.TextBoxFor(m => m.SRSize, Model.SRSize, new { @class = "form-control" })
@@ -103,7 +103,7 @@
                             }
                         </div>
                         <div class="col-md-2 form-group">
-                            @Html.LabelFor(m => m.Qty)
+                            <label>Qty</label>
                             @if (@Model.CrudMode == "RW")
                             {
                                 @Html.TextBoxFor(m => m.Qty, new { @class = "form-control", min = "1" })
@@ -119,23 +119,18 @@
 
                     <div class="row">
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.ShipDate)
-                            @*@Html.HiddenFor(m => m.ShipDate)*@
+                            <label>Ship Date</label>
                             @Html.TextBoxFor(m => m.ShipDate, "{0:dd MMM yyyy}", new { @class = "date-picker form-control" })
                         </div>
                         <div class="col-md-3 form-group">
-                            @Html.LabelFor(m => m.AllocateStatus)
+                            <label>A-Status</label>
                             @Html.TextBoxFor(m => m.AllocateStatus, new { @class = "form-control" })
                         </div>
                         <div class="col-md-6">
-                            <ul class="list-unstyled list-3-col">
+                            <ul class="list-unstyled list-2-col">
                                 <li>
                                     <label>CS Allocate</label> <br />
                                     @Html.CheckBox("CSAllocate", Model.CSAllocate != null && (bool)Model.CSAllocate)
-                                </li>
-                                <li>
-                                    <label>Non CMC Delay</label>
-                                    @Html.CheckBox("NonCMCDelay", Model.NonCMCDelay != null && (bool)Model.NonCMCDelay)
                                 </li>
                                 <li>
                                     <label>Carrier Inv Rec'd</label>
@@ -145,15 +140,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-9 form-group">
-                            @Html.LabelFor(m => m.DelayReason)
-                            @Html.TextBoxFor(m => m.DelayReason, new { @class = "form-control" })
+                        <div class="col-md-6 form-group">
+                            <label>Delay Reason</label>
+                            @Html.DropDownList("DelayReason", (List<SelectListItem>)ViewBag.ListOfDelayReasons, new { @class = "form-control" })
                         </div>
-                        <div class="col-md-3">
-                            <ul class="list-unstyled">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled list-2-col">
                                 <li>
                                     <label>Back Ordered</label> <br />
                                     @Html.CheckBox("BackOrdered", Model.BackOrdered != null && (bool)Model.BackOrdered)
+                                </li>
+                                <li>
+                                    <label>Non CMC Delay</label>
+                                    @Html.CheckBox("NonCMCDelay", Model.NonCMCDelay != null && (bool)Model.NonCMCDelay)
                                 </li>
                             </ul>
                         </div>
@@ -167,49 +166,17 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @Html.LabelFor(m => m.Status)
+                            <label>Status</label>
                             @Html.TextAreaFor(m => m.Status, new { rows = "4", @class = "form-control" })
                         </div>
                     </div>
-                    @*<div class="row">
-                            <div class="col-md-4 form-group">
-                                <input type="submit" value="Save" class="btn btn-success btn-block" />
-                            </div>
-                            <div class="col-md-4 form-group">
-                                @if (@Model.CrudMode == "RW")
-                                {
-                                    @Ajax.ActionLink("Delete Item", "DeleteItem", "Orders", new { id = Model.ItemID }, new AjaxOptions
-                                       {
-                                           HttpMethod = "GET",
-                                           UpdateTargetId = "dialogResult",
-                                           InsertionMode = InsertionMode.Replace,
-                                           OnSuccess = "CloseForm()",
-                                           Confirm = "Are you sure you want to delete this item?"
-                                       }, new { @class = "btn btn-danger btn-block" })
-                                }
-                                else
-                                {
-                                    <span>&nbsp;</span>
-                                }
-                            </div>
-                            <div class="col-md-4 form-group">
-                                <input type="button" value="Close" onclick="CloseForm()" class="btn btn-primary btn-block" />
-                            </div>
-                        </div>*@
-
-                    @*<div class="row">
-                            <div class="col-md-12">
-                                <span id="dialogResult" class="text-center" style="font-weight:bold;">
-                                </span>
-                            </div>
-                        </div>*@
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseForm()">Close</button>
                     @if (@Model.CrudMode == "RW")
                     {
-                        @Ajax.ActionLink("Delete item", "DeleteItem", "Orders", new { id = Model.ItemID }, new AjaxOptions
+                        @Ajax.ActionLink("Delete", "DeleteItem", "Orders", new { id = Model.ItemID }, new AjaxOptions
                         {
                             HttpMethod = "GET",
                             UpdateTargetId = "dialogResult",

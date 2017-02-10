@@ -205,6 +205,8 @@ namespace MvcPhoenix.Controllers
 
         #endregion Printing Actions
 
+        #region Order Item Methods
+
         [HttpGet]
         public ActionResult fnOrderItemsList(int id)
         {
@@ -247,8 +249,8 @@ namespace MvcPhoenix.Controllers
                            }).ToList();
 
                 if (qry.Count > 0)
-                { 
-                    return PartialView("~/Views/Orders/_OrderItems.cshtml", qry); 
+                {
+                    return PartialView("~/Views/Orders/_OrderItems.cshtml", qry);
                 }
 
                 return null;
@@ -260,13 +262,9 @@ namespace MvcPhoenix.Controllers
         {
             // id=orderid
             var vm = OrderService.fnCreateItem(id);
-            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
-        }
+            ViewBag.ListOfDelayReasons = OrderService.fnListOfDelayReasons();
 
-        public ActionResult BuildSizeDropDown(int id)
-        {
-            // id=clientid / return a <select> for <div>
-            return Content(OrderService.fnBuildSizeDropDown(id));
+            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
         }
 
         [HttpGet]
@@ -274,6 +272,7 @@ namespace MvcPhoenix.Controllers
         {
             OrderItem vm = new OrderItem();
             vm = OrderService.fnFillOrderItem(id);
+            ViewBag.ListOfDelayReasons = OrderService.fnListOfDelayReasons();
 
             return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
         }
@@ -297,6 +296,14 @@ namespace MvcPhoenix.Controllers
             return Content("Item Deleted");
         }
 
+        #endregion Order Item Methods
+
+        public ActionResult BuildSizeDropDown(int id)
+        {
+            // id=clientid / return a <select> for <div>
+            return Content(OrderService.fnBuildSizeDropDown(id));
+        }
+
         public ActionResult AllocateFromShelf(int id, bool IncludeQCStock)
         {
             // The view handles the partial updates
@@ -311,7 +318,7 @@ namespace MvcPhoenix.Controllers
         }
 
         #region Order Transaction Methods
-        
+
         [HttpGet]
         public ActionResult fnOrderTransList(int id)
         {
@@ -554,7 +561,7 @@ namespace MvcPhoenix.Controllers
             }
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
-        
+
         [HttpGet]
         public ActionResult PullContactDetails(int id)
         {
@@ -562,7 +569,6 @@ namespace MvcPhoenix.Controllers
             obj = OrderService.fnGetClientContacts(id);
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
-
 
         #region Order Import Actions
 

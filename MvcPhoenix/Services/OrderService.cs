@@ -470,6 +470,39 @@ namespace MvcPhoenix.Services
             }
         }
 
+        public static List<SelectListItem> fnListOfDelayReasons()
+        {
+            List<SelectListItem> mylist = new List<SelectListItem>();
+
+            mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Delay Reason" });
+            mylist.Insert(1, new SelectListItem { Value = "Backorder", Text = "Backorder" });
+            mylist.Insert(2, new SelectListItem { Value = "Oven Product", Text = "Oven Product" });
+            mylist.Insert(3, new SelectListItem { Value = "Humidity", Text = "Humidity" });
+            mylist.Insert(4, new SelectListItem { Value = "Very Large Order", Text = "Very Large Order" });
+            mylist.Insert(5, new SelectListItem { Value = "Questions/Info Needed", Text = "Questions/Info Needed" });
+            mylist.Insert(6, new SelectListItem { Value = "Special Doc Required", Text = "Special Doc Required" });
+            mylist.Insert(7, new SelectListItem { Value = "Special Request Size", Text = "Special Request Size" });
+            mylist.Insert(8, new SelectListItem { Value = "Return Order", Text = "Return Order" });
+            mylist.Insert(9, new SelectListItem { Value = "Waste", Text = "Waste" });
+            mylist.Insert(10, new SelectListItem { Value = "No partial delivery", Text = "No partial delivery" });
+            mylist.Insert(11, new SelectListItem { Value = "Special delivery date", Text = "Special delivery date" });
+            mylist.Insert(12, new SelectListItem { Value = "Public holiday", Text = "Public holiday" });
+            mylist.Insert(13, new SelectListItem { Value = "Freezable Procedure", Text = "Freezable Procedure" });
+            mylist.Insert(14, new SelectListItem { Value = "CMC delay, customer informed", Text = "CMC delay, customer informed" });
+            mylist.Insert(15, new SelectListItem { Value = "R&D flow", Text = "R&D flow" });
+            mylist.Insert(16, new SelectListItem { Value = "Special procedure", Text = "Special procedure" });
+            mylist.Insert(17, new SelectListItem { Value = "Misc. Charges", Text = "Misc. Charges" });
+            mylist.Insert(18, new SelectListItem { Value = "Transfer order", Text = "Transfer order" });
+            mylist.Insert(19, new SelectListItem { Value = "Consolidated Order", Text = "Consolidated Order" });
+            mylist.Insert(20, new SelectListItem { Value = "Approval Required", Text = "Approval Required" });
+            mylist.Insert(21, new SelectListItem { Value = "Conditioned packaging", Text = "Conditioned packaging" });
+            mylist.Insert(22, new SelectListItem { Value = "Product Not Setup", Text = "Product Not Setup" });
+            mylist.Insert(23, new SelectListItem { Value = "Frt Fwd-Pending Arrangement", Text = "Frt Fwd-Pending Arrangement" });
+            mylist.Insert(24, new SelectListItem { Value = "Labels, SDS", Text = "Labels, SDS" });
+
+            return mylist;
+        }
+
         public static string fnBuildSizeDropDown(int id)
         {
             // id=productdetailid
