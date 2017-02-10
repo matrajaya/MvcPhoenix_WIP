@@ -327,7 +327,7 @@ namespace MvcPhoenix.Controllers
                        join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
                        from qry2 in a.DefaultIfEmpty()
                        where t.OrderID == id
-                       orderby t.OrderItemID, t.TransType
+                       orderby t.UpdateDate descending
                        select new OrderTrans
                        {
                            ordertransid = t.OrderTransID,
@@ -345,6 +345,7 @@ namespace MvcPhoenix.Controllers
                            updatedate = t.UpdateDate,
                            updateuser = t.UpdateUser
                        }).ToList();
+
             return PartialView("~/Views/Orders/_OrderTrans.cshtml", qry);
         }
 
@@ -352,6 +353,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult CreateTrans(int id)
         {
             var vm = OrderService.fnCreateTrans(id);
+            ViewBag.ListOrderItemIDs = OrderService.fnListOfOrderItemIDs(vm.orderid);
             return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
         }
 
@@ -359,6 +361,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditTrans(int id)
         {
             var vm = OrderService.fnFillTrans(id);
+            ViewBag.ListOrderItemIDs = OrderService.fnListOfOrderItemIDs(vm.orderid);
             return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
         }
 

@@ -957,6 +957,7 @@ namespace MvcPhoenix.Services
 
                 vm.ordertransid = -1;
                 vm.orderid = id;
+                vm.transtype = "MEMO";
                 vm.createdate = DateTime.UtcNow;
                 vm.transdate = DateTime.UtcNow.Date;
                 vm.createuser = HttpContext.Current.User.Identity.Name;
@@ -1039,6 +1040,20 @@ namespace MvcPhoenix.Services
             {
                 string s = @"Delete from tblOrderTrans where OrderTransID=" + id.ToString();
                 db.Database.ExecuteSqlCommand(s);
+            }
+        }
+
+        public static List<SelectListItem> fnListOfOrderItemIDs(int? id)
+        {
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblOrderItem
+                          where t.OrderID == id
+                          orderby t.ProductCode
+                          select new SelectListItem { Value = t.ItemID.ToString(), Text = t.ProductCode }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "None" });
+                return mylist;
             }
         }
 
