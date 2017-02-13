@@ -13,8 +13,6 @@
     };
 </script>
 
-@*<div id="bcTarget"></div>*@
-
 <img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
 <h1 class="page-header">
     @ViewBag.Title <small>@Model.productcode - @Model.productname</small>
@@ -73,7 +71,7 @@
             </td>
             <td width="25%">
                 <label>Cross Reference List</label><br />
-                @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control form-group", @style = "width:100%;" })                
+                @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control form-group", @style = "width:100%;" })
             </td>
             <td>
                 Global @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct)
@@ -137,7 +135,7 @@
                 @Html.DisplayFor(m => m.mixinginstructions, new { @class = "form-control", @placeholder = "Mixing Instructions" })
             </td>
             <td>
-                <label>Other Instructions</label><br/>
+                <label>Other Instructions</label><br />
                 @Html.DisplayFor(m => m.otherhandlinginstr)
             </td>
         </tr>

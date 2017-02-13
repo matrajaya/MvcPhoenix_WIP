@@ -289,13 +289,11 @@
                     <div class="form-group col-md-6">
                         <label>End Use</label>
                         @Html.TextBoxFor(m => m.enduse, new { @class = "form-control" })
-                        @*@Html.DropDownListFor(m => m.enduse, Model.ListOfEndUsesForCustoms, new { @class = "form-control" })*@
                         @Html.ValidationMessageFor(m => m.enduse)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Harmonized Code</label>
                         @Html.TextBoxFor(m => m.harmonizedcode, new { @class = "form-control" })
-                        @*@Html.DropDownListFor(m => m.harmonizedcode, Model.ListOfHarmonizedCodes, new { @class = "form-control" })*@
                         @Html.ValidationMessageFor(m => m.harmonizedcode)
                     </div>
                     <div class="form-group col-md-2">

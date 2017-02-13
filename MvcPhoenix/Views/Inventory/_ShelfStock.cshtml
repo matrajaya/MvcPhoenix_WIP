@@ -42,7 +42,7 @@
                     <tr>
                         <td id="noprint">
                             <span class="pull-left">
-                                <a href="#" class="btn btn-info fa fa-print" onclick="printLabel(@row.StockID, @row.QtyOnHand)" title="Print label to shared printer"></a> | 
+                                <a href="#" class="btn btn-info fa fa-print" onclick="printLabel(@row.StockID, @row.QtyOnHand)" title="Print label to shared printer"></a> |
                                 @Html.ActionLink(" ", "ShelfStockLabel", "Inventory", new { id = @row.StockID }, new { @class = "btn btn-success fa fa-file-pdf-o", @title = "Preview label in browser", @target = "_blank" })
                             </span>
                         </td>

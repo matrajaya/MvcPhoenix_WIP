@@ -34,67 +34,66 @@
     <!-- /.Page Heading -->
     @using (Html.BeginForm("SaveContainer", "Receiving"))
     {
-    <!-- do not remove -->
         @Html.HiddenFor(m => m.isknownmaterial)
         @Html.HiddenFor(m => m.bulkid)
         @Html.HiddenFor(m => m.productmasterid)
         @Html.HiddenFor(m => m.bulkstatus)
 
-		if(@Model.isknownmaterial==true)
-        { 
-        <div class="panel panel-primary">
-            <div class="panel-body collapse in">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                        <tr>
-							<th colspan="4">Receiving Notes - Alert</th>
-                        </tr>
-                        <tr>
-                            <td colspan="4">@Model.pm_alertnotesreceiving</td>
-                        </tr>
-                        <tr>
-							<th>Master Code</th>
-                            <th>Name</th>
-                            <th>Current Weight on Hand</th>
-                            <th>Bulk Status</th>
-                        </tr>
-                        <tr>
-                            <td>@Model.MasterCode</td>
-                            <td>@Model.MasterName</td>
-                            <td>@Model.pm_sumofcurrentweight.ToString()</td>
-                            <td>@Html.DisplayFor(m => m.bulkstatus, new { @class = "form-control" })</td>
-                        </tr>
-                        <tr>
-                            <th colspan="4">Master Notes</th>
-                        </tr>
-                        <tr>
-                            <td colspan="4">@Model.pm_MasterNotes &nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th colspan="2">Handling Other</th>
-                            <th colspan="2">Other Handling Instructions</th>
-                        </tr>
-                        <tr>
-                            <td colspan="2">@Model.pm_HandlingOther &nbsp;</td>
-                            <td colspan="2">@Model.pm_OtherHandlingInstr &nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th>Refrigerate</th>
-                            <th>Refrigerator List</th>
-                            <th>Flammable Room</th>
-                            <th>Freezable List</th>
-                        </tr>
-                        <tr>
-                            <td>@Model.pm_refrigerate</td>
-                            <td>@Model.pm_refrigeratedlist</td>
-                            <td>@Model.pm_flammablestorageroom</td>
-                            <td>@Model.pm_freezablelist</td>
-                        </tr>
-                    </table>
+        if (@Model.isknownmaterial == true)
+        {
+            <div class="panel panel-primary">
+                <div class="panel-body collapse in">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <tr>
+                                <th colspan="4">Receiving Notes - Alert</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">@Model.pm_alertnotesreceiving</td>
+                            </tr>
+                            <tr>
+                                <th>Master Code</th>
+                                <th>Name</th>
+                                <th>Current Weight on Hand</th>
+                                <th>Bulk Status</th>
+                            </tr>
+                            <tr>
+                                <td>@Model.MasterCode</td>
+                                <td>@Model.MasterName</td>
+                                <td>@Model.pm_sumofcurrentweight.ToString()</td>
+                                <td>@Html.DisplayFor(m => m.bulkstatus, new { @class = "form-control" })</td>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Master Notes</th>
+                            </tr>
+                            <tr>
+                                <td colspan="4">@Model.pm_MasterNotes &nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Handling Other</th>
+                                <th colspan="2">Other Handling Instructions</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2">@Model.pm_HandlingOther &nbsp;</td>
+                                <td colspan="2">@Model.pm_OtherHandlingInstr &nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th>Refrigerate</th>
+                                <th>Refrigerator List</th>
+                                <th>Flammable Room</th>
+                                <th>Freezable List</th>
+                            </tr>
+                            <tr>
+                                <td>@Model.pm_refrigerate</td>
+                                <td>@Model.pm_refrigeratedlist</td>
+                                <td>@Model.pm_flammablestorageroom</td>
+                                <td>@Model.pm_freezablelist</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-		}
+        }
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#prodinfopan"><i class="fa fa-file-text-o fa-fw"></i> Product Batch / Lot Information</h3>
@@ -259,7 +258,6 @@
             </div>
             <div class="form-group col-md-6">
                 <input type="button" class="btn btn-danger btn-block" onclick="location.href = 'javascript:history.back()';" value="Cancel Order" />
-                @*@Html.ActionLink("Cancel", "Index", "Receiving", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel This Process?')" })*@
             </div>
         </div>
         <div class="row">

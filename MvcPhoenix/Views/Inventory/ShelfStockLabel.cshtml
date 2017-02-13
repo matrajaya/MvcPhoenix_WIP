@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Print Shelf Stock Label";
     Layout = "~/Views/Shared/_LayoutPrint.cshtml";
+    @*Maintains label layout structure on 2 x 0.75 label*@
 }
 
 <style>
@@ -21,7 +22,7 @@
     <table>
         <tr>
             <td>
-                <div style="zoom:255%;">@*Maintains label layout structure on 2 x 0.75 label*@                    
+                <div style="zoom:255%;">
                     @Model.ProductCode<br />
                     @Model.ProductName<br />
                     @Model.LotNumber<br />
