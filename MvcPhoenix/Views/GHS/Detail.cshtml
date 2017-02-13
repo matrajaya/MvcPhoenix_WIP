@@ -20,11 +20,9 @@
                             <td class="parent-hide">
                                 @Ajax.ActionLink(" ", "DeletePHDetail", new { id = item.PHDetailID }, new AjaxOptions
                                    {
-                                       Confirm = "Are you sure you wish to delete " + item.PHNumber + "?",
                                        HttpMethod = "POST",
                                        UpdateTargetId = "dvDetailPHCodes",
-                                       OnSuccess = "RefreshDetailPH",
-                                       OnComplete = "successDeleteDialog"
+                                       OnSuccess = "RefreshDetailPH"
                                    }, new { @class = "fa fa-fw fa-lg fa-minus-circle", @style = "color: red; text-decoration: none;", @title = "Delete PH Code" })
                             </td>
 
@@ -59,8 +57,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    function successDeleteDialog() {
-        $.alert('P&H Code Deleted!', 'Success');
-    }
-</script>
