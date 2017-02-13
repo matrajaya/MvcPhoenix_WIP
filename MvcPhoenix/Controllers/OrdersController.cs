@@ -304,6 +304,25 @@ namespace MvcPhoenix.Controllers
             return Content(OrderService.fnBuildSizeDropDown(id));
         }
 
+        public ActionResult CheckProductForAlert(int id)
+        {
+            var obj = (from t in db.tblProductDetail
+                       where t.ProductDetailID == id
+                       select t.AlertNotesOrderEntry).FirstOrDefault();
+
+            return Content(obj);
+        }
+
+        [HttpGet]
+        public ActionResult PullContactDetails(int id)
+        {
+            Contact obj = new Contact();
+            obj = OrderService.fnGetClientContacts(id);
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        #region Allocate Methods
+
         public ActionResult AllocateFromShelf(int id, bool IncludeQCStock)
         {
             // The view handles the partial updates
@@ -316,6 +335,8 @@ namespace MvcPhoenix.Controllers
             int AllocationCount = OrderService.fnAllocateBulk(id, IncludeQCStock);
             return Content(AllocationCount.ToString() + " item(s) allocated");
         }
+
+        #endregion Allocate Methods
 
         #region Order Transaction Methods
 
@@ -380,6 +401,8 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion Order Transaction Methods
+
+        #region Index Order Search and Filters
 
         [HttpGet]
         public ActionResult OrdersNeedAllocation()
@@ -565,13 +588,7 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
-        [HttpGet]
-        public ActionResult PullContactDetails(int id)
-        {
-            Contact obj = new Contact();
-            obj = OrderService.fnGetClientContacts(id);
-            return Json(obj, JsonRequestBehavior.AllowGet);
-        }
+        #endregion Index Order Search and Filters
 
         #region Order Import Actions
 

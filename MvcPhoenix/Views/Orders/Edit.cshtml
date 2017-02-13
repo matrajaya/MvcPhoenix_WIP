@@ -446,6 +446,20 @@
 </div>
 
 <script type="text/javascript">
+    function SampleOrderAlert(productdetailid) {
+        $.ajax({
+            url: "/Orders/CheckProductForAlert/" + productdetailid,
+            type: "GET",
+            success: showalert
+        });
+
+        function showalert(data) {
+            if ((data.length > 0)) {
+                $.alert(data, "Product ID: "+productdetailid);
+            }            
+        }
+    }
+
     function PullRequestor(requestorid) {
         var myurl = '@Url.Action("PullContactDetails", "Orders")';
         $.getJSON(myurl, { id: requestorid },

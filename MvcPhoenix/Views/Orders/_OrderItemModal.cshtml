@@ -231,6 +231,9 @@
         $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.OrderID })');
 
         // Hide the modal
-        $('#dialogPlaceholderModal').modal('hide')
+        $('#dialogPlaceholderModal').modal('hide');
+
+        // Show sample alert note
+        SampleOrderAlert(@Model.ProductDetailID);
     }
 </script>
