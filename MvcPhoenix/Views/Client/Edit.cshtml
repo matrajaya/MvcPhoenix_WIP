@@ -121,13 +121,13 @@
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Invoice Email</label>
-                        <div style="border:solid 1px blue;">
+                        <div style="border:solid 1px lightgrey;">
                             @Html.TextAreaFor(model => model.InvoiceEmailTo, new { @class = "form-control", @rows = "4" })
                         </div>
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Invoice Address</label>
-                        <div style="border:solid 1px blue;">
+                        <div style="border:solid 1px lightgrey;">
                             @Html.TextAreaFor(model => model.InvoiceAddress, new { @class = "form-control", @rows = "4" })
                         </div>
                     </div>
@@ -141,13 +141,13 @@
                             </span>
                             <input type="text" id="LogoUploadFileName" name="LogoUploadFileName" class="form-control" />
                         </div>
-                        <div style="border:solid 1px blue;">
+                        <div style="border:solid 1px lightgrey;">
                             <img src="~/Client/LogoFile?id=@Model.ClientID" alt="@Model.ClientName Logo" title="@Model.ClientName Logo">
                         </div>
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Key Contact Directory</label>
-                        <div style="border:solid 1px blue;">
+                        <div style="border:solid 1px lightgrey;">
                             @Html.TextAreaFor(m => m.KeyContactDir, new { @class = "form-control", @rows = "4" })
                         </div>
                     </div>

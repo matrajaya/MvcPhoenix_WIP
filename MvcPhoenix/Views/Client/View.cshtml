@@ -119,13 +119,13 @@
                 </div>
                 <div class="col-md-3 form-group">
                     <label>Invoice Email</label>
-                    <div style="border:solid 1px blue;">
+                    <div style="border:solid 1px lightgrey;">
                         @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceEmailTo))
                     </div>
                 </div>
                 <div class="col-md-3 form-group">
                     <label>Invoice Address</label>
-                    <div style="border:solid 1px blue;">
+                    <div style="border:solid 1px lightgrey;">
                         @Html.Raw(HttpUtility.HtmlDecode(@Model.InvoiceAddress))
                     </div>
                 </div>
@@ -133,13 +133,13 @@
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label>Logo</label>
-                    <div style="border:solid 1px blue;">
+                    <div style="border:solid 1px lightgrey;">
                         <img src="~/Client/LogoFile?id=@Model.ClientID" alt="@Model.ClientName Logo" title="@Model.ClientName Logo">
                     </div>
                 </div>
                 <div class="col-md-6 form-group">
                     <label>Key Contact Directory</label>
-                    <div style="border:solid 1px blue;">
+                    <div style="border:solid 1px lightgrey;">
                         @Html.Raw(HttpUtility.HtmlDecode(@Model.KeyContactDir))
                     </div>
                 </div>
