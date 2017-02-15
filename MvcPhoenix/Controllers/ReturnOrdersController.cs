@@ -1,4 +1,5 @@
 ﻿using MvcPhoenix.Models;
+using MvcPhoenix.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -333,7 +334,7 @@ namespace MvcPhoenix.Controllers
                 foreach (var row in bulk)
                 {
                     var pm = (from t in db.tblProductMaster where t.ProductMasterID == row.ProductMasterID select t).FirstOrDefault();
-                    int newItemId = Services.OrderService.fnNewItemID();
+                    int newItemId = OrderService.fnNewItemID();
                     var newitem = (from t in db.tblOrderItem where t.ItemID == newItemId select t).FirstOrDefault();
                     newitem.OrderID = orderid;
                     newitem.BulkID = row.BulkID;
@@ -348,7 +349,7 @@ namespace MvcPhoenix.Controllers
                     newitem.ItemNotes = "Return Bulk Order Item";
 
                     // Insert log record
-                    Services.OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, row.BulkID, 1, row.CurrentWeight, DateTime.UtcNow, User.Identity.Name, null, null);
+                    OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, row.BulkID, 1, row.CurrentWeight, DateTime.UtcNow, User.Identity.Name, null, null);
 
                     //update bulk record
                     row.CurrentWeight = 0;
@@ -356,7 +357,7 @@ namespace MvcPhoenix.Controllers
                     row.MarkedForReturn = null;
                     db.SaveChanges();
 
-                    Services.OrderService.fnGenerateOrderTransactions(newItemId);
+                    OrderService.fnGenerateOrderTransactions(newItemId);
                 }
             }
             return null;
@@ -373,7 +374,7 @@ namespace MvcPhoenix.Controllers
                     var sm = db.tblShelfMaster.Find(row.ShelfID);
                     var pd = db.tblProductDetail.Find(sm.ProductDetailID);
                     var pm = db.tblProductMaster.Find(bl.ProductMasterID);
-                    int newItemId = Services.OrderService.fnNewItemID();
+                    int newItemId = OrderService.fnNewItemID();
                     var newitem = (from t in db.tblOrderItem where t.ItemID == newItemId select t).FirstOrDefault();
                     newitem.OrderID = orderid;
                     newitem.ShelfID = sm.ShelfID;
@@ -388,7 +389,7 @@ namespace MvcPhoenix.Controllers
                     newitem.ItemNotes = "Return Shelf Order Item";
 
                     // Insert log record
-                    Services.OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, row.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, User.Identity.Name, null, null);
+                    OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, row.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, User.Identity.Name, null, null);
 
                     //update bulk record
                     row.QtyOnHand = 0;
@@ -396,7 +397,7 @@ namespace MvcPhoenix.Controllers
                     row.MarkedForReturn = null;
                     db.SaveChanges();
 
-                    Services.OrderService.fnGenerateOrderTransactions(newItemId);
+                    OrderService.fnGenerateOrderTransactions(newItemId);
 
                     // Should we DELETE the tblStock record???????????????????????????????????
                 }
@@ -430,7 +431,7 @@ namespace MvcPhoenix.Controllers
             int NewOrderID = 0; // New OrderID record
             using (db)
             {
-                NewOrderID = Services.OrderService.fnNewOrderID();
+                NewOrderID = OrderService.fnNewOrderID();
                 var om = (from t in db.tblOrderMaster where t.OrderID == NewOrderID select t).FirstOrDefault();
                 var cl = (from t in db.tblClient where t.ClientID == MyClientID select t).FirstOrDefault();
                 om.ClientID = MyClientID;

@@ -218,10 +218,10 @@ namespace MvcPhoenix.Services
                               UpdateUser = t.UpdateUser
                           }).FirstOrDefault();
 
-                vm.ListOfShelfStatusIDs = Services.InventoryService.fnListOfShelfStatusIDs();
-                vm.ListOfShelfMasterIDs = Services.InventoryService.fnListOfShelfMasterIDs(vm.ProductDetailID);
-                vm.ListOfBulkIDs = Services.InventoryService.fnListOfBulkIDs(vm.ShelfID);
-                vm.ListOfWareHouseIDs = Services.InventoryService.fnListOfWarehouseIDs();
+                vm.ListOfShelfStatusIDs = InventoryService.fnListOfShelfStatusIDs();
+                vm.ListOfShelfMasterIDs = InventoryService.fnListOfShelfMasterIDs(vm.ProductDetailID);
+                vm.ListOfBulkIDs = InventoryService.fnListOfBulkIDs(vm.ShelfID);
+                vm.ListOfWareHouseIDs = InventoryService.fnListOfWarehouseIDs();
 
                 return vm;
             }

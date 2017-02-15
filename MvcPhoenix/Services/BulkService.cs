@@ -68,7 +68,11 @@ namespace MvcPhoenix.Services
                                receivedascode = t.ReceivedAsCode,
                                receivedasname = t.ReceivedAsName,
                                containernotes = t.ContainerNotes,
-                               otherstorage = t.OtherStorage
+                               otherstorage = t.OtherStorage,
+                               CreateUser = t.CreateUser,
+                               CreateDate = t.CreateDate,
+                               UpdateUser = t.UpdateUser,
+                               UpdateDate = t.UpdateDate
                            }).FirstOrDefault();
 
                 var qPM = (from t in db.tblProductMaster where t.ProductMasterID == obj.productmasterid select t).FirstOrDefault();
@@ -101,6 +105,8 @@ namespace MvcPhoenix.Services
                         db.tblBulk.Add(newrec);
                         newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = HttpContext.Current.User.Identity.Name;
+                        newrec.UpdateDate = DateTime.UtcNow;
+                        newrec.UpdateUser = HttpContext.Current.User.Identity.Name;
                         db.SaveChanges();
                         pk = newrec.BulkID;
                     }

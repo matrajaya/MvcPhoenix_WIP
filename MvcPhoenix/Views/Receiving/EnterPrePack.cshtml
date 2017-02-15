@@ -27,13 +27,10 @@
         OnSuccess = "PostSuccess"
     }))
     {
-
         @Html.HiddenFor(m => m.productmasterid)
         @Html.HiddenFor(m => m.isknownmaterial)
         @Html.HiddenFor(m => m.bulkid)
-
-    <!-- very important -->
-        @Html.HiddenFor(m => m.ItemsCount)
+        @Html.HiddenFor(m => m.ItemsCount) <!-- very important -->
 
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -56,7 +53,8 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Entered By</label>
-                        @Html.TextBoxFor(m => m.enteredby, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.enteredby, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.enteredby)
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -67,7 +65,8 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Received By</label>
-                        @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control"})
+                        @Html.ValidationMessageFor(m => m.receivedby)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Date Of Manufacture</label>
@@ -118,15 +117,15 @@
                         </thead>
                         <tbody>
                             @for (int i = 0; i < Model.ListOfShelfMasters.Count(); i++)
-                                {
+                            {
                                 <tr>
                                     <td>@(i + 1)</td>
                                     <td><input type="text" readonly="readonly" name='@fnRowKey(@i+1)' value="@Model.ListOfShelfMasters[i].shelfid" style="width:35px;text-align:center;border:none;"></td>
                                     <td>@Model.ListOfShelfMasters[i].bin</td>
                                     <td>@Model.ListOfShelfMasters[i].size</td>
-                                    <td style="text-align:center;"><input type="text" required name='@fnRowQty(@i+1)' style="width:55px;text-align:center;" /></td>
+                                    <td style="text-align:center;"><input type="text" required name='@fnRowQty(@i+1)' style="width:55px;text-align:center;" value="0"/></td>
                                 </tr>
-                                }
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -138,7 +137,7 @@
                 <input type="submit" value="Save Changes" class="btn btn-success btn-block" />
             </div>
             <div class="col-md-6">
-                @Html.ActionLink("Cancel", "Index", "Receiving", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel This Process?')" })
+                @Html.ActionLink("Cancel", "Index", "Receiving", null, new { @class = "btn btn-danger btn-block" })
             </div>
         </div>
 
@@ -160,7 +159,7 @@
     function PostSuccess() {
         $("#SaveCancel").addClass("hidden");
         $("#ReturnToIndex").removeClass("hidden");
-    }
+    }        
 </script>
 
 @functions

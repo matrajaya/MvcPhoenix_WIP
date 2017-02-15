@@ -154,11 +154,9 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfCarriers { get; set; }
 
         [Display(Name = "Received By")]
-        [StringLength(10, ErrorMessage = "[Max 10]")]
         public string receivedby { get; set; }
 
         [Display(Name = "Entered By")]
-        [StringLength(10, ErrorMessage = "[Max 10]")]
         public string enteredby { get; set; }
 
         [Display(Name = "Master Code")]

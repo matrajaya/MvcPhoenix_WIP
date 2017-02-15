@@ -328,9 +328,9 @@ namespace MvcPhoenix.Services
                 obj.ListOfCarriers = fnCarriers();
                 obj.warehouse = null;
                 obj.ListOfWareHouses = fnWarehouseIDs();
-                obj.enteredby = null;
+                obj.enteredby = HttpContext.Current.User.Identity.Name;
                 obj.lotnumber = null;
-                obj.receivedby = null;
+                obj.receivedby = HttpContext.Current.User.Identity.Name;
                 obj.mfgdate = null;
                 obj.expirationdate = null;
                 obj.ceaseshipdate = null;
@@ -495,7 +495,7 @@ namespace MvcPhoenix.Services
                     newbulk.ExpirationDate = vm.expirationdate;
                     newbulk.MSDSIncluded = vm.msdsincluded;
                     newbulk.BulkStatus = "PP";
-
+                    
                     db.tblBulk.Add(newbulk);
                     db.SaveChanges();
 
@@ -514,6 +514,7 @@ namespace MvcPhoenix.Services
                         newstock.BulkID = newBulkID; 
                         newstock.ShelfID = ThisShelfID; 
                         newstock.CreateDate = DateTime.UtcNow;
+                        newstock.CreateUser = HttpContext.Current.User.Identity.Name;
                         newstock.Warehouse = vm.warehouse; 
                         newstock.QtyOnHand = ThisQty;
                         newstock.ShelfStatus = "PP";

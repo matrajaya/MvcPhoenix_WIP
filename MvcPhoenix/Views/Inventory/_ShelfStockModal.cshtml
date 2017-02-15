@@ -89,7 +89,7 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Cease Ship Date</label>
-                            @Html.TextBoxFor(m => m.CeaseShipDate, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.TextBoxFor(m => m.CeaseShipDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                             @Html.HiddenFor(m => m.CeaseShipDate)
                         </div>
                     </div>
@@ -97,12 +97,12 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>QC Date</label>
-                            @Html.TextBoxFor(m => m.QCDate, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.TextBoxFor(m => m.QCDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                             @Html.HiddenFor(m => m.QCDate)
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Expiry Date</label>
-                            @Html.TextBoxFor(m => m.ExpirationDate, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.TextBoxFor(m => m.ExpirationDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                             @Html.HiddenFor(m => m.ExpirationDate)
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Create Date</label>
-                            @Html.TextBoxFor(m => m.CreateDate, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.TextBoxFor(m => m.CreateDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Create User</label>
@@ -121,7 +121,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label>Update Date</label>
-                            @Html.TextBoxFor(m => m.UpdateDate, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.TextBoxFor(m => m.UpdateDate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @disabled = "disabled" })
                         </div>
                         <div class="col-md-6">
                             <label>Update By</label>

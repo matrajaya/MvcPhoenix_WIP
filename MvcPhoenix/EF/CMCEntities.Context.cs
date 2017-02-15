@@ -26,7 +26,6 @@ namespace MvcPhoenix.EF
         }
     
         public virtual DbSet<tblBillingGroup> tblBillingGroup { get; set; }
-        public virtual DbSet<tblBulk> tblBulk { get; set; }
         public virtual DbSet<tblBulkOrder> tblBulkOrder { get; set; }
         public virtual DbSet<tblBulkOrderItem> tblBulkOrderItem { get; set; }
         public virtual DbSet<tblBulkSupplier> tblBulkSupplier { get; set; }
@@ -88,5 +87,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<vwBulkLevel> vwBulkLevel { get; set; }
         public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
         public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
+        public virtual DbSet<tblBulk> tblBulk { get; set; }
     }
 }

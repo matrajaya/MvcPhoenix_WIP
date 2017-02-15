@@ -22,26 +22,26 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult RecentBulkReceived()   // build partial for index, same as receiving Index
         {
-            List<BulkContainerViewModel> mylist = MvcPhoenix.Services.ReceivingService.fnIndexList();
+            List<BulkContainerViewModel> mylist = ReceivingService.fnIndexList();
             return PartialView("~/Views/Inventory/_RecentBulkReceived.cshtml", mylist);
         }
 
         public ActionResult Edit(int id)    // Entry point for ProductDetailID from Search Results
         {
-            var vm = MvcPhoenix.Services.InventoryService.fnFillInventoryVM(id);
+            var vm = InventoryService.fnFillInventoryVM(id);
             return View("~/Views/Inventory/Edit.cshtml", vm);
         }
 
         [HttpPost]
         public ActionResult Save(Inventory vm)
         {
-            MvcPhoenix.Services.InventoryService.fnSaveInventory(vm);
+            InventoryService.fnSaveInventory(vm);
             return RedirectToAction("Edit", new { id = vm.PP.productdetailid });
         }
 
         public ActionResult EditBulk(int id)   // redirect to bulk edit
         {
-            var vm = MvcPhoenix.Services.BulkService.fnFillBulkContainerFromDB(id);
+            var vm = BulkService.fnFillBulkContainerFromDB(id);
             return View("~/Views/Bulk/Edit.cshtml", vm);
         }
 
@@ -61,7 +61,7 @@ namespace MvcPhoenix.Controllers
 
             foreach (var row in q)
             {
-                vm.Add(MvcPhoenix.Services.BulkService.fnFillBulkContainerFromDB(row.BulkID));
+                vm.Add(BulkService.fnFillBulkContainerFromDB(row.BulkID));
             }
 			
 			// pc 12/27 added for use by CreateNewPackout so can return to Inv Edit
@@ -81,7 +81,7 @@ namespace MvcPhoenix.Controllers
 
             foreach (var row in q)
             {
-                vm.Add(Services.InventoryService.fnFillStockViewModel(row.StockID));
+                vm.Add(InventoryService.fnFillStockViewModel(row.StockID));
             }
 
             ViewBag.ParentID = id;
@@ -91,7 +91,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult EditStock(int id)
         {
-            var vm = Services.InventoryService.fnFillStockViewModel(id);
+            var vm = InventoryService.fnFillStockViewModel(id);
             return PartialView("~/Views/Inventory/_ShelfStockModal.cshtml", vm);
         }
 
@@ -134,7 +134,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SavePrePackStock(PrePackStock vm, FormCollection fc)
         {
-            Services.InventoryService.fnSavePrePackStock(vm, fc);
+            InventoryService.fnSavePrePackStock(vm, fc);
 
             return RedirectToAction("Edit", new { id = vm.ProductDetailID });
         }
@@ -142,7 +142,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveStock(StockViewModel vm)
         {
-            Services.InventoryService.fnSaveStock(vm);
+            InventoryService.fnSaveStock(vm);
 
             return RedirectToAction("Edit", new { id = vm.ProductDetailID });
         }
@@ -409,7 +409,7 @@ namespace MvcPhoenix.Controllers
         [AllowAnonymous]
         public ActionResult PrintShelfStockLabel(int id)
         {
-            var vm = Services.InventoryService.fnFillStockViewModel(id);
+            var vm = InventoryService.fnFillStockViewModel(id);
 
             return View(vm);
         }
@@ -417,7 +417,7 @@ namespace MvcPhoenix.Controllers
         // Generate PDF
         public ActionResult ShelfStockLabel(int id)
         {
-            var vm = Services.InventoryService.fnFillStockViewModel(id);
+            var vm = InventoryService.fnFillStockViewModel(id);
 
             return new ViewAsPdf(vm)
             {

@@ -106,5 +106,6 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateUser { get; set; }
         public Nullable<int> LegacyID { get; set; }
+        public Nullable<int> DivisionID { get; set; }
     }
 }

@@ -218,7 +218,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="form-group col-md-6">
                 <input id="btnSave" type="submit" value="Save Changes" class="btn btn-success btn-block" />
@@ -226,6 +225,12 @@
             <div class="form-group col-md-6">
                 @Html.ActionLink("Cancel", "Index", "Bulk", null, new { @class = "btn btn-danger btn-block", onclick = "return confirm('Cancel This Process?')" })
             </div>
+        </div>
+        <div class="row">
+            @if (@Model.UpdateUser != null)
+            {
+                <div class="col-md-12 form-group"><em>Last updated by @Html.DisplayFor(m => m.UpdateUser) on @Html.DisplayFor(m => m.UpdateDate) GMT</em></div>
+            }
         </div>
         <div class="row">
             <div class="col-lg-12">

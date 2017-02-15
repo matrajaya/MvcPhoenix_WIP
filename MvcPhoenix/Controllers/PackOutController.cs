@@ -1,4 +1,5 @@
 ﻿using MvcPhoenix.Models;
+using MvcPhoenix.Services;
 using System;
 using System.Web.Mvc;
 
@@ -13,7 +14,7 @@ namespace MvcPhoenix.Controllers
             using (db)
             {
                 TempData["productdetailid"] = productdetailid;    // to stash calling parameter into form for read on postback cause PDid not part of Bulk vm
-                var vm = Services.BulkService.fnFillBulkContainerFromDB(id);
+                var vm = BulkService.fnFillBulkContainerFromDB(id);
 
                 return View("~/Views/PackOut/Index.cshtml", vm);
             }
@@ -30,7 +31,7 @@ namespace MvcPhoenix.Controllers
                 return RedirectToAction("Index", new { id = vm.bulkid, productdetailid = ReturnProductDetailID });
             }
 
-            int PackOutResult = Services.Packout.fnCreatePackOutOrder(vm.bulkid, Priority);
+            int PackOutResult = Packout.fnCreatePackOutOrder(vm.bulkid, Priority);
 
             if (PackOutResult == -1)
             {
