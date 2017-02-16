@@ -41,7 +41,7 @@
                             }))
                             {
                             <div class="input-group">
-                                @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Keyword...", @required = "required" })
+                                @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Keyword...", @required = "required", @title = "Search using product master code/name" })
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
                                 </span>
@@ -114,6 +114,8 @@
         </div>
     </div>
 
+    @Html.Action("UnkownBulkList", "Receiving")
+    
     <div class="row">
         <div class="col-md-12">
             <i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a>

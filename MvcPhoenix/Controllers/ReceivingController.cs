@@ -19,6 +19,27 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Receiving/Index.cshtml", mylist);
         }
 
+        [HttpGet]
+        public ActionResult UnkownBulkList()
+        {
+            var obj = (from t in db.tblBulkUnKnown
+                       orderby t.BulkID descending
+                       select t).ToList();
+
+            return PartialView("~/Views/Receiving/_UnknownBulkList.cshtml", obj);
+        }
+
+        public ActionResult DeleteUnknownBulk(int id)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                string s = @"DELETE FROM tblBulkUnKnown WHERE BulkID=" + id.ToString();
+                db.Database.ExecuteSqlCommand(s);
+            }
+
+            return null;
+        }
+
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
             using (var db = new EF.CMCSQL03Entities())

@@ -323,25 +323,15 @@ namespace MvcPhoenix.Services
 
         public static BulkContainerViewModel fnNewBulkContainerUnKnown()
         {
-            // id=productmasterid
             BulkContainerViewModel obj = new BulkContainerViewModel();
             using (var db = new CMCSQL03Entities())
             {
                 obj.isknownmaterial = false;
-                obj.productmasterid = null;
-                obj.bulkid = -1;    // for insert later
-                obj.clientid = null;
-                obj.clientname = null;
-                obj.productmasterid = null;
+                obj.bulkid = -1;
                 obj.receivedate = DateTime.UtcNow;
-                obj.bulkstatus = "RECD";
-                obj.MasterCode = null;
-                obj.MasterName = null;
                 obj.enteredby = HttpContext.Current.User.Identity.Name;
                 obj.receivedby = HttpContext.Current.User.Identity.Name;
                 obj.ListOfWareHouses = fnWarehouseIDs();
-                obj.ListOfProductMasters = fnProductMasterIDs(obj.clientid, null);
-                obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
                 obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
                 obj.ListOfCarriers = fnCarriers();
                 return obj;
@@ -386,7 +376,7 @@ namespace MvcPhoenix.Services
                         freezer = incoming.freezer,
                         PackOut = incoming.packout,
                         NoticeDate = DateTime.UtcNow,
-                        LogNotes = "Unknown bulk stock received by " + HttpContext.Current.User.Identity.Name + " on " + DateTime.UtcNow,
+                        LogNotes = "Unknown bulk stock received by " + HttpContext.Current.User.Identity.Name + " on " + DateTime.UtcNow.ToString("R"),
                         BulkStatus = "HOLD"
                     };
 

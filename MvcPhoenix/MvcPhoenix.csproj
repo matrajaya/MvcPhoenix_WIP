@@ -1340,6 +1340,7 @@
     <Content Include="Views\Client\_ContactsModal.cshtml" />
     <Content Include="Views\Client\_Contacts.cshtml" />
     <Content Include="Views\Client\_EndUses.cshtml" />
+    <Content Include="Views\Receiving\_UnknownBulkList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

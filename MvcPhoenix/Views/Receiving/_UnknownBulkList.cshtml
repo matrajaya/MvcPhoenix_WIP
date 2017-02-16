@@ -1,0 +1,116 @@
+﻿@model List<MvcPhoenix.EF.tblBulkUnKnown>
+@{
+    ViewBag.Title = "Unknown Bulk List";
+}
+
+@if (Model.Count > 0)
+{
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <div id="dvGridPlaceHolder">
+                <div class="col-md-12 text-center">
+                    <label class="lead">Unkown Bulk Containers On Hold</label>
+                </div>
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>BulkID</th>
+                                <th>BulkStatus</th>
+                                <th>Warehouse</th>
+                                <th>LotNumber</th>
+                                <th>Bin</th>
+                                <th>UM</th>
+                                <th>Qty</th>
+                                <th>ReceiveWeight</th>
+                                <th>CurrentWeight</th>
+                                <th>ExpirationDate</th>
+                                <th>MfgDate</th>
+                                <th>ReceiveDate</th>
+                                <th>QCDate</th>
+                                <th>PackOut</th>
+                                <th>ReturnLocation</th>
+                                <th>NoticeDate</th>
+                                <th>ContainerColor</th>
+                                <th>CeaseShipDate</th>
+                                <th>ContainerNotes</th>
+                                <th>BulkLabelNote</th>
+                                <th>ReceivedBy</th>
+                                <th>EnteredBy</th>
+                                <th>Carrier</th>
+                                <th>LogNotes</th>
+                                <th>ContainerType</th>
+                                <th>COAIncluded</th>
+                                <th>MSDSIncluded</th>
+                                <th>ReceivedAsCode</th>
+                                <th>ReceivedAsName</th>
+                                <th>flammable</th>
+                                <th>freezer</th>
+                                <th>refrigerator</th>
+                                <th>OtherStorage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Ajax.ActionLink(" ", "DeleteUnknownBulk", "Receiving", new { id = @item.BulkID },
+                                         new AjaxOptions
+                                         {
+                                             HttpMethod = "GET",
+                                             OnSuccess = "RefreshList"
+                                         }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;", @title = "Delete" })
+                                    </td>
+                                    <td>@item.BulkID</td>
+                                    <td>@item.BulkStatus</td>
+                                    <td>@item.Warehouse</td>
+                                    <td>@item.LotNumber</td>
+                                    <td>@item.Bin</td>
+                                    <td>@item.UM</td>
+                                    <td>@item.Qty</td>
+                                    <td>@String.Format("{0:0.00}", @item.ReceiveWeight)</td>
+                                    <td>@String.Format("{0:0.00}", @item.CurrentWeight)</td>
+                                    <td>@String.Format("{0:dd MMM yyyy}", @item.ExpirationDate)</td>
+                                    <td>@String.Format("{0:dd MMM yyyy}", @item.MfgDate)</td>
+                                    <td>@String.Format("{0:dd MMM yyyy}", @item.ReceiveDate)</td>
+                                    <td>@String.Format("{0:dd MMM yyyy}", @item.QCDate)</td>
+                                    <td>@item.PackOut</td>
+                                    <td>@item.ReturnLocation</td>
+                                    <td>@String.Format("{0:dd MMM yyyy}", @item.NoticeDate)</td>
+                                    <td>@item.ContainerColor</td>
+                                    <td>@String.Format("{0:dd MMM yyyy}", @item.CeaseShipDate)</td>
+                                    <td>@item.ContainerNotes</td>
+                                    <td>@item.BulkLabelNote</td>
+                                    <td>@item.ReceivedBy</td>
+                                    <td>@item.EnteredBy</td>
+                                    <td>@item.Carrier</td>
+                                    <td>@item.LogNotes</td>
+                                    <td>@item.ContainerType</td>
+                                    <td>@item.COAIncluded</td>
+                                    <td>@item.MSDSIncluded</td>
+                                    <td>@item.ReceivedAsCode</td>
+                                    <td>@item.ReceivedAsName</td>
+                                    <td>@item.flammable</td>
+                                    <td>@item.freezer</td>
+                                    <td>@item.refrigerator</td>
+                                    <td>@item.OtherStorage</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p class="invisible">No unknown bulk available</p>
+}
+<script type="text/javascript">
+    function RefreshList() {
+        window.location.reload();
+    }
+</script>
