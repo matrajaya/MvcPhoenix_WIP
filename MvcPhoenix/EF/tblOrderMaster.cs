@@ -16,6 +16,7 @@ namespace MvcPhoenix.EF
     {
         public int OrderID { get; set; }
         public Nullable<int> ClientID { get; set; }
+        public Nullable<int> DivisionID { get; set; }
         public string Customer { get; set; }
         public Nullable<int> CMCOrder { get; set; }
         public Nullable<int> WebOrderID { get; set; }
@@ -106,6 +107,5 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateUser { get; set; }
         public Nullable<int> LegacyID { get; set; }
-        public Nullable<int> DivisionID { get; set; }
     }
 }

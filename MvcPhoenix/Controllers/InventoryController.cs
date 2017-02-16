@@ -135,7 +135,6 @@ namespace MvcPhoenix.Controllers
         public ActionResult SavePrePackStock(PrePackStock vm, FormCollection fc)
         {
             InventoryService.fnSavePrePackStock(vm, fc);
-
             return RedirectToAction("Edit", new { id = vm.ProductDetailID });
         }
 
@@ -143,12 +142,12 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveStock(StockViewModel vm)
         {
             InventoryService.fnSaveStock(vm);
-
             return RedirectToAction("Edit", new { id = vm.ProductDetailID });
         }
 
-        public ActionResult BulkOrdersList(int id)  // id=productdetailid
+        public ActionResult BulkOrdersList(int id)
         {
+            // id=productdetailid
             using (db)
             {
                 var pd = db.tblProductDetail.Find(id);
@@ -177,8 +176,6 @@ namespace MvcPhoenix.Controllers
                               OrderComment = orders.Comment
                           }).ToList();
 
-                // 09/02 add viewbag
-                // we need the clientid to pass to replenishments controller if user wants to create a new bulk order
                 var pm2 = db.tblProductMaster.Find(id);
                 ViewBag.ProductDetailID = id;
 
@@ -328,26 +325,10 @@ namespace MvcPhoenix.Controllers
 
         #region Label Printing
 
-        /// Generates Label as PDF
-        //public ActionResult PrintLabel()
-        //{
-        //    var pagecopies = 2;
-
-        //    return new ViewAsPdf()
-        //    {
-        //        //FileName = "Label.pdf",
-        //        PageMargins = new Margins(2, 2, 0, 2),
-        //        PageWidth = 200,
-        //        PageHeight = 75,
-        //        CustomSwitches = "--disable-smart-shrinking --copies "+pagecopies+""
-        //    };
-        //}
-
         [AllowAnonymous]
         public ActionResult PrintLabel()
-        {
-            // Generate plain html label
-            return View();
+        {            
+            return View();                                                      // Generate plain html label
         }
 
         // Anonymous access is REQUIRED for the callback from client print
@@ -376,8 +357,7 @@ namespace MvcPhoenix.Controllers
             cpj.SendToClient(System.Web.HttpContext.Current.Response);          // Send it...
         }
 
-        // Web client call to ShelfStockPrint generates pdf and sends pdf stream to printer
-        // stream pdf to printer
+        // Web client call to ShelfStockPrint generates pdf and sends pdf stream to printer. Stream pdf to printer
         [AllowAnonymous]
         public void ShelfStockPrint(string Shelfstockid, string pagecopies)
         {
@@ -404,13 +384,11 @@ namespace MvcPhoenix.Controllers
             cpj.SendToClient(System.Web.HttpContext.Current.Response);          // Send it
         }
 
-        // Generate label as html view
-        // Used as template for pdf stream in ShelfStockPrint
+        // Generate label as html view. Used as template for pdf stream in ShelfStockPrint
         [AllowAnonymous]
         public ActionResult PrintShelfStockLabel(int id)
         {
             var vm = InventoryService.fnFillStockViewModel(id);
-
             return View(vm);
         }
 
@@ -418,7 +396,6 @@ namespace MvcPhoenix.Controllers
         public ActionResult ShelfStockLabel(int id)
         {
             var vm = InventoryService.fnFillStockViewModel(id);
-
             return new ViewAsPdf(vm)
             {
                 // FileName = vm.ProductCode + vm.LotNumber + vm.Size + ".pdf",     // download using filename

@@ -73,7 +73,7 @@ namespace MvcPhoenix.Services
                 vm.TotalLevelHold = StatusLevelTotal(id, "HOLD");
                 vm.TotalLevelQC = StatusLevelTotal(id, "QC");
                 vm.TotalLevelReturn = StatusLevelTotal(id, "RETURN");
-                vm.TotalLevelReturn = StatusLevelTotal(id, "RECD");
+                vm.TotalLevelRecd = StatusLevelTotal(id, "RECD");
                 vm.TotalLevelOther = StatusLevelTotal(id, "OTHER");
 
                 return vm;

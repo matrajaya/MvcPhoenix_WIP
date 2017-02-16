@@ -63,18 +63,22 @@
                     <div class="form-group col-md-3">
                         <label>Date Of Manufacture</label>
                         @Html.TextBoxFor(m => m.BulkContainer.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.BulkContainer.mfgdate)
                     </div>
                     <div class="form-group col-md-2">
                         <label>Expiration Date</label>
                         @Html.TextBoxFor(m => m.BulkContainer.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.BulkContainer.expirationdate)
                     </div>
                     <div class="form-group col-md-2">
                         <label>Cease Ship Date</label>
                         @Html.TextBoxFor(m => m.BulkContainer.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.BulkContainer.ceaseshipdate)
                     </div>
                     <div class="form-group col-md-2">
                         <label>QC Date</label>
                         @Html.TextBoxFor(m => m.BulkContainer.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.BulkContainer.qcdate)
                     </div>
                 </div>
             </div>

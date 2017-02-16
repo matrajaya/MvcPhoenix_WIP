@@ -6,6 +6,12 @@
     {
         ViewBag.Title = "Receive Bulk Container";
         ViewBag.BulkNew = "New";
+
+        if (Model.isknownmaterial == false)
+        {
+            ViewBag.Title = "Receive Unknown Bulk Container";
+            ViewBag.BulkNew = "New";
+        }
     }
     else
     {
@@ -17,7 +23,10 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+            @if (Model.clientid > 1)
+            {
+                <img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+            }
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
@@ -49,7 +58,16 @@
                                 <th colspan="4">Receiving Notes - Alert</th>
                             </tr>
                             <tr>
-                                <td colspan="4">@Model.pm_alertnotesreceiving</td>
+                                <td colspan="4">
+                                    @if (@Model.pm_alertnotesreceiving == "No receiving alert for this product")
+                                    {
+                                        @Model.pm_alertnotesreceiving
+                                    }
+                                    else
+                                    {
+                                        <marquee><h3>@Model.pm_alertnotesreceiving</h3></marquee>
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <th>Master Code</th>
@@ -99,6 +117,21 @@
                 <h3 class="panel-title" data-toggle="collapse" data-target="#prodinfopan"><i class="fa fa-file-text-o fa-fw"></i> Product Batch / Lot Information</h3>
             </div>
             <div id="prodinfopan" class="panel-body collapse in">
+                @if (Model.isknownmaterial == false)
+                {
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Received as Code</label>
+                            @Html.TextBoxFor(m => m.receivedascode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.receivedascode)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Received as Name</label>
+                            @Html.TextBoxFor(m => m.receivedasname, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.receivedasname)
+                        </div>
+                    </div>
+                }
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Client</label>
@@ -230,24 +263,48 @@
                         @Html.ValidationMessageFor(m => m.um)
                     </div>
                     <div class="col-md-6">
-                        <ul class="list-unstyled list-2-col">
-                            <li>
-                                @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                <label class="control-label">Flammable</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                <label class="control-label">Freezer</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                <label class="control-label">Refrigerate</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                <label class="control-label">Packout On Receipt</label>
-                            </li>
-                        </ul>
+                        @if (Model.isknownmaterial == false)
+                        {
+                            <ul class="list-unstyled list-2-col">
+                                <li>
+                                    @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox checkbox-inline" })
+                                    <label class="control-label">Flammable</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox checkbox-inline" })
+                                    <label class="control-label">Freezer</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox checkbox-inline" })
+                                    <label class="control-label">Refrigerate</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox checkbox-inline" })
+                                    <label class="control-label">Packout On Receipt</label>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="list-unstyled list-2-col">
+                                <li>
+                                    @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
+                                    <label class="control-label">Flammable</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
+                                    <label class="control-label">Freezer</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
+                                    <label class="control-label">Refrigerate</label>
+                                </li>
+                                <li>
+                                    @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
+                                    <label class="control-label">Packout On Receipt</label>
+                                </li>
+                            </ul>
+                        }
                     </div>
                 </div>
             </div>

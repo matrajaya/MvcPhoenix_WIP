@@ -21,18 +21,17 @@
             <thead>
                 <tr>
                     <th id="noprint" width="100px"></th>
-                    <th>Product Code</th>
-                    <th>WH</th>
-                    <th>Size</th>
-                    <th>Unit Weight</th>
-                    <th>Lot#</th>
-                    <th>Qty On Hand</th>
-                    <th>Qty Allocated</th>
-                    <th>Status</th>
-                    <th>Current Bin</th>
                     <th>Shelf ID</th>
                     <th>Stock ID</th>
                     <th>Bulk ID</th>
+                    <th>WH</th>
+                    <th>Current Bin</th>
+                    <th>Lot#</th>
+                    <th>Size</th>
+                    <th>Unit Weight</th>
+                    <th>Qty On Hand</th>
+                    <th>Qty Allocated</th>
+                    <th>Status</th>
                     <th id="noprint" class="text-center"></th>
                 </tr>
             </thead>
@@ -46,18 +45,17 @@
                                 @Html.ActionLink(" ", "ShelfStockLabel", "Inventory", new { id = @row.StockID }, new { @class = "btn btn-success fa fa-file-pdf-o", @title = "Preview label in browser", @target = "_blank" })
                             </span>
                         </td>
-                        <td>@row.ProductCode</td>
-                        <td>@row.Warehouse</td>
-                        <td>@row.Size</td>
-                        <td>@row.UnitWeight</td>
-                        <td>@row.LotNumber</td>
-                        <td>@row.QtyOnHand</td>
-                        <td>@row.QtyAllocated</td>
-                        <td>@row.ShelfStatus</td>
-                        <td>@row.Bin</td>
                         <td>@row.ShelfID</td>
                         <td>@row.StockID</td>
                         <td>@row.BulkID</td>
+                        <td>@row.Warehouse</td>
+                        <td>@row.Bin</td>
+                        <td>@row.LotNumber</td>
+                        <td>@row.Size</td>
+                        <td>@row.UnitWeight</td>
+                        <td>@row.QtyOnHand</td>
+                        <td>@row.QtyAllocated</td>
+                        <td>@row.ShelfStatus</td>
                         <td id="noprint">
                             <span class="pull-right">
                                 @if (@row.QtyOnHand > 0)
