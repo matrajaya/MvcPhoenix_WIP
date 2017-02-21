@@ -18,7 +18,7 @@
             {
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i></span>
-                    @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Product Code", @required = "required" })
+                    @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter product code or name", @required = "required", @title = "Search using product code/name" })
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
                     </span>
@@ -42,4 +42,7 @@
             </div>
         </div>
     </div>
+
+    @Html.Action("UnkownBulkList", "Receiving")
+
 </div>
