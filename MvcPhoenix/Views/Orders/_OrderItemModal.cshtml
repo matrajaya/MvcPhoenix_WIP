@@ -51,7 +51,7 @@
                         @if (@Model.CrudMode == "RW")
                         {
                             <div class="col-md-12 form-group">
-                                @Html.DropDownListFor(m => m.ProductDetailID, Model.ListOfProductDetailIDs, new { onchange = "fnGetSizes()", @class = "form-control" })
+                                @Html.DropDownListFor(m => m.ProductDetailID, Model.ListOfProductDetailIDs, new { onchange = "fnGetSizes();fnCatchProductDetailId(this.value);", @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.ProductDetailID)
                             </div>
                         }
@@ -198,6 +198,10 @@
 
 <script type="text/javascript">
 
+    function fnCatchProductDetailId(id) {
+        $('#ProductDetailID').val(id);
+    }
+
     function fnGetSizes() {
         // empty the dd then rebuild it
         $('#FirstShelfID').empty();
@@ -234,6 +238,6 @@
         $('#dialogPlaceholderModal').modal('hide');
 
         // Show sample alert note
-        SampleOrderAlert(@Model.ProductDetailID);
+        SampleOrderAlert($('#ProductDetailID').val());
     }
 </script>
