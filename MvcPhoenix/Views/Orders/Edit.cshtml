@@ -371,44 +371,43 @@
             </div>
             <div id="shipmentspan" class="panel-body collapse in">
                 <div class="row">
-                    <div class="col-md-4 form-group">
-                        <label class="control-label">Carrier/Ship Via</label>
-                        @Html.DropDownListFor(m => m.shipvia, Model.ListOfShipVias, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.shipvia)
-                    </div>
-                    <div class="col-md-4 form-group">
-                        <label class="control-label">Shipping Account</label>
-                        @Html.TextBoxFor(m => m.shipacct, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.shipacct)
-                    </div>
-                    <div class="col-md-4 form-group">
-                        <label class="control-label">Preferred Carrier</label>
-                        @Html.TextBoxFor(m => m.preferredcarrier, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.preferredcarrier)
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <label class="control-label">Timing</label>
-                        @Html.TextBoxFor(m => m.timing, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.timing)
-                    </div>
-                    <div class="col-md-2">
-                        <label class="control-label">Freight Cost</label>
-                        @Html.TextBoxFor(m => m.spsfreightcost, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.spsfreightcost)
-                    </div>
-                    <div class="col-md-2">
-                        <label class="control-label">Shipped Weight</label>
-                        @Html.TextBoxFor(m => m.spsshippedwt, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.spsshippedwt)
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label class="control-label">Carrier/Ship Via</label>
+                                @Html.DropDownListFor(m => m.shipvia, Model.ListOfShipVias, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.shipvia)
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <label class="control-label">Shipping Account</label>
+                                @Html.TextBoxFor(m => m.shipacct, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.shipacct)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="control-label">Timing</label>
+                                @Html.TextBoxFor(m => m.timing, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.timing)
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">Freight Cost</label>
+                                @Html.TextBoxFor(m => m.spsfreightcost, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.spsfreightcost)
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label">Shipped Weight</label>
+                                @Html.TextBoxFor(m => m.spsshippedwt, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.spsshippedwt)
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <label class="control-label">Tracking Number</label>
-                        @Html.TextBoxFor(m => m.tracking, new { @class = "form-control" })
+                        @Html.TextAreaFor(m => m.tracking, new { @class = "form-control", @rows = 5 })
                         @Html.ValidationMessageFor(m => m.tracking)
                     </div>
-                </div>
+                </div>                
             </div>
         </div>
         <div class="panel panel-primary">
@@ -419,12 +418,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label>Special Instructions - Internal</label>
-                        @Html.TextAreaFor(m => m.specialinternal, new { @class = "form-control", @rows = 10 })
+                        @Html.TextAreaFor(m => m.specialinternal, new { @class = "form-control", @rows = 5 })
                         @Html.ValidationMessageFor(m => m.specialinternal)
                     </div>
                     <div class="col-md-6">
                         <label>Special Instructions - External</label>
-                        @Html.TextAreaFor(m => m.special, new { @class = "form-control", @rows = 10 })
+                        @Html.TextAreaFor(m => m.special, new { @class = "form-control", @rows = 5 })
                         @Html.ValidationMessageFor(m => m.special)
                     </div>
                 </div>

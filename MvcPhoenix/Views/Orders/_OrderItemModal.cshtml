@@ -118,14 +118,20 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-4 form-group">
+                            <label>Carrier</label>
+                            @Html.DropDownListFor(m => m.ItemShipVia, Model.ListOfShipVias, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-4 form-group">
                             <label>Ship Date</label>
                             @Html.TextBoxFor(m => m.ShipDate, "{0:dd MMM yyyy}", new { @class = "date-picker form-control" })
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-4 form-group">
                             <label>A-Status</label>
                             @Html.TextBoxFor(m => m.AllocateStatus, new { @class = "form-control" })
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <ul class="list-unstyled list-2-col">
                                 <li>
@@ -138,12 +144,6 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label>Delay Reason</label>
-                            @Html.DropDownList("DelayReason", (List<SelectListItem>)ViewBag.ListOfDelayReasons, new { @class = "form-control" })
-                        </div>
                         <div class="col-md-6">
                             <ul class="list-unstyled list-2-col">
                                 <li>
@@ -155,6 +155,12 @@
                                     @Html.CheckBox("NonCMCDelay", Model.NonCMCDelay != null && (bool)Model.NonCMCDelay)
                                 </li>
                             </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Delay Reason</label>
+                            @Html.DropDownList("DelayReason", (List<SelectListItem>)ViewBag.ListOfDelayReasons, new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">

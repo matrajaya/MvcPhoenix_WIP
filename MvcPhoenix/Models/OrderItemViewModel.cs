@@ -64,6 +64,11 @@ namespace MvcPhoenix.Models
         [Display(Name = "Ship Date")]
         public Nullable<System.DateTime> ShipDate { get; set; }
 
+        [Display(Name = "Ship Via")]
+        public string ItemShipVia { get; set; }
+
+        public List<SelectListItem> ListOfShipVias { get; set; }
+
         [Display(Name = "Non CMC Delay?")]
         public bool? NonCMCDelay { get; set; }
 

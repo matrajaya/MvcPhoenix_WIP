@@ -454,6 +454,8 @@ namespace MvcPhoenix.Services
                 vm.Qty = 1;
                 vm.LotNumber = null;
                 vm.ShipDate = null;
+                vm.ItemShipVia = "";
+                vm.ListOfShipVias = fnListOfShipVias();
                 vm.CSAllocate = true;
                 vm.AllocateStatus = null;
                 vm.NonCMCDelay = false;
@@ -577,6 +579,8 @@ namespace MvcPhoenix.Services
                 vm.Size = q.Size;
                 vm.Qty = q.Qty;
                 vm.LotNumber = q.LotNumber;
+                vm.ItemShipVia = q.Via;
+                vm.ListOfShipVias = fnListOfShipVias();
                 vm.ShipDate = q.ShipDate;
                 vm.CSAllocate = q.CSAllocate;
                 vm.AllocateStatus = q.AllocateStatus;
@@ -629,6 +633,7 @@ namespace MvcPhoenix.Services
                 q.ShelfID = vm.ShelfID;
                 q.Qty = vm.Qty;
                 q.LotNumber = vm.LotNumber;
+                q.Via = vm.ItemShipVia;
                 q.ShipDate = vm.ShipDate;
                 q.CSAllocate = vm.CSAllocate;
                 q.AllocateStatus = vm.AllocateStatus;
@@ -1169,69 +1174,72 @@ namespace MvcPhoenix.Services
                                      where t.ClientID == o.ClientID
                                      select t).FirstOrDefault();
 
-                if (sm.HazardSurcharge == true)
+                if (qrySurcharges != null)
                 {
-                    fnInsertOrderTrans(oi.ItemID, "HAZD", qrySurcharges.Haz);
-                }
+                    if (sm.HazardSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "HAZD", qrySurcharges.Haz);
+                    }
 
-                if (sm.FlammableSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "FLAM", qrySurcharges.Flam);
-                }
+                    if (sm.FlammableSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "FLAM", qrySurcharges.Flam);
+                    }
 
-                if (sm.HeatSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "HEAT", qrySurcharges.Heat);
-                }
+                    if (sm.HeatSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "HEAT", qrySurcharges.Heat);
+                    }
 
-                if (sm.RefrigSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "REFR", qrySurcharges.Refrig);
-                }
+                    if (sm.RefrigSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "REFR", qrySurcharges.Refrig);
+                    }
 
-                if (sm.FreezerSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "FREZ", qrySurcharges.Freezer);
-                }
+                    if (sm.FreezerSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "FREZ", qrySurcharges.Freezer);
+                    }
 
-                if (sm.CleanSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "CLEN", qrySurcharges.Clean);
-                }
+                    if (sm.CleanSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "CLEN", qrySurcharges.Clean);
+                    }
 
-                if (sm.BlendSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "BLND", 0);
-                }
+                    if (sm.BlendSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "BLND", 0);
+                    }
 
-                if (sm.NalgeneSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "NALG", qrySurcharges.Nalgene);
-                }
+                    if (sm.NalgeneSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "NALG", qrySurcharges.Nalgene);
+                    }
 
-                if (sm.NitrogenSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "NITR", 0);
-                }
+                    if (sm.NitrogenSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "NITR", 0);
+                    }
 
-                if (sm.BiocideSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "BIOC", 0);
-                }
+                    if (sm.BiocideSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "BIOC", 0);
+                    }
 
-                if (sm.KosherSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "KOSH", 0);
-                }
+                    if (sm.KosherSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "KOSH", 0);
+                    }
 
-                if (sm.LabelSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "LABL", qrySurcharges.LabelFee);
-                }
+                    if (sm.LabelSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "LABL", qrySurcharges.LabelFee);
+                    }
 
-                if (sm.OtherSurcharge == true)
-                {
-                    fnInsertOrderTrans(oi.ItemID, "OTHR", sm.OtherSurchargeAmt);
+                    if (sm.OtherSurcharge == true)
+                    {
+                        fnInsertOrderTrans(oi.ItemID, "OTHR", sm.OtherSurchargeAmt);
+                    }
                 }
             }
         }

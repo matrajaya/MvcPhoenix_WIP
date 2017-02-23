@@ -27,6 +27,23 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Orders/Index.cshtml", orderslist);
         }
 
+        [HttpGet]
+        public ActionResult ImportOrders()
+        {
+            //int ImportCount = Services.OrderImportService.ImportOrders(); // Actual import
+            
+            using (db)
+            {
+                //TempData["ImportCount"] = ImportCount;
+                var vm = (from t in db.tblOrderImport
+                          where t.ImportStatus == "FAIL" && t.Location_MDB == "EU"
+                          orderby t.OrderDate, t.GUID
+                          select t).ToList();
+
+                return View("~/Views/Orders/ImportResults.cshtml", vm);
+            }
+        }
+
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {

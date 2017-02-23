@@ -567,6 +567,7 @@
     <Compile Include="Services\GHSService.cs" />
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\InvoiceService.cs" />
+    <Compile Include="Services\OrderImportService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\PackOutService.cs" />
     <Compile Include="Services\ProductsService.cs" />
@@ -1341,6 +1342,7 @@
     <Content Include="Views\Client\_Contacts.cshtml" />
     <Content Include="Views\Client\_EndUses.cshtml" />
     <Content Include="Views\Receiving\_UnknownBulkList.cshtml" />
+    <Content Include="Views\Orders\ImportResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

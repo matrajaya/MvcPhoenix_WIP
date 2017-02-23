@@ -26,6 +26,9 @@ namespace MvcPhoenix.Models
         [Display(Name = "Client")]
         public int? clientid { get; set; }
 
+        [Display(Name = "Division ID")]
+        public int? divisionid { get; set; }
+
         public string clientname { get; set; }
         public string clientcode { get; set; }
         public string logofilename { get; set; }

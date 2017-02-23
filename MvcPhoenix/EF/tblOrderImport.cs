@@ -174,6 +174,7 @@ namespace MvcPhoenix.EF
         public Nullable<int> ProfileID_MDB { get; set; }
         public Nullable<int> LegacyID_MDB { get; set; }
         public string Company_MDB { get; set; }
+        public string Location_MDB { get; set; }
         public Nullable<decimal> FRT_MDB { get; set; }
         public Nullable<decimal> FrtSurcharge_MDB { get; set; }
         public Nullable<decimal> DH_MDB { get; set; }

@@ -27,7 +27,7 @@
             {
                 <tr>
                     <td>@item.clientname</td>
-                    <td>@item.orderdate.ToString()</td>
+                    <td>@String.Format("{0:dd MMM yyyy}", @item.orderdate)</td>
                     <td>@item.company</td>
                     <td>@item.orderid.ToString()</td>
                     <td>@item.ordertype</td>
