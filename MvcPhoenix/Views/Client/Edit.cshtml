@@ -263,11 +263,10 @@
         <div id="endusepanel" class="panel-body collapse in">
             <div class="row">
                 <div class="form-group col-md-6">
-                    @* Shows input field even if no end use exists*@
                     @using (Ajax.BeginForm("AddEndUse", "Client", new AjaxOptions
                     {
                         HttpMethod = "POST",
-                        UpdateTargetId = "endusepanel",
+                        UpdateTargetId = "endUseList",
                         OnFailure = "$.alert('Something is wrong!')",
                         InsertionMode = InsertionMode.Replace
                     }))
@@ -282,7 +281,9 @@
                     }
                 </div>
             </div>
-            @Html.Action("ListEndUses", "Client", new { id = @Model.ClientID })
+            <div id="endUseList">
+                @Html.Action("ListEndUses", "Client", new { id = @Model.ClientID })
+            </div>
         </div>
     </div>
 

@@ -7,26 +7,6 @@
 }
 
 <div id="endUseList">
-    <div class="row">
-        <div class="form-group col-md-6">
-            @using (Ajax.BeginForm("AddEndUse", "Client", new AjaxOptions
-            {
-                HttpMethod = "POST",
-                UpdateTargetId = "endUseList",
-                OnFailure = "$.alert('Something is wrong!')",
-                InsertionMode = InsertionMode.Replace
-            }))
-            {
-                <div class="input-group">
-                    <input type="text" id="EndUseString" name="endusestring" class="form-control" placeholder="Add New End Use" required pattern=".*\S+.*" title="Type End Use" />
-                    <input hidden value="@ViewBag.ClientKey" id="clientid" name="clientid" />
-                    <div class="input-group-btn">
-                        <input type="submit" value="+ Add" class="btn btn-success" />
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
     <ul class="list-unstyled list-3-col">
         @foreach (var item in Model)
         {
@@ -35,7 +15,7 @@
                                        {
                                            Confirm = "Are you sure you want to delete end use phrase?",
                                            HttpMethod = "POST",
-                                           UpdateTargetId = "endusepanel",
+                                           UpdateTargetId = "endUseList",
                                            OnSuccess = "$.alert('End Use Deleted')",
                                            InsertionMode = InsertionMode.Replace
                                        }, new { @class = "fa fa-fw fa-times-circle", @style = "color:red", @title = "Delete End Use" })
