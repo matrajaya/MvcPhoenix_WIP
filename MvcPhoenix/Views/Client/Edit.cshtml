@@ -261,6 +261,27 @@
             <h3 class="panel-title" data-toggle="collapse" data-target="#endusepanel"><i class="fa fa-book fa-fw"></i> End Uses</h3>
         </div>
         <div id="endusepanel" class="panel-body collapse in">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    @* Shows input field even if no end use exists*@
+                    @using (Ajax.BeginForm("AddEndUse", "Client", new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        UpdateTargetId = "endusepanel",
+                        OnFailure = "$.alert('Something is wrong!')",
+                        InsertionMode = InsertionMode.Replace
+                    }))
+                    {
+                        <div class="input-group">
+                            <input type="text" id="EndUseString" name="endusestring" class="form-control" placeholder="Add New End Use" required pattern=".*\S+.*" title="Type End Use" />
+                            <input hidden value="@Model.ClientID" id="clientid" name="clientid" />
+                            <div class="input-group-btn">
+                                <input type="submit" value="+ Add" class="btn btn-success" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
             @Html.Action("ListEndUses", "Client", new { id = @Model.ClientID })
         </div>
     </div>
