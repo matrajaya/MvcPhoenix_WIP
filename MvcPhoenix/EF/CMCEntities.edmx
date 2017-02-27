@@ -980,6 +980,7 @@
           <Property Name="FrtSurcharge_MDB" Type="numeric" Precision="10" Scale="2" />
           <Property Name="DH_MDB" Type="numeric" Precision="10" Scale="2" />
           <Property Name="Other_MDB" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="ImportError" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="tblOrderItem">
           <Key>
@@ -993,9 +994,9 @@
           <Property Name="AllocatedBulkID" Type="int" />
           <Property Name="AllocatedStockID" Type="int" />
           <Property Name="ImportItemID" Type="nvarchar" MaxLength="50" />
-          <Property Name="ProductCode" Type="nvarchar" MaxLength="15" />
-          <Property Name="ProductName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Mnemonic" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProductCode" Type="nvarchar(max)" />
+          <Property Name="ProductName" Type="nvarchar(max)" />
+          <Property Name="Mnemonic" Type="nvarchar(max)" />
           <Property Name="LotNumber" Type="nvarchar" MaxLength="25" />
           <Property Name="Qty" Type="int" />
           <Property Name="Size" Type="nvarchar" MaxLength="8" />
@@ -3020,9 +3021,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="AllocatedBulkID" Type="Int32" />
           <Property Name="AllocatedStockID" Type="Int32" />
           <Property Name="ImportItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Mnemonic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Mnemonic" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LotNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Qty" Type="Int32" />
           <Property Name="Size" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
@@ -3085,7 +3086,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="FrtSurcharge_MDB" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="DH_MDB" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Other_MDB" Type="Decimal" Precision="10" Scale="2" />
-        </EntityType>
+        </EntityType>        
         <EntityType Name="tblOrderMaster">
           <Key>
             <PropertyRef Name="OrderID" />
@@ -4163,8 +4164,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="FrtSurcharge_MDB" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="DH_MDB" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Other_MDB" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ImportError" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
-        </Schema>
+		</Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -6025,6 +6027,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySetMapping Name="tblOrderImport">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderImport">
               <MappingFragment StoreEntitySet="tblOrderImport">
+                <ScalarProperty Name="ImportError" ColumnName="ImportError" />
                 <ScalarProperty Name="Other_MDB" ColumnName="Other_MDB" />
                 <ScalarProperty Name="DH_MDB" ColumnName="DH_MDB" />
                 <ScalarProperty Name="FrtSurcharge_MDB" ColumnName="FrtSurcharge_MDB" />

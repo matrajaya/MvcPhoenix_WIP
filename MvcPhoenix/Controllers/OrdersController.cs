@@ -28,20 +28,26 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult ImportOrders()
+        public ActionResult OrdersImport()
         {
-            //int ImportCount = Services.OrderImportService.ImportOrders(); // Actual import
-            
             using (db)
             {
-                //TempData["ImportCount"] = ImportCount;
                 var vm = (from t in db.tblOrderImport
                           where t.ImportStatus == "FAIL" && t.Location_MDB == "EU"
                           orderby t.OrderDate, t.GUID
                           select t).ToList();
 
-                return View("~/Views/Orders/ImportResults.cshtml", vm);
+                return View("~/Views/Orders/Import.cshtml", vm);
             }
+        }
+
+        [HttpGet]
+        public ActionResult OrdersImportProcess()
+        {
+            int ImportCount = OrderImportService.ImportOrders(); // Actual import
+            TempData["ImportCount"] = ImportCount;
+
+            return RedirectToAction("OrdersImport");
         }
 
         [HttpPost]

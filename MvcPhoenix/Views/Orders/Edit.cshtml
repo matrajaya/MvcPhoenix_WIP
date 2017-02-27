@@ -24,6 +24,10 @@
         <div class="col-md-12">
             <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Orders", "Index")
             <span class="pull-right label label-info">Order ID: @Model.orderid</span>
+            @if (@Model.weborderid > 1)
+            {
+                <span class="pull-right label label-warning" style="padding-right:5px;margin-right:5px;">Web Order ID: @Model.weborderid</span>
+            }
         </div>
         <div class="col-md-12">
             <div class="pull-left">
@@ -69,6 +73,7 @@
     {
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(m => m.orderid)
+        @Html.HiddenFor(m => m.weborderid)
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.orderdate)
         @Html.HiddenFor(m => m.CreateUser)
@@ -114,9 +119,9 @@
                         @Html.ValidationMessageFor(m => m.source)
                     </div>
                     <div class="col-md-2">
-                        <label class="control-label">Client Source</label>
-                        @Html.TextBoxFor(m => m.source, new { @class = "form-control", @disabled = "disabled" })
-                        @Html.ValidationMessageFor(m => m.source)
+                        <label class="control-label">Client Source/Type</label>
+                        @Html.TextBoxFor(m => m.custordertype, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.custordertype)
                     </div>
                 </div>
             </div>
