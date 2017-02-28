@@ -12,7 +12,7 @@
                 <td width="50%">
                     <label>Sent From:</label>
                     <p>
-                        @Html.DisplayFor(m => m.clientname)<br />
+                        <label>@Html.DisplayFor(m => m.clientname)</label><br />
                         Chemical Marketing Concepts Europe<br />
                         Industrieweg 73<br />
                         5145 PD Waalwijk The Netherlands<br />
@@ -38,18 +38,23 @@
                         <tr>
                             <td>
                                 <p>
-                                    @Html.DisplayFor(m => m.company)<br />
+                                    <label>@Html.DisplayFor(m => m.company)</label><br />
                                     @Html.DisplayFor(m => m.street)<br />
-                                    @Html.DisplayFor(m => m.street2)<br />
-                                    @Html.DisplayFor(m => m.street3)<br />
+                                    @Html.DisplayFor(m => m.street2), @Html.DisplayFor(m => m.street3)<br />
                                     @Html.DisplayFor(m => m.city), @Html.DisplayFor(m => m.state) - @Html.DisplayFor(m => m.Zip)<br />
                                     @Html.DisplayFor(m => m.country)<br />
                                 </p>
                                 <p>
                                     <label>ATTN: </label>@Html.DisplayFor(m => m.attention)<br />
                                     <label>Email: </label>@Html.DisplayFor(m => m.email)<br />
-                                    <label>Phone: </label>@Html.DisplayFor(m => m.phone)
+                                    <label>Phone: </label>@Html.DisplayFor(m => m.phone)<br />
                                 </p>
+                                @if (Model.CustomsRefNum != null)
+                                {
+                                    <p>
+                                        <label>Customs Ref #: </label>@Html.DisplayFor(m => m.CustomsRefNum)
+                                    </p>
+                                }
                             </td>
                         </tr>
                     </table>
@@ -79,10 +84,6 @@
                         <tr>
                             <td style="text-align:right;"><label>Ship Via: </label></td>
                             <td>@Html.DisplayFor(m => m.shipvia)</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:right;"><label>Customs Ref #: </label></td>
-                            <td>@Html.DisplayFor(m => m.CustomsRefNum)</td>
                         </tr>
                     </table>
                 </td>

@@ -1119,7 +1119,7 @@
           <Property Name="CMCUser" Type="nvarchar" MaxLength="50" />
           <Property Name="CustomerReference" Type="nvarchar" MaxLength="4" />
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
-          <Property Name="BillingGroup" Type="nvarchar" MaxLength="30" />
+          <Property Name="BillingGroup" Type="nvarchar(max)" />
           <Property Name="TotalOrderWeight" Type="int" />
           <Property Name="SPSTaxID" Type="nvarchar" MaxLength="25" />
           <Property Name="SPSCurrency" Type="nvarchar" MaxLength="3" />
@@ -3146,7 +3146,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="CMCUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CustomerReference" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BillingGroup" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BillingGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TotalOrderWeight" Type="Int32" />
           <Property Name="SPSTaxID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="SPSCurrency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />

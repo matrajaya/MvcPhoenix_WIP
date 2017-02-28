@@ -27,11 +27,16 @@
                     }
                 </div>
             </div>
+            <div class="form-group">
+                @Html.ActionLink("Import Orders", "OrdersImport", "Orders", new { onclick = "startImport();", @class = "btn btn-block btn-primary", @target = "_blank" })
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title" data-toggle="collapse" data-target="#searchoptions"><i class="fa fa-search fa-fw"></i>Search</h3>
                 </div>
-                <div id="searchoptions" class="panel-body collapse" style="margin-bottom:-20px;">
+                <div id="searchoptions" class="panel-body" style="margin-bottom:-30px;">
                     <div class="row">
                         <div class="form-group col-md-8">
                             @using (Html.BeginForm("LookupOrderID", "Orders", FormMethod.Post))
@@ -82,9 +87,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            @Html.Action("OrderImport")
-        </div>
+        @*<div class="col-md-6">
+            @Html.Action("OrderImport") For file imports used in New Milford. Passes documents to folder watch by SSIS ETL package.
+        </div>*@
     </div>
     <!-- End: Search Order -->
     <!--Start: Display Results-->

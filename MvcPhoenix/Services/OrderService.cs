@@ -9,37 +9,6 @@ namespace MvcPhoenix.Services
 {
     public class OrderService
     {
-        public static List<OrderMasterFull> fnOrdersSearchResults()
-        {
-            // default query join for the index_partial ORDERS search results, also used by all the search requests as the starting point
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                db.Configuration.AutoDetectChangesEnabled = false;
-                List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
-                orderslist = (from t in db.tblOrderMaster
-                              join clt in db.tblClient on t.ClientID equals clt.ClientID
-                              let count = (from items in db.tblOrderItem where items.OrderID == t.OrderID select items).Count()
-                              let allocationcount = (from i in db.tblOrderItem where i.OrderID == t.OrderID && i.ShipDate == null && i.Qty > 0 && String.IsNullOrEmpty(i.AllocateStatus) && i.ProductDetailID != null && i.ShelfID == null select i).Count()
-                              select new OrderMasterFull
-                              {
-                                  clientid = t.ClientID,
-                                  orderid = t.OrderID,
-                                  customer = t.Customer,
-                                  clientname = clt.ClientName,
-                                  ordertype = t.OrderType,
-                                  orderdate = t.OrderDate,
-                                  company = t.Company,
-                                  CreateUser = t.CreateUser,
-                                  itemscount = count,
-                                  Zip = t.Zip,
-                                  salesrep = t.SalesRep,
-                                  needallocationcount = allocationcount
-                              }).ToList();
-                db.Configuration.AutoDetectChangesEnabled = true;
-                return orderslist;
-            }
-        }
-
         public static OrderMasterFull fnCreateOrder(int id)
         {
             // id=clientid
@@ -48,6 +17,7 @@ namespace MvcPhoenix.Services
                 OrderMasterFull vm = new OrderMasterFull();
                 vm.orderid = -1;
                 vm.clientid = id;
+                vm.ListOfDivisions = fnListOfDivisions(id);
                 var cl = db.tblClient.Find(vm.clientid);
                 vm.clientname = cl.ClientName;
                 vm.orderstatus = "z";
@@ -57,7 +27,6 @@ namespace MvcPhoenix.Services
                 vm.ListOfCountries = fnListOfCountries();
                 vm.ListOfEndUses = fnListOfEndUses(id);
                 vm.ListOfShipVias = fnListOfShipVias();
-                vm.ListOfBillingGroups = fnListOfBillingGroups(id);
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 vm.CreateDate = DateTime.UtcNow;
                 vm.IsSDN = false;
@@ -75,20 +44,29 @@ namespace MvcPhoenix.Services
                          where t.OrderID == id
                          select t).FirstOrDefault();
 
-                o.itemscount = (from t in db.tblOrderItem where t.OrderID == id select t).Count();
-                o.transcount = (from t in db.tblOrderTrans where t.OrderID == id select t).Count();
+                o.itemscount = (from t in db.tblOrderItem 
+                                where t.OrderID == id 
+                                select t).Count();
+
+                o.transcount = (from t in db.tblOrderTrans 
+                                where t.OrderID == id 
+                                select t).Count();
 
                 var cl = db.tblClient.Find(q.ClientID);
-                o.clientname = cl.ClientName;
-                o.clientcode = cl.ClientCode;
+
                 o.ListOfSalesReps = fnListOfSalesReps(cl.ClientID);
                 o.ListOfRequestors = fnListOfRequestors(cl.ClientID);
                 o.ListOfCountries = fnListOfCountries();
                 o.ListOfEndUses = fnListOfEndUses(cl.ClientID);
                 o.ListOfShipVias = fnListOfShipVias();
-                o.ListOfBillingGroups = fnListOfBillingGroups(cl.ClientID);
+                o.ListOfDivisions = fnListOfDivisions(cl.ClientID);
+
+                o.clientname = cl.ClientName;
+                o.clientcode = cl.ClientCode;
                 o.orderid = q.OrderID;
                 o.clientid = q.ClientID;
+                o.divisionid = q.DivisionID;
+                o.billinggroup = q.BillingGroup;
                 o.orderstatus = q.OrderStatus;
                 o.customer = q.Customer;
                 o.cmcorder = Convert.ToInt32(q.CMCOrder);
@@ -199,7 +177,6 @@ namespace MvcPhoenix.Services
                 o.CreateDate = q.CreateDate;
                 o.UpdateUser = q.UpdateUser;
                 o.UpdateDate = q.UpdateDate;
-                o.billinggroup = q.BillingGroup;
                 o.IsSDN = q.IsSDN;
 
                 return o;
@@ -240,6 +217,8 @@ namespace MvcPhoenix.Services
 
                 q.OrderDate = vm.orderdate;
                 q.ClientID = vm.clientid;
+                q.DivisionID = vm.divisionid;
+                q.BillingGroup = vm.billinggroup;               // divisionname + businessunit. Rethink changing to divisionid since it is more unique now.
                 q.Customer = vm.customer;
                 q.CMCOrder = vm.cmcorder;
                 q.WebOrderID = vm.weborderid;
@@ -324,7 +303,6 @@ namespace MvcPhoenix.Services
                 q.UpdateDate = vm.UpdateDate;
                 q.CreateUser = vm.CreateUser;
                 q.CreateDate = vm.CreateDate;
-                q.BillingGroup = vm.billinggroup;           // divisionname + businessunit. Rethink changing to divisionid since it is more unique now.
                 q.IsSDN = false;
 
                 db.SaveChanges();
@@ -472,69 +450,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static List<SelectListItem> fnListOfDelayReasons()
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-
-            mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Delay Reason" });
-            mylist.Insert(1, new SelectListItem { Value = "Backorder", Text = "Backorder" });
-            mylist.Insert(2, new SelectListItem { Value = "Oven Product", Text = "Oven Product" });
-            mylist.Insert(3, new SelectListItem { Value = "Humidity", Text = "Humidity" });
-            mylist.Insert(4, new SelectListItem { Value = "Very Large Order", Text = "Very Large Order" });
-            mylist.Insert(5, new SelectListItem { Value = "Questions/Info Needed", Text = "Questions/Info Needed" });
-            mylist.Insert(6, new SelectListItem { Value = "Special Doc Required", Text = "Special Doc Required" });
-            mylist.Insert(7, new SelectListItem { Value = "Special Request Size", Text = "Special Request Size" });
-            mylist.Insert(8, new SelectListItem { Value = "Return Order", Text = "Return Order" });
-            mylist.Insert(9, new SelectListItem { Value = "Waste", Text = "Waste" });
-            mylist.Insert(10, new SelectListItem { Value = "No partial delivery", Text = "No partial delivery" });
-            mylist.Insert(11, new SelectListItem { Value = "Special delivery date", Text = "Special delivery date" });
-            mylist.Insert(12, new SelectListItem { Value = "Public holiday", Text = "Public holiday" });
-            mylist.Insert(13, new SelectListItem { Value = "Freezable Procedure", Text = "Freezable Procedure" });
-            mylist.Insert(14, new SelectListItem { Value = "CMC delay, customer informed", Text = "CMC delay, customer informed" });
-            mylist.Insert(15, new SelectListItem { Value = "R&D flow", Text = "R&D flow" });
-            mylist.Insert(16, new SelectListItem { Value = "Special procedure", Text = "Special procedure" });
-            mylist.Insert(17, new SelectListItem { Value = "Misc. Charges", Text = "Misc. Charges" });
-            mylist.Insert(18, new SelectListItem { Value = "Transfer order", Text = "Transfer order" });
-            mylist.Insert(19, new SelectListItem { Value = "Consolidated Order", Text = "Consolidated Order" });
-            mylist.Insert(20, new SelectListItem { Value = "Approval Required", Text = "Approval Required" });
-            mylist.Insert(21, new SelectListItem { Value = "Conditioned packaging", Text = "Conditioned packaging" });
-            mylist.Insert(22, new SelectListItem { Value = "Product Not Setup", Text = "Product Not Setup" });
-            mylist.Insert(23, new SelectListItem { Value = "Frt Fwd-Pending Arrangement", Text = "Frt Fwd-Pending Arrangement" });
-            mylist.Insert(24, new SelectListItem { Value = "Labels, SDS", Text = "Labels, SDS" });
-
-            return mylist;
-        }
-
-        public static string fnBuildSizeDropDown(int id)
-        {
-            // id=productdetailid
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                var qry = (from t in db.tblShelfMaster
-                           where t.ProductDetailID == id
-                           orderby t.Size
-                           select t);
-
-                string s = "<option value='0' selected=true>Select Size</option>";
-
-                if (qry.Count() > 0)
-                {
-                    foreach (var item in qry)
-                    {
-                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + "</option>";
-                    }
-                }
-                else
-                {
-                    s = s + "<option value='0'>No Sizes Found</option>";
-                }
-
-                s = s + "<option value='99'>Special Request</option>";
-
-                return s;
-            }
-        }
-
         public static int fnNewItemID()
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -646,11 +561,8 @@ namespace MvcPhoenix.Services
 
                 db.SaveChanges();
 
-                // update the row from other tables
-                fnSaveItemPostUpdate(vm);
-
-                // Go do the Order Trans work....
-                fnGenerateOrderTransactions(vm.ItemID);
+                fnSaveItemPostUpdate(vm);                       // update the row from other tables
+                fnGenerateOrderTransactions(vm.ItemID);         // Go do the Order Trans work....
 
                 return vm.ItemID;
             }
@@ -717,11 +629,11 @@ namespace MvcPhoenix.Services
 
                 if (qry != null)
                 {
-                    string s = @"Delete from tblOrderItem where ItemID=" + id.ToString();
+                    string s = @"DELETE FROM tblOrderItem WHERE ItemID=" + id.ToString();
                     db.Database.ExecuteSqlCommand(s);
 
                     // TODO do we really want to delete all the transactons?
-                    s = @"Delete from tblOrderTrans where OrderItemID=" + id.ToString();
+                    s = @"DELETE FROM tblOrderTrans WHERE OrderItemID=" + id.ToString();
                     db.Database.ExecuteSqlCommand(s);
                 }
             }
@@ -926,6 +838,7 @@ namespace MvcPhoenix.Services
                         }
                     }
                 }
+
                 return AllocationCount;
             }
         }
@@ -1043,22 +956,8 @@ namespace MvcPhoenix.Services
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                string s = @"Delete from tblOrderTrans where OrderTransID=" + id.ToString();
+                string s = @"DELETE FROM tblOrderTrans WHERE OrderTransID=" + id.ToString();
                 db.Database.ExecuteSqlCommand(s);
-            }
-        }
-
-        public static List<SelectListItem> fnListOfOrderItemIDs(int? id)
-        {
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblOrderItem
-                          where t.OrderID == id
-                          orderby t.ProductCode
-                          select new SelectListItem { Value = t.ItemID.ToString(), Text = t.ProductCode }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "None" });
-                return mylist;
             }
         }
 
@@ -1080,7 +979,7 @@ namespace MvcPhoenix.Services
                 string s = "";
 
                 // Tier 1 sample charge
-                s = "Delete from tblOrderTrans where OrderItemID=" + oi.ItemID + " and Transtype = 'SAMP' And CreateUser='System'";
+                s = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + oi.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
                 db.Database.ExecuteSqlCommand(s);
 
                 var tierSize = (from t in db.tblTier
@@ -1094,6 +993,7 @@ namespace MvcPhoenix.Services
                     newrec.OrderItemID = oi.ItemID;
                     newrec.OrderID = oi.OrderID;
                     newrec.ClientID = o.ClientID;
+                    newrec.BillingGroup = o.BillingGroup;
                     newrec.TransType = "SAMP";
                     newrec.TransQty = oi.Qty;
                     newrec.TransAmount = tierSize.Price;
@@ -1101,7 +1001,6 @@ namespace MvcPhoenix.Services
                     newrec.CreateUser = "System";
                     newrec.UpdateDate = DateTime.UtcNow;
                     newrec.UpdateUser = "System";
-                    newrec.BillingGroup = o.BillingGroup;
 
                     db.tblOrderTrans.Add(newrec);
                     db.SaveChanges();
@@ -1120,6 +1019,7 @@ namespace MvcPhoenix.Services
                         newrec.OrderItemID = oi.ItemID;
                         newrec.OrderID = oi.OrderID;
                         newrec.ClientID = o.ClientID;
+                        newrec.BillingGroup = o.BillingGroup;
                         newrec.TransType = "SAMP";
                         newrec.TransQty = oi.Qty;
                         newrec.TransAmount = tierSpecialRequest.Price;
@@ -1128,7 +1028,6 @@ namespace MvcPhoenix.Services
                         newrec.CreateUser = "System";
                         newrec.UpdateDate = DateTime.UtcNow;
                         newrec.UpdateUser = "System";
-                        newrec.BillingGroup = o.BillingGroup;
 
                         db.tblOrderTrans.Add(newrec);
                         db.SaveChanges();
@@ -1248,7 +1147,7 @@ namespace MvcPhoenix.Services
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                string s = String.Format("Delete from tblOrderTrans where OrderItemID={0} and Transtype = '{1}' And CreateUser='System'", ItemID, TransType);
+                string s = String.Format("DELETE FROM tblOrderTrans WHERE OrderItemID={0} AND Transtype = '{1}' AND CreateUser='System'", ItemID, TransType);
 
                 db.Database.ExecuteSqlCommand(s);
 
@@ -1294,6 +1193,133 @@ namespace MvcPhoenix.Services
         // Service utility methods
         // ****************************************************
 
+        public static int ExecuteADOSQL(string sql)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                db.Database.ExecuteSqlCommand(sql);
+                return 1;
+            }
+        }
+
+        #region Selection List Methods
+
+        public static List<OrderMasterFull> fnOrdersSearchResults()
+        {
+            // default query join for the index_partial ORDERS search results, also used by all the search requests as the starting point
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                db.Configuration.AutoDetectChangesEnabled = false;
+                List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+                orderslist = (from t in db.tblOrderMaster
+                              join clt in db.tblClient on t.ClientID equals clt.ClientID
+                              let count = (from items in db.tblOrderItem
+                                           where items.OrderID == t.OrderID
+                                           select items).Count()
+
+                              let allocationcount = (from i in db.tblOrderItem
+                                                     where i.OrderID == t.OrderID && i.ShipDate == null && i.Qty > 0 && String.IsNullOrEmpty(i.AllocateStatus) && i.ProductDetailID != null && i.ShelfID == null
+                                                     select i).Count()
+
+                              select new OrderMasterFull
+                              {
+                                  clientid = t.ClientID,
+                                  orderid = t.OrderID,
+                                  customer = t.Customer,
+                                  clientname = clt.ClientName,
+                                  ordertype = t.OrderType,
+                                  orderdate = t.OrderDate,
+                                  company = t.Company,
+                                  CreateUser = t.CreateUser,
+                                  itemscount = count,
+                                  Zip = t.Zip,
+                                  salesrep = t.SalesRep,
+                                  needallocationcount = allocationcount
+                              }).ToList();
+
+                db.Configuration.AutoDetectChangesEnabled = true;
+
+                return orderslist;
+            }
+        }
+
+        public static string fnBuildSizeDropDown(int id)
+        {
+            // id=productdetailid
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var qry = (from t in db.tblShelfMaster
+                           where t.ProductDetailID == id
+                           orderby t.Size
+                           select t);
+
+                string s = "<option value='0' selected=true>Select Size</option>";
+
+                if (qry.Count() > 0)
+                {
+                    foreach (var item in qry)
+                    {
+                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + "</option>";
+                    }
+                }
+                else
+                {
+                    s = s + "<option value='0'>No Sizes Found</option>";
+                }
+
+                s = s + "<option value='99'>Special Request</option>";
+
+                return s;
+            }
+        }
+        
+        public static List<SelectListItem> fnListOfOrderItemIDs(int? id)
+        {
+            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblOrderItem
+                          where t.OrderID == id
+                          orderby t.ProductCode
+                          select new SelectListItem { Value = t.ItemID.ToString(), Text = t.ProductCode }).ToList();
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "None" });
+                return mylist;
+            }
+        }
+
+        public static List<SelectListItem> fnListOfDelayReasons()
+        {
+            List<SelectListItem> mylist = new List<SelectListItem>();
+
+            mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Delay Reason" });
+            mylist.Insert(1, new SelectListItem { Value = "Backorder", Text = "Backorder" });
+            mylist.Insert(2, new SelectListItem { Value = "Oven Product", Text = "Oven Product" });
+            mylist.Insert(3, new SelectListItem { Value = "Humidity", Text = "Humidity" });
+            mylist.Insert(4, new SelectListItem { Value = "Very Large Order", Text = "Very Large Order" });
+            mylist.Insert(5, new SelectListItem { Value = "Questions/Info Needed", Text = "Questions/Info Needed" });
+            mylist.Insert(6, new SelectListItem { Value = "Special Doc Required", Text = "Special Doc Required" });
+            mylist.Insert(7, new SelectListItem { Value = "Special Request Size", Text = "Special Request Size" });
+            mylist.Insert(8, new SelectListItem { Value = "Return Order", Text = "Return Order" });
+            mylist.Insert(9, new SelectListItem { Value = "Waste", Text = "Waste" });
+            mylist.Insert(10, new SelectListItem { Value = "No partial delivery", Text = "No partial delivery" });
+            mylist.Insert(11, new SelectListItem { Value = "Special delivery date", Text = "Special delivery date" });
+            mylist.Insert(12, new SelectListItem { Value = "Public holiday", Text = "Public holiday" });
+            mylist.Insert(13, new SelectListItem { Value = "Freezable Procedure", Text = "Freezable Procedure" });
+            mylist.Insert(14, new SelectListItem { Value = "CMC delay, customer informed", Text = "CMC delay, customer informed" });
+            mylist.Insert(15, new SelectListItem { Value = "R&D flow", Text = "R&D flow" });
+            mylist.Insert(16, new SelectListItem { Value = "Special procedure", Text = "Special procedure" });
+            mylist.Insert(17, new SelectListItem { Value = "Misc. Charges", Text = "Misc. Charges" });
+            mylist.Insert(18, new SelectListItem { Value = "Transfer order", Text = "Transfer order" });
+            mylist.Insert(19, new SelectListItem { Value = "Consolidated Order", Text = "Consolidated Order" });
+            mylist.Insert(20, new SelectListItem { Value = "Approval Required", Text = "Approval Required" });
+            mylist.Insert(21, new SelectListItem { Value = "Conditioned packaging", Text = "Conditioned packaging" });
+            mylist.Insert(22, new SelectListItem { Value = "Product Not Setup", Text = "Product Not Setup" });
+            mylist.Insert(23, new SelectListItem { Value = "Frt Fwd-Pending Arrangement", Text = "Frt Fwd-Pending Arrangement" });
+            mylist.Insert(24, new SelectListItem { Value = "Labels, SDS", Text = "Labels, SDS" });
+
+            return mylist;
+        }
+
         public static List<SelectListItem> fnListOfClientIDs()
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -1314,17 +1340,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static int ExecuteADOSQL(string sql)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                db.Database.ExecuteSqlCommand(sql);
-                return 1;
-            }
-        }
-
-        //fnListOfBillingGroups
-        public static List<SelectListItem> fnListOfBillingGroups(int? id)
+        public static List<SelectListItem> fnListOfDivisions(int? id)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
@@ -1335,7 +1351,7 @@ namespace MvcPhoenix.Services
                           orderby t.DivisionName
                           select new SelectListItem
                           {
-                              Value = t.DivisionName,
+                              Value = t.DivisionID.ToString(),
                               Text = t.DivisionName + " / " + t.BusinessUnit
                           }).Distinct().ToList();
 
@@ -1345,7 +1361,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static List<OrderItem> fnListOfOrderItemsForOrderID(long OrderID)
+        public static List<OrderItem> fnListOfOrderItemsForOrderID(int OrderID)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
@@ -1567,27 +1583,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static List<SelectListItem> fnListOfDivisions(int? id)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblDivision
-                          where t.ClientID == id
-                          orderby t.DivisionName
-                          select new SelectListItem
-                          {
-                              Value = t.DivisionName + " / " + t.BusinessUnit,
-                              Text = t.DivisionName + " / " + t.BusinessUnit
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
         public static List<SelectListItem> fnListOfProductCodes(int? id)
         {
             List<SelectListItem> mylist = new List<SelectListItem>();
@@ -1665,5 +1660,7 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
+
+        #endregion        
     }
 }

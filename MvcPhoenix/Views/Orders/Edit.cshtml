@@ -49,16 +49,16 @@
 
     <div class="well col-lg-12">
         <div class="row">
-            <div class="col-md-3"><b>Created:</b></div>
-            <div class="col-md-3"><b>Created By:</b></div>
-            <div class="col-md-3"><b>Updated:</b></div>
-            <div class="col-md-3"><b>Updated By:</b></div>
+            <div class="col-md-3"><b>Created On</b></div>
+            <div class="col-md-3"><b>Created By</b></div>
+            <div class="col-md-3"><b>Updated On</b></div>
+            <div class="col-md-3"><b>Updated By</b></div>
         </div>
         <div class="row">
-            <div class="col-md-3"><div>@Model.orderdate</div></div>
-            <div class="col-md-3"><div>@Model.CreateUser</div></div>
-            <div class="col-md-3"><div>@Model.UpdateDate</div></div>
-            <div class="col-md-3"><div>@Model.UpdateUser</div></div>
+            <div class="col-md-3">@String.Format("{0:r}", @Model.CreateDate)</div>
+            <div class="col-md-3">@Model.CreateUser</div>
+            <div class="col-md-3">@String.Format("{0:r}", @Model.UpdateDate)</div>
+            <div class="col-md-3">@Model.UpdateUser</div>
         </div>
     </div>
 
@@ -75,6 +75,8 @@
         @Html.HiddenFor(m => m.orderid)
         @Html.HiddenFor(m => m.weborderid)
         @Html.HiddenFor(m => m.clientid)
+        @Html.HiddenFor(m => m.customer)
+        @Html.HiddenFor(m => m.billinggroup)
         @Html.HiddenFor(m => m.orderdate)
         @Html.HiddenFor(m => m.CreateUser)
         @Html.HiddenFor(m => m.CreateDate)
@@ -93,8 +95,9 @@
                         @Html.ValidationMessageFor(m => m.clientname)
                     </div>
                     <div class="col-md-6 form-group">
-                        <label>Billing Group (Division / Business Unit)</label>
-                        @Html.DropDownListFor(m => m.billinggroup, Model.ListOfBillingGroups, new { @class = "form-control" })
+                        <label>Division <i class="fa fa-fw fa-question-circle" title="Division / Business Unit"></i></label>
+                        @Html.DropDownListFor(m => m.divisionid, Model.ListOfDivisions, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.divisionid)
                     </div>
                 </div>
                 <div class="row">
@@ -412,7 +415,7 @@
                         @Html.TextAreaFor(m => m.tracking, new { @class = "form-control", @rows = 5 })
                         @Html.ValidationMessageFor(m => m.tracking)
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
         <div class="panel panel-primary">
@@ -450,6 +453,14 @@
 </div>
 
 <script type="text/javascript">
+    $('#customer').val($('#clientname').val());
+    
+    // CopyDivisionToBillingGroup
+    $("#divisionid").change(function () {
+        var selectedText = $('#divisionid option:selected').text();
+        $('#billinggroup').val(selectedText);
+    });
+
     function SampleOrderAlert(productdetailid) {
         $.ajax({
             url: "/Orders/CheckProductForAlert/" + productdetailid,
@@ -459,7 +470,7 @@
 
         function showalert(data) {
             if ((data.length > 0)) {
-                $.alert(data, "Product ID: "+productdetailid);
+                $.alert(data, "Product ID: " + productdetailid);
             }
         }
     }

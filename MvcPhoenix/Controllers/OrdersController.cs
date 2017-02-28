@@ -18,14 +18,16 @@ namespace MvcPhoenix.Controllers
             var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist
                           orderby t.orderdate descending
-                          select t).Take(10).ToList();  // refine for here
+                          select t).Take(20).ToList();  // refine for here
 
-            TempData["SearchResultsMessage"] = "Last 10 Orders";
+            TempData["SearchResultsMessage"] = "Last 20 Orders";
             List<SelectListItem> clientlist = new List<SelectListItem>();
             clientlist = OrderService.fnListOfClientIDs();
             ViewBag.NewClientID = clientlist;
             return View("~/Views/Orders/Index.cshtml", orderslist);
         }
+
+        #region Import Actions - Pull data from samplecenter db after transform in Access
 
         [HttpGet]
         public ActionResult OrdersImport()
@@ -44,12 +46,14 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult OrdersImportProcess()
         {
-            int ImportCount = OrderImportService.ImportOrders(); // Actual import
+            int ImportCount = OrderImportService.ImportOrders();        // Actual import
             TempData["ImportCount"] = ImportCount;
 
             return RedirectToAction("OrdersImport");
         }
 
+        #endregion
+        
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
@@ -261,10 +265,18 @@ namespace MvcPhoenix.Controllers
                                                where (x.ShelfID != null) && (x.ShelfID == t.ShelfID) && (x.ShelfStatus == "AVAIL")
                                                select (x.QtyOnHand - x.QtyAllocated)).Sum(),
                                AllocatedDate = t.AllocatedDate,
-                               GrnUnNumber = (from a in db.tblProductDetail where (a.ProductDetailID == t.ProductDetailID) select a.GRNUNNUMBER).FirstOrDefault(),
-                               GrnPkGroup = (from b in db.tblProductDetail where (b.ProductDetailID == t.ProductDetailID) select b.GRNPKGRP).FirstOrDefault(),
-                               AirUnNumber = (from c in db.tblProductDetail where (c.ProductDetailID == t.ProductDetailID) select c.AIRUNNUMBER).FirstOrDefault(),
-                               AirPkGroup = (from d in db.tblProductDetail where (d.ProductDetailID == t.ProductDetailID) select d.AIRPKGRP).FirstOrDefault(),
+                               GrnUnNumber = (from a in db.tblProductDetail 
+                                              where (a.ProductDetailID == t.ProductDetailID) 
+                                              select a.GRNUNNUMBER).FirstOrDefault(),
+                               GrnPkGroup = (from b in db.tblProductDetail 
+                                             where (b.ProductDetailID == t.ProductDetailID) 
+                                             select b.GRNPKGRP).FirstOrDefault(),
+                               AirUnNumber = (from c in db.tblProductDetail 
+                                              where (c.ProductDetailID == t.ProductDetailID) 
+                                              select c.AIRUNNUMBER).FirstOrDefault(),
+                               AirPkGroup = (from d in db.tblProductDetail 
+                                             where (d.ProductDetailID == t.ProductDetailID) 
+                                             select d.AIRPKGRP).FirstOrDefault(),
                                CreateDate = t.CreateDate,
                                CreateUser = t.CreateUser,
                                UpdateDate = t.UpdateDate,
@@ -613,165 +625,165 @@ namespace MvcPhoenix.Controllers
 
         #endregion Index Order Search and Filters
 
-        #region Order Import Actions
+        #region Order Import Actions - For orders coming in via files for ETL - Deprecate and preserve, processes still maintained in Access for now
 
-        public ActionResult Import()
-        {
-            return View();
-        }
+        //public ActionResult Import()
+        //{
+        //    return View();
+        //}
 
-        [HttpGet]
-        public ActionResult OrderImport()
-        {
-            var clients = GetClients(); // Let's get all clients that we need for a DropDownList
-            var model = new OrderImportFile();
-            model.Clients = GetSelectListItems(clients);  // Create a list of SelectListItems so these can be rendered on the page
+        //[HttpGet]
+        //public ActionResult OrderImport()
+        //{
+        //    var clients = GetClients(); // Let's get all clients that we need for a DropDownList
+        //    var model = new OrderImportFile();
+        //    model.Clients = GetSelectListItems(clients);  // Create a list of SelectListItems so these can be rendered on the page
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public ActionResult OrderImport(OrderImportFile model)
-        {
-            var clientfolder = ""; // initialize
-            var clients = GetClients();
-            model.Clients = GetSelectListItems(clients);
-            var client = model.Client;
+        //[HttpPost]
+        //public ActionResult OrderImport(OrderImportFile model)
+        //{
+        //    var clientfolder = ""; // initialize
+        //    var clients = GetClients();
+        //    model.Clients = GetSelectListItems(clients);
+        //    var client = model.Client;
 
-            // Change folders based on client dropdown selection.
-            switch (client)
-            {
-                case "Akzo Nobel":
-                    clientfolder = "AkzoNobel";
-                    break;
+        //    // Change folders based on client dropdown selection.
+        //    switch (client)
+        //    {
+        //        case "Akzo Nobel":
+        //            clientfolder = "AkzoNobel";
+        //            break;
 
-                case "Archroma":
-                    clientfolder = "Archroma";
-                    break;
+        //        case "Archroma":
+        //            clientfolder = "Archroma";
+        //            break;
 
-                case "Clariant":
-                    clientfolder = "Clariant";
-                    break;
+        //        case "Clariant":
+        //            clientfolder = "Clariant";
+        //            break;
 
-                case "Cytec":
-                    clientfolder = "Cytec";
-                    break;
+        //        case "Cytec":
+        //            clientfolder = "Cytec";
+        //            break;
 
-                case "Dow Chemical":
-                    clientfolder = "DowChem";
-                    break;
+        //        case "Dow Chemical":
+        //            clientfolder = "DowChem";
+        //            break;
 
-                case "DSM":
-                    clientfolder = "DSM";
-                    break;
+        //        case "DSM":
+        //            clientfolder = "DSM";
+        //            break;
 
-                case "Eastman":
-                    clientfolder = "Eastman";
-                    break;
+        //        case "Eastman":
+        //            clientfolder = "Eastman";
+        //            break;
 
-                case "Elementis":
-                    clientfolder = "Elementis";
-                    break;
+        //        case "Elementis":
+        //            clientfolder = "Elementis";
+        //            break;
 
-                case "Honeywell":
-                    clientfolder = "Honeywell";
-                    break;
+        //        case "Honeywell":
+        //            clientfolder = "Honeywell";
+        //            break;
 
-                case "Lonza":
-                    clientfolder = "Lonza";
-                    break;
+        //        case "Lonza":
+        //            clientfolder = "Lonza";
+        //            break;
 
-                case "Momentive":
-                    clientfolder = "Momentive";
-                    break;
+        //        case "Momentive":
+        //            clientfolder = "Momentive";
+        //            break;
 
-                case "OMG":
-                    clientfolder = "OMG";
-                    break;
+        //        case "OMG":
+        //            clientfolder = "OMG";
+        //            break;
 
-                case "Reichhold":
-                    clientfolder = "Reichhold";
-                    break;
+        //        case "Reichhold":
+        //            clientfolder = "Reichhold";
+        //            break;
 
-                case "Stepan":
-                    clientfolder = "Stepan";
-                    break;
+        //        case "Stepan":
+        //            clientfolder = "Stepan";
+        //            break;
 
-                case "Sun Chemical":
-                    clientfolder = "SunChem";
-                    break;
+        //        case "Sun Chemical":
+        //            clientfolder = "SunChem";
+        //            break;
 
-                default:
-                    TempData["message"] = "Please select a client from the dropdown list";
+        //        default:
+        //            TempData["message"] = "Please select a client from the dropdown list";
 
-                    return RedirectToAction("Index");
-            }
+        //            return RedirectToAction("Index");
+        //    }
 
-            try
-            {
-                foreach (var file in model.Files)
-                {
-                    if (file.ContentLength != 0)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        var path = Path.Combine(Server.MapPath("~/Content/OrderImportFiles/" + clientfolder), fileName);
-                        file.SaveAs(path);
-                        TempData["message"] = String.Format("The {0} order import files uploaded successfully", client);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                TempData["message"] = "Please make sure you browse and select at least a file";
-            }
-            return RedirectToAction("Index");
-        }
+        //    try
+        //    {
+        //        foreach (var file in model.Files)
+        //        {
+        //            if (file.ContentLength != 0)
+        //            {
+        //                var fileName = Path.GetFileName(file.FileName);
+        //                var path = Path.Combine(Server.MapPath("~/Content/OrderImportFiles/" + clientfolder), fileName);
+        //                file.SaveAs(path);
+        //                TempData["message"] = String.Format("The {0} order import files uploaded successfully", client);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        TempData["message"] = "Please make sure you browse and select at least a file";
+        //    }
+        //    return RedirectToAction("Index");
+        //}
 
-        // Return a list of clients that send files and have folders in Content/OrderImport
-        private IEnumerable<string> GetClients()
-        {
-            return new List<string>
-            {
-                "Akzo Nobel",
-                "Archroma",
-                "Clariant",
-                "Cytec",
-                "Dow Chemical",
-                "DSM",
-                "Eastman",
-                "Elementis",
-                "Honeywell",
-                "Lonza",
-                "Momentive",
-                "OMG",
-                "Reichhold",
-                "Stepan",
-                "Sun Chemical",
-            };
-        }
+        //// Return a list of clients that send files and have folders in Content/OrderImport
+        //private IEnumerable<string> GetClients()
+        //{
+        //    return new List<string>
+        //    {
+        //        "Akzo Nobel",
+        //        "Archroma",
+        //        "Clariant",
+        //        "Cytec",
+        //        "Dow Chemical",
+        //        "DSM",
+        //        "Eastman",
+        //        "Elementis",
+        //        "Honeywell",
+        //        "Lonza",
+        //        "Momentive",
+        //        "OMG",
+        //        "Reichhold",
+        //        "Stepan",
+        //        "Sun Chemical",
+        //    };
+        //}
 
-        //Generic Helper For Creating lists from enums. Consider moving it to relevant Helper in Phoenix.
-        //
-        // Create an empty list to hold result of the operation.
-        //
-        // For each string in the 'elements' variable, create a new SelectListItem object
-        // that has both its Value and Text properties set to a particular value.
-        // This will result in MVC rendering each item as: <option value="State Name">State Name</option>
-        //
-        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
-        {
-            var selectList = new List<SelectListItem>();
+        ////Generic Helper For Creating lists from enums. Consider moving it to relevant Helper in Phoenix.
+        ////
+        //// Create an empty list to hold result of the operation.
+        ////
+        //// For each string in the 'elements' variable, create a new SelectListItem object
+        //// that has both its Value and Text properties set to a particular value.
+        //// This will result in MVC rendering each item as: <option value="State Name">State Name</option>
+        ////
+        //private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
+        //{
+        //    var selectList = new List<SelectListItem>();
 
-            foreach (var element in elements)
-            {
-                selectList.Add(new SelectListItem
-                {
-                    Value = element,
-                    Text = element
-                });
-            }
-            return selectList;
-        }
+        //    foreach (var element in elements)
+        //    {
+        //        selectList.Add(new SelectListItem
+        //        {
+        //            Value = element,
+        //            Text = element
+        //        });
+        //    }
+        //    return selectList;
+        //}
 
         #endregion Order Import Actions
     }
