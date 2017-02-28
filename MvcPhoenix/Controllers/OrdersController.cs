@@ -3,7 +3,6 @@ using MvcPhoenix.Services;
 using Rotativa;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -52,8 +51,8 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("OrdersImport");
         }
 
-        #endregion
-        
+        #endregion Import Actions - Pull data from samplecenter db after transform in Access
+
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
@@ -100,13 +99,7 @@ namespace MvcPhoenix.Controllers
         {
             string footer = DocumentFooter();
             var vm = OrderService.fnFillOrder(id);
-
-            var vm1 = (from t in db.tblClient
-                       where t.ClientID == vm.clientid
-                       select t.ShippingRules).FirstOrDefault();
-
-            ViewBag.ClientShippingRules = vm1;
-
+            
             return new ViewAsPdf(vm) { CustomSwitches = footer };
         }
 
@@ -167,7 +160,13 @@ namespace MvcPhoenix.Controllers
                                              select q.HarmonizedCode).FirstOrDefault(),
                            QtyAvailable = (from q in db.tblStock
                                            where q.ShelfID == t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL"
-                                           select q).Count()
+                                           select q).Count(),
+                           AlertNotesOrderEntry = (from q in db.tblProductDetail
+                                                   where q.ProductDetailID == t.ProductDetailID
+                                                   select q.AlertNotesOrderEntry).FirstOrDefault(),
+                           AlertNotesShipping = (from q in db.tblProductDetail
+                                                 where q.ProductDetailID == t.ProductDetailID
+                                                 select q.AlertNotesShipping).FirstOrDefault()
                        }).ToList();
             return qry;
         }
@@ -190,7 +189,13 @@ namespace MvcPhoenix.Controllers
                            LotNumber = t.LotNumber,
                            ShipDate = t.ShipDate,
                            BackOrdered = t.BackOrdered,
-                           AllocateStatus = t.AllocateStatus
+                           AllocateStatus = t.AllocateStatus,
+                           AlertNotesOrderEntry = (from q in db.tblProductDetail
+                                                   where q.ProductDetailID == t.ProductDetailID
+                                                   select q.AlertNotesOrderEntry).FirstOrDefault(),
+                           AlertNotesShipping = (from q in db.tblProductDetail
+                                                 where q.ProductDetailID == t.ProductDetailID
+                                                 select q.AlertNotesShipping).FirstOrDefault()
                        }).ToList();
 
             if (qry.Count > 0)
@@ -265,17 +270,17 @@ namespace MvcPhoenix.Controllers
                                                where (x.ShelfID != null) && (x.ShelfID == t.ShelfID) && (x.ShelfStatus == "AVAIL")
                                                select (x.QtyOnHand - x.QtyAllocated)).Sum(),
                                AllocatedDate = t.AllocatedDate,
-                               GrnUnNumber = (from a in db.tblProductDetail 
-                                              where (a.ProductDetailID == t.ProductDetailID) 
+                               GrnUnNumber = (from a in db.tblProductDetail
+                                              where (a.ProductDetailID == t.ProductDetailID)
                                               select a.GRNUNNUMBER).FirstOrDefault(),
-                               GrnPkGroup = (from b in db.tblProductDetail 
-                                             where (b.ProductDetailID == t.ProductDetailID) 
+                               GrnPkGroup = (from b in db.tblProductDetail
+                                             where (b.ProductDetailID == t.ProductDetailID)
                                              select b.GRNPKGRP).FirstOrDefault(),
-                               AirUnNumber = (from c in db.tblProductDetail 
-                                              where (c.ProductDetailID == t.ProductDetailID) 
+                               AirUnNumber = (from c in db.tblProductDetail
+                                              where (c.ProductDetailID == t.ProductDetailID)
                                               select c.AIRUNNUMBER).FirstOrDefault(),
-                               AirPkGroup = (from d in db.tblProductDetail 
-                                             where (d.ProductDetailID == t.ProductDetailID) 
+                               AirPkGroup = (from d in db.tblProductDetail
+                                             where (d.ProductDetailID == t.ProductDetailID)
                                              select d.AIRPKGRP).FirstOrDefault(),
                                CreateDate = t.CreateDate,
                                CreateUser = t.CreateUser,
@@ -785,6 +790,6 @@ namespace MvcPhoenix.Controllers
         //    return selectList;
         //}
 
-        #endregion Order Import Actions
+        #endregion Order Import Actions - For orders coming in via files for ETL - Deprecate and preserve, processes still maintained in Access for now
     }
 }

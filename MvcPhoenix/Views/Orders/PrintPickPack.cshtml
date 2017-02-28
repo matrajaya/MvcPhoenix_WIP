@@ -363,7 +363,7 @@
 
     <table>
         <tr>
-            <td width="65%" style="border:solid 1px;">
+            <td style="border:solid 1px;">
                 @try
                 {
                     @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.country })
@@ -372,12 +372,6 @@
                 {
                     <h2>Sorry, the destination country was not found. :(</h2>
                 }
-            </td>
-
-            <td style="border:solid 1px;">
-                <h2>Client Profile:</h2>
-
-                @Html.Raw(@ViewBag.ClientShippingRules)
             </td>
         </tr>
     </table>

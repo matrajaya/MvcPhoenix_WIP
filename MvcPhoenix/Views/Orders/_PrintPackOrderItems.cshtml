@@ -38,6 +38,22 @@
                                 <td>SEA: @item.GrnUnNumber</td>
                                 <td>Harm. Code: @item.HarmonizedCode</td>
                             </tr>
+                            @if (@item.AlertNotesOrderEntry != null)
+                            {
+                                <tr>
+                                    <td colspan="6">
+                                        <em><b>Order Alert Note:</b> @item.AlertNotesOrderEntry</em>
+                                    </td>
+                                </tr>
+                            }
+                            @if (@item.AlertNotesShipping != null)
+                            {
+                                <tr>
+                                    <td colspan="6">
+                                        <em><b>Shipping Alert Note:</b> @item.AlertNotesShipping</em>
+                                    </td>
+                                </tr>
+                            }
                         </table>
                     </td>
                 </tr>
