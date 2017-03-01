@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.Extensions;
+using MvcPhoenix.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace MvcPhoenix.Controllers
                     var ghs = (from t in db.tblGHS
                                where t.ProductDetailID == id
                                select t).FirstOrDefault();
-                    
+
                     GHS.GHSID = ghs.GHSID;
                     GHS.ProductDetailID = ghs.ProductDetailID;
                     GHS.GHSSignalWord = ghs.SignalWord;
@@ -56,7 +57,7 @@ namespace MvcPhoenix.Controllers
             using (var db = new EF.CMCSQL03Entities())
             {
                 List<GHSDetail> model = new List<GHSDetail>();
-                
+
                 var phdetail = (from t in db.tblGHSPHDetail
                                 join tsrc in db.tblGHSPHSource on t.PHNumber equals tsrc.PHNumber
                                 where t.ProductDetailID == id //&& tsrc.Language == "EN"
@@ -145,8 +146,7 @@ namespace MvcPhoenix.Controllers
                 ViewBag.CurrentFilter = searchString;
                 ViewBag.SearchString = searchString;
 
-                var phCodes = from p in db.tblGHSPHSource 
-                              //where p.Language == "EN" 
+                var phCodes = from p in db.tblGHSPHSource
                               select p;
 
                 if (!String.IsNullOrEmpty(searchString))
@@ -203,11 +203,10 @@ namespace MvcPhoenix.Controllers
 
             return null;
         }
-        
+
         [HttpPost]
         public ActionResult ExcludePH(int id, bool isChecked)
         {
-            
             using (var db = new EF.CMCSQL03Entities())
             {
                 var dtrcd = db.tblGHSPHDetail.Find(id);
@@ -229,19 +228,22 @@ namespace MvcPhoenix.Controllers
 
             return null;
         }
-        
+
         /// <summary>
         /// Generates temporary model values in clone modal
         /// </summary>
-        public ActionResult Clone(int id) {
+        public ActionResult Clone(int id)
+        {
             GHSPHSource PHSrc = new GHSPHSource();
-            string[] Suffix = new string[] {"A","B","C","D","E","F","G","H","I","J"};
+            string[] Suffix = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
             using (var db = new EF.CMCSQL03Entities())
             {
                 var phsrc = (from t in db.tblGHSPHSource
-                          where t.PHsourceID == id
-                          select t).FirstOrDefault();
+                             where t.PHsourceID == id
+                             select t).FirstOrDefault();
+
+                ViewBag.OldPhNum = phsrc.PHNumber;
 
                 int i = 0;
                 PHSrc.PHNumber = phsrc.PHNumber + "-" + Suffix[i];
@@ -262,21 +264,31 @@ namespace MvcPhoenix.Controllers
             return PartialView("CloneEdit", PHSrc);
         }
 
-        public ActionResult SaveClone(GHSPHSource obj) 
+        public ActionResult SaveClone(GHSPHSource obj, string oldPHNumber)
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var newrecord = new EF.tblGHSPHSource
-                {
-                    PHNumber = obj.PHNumber,
-                    Language = obj.Language,
-                    PHStatement = obj.PHStatement,
-                    CreateDate = DateTime.UtcNow,
-                    CreateUser = HttpContext.User.Identity.Name
-                };
+                var ph = (from p in db.tblGHSPHSource
+                          where p.PHNumber == oldPHNumber
+                          select p).ToList();
 
-                db.tblGHSPHSource.Add(newrecord);
-                db.SaveChanges();
+                for (int i = 0; i < ph.Count; i++)
+                {
+                    var newPh = ph[i].Clone();
+                    newPh.PHNumber = obj.PHNumber;
+                    newPh.Language = ph[i].Language;
+                    newPh.PHStatement = ph[i].PHStatement;
+                    newPh.CreateDate = DateTime.UtcNow;
+                    newPh.CreateUser = HttpContext.User.Identity.Name;
+
+                    if (newPh.Language == obj.Language)
+                    {
+                        newPh.PHStatement = obj.PHStatement;
+                    }
+
+                    db.tblGHSPHSource.Add(newPh);
+                    db.SaveChanges();
+                }
 
                 // Get new id to pass to AddPhDetail action
                 var pd = (from t in db.tblGHSPHSource

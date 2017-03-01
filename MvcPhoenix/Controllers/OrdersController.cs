@@ -88,18 +88,17 @@ namespace MvcPhoenix.Controllers
             return footer;
         }
 
-        public ActionResult PrintOrder(int id)
-        {
-            string footer = DocumentFooter();
-            var vm = OrderService.fnFillOrder(id);
-            return new ViewAsPdf(vm) { CustomSwitches = footer };
-        }
-
+        //public ActionResult PrintOrder(int id)
+        //{
+        //    string footer = DocumentFooter();
+        //    var vm = OrderService.fnFillOrder(id);
+        //    return new ViewAsPdf(vm) { CustomSwitches = footer };
+        //}
         public ActionResult PrintPickPack(int id)
         {
             string footer = DocumentFooter();
             var vm = OrderService.fnFillOrder(id);
-            
+
             return new ViewAsPdf(vm) { CustomSwitches = footer };
         }
 

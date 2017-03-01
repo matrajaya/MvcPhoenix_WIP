@@ -39,8 +39,8 @@
                 <div class="pull-right">
                     @if (@Model.orderid != -1)
                     {
-                        <a href="@Url.Action("PrintOrder", "Orders", new { id = @Model.orderid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Order Print View</a>
-                        <a href="@Url.Action("PrintPickPack", "Orders", new { id = @Model.orderid })" target="_blank" class="btn btn-sm btn-success"><i class="fa fa-file-pdf-o"></i> Print Pick &amp; Pack Docs</a>
+                        @*<a href="@Url.Action("PrintOrder", "Orders", new { id = @Model.orderid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Order Print View</a>*@
+                        <a href="@Url.Action("PrintPickPack", "Orders", new { id = @Model.orderid })" target="_blank" class="btn btn-xs btn-success"><i class="fa fa-file-pdf-o"></i> Print Pick &amp; Pack Docs</a>
                     }
                 </div>
             </div>

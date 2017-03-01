@@ -78,13 +78,10 @@
                 </div>
             }
             <hr />
+
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label>P & H Statements</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
                     @using (Ajax.BeginForm("Search", "GHS", new AjaxOptions
                     {
                         UpdateTargetId = "dvSearchPHCodes",
@@ -100,15 +97,16 @@
                             </span>
                         </div>
                     }
+
+                    <div id="dvSearchPHCodes"></div>
                 </div>
-                <div id="dvDetailPHCodes" class="col-md-9">
+                <div id="dvDetailPHCodes" class="col-md-6">
+                    <label class="invisible">Selected Phrases</label>
                     @Html.Action("Detail", "GHS", Model.ProductDetailID)
                 </div>
             </div>
         </div>
     </div>
-
-    <div id="dvSearchPHCodes"></div>
 
     <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
         <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...

@@ -22,6 +22,7 @@
 
                     <div class="row">
                         @Html.HiddenFor(m => m.PHSourceID)
+                        <input type="hidden" id="oldPHNumber" name="oldPHNumber" value="@ViewBag.OldPhNum">
                         <div class="col-md-8 form-group">
                             <label>P&amp;H Code</label>
                             @Html.TextBoxFor(m => m.PHNumber, new { @class = "form-control", @readonly = "readonly" })
