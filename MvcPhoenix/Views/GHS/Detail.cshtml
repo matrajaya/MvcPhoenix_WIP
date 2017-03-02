@@ -53,7 +53,15 @@
                             </td>
                             <td>@item.PHNumber</td>
                             <td>@item.Language</td>
-                            <td>@item.PHStatement</td>
+                            <td>
+                                @item.PHStatement
+                                @Ajax.ActionLink(" ", "EditPHSource", "GHS", new { phnumber = item.PHNumber, lang = item.Language }, new AjaxOptions
+                                   {
+                                       HttpMethod = "GET",
+                                       UpdateTargetId = "dialogPlaceholder",
+                                       OnSuccess = "$('#editphsourcemodal').modal('show')"
+                                   }, new { @class = "fa fa-fw fa-lg fa-pencil", @title = "Edit PH Source" })
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -63,7 +71,7 @@
 </div>
 
 <script type="text/javascript">
-    // Init filter on load to display only English selected phrases
+    // Initial filter on load to display only English selected phrases
     (function () {
         document.getElementById("langInput").value = "EN";
         filterPhrases();

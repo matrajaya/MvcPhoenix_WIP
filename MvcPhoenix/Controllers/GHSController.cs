@@ -222,8 +222,49 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                string s = @"Delete from tblGHSPHDetail where PHDetailID=" + id.ToString();
+                string s = @"DELETE FROM tblGHSPHDetail WHERE PHDetailID=" + id.ToString();
                 db.Database.ExecuteSqlCommand(s);
+            }
+
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult EditPHSource(string phnumber, string lang)
+        {
+            GHSPHSource PHSrc = new GHSPHSource();
+            
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var phsrc = (from t in db.tblGHSPHSource
+                             where t.PHNumber == phnumber && t.Language == lang
+                             select t).FirstOrDefault();
+
+                if (phsrc != null)
+                {
+                    PHSrc.PHSourceID = phsrc.PHsourceID;
+                    PHSrc.PHNumber = phsrc.PHNumber;
+                    PHSrc.Language = phsrc.Language;
+                    PHSrc.PHStatement = phsrc.PHStatement;
+                }                
+            }
+
+            return PartialView("~/Views/GHS/EditPHSource.cshtml", PHSrc);
+        }
+
+        public ActionResult SavePHSource(GHSPHSource obj)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var PH = (from t in db.tblGHSPHSource 
+                                    where t.PHsourceID == obj.PHSourceID 
+                                    select t).SingleOrDefault();
+                
+                PH.PHStatement = obj.PHStatement;
+                PH.UpdateDate = DateTime.UtcNow;
+                PH.UpdateUser = HttpContext.User.Identity.Name;
+
+                db.SaveChanges();
             }
 
             return null;
