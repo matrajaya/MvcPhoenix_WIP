@@ -34,7 +34,6 @@
                         <tr>
                             <th>#</th>
                             <th>Date</th>
-                            <th>Source</th>
                             <th>GUID</th>
                             <th>Client ID</th>
                             <th>Location</th>
@@ -44,6 +43,7 @@
                             <th class="text-center">Size</th>
                             <th class="text-center">ProductDetail ID</th>
                             <th class="text-center">ShelfMaster ID</th>
+                            <th>Import Error Cause</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,16 +52,16 @@
                             <tr>
                                 <td>@(Model.IndexOf(item) + 1)</td>
                                 <td>@String.Format("{0:dd MMM yyyy}", @item.OrderDate)</td>
-                                <td>@item.CreateUser</td>
                                 <td>@item.GUID</td>
                                 <td>@item.ClientID</td>
                                 <td>@item.Location_MDB</td>
                                 <td>@item.Company</td>
                                 <td>@item.ProductCode</td>
                                 <td class="text-center">@item.Qty</td>
-                                <td class="text-center">@item.Size</td>
+                                <td class="text-center">@item.Size @item.SRSize</td>
                                 <td class="text-center">@item.ProductDetailID</td>
                                 <td class="text-center">@item.ShelfID</td>
+                                <td>@item.ImportError</td>
                             </tr>
                         }
                     </tbody>
