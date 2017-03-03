@@ -69,7 +69,8 @@ namespace MvcPhoenix.Controllers
                                     t.ExcludeFromLabel,
                                     t.PHNumber,
                                     tsrc.Language,
-                                    tsrc.PHStatement
+                                    tsrc.PHStatement,
+                                    tsrc.CreateUser
                                 }).ToList();
 
                 foreach (var item in phdetail) //retrieve each item and assign to model
@@ -81,7 +82,8 @@ namespace MvcPhoenix.Controllers
                         ExcludeFromLabel = item.ExcludeFromLabel,
                         PHNumber = item.PHNumber,
                         Language = item.Language,
-                        PHStatement = item.PHStatement
+                        PHStatement = item.PHStatement,
+                        CreateUser = item.CreateUser
                     });
                 }
 
@@ -152,7 +154,7 @@ namespace MvcPhoenix.Controllers
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     phCodes = phCodes.Where(p => p.PHNumber.Contains(searchString)
-                        || p.PHStatement.Contains(searchString));
+                        || p.PHStatement.Contains(searchString) && p.Language == "EN");
                 }
 
                 switch (sortOrder)
@@ -170,7 +172,7 @@ namespace MvcPhoenix.Controllers
                         break;
 
                     default:
-                        phCodes = phCodes.OrderBy(p => p.Language);
+                        phCodes = phCodes.OrderBy(p => p.PHNumber);
                         break;
                 }
 

@@ -55,12 +55,15 @@
                             <td>@item.Language</td>
                             <td>
                                 @item.PHStatement
-                                @Ajax.ActionLink(" ", "EditPHSource", "GHS", new { phnumber = item.PHNumber, lang = item.Language }, new AjaxOptions
-                                   {
-                                       HttpMethod = "GET",
-                                       UpdateTargetId = "dialogPlaceholder",
-                                       OnSuccess = "$('#editphsourcemodal').modal('show')"
-                                   }, new { @class = "fa fa-fw fa-lg fa-pencil", @title = "Edit PH Source" })
+                                @if (item.CreateUser != "System")
+                                {
+                                    @Ajax.ActionLink(" ", "EditPHSource", "GHS", new { phnumber = item.PHNumber, lang = item.Language }, new AjaxOptions
+                                       {
+                                           HttpMethod = "GET",
+                                           UpdateTargetId = "dialogPlaceholder",
+                                           OnSuccess = "$('#editphsourcemodal').modal('show')"
+                                       }, new { @class = "fa fa-fw fa-lg fa-pencil", @title = "Edit PH Source" })
+                                }
                             </td>
                         </tr>
                     }
