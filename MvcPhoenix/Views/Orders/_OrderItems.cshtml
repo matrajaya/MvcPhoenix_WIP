@@ -21,14 +21,11 @@
                 <th class="text-center">Qty</th>
                 <th class="text-center">Avail Qty</th>
                 <th class="text-center">Ship Date</th>
-                <th class="text-center">BO</th>
                 <th class="text-center">Delay</th>
-                <th class="text-center">CS-Status</th>
                 <th class="text-center">A-Status</th>
                 <th class="text-center">Allocated On</th>
                 <th class="text-center">Grn UN</th>
                 <th class="text-center">Air UN</th>
-                <th>Updated By</th>
                 <th>Updated On</th>
                 <th id="noprint"></th>
             </tr>
@@ -49,15 +46,12 @@
                     <td class="text-center">@item.Qty</td>
                     <td class="text-center">@item.QtyAvailable</td>
                     <td class="text-center">@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
-                    <td class="text-center"><input type="checkbox" checked="@item.BackOrdered" readonly="readonly" onclick="return false" /></td>
                     <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
-                    <td class="text-center"><input type="checkbox" checked="@item.CSAllocate" readonly="readonly" onclick="return false" /></td>
                     <td class="text-center">@item.AllocateStatus</td>
                     <td class="text-center">@String.Format("{0:dd MMM yyyy}", item.AllocatedDate)</td>
                     <td class="text-center">@item.GrnUnNumber, @item.GrnPkGroup</td>
                     <td class="text-center">@item.AirUnNumber, @item.AirPkGroup</td>
-                    <td title="Created By: @item.CreateUser">@item.UpdateUser</td>
-                    <td title="Created On: @String.Format("{0:dd MMM yyyy}", item.CreateDate)">@String.Format("{0:dd MMM yyyy}", item.UpdateDate)</td>
+                    <td title="Updated by: @item.UpdateUser">@String.Format("{0:dd MMM yyyy}", item.UpdateDate)</td>
                     <td id="noprint" class="text-right">
                         @Ajax.ActionLink(" ", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
                         {

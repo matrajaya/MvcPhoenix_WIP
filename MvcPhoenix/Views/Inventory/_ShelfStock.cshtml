@@ -31,6 +31,7 @@
                     <th>Unit Weight</th>
                     <th>Qty On Hand</th>
                     <th>Qty Allocated</th>
+                    <th>Cease Ship Date</th>
                     <th>Status</th>
                     <th id="noprint" class="text-center"></th>
                 </tr>
@@ -55,6 +56,7 @@
                         <td>@row.UnitWeight</td>
                         <td>@row.QtyOnHand</td>
                         <td>@row.QtyAllocated</td>
+                        <td>@String.Format("{0:dd MMM yyyy}", @row.CeaseShipDate)</td>
                         <td>@row.ShelfStatus</td>
                         <td id="noprint">
                             <span class="pull-right">

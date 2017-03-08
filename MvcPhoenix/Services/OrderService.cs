@@ -1259,7 +1259,7 @@ namespace MvcPhoenix.Services
                 {
                     foreach (var item in qry)
                     {
-                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + "</option>";
+                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - "+ item.UnitWeight + "</option>";
                     }
                 }
                 else
@@ -1386,7 +1386,7 @@ namespace MvcPhoenix.Services
                           select new SelectListItem
                           {
                               Value = t.ShelfID.ToString(),
-                              Text = t.Size
+                              Text = t.Size + " - " + t.UnitWeight
                           }).ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = " -- Select Size --" });

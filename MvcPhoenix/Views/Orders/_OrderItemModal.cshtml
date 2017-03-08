@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-5 form-group">
+                        <div class="col-md-4 form-group">
                             <label>Lot Number</label>
                             @if (@Model.CrudMode == "RW")
                             {
@@ -70,7 +70,7 @@
                                 @Html.TextBoxFor(m => m.LotNumber, new { @class = "form-control", disabled = "disabled" })
                             }
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-4 form-group">
                             <label>Size</label>
                             @if (@Model.CrudMode == "RO")
                             {
@@ -118,37 +118,25 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-6 form-group">
                             <label>Carrier</label>
                             @Html.DropDownListFor(m => m.ItemShipVia, Model.ListOfShipVias, new { @class = "form-control" })
                         </div>
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-6 form-group">
                             <label>Ship Date</label>
                             @Html.TextBoxFor(m => m.ShipDate, "{0:dd MMM yyyy}", new { @class = "date-picker form-control" })
                         </div>
-                        <div class="col-md-4 form-group">
-                            <label>A-Status</label>
-                            @Html.TextBoxFor(m => m.AllocateStatus, new { @class = "form-control" })
-                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <ul class="list-unstyled list-2-col">
+                        <div class="col-md-12">
+                            <ul class="list-unstyled list-3-col">
                                 <li>
-                                    <label>CS Allocate</label> <br />
+                                    <label>CS Allocate</label>
                                     @Html.CheckBox("CSAllocate", Model.CSAllocate != null && (bool)Model.CSAllocate)
                                 </li>
                                 <li>
                                     <label>Carrier Inv Rec'd</label>
                                     @Html.CheckBox("CarrierInvoiceRcvd", Model.CarrierInvoiceRcvd != null && (bool)Model.CarrierInvoiceRcvd)
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <ul class="list-unstyled list-2-col">
-                                <li>
-                                    <label>Back Ordered</label> <br />
-                                    @Html.CheckBox("BackOrdered", Model.BackOrdered != null && (bool)Model.BackOrdered)
                                 </li>
                                 <li>
                                     <label>Non CMC Delay</label>
@@ -172,7 +160,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <label>Status</label>
+                            <label>Status Notes</label>
                             @Html.TextAreaFor(m => m.Status, new { rows = "4", @class = "form-control" })
                         </div>
                     </div>

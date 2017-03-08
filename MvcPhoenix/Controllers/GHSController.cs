@@ -153,7 +153,7 @@ namespace MvcPhoenix.Controllers
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    phCodes = phCodes.Where(p => p.PHNumber.Contains(searchString)
+                    phCodes = phCodes.Where(p => p.PHNumber.Contains(searchString) && p.Language == "EN"
                         || p.PHStatement.Contains(searchString) && p.Language == "EN");
                 }
 
