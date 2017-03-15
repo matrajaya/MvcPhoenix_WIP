@@ -191,15 +191,16 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult OrdersExport()
         {
-            ViewBag.Title = "Orders: General Export Report (for partial deliveries pivot?)";
+            ViewBag.Title = "Orders: General Export";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersExport";
 
-            ReportParameter[] reportParameter = new ReportParameter[3];
+            ReportParameter[] reportParameter = new ReportParameter[4];
             reportParameter[0] = new ReportParameter("Client", "1");
             reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
             reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());
+            reportParameter[3] = new ReportParameter("Division", "LRA DROGENBOS");
 
             reportViewer.ServerReport.SetParameters(reportParameter);
             ViewBag.ReportViewer = reportViewer;

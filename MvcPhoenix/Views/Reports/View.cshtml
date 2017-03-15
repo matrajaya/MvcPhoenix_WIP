@@ -14,7 +14,7 @@
 
     <div class="row">
         <div class="table-responsive text-center">
-            @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "no" })
+            @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "no", @style="min-height:500px;" })
         </div>
     </div>
 

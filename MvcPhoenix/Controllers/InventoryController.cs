@@ -336,7 +336,8 @@ namespace MvcPhoenix.Controllers
         public void LabelPrint()
         {
             int pagecopies = 1;
-            string printerName = @"AThermalZebraNet";                           // @"\\CMCNMPS2\RcvShelf";
+            //string printerName = @"AThermalZebraNet";                           
+            string printerName = @"\\CMCNMPS2\RcvShelf";
 
             var actionPDF = new Rotativa.ActionAsPdf("PrintLabel")
             {
@@ -362,7 +363,8 @@ namespace MvcPhoenix.Controllers
         public void ShelfStockPrint(string Shelfstockid, string pagecopies)
         {
             int id = Convert.ToInt32(Shelfstockid);
-            string printerName = @"AThermalZebraNet";                           // Set printer name as installed on local pc or UNC eg; @"\\CMCNMPS2\RcvShelf"
+            //string printerName = @"AThermalZebraNet";                           // Set printer name as installed on local pc or UNC eg; @"\\CMCNMPS2\RcvShelf"
+            string printerName = @"\\CMCNMPS2\RcvShelf";
 
             var actionPDF = new Rotativa.ActionAsPdf("PrintShelfStockLabel", new { id })
             {
