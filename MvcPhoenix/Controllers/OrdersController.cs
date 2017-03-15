@@ -261,6 +261,7 @@ namespace MvcPhoenix.Controllers
                                LotNumber = t.LotNumber,
                                Qty = t.Qty,
                                ShipDate = t.ShipDate,
+                               Via = t.Via,
                                BackOrdered = t.BackOrdered,
                                AllocateStatus = t.AllocateStatus,
                                CSAllocate = t.CSAllocate,

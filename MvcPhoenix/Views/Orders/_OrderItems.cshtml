@@ -21,6 +21,7 @@
                 <th class="text-center">Qty</th>
                 <th class="text-center">Avail Qty</th>
                 <th class="text-center">Ship Date</th>
+                <th class="text-center">Carrier</th>
                 <th class="text-center">Delay</th>
                 <th class="text-center">A-Status</th>
                 <th class="text-center">Allocated On</th>
@@ -46,6 +47,7 @@
                     <td class="text-center">@item.Qty</td>
                     <td class="text-center">@item.QtyAvailable</td>
                     <td class="text-center">@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
+                    <td class="text-center">@item.Via</td>
                     <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
                     <td class="text-center">@item.AllocateStatus</td>
                     <td class="text-center">@String.Format("{0:dd MMM yyyy}", item.AllocatedDate)</td>
