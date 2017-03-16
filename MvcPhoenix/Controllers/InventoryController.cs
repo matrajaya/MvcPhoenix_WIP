@@ -337,11 +337,12 @@ namespace MvcPhoenix.Controllers
         {
             int pagecopies = 1;
             //string printerName = @"AThermalZebraNet";                           
-            string printerName = @"\\CMCNMPS2\RcvShelf";
+            //string printerName = @"\\CMCNMPS2\RcvShelf";
+            string printerName = @"\\cmcnmps2\ZebraIT";
 
             var actionPDF = new Rotativa.ActionAsPdf("PrintLabel")
             {
-                PageMargins = new Margins(2, 2, 0, 2),
+                PageMargins = new Margins(10, 2, 2, 10),
                 PageWidth = 200,
                 PageHeight = 75,
                 CustomSwitches = "--disable-smart-shrinking --load-error-handling ignore --copies " + pagecopies + ""
@@ -364,11 +365,12 @@ namespace MvcPhoenix.Controllers
         {
             int id = Convert.ToInt32(Shelfstockid);
             //string printerName = @"AThermalZebraNet";                           // Set printer name as installed on local pc or UNC eg; @"\\CMCNMPS2\RcvShelf"
-            string printerName = @"\\CMCNMPS2\RcvShelf";
+            //string printerName = @"\\CMCNMPS2\RcvShelf";
+            string printerName = @"\\cmcnmps2\ZebraIT";
 
             var actionPDF = new Rotativa.ActionAsPdf("PrintShelfStockLabel", new { id })
             {
-                PageMargins = new Margins(2, 2, 0, 2),
+                PageMargins = new Margins(10, 2, 2, 10),
                 PageWidth = 200,
                 PageHeight = 75,
                 CustomSwitches = "--disable-smart-shrinking --load-error-handling ignore --copies " + pagecopies + ""

@@ -218,11 +218,11 @@ namespace MvcPhoenix.Services
 
             var q = fnFillBulkOrderFromDB(vm.bulkorderid);
             System.Text.StringBuilder s = new System.Text.StringBuilder();
-            s.Append("<div class='table-responsive'><table class='table table-hover table-striped'><thead><tr><th>Mastercode</th><th>Master Name</th><th align='right'>Weight</th></tr></thead>");
+            s.Append("<div class='table-responsive'><table class='table table-hover table-striped'><thead><tr><th>Mastercode</th><th>Master Name</th><th>Weight</th><th align='right'>Notes</th></tr></thead>");
 
             foreach (var item in q.ListOfBulkOrderItem)
             {
-                s.Append(String.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", item.mastercode, item.mastername, item.weight));
+                s.Append(String.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td></tr>", item.mastercode, item.mastername, item.weight, item.itemnotes));
             }
 
             s.Append("</table></div>");
@@ -236,17 +236,28 @@ namespace MvcPhoenix.Services
         {
             // build table and send email
             var q = fnFillBulkOrderFromDB(obj.bulkorderid);
+            var shipto = "Chemical Marketing Concepts Europe<br/>Industrieweg 73<br/>5145 PD Waalwijk<br/>The Netherlands<br/>+31 (0)416-651977";
+
             System.Text.StringBuilder s = new System.Text.StringBuilder();
             s.Append(String.Format("<p><em>The following message is sent on behalf of {0}</em></p>", obj.FromAddress));
+
+            s.Append("<p>Hello,</p>");
+            s.Append("<p>Please find below our new replenishment order.</p>");
+            s.Append("<p>Thank you for your feedback.</p>");
+            s.Append("<p>Kind regards,<br/>Inventory Team<br/>Chemical Marketing Concepts</p><hr style='border: 1px solid black'/>");
+
+            s.Append(String.Format("<p><b>Order Number: </b>{0}<br/><b>Order Date: </b>{1}<br/></p>", obj.bulkorderid, DateTime.UtcNow.ToShortDateString()));
+            s.Append(String.Format("<p><b>Ship To:</b><br/>{0}</p>", shipto));
+
             s.Append("<p>Please send the following items:</p>");
-            s.Append("<table width='70%'><tr align='left'><th align='left'>Mastercode</th><th align='left'>Master Name</th><th align='left'>Weight</th></tr>");
+            s.Append("<table width='70%' style='border: 1px solid black'><tr align='left' bgcolor='#428BCA' style='color:white;'><th align='left'>Product Code</th><th align='left'>Product Name</th><th align='center'>Weight (KG)</th><th align='left'>Notes</th></tr>");
 
             foreach (var item in q.ListOfBulkOrderItem)
             {
-                s.Append(String.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", item.mastercode, item.mastername, item.weight));
+                s.Append(String.Format("<tr><td>{0}</td><td>{1}</td><td align='center'>{2}</td><td>{3}</td></tr>", item.mastercode, item.mastername, item.weight, item.itemnotes));
             }
 
-            s.Append("</table>");
+            s.Append("</table><br/><hr style='border: 1px solid black'/>");
 
             obj.MessageBody = s.ToString();
 
