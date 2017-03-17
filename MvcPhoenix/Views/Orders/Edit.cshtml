@@ -398,16 +398,26 @@
                                 @Html.TextBoxFor(m => m.timing, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.timing)
                             </div>
-                            <div class="col-md-4">
-                                <label class="control-label">Freight Cost</label>
-                                @Html.TextBoxFor(m => m.spsfreightcost, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.spsfreightcost)
+                            <div class="col-md-8 form-group">
+                                <label class="control-label">&nbsp;</label>
+                                @Ajax.ActionLink("SPS Billing Details", "EditSPSBilling", "Orders", new { id = @Model.orderid }, new AjaxOptions
+                                {
+                                    UpdateTargetId = "dialogPlaceholder",
+                                    InsertionMode = InsertionMode.Replace,
+                                    HttpMethod = "GET",
+                                    OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                                }, new { @class = "btn btn-primary btn-block" })
                             </div>
-                            <div class="col-md-4">
-                                <label class="control-label">Shipped Weight</label>
-                                @Html.TextBoxFor(m => m.spsshippedwt, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.spsshippedwt)
-                            </div>
+                            @*<div class="col-md-4">
+                                    <label class="control-label">Freight Cost</label>
+                                    @Html.TextBoxFor(m => m.spsfreightcost, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.spsfreightcost)
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label">Shipped Weight</label>
+                                    @Html.TextBoxFor(m => m.spsshippedwt, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.spsshippedwt)
+                                </div>*@
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -454,7 +464,7 @@
 
 <script type="text/javascript">
     $('#customer').val($('#clientname').val());
-    
+
     // CopyDivisionToBillingGroup
     $("#divisionid").change(function () {
         var selectedText = $('#divisionid option:selected').text();

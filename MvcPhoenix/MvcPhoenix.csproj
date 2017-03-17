@@ -402,6 +402,9 @@
     <Compile Include="EF\tblOrderSource.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblOrderSPSBilling.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblOrderTrans.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -1344,6 +1347,7 @@
     <Content Include="Views\Receiving\_UnknownBulkList.cshtml" />
     <Content Include="Views\Orders\Import.cshtml" />
     <Content Include="Views\GHS\EditPHSource.cshtml" />
+    <Content Include="Views\Orders\_SPSBillingModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

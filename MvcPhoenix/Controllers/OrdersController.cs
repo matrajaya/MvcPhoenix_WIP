@@ -236,6 +236,26 @@ namespace MvcPhoenix.Controllers
 
         #endregion Printing Actions
 
+        #region Order SPS Billing Details
+
+        public ActionResult EditSPSBilling(int id)
+        {
+            int orderid = id;
+            var vm = OrderService.fnSPSBilling(orderid);
+            ViewBag.ListOfCountries = OrderService.fnListOfCountries();
+
+            return PartialView("~/Views/Orders/_SPSBillingModal.cshtml", vm);
+        }
+
+        [HttpPost]
+        public ActionResult SaveSPSBilling(OrderSPSBilling vm)
+        {
+            OrderService.fnSaveSPSBillingDetails(vm);
+            return null;
+        }
+
+        #endregion
+
         #region Order Item Methods
 
         [HttpGet]

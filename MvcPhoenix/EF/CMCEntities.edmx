@@ -1166,6 +1166,34 @@
           <Property Name="Source" Type="nvarchar" MaxLength="50" />
           <Property Name="LegacyID" Type="int" />
         </EntityType>
+        <EntityType Name="tblOrderSPSBilling">
+          <Key>
+            <PropertyRef Name="SPSBillingID" />
+          </Key>
+          <Property Name="SPSBillingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="TaxID" Type="nvarchar(max)" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="3" />
+          <Property Name="PriceCost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FreightCost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ShippedWeight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="InvoiceTitle" Type="nvarchar(max)" />
+          <Property Name="InvoiceFirstName" Type="nvarchar(max)" />
+          <Property Name="InvoiceLastName" Type="nvarchar(max)" />
+          <Property Name="InvoiceCompany" Type="nvarchar(max)" />
+          <Property Name="InvoiceAddress1" Type="nvarchar(max)" />
+          <Property Name="InvoiceAddress2" Type="nvarchar(max)" />
+          <Property Name="InvoiceAddress3" Type="nvarchar(max)" />
+          <Property Name="InvoiceCity" Type="nvarchar(max)" />
+          <Property Name="InvoiceState" Type="nvarchar(max)" />
+          <Property Name="InvoicePostalCode" Type="nvarchar(max)" />
+          <Property Name="InvoiceCountry" Type="nvarchar(max)" />
+          <Property Name="InvoicePhone" Type="nvarchar(max)" />
+          <Property Name="InvoiceEmail" Type="nvarchar(max)" />
+          <Property Name="UpdateDate" Type="datetime" />
+          <Property Name="UpdateUser" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="tblOrderTrans">
           <Key>
             <PropertyRef Name="OrderTransID" />
@@ -1394,6 +1422,7 @@
           <Property Name="SpecialInstructions" Type="nvarchar" MaxLength="255" />
           <Property Name="ShelfStockLocation" Type="nvarchar" MaxLength="20" />
           <Property Name="PackagePartNumber" Type="nvarchar" MaxLength="8" />
+          <Property Name="ts" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="tblProductionMaster">
           <Key>
@@ -1438,6 +1467,7 @@
           <Property Name="ProdmastCreateDate" Type="datetime" />
           <Property Name="BulkContainerNote" Type="nvarchar" MaxLength="20" />
           <Property Name="ClientID" Type="int" />
+          <Property Name="TS" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="tblProductionStage">
           <Key>
@@ -2006,6 +2036,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="tblOrderItem" EntityType="Self.tblOrderItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderMaster" EntityType="Self.tblOrderMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderSource" EntityType="Self.tblOrderSource" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblOrderSPSBilling" EntityType="Self.tblOrderSPSBilling" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderTrans" EntityType="Self.tblOrderTrans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderType" EntityType="Self.tblOrderType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblPackage" EntityType="Self.tblPackage" Schema="dbo" store:Type="Tables" />
@@ -2202,6 +2233,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySet Name="vwBulkLevel" EntityType="CMCSQL03Model.vwBulkLevel" />
           <EntitySet Name="vwProductsInfo" EntityType="CMCSQL03Model.vwProductsInfo" />
           <EntitySet Name="tblOrderImport" EntityType="CMCSQL03Model.tblOrderImport" />
+          <EntitySet Name="tblOrderSPSBilling" EntityType="CMCSQL03Model.tblOrderSPSBilling" />
         </EntityContainer>
         <EntityType Name="tblBillingGroup">
           <Key>
@@ -3421,6 +3453,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="SpecialInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ShelfStockLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PackagePartNumber" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="ts" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="tblProductionMaster">
           <Key>
@@ -3465,6 +3498,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="ProdmastCreateDate" Type="DateTime" Precision="3" />
           <Property Name="BulkContainerNote" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ClientID" Type="Int32" />
+          <Property Name="TS" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="tblProductionStage">
           <Key>
@@ -4165,6 +4199,34 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="DH_MDB" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Other_MDB" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="ImportError" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblOrderSPSBilling">
+          <Key>
+            <PropertyRef Name="SPSBillingID" />
+          </Key>
+          <Property Name="SPSBillingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TaxID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Currency" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="PriceCost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FreightCost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ShippedWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="InvoiceTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceFirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceLastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceCompany" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceAddress1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceAddress2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceAddress3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceCity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceState" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoicePostalCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceCountry" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoicePhone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
 		</Schema>
     </edmx:ConceptualModels>
@@ -5410,6 +5472,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySetMapping Name="tblProductionDetail">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionDetail">
               <MappingFragment StoreEntitySet="tblProductionDetail">
+                <ScalarProperty Name="ts" ColumnName="ts" />
                 <ScalarProperty Name="PackagePartNumber" ColumnName="PackagePartNumber" />
                 <ScalarProperty Name="ShelfStockLocation" ColumnName="ShelfStockLocation" />
                 <ScalarProperty Name="SpecialInstructions" ColumnName="SpecialInstructions" />
@@ -5435,6 +5498,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <EntitySetMapping Name="tblProductionMaster">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionMaster">
               <MappingFragment StoreEntitySet="tblProductionMaster">
+                <ScalarProperty Name="TS" ColumnName="TS" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="BulkContainerNote" ColumnName="BulkContainerNote" />
                 <ScalarProperty Name="ProdmastCreateDate" ColumnName="ProdmastCreateDate" />
@@ -6193,6 +6257,35 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
                 <ScalarProperty Name="ImportStatus" ColumnName="ImportStatus" />
                 <ScalarProperty Name="GUID" ColumnName="GUID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblOrderSPSBilling">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderSPSBilling">
+              <MappingFragment StoreEntitySet="tblOrderSPSBilling">
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="InvoiceEmail" ColumnName="InvoiceEmail" />
+                <ScalarProperty Name="InvoicePhone" ColumnName="InvoicePhone" />
+                <ScalarProperty Name="InvoiceCountry" ColumnName="InvoiceCountry" />
+                <ScalarProperty Name="InvoicePostalCode" ColumnName="InvoicePostalCode" />
+                <ScalarProperty Name="InvoiceState" ColumnName="InvoiceState" />
+                <ScalarProperty Name="InvoiceCity" ColumnName="InvoiceCity" />
+                <ScalarProperty Name="InvoiceAddress3" ColumnName="InvoiceAddress3" />
+                <ScalarProperty Name="InvoiceAddress2" ColumnName="InvoiceAddress2" />
+                <ScalarProperty Name="InvoiceAddress1" ColumnName="InvoiceAddress1" />
+                <ScalarProperty Name="InvoiceCompany" ColumnName="InvoiceCompany" />
+                <ScalarProperty Name="InvoiceLastName" ColumnName="InvoiceLastName" />
+                <ScalarProperty Name="InvoiceFirstName" ColumnName="InvoiceFirstName" />
+                <ScalarProperty Name="InvoiceTitle" ColumnName="InvoiceTitle" />
+                <ScalarProperty Name="ShippedWeight" ColumnName="ShippedWeight" />
+                <ScalarProperty Name="FreightCost" ColumnName="FreightCost" />
+                <ScalarProperty Name="PriceCost" ColumnName="PriceCost" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="TaxID" ColumnName="TaxID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="SPSBillingID" ColumnName="SPSBillingID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

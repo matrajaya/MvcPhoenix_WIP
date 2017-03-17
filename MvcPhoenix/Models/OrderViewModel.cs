@@ -223,53 +223,57 @@ namespace MvcPhoenix.Models
         [Display(Name = "Total Order Weight")]
         public int? totalorderweight { get; set; }
 
-        [Display(Name = "SPS Tax ID")]
-        public string spstaxid { get; set; }
+        ////////////////////////////////////////////////////////////////////////////////////////////////
 
-        [Display(Name = "SPS Currency")]
-        public string spscurrency { get; set; }
+        //[Display(Name = "SPS Tax ID")]
+        //public string spstaxid { get; set; }
 
-        [Display(Name = "SPS Shipped Wt")]
-        public string spsshippedwt { get; set; }
+        //[Display(Name = "SPS Currency")]
+        //public string spscurrency { get; set; }
 
-        [Display(Name = "SPS Freight Cost")]
-        public string spsfreightcost { get; set; }
+        //[Display(Name = "SPS Shipped Wt")]
+        //public string spsshippedwt { get; set; }
 
-        [Display(Name = "Invoice Company")]
-        public string invoicecompany { get; set; }
+        //[Display(Name = "SPS Freight Cost")]
+        //public string spsfreightcost { get; set; }
 
-        [Display(Name = "Invoice Title")]
-        public string invoicetitle { get; set; }
+        //[Display(Name = "Invoice Company")]
+        //public string invoicecompany { get; set; }
 
-        [Display(Name = "Invoice First Name")]
-        public string invoicefirstname { get; set; }
+        //[Display(Name = "Invoice Title")]
+        //public string invoicetitle { get; set; }
 
-        [Display(Name = "Invoice Last Name")]
-        public string invoicelastname { get; set; }
+        //[Display(Name = "Invoice First Name")]
+        //public string invoicefirstname { get; set; }
 
-        [Display(Name = "Invoice Address 1")]
-        public string invoiceaddress1 { get; set; }
+        //[Display(Name = "Invoice Last Name")]
+        //public string invoicelastname { get; set; }
 
-        [Display(Name = "Invoice Address 2")]
-        public string invoiceaddress2 { get; set; }
+        //[Display(Name = "Invoice Address 1")]
+        //public string invoiceaddress1 { get; set; }
 
-        [Display(Name = "Invoice Address 3")]
-        public string invoiceaddress3 { get; set; }
+        //[Display(Name = "Invoice Address 2")]
+        //public string invoiceaddress2 { get; set; }
 
-        [Display(Name = "Invoice City")]
-        public string invoicecity { get; set; }
+        //[Display(Name = "Invoice Address 3")]
+        //public string invoiceaddress3 { get; set; }
 
-        [Display(Name = "Invoice State")]
-        public string invoicestateprov { get; set; }
+        //[Display(Name = "Invoice City")]
+        //public string invoicecity { get; set; }
 
-        [Display(Name = "Invoice Postal Code")]
-        public string invoicepostalcode { get; set; }
+        //[Display(Name = "Invoice State")]
+        //public string invoicestateprov { get; set; }
 
-        [Display(Name = "Invoice Country")]
-        public string invoicecountry { get; set; }
+        //[Display(Name = "Invoice Postal Code")]
+        //public string invoicepostalcode { get; set; }
 
-        [Display(Name = "Invoice Phone")]
-        public string invoicephone { get; set; }
+        //[Display(Name = "Invoice Country")]
+        //public string invoicecountry { get; set; }
+
+        //[Display(Name = "Invoice Phone")]
+        //public string invoicephone { get; set; }
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////
 
         [Display(Name = "Cust Order Type")]
         public string custordertype { get; set; }
@@ -318,6 +322,50 @@ namespace MvcPhoenix.Models
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
+    }
+
+    public class OrderSPSBilling
+    {
+        public int SPSBillingID { get; set; }
+        public int OrderId { get; set; }
+        public string Type { get; set; }                    // CC or Invoice
+        public string TaxId { get; set; }
+        public string Currency { get; set; }                // USD or EUR or CNY ...necessary?
+        public decimal? PriceCost { get; set; }              // Sum of SPSCharge in Order Item
+        public decimal? FreightCost { get; set; }
+        public decimal? ShippedWeight { get; set; }
+        public string InvoiceTitle { get; set; }
+        public string InvoiceFirstName { get; set; }
+        public string InvoiceLastName { get; set; }
+        public string InvoiceCompany { get; set; }
+        public string InvoiceAddress1 { get; set; }
+        public string InvoiceAddress2 { get; set; }
+        public string InvoiceAddress3 { get; set; }
+        public string InvoiceCity { get; set; }
+        public string InvoiceState { get; set; }
+        public string InvoicePostalCode { get; set; }
+        public string InvoiceCountry { get; set; }
+        public string InvoicePhone { get; set; }
+        public string InvoiceEmail { get; set; }
+        public DateTime UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
+
+        #region CC billing info        
+        //public string MerchantAcctNumber { get; set; }
+        //public DateTime TransactionDate { get; set; } //note: must match ship date for invoiced orders
+        //public string CardType { get; set; }
+        //public string NameOnCard { get; set; }
+        //public int LastDigits { get; set; }
+        //public int CID { get; set; }
+        //public DateTime CCExpiration { get; set; } // mm/yyyy
+        //public bool TaxExemptRecd { get; set; }
+        //public decimal PurchaseAmount { get; set; }
+        //public decimal ProcessingFee { get; set; }
+        //public string ReferenceNumber { get; set; }
+        //public string CAPNumber { get; set; }
+        //public bool VoidPayment { get; set; }
+        //public string BillingNotes { get; set; }
+        #endregion
     }
 
     public class OrderImportFile

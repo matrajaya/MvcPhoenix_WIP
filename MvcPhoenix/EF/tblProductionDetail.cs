@@ -33,5 +33,6 @@ namespace MvcPhoenix.EF
         public string SpecialInstructions { get; set; }
         public string ShelfStockLocation { get; set; }
         public string PackagePartNumber { get; set; }
+        public byte[] ts { get; set; }
     }
 }

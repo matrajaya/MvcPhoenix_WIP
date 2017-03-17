@@ -44,12 +44,12 @@ namespace MvcPhoenix.Services
                          where t.OrderID == id
                          select t).FirstOrDefault();
 
-                o.itemscount = (from t in db.tblOrderItem 
-                                where t.OrderID == id 
+                o.itemscount = (from t in db.tblOrderItem
+                                where t.OrderID == id
                                 select t).Count();
 
-                o.transcount = (from t in db.tblOrderTrans 
-                                where t.OrderID == id 
+                o.transcount = (from t in db.tblOrderTrans
+                                where t.OrderID == id
                                 select t).Count();
 
                 var cl = db.tblClient.Find(q.ClientID);
@@ -127,22 +127,22 @@ namespace MvcPhoenix.Services
                 o.cmcuser = q.CMCUser;
                 o.customerreference = q.CustomerReference;
                 o.totalorderweight = q.TotalOrderWeight;
-                o.spstaxid = q.SPSTaxID;
-                o.spscurrency = q.SPSCurrency;
-                o.spsshippedwt = q.SPSShippedWt;
-                o.spsfreightcost = q.SPSFreightCost;
-                o.invoicecompany = q.InvoiceCompany;
-                o.invoicetitle = q.InvoiceTitle;
-                o.invoicefirstname = q.InvoiceFirstName;
-                o.invoicelastname = q.InvoiceLastName;
-                o.invoiceaddress1 = q.InvoiceAddress1;
-                o.invoiceaddress2 = q.InvoiceAddress2;
-                o.invoiceaddress3 = q.InvoiceAddress3;
-                o.invoicecity = q.InvoiceCity;
-                o.invoicestateprov = q.InvoiceStateProv;
-                o.invoicepostalcode = q.InvoicePostalCode;
-                o.invoicecountry = q.InvoiceCountry;
-                o.invoicephone = q.InvoicePhone;
+                //o.spstaxid = q.SPSTaxID;
+                //o.spscurrency = q.SPSCurrency;
+                //o.spsshippedwt = q.SPSShippedWt;
+                //o.spsfreightcost = q.SPSFreightCost;
+                //o.invoicecompany = q.InvoiceCompany;
+                //o.invoicetitle = q.InvoiceTitle;
+                //o.invoicefirstname = q.InvoiceFirstName;
+                //o.invoicelastname = q.InvoiceLastName;
+                //o.invoiceaddress1 = q.InvoiceAddress1;
+                //o.invoiceaddress2 = q.InvoiceAddress2;
+                //o.invoiceaddress3 = q.InvoiceAddress3;
+                //o.invoicecity = q.InvoiceCity;
+                //o.invoicestateprov = q.InvoiceStateProv;
+                //o.invoicepostalcode = q.InvoicePostalCode;
+                //o.invoicecountry = q.InvoiceCountry;
+                //o.invoicephone = q.InvoicePhone;
                 o.custordertype = q.CustOrderType;
 
                 o.custrequestdate = null;
@@ -269,22 +269,22 @@ namespace MvcPhoenix.Services
                 q.CMCUser = vm.cmcuser;
                 q.CustomerReference = vm.customerreference;
                 q.TotalOrderWeight = (vm.totalorderweight);
-                q.SPSTaxID = vm.spstaxid;
-                q.SPSCurrency = vm.spscurrency;
-                q.SPSShippedWt = vm.spsshippedwt;
-                q.SPSFreightCost = vm.spsfreightcost;
-                q.InvoiceCompany = vm.invoicecompany;
-                q.InvoiceTitle = vm.invoicetitle;
-                q.InvoiceFirstName = vm.invoicefirstname;
-                q.InvoiceLastName = vm.invoicelastname;
-                q.InvoiceAddress1 = vm.invoiceaddress1;
-                q.InvoiceAddress2 = vm.invoiceaddress2;
-                q.InvoiceAddress3 = vm.invoiceaddress3;
-                q.InvoiceCity = vm.invoicecity;
-                q.InvoiceStateProv = vm.invoicestateprov;
-                q.InvoicePostalCode = vm.invoicepostalcode;
-                q.InvoiceCountry = vm.invoicecountry;
-                q.InvoicePhone = vm.invoicephone;
+                //q.SPSTaxID = vm.spstaxid;
+                //q.SPSCurrency = vm.spscurrency;
+                //q.SPSShippedWt = vm.spsshippedwt;
+                //q.SPSFreightCost = vm.spsfreightcost;
+                //q.InvoiceCompany = vm.invoicecompany;
+                //q.InvoiceTitle = vm.invoicetitle;
+                //q.InvoiceFirstName = vm.invoicefirstname;
+                //q.InvoiceLastName = vm.invoicelastname;
+                //q.InvoiceAddress1 = vm.invoiceaddress1;
+                //q.InvoiceAddress2 = vm.invoiceaddress2;
+                //q.InvoiceAddress3 = vm.invoiceaddress3;
+                //q.InvoiceCity = vm.invoicecity;
+                //q.InvoiceStateProv = vm.invoicestateprov;
+                //q.InvoicePostalCode = vm.invoicepostalcode;
+                //q.InvoiceCountry = vm.invoicecountry;
+                //q.InvoicePhone = vm.invoicephone;
                 q.CustOrderType = vm.custordertype;
                 q.CustRequestDate = vm.custrequestdate;
                 q.ApprovalDate = vm.approvaldate;
@@ -407,6 +407,89 @@ namespace MvcPhoenix.Services
             }
 
             return false;
+        }
+
+        public static OrderSPSBilling fnSPSBilling(int id)
+        {
+            // id=OrderID
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                OrderSPSBilling vm = new OrderSPSBilling();
+                var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == id);
+
+                if (q == null)
+                {
+                    vm.SPSBillingID = -1;
+                    vm.OrderId = id;
+                    return vm;
+                }
+
+                //vm.Id = q.SPSBillingID;
+                vm.OrderId = q.OrderID;
+                vm.Type = q.Type;
+                vm.TaxId = q.TaxID;
+                vm.Currency = q.Currency;
+                vm.PriceCost = q.PriceCost;
+                vm.FreightCost = q.FreightCost;
+                vm.ShippedWeight = q.ShippedWeight;
+                vm.InvoiceTitle = q.InvoiceTitle;
+                vm.InvoiceFirstName = q.InvoiceFirstName;
+                vm.InvoiceLastName = q.InvoiceLastName;
+                vm.InvoiceCompany = q.InvoiceCompany;
+                vm.InvoiceAddress1 = q.InvoiceAddress1;
+                vm.InvoiceAddress2 = q.InvoiceAddress2;
+                vm.InvoiceAddress3 = q.InvoiceAddress3;
+                vm.InvoiceCity = q.InvoiceCity;
+                vm.InvoiceState = q.InvoiceState;
+                vm.InvoicePostalCode = q.InvoicePostalCode;
+                vm.InvoiceCountry = q.InvoiceCountry;
+                vm.InvoicePhone = q.InvoicePhone;
+                vm.InvoiceEmail = q.InvoiceEmail;
+                vm.UpdateDate = DateTime.UtcNow;
+                vm.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                return vm;
+            }
+        }
+
+        public static void fnSaveSPSBillingDetails(OrderSPSBilling vm)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                if (vm.SPSBillingID == -1)
+                {
+                    EF.tblOrderSPSBilling newrec = new EF.tblOrderSPSBilling();
+                    newrec.OrderID = vm.OrderId;
+                    db.tblOrderSPSBilling.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == vm.OrderId);
+
+                q.Type = "Invoice";
+                q.TaxID = vm.TaxId;
+                q.Currency = "EUR";
+                q.PriceCost = vm.PriceCost;
+                q.FreightCost = vm.FreightCost;
+                q.ShippedWeight = vm.ShippedWeight;
+                q.InvoiceTitle = vm.InvoiceTitle;
+                q.InvoiceFirstName = vm.InvoiceFirstName;
+                q.InvoiceLastName = vm.InvoiceLastName;
+                q.InvoiceCompany = vm.InvoiceCompany;
+                q.InvoiceAddress1 = vm.InvoiceAddress1;
+                q.InvoiceAddress2 = vm.InvoiceAddress2;
+                q.InvoiceAddress3 = vm.InvoiceAddress3;
+                q.InvoiceCity = vm.InvoiceCity;
+                q.InvoiceState = vm.InvoiceState;
+                q.InvoicePostalCode = vm.InvoicePostalCode;
+                q.InvoiceCountry = vm.InvoiceCountry;
+                q.InvoicePhone = vm.InvoicePhone;
+                q.InvoiceEmail = vm.InvoiceEmail;
+                q.UpdateDate = DateTime.UtcNow;
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                db.SaveChanges();
+            }
         }
 
         public static OrderItem fnCreateItem(int id)
@@ -1259,7 +1342,7 @@ namespace MvcPhoenix.Services
                 {
                     foreach (var item in qry)
                     {
-                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - "+ item.UnitWeight + "</option>";
+                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - " + item.UnitWeight + "</option>";
                     }
                 }
                 else
@@ -1272,7 +1355,7 @@ namespace MvcPhoenix.Services
                 return s;
             }
         }
-        
+
         public static List<SelectListItem> fnListOfOrderItemIDs(int? id)
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
@@ -1661,6 +1744,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        #endregion        
+        #endregion Selection List Methods
     }
 }

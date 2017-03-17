@@ -205,28 +205,25 @@ namespace MvcPhoenix.Services
                     NewOrder.cmcuser = qOM.CMCUser;
                     NewOrder.customerreference = qOM.CustomerReference;
                     NewOrder.totalorderweight = qOM.TotalOrderWeight;
-                    NewOrder.spstaxid = qOM.SPSTaxID;
-                    NewOrder.spscurrency = qOM.SPSCurrency;
-                    NewOrder.spsshippedwt = qOM.SPSShippedWt;
-                    NewOrder.spsfreightcost = qOM.SPSFreightCost;
-                    NewOrder.invoicecompany = qOM.InvoiceCompany;
-                    NewOrder.invoicetitle = qOM.InvoiceTitle;
-                    NewOrder.invoicefirstname = qOM.InvoiceFirstName;
-                    NewOrder.invoicelastname = qOM.InvoiceLastName;
-                    NewOrder.invoiceaddress1 = qOM.InvoiceAddress1;
-                    NewOrder.invoiceaddress2 = qOM.InvoiceAddress2;
-                    NewOrder.invoiceaddress3 = qOM.InvoiceAddress3;
-                    NewOrder.invoicecity = qOM.InvoiceCity;
-                    NewOrder.invoicestateprov = qOM.InvoiceStateProv;
-                    NewOrder.invoicepostalcode = qOM.InvoicePostalCode;
-                    NewOrder.invoicecountry = qOM.InvoiceCountry;
-                    NewOrder.invoicephone = qOM.InvoicePhone;
+                    //NewOrder.spstaxid = qOM.SPSTaxID;
+                    //NewOrder.spscurrency = qOM.SPSCurrency;
+                    //NewOrder.spsshippedwt = qOM.SPSShippedWt;
+                    //NewOrder.spsfreightcost = qOM.SPSFreightCost;
+                    //NewOrder.invoicecompany = qOM.InvoiceCompany;
+                    //NewOrder.invoicetitle = qOM.InvoiceTitle;
+                    //NewOrder.invoicefirstname = qOM.InvoiceFirstName;
+                    //NewOrder.invoicelastname = qOM.InvoiceLastName;
+                    //NewOrder.invoiceaddress1 = qOM.InvoiceAddress1;
+                    //NewOrder.invoiceaddress2 = qOM.InvoiceAddress2;
+                    //NewOrder.invoiceaddress3 = qOM.InvoiceAddress3;
+                    //NewOrder.invoicecity = qOM.InvoiceCity;
+                    //NewOrder.invoicestateprov = qOM.InvoiceStateProv;
+                    //NewOrder.invoicepostalcode = qOM.InvoicePostalCode;
+                    //NewOrder.invoicecountry = qOM.InvoiceCountry;
+                    //NewOrder.invoicephone = qOM.InvoicePhone;
                     NewOrder.custordertype = qOM.CustOrderType;
-                    //NewOrder.custrequestdate = null;
                     NewOrder.custrequestdate = qOM.CustRequestDate ?? null;
-                    //NewOrder.approvaldate = null;
                     NewOrder.approvaldate = qOM.ApprovalDate ?? null;
-                    //NewOrder.requesteddeliverydate = null;
                     NewOrder.requesteddeliverydate = qOM.RequestedDeliveryDate ?? null;
                     NewOrder.custtotalitems = Convert.ToInt32(qOM.CustTotalItems);
                     NewOrder.custrequestedcarrier = qOM.CustRequestedCarrier;
@@ -243,7 +240,7 @@ namespace MvcPhoenix.Services
                     NewOrder.UpdateUser = qOM.UpdateUser;
                     NewOrder.UpdateDate = qOM.UpdateDate;
                     NewOrder.billinggroup = qOM.BillingGroup;
-                    NewOrder.IsSDN = qOM.IsSDN;     // lookup ?
+                    NewOrder.IsSDN = qOM.IsSDN;
 
                     // save tblOrderMaster to DB
                     NewOrder.orderid = -1; // needed to do insert
@@ -266,7 +263,7 @@ namespace MvcPhoenix.Services
                         NewItem.ShelfID = i.ShelfID;
                         if (i.ShelfID == null)
                         {
-                            i.ShelfID = 99; // needed for post save to pull SR
+                            i.ShelfID = 99;                     // needed for post save to pull SR
                             NewItem.SRSize = i.SRSize;
                         }
                         NewItem.Qty = i.Qty;

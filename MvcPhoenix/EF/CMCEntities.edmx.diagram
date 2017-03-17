@@ -68,6 +68,7 @@
         <EntityTypeShape EntityType="CMCSQL03Model.vwProductsInfo" Width="1.5" PointX="10.75" PointY="29.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderImport" Width="1.5" PointX="17.375" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderItem" Width="1.5" PointX="19.375" PointY="29.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblOrderSPSBilling" Width="1.5" PointX="3.375" PointY="30.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

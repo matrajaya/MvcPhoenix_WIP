@@ -88,5 +88,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<vwBulkLevel> vwBulkLevel { get; set; }
         public virtual DbSet<vwProductsInfo> vwProductsInfo { get; set; }
         public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
+        public virtual DbSet<tblOrderSPSBilling> tblOrderSPSBilling { get; set; }
     }
 }
