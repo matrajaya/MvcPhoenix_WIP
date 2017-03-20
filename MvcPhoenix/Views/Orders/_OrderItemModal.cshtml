@@ -146,9 +146,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-8 form-group">
                             <label>Delay Reason</label>
                             @Html.DropDownList("DelayReason", (List<SelectListItem>)ViewBag.ListOfDelayReasons, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label>SPS Charge</label>
+                            @Html.TextBoxFor(m => m.SPSCharge, new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">

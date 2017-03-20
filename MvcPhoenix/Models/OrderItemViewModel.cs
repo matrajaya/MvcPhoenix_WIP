@@ -110,7 +110,7 @@ namespace MvcPhoenix.Models
 
         public Nullable<int> LineItem { get; set; }
 
-        public string SPSCharge { get; set; }
+        public decimal? SPSCharge { get; set; }
 
         [Display(Name = "Carrier Inv Rec'd")]
         public Nullable<bool> CarrierInvoiceRcvd { get; set; }

@@ -47,7 +47,7 @@ namespace MvcPhoenix.EF
         public string Warehouse { get; set; }
         public Nullable<int> LineItem { get; set; }
         public Nullable<int> PackID { get; set; }
-        public string SPSCharge { get; set; }
+        public Nullable<decimal> SPSCharge { get; set; }
         public Nullable<bool> CarrierInvoiceRcvd { get; set; }
         public string GrnUnNumber { get; set; }
         public string GrnPkGroup { get; set; }

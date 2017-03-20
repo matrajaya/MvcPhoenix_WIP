@@ -429,7 +429,7 @@ namespace MvcPhoenix.Services
                 vm.Type = q.Type;
                 vm.TaxId = q.TaxID;
                 vm.Currency = q.Currency;
-                vm.PriceCost = q.PriceCost;
+                vm.PriceCost = db.tblOrderItem.Where(t => t.OrderID == vm.OrderId).Sum(t => t.SPSCharge);
                 vm.FreightCost = q.FreightCost;
                 vm.ShippedWeight = q.ShippedWeight;
                 vm.InvoiceTitle = q.InvoiceTitle;
@@ -452,6 +452,17 @@ namespace MvcPhoenix.Services
             }
         }
 
+        //public decimal? SPSTotalCharge(int orderid)
+        //{
+        //    using (var db = new EF.CMCSQL03Entities())
+        //    {
+        //        var q = db.tblOrderItem.Where(t => t.OrderID == orderid).Sum(t => t.SPSCharge);
+        //        decimal? totalcost = q;
+
+        //        return totalcost;
+        //    }
+        //}
+
         public static void fnSaveSPSBillingDetails(OrderSPSBilling vm)
         {
             using (var db = new EF.CMCSQL03Entities())
@@ -469,7 +480,7 @@ namespace MvcPhoenix.Services
                 q.Type = "Invoice";
                 q.TaxID = vm.TaxId;
                 q.Currency = "EUR";
-                q.PriceCost = vm.PriceCost;
+                q.PriceCost = db.tblOrderItem.Where(t => t.OrderID == vm.OrderId).Sum(t => t.SPSCharge);
                 q.FreightCost = vm.FreightCost;
                 q.ShippedWeight = vm.ShippedWeight;
                 q.InvoiceTitle = vm.InvoiceTitle;
@@ -586,6 +597,7 @@ namespace MvcPhoenix.Services
                 vm.BackOrdered = q.BackOrdered;
                 vm.CarrierInvoiceRcvd = q.CarrierInvoiceRcvd;
                 vm.DelayReason = q.DelayReason;
+                vm.SPSCharge = q.SPSCharge;
                 vm.Status = q.Status;
                 vm.StatusID = null;
                 vm.ListOfStatusNotesIDs = fnListOfStatusNotesIDs();
@@ -640,6 +652,7 @@ namespace MvcPhoenix.Services
                 q.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
                 q.Status = vm.Status;
                 q.DelayReason = vm.DelayReason;
+                q.SPSCharge = vm.SPSCharge;
                 q.ItemNotes = vm.ItemNotes;
 
                 db.SaveChanges();

@@ -246,6 +246,24 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Reports/View.cshtml");
         }
 
+        public ActionResult OrdersSPSExport()
+        {
+            ViewBag.Title = "Orders: SPS Billing Export";
+
+            ReportViewer reportViewer = rptViewerSettings();
+            reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersSPSExport";
+
+            ReportParameter[] reportParameter = new ReportParameter[3];
+            reportParameter[0] = new ReportParameter("Client", "30");
+            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
+            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());            
+
+            reportViewer.ServerReport.SetParameters(reportParameter);
+            ViewBag.ReportViewer = reportViewer;
+
+            return View("~/Views/Reports/View.cshtml");
+        }
+
         #endregion
 
         #region Product Management Reports
