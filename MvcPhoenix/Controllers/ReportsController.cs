@@ -9,7 +9,7 @@ namespace MvcPhoenix.Controllers
     public class ReportsController : Controller
     {
         public ActionResult Index()
-        {
+        {            
             return View();
         }
 
@@ -19,97 +19,97 @@ namespace MvcPhoenix.Controllers
         /// </summary>
         #region Product Coordinators Reports
 
-        public ActionResult Cas()
+        public ActionResult Cas(string unnum)
         {
             ViewBag.Title = "Products: CAS Report";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsCAS";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("UNNum", "UN3082"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("UNNum", unnum));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ClientHarmonized()
+        public ActionResult ClientHarmonized(string clientid)
         {
             ViewBag.Title = "Products: Client Harmonized Report";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsClientHarmonized";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ClientMSDSDate()
+        public ActionResult ClientMSDSDate(string clientid)
         {
             ViewBag.Title = "Products: Client MSDS Date";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsClientMSDSDate";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ClientPackages()
+        public ActionResult ClientPackages(string clientid)
         {
             ViewBag.Title = "Products: Client Packages";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsClientPackages";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ClientProductsList()
+        public ActionResult ClientProductsList(string clientid)
         {
             ViewBag.Title = "Products: Client Products List";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsClientProductsLst";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ClientHazardList()
+        public ActionResult ClientHazardList(string clientid)
         {
             ViewBag.Title = "Products: Client Hazard List";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsHazardList";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ClientSampleGuideInfo()
+        public ActionResult ClientSampleGuideInfo(string clientid)
         {
             ViewBag.Title = "Products: Sample Guide Information";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSampleGuideInfo";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ClientSGRevDate()
+        public ActionResult ClientSGRevDate(string clientid)
         {
             ViewBag.Title = "Products: Sample Guide Revision Date";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSGRevDate";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
@@ -119,7 +119,7 @@ namespace MvcPhoenix.Controllers
 
         #region Inventory Reports
 
-        public ActionResult InvExpiry()
+        public ActionResult InvExpiry(string clientid)
         {
             ViewBag.Title = "Inventory: Expiry Report";
 
@@ -127,9 +127,9 @@ namespace MvcPhoenix.Controllers
             reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryExpiryReport";
             
             ReportParameter[] reportParameter = new ReportParameter[3];
-            reportParameter[0] = new ReportParameter("Client", "1");
-            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
-            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());
+            reportParameter[0] = new ReportParameter("Client", clientid);
+            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
 
             reportViewer.ServerReport.SetParameters(reportParameter);
             ViewBag.ReportViewer = reportViewer;
@@ -137,37 +137,37 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult InvTotalInStock()
+        public ActionResult InvTotalInStock(string clientid)
         {
             ViewBag.Title = "Inventory: Total In Stock Report";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryTotalInvInStock";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
-        
-        public ActionResult InvOutOfStock()
+
+        public ActionResult InvOutOfStock(string clientid)
         {
             ViewBag.Title = "Inventory: Out Of Stock Report";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryTotalInvOutOfStock";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
-        
-        public ActionResult InvOpenReplenishment()
+
+        public ActionResult InvOpenReplenishment(string clientid)
         {
             ViewBag.Title = "Inventory: Open Replenishment Orders";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/InventoryOpenReplenishment";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
@@ -177,19 +177,24 @@ namespace MvcPhoenix.Controllers
 
         #region Order Reports
 
-        public ActionResult OrdersOpen()
+        public ActionResult OrdersOpen(string clientid, string division)
         {
             ViewBag.Title = "Orders: Current Open Report";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersOpen";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+
+            ReportParameter[] reportParameter = new ReportParameter[2];
+            reportParameter[0] = new ReportParameter("Client", clientid);
+            reportParameter[1] = new ReportParameter("Division", division);
+
+            reportViewer.ServerReport.SetParameters(reportParameter);
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult OrdersExport()
+        public ActionResult OrdersExport(string clientid, string division)
         {
             ViewBag.Title = "Orders: General Export";
 
@@ -197,10 +202,10 @@ namespace MvcPhoenix.Controllers
             reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersExport";
 
             ReportParameter[] reportParameter = new ReportParameter[4];
-            reportParameter[0] = new ReportParameter("Client", "1");
-            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
-            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());
-            reportParameter[3] = new ReportParameter("Division", "LRA DROGENBOS");
+            reportParameter[0] = new ReportParameter("Client", clientid);
+            reportParameter[1] = new ReportParameter("Division", division);
+            reportParameter[2] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+            reportParameter[3] = new ReportParameter("EndDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
 
             reportViewer.ServerReport.SetParameters(reportParameter);
             ViewBag.ReportViewer = reportViewer;
@@ -208,7 +213,7 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult OrdersSummary(string client = "1")
+        public ActionResult OrdersSummary(string clientid)
         {
             ViewBag.Title = "Orders: Summary Report (Daily Run)";
 
@@ -216,7 +221,7 @@ namespace MvcPhoenix.Controllers
             reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersSummary";
 
             ReportParameter[] reportParameter = new ReportParameter[3];
-            reportParameter[0] = new ReportParameter("Client", client);
+            reportParameter[0] = new ReportParameter("Client", clientid);
             //reportParameter[1] = new ReportParameter("Warehouse", "EU");
             reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
             reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
@@ -227,7 +232,7 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult FreightSummary(string client = "1")
+        public ActionResult FreightSummary(string clientid)
         {
             ViewBag.Title = "Orders: Air & Truck Freight Summary";
 
@@ -235,7 +240,7 @@ namespace MvcPhoenix.Controllers
             reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersFreightSum";
 
             ReportParameter[] reportParameter = new ReportParameter[3];
-            reportParameter[0] = new ReportParameter("Client", client);
+            reportParameter[0] = new ReportParameter("Client", clientid);
             //reportParameter[1] = new ReportParameter("Warehouse", "EU");
             reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
             reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
@@ -246,7 +251,7 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult OrdersSPSExport()
+        public ActionResult OrdersSPSExport(string clientid)
         {
             ViewBag.Title = "Orders: SPS Billing Export";
 
@@ -254,9 +259,9 @@ namespace MvcPhoenix.Controllers
             reportViewer.ServerReport.ReportPath = "/SimpleReports/OrdersSPSExport";
 
             ReportParameter[] reportParameter = new ReportParameter[3];
-            reportParameter[0] = new ReportParameter("Client", "30");
-            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-365).ToShortDateString());
-            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.ToShortDateString());            
+            reportParameter[0] = new ReportParameter("Client", clientid);
+            reportParameter[1] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+            reportParameter[2] = new ReportParameter("EndDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());            
 
             reportViewer.ServerReport.SetParameters(reportParameter);
             ViewBag.ReportViewer = reportViewer;
@@ -267,50 +272,57 @@ namespace MvcPhoenix.Controllers
         #endregion
 
         #region Product Management Reports
-        
-        public ActionResult ProductsSetup(string client = "1")
+
+        public ActionResult ProductsSetup(string clientid)
         {
             ViewBag.Title = "Products: Setup Report";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSetupReport";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", client));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ProductsProfileList(string client = "1")
+        public ActionResult ProductsProfileList(string clientid)
         {
             ViewBag.Title = "Products: Profiles List Export";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsProfileListExport";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", client));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ProductsSampleGuideExport(string client = "1")
+        public ActionResult ProductsSampleGuideExport(string clientid)
         {
             ViewBag.Title = "Products: Sample Guide Export";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSampleGuideExport";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", client));
+            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", clientid));
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
         }
 
-        public ActionResult ProductsSGRevDate()
+        public ActionResult ProductsSGRevDate(string clientid, string division)
         {
             ViewBag.Title = "Products: Sample Guide Revision Date";
 
             ReportViewer reportViewer = rptViewerSettings();
             reportViewer.ServerReport.ReportPath = "/SimpleReports/ProductsSGRevDate";
-            reportViewer.ServerReport.SetParameters(new ReportParameter("Client", "1"));
+            
+            ReportParameter[] reportParameter = new ReportParameter[4];
+            reportParameter[0] = new ReportParameter("Client", clientid);
+            reportParameter[1] = new ReportParameter("Division", division);
+            reportParameter[2] = new ReportParameter("StartDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+            reportParameter[3] = new ReportParameter("EndDate", DateTime.UtcNow.AddDays(-1).ToShortDateString());
+
+            reportViewer.ServerReport.SetParameters(reportParameter);
             ViewBag.ReportViewer = reportViewer;
 
             return View("~/Views/Reports/View.cshtml");
