@@ -94,7 +94,7 @@
                             <label>SR Size</label>
                             @if (@Model.CrudMode == "RW")
                             {
-                                @Html.TextBoxFor(m => m.SRSize, Model.SRSize, new { @class = "form-control" })
+                                @Html.TextBoxFor(m => m.SRSize, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.SRSize)
                             }
                             else

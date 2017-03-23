@@ -28,7 +28,7 @@ namespace MvcPhoenix.EF
         public string LotNumber { get; set; }
         public Nullable<int> Qty { get; set; }
         public string Size { get; set; }
-        public string SRSize { get; set; }
+        public Nullable<decimal> SRSize { get; set; }
         public Nullable<System.DateTime> ShipDate { get; set; }
         public Nullable<bool> NonCMCDelay { get; set; }
         public string DelayReason { get; set; }

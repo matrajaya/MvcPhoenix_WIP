@@ -59,7 +59,7 @@ namespace MvcPhoenix.Models
         public string Size { get; set; }
 
         [Display(Name = "SRSize")]
-        public string SRSize { get; set; }
+        public decimal? SRSize { get; set; }
 
         [Display(Name = "Ship Date")]
         public Nullable<System.DateTime> ShipDate { get; set; }

@@ -34,7 +34,7 @@ namespace MvcPhoenix.Controllers
             using (db)
             {
                 var vm = (from t in db.tblOrderImport
-                          where t.ImportStatus == "FAIL" && t.Location_MDB == "EU"
+                          where t.ImportStatus == "FAIL" && t.Location_MDB == "EU" && t.ImportError != null
                           orderby t.OrderDate, t.GUID
                           select t).ToList();
 
@@ -88,12 +88,6 @@ namespace MvcPhoenix.Controllers
             return footer;
         }
 
-        //public ActionResult PrintOrder(int id)
-        //{
-        //    string footer = DocumentFooter();
-        //    var vm = OrderService.fnFillOrder(id);
-        //    return new ViewAsPdf(vm) { CustomSwitches = footer };
-        //}
         public ActionResult PrintPickPack(int id)
         {
             string footer = DocumentFooter();
@@ -278,6 +272,7 @@ namespace MvcPhoenix.Controllers
                                Mnemonic = t.Mnemonic,
                                ProductName = t.ProductName,
                                Size = t.Size,
+                               SRSize = t.SRSize,
                                LotNumber = t.LotNumber,
                                Qty = t.Qty,
                                ShipDate = t.ShipDate,

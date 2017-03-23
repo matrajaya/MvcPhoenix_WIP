@@ -1000,7 +1000,7 @@
           <Property Name="LotNumber" Type="nvarchar" MaxLength="25" />
           <Property Name="Qty" Type="int" />
           <Property Name="Size" Type="nvarchar" MaxLength="8" />
-          <Property Name="SRSize" Type="nvarchar" MaxLength="12" />
+          <Property Name="SRSize" Type="decimal" Precision="18" Scale="4" />
           <Property Name="ShipDate" Type="datetime" />
           <Property Name="NonCMCDelay" Type="bit" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="50" />
@@ -4168,7 +4168,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwProductsInfo' does not have a prima
           <Property Name="LotNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Qty" Type="Int32" />
           <Property Name="Size" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-          <Property Name="SRSize" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="SRSize" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="ShipDate" Type="DateTime" Precision="3" />
           <Property Name="NonCMCDelay" Type="Boolean" />
           <Property Name="DelayReason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />

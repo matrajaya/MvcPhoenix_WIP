@@ -6,8 +6,6 @@ namespace MvcPhoenix.Services
 {
     public class OrderImportService
     {
-        public static MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-
         public static void PrepareForImport()
         {
             // this method tries to put the external record into Phoenix normalized fashion and tag for actual import
@@ -205,22 +203,6 @@ namespace MvcPhoenix.Services
                     NewOrder.cmcuser = qOM.CMCUser;
                     NewOrder.customerreference = qOM.CustomerReference;
                     NewOrder.totalorderweight = qOM.TotalOrderWeight;
-                    //NewOrder.spstaxid = qOM.SPSTaxID;
-                    //NewOrder.spscurrency = qOM.SPSCurrency;
-                    //NewOrder.spsshippedwt = qOM.SPSShippedWt;
-                    //NewOrder.spsfreightcost = qOM.SPSFreightCost;
-                    //NewOrder.invoicecompany = qOM.InvoiceCompany;
-                    //NewOrder.invoicetitle = qOM.InvoiceTitle;
-                    //NewOrder.invoicefirstname = qOM.InvoiceFirstName;
-                    //NewOrder.invoicelastname = qOM.InvoiceLastName;
-                    //NewOrder.invoiceaddress1 = qOM.InvoiceAddress1;
-                    //NewOrder.invoiceaddress2 = qOM.InvoiceAddress2;
-                    //NewOrder.invoiceaddress3 = qOM.InvoiceAddress3;
-                    //NewOrder.invoicecity = qOM.InvoiceCity;
-                    //NewOrder.invoicestateprov = qOM.InvoiceStateProv;
-                    //NewOrder.invoicepostalcode = qOM.InvoicePostalCode;
-                    //NewOrder.invoicecountry = qOM.InvoiceCountry;
-                    //NewOrder.invoicephone = qOM.InvoicePhone;
                     NewOrder.custordertype = qOM.CustOrderType;
                     NewOrder.custrequestdate = qOM.CustRequestDate ?? null;
                     NewOrder.approvaldate = qOM.ApprovalDate ?? null;
@@ -263,8 +245,19 @@ namespace MvcPhoenix.Services
                         NewItem.ShelfID = i.ShelfID;
                         if (i.ShelfID == null)
                         {
-                            i.ShelfID = 99;                     // needed for post save to pull SR
-                            NewItem.SRSize = i.SRSize;
+                            i.ShelfID = 9999;                     // needed for post save to pull SR
+                            
+                            decimal srsize;                     // get rid of this when tblOrderImport.SRSize is changed to decimal
+                            try
+                            {
+                                srsize = decimal.Parse(i.SRSize);
+                            }
+                            catch (Exception)
+                            {
+                                srsize = 0.00M;
+                            }
+
+                            NewItem.SRSize = srsize;
                         }
                         NewItem.Qty = i.Qty;
                         NewItem.LotNumber = i.LotNumber;

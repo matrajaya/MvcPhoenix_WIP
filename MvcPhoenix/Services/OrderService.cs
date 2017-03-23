@@ -586,6 +586,7 @@ namespace MvcPhoenix.Services
                 vm.ShelfID = q.ShelfID;
                 vm.ListOfShelfIDs = fnProductCodeSizes(Convert.ToInt32(vm.ProductDetailID));
                 vm.Size = q.Size;
+                vm.SRSize = q.SRSize;
                 vm.Qty = q.Qty;
                 vm.LotNumber = q.LotNumber;
                 vm.ItemShipVia = q.Via;
@@ -680,9 +681,9 @@ namespace MvcPhoenix.Services
                 q.ProductCode = dbPD.ProductCode;
                 q.ProductName = dbPD.ProductName;
 
-                if (vm.ShelfID == 99 && !String.IsNullOrEmpty(vm.SRSize))
+                if (vm.ShelfID == 9999 || vm.SRSize != null || vm.SRSize != 0)
                 {
-                    q.Size = vm.SRSize;
+                    q.Size = "1SR";
                 }
                 else
                 {
@@ -1363,7 +1364,7 @@ namespace MvcPhoenix.Services
                     s = s + "<option value='0'>No Sizes Found</option>";
                 }
 
-                s = s + "<option value='99'>Special Request</option>";
+                s = s + "<option value='9999'>Special Request</option>";
 
                 return s;
             }
@@ -1486,7 +1487,7 @@ namespace MvcPhoenix.Services
                           }).ToList();
 
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = " -- Select Size --" });
-                mylist.Add(new SelectListItem { Value = "99", Text = "SR" });
+                mylist.Add(new SelectListItem { Value = "9999", Text = "1SR" });
 
                 return mylist;
             }

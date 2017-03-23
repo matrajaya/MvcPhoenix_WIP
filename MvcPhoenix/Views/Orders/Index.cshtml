@@ -38,7 +38,7 @@
                 </div>
                 <div id="searchoptions" class="panel-body" style="margin-bottom:-30px;">
                     <div class="row">
-                        <div class="form-group col-md-8">
+                        <div class="form-group col-md-7">
                             @using (Html.BeginForm("LookupOrderID", "Orders", FormMethod.Post))
                             {
                                 <div class="input-group">
@@ -47,14 +47,14 @@
                                 </div>
                             }
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
                             @Ajax.ActionLink("+ Advanced Search", "AdvancedSearch", "Orders", new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",
                                  InsertionMode = InsertionMode.Replace,
                                  HttpMethod = "GET",
                                  OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                             }, new { @class = "btn btn-block" })
+                             }, new { @class = "btn btn-block btn-primary" })
                         </div>
                     </div>
                     <div class="panel panel-primary">
