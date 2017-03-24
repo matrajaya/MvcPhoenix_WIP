@@ -154,7 +154,6 @@ namespace MvcPhoenix.Services
                            orderdate = t.OrderDate,
                            ordercomment = t.Comment,
                            supplyid = t.SupplyID,
-
                            bulksupplieremail = t.BulkSupplierEmail,
                            emailsent = t.EmailSent,
                        }).FirstOrDefault();

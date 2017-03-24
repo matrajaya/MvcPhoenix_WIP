@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <!-- Client Information -->
+    @*Client Information*@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title" data-toggle="collapse" data-target="#clientinfopanel"><i class="fa fa-book fa-fw"></i> Client Information</h3>
@@ -173,20 +173,7 @@
             <h3 class="panel-title" data-toggle="collapse" data-target="#contactpanel"><i class="fa fa-book fa-fw"></i> Contacts</h3>
         </div>
         <div id="contactpanel" class="panel-body collapse in">
-            <div class="row">
-                <div class="col-md-3">
-                    @Ajax.ActionLink("+ Add New Contact", "CreateContact", "Client", new { id = Model.ClientID }, new AjaxOptions
-                    {
-                        InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "GET",
-                        UpdateTargetId = "dialogPlaceholder",
-                        OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-                    }, new { @class = "btn btn-primary btn-block" })
-                </div>
-            </div>
-            <div id="dvSupplierList">
-                @Html.Action("ListContacts", "Client", new { id = @Model.ClientID })
-            </div>
+            @Html.Action("ListContacts", "Client", new { id = @Model.ClientID })
         </div>
     </div>
 
@@ -200,12 +187,22 @@
         </div>
     </div>
 
+    @* End Uses *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#endusepanel"><i class="fa fa-book fa-fw"></i> End Uses</h3>
+        </div>
+        <div id="endusepanel" class="panel-body collapse in">
+            @Html.Action("ListEndUses", "Client", new { id = @Model.ClientID })
+        </div>
+    </div>
+
     @* Surcharges *@
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title" data-toggle="collapse" data-target="#tierpanel"><i class="fa fa-book fa-fw"></i> Surcharges</h3>
+            <h3 class="panel-title" data-toggle="collapse" data-target="#surchargepanel"><i class="fa fa-book fa-fw"></i> Surcharges</h3>
         </div>
-        <div id="tierpanel" class="panel-body collapse in">
+        <div id="surchargepanel" class="panel-body collapse in">
             @Html.Action("DisplaySurcharges", "Client", new { clientid = @Model.ClientID })
         </div>
     </div>
