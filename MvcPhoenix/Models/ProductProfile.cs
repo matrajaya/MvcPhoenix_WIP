@@ -331,8 +331,8 @@ namespace MvcPhoenix.Models
         [Required]
         public string mastername { get; set; }
 
-        [Display(Name = "ShlfLife")]
-        public int? shlflife { get; set; }
+        [Display(Name = "ShelfLife")]
+        public int? shelflife { get; set; }
 
         [Display(Name = "DENSITY")]
         public decimal? density { get; set; }

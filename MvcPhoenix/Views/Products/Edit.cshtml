@@ -323,10 +323,15 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <label>Rejection Criterion</label>
                         @Html.TextAreaFor(m => m.rejectioncriterion, new { @class = "form-control", @rows = 1 })
                         @Html.ValidationMessageFor(m => m.rejectioncriterion)
+                    </div>
+                    <div class="col-md-2">
+                        <label>Shelf Life</label>
+                        @Html.TextBoxFor(m => m.shelflife, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.shelflife)
                     </div>
                     <div class="col-md-2">
                         <label>Plant Lead Time</label>
@@ -393,15 +398,10 @@
                         @Html.TextBoxFor(m => m.msdsrevisionnumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.msdsrevisionnumber)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-5">
                         <label>Other Number</label>
                         @Html.TextBoxFor(m => m.msdsothernumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.msdsothernumber)
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label>Shelf Life</label>
-                        @Html.TextBoxFor(m => m.shlflife, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.shlflife)
                     </div>
                     <div class="form-group col-md-2">
                         <label style="color: white">.</label>

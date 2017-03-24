@@ -372,7 +372,7 @@ namespace MvcPhoenix.Models
                 PP.flammability = q.Flammability;
                 PP.reactivity = q.Reactivity;
                 PP.otherequipmentdescription = q.OtherEquipmentDescription;
-                PP.shlflife = q.ShlfLife;
+                PP.shelflife = q.ShlfLife;
                 PP.booties = q.Booties;
                 PP.hazardclassground_sg = q.HazardClassGround_SG;
                 PP.irritant = q.irritant;
@@ -669,7 +669,7 @@ namespace MvcPhoenix.Models
                 q.Flammability = pm.flammability;
                 q.Reactivity = pm.reactivity;
                 q.OtherEquipmentDescription = pm.otherequipmentdescription;
-                q.ShlfLife = pm.shlflife;
+                q.ShlfLife = pm.shelflife;
                 q.Booties = pm.booties;
                 q.HazardClassGround_SG = pm.hazardclassground_sg;
                 q.irritant = pm.irritant;
