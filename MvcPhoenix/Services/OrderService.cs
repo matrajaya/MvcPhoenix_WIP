@@ -416,20 +416,21 @@ namespace MvcPhoenix.Services
             {
                 OrderSPSBilling vm = new OrderSPSBilling();
                 var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == id);
-
+                
                 if (q == null)
                 {
                     vm.SPSBillingID = -1;
                     vm.OrderId = id;
+                    vm.PriceCost = CalcSPSSumCharge(id);
                     return vm;
                 }
 
-                //vm.Id = q.SPSBillingID;
+                vm.SPSBillingID = q.SPSBillingID;
                 vm.OrderId = q.OrderID;
                 vm.Type = q.Type;
                 vm.TaxId = q.TaxID;
                 vm.Currency = q.Currency;
-                vm.PriceCost = db.tblOrderItem.Where(t => t.OrderID == vm.OrderId).Sum(t => t.SPSCharge);
+                vm.PriceCost = CalcSPSSumCharge(id);
                 vm.FreightCost = q.FreightCost;
                 vm.ShippedWeight = q.ShippedWeight;
                 vm.InvoiceTitle = q.InvoiceTitle;
@@ -452,16 +453,17 @@ namespace MvcPhoenix.Services
             }
         }
 
-        //public decimal? SPSTotalCharge(int orderid)
-        //{
-        //    using (var db = new EF.CMCSQL03Entities())
-        //    {
-        //        var q = db.tblOrderItem.Where(t => t.OrderID == orderid).Sum(t => t.SPSCharge);
-        //        decimal? totalcost = q;
+        private static decimal? CalcSPSSumCharge(int OrderId)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                var SumSPSCharge = db.tblOrderItem
+                    .Where(t => t.OrderID == OrderId)
+                    .Sum(t => t.SPSCharge);
 
-        //        return totalcost;
-        //    }
-        //}
+                return SumSPSCharge;
+            }
+        }
 
         public static void fnSaveSPSBillingDetails(OrderSPSBilling vm)
         {
@@ -480,7 +482,7 @@ namespace MvcPhoenix.Services
                 q.Type = "Invoice";
                 q.TaxID = vm.TaxId;
                 q.Currency = "EUR";
-                q.PriceCost = db.tblOrderItem.Where(t => t.OrderID == vm.OrderId).Sum(t => t.SPSCharge);
+                q.PriceCost = CalcSPSSumCharge(vm.OrderId);
                 q.FreightCost = vm.FreightCost;
                 q.ShippedWeight = vm.ShippedWeight;
                 q.InvoiceTitle = vm.InvoiceTitle;
