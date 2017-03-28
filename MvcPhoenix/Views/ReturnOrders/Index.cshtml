@@ -71,18 +71,23 @@
 </div>
 
 <div id="dvCreateRow" class="row hidden">
-    <div class="md-col-4 text-center">
-        @using (Html.BeginForm("CreateReturnOrder", "ReturnOrders", FormMethod.Post, new { id = "orderform"}))
+    <div class="col-md-4 col-md-offset-4">
+        @using (Html.BeginForm("CreateReturnOrder", "ReturnOrders", FormMethod.Post, new { id = "orderform" }))
         {
             <input type="hidden" id="hiddenclientid" name="hiddenclientid" />
-            <input id="SubmitOrder" type="submit" value="Create Return Order" onclick="return confirm('Create Return Order?');" class="btn btn-success" />
+            <input type="hidden" id="hiddendivisionid" name="hiddendivisionid" />
+            <input id="SubmitOrder" type="submit" value="Create Return Order" onclick="return confirm('Create Return Order?');" class="btn btn-success btn-block" />
         }
     </div>
 </div>
 
 <script type="text/javascript">
     // animation when form is submitted
-    $("#orderform").submit(function(e) {
+    $("#orderform").submit(function (e) {
+        var myclientid = $('#clientid').val();
+        $("#hiddenclientid").val(myclientid);
+        var mydivisionid = $('#divisionid').val();
+        $("#hiddendivisionid").val(mydivisionid);
         $("#dvspinner").show();
     });
 
@@ -105,7 +110,7 @@
         var mybulkstatusid = $('#bulkstatusid').val();
         var mystockstatusid = $('#stockstatusid').val();
         var mydivisionid = $('#divisionid').val();
-        $("#hiddenclientid").val(myclientid);
+        //$("#hiddenclientid").val(myclientid);
         var myurl1 = '@Url.Action("LoadBulkPartial", "ReturnOrders")';
         $("#dvBulkPlaceHolder").load(myurl1, { clientid: myclientid, bulkstatusid: mybulkstatusid, divisionid: mydivisionid });
         var myurl3 = '@Url.Action("LoadMarkedBulkPartial", "ReturnOrders")';
@@ -118,7 +123,7 @@
         var mybulkstatusid = $('#bulkstatusid').val();
         var mystockstatusid = $('#stockstatusid').val();
         var mydivisionid = $('#divisionid').val();
-        $("#hiddenclientid").val(myclientid);
+        //$("#hiddenclientid").val(myclientid);
         var myurl2 = '@Url.Action("LoadStockPartial", "ReturnOrders")';
         $("#dvStockPlaceHolder").load(myurl2, { clientid: myclientid, stockstatusid: mystockstatusid, divisionid: mydivisionid });
         var myurl4 = '@Url.Action("LoadMarkedStockPartial", "ReturnOrders")';

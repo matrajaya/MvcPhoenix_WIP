@@ -163,9 +163,15 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <label>Status Notes</label>
                             @Html.TextAreaFor(m => m.Status, new { rows = "4", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Item Notes</label>
+                            @Html.TextAreaFor(m => m.ItemNotes, new { rows = "2", @class = "form-control" })
                         </div>
                     </div>
                 </div>

@@ -63,17 +63,32 @@ namespace MvcPhoenix.Controllers
         {
             // build vm and return partial
             var vm = fnListOfStockRecords();
-            vm = (from t in vm where t.ClientID == clientid select t).ToList();
+            vm = (from t in vm 
+                  where t.ClientID == clientid 
+                  select t).ToList();
+
             if (!String.IsNullOrEmpty(stockstatusid))
             {
-                vm = (from t in vm where t.ShelfStatus == stockstatusid select t).ToList();
+                vm = (from t in vm 
+                      where t.ShelfStatus == stockstatusid 
+                      select t).ToList();
             }
+
             if (divisionid > 0)
             {
-                vm = (from t in vm where t.divisionid == divisionid select t).ToList();
+                vm = (from t in vm 
+                      where t.divisionid == divisionid 
+                      select t).ToList();
             }
-            vm = (from t in vm where (t.markedforreturn == false) select t).ToList();
-            vm = (from t in vm where (t.ShelfStatus != "RETURN") select t).ToList();
+
+            vm = (from t in vm 
+                  where (t.markedforreturn == false) 
+                  select t).ToList();
+
+            vm = (from t in vm 
+                  where (t.ShelfStatus != "RETURN") 
+                  select t).ToList();
+
             ViewBag.TableHeader = "Shelf Stock Records";
             ViewBag.TableStyle = "height:350px;overflow-y:scroll;font-size:.95em;";
             ViewBag.RecordCount = vm.Count();
@@ -86,9 +101,13 @@ namespace MvcPhoenix.Controllers
         {
             using (db)
             {
-                var q = (from t in db.tblBulk where t.BulkID == id select t).FirstOrDefault();
+                var q = (from t in db.tblBulk 
+                         where t.BulkID == id 
+                         select t).FirstOrDefault();
+
                 q.MarkedForReturn = true;
                 db.SaveChanges();
+
                 return null;
             }
         }
@@ -123,9 +142,13 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult UnMarkBulkRecordForReturn(int id)
         {
-            var q = (from t in db.tblBulk where t.BulkID == id select t).FirstOrDefault();
+            var q = (from t in db.tblBulk 
+                     where t.BulkID == id 
+                     select t).FirstOrDefault();
+
             q.MarkedForReturn = false;
             db.SaveChanges();
+
             return null;
         }
 
@@ -133,9 +156,13 @@ namespace MvcPhoenix.Controllers
         {
             using (db)
             {
-                var q = (from t in db.tblStock where t.StockID == id select t).FirstOrDefault();
+                var q = (from t in db.tblStock 
+                         where t.StockID == id 
+                         select t).FirstOrDefault();
+
                 q.MarkedForReturn = true;
                 db.SaveChanges();
+
                 return null;
             }
         }
@@ -144,9 +171,13 @@ namespace MvcPhoenix.Controllers
         {
             using (db)
             {
-                var q = (from t in db.tblStock where t.StockID == id select t).FirstOrDefault();
+                var q = (from t in db.tblStock 
+                         where t.StockID == id 
+                         select t).FirstOrDefault();
+
                 q.MarkedForReturn = false;
                 db.SaveChanges();
+
                 return null;
             }
         }
@@ -155,11 +186,15 @@ namespace MvcPhoenix.Controllers
         {
             // build vm and return partial
             var vm = fnListOfBulkRecords();
-            vm = (from t in vm where t.markedforreturn == true select t).ToList();
+            vm = (from t in vm 
+                  where t.markedforreturn == true 
+                  select t).ToList();
+
             ViewBag.TableHeader = "Selected Bulk Records";
             ViewBag.TableStyle = "font-size:.95em;";
             ViewBag.RecordCount = vm.Count();
             ViewBag.ShowTheMarkAllBulkButton = false;
+
             return PartialView("~/Views/ReturnOrders/_ReturnBulkRecords.cshtml", vm);
         }
 
@@ -167,11 +202,15 @@ namespace MvcPhoenix.Controllers
         {
             // build vm and return partial
             var vm = fnListOfStockRecords();
-            vm = (from t in vm where t.markedforreturn == true select t).ToList();
+            vm = (from t in vm 
+                  where t.markedforreturn == true 
+                  select t).ToList();
+
             ViewBag.TableHeader = "Selected Shelf Stock Records";
             ViewBag.TableStyle = "font-size:.95em;";
             ViewBag.RecordCount = vm.Count();
             ViewBag.ShowTheMarkAllStockButton = false;
+
             return PartialView("~/Views/ReturnOrders/_ReturnStockRecords.cshtml", vm);
         }
 
@@ -330,24 +369,40 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
-                var bulk = (from t in db.tblBulk where t.MarkedForReturn == true select t).ToList();
+                var bulk = (from t in db.tblBulk 
+                            where t.MarkedForReturn == true 
+                            select t).ToList();
+
                 foreach (var row in bulk)
                 {
-                    var pm = (from t in db.tblProductMaster where t.ProductMasterID == row.ProductMasterID select t).FirstOrDefault();
+                    var pm = (from t in db.tblProductMaster 
+                              where t.ProductMasterID == row.ProductMasterID 
+                              select t).FirstOrDefault();
+
                     int newItemId = OrderService.fnNewItemID();
-                    var newitem = (from t in db.tblOrderItem where t.ItemID == newItemId select t).FirstOrDefault();
+
+                    var newitem = (from t in db.tblOrderItem 
+                                   where t.ItemID == newItemId 
+                                   select t).FirstOrDefault();
+
                     newitem.OrderID = orderid;
                     newitem.BulkID = row.BulkID;
+                    newitem.ShelfID = 9999;                         // default virtual indicator for special requests to avoid order item creation errors
+                    newitem.ProductDetailID = pm.ProductMasterID;
                     newitem.ProductCode = pm.MasterCode;
                     newitem.ProductName = pm.MasterName;
                     newitem.LotNumber = row.LotNumber;
                     newitem.Qty = 1;
-                    newitem.Size = row.UM;
+                    newitem.Size = "1SR";
+                    newitem.SRSize = row.CurrentWeight;
                     newitem.Weight = row.CurrentWeight;
-                    newitem.AllocateStatus = "A";
                     newitem.Bin = row.Bin;
-                    newitem.ItemNotes = "Return Bulk Order Item";
-
+                    newitem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + row.UM + " with a current weight of " + row.CurrentWeight;
+                    newitem.CreateDate = DateTime.UtcNow;
+                    newitem.CreateUser = HttpContext.User.Identity.Name;
+                    newitem.UpdateDate = DateTime.UtcNow;
+                    newitem.UpdateUser = HttpContext.User.Identity.Name;
+                    
                     // Insert log record
                     OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, row.BulkID, 1, row.CurrentWeight, DateTime.UtcNow, User.Identity.Name, null, null);
 
@@ -367,26 +422,37 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
             {
-                var stock = (from t in db.tblStock where t.MarkedForReturn == true select t).ToList();
+                var stock = (from t in db.tblStock 
+                             where t.MarkedForReturn == true 
+                             select t).ToList();
+
                 foreach (var row in stock)
                 {
                     var bl = db.tblBulk.Find(row.BulkID);
                     var sm = db.tblShelfMaster.Find(row.ShelfID);
                     var pd = db.tblProductDetail.Find(sm.ProductDetailID);
                     var pm = db.tblProductMaster.Find(bl.ProductMasterID);
+                    
                     int newItemId = OrderService.fnNewItemID();
-                    var newitem = (from t in db.tblOrderItem where t.ItemID == newItemId select t).FirstOrDefault();
+                    var newitem = (from t in db.tblOrderItem 
+                                   where t.ItemID == newItemId 
+                                   select t).FirstOrDefault();
+                    
                     newitem.OrderID = orderid;
                     newitem.ShelfID = sm.ShelfID;
+                    newitem.ProductDetailID = pd.ProductDetailID;
                     newitem.ProductCode = pd.ProductCode;
                     newitem.ProductName = pd.ProductName;
                     newitem.LotNumber = bl.LotNumber;
                     newitem.Qty = row.QtyOnHand;
                     newitem.Size = sm.Size;
                     newitem.Weight = sm.UnitWeight;
-                    newitem.AllocateStatus = "A";
                     newitem.Bin = row.Bin;
                     newitem.ItemNotes = "Return Shelf Order Item";
+                    newitem.CreateDate = DateTime.UtcNow;
+                    newitem.CreateUser = HttpContext.User.Identity.Name;
+                    newitem.UpdateDate = DateTime.UtcNow;
+                    newitem.UpdateUser = HttpContext.User.Identity.Name;
 
                     // Insert log record
                     OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, row.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, User.Identity.Name, null, null);
@@ -408,21 +474,23 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult CreateReturnOrder(FormCollection fc)
         {
-            //string x = fc["chkConfirm"];
-            //if(x=="off")
-            //{
-            //    return Content("Please check the confirm box to create the order");
-            //}
             if (String.IsNullOrEmpty(fc["hiddenclientid"]))
             {
-                // form did not get updated properly with clientid for new order / start over
-                return RedirectToAction("Index");   // nothing to do
+                return RedirectToAction("Index");   // nothing to do; clientid missing -> start over
             }
+
             int MyClientID = Convert.ToInt32(fc["hiddenclientid"]);
+            int MyDivisionID = Convert.ToInt32(fc["hiddendivisionid"]);
 
             // be sure user added items
-            var qbulkcnt = (from t in db.tblBulk where t.MarkedForReturn == true select t.BulkID).Count();
-            var qstockcnt = (from t in db.tblStock where t.MarkedForReturn == true select t.StockID).Count();
+            var qbulkcnt = (from t in db.tblBulk 
+                            where t.MarkedForReturn == true 
+                            select t.BulkID).Count();
+
+            var qstockcnt = (from t in db.tblStock
+                             where t.MarkedForReturn == true 
+                             select t.StockID).Count();
+
             if (qbulkcnt == 0 && qstockcnt == 0)
             {
                 return RedirectToAction("Index");   // nothing to do
@@ -432,9 +500,16 @@ namespace MvcPhoenix.Controllers
             using (db)
             {
                 NewOrderID = OrderService.fnNewOrderID();
-                var om = (from t in db.tblOrderMaster where t.OrderID == NewOrderID select t).FirstOrDefault();
-                var cl = (from t in db.tblClient where t.ClientID == MyClientID select t).FirstOrDefault();
+                var om = (from t in db.tblOrderMaster 
+                          where t.OrderID == NewOrderID 
+                          select t).FirstOrDefault();
+
+                var cl = (from t in db.tblClient 
+                          where t.ClientID == MyClientID 
+                          select t).FirstOrDefault();
+
                 om.ClientID = MyClientID;
+                om.DivisionID = MyDivisionID;
                 om.OrderType = "R";
                 om.OrderDate = DateTime.UtcNow;
                 om.Company = cl.ClientName;
@@ -445,6 +520,7 @@ namespace MvcPhoenix.Controllers
 
             CreateReturnOrderBulkItems(NewOrderID);
             CreateReturnOrderStockItems(NewOrderID);
+
             return RedirectToAction("Edit", "Orders", new { id = NewOrderID });
         }
     }

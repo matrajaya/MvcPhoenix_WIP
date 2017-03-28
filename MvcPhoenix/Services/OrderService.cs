@@ -1366,7 +1366,7 @@ namespace MvcPhoenix.Services
                     s = s + "<option value='0'>No Sizes Found</option>";
                 }
 
-                s = s + "<option value='9999'>Special Request</option>";
+                s = s + "<option value='9999'>1SR</option>";
 
                 return s;
             }
