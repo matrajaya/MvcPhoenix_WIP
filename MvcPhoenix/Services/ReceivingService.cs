@@ -97,33 +97,47 @@ namespace MvcPhoenix.Services
 
         #region Known Bulk Receiving Methods
         
-        public static BulkContainerViewModel fnNewBulkContainer(int id)
+        public static BulkContainerViewModel fnNewBulkContainer(int productmasterid, int? productdetailid)
         {
             // id=productmasterid
             BulkContainerViewModel obj = new BulkContainerViewModel();
             using (var db = new CMCSQL03Entities())
             {
                 obj.isknownmaterial = true;
+                obj.pm_sumofcurrentweight = 0;
 
                 var x = (from t in db.tblBulk 
-                         where t.ProductMasterID == id 
+                         where t.ProductMasterID == productmasterid 
                          select t).ToList();
-
-                obj.pm_sumofcurrentweight = 0;
+                
                 foreach (var row in x)
                 {
                     obj.pm_sumofcurrentweight = obj.pm_sumofcurrentweight + row.CurrentWeight;
                 }
 
-                var dbPM = db.tblProductMaster.Find(id);
-                // assign ProductMaster fields for R/O
-                obj.pm_MasterNotes = dbPM.MasterNotes;
-                obj.pm_HandlingOther = dbPM.HandlingOther;
+                // R/O fields from PM
+                var dbPM = db.tblProductMaster.Find(productmasterid);
+                obj.MasterCode = dbPM.MasterCode;
+                obj.MasterName = dbPM.MasterName;
+                obj.flammable = dbPM.Flammable;
+                obj.freezer = dbPM.FREEZERSTORAGE;
+                obj.refrigerated = dbPM.Refrigerate;
+                obj.packout = dbPM.PackOutOnReceipt;
                 obj.pm_OtherHandlingInstr = dbPM.OtherHandlingInstr;
                 obj.pm_refrigerate = dbPM.Refrigerate;
                 obj.pm_flammablestorageroom = dbPM.FlammableStorageRoom;
                 obj.pm_freezablelist = dbPM.FreezableList;
                 obj.pm_refrigeratedlist = dbPM.RefrigeratedList;
+
+                // R/O from related PD
+                var dbPD = (from t in db.tblProductDetail
+                            where t.ProductMasterID == obj.productmasterid
+                            select t).FirstOrDefault();
+
+                obj.pd_groundunnum = dbPD.GRNUNNUMBER;
+                obj.pd_groundpackinggrp = dbPD.GRNPKGRP;
+                obj.pd_airunnum = dbPD.AIRUNNUMBER;
+                obj.pd_airpackinggrp = dbPD.AIRPKGRP;
 				
 				if (!String.IsNullOrEmpty(dbPM.AlertNotesReceiving))
                 {
@@ -135,29 +149,22 @@ namespace MvcPhoenix.Services
                 } 
 
                 var dbClient = db.tblClient.Find(dbPM.ClientID);
-
-                obj.bulkid = -1;    // for insert later
                 obj.clientid = dbClient.ClientID;
                 obj.warehouse = dbClient.CMCLocation;
                 obj.clientname = dbClient.ClientName;
-                obj.productmasterid = id;
+
+                obj.bulkid = -1;    // for insert later
+                obj.productmasterid = productmasterid;
                 obj.receivedate = DateTime.UtcNow;
                 obj.bulkstatus = "RECD";
                 obj.enteredby = HttpContext.Current.User.Identity.Name;
 
                 obj.ListOfWareHouses = fnWarehouseIDs();
-                obj.ListOfProductMasters = fnProductMasterIDs(obj.clientid, id);
+                obj.ListOfProductMasters = fnProductMasterIDs(obj.clientid, productmasterid);
                 obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
                 obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
+                obj.ListOfUMs = fnUnitMeasure(obj.clientid);
                 obj.ListOfCarriers = fnCarriers();
-
-                // R/O fields from PM
-                obj.MasterCode = dbPM.MasterCode;
-                obj.MasterName = dbPM.MasterName;
-                obj.flammable = dbPM.Flammable;
-                obj.freezer = dbPM.FREEZERSTORAGE;
-                obj.refrigerated = dbPM.Refrigerate;
-                obj.packout = dbPM.PackOutOnReceipt;
 
                 return obj;
             }
@@ -295,6 +302,7 @@ namespace MvcPhoenix.Services
                 obj.ListOfProductMasters = fnProductMasterIDs(qPM.ClientID, qPM.ProductMasterID);
                 obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
                 obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
+                obj.ListOfUMs = fnUnitMeasure(obj.clientid);
                 obj.ListOfCarriers = fnCarriers();
 
                 if (!String.IsNullOrEmpty(qPM.AlertNotesReceiving))
@@ -312,6 +320,24 @@ namespace MvcPhoenix.Services
                 obj.freezer = qPM.FREEZERSTORAGE;
                 obj.refrigerated = qPM.Refrigerate;
                 obj.packout = qPM.PackOutOnReceipt;
+
+                // R/O fields from PM
+                var dbPM = db.tblProductMaster.Find(obj.productmasterid);
+                obj.pm_OtherHandlingInstr = dbPM.OtherHandlingInstr;
+                obj.pm_refrigerate = dbPM.Refrigerate;
+                obj.pm_flammablestorageroom = dbPM.FlammableStorageRoom;
+                obj.pm_freezablelist = dbPM.FreezableList;
+                obj.pm_refrigeratedlist = dbPM.RefrigeratedList;
+
+                // R/O from related PD
+                var dbPD = (from t in db.tblProductDetail 
+                            where t.ProductMasterID == obj.productmasterid
+                            select t).FirstOrDefault();
+
+                obj.pd_groundunnum = dbPD.GRNUNNUMBER;
+                obj.pd_groundpackinggrp = dbPD.GRNPKGRP;
+                obj.pd_airunnum = dbPD.AIRUNNUMBER;
+                obj.pd_airpackinggrp = dbPD.AIRPKGRP;
 
                 return obj;
             }
@@ -491,7 +517,7 @@ namespace MvcPhoenix.Services
                         newstock.CreateUser = HttpContext.Current.User.Identity.Name;
                         newstock.Warehouse = vm.warehouse; 
                         newstock.QtyOnHand = ThisQty;
-                        newstock.ShelfStatus = "AVAIL";
+                        newstock.ShelfStatus = "RECD";
                         newstock.Bin = (from t in db.tblShelfMaster
                                         where t.ShelfID == newstock.ShelfID
                                         select t.Bin).FirstOrDefault() ;
@@ -673,7 +699,27 @@ namespace MvcPhoenix.Services
             mylist.Add(new SelectListItem { Value = "O", Text = "Other" });
             return mylist;
         }
-        
+
+        public static List<SelectListItem> fnUnitMeasure(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+                mylist = (from t in db.tblTier
+                          orderby t.ClientID
+                          where t.ClientID == clientid
+                          select new SelectListItem
+                          {
+                              Value = t.Size,
+                              Text = t.Size
+                          }).Distinct().ToList();
+
+                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+
+                return mylist;
+            }
+        }
+
         #endregion
     }
 }

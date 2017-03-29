@@ -45,8 +45,6 @@ namespace MvcPhoenix.Controllers
             using (var db = new EF.CMCSQL03Entities())
             {
                 ViewBag.CurrentSort = sortOrder;
-                ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
-                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
                 if (searchString != null)
                 {
@@ -55,34 +53,29 @@ namespace MvcPhoenix.Controllers
                 else { searchString = currentFilter; }
 
                 ViewBag.CurrentFilter = searchString;
-                ViewBag.SearchString = searchString;
 
-                var productCodes = from p in db.tblProductMaster select p;
+                var productCodes = (from pd in db.tblProductDetail
+                                    join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                                    join c in db.tblClient on pm.ClientID equals c.ClientID
+                                    select new ProductProfile{ 
+                                        clientid = c.ClientID,
+                                        clientname = c.ClientName,
+                                        productmasterid = pm.ProductMasterID,
+                                        mastercode = pm.MasterCode,
+                                        mastername = pm.MasterName,
+                                        productdetailid = pd.ProductDetailID,
+                                        productcode = pd.ProductCode,
+                                        productname = pd.ProductName
+                                    });
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     productCodes = productCodes.Where(
-                        p => p.MasterCode.Contains(searchString)
-                        || p.MasterName.Contains(searchString));
-                }
-
-                switch (sortOrder)
-                {
-                    case "name":
-                        productCodes = productCodes.OrderBy(p => p.MasterName);
-                        break;
-
-                    case "name_desc":
-                        productCodes = productCodes.OrderByDescending(p => p.MasterName);
-                        break;
-
-                    case "code_desc":
-                        productCodes = productCodes.OrderByDescending(p => p.MasterCode);
-                        break;
-
-                    default:
-                        productCodes = productCodes.OrderBy(p => p.MasterCode);
-                        break;
+                        p => p.mastercode.Contains(searchString)
+                            || p.mastername.Contains(searchString)
+                            || p.productcode.Contains(searchString)
+                            || p.productname.Contains(searchString))
+                            .OrderBy(p => p.mastercode);
                 }
 
                 int pageSize = 20;
@@ -148,13 +141,10 @@ namespace MvcPhoenix.Controllers
             return Content(ReceivingService.fnBuildProductCodeDropDown(clientid));
         }
 
-        public ActionResult EnterPrePack(FormCollection fc)
+        public ActionResult EnterPrePack(int clientid, int productdetailid)
         {
-            // Take clientid and productdetailid from POST and build ViewModel, return data entry view
-            int fc_clientid = Convert.ToInt32(fc["ClientID"]);
-            int fc_productdetailid = Convert.ToInt32(fc["productdetailid"]);
             PrePackViewModel obj = new PrePackViewModel();
-            obj = ReceivingService.fnNewBulkContainerForPrePack(fc_clientid, fc_productdetailid);
+            obj = ReceivingService.fnNewBulkContainerForPrePack(clientid, productdetailid);
             return View("~/Views/Receiving/EnterPrePack.cshtml", obj);
         }
 
@@ -166,12 +156,12 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateContainerReceipt(int id)
+        public ActionResult CreateContainerReceipt(int productmasterid, int? productdetailid)
         {
             // id = productmasterid .. Build a new viewmodel of a bulk container and load the edit view
             BulkContainerViewModel obj = new BulkContainerViewModel();
-            obj = ReceivingService.fnNewBulkContainer(id);
-            return View("~/Views/Receiving/Edit.cshtml", obj);
+            obj = ReceivingService.fnNewBulkContainer(productmasterid, productdetailid);
+            return View("~/Views/Receiving/Edit.cshtml", obj); 
         }
 
         [HttpGet]

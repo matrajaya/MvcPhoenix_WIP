@@ -15,48 +15,31 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Receive Client Stock</h3>
+        <div class="col-md-3">
+            <a href='@Url.Action("SetupReceiveUnKnown", "Receiving")' class="form-control btn btn-danger btn-block">Receive Unknown Bulk Stock</a>
+        </div>
+        <div class="col-md-6 pull-right form-group">
+            @using (Ajax.BeginForm("Search", "Receiving", new AjaxOptions
+            {
+                UpdateTargetId = "dvSearchReference",
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "POST",
+                LoadingElementId = "dvspinner"
+            }))
+            {
+                <div class="input-group">
+                    @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Search for product", @required = "required", autofocus = "", @title = "Search using product master code/name" })
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
+                    </span>
                 </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <a href='@Url.Action("SetUpReceiveKnown", "Receiving")' class="form-control btn btn-warning btn-block">Receive Bulk Stock</a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href='@Url.Action("SetUpReceivePrePack", "Receiving")' class="form-control btn btn-success btn-block">Receive Prepacked Stock</a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href='@Url.Action("SetupReceiveUnKnown", "Receiving")' class="form-control btn btn-danger btn-block">Receive Unknown Bulk Stock</a>
-                        </div>
-                        <div class="col-md-3">
-                            @using (Ajax.BeginForm("Search", "Receiving", new AjaxOptions
-                            {
-                                UpdateTargetId = "dvSearchReference",
-                                InsertionMode = InsertionMode.Replace,
-                                HttpMethod = "POST",
-                                LoadingElementId = "dvspinner"
-                            }))
-                            {
-                            <div class="input-group">
-                                @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Keyword...", @required = "required", @title = "Search using product master code/name" })
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
-                                </span>
-                            </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 
     <div id="dvSearchReference"></div>
 
-    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
+    <div class="col-md-12 text-center form-group" id="dvspinner" style="display:none; font-size:large">
         <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
     </div>
 
@@ -115,7 +98,7 @@
     </div>
 
     @Html.Action("UnkownBulkList", "Receiving")
-    
+
     <div class="row">
         <div class="col-md-12">
             <i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a>

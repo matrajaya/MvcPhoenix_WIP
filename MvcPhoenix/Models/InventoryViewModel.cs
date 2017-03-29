@@ -119,13 +119,15 @@ namespace MvcPhoenix.Models
     public class BulkContainerViewModel
     {
         public decimal? pm_sumofcurrentweight { get; set; } // hold sum(CurrentWeight) for ProductMasterID
-        public string pm_MasterNotes { get; set; }
-        public string pm_HandlingOther { get; set; }
         public string pm_OtherHandlingInstr { get; set; }
         public bool? pm_refrigerate { get; set; }
         public bool? pm_flammablestorageroom { get; set; }
         public bool? pm_freezablelist { get; set; }
         public bool? pm_refrigeratedlist { get; set; }
+        public string pd_groundunnum { get; set; }
+        public string pd_groundpackinggrp { get; set; }
+        public string pd_airunnum { get; set; }
+        public string pd_airpackinggrp { get; set; }
 		public string pm_alertnotesreceiving { get; set; }
         public bool? isknownmaterial { get; set; }
         public string closelist { get; set; }
@@ -196,6 +198,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Unit Measure")]  // previous fieldname was Container
         [StringLength(20, ErrorMessage = "Max 20)")]
         public string um { get; set; }
+        public List<SelectListItem> ListOfUMs { get; set; }
 
         [Display(Name = "Container Color")]
         [StringLength(15, ErrorMessage = "Max 15)")]
