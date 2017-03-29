@@ -1261,8 +1261,6 @@
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Receiving\SelectProduct.cshtml" />
-    <Content Include="Views\Receiving\SelectPrePack.cshtml" />
     <Content Include="Views\Receiving\EnterPrePack.cshtml" />
     <Content Include="Views\Receiving\Edit.cshtml">
       <SubType>Code</SubType>

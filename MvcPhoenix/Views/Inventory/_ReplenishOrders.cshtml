@@ -42,7 +42,7 @@
                         <td>@row.itemstatus</td>
                         <td>@row.eta</td>
                         <td>@row.itemnotes</td>
-                        <td>@Html.ActionLink("Edit", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, new { target = "_blank" })</td>
+                        <td><span class="pull-right">@Html.ActionLink(" ", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, new { @target = "_blank", @class = "btn btn-primary fa fa-pencil", @title = "Edit Replenishment Order" })</span></td>
                     </tr>
                 }
             </tbody>

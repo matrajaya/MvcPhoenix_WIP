@@ -263,7 +263,14 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label>Unit Measure</label>
-                        @Html.DropDownListFor(m => m.um, Model.ListOfUMs, new { @class = "form-control" })
+                        @if (Model.isknownmaterial == true)
+                        {
+                            @Html.DropDownListFor(m => m.um, Model.ListOfUMs, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
+                        }
                         @Html.ValidationMessageFor(m => m.um)
                     </div>
                     <div class="col-md-6">

@@ -155,7 +155,6 @@ namespace MvcPhoenix.Controllers
                 var vm = (from items in db.tblBulkOrderItem
                           join orders in db.tblBulkOrder on items.BulkOrderID equals orders.BulkOrderID
                           join pm in db.tblProductMaster on items.ProductMasterID equals pm.ProductMasterID
-                          //where items.ProductMasterID == id && items.Status == "OP"
                           where items.ProductMasterID == pmx.ProductMasterID && items.Status == "OP"
                           orderby orders.OrderDate
                           select new BulkOrderItemForInventory
