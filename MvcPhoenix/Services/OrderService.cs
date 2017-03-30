@@ -1481,7 +1481,7 @@ namespace MvcPhoenix.Services
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
                 mylist = (from t in db.tblShelfMaster
-                          where t.ProductDetailID == id
+                          where t.ProductDetailID == id && t.InactiveSize != true
                           select new SelectListItem
                           {
                               Value = t.ShelfID.ToString(),
