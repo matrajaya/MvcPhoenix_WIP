@@ -570,7 +570,6 @@
     <Compile Include="Services\GHSService.cs" />
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\InvoiceService.cs" />
-    <Compile Include="Services\OrderImportService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\PackOutService.cs" />
     <Compile Include="Services\ProductsService.cs" />

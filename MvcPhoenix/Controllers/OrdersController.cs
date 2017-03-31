@@ -1,4 +1,5 @@
 ﻿using MvcPhoenix.Models;
+using MvcPhoenix.EF;
 using MvcPhoenix.Services;
 using Rotativa;
 using System;
@@ -10,7 +11,9 @@ namespace MvcPhoenix.Controllers
 {
     public class OrdersController : Controller
     {
-        private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+        //private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
+
+        #region Order Master Methods
 
         public ActionResult Index()
         {
@@ -23,35 +26,9 @@ namespace MvcPhoenix.Controllers
             List<SelectListItem> clientlist = new List<SelectListItem>();
             clientlist = OrderService.fnListOfClientIDs();
             ViewBag.NewClientID = clientlist;
+
             return View("~/Views/Orders/Index.cshtml", orderslist);
         }
-
-        #region Import Actions - Pull data from samplecenter db after transform in Access
-
-        [HttpGet]
-        public ActionResult OrdersImport()
-        {
-            using (db)
-            {
-                var vm = (from t in db.tblOrderImport
-                          where t.ImportStatus == "FAIL" && t.Location_MDB == "EU" && t.ImportError != null
-                          orderby t.OrderDate, t.GUID
-                          select t).ToList();
-
-                return View("~/Views/Orders/Import.cshtml", vm);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult OrdersImportProcess()
-        {
-            int ImportCount = OrderImportService.ImportOrders();        // Actual import
-            TempData["ImportCount"] = ImportCount;
-
-            return RedirectToAction("OrdersImport");
-        }
-
-        #endregion Import Actions - Pull data from samplecenter db after transform in Access
 
         [HttpPost]
         public ActionResult Create(FormCollection fc)
@@ -75,6 +52,8 @@ namespace MvcPhoenix.Controllers
             TempData["SaveResult"] = "Order Information updated on " + DateTime.UtcNow.ToString("R");
             return RedirectToAction("Edit", new { id = pk });
         }
+
+        #endregion
 
         #region Printing Actions
 
@@ -122,110 +101,120 @@ namespace MvcPhoenix.Controllers
 
         private List<OrderItem> PrintListOrderItems(int id)
         {
-            var qry = (from t in db.tblOrderItem
-                       where t.OrderID == id && t.AllocateStatus == "A" && t.ShipDate == null
-                       orderby t.ProductCode
-                       select new MvcPhoenix.Models.OrderItem
-                       {
-                           OrderID = t.OrderID,
-                           ItemID = t.ItemID,
-                           ProductDetailID = t.ProductDetailID,
-                           ProductCode = t.ProductCode,
-                           ProductName = t.ProductName,
-                           Qty = t.Qty,
-                           Size = t.Size,
-                           ShipDate = t.ShipDate,
-                           CeaseShipDate = t.ShipDate, //Note TBD: ceaseshipdate = (stock:expiration_date) minus (profile:cease_ship_differential)
-                           LotNumber = t.LotNumber,
-                           Bin = t.Bin,
-                           AirUnNumber = t.AirUnNumber,
-                           GrnUnNumber = t.GrnUnNumber,
-                           SeaUnNumber = t.GrnUnNumber, //Note: Add SeaUnNumber field to tblOrderItem
-                           BackOrdered = t.BackOrdered,
-                           AllocateStatus = t.AllocateStatus,
-                           NonCMCDelay = t.NonCMCDelay,
-                           DelayReason = t.DelayReason,
-                           FreezableList = (from q in db.tblProductMaster
-                                            where (q.MasterCode == t.ProductCode)
-                                            select q.FreezableList).FirstOrDefault(),
-                           HarmonizedCode = (from q in db.tblProductDetail
-                                             where (q.ProductDetailID == t.ProductDetailID)
-                                             select q.HarmonizedCode).FirstOrDefault(),
-                           QtyAvailable = (from q in db.tblStock
-                                           where q.ShelfID == t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL"
-                                           select q).Count(),
-                           AlertNotesOrderEntry = (from q in db.tblProductDetail
-                                                   where q.ProductDetailID == t.ProductDetailID
-                                                   select q.AlertNotesOrderEntry).FirstOrDefault(),
-                           AlertNotesShipping = (from q in db.tblProductDetail
-                                                 where q.ProductDetailID == t.ProductDetailID
-                                                 select q.AlertNotesShipping).FirstOrDefault()
-                       }).ToList();
-            return qry;
+            using (var db = new CMCSQL03Entities())
+            {
+                var qry = (from t in db.tblOrderItem
+                           where t.OrderID == id && t.AllocateStatus == "A" && t.ShipDate == null
+                           orderby t.ProductCode
+                           select new MvcPhoenix.Models.OrderItem
+                           {
+                               OrderID = t.OrderID,
+                               ItemID = t.ItemID,
+                               ProductDetailID = t.ProductDetailID,
+                               ProductCode = t.ProductCode,
+                               ProductName = t.ProductName,
+                               Qty = t.Qty,
+                               Size = t.Size,
+                               ShipDate = t.ShipDate,
+                               CeaseShipDate = t.ShipDate, //Note TBD: ceaseshipdate = (stock:expiration_date) minus (profile:cease_ship_differential)
+                               LotNumber = t.LotNumber,
+                               Bin = t.Bin,
+                               AirUnNumber = t.AirUnNumber,
+                               GrnUnNumber = t.GrnUnNumber,
+                               SeaUnNumber = t.GrnUnNumber, //Note: Add SeaUnNumber field to tblOrderItem
+                               BackOrdered = t.BackOrdered,
+                               AllocateStatus = t.AllocateStatus,
+                               NonCMCDelay = t.NonCMCDelay,
+                               DelayReason = t.DelayReason,
+                               FreezableList = (from q in db.tblProductMaster
+                                                where (q.MasterCode == t.ProductCode)
+                                                select q.FreezableList).FirstOrDefault(),
+                               HarmonizedCode = (from q in db.tblProductDetail
+                                                 where (q.ProductDetailID == t.ProductDetailID)
+                                                 select q.HarmonizedCode).FirstOrDefault(),
+                               QtyAvailable = (from q in db.tblStock
+                                               where q.ShelfID == t.ShelfID && (q.QtyOnHand - q.QtyAllocated >= t.Qty) && q.ShelfStatus == "AVAIL"
+                                               select q).Count(),
+                               AlertNotesOrderEntry = (from q in db.tblProductDetail
+                                                       where q.ProductDetailID == t.ProductDetailID
+                                                       select q.AlertNotesOrderEntry).FirstOrDefault(),
+                               AlertNotesShipping = (from q in db.tblProductDetail
+                                                     where q.ProductDetailID == t.ProductDetailID
+                                                     select q.AlertNotesShipping).FirstOrDefault()
+                           }).ToList();
+
+                return qry;
+            }
         }
 
         [HttpGet]
         public ActionResult PrintRemainingItems(int id)
         {
-            var qry = (from t in db.tblOrderItem
-                       where t.OrderID == id && (t.ShipDate != null || t.AllocateStatus != "A")
-                       orderby t.ProductCode
-                       select new MvcPhoenix.Models.OrderItem
-                       {
-                           OrderID = t.OrderID,
-                           ItemID = t.ItemID,
-                           ProductDetailID = t.ProductDetailID,
-                           ProductCode = t.ProductCode,
-                           ProductName = t.ProductName,
-                           Qty = t.Qty,
-                           Size = t.Size,
-                           LotNumber = t.LotNumber,
-                           ShipDate = t.ShipDate,
-                           BackOrdered = t.BackOrdered,
-                           AllocateStatus = t.AllocateStatus,
-                           AlertNotesOrderEntry = (from q in db.tblProductDetail
-                                                   where q.ProductDetailID == t.ProductDetailID
-                                                   select q.AlertNotesOrderEntry).FirstOrDefault(),
-                           AlertNotesShipping = (from q in db.tblProductDetail
-                                                 where q.ProductDetailID == t.ProductDetailID
-                                                 select q.AlertNotesShipping).FirstOrDefault()
-                       }).ToList();
-
-            if (qry.Count > 0)
+            using (var db = new CMCSQL03Entities())
             {
-                return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", qry);
-            }
+                var qry = (from t in db.tblOrderItem
+                           where t.OrderID == id && (t.ShipDate != null || t.AllocateStatus != "A")
+                           orderby t.ProductCode
+                           select new MvcPhoenix.Models.OrderItem
+                           {
+                               OrderID = t.OrderID,
+                               ItemID = t.ItemID,
+                               ProductDetailID = t.ProductDetailID,
+                               ProductCode = t.ProductCode,
+                               ProductName = t.ProductName,
+                               Qty = t.Qty,
+                               Size = t.Size,
+                               LotNumber = t.LotNumber,
+                               ShipDate = t.ShipDate,
+                               BackOrdered = t.BackOrdered,
+                               AllocateStatus = t.AllocateStatus,
+                               AlertNotesOrderEntry = (from q in db.tblProductDetail
+                                                       where q.ProductDetailID == t.ProductDetailID
+                                                       select q.AlertNotesOrderEntry).FirstOrDefault(),
+                               AlertNotesShipping = (from q in db.tblProductDetail
+                                                     where q.ProductDetailID == t.ProductDetailID
+                                                     select q.AlertNotesShipping).FirstOrDefault()
+                           }).ToList();
 
-            return null;
+                if (qry.Count > 0)
+                {
+                    return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", qry);
+                }
+
+                return null;
+            }
         }
 
         public ActionResult PrintPreferredCarrierMatrix(string Country)
         {
-            PreferredCarrierViewModel modelobj = new PreferredCarrierViewModel();
-            var qry = (from t in db.tblPreferredCarrierList
-                       where t.CountryName.Contains(Country)
-                       select t).FirstOrDefault();
+            using (var db = new CMCSQL03Entities())
+            {
+                PreferredCarrierViewModel modelobj = new PreferredCarrierViewModel();
+                var qry = (from t in db.tblPreferredCarrierList
+                           where t.CountryName.Contains(Country)
+                           select t).FirstOrDefault();
 
-            modelobj.CountryCode = qry.CountryCode;
-            modelobj.CountryName = qry.CountryName;
-            modelobj.CommInvoiceReq = qry.CommInvoiceReq;
-            modelobj.NonHazSm = qry.NonHaz_Sm;
-            modelobj.NonHazLg = qry.NonHaz_Lg;
-            modelobj.NonHazIncoTerms = qry.NonHaz_IncoTerms;
-            modelobj.HazIATASm = qry.HazIATA_Sm;
-            modelobj.HazIATALg = qry.HazIATA_Lg;
-            modelobj.HazGroundLQ = qry.HazGround_LQ;
-            modelobj.HazGround = qry.HazGround;
-            modelobj.HazIncoterms = qry.Haz_Incoterms;
-            modelobj.IncotermsAlt = qry.Incoterms_Alt;
-            modelobj.NotesGeneral = qry.Notes_General;
-            modelobj.NotesIATAADR = qry.Notes_IATA_ADR;
-            modelobj.NonHazIncotermsAlt = qry.NonHazIncoterms_Alt;
-            modelobj.HazIncotermsAlt = qry.HazIncoterms_Alt;
+                modelobj.CountryCode = qry.CountryCode;
+                modelobj.CountryName = qry.CountryName;
+                modelobj.CommInvoiceReq = qry.CommInvoiceReq;
+                modelobj.NonHazSm = qry.NonHaz_Sm;
+                modelobj.NonHazLg = qry.NonHaz_Lg;
+                modelobj.NonHazIncoTerms = qry.NonHaz_IncoTerms;
+                modelobj.HazIATASm = qry.HazIATA_Sm;
+                modelobj.HazIATALg = qry.HazIATA_Lg;
+                modelobj.HazGroundLQ = qry.HazGround_LQ;
+                modelobj.HazGround = qry.HazGround;
+                modelobj.HazIncoterms = qry.Haz_Incoterms;
+                modelobj.IncotermsAlt = qry.Incoterms_Alt;
+                modelobj.NotesGeneral = qry.Notes_General;
+                modelobj.NotesIATAADR = qry.Notes_IATA_ADR;
+                modelobj.NonHazIncotermsAlt = qry.NonHazIncoterms_Alt;
+                modelobj.HazIncotermsAlt = qry.HazIncoterms_Alt;
 
-            if (qry == null) { return null; }
+                if (qry == null) { return null; }
 
-            return PartialView("~/Views/Orders/_PrintPreferredCarrierMatrix.cshtml", modelobj);
+                return PartialView("~/Views/Orders/_PrintPreferredCarrierMatrix.cshtml", modelobj);
+            }
         }
 
         #endregion Printing Actions
@@ -256,7 +245,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult fnOrderItemsList(int id)
         {
             // list of items for a given order
-            using (db)
+            using (var db = new CMCSQL03Entities())
             {
                 var qry = (from t in db.tblOrderItem
                            where t.OrderID == id
@@ -350,9 +339,7 @@ namespace MvcPhoenix.Controllers
             OrderService.fnDeleteOrderItem(id);
             return Content("Item Deleted");
         }
-
-        #endregion Order Item Methods
-
+        
         public ActionResult BuildSizeDropDown(int id)
         {
             // id=clientid / return a <select> for <div>
@@ -361,12 +348,44 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult CheckProductForAlert(int id)
         {
-            var obj = (from t in db.tblProductDetail
-                       where t.ProductDetailID == id
-                       select t.AlertNotesOrderEntry).FirstOrDefault();
+            using (var db = new CMCSQL03Entities())
+            {
+                var obj = (from t in db.tblProductDetail
+                           where t.ProductDetailID == id
+                           select t.AlertNotesOrderEntry).FirstOrDefault();
 
-            return Content(obj);
+                return Content(obj);
+            }
         }
+
+        #endregion Order Item Methods
+
+        #region Import Actions - Pull data from samplecenter db after transform in Access
+
+        [HttpGet]
+        public ActionResult OrdersImport()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var vm = (from t in db.tblOrderImport
+                          where t.ImportStatus == "FAIL" && t.Location_MDB == "EU" && t.ImportError != null
+                          orderby t.OrderDate, t.GUID
+                          select t).ToList();
+
+                return View("~/Views/Orders/Import.cshtml", vm);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult OrdersImportProcess()
+        {
+            int ImportCount = OrderService.ImportOrders();        // Actual import
+            TempData["ImportCount"] = ImportCount;
+
+            return RedirectToAction("OrdersImport");
+        }
+
+        #endregion 
 
         [HttpGet]
         public ActionResult PullContactDetails(int id)
@@ -398,31 +417,34 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult fnOrderTransList(int id)
         {
-            // id=orderid
-            var qry = (from t in db.tblOrderTrans
-                       join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
-                       from qry2 in a.DefaultIfEmpty()
-                       where t.OrderID == id
-                       orderby t.UpdateDate descending
-                       select new OrderTrans
-                       {
-                           ordertransid = t.OrderTransID,
-                           orderid = t.OrderID,
-                           orderitemid = t.OrderItemID,
-                           productcode = qry2.ProductCode,
-                           clientid = t.ClientID,
-                           transdate = t.TransDate,
-                           transtype = t.TransType,
-                           transqty = t.TransQty,
-                           transamount = t.TransAmount,
-                           comments = t.Comments,
-                           createdate = t.CreateDate,
-                           createuser = t.CreateUser,
-                           updatedate = t.UpdateDate,
-                           updateuser = t.UpdateUser
-                       }).ToList();
+            using (var db = new CMCSQL03Entities())
+            {
+                // id=orderid
+                var qry = (from t in db.tblOrderTrans
+                           join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
+                           from qry2 in a.DefaultIfEmpty()
+                           where t.OrderID == id
+                           orderby t.UpdateDate descending
+                           select new OrderTrans
+                           {
+                               ordertransid = t.OrderTransID,
+                               orderid = t.OrderID,
+                               orderitemid = t.OrderItemID,
+                               productcode = qry2.ProductCode,
+                               clientid = t.ClientID,
+                               transdate = t.TransDate,
+                               transtype = t.TransType,
+                               transqty = t.TransQty,
+                               transamount = t.TransAmount,
+                               comments = t.Comments,
+                               createdate = t.CreateDate,
+                               createuser = t.CreateUser,
+                               updatedate = t.UpdateDate,
+                               updateuser = t.UpdateUser
+                           }).ToList();
 
-            return PartialView("~/Views/Orders/_OrderTrans.cshtml", qry);
+                return PartialView("~/Views/Orders/_OrderTrans.cshtml", qry);
+            }
         }
 
         [HttpGet]
@@ -459,6 +481,28 @@ namespace MvcPhoenix.Controllers
 
         #region Index Order Search and Filters
 
+        [HttpPost]
+        public ActionResult LookupOrderID(FormCollection fc)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                if (String.IsNullOrEmpty(fc["orderid"]))
+                {
+                    return RedirectToAction("Index");
+                }
+                int id = Convert.ToInt32(fc["orderid"]);
+                var qry = (from t in db.tblOrderMaster
+                           where t.OrderID == id
+                           select t).FirstOrDefault();
+
+                if (qry != null)
+                {
+                    return RedirectToAction("Edit", new { id = id });
+                }
+                return RedirectToAction("Index");
+            }
+        }
+
         [HttpGet]
         public ActionResult OrdersNeedAllocation()
         {
@@ -490,12 +534,12 @@ namespace MvcPhoenix.Controllers
         public ActionResult OrdersYesterday()
         {
             //TODO change to calc last Business day
-            DateTime datToday = DateTime.Today.AddDays(-1);
+            DateTime dateToday = DateTime.Today.AddDays(-1);
             //var orderslist = fnOrdersSearchResults();
             var orderslist = OrderService.fnOrdersSearchResults();
             orderslist = (from t in orderslist
                           orderby t.orderid descending
-                          where t.orderdate.Value.Date == datToday.Date
+                          where t.orderdate.Value.Date == dateToday.Date
                           select t).ToList();
             TempData["SearchResultsMessage"] = "Orders Created Yesterday";
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
@@ -524,25 +568,6 @@ namespace MvcPhoenix.Controllers
                           select t).Take(10).ToList();
             TempData["SearchResultsMessage"] = "My Last 10 Orders";
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
-        }
-
-        [HttpPost]
-        public ActionResult LookupOrderID(FormCollection fc)
-        {
-            if (String.IsNullOrEmpty(fc["orderid"]))
-            {
-                return RedirectToAction("Index");
-            }
-            int id = Convert.ToInt32(fc["orderid"]);
-            var qry = (from t in db.tblOrderMaster
-                       where t.OrderID == id
-                       select t).FirstOrDefault();
-
-            if (qry != null)
-            {
-                return RedirectToAction("Edit", new { id = id });
-            }
-            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -644,167 +669,5 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion Index Order Search and Filters
-
-        #region Order Import Actions - For orders coming in via files for ETL - Deprecate and preserve, processes still maintained in Access for now
-
-        //public ActionResult Import()
-        //{
-        //    return View();
-        //}
-
-        //[HttpGet]
-        //public ActionResult OrderImport()
-        //{
-        //    var clients = GetClients(); // Let's get all clients that we need for a DropDownList
-        //    var model = new OrderImportFile();
-        //    model.Clients = GetSelectListItems(clients);  // Create a list of SelectListItems so these can be rendered on the page
-
-        //    return View(model);
-        //}
-
-        //[HttpPost]
-        //public ActionResult OrderImport(OrderImportFile model)
-        //{
-        //    var clientfolder = ""; // initialize
-        //    var clients = GetClients();
-        //    model.Clients = GetSelectListItems(clients);
-        //    var client = model.Client;
-
-        //    // Change folders based on client dropdown selection.
-        //    switch (client)
-        //    {
-        //        case "Akzo Nobel":
-        //            clientfolder = "AkzoNobel";
-        //            break;
-
-        //        case "Archroma":
-        //            clientfolder = "Archroma";
-        //            break;
-
-        //        case "Clariant":
-        //            clientfolder = "Clariant";
-        //            break;
-
-        //        case "Cytec":
-        //            clientfolder = "Cytec";
-        //            break;
-
-        //        case "Dow Chemical":
-        //            clientfolder = "DowChem";
-        //            break;
-
-        //        case "DSM":
-        //            clientfolder = "DSM";
-        //            break;
-
-        //        case "Eastman":
-        //            clientfolder = "Eastman";
-        //            break;
-
-        //        case "Elementis":
-        //            clientfolder = "Elementis";
-        //            break;
-
-        //        case "Honeywell":
-        //            clientfolder = "Honeywell";
-        //            break;
-
-        //        case "Lonza":
-        //            clientfolder = "Lonza";
-        //            break;
-
-        //        case "Momentive":
-        //            clientfolder = "Momentive";
-        //            break;
-
-        //        case "OMG":
-        //            clientfolder = "OMG";
-        //            break;
-
-        //        case "Reichhold":
-        //            clientfolder = "Reichhold";
-        //            break;
-
-        //        case "Stepan":
-        //            clientfolder = "Stepan";
-        //            break;
-
-        //        case "Sun Chemical":
-        //            clientfolder = "SunChem";
-        //            break;
-
-        //        default:
-        //            TempData["message"] = "Please select a client from the dropdown list";
-
-        //            return RedirectToAction("Index");
-        //    }
-
-        //    try
-        //    {
-        //        foreach (var file in model.Files)
-        //        {
-        //            if (file.ContentLength != 0)
-        //            {
-        //                var fileName = Path.GetFileName(file.FileName);
-        //                var path = Path.Combine(Server.MapPath("~/Content/OrderImportFiles/" + clientfolder), fileName);
-        //                file.SaveAs(path);
-        //                TempData["message"] = String.Format("The {0} order import files uploaded successfully", client);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        TempData["message"] = "Please make sure you browse and select at least a file";
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //// Return a list of clients that send files and have folders in Content/OrderImport
-        //private IEnumerable<string> GetClients()
-        //{
-        //    return new List<string>
-        //    {
-        //        "Akzo Nobel",
-        //        "Archroma",
-        //        "Clariant",
-        //        "Cytec",
-        //        "Dow Chemical",
-        //        "DSM",
-        //        "Eastman",
-        //        "Elementis",
-        //        "Honeywell",
-        //        "Lonza",
-        //        "Momentive",
-        //        "OMG",
-        //        "Reichhold",
-        //        "Stepan",
-        //        "Sun Chemical",
-        //    };
-        //}
-
-        ////Generic Helper For Creating lists from enums. Consider moving it to relevant Helper in Phoenix.
-        ////
-        //// Create an empty list to hold result of the operation.
-        ////
-        //// For each string in the 'elements' variable, create a new SelectListItem object
-        //// that has both its Value and Text properties set to a particular value.
-        //// This will result in MVC rendering each item as: <option value="State Name">State Name</option>
-        ////
-        //private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
-        //{
-        //    var selectList = new List<SelectListItem>();
-
-        //    foreach (var element in elements)
-        //    {
-        //        selectList.Add(new SelectListItem
-        //        {
-        //            Value = element,
-        //            Text = element
-        //        });
-        //    }
-        //    return selectList;
-        //}
-
-        #endregion Order Import Actions - For orders coming in via files for ETL - Deprecate and preserve, processes still maintained in Access for now
     }
 }

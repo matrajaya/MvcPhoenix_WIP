@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace MvcPhoenix.Services
 {
     public class OrderService
     {
+        #region Order Master Methods
+
         public static OrderMasterFull fnCreateOrder(int id)
         {
             // id=clientid
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 OrderMasterFull vm = new OrderMasterFull();
                 vm.orderid = -1;
@@ -37,7 +40,7 @@ namespace MvcPhoenix.Services
 
         public static OrderMasterFull fnFillOrder(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 OrderMasterFull o = new OrderMasterFull();
                 var q = (from t in db.tblOrderMaster
@@ -127,22 +130,6 @@ namespace MvcPhoenix.Services
                 o.cmcuser = q.CMCUser;
                 o.customerreference = q.CustomerReference;
                 o.totalorderweight = q.TotalOrderWeight;
-                //o.spstaxid = q.SPSTaxID;
-                //o.spscurrency = q.SPSCurrency;
-                //o.spsshippedwt = q.SPSShippedWt;
-                //o.spsfreightcost = q.SPSFreightCost;
-                //o.invoicecompany = q.InvoiceCompany;
-                //o.invoicetitle = q.InvoiceTitle;
-                //o.invoicefirstname = q.InvoiceFirstName;
-                //o.invoicelastname = q.InvoiceLastName;
-                //o.invoiceaddress1 = q.InvoiceAddress1;
-                //o.invoiceaddress2 = q.InvoiceAddress2;
-                //o.invoiceaddress3 = q.InvoiceAddress3;
-                //o.invoicecity = q.InvoiceCity;
-                //o.invoicestateprov = q.InvoiceStateProv;
-                //o.invoicepostalcode = q.InvoicePostalCode;
-                //o.invoicecountry = q.InvoiceCountry;
-                //o.invoicephone = q.InvoicePhone;
                 o.custordertype = q.CustOrderType;
 
                 o.custrequestdate = null;
@@ -185,9 +172,9 @@ namespace MvcPhoenix.Services
 
         public static int fnNewOrderID()
         {
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                MvcPhoenix.EF.tblOrderMaster newrec = new MvcPhoenix.EF.tblOrderMaster();
+                tblOrderMaster newrec = new tblOrderMaster();
                 db.tblOrderMaster.Add(newrec);
                 db.SaveChanges();
 
@@ -197,10 +184,8 @@ namespace MvcPhoenix.Services
 
         public static int fnSaveOrder(OrderMasterFull vm)
         {
-            fnArchiveOrderMaster(vm.orderid);
-
             // Take a ViewModel and Insert/Update DB / Return the PK
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (vm.orderid == -1)
                 {
@@ -269,22 +254,6 @@ namespace MvcPhoenix.Services
                 q.CMCUser = vm.cmcuser;
                 q.CustomerReference = vm.customerreference;
                 q.TotalOrderWeight = (vm.totalorderweight);
-                //q.SPSTaxID = vm.spstaxid;
-                //q.SPSCurrency = vm.spscurrency;
-                //q.SPSShippedWt = vm.spsshippedwt;
-                //q.SPSFreightCost = vm.spsfreightcost;
-                //q.InvoiceCompany = vm.invoicecompany;
-                //q.InvoiceTitle = vm.invoicetitle;
-                //q.InvoiceFirstName = vm.invoicefirstname;
-                //q.InvoiceLastName = vm.invoicelastname;
-                //q.InvoiceAddress1 = vm.invoiceaddress1;
-                //q.InvoiceAddress2 = vm.invoiceaddress2;
-                //q.InvoiceAddress3 = vm.invoiceaddress3;
-                //q.InvoiceCity = vm.invoicecity;
-                //q.InvoiceStateProv = vm.invoicestateprov;
-                //q.InvoicePostalCode = vm.invoicepostalcode;
-                //q.InvoiceCountry = vm.invoicecountry;
-                //q.InvoicePhone = vm.invoicephone;
                 q.CustOrderType = vm.custordertype;
                 q.CustRequestDate = vm.custrequestdate;
                 q.ApprovalDate = vm.approvaldate;
@@ -316,7 +285,7 @@ namespace MvcPhoenix.Services
         public static void fnSaveOrderPostUpdate(OrderMasterFull vm)
         {
             // changes to order record after it is saved
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 bool ShowAlert = false;
 
@@ -409,106 +378,14 @@ namespace MvcPhoenix.Services
             return false;
         }
 
-        public static OrderSPSBilling fnSPSBilling(int id)
-        {
-            // id=OrderID
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                OrderSPSBilling vm = new OrderSPSBilling();
-                var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == id);
-                
-                if (q == null)
-                {
-                    vm.SPSBillingID = -1;
-                    vm.OrderId = id;
-                    vm.PriceCost = CalcSPSSumCharge(id);
-                    return vm;
-                }
+        #endregion Order Master Methods
 
-                vm.SPSBillingID = q.SPSBillingID;
-                vm.OrderId = q.OrderID;
-                vm.Type = q.Type;
-                vm.TaxId = q.TaxID;
-                vm.Currency = q.Currency;
-                vm.PriceCost = CalcSPSSumCharge(id);
-                vm.FreightCost = q.FreightCost;
-                vm.ShippedWeight = q.ShippedWeight;
-                vm.InvoiceTitle = q.InvoiceTitle;
-                vm.InvoiceFirstName = q.InvoiceFirstName;
-                vm.InvoiceLastName = q.InvoiceLastName;
-                vm.InvoiceCompany = q.InvoiceCompany;
-                vm.InvoiceAddress1 = q.InvoiceAddress1;
-                vm.InvoiceAddress2 = q.InvoiceAddress2;
-                vm.InvoiceAddress3 = q.InvoiceAddress3;
-                vm.InvoiceCity = q.InvoiceCity;
-                vm.InvoiceState = q.InvoiceState;
-                vm.InvoicePostalCode = q.InvoicePostalCode;
-                vm.InvoiceCountry = q.InvoiceCountry;
-                vm.InvoicePhone = q.InvoicePhone;
-                vm.InvoiceEmail = q.InvoiceEmail;
-                vm.UpdateDate = DateTime.UtcNow;
-                vm.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                return vm;
-            }
-        }
-
-        private static decimal? CalcSPSSumCharge(int OrderId)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                var SumSPSCharge = db.tblOrderItem
-                    .Where(t => t.OrderID == OrderId)
-                    .Sum(t => t.SPSCharge);
-
-                return SumSPSCharge;
-            }
-        }
-
-        public static void fnSaveSPSBillingDetails(OrderSPSBilling vm)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                if (vm.SPSBillingID == -1)
-                {
-                    EF.tblOrderSPSBilling newrec = new EF.tblOrderSPSBilling();
-                    newrec.OrderID = vm.OrderId;
-                    db.tblOrderSPSBilling.Add(newrec);
-                    db.SaveChanges();
-                }
-
-                var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == vm.OrderId);
-
-                q.Type = "Invoice";
-                q.TaxID = vm.TaxId;
-                q.Currency = "EUR";
-                q.PriceCost = CalcSPSSumCharge(vm.OrderId);
-                q.FreightCost = vm.FreightCost;
-                q.ShippedWeight = vm.ShippedWeight;
-                q.InvoiceTitle = vm.InvoiceTitle;
-                q.InvoiceFirstName = vm.InvoiceFirstName;
-                q.InvoiceLastName = vm.InvoiceLastName;
-                q.InvoiceCompany = vm.InvoiceCompany;
-                q.InvoiceAddress1 = vm.InvoiceAddress1;
-                q.InvoiceAddress2 = vm.InvoiceAddress2;
-                q.InvoiceAddress3 = vm.InvoiceAddress3;
-                q.InvoiceCity = vm.InvoiceCity;
-                q.InvoiceState = vm.InvoiceState;
-                q.InvoicePostalCode = vm.InvoicePostalCode;
-                q.InvoiceCountry = vm.InvoiceCountry;
-                q.InvoicePhone = vm.InvoicePhone;
-                q.InvoiceEmail = vm.InvoiceEmail;
-                q.UpdateDate = DateTime.UtcNow;
-                q.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                db.SaveChanges();
-            }
-        }
+        #region Order Item Methods
 
         public static OrderItem fnCreateItem(int id)
         {
             // id=OrderID
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 OrderItem vm = new OrderItem();
                 vm.CrudMode = "RW";
@@ -522,7 +399,6 @@ namespace MvcPhoenix.Services
                 vm.ListOfProductDetailIDs = fnListOfProductCodes(vm.ClientID);
                 vm.ProductCode = null;
                 vm.ProductName = null;
-                vm.ShelfID = -1;
                 vm.Size = null;
                 vm.SRSize = null;
                 vm.Qty = 1;
@@ -548,9 +424,9 @@ namespace MvcPhoenix.Services
 
         public static int fnNewItemID()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                EF.tblOrderItem newrec = new EF.tblOrderItem();
+                tblOrderItem newrec = new tblOrderItem();
                 db.tblOrderItem.Add(newrec);
                 db.SaveChanges();
 
@@ -562,7 +438,7 @@ namespace MvcPhoenix.Services
         {
             // id=itemid
             // Fill all the fields from the tblOrderItem record
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 OrderItem vm = new OrderItem();
                 var q = (from t in db.tblOrderItem
@@ -622,9 +498,7 @@ namespace MvcPhoenix.Services
 
         public static int fnSaveItem(OrderItem vm)
         {
-            fnArchiveOrderItem(vm.ItemID);
-
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (vm.ItemID == -1)
                 {
@@ -637,55 +511,17 @@ namespace MvcPhoenix.Services
                          where t.ItemID == vm.ItemID
                          select t).FirstOrDefault();
 
-                q.OrderID = vm.OrderID;
-                q.CreateDate = vm.CreateDate;
-                q.CreateUser = vm.CreateUser;
-                q.UpdateDate = DateTime.UtcNow;
-                q.UpdateUser = HttpContext.Current.User.Identity.Name;
-                q.ProductDetailID = vm.ProductDetailID;
-                q.ShelfID = vm.ShelfID;
-                q.Qty = vm.Qty;
-                q.LotNumber = vm.LotNumber;
-                q.Via = vm.ItemShipVia;
-                q.ShipDate = vm.ShipDate;
-                q.CSAllocate = vm.CSAllocate;
-                q.AllocateStatus = vm.AllocateStatus;
-                q.NonCMCDelay = vm.NonCMCDelay;
-                q.BackOrdered = vm.BackOrdered;
-                q.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
-                q.Status = vm.Status;
-                q.DelayReason = vm.DelayReason;
-                q.SPSCharge = vm.SPSCharge;
-                q.ItemNotes = vm.ItemNotes;
-
-                db.SaveChanges();
-
-                fnSaveItemPostUpdate(vm);                       // update the row from other tables
-                fnGenerateOrderTransactions(vm.ItemID);         // Go do the Order Trans work....
-
-                return vm.ItemID;
-            }
-        }
-
-        public static void fnSaveItemPostUpdate(OrderItem vm)
-        {
-            // pull values for ProductCode, ProductName, Size
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                var q = (from t in db.tblOrderItem
-                         where t.ItemID == vm.ItemID
-                         select t).FirstOrDefault();
-
                 var dbPD = (from t in db.tblProductDetail
                             where t.ProductDetailID == vm.ProductDetailID
                             select t).FirstOrDefault();
 
-                q.ProductCode = dbPD.ProductCode;
-                q.ProductName = dbPD.ProductName;
+                var dbPM = db.tblProductMaster.Find(dbPD.ProductMasterID);
 
-                if (vm.ShelfID == 9999 || vm.SRSize != null || vm.SRSize != 0)
+                if (vm.ShelfID == 0 || vm.SRSize != null)
                 {
+                    q.SRSize = vm.SRSize;
                     q.Size = "1SR";
+                    vm.ShelfID = GetShelfIdfor1SR(vm.ProductDetailID, "1SR");
                 }
                 else
                 {
@@ -700,13 +536,31 @@ namespace MvcPhoenix.Services
                     }
                 }
 
+                q.OrderID = vm.OrderID;
+                q.CreateDate = vm.CreateDate;
+                q.CreateUser = vm.CreateUser;
+                q.UpdateDate = DateTime.UtcNow;
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
+                q.ProductDetailID = vm.ProductDetailID;
+                q.ProductCode = dbPD.ProductCode;
+                q.ProductName = dbPD.ProductName;
+                q.ShelfID = vm.ShelfID;
+                q.Qty = vm.Qty;
+                q.LotNumber = vm.LotNumber;
+                q.Via = vm.ItemShipVia;
+                q.ShipDate = vm.ShipDate;
+                q.CSAllocate = vm.CSAllocate;
+                q.AllocateStatus = vm.AllocateStatus;
+                q.NonCMCDelay = vm.NonCMCDelay;
+                q.BackOrdered = vm.BackOrdered;
+                q.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
+                q.Status = vm.Status;
+                q.DelayReason = vm.DelayReason;
+                q.SPSCharge = vm.SPSCharge;
+                q.ItemNotes = vm.ItemNotes;
                 q.AlertNotesShipping = dbPD.AlertNotesShipping;
-
-                var dbPM = db.tblProductMaster.Find(dbPD.ProductMasterID);
-
+                q.AlertNotesOrderEntry = dbPD.AlertNotesOrderEntry;
                 q.AlertNotesPackout = dbPM.AlertNotesPackout;
-
-                q.AlertNotesOrderEntry = dbPD.AlertNotesOrderEntry;  // comes from profiles
 
                 if (dbPD.AIRUNNUMBER == "UN3082" | dbPD.AIRUNNUMBER == "UN3077" | dbPD.GRNUNNUMBER == "UN3082" | dbPD.GRNUNNUMBER == "UN3077")
                 {
@@ -714,13 +568,17 @@ namespace MvcPhoenix.Services
                 }
 
                 db.SaveChanges();
+
+                fnGenerateOrderTransactions(vm.ItemID);         // Go do the Order Trans work....
+
+                return vm.ItemID;
             }
         }
 
         public static void fnDeleteOrderItem(int id)
         {
             System.Threading.Thread.Sleep(1000);
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var qry = (from t in db.tblOrderItem
                            where t.ItemID == id
@@ -738,234 +596,51 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static int fnAllocateBulk(int OrderID, bool IncludeQCStock)
+        public static int GetShelfIdfor1SR(int? productdetailid, string size)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            int xshelfid = 0;
+            try
             {
-                int AllocationCount = 0;
-                var orderitems = (from t in db.tblOrderItem
-                                  where t.OrderID == OrderID && t.ShipDate == null && t.AllocateStatus == null && t.CSAllocate == true
-                                  select t).ToList();
-
-                if (orderitems == null)
+                using (var db = new CMCSQL03Entities())
                 {
-                    return AllocationCount;
-                }
+                    int qshelfid = (from t in db.tblShelfMaster
+                                    where t.ProductDetailID == productdetailid && t.Size == size
+                                    select t.ShelfID).FirstOrDefault();
 
-                foreach (var item in orderitems)
-                {
-                    var tblbulk = (from t in db.tblBulk
-                                   join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                                   join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
-                                   where (pd.ProductDetailID == item.ProductDetailID)
-                                   select new
-                                   {
-                                       BulkID = t.BulkID,
-                                       Warehouse = t.Warehouse,
-                                       Qty = t.Qty,
-                                       LotNumber = t.LotNumber,
-                                       CurrentWeight = t.CurrentWeight,
-                                       CeaseShipDate = t.CeaseShipDate,
-                                       BulkStatus = t.BulkStatus,
-                                       Bin = t.Bin
-                                   }).ToList();
-
-                    var qOffset = db.tblOrderMaster.Find(OrderID);
-                    int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
-                    if (iOffset != 0)
+                    if (qshelfid != 0)
                     {
-                        // if there's an offset on the order record, add that to today to build in extra time
-                        DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
-
-                        tblbulk = (from t in tblbulk
-                                   where t.CeaseShipDate > dCease
-                                   select t).ToList();
-                    }
-
-                    if (IncludeQCStock == true)
-                    {
-                        tblbulk = (from t in tblbulk
-                                   where t.BulkStatus == "AVAIL" || t.BulkStatus == "QC"
-                                   select t).ToList();
+                        xshelfid = qshelfid;
                     }
                     else
                     {
-                        tblbulk = (from t in tblbulk
-                                   where t.BulkStatus == "AVAIL"
-                                   select t).ToList();
-                    }
-
-                    tblbulk = (from t in tblbulk
-                               where t.CurrentWeight >= (item.Qty * item.Weight)
-                               select t).ToList();
-
-                    tblbulk = (from t in tblbulk
-                               orderby t.CeaseShipDate ascending
-                               select t).ToList();
-
-                    foreach (var row in tblbulk)
-                    {
-                        // update tblstock record (need to use separate qry)
-                        if (row.CurrentWeight >= item.Qty * item.Weight)
+                        var newrecord = new tblShelfMaster
                         {
-                            AllocationCount = AllocationCount + 1;
-                            var q = db.tblBulk.Find(row.BulkID);
+                            ProductDetailID = productdetailid,
+                            Size = size
+                        };
+                        db.tblShelfMaster.Add(newrecord);
+                        db.SaveChanges();
 
-                            q.CurrentWeight = q.CurrentWeight - (item.Qty * item.Weight);
-                            item.AllocatedBulkID = row.BulkID;
-                            item.Warehouse = row.Warehouse;
-                            item.LotNumber = row.LotNumber;
-                            item.AllocateStatus = "A";
-                            item.Bin = row.Bin;
-                            item.ExpirationDate = q.ExpirationDate;
-                            item.CeaseShipDate = q.CeaseShipDate;
-
-                            fnInsertLogRecord("BS-ALC", DateTime.UtcNow, null, row.BulkID, item.Qty, item.Weight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
-
-                            db.SaveChanges();
-
-                            break;
-                        }
+                        xshelfid = newrecord.ShelfID;
                     }
                 }
-
-                return AllocationCount;
             }
-        }
-
-        public static int fnAllocateShelf(int OrderID, bool IncludeQCStock)
-        {
-            using (var db = new EF.CMCSQL03Entities())
+            catch (Exception ex)
             {
-                int AllocationCount = 0;
-
-                var items = (from t in db.tblOrderItem
-                             join om in db.tblOrderMaster on t.OrderID equals om.OrderID
-                             where t.OrderID == OrderID && t.ShipDate == null && t.AllocateStatus == null && t.CSAllocate == true
-                             select t).ToList();
-
-                if (items == null)
-                {
-                    return AllocationCount;
-                }
-
-                foreach (var item in items)
-                {
-                    var tblstock = (from t in db.tblStock
-                                    join b in db.tblBulk on t.BulkID equals b.BulkID
-                                    orderby b.CeaseShipDate
-                                    where t.ShelfID == item.ShelfID
-                                    select new
-                                        {
-                                            StockID = t.StockID,
-                                            Warehouse = t.Warehouse,
-                                            QtyOnHand = t.QtyOnHand,
-                                            QtyAllocated = t.QtyAllocated ?? 0,
-                                            Bin = t.Bin,
-                                            ShelfStatus = t.ShelfStatus,
-                                            ExpirationDate = b.ExpirationDate,
-                                            CeaseShipDate = b.CeaseShipDate,
-                                            LotNumber = b.LotNumber
-                                        }
-                                    ).ToList();
-
-                    var qOffset = db.tblOrderMaster.Find(items[0].OrderID);
-                    int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
-
-                    // change to take negative numbers
-                    if (iOffset != 0)
-                    {
-                        // if there's an offset on the order record, add that to today to build in extra time
-                        DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
-                        tblstock = (from t in tblstock
-                                    where t.CeaseShipDate > dCease
-                                    select t).ToList();
-                    }
-
-                    if (item.LotNumber != null) // specific lot number requested
-                    {
-                        tblstock = (from t in tblstock
-                                    where t.LotNumber == item.LotNumber
-                                    select t).ToList();
-                    }
-
-                    if (IncludeQCStock == true)
-                    {
-                        tblstock = (from t in tblstock
-                                    where t.ShelfStatus == "AVAIL" || t.ShelfStatus == "QC"
-                                    select t).ToList();
-                    }
-                    else
-                    {
-                        tblstock = (from t in tblstock
-                                    where t.ShelfStatus == "AVAIL"
-                                    select t).ToList();
-                    }
-
-                    // Do something with the Profiles alert message (add to tblOrderItem on creation?
-                    // Do something with the Special Transport Provision Alert - add to tblOrderitem on creation?
-
-                    tblstock = (from t in tblstock
-                                orderby t.CeaseShipDate ascending
-                                select t).ToList();
-
-                    // Page thru tblstock rows looking for the first record that has enough qty then bailout
-                    foreach (var row in tblstock)
-                    {
-                        if (row.QtyOnHand - row.QtyAllocated >= item.Qty)
-                        {
-                            AllocationCount = AllocationCount + 1;
-                            // update tblstock record (need to use separate qry)
-                            var q = db.tblStock.Find(row.StockID);
-                            q.QtyAllocated = (q.QtyAllocated ?? 0) + item.Qty;
-
-                            // update tblorderitem record
-                            item.AllocatedStockID = row.StockID;
-                            item.Warehouse = row.Warehouse;
-                            item.LotNumber = row.LotNumber;
-                            item.AllocateStatus = "A";
-                            item.Bin = row.Bin;
-                            item.ExpirationDate = row.ExpirationDate;
-                            item.CeaseShipDate = row.CeaseShipDate;
-                            item.AllocatedDate = DateTime.UtcNow;
-
-                            db.SaveChanges();
-
-                            break;
-
-                            fnInsertLogRecord("SS-ALC", DateTime.UtcNow, row.StockID, null, item.Qty, null, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
-                        }
-                    }
-                }
-
-                return AllocationCount;
+                throw ex;
             }
+
+            return xshelfid;
         }
 
-        public static void fnInsertLogRecord(string vLogType, DateTime? vLogDate, int? vStockID, int? vBulkID, int? vLogQty, decimal? vLogAmount, DateTime? vCreateDate, string vCreateUser, DateTime? vUpdateDate, string vUpdateUser)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                EF.tblInvLog newrec = new EF.tblInvLog();
-                newrec.LogType = vLogType;
-                newrec.LogDate = vLogDate;
-                newrec.StockID = vStockID;
-                newrec.BulkID = vBulkID;
-                newrec.LogQty = vLogQty;
-                newrec.LogAmount = vLogAmount;
-                newrec.CreateDate = vCreateDate;
-                newrec.CreateUser = vCreateUser;
-                newrec.UpdateDate = vUpdateDate;
-                newrec.UpdateUser = vUpdateUser;
-                db.tblInvLog.Add(newrec);
-                db.SaveChanges();
-            }
-        }
+        #endregion Order Item Methods
+
+        #region Order Transaction Methods
 
         public static OrderTrans fnCreateTrans(int id)
         {
             // id=orderid
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var vm = new OrderTrans();
                 var cl = (from t in db.tblOrderMaster
@@ -986,14 +661,15 @@ namespace MvcPhoenix.Services
 
         public static int fnSaveTrans(OrderTrans vm)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (vm.ordertransid == -1)
                 {
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    tblOrderTrans newrec = new tblOrderTrans();
                     db.tblOrderTrans.Add(newrec);
                     vm.createdate = DateTime.UtcNow;
                     vm.createuser = HttpContext.Current.User.Identity.Name;
+
                     db.SaveChanges();
                     vm.ordertransid = newrec.OrderTransID;
                 }
@@ -1017,6 +693,7 @@ namespace MvcPhoenix.Services
                 d.CreateUser = vm.createuser;
                 d.UpdateDate = vm.updatedate;
                 d.UpdateUser = vm.updateuser;
+
                 db.SaveChanges();
 
                 return vm.ordertransid;
@@ -1027,7 +704,7 @@ namespace MvcPhoenix.Services
         {
             OrderTrans vm = new OrderTrans();
 
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var qry = (from t in db.tblOrderTrans
                            where t.OrderTransID == id
@@ -1053,7 +730,7 @@ namespace MvcPhoenix.Services
 
         public static void fnDeleteTrans(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 string s = @"DELETE FROM tblOrderTrans WHERE OrderTransID=" + id.ToString();
                 db.Database.ExecuteSqlCommand(s);
@@ -1062,7 +739,7 @@ namespace MvcPhoenix.Services
 
         public static void fnGenerateOrderTransactions(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var oi = (from t in db.tblOrderItem
                           where t.ItemID == id
@@ -1087,7 +764,7 @@ namespace MvcPhoenix.Services
 
                 if (tierSize != null)
                 {
-                    EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                    tblOrderTrans newrec = new tblOrderTrans();
                     newrec.TransDate = DateTime.UtcNow;
                     newrec.OrderItemID = oi.ItemID;
                     newrec.OrderID = oi.OrderID;
@@ -1113,7 +790,7 @@ namespace MvcPhoenix.Services
 
                     if (tierSpecialRequest != null)
                     {
-                        EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                        tblOrderTrans newrec = new tblOrderTrans();
                         newrec.TransDate = DateTime.UtcNow;
                         newrec.OrderItemID = oi.ItemID;
                         newrec.OrderID = oi.OrderID;
@@ -1244,7 +921,7 @@ namespace MvcPhoenix.Services
 
         public static void fnInsertOrderTrans(int? ItemID, string TransType, decimal? TransAmount)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 string s = String.Format("DELETE FROM tblOrderTrans WHERE OrderItemID={0} AND Transtype = '{1}' AND CreateUser='System'", ItemID, TransType);
 
@@ -1258,7 +935,7 @@ namespace MvcPhoenix.Services
                          where t.OrderID == oi.OrderID
                          select t).FirstOrDefault();
 
-                EF.tblOrderTrans newrec = new EF.tblOrderTrans();
+                tblOrderTrans newrec = new tblOrderTrans();
                 newrec.TransDate = DateTime.UtcNow;
                 newrec.OrderItemID = ItemID;
                 newrec.OrderID = oi.OrderID;
@@ -1278,35 +955,322 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static void fnArchiveOrderMaster(int id)
-        {
-            // stash a copy before update
-        }
+        #endregion Order Transaction Methods
 
-        public static void fnArchiveOrderItem(int id)
-        {
-            // stash a copy before update
-        }
+        #region Allocate Methods
 
-        // ****************************************************
-        // Service utility methods
-        // ****************************************************
-
-        public static int ExecuteADOSQL(string sql)
+        public static int fnAllocateBulk(int OrderID, bool IncludeQCStock)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                db.Database.ExecuteSqlCommand(sql);
-                return 1;
+                int AllocationCount = 0;
+                var orderitems = (from t in db.tblOrderItem
+                                  where t.OrderID == OrderID && t.ShipDate == null && t.AllocateStatus == null && t.CSAllocate == true
+                                  select t).ToList();
+
+                if (orderitems == null)
+                {
+                    return AllocationCount;
+                }
+
+                foreach (var item in orderitems)
+                {
+                    var tblbulk = (from t in db.tblBulk
+                                   join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                                   join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
+                                   where (pd.ProductDetailID == item.ProductDetailID)
+                                   select new
+                                   {
+                                       BulkID = t.BulkID,
+                                       Warehouse = t.Warehouse,
+                                       Qty = t.Qty,
+                                       LotNumber = t.LotNumber,
+                                       CurrentWeight = t.CurrentWeight,
+                                       CeaseShipDate = t.CeaseShipDate,
+                                       BulkStatus = t.BulkStatus,
+                                       Bin = t.Bin
+                                   }).ToList();
+
+                    var qOffset = db.tblOrderMaster.Find(OrderID);
+                    int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
+                    if (iOffset != 0)
+                    {
+                        // if there's an offset on the order record, add that to today to build in extra time
+                        DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
+
+                        tblbulk = (from t in tblbulk
+                                   where t.CeaseShipDate > dCease
+                                   select t).ToList();
+                    }
+
+                    if (IncludeQCStock == true)
+                    {
+                        tblbulk = (from t in tblbulk
+                                   where t.BulkStatus == "AVAIL" || t.BulkStatus == "QC"
+                                   select t).ToList();
+                    }
+                    else
+                    {
+                        tblbulk = (from t in tblbulk
+                                   where t.BulkStatus == "AVAIL"
+                                   select t).ToList();
+                    }
+
+                    tblbulk = (from t in tblbulk
+                               where t.CurrentWeight >= (item.Qty * item.Weight)
+                               select t).ToList();
+
+                    tblbulk = (from t in tblbulk
+                               orderby t.CeaseShipDate ascending
+                               select t).ToList();
+
+                    foreach (var row in tblbulk)
+                    {
+                        // update tblstock record (need to use separate qry)
+                        if (row.CurrentWeight >= item.Qty * item.Weight)
+                        {
+                            AllocationCount = AllocationCount + 1;
+                            var q = db.tblBulk.Find(row.BulkID);
+
+                            q.CurrentWeight = q.CurrentWeight - (item.Qty * item.Weight);
+                            item.AllocatedBulkID = row.BulkID;
+                            item.Warehouse = row.Warehouse;
+                            item.LotNumber = row.LotNumber;
+                            item.AllocateStatus = "A";
+                            item.Bin = row.Bin;
+                            item.ExpirationDate = q.ExpirationDate;
+                            item.CeaseShipDate = q.CeaseShipDate;
+
+                            fnInsertLogRecord("BS-ALC", DateTime.UtcNow, null, row.BulkID, item.Qty, item.Weight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+
+                            db.SaveChanges();
+
+                            break;
+                        }
+                    }
+                }
+
+                return AllocationCount;
             }
         }
 
-        #region Selection List Methods
+        public static int fnAllocateShelf(int OrderID, bool IncludeQCStock)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                int AllocationCount = 0;
+
+                var items = (from t in db.tblOrderItem
+                             join om in db.tblOrderMaster on t.OrderID equals om.OrderID
+                             where t.OrderID == OrderID && t.ShipDate == null && t.AllocateStatus == null && t.CSAllocate == true
+                             select t).ToList();
+
+                if (items == null)
+                {
+                    return AllocationCount;
+                }
+
+                foreach (var item in items)
+                {
+                    var tblstock = (from t in db.tblStock
+                                    join b in db.tblBulk on t.BulkID equals b.BulkID
+                                    orderby b.CeaseShipDate
+                                    where t.ShelfID == item.ShelfID
+                                    select new
+                                        {
+                                            StockID = t.StockID,
+                                            Warehouse = t.Warehouse,
+                                            QtyOnHand = t.QtyOnHand,
+                                            QtyAllocated = t.QtyAllocated ?? 0,
+                                            Bin = t.Bin,
+                                            ShelfStatus = t.ShelfStatus,
+                                            ExpirationDate = b.ExpirationDate,
+                                            CeaseShipDate = b.CeaseShipDate,
+                                            LotNumber = b.LotNumber
+                                        }
+                                    ).ToList();
+
+                    var qOffset = db.tblOrderMaster.Find(items[0].OrderID);
+                    int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
+
+                    // change to take negative numbers
+                    if (iOffset != 0)
+                    {
+                        // if there's an offset on the order record, add that to today to build in extra time
+                        DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
+                        tblstock = (from t in tblstock
+                                    where t.CeaseShipDate > dCease
+                                    select t).ToList();
+                    }
+
+                    if (item.LotNumber != null) // specific lot number requested
+                    {
+                        tblstock = (from t in tblstock
+                                    where t.LotNumber == item.LotNumber
+                                    select t).ToList();
+                    }
+
+                    if (IncludeQCStock == true)
+                    {
+                        tblstock = (from t in tblstock
+                                    where t.ShelfStatus == "AVAIL" || t.ShelfStatus == "QC"
+                                    select t).ToList();
+                    }
+                    else
+                    {
+                        tblstock = (from t in tblstock
+                                    where t.ShelfStatus == "AVAIL"
+                                    select t).ToList();
+                    }
+
+                    // Do something with the Profiles alert message (add to tblOrderItem on creation?
+                    // Do something with the Special Transport Provision Alert - add to tblOrderitem on creation?
+
+                    tblstock = (from t in tblstock
+                                orderby t.CeaseShipDate ascending
+                                select t).ToList();
+
+                    // Page thru tblstock rows looking for the first record that has enough qty then bailout
+                    foreach (var row in tblstock)
+                    {
+                        if (row.QtyOnHand - row.QtyAllocated >= item.Qty)
+                        {
+                            AllocationCount = AllocationCount + 1;
+                            // update tblstock record (need to use separate qry)
+                            var q = db.tblStock.Find(row.StockID);
+                            q.QtyAllocated = (q.QtyAllocated ?? 0) + item.Qty;
+
+                            // update tblorderitem record
+                            item.AllocatedStockID = row.StockID;
+                            item.Warehouse = row.Warehouse;
+                            item.LotNumber = row.LotNumber;
+                            item.AllocateStatus = "A";
+                            item.Bin = row.Bin;
+                            item.ExpirationDate = row.ExpirationDate;
+                            item.CeaseShipDate = row.CeaseShipDate;
+                            item.AllocatedDate = DateTime.UtcNow;
+
+                            db.SaveChanges();
+
+                            break;
+
+                            fnInsertLogRecord("SS-ALC", DateTime.UtcNow, row.StockID, null, item.Qty, null, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+                        }
+                    }
+                }
+
+                return AllocationCount;
+            }
+        }
+
+        #endregion Allocate Methods
+
+        #region SPS Billing Methods
+
+        public static OrderSPSBilling fnSPSBilling(int id)
+        {
+            // id=OrderID
+            using (var db = new CMCSQL03Entities())
+            {
+                OrderSPSBilling vm = new OrderSPSBilling();
+                var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == id);
+
+                if (q == null)
+                {
+                    vm.SPSBillingID = -1;
+                    vm.OrderId = id;
+                    vm.PriceCost = CalcSPSSumCharge(id);
+                    return vm;
+                }
+
+                vm.SPSBillingID = q.SPSBillingID;
+                vm.OrderId = q.OrderID;
+                vm.Type = q.Type;
+                vm.TaxId = q.TaxID;
+                vm.Currency = q.Currency;
+                vm.PriceCost = CalcSPSSumCharge(id);
+                vm.FreightCost = q.FreightCost;
+                vm.ShippedWeight = q.ShippedWeight;
+                vm.InvoiceTitle = q.InvoiceTitle;
+                vm.InvoiceFirstName = q.InvoiceFirstName;
+                vm.InvoiceLastName = q.InvoiceLastName;
+                vm.InvoiceCompany = q.InvoiceCompany;
+                vm.InvoiceAddress1 = q.InvoiceAddress1;
+                vm.InvoiceAddress2 = q.InvoiceAddress2;
+                vm.InvoiceAddress3 = q.InvoiceAddress3;
+                vm.InvoiceCity = q.InvoiceCity;
+                vm.InvoiceState = q.InvoiceState;
+                vm.InvoicePostalCode = q.InvoicePostalCode;
+                vm.InvoiceCountry = q.InvoiceCountry;
+                vm.InvoicePhone = q.InvoicePhone;
+                vm.InvoiceEmail = q.InvoiceEmail;
+                vm.UpdateDate = DateTime.UtcNow;
+                vm.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                return vm;
+            }
+        }
+
+        private static decimal? CalcSPSSumCharge(int OrderId)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var SumSPSCharge = db.tblOrderItem
+                    .Where(t => t.OrderID == OrderId)
+                    .Sum(t => t.SPSCharge);
+
+                return SumSPSCharge;
+            }
+        }
+
+        public static void fnSaveSPSBillingDetails(OrderSPSBilling vm)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                if (vm.SPSBillingID == -1)
+                {
+                    tblOrderSPSBilling newrec = new tblOrderSPSBilling();
+                    newrec.OrderID = vm.OrderId;
+                    db.tblOrderSPSBilling.Add(newrec);
+                    db.SaveChanges();
+                }
+
+                var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == vm.OrderId);
+
+                q.Type = "Invoice";
+                q.TaxID = vm.TaxId;
+                q.Currency = "EUR";
+                q.PriceCost = CalcSPSSumCharge(vm.OrderId);
+                q.FreightCost = vm.FreightCost;
+                q.ShippedWeight = vm.ShippedWeight;
+                q.InvoiceTitle = vm.InvoiceTitle;
+                q.InvoiceFirstName = vm.InvoiceFirstName;
+                q.InvoiceLastName = vm.InvoiceLastName;
+                q.InvoiceCompany = vm.InvoiceCompany;
+                q.InvoiceAddress1 = vm.InvoiceAddress1;
+                q.InvoiceAddress2 = vm.InvoiceAddress2;
+                q.InvoiceAddress3 = vm.InvoiceAddress3;
+                q.InvoiceCity = vm.InvoiceCity;
+                q.InvoiceState = vm.InvoiceState;
+                q.InvoicePostalCode = vm.InvoicePostalCode;
+                q.InvoiceCountry = vm.InvoiceCountry;
+                q.InvoicePhone = vm.InvoicePhone;
+                q.InvoiceEmail = vm.InvoiceEmail;
+                q.UpdateDate = DateTime.UtcNow;
+                q.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                db.SaveChanges();
+            }
+        }
+
+        #endregion SPS Billing Methods
+
+        #region List Methods
 
         public static List<OrderMasterFull> fnOrdersSearchResults()
         {
             // default query join for the index_partial ORDERS search results, also used by all the search requests as the starting point
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 db.Configuration.AutoDetectChangesEnabled = false;
                 List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
@@ -1342,39 +1306,62 @@ namespace MvcPhoenix.Services
             }
         }
 
+        // TODO: Combine both size dropdownlists
         public static string fnBuildSizeDropDown(int id)
         {
             // id=productdetailid
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
+                bool isSRcheck = false; //flag to avoid duplicate listing of 1SR
                 var qry = (from t in db.tblShelfMaster
-                           where t.ProductDetailID == id
+                           where t.ProductDetailID == id && t.InactiveSize != true
                            orderby t.Size
                            select t);
 
                 string s = "<option value='0' selected=true>Select Size</option>";
-
                 if (qry.Count() > 0)
                 {
                     foreach (var item in qry)
                     {
+                        if (item.Size == "1SR")
+                        {
+                            isSRcheck = true;
+                        }
                         s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - " + item.UnitWeight + "</option>";
                     }
                 }
-                else
+                if (!isSRcheck)
                 {
-                    s = s + "<option value='0'>No Sizes Found</option>";
+                    s = s + "<option value='0'>1SR</option>";
                 }
-
-                s = s + "<option value='9999'>1SR</option>";
 
                 return s;
             }
         }
 
+        public static List<SelectListItem> fnProductCodeSizes(int id)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> mylist = new List<SelectListItem>();
+
+                mylist = (from t in db.tblShelfMaster
+                          where t.ProductDetailID == id && t.InactiveSize != true
+                          select new SelectListItem
+                          {
+                              Value = t.ShelfID.ToString(),
+                              Text = t.Size + " - " + t.UnitWeight
+                          }).ToList();
+
+                return mylist;
+            }
+        }
+
+        // End: TODO: Combine both dropdownlists
+
         public static List<SelectListItem> fnListOfOrderItemIDs(int? id)
         {
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 mylist = (from t in db.tblOrderItem
@@ -1421,7 +1408,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfClientIDs()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1441,7 +1428,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfDivisions(int? id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1462,7 +1449,7 @@ namespace MvcPhoenix.Services
 
         public static List<OrderItem> fnListOfOrderItemsForOrderID(int OrderID)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<OrderItem> mylist = new List<OrderItem>();
 
@@ -1474,30 +1461,9 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static List<SelectListItem> fnProductCodeSizes(int id)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblShelfMaster
-                          where t.ProductDetailID == id && t.InactiveSize != true
-                          select new SelectListItem
-                          {
-                              Value = t.ShelfID.ToString(),
-                              Text = t.Size + " - " + t.UnitWeight
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = " -- Select Size --" });
-                mylist.Add(new SelectListItem { Value = "9999", Text = "1SR" });
-
-                return mylist;
-            }
-        }
-
         public static List<SelectListItem> fnProductCodeXref(int? id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1518,7 +1484,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfOrderIDs()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1538,7 +1504,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfCountries()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1558,7 +1524,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfSalesReps(int? id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1580,7 +1546,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfRequestors(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1603,7 +1569,7 @@ namespace MvcPhoenix.Services
         public static Contact fnGetClientContacts(int id)
         {
             // fill a json object for View use
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 Contact obj = new Contact();
 
@@ -1623,7 +1589,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfEndUses(int? id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1644,7 +1610,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfShipVias()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1664,7 +1630,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfOrderSources()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1686,7 +1652,7 @@ namespace MvcPhoenix.Services
         {
             List<SelectListItem> mylist = new List<SelectListItem>();
 
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 mylist = (from t in db.tblProductDetail
                           join m in db.tblProductMaster on t.ProductMasterID equals m.ProductMasterID
@@ -1706,7 +1672,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfShipViasItemLevel()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1726,7 +1692,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfStatuses()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1742,7 +1708,7 @@ namespace MvcPhoenix.Services
 
         public static List<SelectListItem> fnListOfStatusNotesIDs()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> mylist = new List<SelectListItem>();
 
@@ -1760,6 +1726,318 @@ namespace MvcPhoenix.Services
             }
         }
 
-        #endregion Selection List Methods
+        #endregion List Methods
+
+        #region Order Import Methods
+
+        public static void PrepareForImport()
+        {
+            // this method tries to put the external record into Phoenix normalized fashion and tag for actual import
+            using (var db = new CMCSQL03Entities())
+            {
+                db.Database.ExecuteSqlCommand("DELETE FROM tblOrderImport WHERE Status NOT IN('0')");
+
+                var q = (from t in db.tblOrderImport
+                         where t.ImportStatus == null && t.Location_MDB == "EU"
+                         select t).ToList();
+
+                foreach (var r in q)
+                {
+                    r.ImportStatus = "FAIL";
+
+                    var qclt = (from t in db.tblClient
+                                where t.CMCLongCustomer == r.Company_MDB && t.CMCLocation == r.Location_MDB
+                                select t).FirstOrDefault();
+
+                    if (qclt == null)
+                    {
+                        r.ImportError += " [ClientID]";
+                    }
+
+                    if (qclt != null)
+                    {
+                        r.ClientID = qclt.ClientID;
+                        var qdiv = (from t in db.tblDivision
+                                    where t.ClientID == r.ClientID && t.DivisionName == r.Division_MDB
+                                    select t).FirstOrDefault();
+
+                        if (qdiv != null)
+                        {
+                            r.DivisionID = qdiv.DivisionID;
+                        }
+                    }
+
+                    // will this always return one row ?????
+                    var qPD = (from pd in db.tblProductDetail
+                               join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                               where pd.ProductCode == r.ProductCode && pm.ClientID == r.ClientID
+                               select new { pd, pm }).FirstOrDefault();
+
+                    if (qPD == null)
+                    {
+                        r.ImportError += " [ProductDetailID]";
+                    }
+
+                    if (qPD != null)
+                    {
+                        r.ProductDetailID = qPD.pd.ProductDetailID;
+                        // note - there needs to be a SM record for size 1SR for each productdetailid that can be sampled in SR
+                        var qSM = (from t in db.tblShelfMaster
+                                   where t.ProductDetailID == r.ProductDetailID && t.Size == r.Size
+                                   select t).FirstOrDefault();
+
+                        if (qSM == null)
+                        {
+                            r.ImportError += " [ShelfID]";
+                        }
+
+                        if (qSM != null)
+                        {
+                            r.ShelfID = qSM.ShelfID;
+                        }
+                        else
+                        {
+                            var qSM_SR = (from t in db.tblShelfMaster
+                                          where t.ProductDetailID == r.ProductDetailID && t.Size == "1SR"
+                                          select t).FirstOrDefault();
+
+                            if (qSM_SR != null)
+                            {
+                                r.ShelfID = qSM_SR.ShelfID;
+                            }
+                        }
+                    }
+
+                    // min requirements are clientid, productdetailid, shelfid
+                    // ******* THIS WILL CAUSE ISSUES WITh PHOENIX ORDER EDIT IF SHELFID=null ********************************************
+                    if (r.ClientID != null && r.ProductDetailID != null && r.ShelfID != null)
+                    {
+                        r.ImportStatus = "PASS";
+                    }
+
+                    db.SaveChanges();
+                }
+
+                // post adjust - if one item failed, the whole order fails
+                var qFix = (from t in db.tblOrderImport
+                            where t.ImportStatus == "FAIL"
+                            select new { guid = t.GUID }).ToList().Distinct();
+
+                foreach (var r in qFix)
+                {
+                    string s = String.Format("UPDATE tblOrderImport SET ImportStatus='FAIL' WHERE GUID='{0}'", r.guid);
+                    db.Database.ExecuteSqlCommand(s);
+                }
+
+                return;
+            }
+        }
+
+        public static int ImportOrders()
+        {
+            PrepareForImport();
+
+            string sLocation = "EU"; // later move to parameter for this method
+
+            using (var db = new CMCSQL03Entities())
+            {
+                int OrdersImportedCount = 0;
+
+                // if ImportStatus=GOOD we can create VM objects as if it were data entry
+
+                var qGUIDs = (from t in db.tblOrderImport
+                              where t.ImportStatus == "PASS" && t.Location_MDB == sLocation
+                              select new { t.GUID }).ToList().Distinct();
+
+                foreach (var r in qGUIDs)
+                {
+                    // just set a pointer to one of the rows so we can read the data
+                    var qOM = (from t in db.tblOrderImport
+                               where t.GUID == r.GUID
+                               select t).FirstOrDefault();
+
+                    Models.OrderMasterFull NewOrder = new Models.OrderMasterFull();
+
+                    // fill OM fields
+                    NewOrder.CreateUser = "Import";
+                    NewOrder.CreateDate = DateTime.UtcNow;
+                    NewOrder.orderdate = Convert.ToDateTime(qOM.OrderDate);
+                    NewOrder.clientid = qOM.ClientID;
+                    NewOrder.divisionid = qOM.DivisionID;
+                    NewOrder.customer = qOM.Customer;
+                    NewOrder.cmcorder = Convert.ToInt32(qOM.CMCOrder);
+                    NewOrder.weborderid = Convert.ToInt32(qOM.WebOrderID);
+                    NewOrder.cmclegacynumber = qOM.CMCLegacyNum;
+                    NewOrder.custordnum = qOM.CustOrdNum;
+                    NewOrder.custsapnum = qOM.CustSapNum;
+                    NewOrder.custrefnum = qOM.CustRefNum;
+                    if (qOM.OrderType == "w")
+                    {
+                        NewOrder.ordertype = "S";
+                    }
+                    else
+                    {
+                        NewOrder.ordertype = qOM.OrderType;
+                    }
+                    NewOrder.company = qOM.Company;
+                    NewOrder.street = qOM.Street;
+                    NewOrder.street2 = qOM.Street2;
+                    NewOrder.street3 = qOM.Street3;
+                    NewOrder.city = qOM.City;
+                    NewOrder.state = qOM.State;
+                    NewOrder.Zip = qOM.Zip;
+                    NewOrder.country = qOM.Country;
+                    NewOrder.attention = qOM.Attention;
+                    NewOrder.email = qOM.Email;
+                    NewOrder.salesrep = qOM.SalesRep;
+                    NewOrder.sales_email = qOM.SalesEmail;
+                    NewOrder.req = qOM.Req;
+                    NewOrder.reqphone = qOM.ReqPhone;
+                    NewOrder.reqfax = qOM.ReqFax;
+                    NewOrder.reqemail = qOM.ReqEmail;
+                    NewOrder.enduse = qOM.EndUse;
+                    NewOrder.shipvia = qOM.ShipVia;
+                    NewOrder.shipacct = qOM.ShipAcct;
+                    NewOrder.phone = qOM.Phone;
+                    if (qOM.Source == null)
+                    {
+                        NewOrder.source = "Web";
+                    }
+                    else
+                    {
+                        NewOrder.source = qOM.Source;
+                    }
+                    NewOrder.fax = qOM.Fax;
+                    NewOrder.tracking = qOM.Tracking;
+                    NewOrder.special = qOM.Special;
+                    NewOrder.specialinternal = qOM.SpecialInternal;
+                    NewOrder.lit = Convert.ToBoolean(qOM.Lit);
+                    NewOrder.region = qOM.Region;
+                    NewOrder.coa = Convert.ToBoolean(qOM.COA);
+                    NewOrder.tds = Convert.ToBoolean(qOM.TDS);
+                    NewOrder.cid = qOM.CID;
+                    NewOrder.custacct = qOM.CustAcct;
+                    NewOrder.acode = qOM.ACode;
+                    NewOrder.importfile = qOM.ImportFile;
+                    NewOrder.importdateline = qOM.ImportDateLine ?? null;
+                    NewOrder.timing = qOM.Timing;
+                    NewOrder.volume = qOM.Volume;
+                    NewOrder.samplerack = Convert.ToBoolean(qOM.SampleRack);
+                    NewOrder.cmcuser = qOM.CMCUser;
+                    NewOrder.customerreference = qOM.CustomerReference;
+                    NewOrder.totalorderweight = qOM.TotalOrderWeight;
+                    NewOrder.custordertype = qOM.CustOrderType;
+                    NewOrder.custrequestdate = qOM.CustRequestDate ?? null;
+                    NewOrder.approvaldate = qOM.ApprovalDate ?? null;
+                    NewOrder.requesteddeliverydate = qOM.RequestedDeliveryDate ?? null;
+                    NewOrder.custtotalitems = Convert.ToInt32(qOM.CustTotalItems);
+                    NewOrder.custrequestedcarrier = qOM.CustRequestedCarrier;
+                    NewOrder.legacyid = Convert.ToInt32(qOM.LegacyID);
+                    NewOrder.salesrepphone = qOM.SalesRepPhone;
+                    NewOrder.salesrepterritory = qOM.SalesRepTerritory;
+                    NewOrder.marketingrep = qOM.MarketingRep;
+                    NewOrder.marketingrepemail = qOM.MarketingRepEmail;
+                    NewOrder.distributor = qOM.Distributor;
+                    NewOrder.preferredcarrier = qOM.PreferredCarrier;
+                    NewOrder.approvalneeded = Convert.ToBoolean(qOM.ApprovalNeeded);
+                    NewOrder.CreateUser = qOM.CreateUser;
+                    NewOrder.CreateDate = qOM.CreateDate;
+                    NewOrder.UpdateUser = qOM.UpdateUser;
+                    NewOrder.UpdateDate = qOM.UpdateDate;
+                    NewOrder.billinggroup = qOM.BillingGroup;
+                    NewOrder.IsSDN = qOM.IsSDN;
+
+                    // save tblOrderMaster to DB
+                    NewOrder.orderid = -1;                                              // needed to do insert
+                    int NewOrderID = Services.OrderService.fnSaveOrder(NewOrder);
+
+                    // fill OM fields
+                    var qOI = (from t in db.tblOrderImport
+                               where t.GUID == r.GUID
+                               select t).ToList();
+
+                    foreach (var i in qOI)
+                    {
+                        Models.OrderItem NewItem = new Models.OrderItem();
+                        NewItem.ItemID = -1;
+                        NewItem.OrderID = NewOrderID;
+                        NewItem.CreateDate = DateTime.UtcNow;
+                        NewItem.CreateUser = "System";
+                        NewItem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                        NewItem.ProductDetailID = i.ProductDetailID;
+                        NewItem.ShelfID = i.ShelfID;
+                        if (i.ShelfID == null)                                          // TODO: If shelf id is null; GetShelfid()
+                        {
+                            i.ShelfID = 0;                                           // needed for post save to pull SR
+
+                            decimal srsize;                                             // get rid of this when tblOrderImport.SRSize is changed to decimal
+                            try
+                            {
+                                srsize = decimal.Parse(i.SRSize);
+                            }
+                            catch (Exception)
+                            {
+                                srsize = 0.00M;
+                            }
+
+                            NewItem.SRSize = srsize;
+                        }
+                        NewItem.Qty = i.Qty;
+                        NewItem.LotNumber = i.LotNumber;
+                        NewItem.ShipDate = i.ShipDate;
+                        NewItem.CSAllocate = i.CSAllocate;
+                        NewItem.AllocateStatus = i.AllocateStatus;
+                        NewItem.NonCMCDelay = i.NonCMCDelay;
+                        NewItem.CarrierInvoiceRcvd = i.CarrierInvoiceRcvd;
+                        NewItem.Status = i.Status;
+                        NewItem.DelayReason = i.DelayReason;
+                        NewItem.ItemNotes = i.ItemNotes;
+
+                        int NewItemID = Services.OrderService.fnSaveItem(NewItem);      // save tblOrderItem to DB
+                    }
+
+                    OrdersImportedCount = OrdersImportedCount + 1;
+                    string s = String.Format("UPDATE tblOrderImport SET ImportStatus='IMPORTED' WHERE GUID='{0}'", r.GUID);         // at this point we have an order
+
+                    db.Database.ExecuteSqlCommand(s);
+                }
+
+                return OrdersImportedCount;
+            }
+        }
+
+        #endregion Order Import Methods
+
+        public static void fnInsertLogRecord(string vLogType, DateTime? vLogDate, int? vStockID, int? vBulkID, int? vLogQty, decimal? vLogAmount, DateTime? vCreateDate, string vCreateUser, DateTime? vUpdateDate, string vUpdateUser)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                tblInvLog newrec = new tblInvLog();
+
+                newrec.LogType = vLogType;
+                newrec.LogDate = vLogDate;
+                newrec.StockID = vStockID;
+                newrec.BulkID = vBulkID;
+                newrec.LogQty = vLogQty;
+                newrec.LogAmount = vLogAmount;
+                newrec.CreateDate = vCreateDate;
+                newrec.CreateUser = vCreateUser;
+                newrec.UpdateDate = vUpdateDate;
+                newrec.UpdateUser = vUpdateUser;
+
+                db.tblInvLog.Add(newrec);
+
+                db.SaveChanges();
+            }
+        }
+
+        public static int ExecuteADOSQL(string sql)
+        {
+            using (var db = new EF.CMCSQL03Entities())
+            {
+                db.Database.ExecuteSqlCommand(sql);
+                return 1;
+            }
+        }
     }
 }
