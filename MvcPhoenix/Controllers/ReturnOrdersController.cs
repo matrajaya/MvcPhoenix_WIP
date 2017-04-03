@@ -560,7 +560,7 @@ namespace MvcPhoenix.Controllers
                     newitem.LotNumber = bl.LotNumber;
                     newitem.Qty = row.QtyOnHand;
                     newitem.Size = sm.Size;
-                    newitem.Weight = sm.UnitWeight;
+                    newitem.Weight = Convert.ToDecimal(sm.UnitWeight * row.QtyOnHand);
                     newitem.Bin = row.Bin;
                     newitem.ItemNotes = "Return Shelf Order Item";
                     newitem.CreateDate = DateTime.UtcNow;
