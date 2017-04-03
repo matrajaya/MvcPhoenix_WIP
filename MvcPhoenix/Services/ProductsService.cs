@@ -71,6 +71,8 @@ namespace MvcPhoenix.Models
 
                 PP.ListOfPackagePartNumbers.Insert(0, new SelectListItem { Value = "0", Text = "" });
 
+                PP.ListOfOtherStorage = ListOfOtherStorage();
+
                 List<SelectListItem> gloves = new List<SelectListItem>();
                 gloves.Add(new SelectListItem { Value = "", Text = "" });
                 gloves.Add(new SelectListItem { Value = "GMP NITRILE", Text = "GMP NITRILE" });
@@ -309,7 +311,6 @@ namespace MvcPhoenix.Models
                 PP.supplyid = q.SUPPLYID;
                 PP.discontinued = q.Discontinued;
                 PP.noreorder = q.NoReorder;
-                PP.packoutonreceipt = q.PackOutOnReceipt;
                 PP.restrictedtoamount = q.RestrictedToAmount;
                 PP.createdate = q.CreateDate;
                 PP.masternotes = q.MasterNotes;
@@ -394,7 +395,7 @@ namespace MvcPhoenix.Models
                 PP.fullfacerespirator = q.FullFaceRespirator;
                 PP.torque = q.Torque;
                 PP.torquerequirements = q.TorqueRequirements;
-                PP.otherpkg = q.OtherPkg;
+                PP.otherstorage = q.OtherStorage;
                 PP.eecall = q.EECAll;
                 PP.rphrasesall = q.RPhrasesAll;
                 PP.sphrasesall = q.SPhrasesAll;
@@ -606,7 +607,6 @@ namespace MvcPhoenix.Models
                 q.SUPPLYID = pm.supplyid;
                 q.Discontinued = pm.discontinued;
                 q.NoReorder = pm.noreorder;
-                q.PackOutOnReceipt = pm.packoutonreceipt;
                 q.RestrictedToAmount = pm.restrictedtoamount;
                 q.CreateDate = pm.createdate;
                 q.MasterNotes = pm.masternotes;
@@ -691,7 +691,7 @@ namespace MvcPhoenix.Models
                 q.FullFaceRespirator = pm.fullfacerespirator;
                 q.Torque = pm.torque;
                 q.TorqueRequirements = pm.torquerequirements;
-                q.OtherPkg = pm.otherpkg;
+                q.OtherStorage = pm.otherstorage;
                 q.EECAll = pm.eecall;
                 q.RPhrasesAll = pm.rphrasesall;
                 q.SPhrasesAll = pm.sphrasesall;
@@ -1073,6 +1073,36 @@ namespace MvcPhoenix.Models
 
                 return mylist;
             }
+        }
+
+        public static List<SelectListItem> ListOfOtherStorage()
+        {
+            List<SelectListItem> otherstoragelist = new List<SelectListItem>();
+            otherstoragelist.Add(new SelectListItem { Value = "", Text = "" });
+            otherstoragelist.Add(new SelectListItem { Value = "Toxic Storage", Text = "Toxic Storage" });
+            otherstoragelist.Add(new SelectListItem { Value = "Spontaneously Combustible", Text = "Spontaneously Combustible" });
+            otherstoragelist.Add(new SelectListItem { Value = "Oxidizer", Text = "Oxidizer" });
+            otherstoragelist.Add(new SelectListItem { Value = "Base", Text = "Base" });
+            otherstoragelist.Add(new SelectListItem { Value = "Acid", Text = "Acid" });
+            otherstoragelist.Add(new SelectListItem { Value = "Clean Storage", Text = "Clean Storage" });
+            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Corrosive", Text = "Flammable/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Toxic/Corrosive", Text = "Toxic/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide", Text = "Biocide" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Toxic", Text = "Biocide/Toxic" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Toxic/Corrosive", Text = "Biocide/Toxic/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive", Text = "Biocide/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Oxidizer", Text = "Biocide/Oxidizer" });
+            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Pueblo", Text = "Flammable/Pueblo" });
+            otherstoragelist.Add(new SelectListItem { Value = "Corrosive/Flammable", Text = "Corrosive/Flammable" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive/Toxic", Text = "Biocide/Corrosive/Toxic" });
+            otherstoragelist.Add(new SelectListItem { Value = "Corrosive/Toxic", Text = "Corrosive/Toxic" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive", Text = "Biocide/Flammable/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Toxic/Corrosive", Text = "Flammable/Toxic/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive/Flammable", Text = "Biocide/Corrosive/Flammable" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Toxic/Corrosive", Text = "Biocide/Flammable/Toxic/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive/Toxic", Text = "Biocide/Flammable/Corrosive/Toxic" });
+
+            return otherstoragelist;
         }
     }
 }

@@ -316,8 +316,8 @@ namespace MvcPhoenix.Models
         [Display(Name = "TorqueRequirements")]
         public string torquerequirements { get; set; }
 
-        [Display(Name = "OtherPkg")]
-        public string otherpkg { get; set; }
+        [Display(Name = "OtherStorage")]
+        public string otherstorage { get; set; }
 
         [Display(Name = "EECAll")]
         public string eecall { get; set; }

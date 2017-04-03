@@ -108,7 +108,7 @@ namespace MvcPhoenix.EF
         public Nullable<bool> FullFaceRespirator { get; set; }
         public Nullable<bool> Torque { get; set; }
         public string TorqueRequirements { get; set; }
-        public string OtherPkg { get; set; }
+        public string OtherStorage { get; set; }
         public string EECAll { get; set; }
         public string RPhrasesAll { get; set; }
         public string SPhrasesAll { get; set; }

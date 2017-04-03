@@ -16,7 +16,8 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>BulkID</th>
+                                <th>ReceivedAsCode</th>
+                                <th>ReceivedAsName</th>
                                 <th>BulkStatus</th>
                                 <th>Warehouse</th>
                                 <th>LotNumber</th>
@@ -43,12 +44,6 @@
                                 <th>ContainerType</th>
                                 <th>COAIncluded</th>
                                 <th>MSDSIncluded</th>
-                                <th>ReceivedAsCode</th>
-                                <th>ReceivedAsName</th>
-                                <th>flammable</th>
-                                <th>freezer</th>
-                                <th>refrigerator</th>
-                                <th>OtherStorage</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,7 +58,8 @@
                                              OnSuccess = "RefreshList"
                                          }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;", @title = "Delete" })
                                     </td>
-                                    <td>@item.BulkID</td>
+                                    <td>@item.ReceivedAsCode</td>
+                                    <td>@item.ReceivedAsName</td>
                                     <td>@item.BulkStatus</td>
                                     <td>@item.Warehouse</td>
                                     <td>@item.LotNumber</td>
@@ -90,12 +86,6 @@
                                     <td>@item.ContainerType</td>
                                     <td>@item.COAIncluded</td>
                                     <td>@item.MSDSIncluded</td>
-                                    <td>@item.ReceivedAsCode</td>
-                                    <td>@item.ReceivedAsName</td>
-                                    <td>@item.flammable</td>
-                                    <td>@item.freezer</td>
-                                    <td>@item.refrigerator</td>
-                                    <td>@item.OtherStorage</td>
                                 </tr>
                             }
                         </tbody>

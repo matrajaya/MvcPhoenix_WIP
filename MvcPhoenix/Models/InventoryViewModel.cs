@@ -119,16 +119,32 @@ namespace MvcPhoenix.Models
     public class BulkContainerViewModel
     {
         public decimal? pm_sumofcurrentweight { get; set; } // hold sum(CurrentWeight) for ProductMasterID
+        
         public string pm_OtherHandlingInstr { get; set; }
         public bool? pm_refrigerate { get; set; }
         public bool? pm_flammablestorageroom { get; set; }
-        public bool? pm_freezablelist { get; set; }
-        public bool? pm_refrigeratedlist { get; set; }
+        public bool? pm_freezerstorage { get; set; }
+        public string pm_otherstorage { get; set; }
+        public bool? pm_cleanroomgmp { get; set; }
+		public string pm_alertnotesreceiving { get; set; }
+        public decimal? pm_restrictedtoamount { get; set; }
+        public bool? pm_tempraturecontrolledstorage { get; set; }
+        public decimal? pm_shelflife { get; set; }
+        public bool? pm_packoutonreceipt { get; set; }
+
         public string pd_groundunnum { get; set; }
         public string pd_groundpackinggrp { get; set; }
-        public string pd_airunnum { get; set; }
-        public string pd_airpackinggrp { get; set; }
-		public string pm_alertnotesreceiving { get; set; }
+        public string pd_groundhazardclass { get; set; }
+        public string pd_groundhazardsubclass { get; set; }
+        public bool? pd_epabiocide{ get; set; }
+
+        public string ghs_signalword { get; set; }
+        public string ghs_symbol1 { get; set; }
+        public string ghs_symbol2 { get; set; }
+        public string ghs_symbol3 { get; set; }
+        public string ghs_symbol4 { get; set; }
+        public string ghs_symbol5 { get; set; }
+        
         public bool? isknownmaterial { get; set; }
         public string closelist { get; set; }
         public int? clientid { get; set; }
@@ -214,16 +230,12 @@ namespace MvcPhoenix.Models
 
         public List<SelectListItem> ListOfContainerTypeIDs { get; set; }
 
-        // ******* documentation info
         [Display(Name = "COA Included?")]
         public bool? coaincluded { get; set; }
 
         [Display(Name = "MSDS Included?")]
         public bool? msdsincluded { get; set; }
 
-        // ******* misc info
-
-        // Display only ?
         [Display(Name = "Current Weight")]
         public decimal? currentweight { get; set; }
 
@@ -256,19 +268,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Container Notes")]
         [StringLength(500, ErrorMessage = "Max 500)")]
         public string containernotes { get; set; }
-
-        [Display(Name = "Other Storage")]
-        public string otherstorage { get; set; }
-
-        // Some readonly properties from PM
-        public bool? flammable { get; set; }
-
-        public bool? freezer { get; set; }
-        public bool? refrigerated { get; set; }
-
-        [Display(Name = "PackOut on Recpt")]
-        public bool? packout { get; set; }
-
+        
         [Display(Name = "Waste Accum Start Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

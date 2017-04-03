@@ -112,7 +112,7 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfPackagePartNumbers { get; set; }
         public List<ProductNote> ListOfProductNotes { get; set; }
         public List<Cas> ListOfCasNumbers { get; set; }
-        public List<MvcPhoenix.Models.ShelfMasterViewModel> ListOfShelfItems { get; set; }
+        public List<ShelfMasterViewModel> ListOfShelfItems { get; set; }
         public List<SelectListItem> ListOfHarmonizedCodes { get; set; }
         public List<SelectListItem> ListOfEndUsesForCustoms { get; set; }
         public List<SelectListItem> ListOfEquivalents { get; set; }
@@ -120,6 +120,7 @@ namespace MvcPhoenix.Models
         public List<SelectListItem> ListOfDivisions { get; set; }
         public List<SelectListItem> ListOfSupplyIDs { get; set; }
         public List<SelectListItem> ListOfGloves { get; set; }
+        public List<SelectListItem> ListOfOtherStorage { get; set; }
 
         public string logofilename { get; set; }
 
@@ -342,10 +343,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "NoReorder")]
         public bool? noreorder { get; set; }
-
-        [Display(Name = "PackOutOnReceipt")]
-        public bool? packoutonreceipt { get; set; }
-
+        
         [Display(Name = "RestrictedToAmount")]
         public decimal? restrictedtoamount { get; set; }
 
@@ -592,8 +590,8 @@ namespace MvcPhoenix.Models
         [Display(Name = "TorqueRequirements")]
         public string torquerequirements { get; set; }
 
-        [Display(Name = "OtherPkg")]
-        public string otherpkg { get; set; }
+        [Display(Name = "OtherStorage")]
+        public string otherstorage { get; set; }
 
         [Display(Name = "EECAll")]
         public string eecall { get; set; }

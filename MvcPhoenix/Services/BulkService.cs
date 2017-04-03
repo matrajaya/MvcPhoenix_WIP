@@ -62,21 +62,25 @@ namespace MvcPhoenix.Services
                                msdsincluded = t.MSDSIncluded,
                                currentweight = t.CurrentWeight,
                                qcdate = t.QCDate,
-                               returnlocation = t.ReturnLocation,
                                noticedate = t.NoticeDate,
                                bulklabelnote = t.BulkLabelNote,
                                receivedascode = t.ReceivedAsCode,
                                receivedasname = t.ReceivedAsName,
                                containernotes = t.ContainerNotes,
-                               otherstorage = t.OtherStorage,
                                CreateUser = t.CreateUser,
                                CreateDate = t.CreateDate,
                                UpdateUser = t.UpdateUser,
                                UpdateDate = t.UpdateDate
                            }).FirstOrDefault();
 
-                var qPM = (from t in db.tblProductMaster where t.ProductMasterID == obj.productmasterid select t).FirstOrDefault();
-                var qCL = (from t in db.tblClient where t.ClientID == qPM.ClientID select t).FirstOrDefault();
+                var qPM = (from t in db.tblProductMaster
+                           where t.ProductMasterID == obj.productmasterid
+                           select t).FirstOrDefault();
+
+                var qCL = (from t in db.tblClient
+                           where t.ClientID == qPM.ClientID
+                           select t).FirstOrDefault();
+
                 obj.clientid = qPM.ClientID;
                 obj.clientname = qCL.ClientName;
                 obj.ListOfWareHouses = fnWarehouseIDs();
@@ -111,7 +115,10 @@ namespace MvcPhoenix.Services
                         pk = newrec.BulkID;
                     }
 
-                    var qry = (from t in db.tblBulk where t.BulkID == pk select t).FirstOrDefault();
+                    var qry = (from t in db.tblBulk
+                               where t.BulkID == pk
+                               select t).FirstOrDefault();
+
                     qry.Warehouse = incoming.warehouse;
                     qry.ReceiveDate = incoming.receivedate;
                     qry.Carrier = incoming.carrier;
@@ -133,12 +140,10 @@ namespace MvcPhoenix.Services
                     qry.ContainerNotes = incoming.containernotes;
                     qry.CurrentWeight = incoming.currentweight;
                     qry.QCDate = incoming.qcdate;
-                    qry.ReturnLocation = incoming.returnlocation;
                     qry.NoticeDate = incoming.noticedate;
                     qry.BulkLabelNote = incoming.bulklabelnote;
                     qry.ReceivedAsCode = incoming.receivedascode;
                     qry.ReceivedAsName = incoming.receivedasname;
-                    qry.OtherStorage = incoming.otherstorage;
                     qry.UpdateDate = DateTime.UtcNow;
                     qry.UpdateUser = HttpContext.Current.User.Identity.Name;
                     db.SaveChanges();

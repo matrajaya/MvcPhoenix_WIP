@@ -485,12 +485,16 @@ namespace MvcPhoenix.Controllers
             }
         }
 
+        /// <summary>
+        /// find original productdetailid, ignore equivalent products
+        //  use productdetailid and um(size) to check shelfmaster
+        //  if true: get shelfid ?: insert new record in shelfmaster using productdetailid and size = um
+        /// </summary>
+        /// <param name="productmasterid"></param>
+        /// <param name="um"></param>
+        /// <returns></returns>
         public int GetShelfId(int? productmasterid, string um)
         {
-            // find original productdetailid for productmasterid, ignore equivalent products
-            // use productdetailid and um(size) to check shelfmaster
-            // if true: get shelfid ?: insert new record in shelfmaster using productdetailid and size = um
-
             int getproductdetailid = GetProductDetailId(productmasterid);
 
             int xshelfid = 0;

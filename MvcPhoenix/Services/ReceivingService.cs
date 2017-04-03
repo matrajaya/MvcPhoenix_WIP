@@ -96,7 +96,7 @@ namespace MvcPhoenix.Services
         }
 
         #region Known Bulk Receiving Methods
-        
+
         public static BulkContainerViewModel fnNewBulkContainer(int productmasterid, int? productdetailid)
         {
             // id=productmasterid
@@ -106,49 +106,70 @@ namespace MvcPhoenix.Services
                 obj.isknownmaterial = true;
                 obj.pm_sumofcurrentweight = 0;
 
-                var x = (from t in db.tblBulk 
-                         where t.ProductMasterID == productmasterid 
+                var x = (from t in db.tblBulk
+                         where t.ProductMasterID == productmasterid
                          select t).ToList();
-                
+
                 foreach (var row in x)
                 {
                     obj.pm_sumofcurrentweight = obj.pm_sumofcurrentweight + row.CurrentWeight;
                 }
 
                 // R/O fields from PM
-                var dbPM = db.tblProductMaster.Find(productmasterid);
-                obj.MasterCode = dbPM.MasterCode;
-                obj.MasterName = dbPM.MasterName;
-                obj.flammable = dbPM.Flammable;
-                obj.freezer = dbPM.FREEZERSTORAGE;
-                obj.refrigerated = dbPM.Refrigerate;
-                obj.packout = dbPM.PackOutOnReceipt;
-                obj.pm_OtherHandlingInstr = dbPM.OtherHandlingInstr;
-                obj.pm_refrigerate = dbPM.Refrigerate;
-                obj.pm_flammablestorageroom = dbPM.FlammableStorageRoom;
-                obj.pm_freezablelist = dbPM.FreezableList;
-                obj.pm_refrigeratedlist = dbPM.RefrigeratedList;
+                var qPM = db.tblProductMaster.Find(productmasterid);
+                obj.MasterCode = qPM.MasterCode;
+                obj.MasterName = qPM.MasterName;
+
+                obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
+                obj.pm_OtherHandlingInstr = qPM.OtherHandlingInstr;
+                obj.pm_refrigerate = qPM.Refrigerate;
+                obj.pm_flammablestorageroom = qPM.FlammableStorageRoom;
+                obj.pm_freezerstorage = qPM.FREEZERSTORAGE;
+                obj.pm_otherstorage = qPM.OtherStorage;
+                obj.pm_cleanroomgmp = qPM.CleanRoomGMP;
+                obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
+                obj.pm_restrictedtoamount = qPM.RestrictedToAmount;
+                obj.pm_tempraturecontrolledstorage = qPM.TemperatureControlledStorage;
+                obj.pm_shelflife = qPM.ShlfLife;
+                obj.pm_packoutonreceipt = qPM.PackOutOnReceipt;
 
                 // R/O from related PD
-                var dbPD = (from t in db.tblProductDetail
-                            where t.ProductMasterID == obj.productmasterid
-                            select t).FirstOrDefault();
+                var qPD = (from t in db.tblProductDetail
+                           where t.ProductMasterID == obj.productmasterid
+                           select t).FirstOrDefault();
 
-                obj.pd_groundunnum = dbPD.GRNUNNUMBER;
-                obj.pd_groundpackinggrp = dbPD.GRNPKGRP;
-                obj.pd_airunnum = dbPD.AIRUNNUMBER;
-                obj.pd_airpackinggrp = dbPD.AIRPKGRP;
-				
-				if (!String.IsNullOrEmpty(dbPM.AlertNotesReceiving))
+                obj.pd_groundunnum = qPD.GRNUNNUMBER;
+                obj.pd_groundpackinggrp = qPD.GRNPKGRP;
+                obj.pd_groundhazardclass = qPD.GRNHAZCL;
+                obj.pd_groundhazardsubclass = qPD.GRNHAZSUBCL;
+                obj.pd_epabiocide = qPD.EPABiocide;
+
+                try
                 {
-                    obj.pm_alertnotesreceiving = dbPM.AlertNotesReceiving;
-                }
-                else
-                { 
-                    obj.pm_alertnotesreceiving = "No receiving alert for this product";
-                } 
+                    var qGHS = (from t in db.tblGHS
+                                join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
+                                where pd.ProductMasterID == obj.productmasterid
+                                select t).FirstOrDefault();
 
-                var dbClient = db.tblClient.Find(dbPM.ClientID);
+                    obj.ghs_signalword = qGHS.SignalWord;
+                    obj.ghs_symbol1 = qGHS.Symbol1;
+                    obj.ghs_symbol2 = qGHS.Symbol2;
+                    obj.ghs_symbol3 = qGHS.Symbol3;
+                    obj.ghs_symbol4 = qGHS.Symbol4;
+                    obj.ghs_symbol5 = qGHS.Symbol5;
+                }
+                catch (Exception)
+                {
+                    // if no ghs entry is found assign NONE to fields
+                    obj.ghs_signalword = "NONE";
+                    obj.ghs_symbol1 = "NONE";
+                    obj.ghs_symbol2 = "NONE";
+                    obj.ghs_symbol3 = "NONE";
+                    obj.ghs_symbol4 = "NONE";
+                    obj.ghs_symbol5 = "NONE";
+                }
+
+                var dbClient = db.tblClient.Find(qPM.ClientID);
                 obj.clientid = dbClient.ClientID;
                 obj.warehouse = dbClient.CMCLocation;
                 obj.clientname = dbClient.ClientName;
@@ -180,24 +201,24 @@ namespace MvcPhoenix.Services
                     int pk = incoming.bulkid;
                     if (incoming.bulkid == -1)
                     {
-                        var newrec = new EF.tblBulk 
-                        { 
-                            ProductMasterID = incoming.productmasterid 
+                        var newrec = new EF.tblBulk
+                        {
+                            ProductMasterID = incoming.productmasterid
                         };
 
                         newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = HttpContext.Current.User.Identity.Name;
-                        
+
                         db.tblBulk.Add(newrec);
                         db.SaveChanges();
 
                         pk = newrec.BulkID;
                     }
 
-                    var qry = (from t in db.tblBulk 
-                               where t.BulkID == pk 
+                    var qry = (from t in db.tblBulk
+                               where t.BulkID == pk
                                select t).FirstOrDefault();
-                    
+
                     qry.Warehouse = incoming.warehouse;
                     qry.ReceiveDate = incoming.receivedate;
                     qry.Carrier = incoming.carrier;
@@ -219,20 +240,18 @@ namespace MvcPhoenix.Services
                     qry.ContainerNotes = incoming.containernotes;
                     qry.CurrentWeight = incoming.receiveweight;
                     qry.QCDate = incoming.qcdate;
-                    qry.ReturnLocation = incoming.returnlocation;
                     qry.NoticeDate = incoming.noticedate;
                     qry.BulkLabelNote = incoming.bulklabelnote;
                     qry.ReceivedAsCode = incoming.receivedascode;
                     qry.ReceivedAsName = incoming.receivedasname;
-                    qry.OtherStorage = incoming.otherstorage;
                     qry.UpdateDate = DateTime.UtcNow;
                     qry.UpdateUser = HttpContext.Current.User.Identity.Name;
-                    
+
                     db.SaveChanges();
 
                     // Close items tagged to be closed for this productmasterid (would be better to pass a comma delimited list of PKs)
                     db.Database.ExecuteSqlCommand("UPDATE tblBulkOrderItem SET Status='CL' WHERE ToBeClosed=1 AND productmasterid=" + incoming.productmasterid);
-                    
+
                     retval = true;
                 }
             }
@@ -253,8 +272,8 @@ namespace MvcPhoenix.Services
                            where t.BulkID == id
                            select new BulkContainerViewModel
                                {
-                                   pm_sumofcurrentweight = (from x in db.tblBulk 
-                                                            where x.ProductMasterID == t.ProductMasterID 
+                                   pm_sumofcurrentweight = (from x in db.tblBulk
+                                                            where x.ProductMasterID == t.ProductMasterID
                                                             select x.CurrentWeight).Sum(),
                                    isknownmaterial = true,
                                    bulkid = t.BulkID,
@@ -279,21 +298,16 @@ namespace MvcPhoenix.Services
                                    msdsincluded = t.MSDSIncluded,
                                    currentweight = t.CurrentWeight,
                                    qcdate = t.QCDate,
-                                   returnlocation = t.ReturnLocation,
                                    noticedate = t.NoticeDate,
                                    bulklabelnote = t.BulkLabelNote,
                                    receivedascode = t.ReceivedAsCode,
                                    receivedasname = t.ReceivedAsName,
-                                   containernotes = t.ContainerNotes,
-                                   otherstorage = t.OtherStorage
+                                   containernotes = t.ContainerNotes
                                }).FirstOrDefault();
 
-                var qPM = (from t in db.tblProductMaster 
-                           where t.ProductMasterID == obj.productmasterid 
-                           select t).FirstOrDefault();
-
-                var qCL = (from t in db.tblClient 
-                           where t.ClientID == qPM.ClientID 
+                var qPM = db.tblProductMaster.Find(obj.productmasterid);
+                var qCL = (from t in db.tblClient
+                           where t.ClientID == qPM.ClientID
                            select t).FirstOrDefault();
 
                 obj.clientid = qPM.ClientID;
@@ -305,45 +319,63 @@ namespace MvcPhoenix.Services
                 obj.ListOfUMs = fnUnitMeasure(obj.clientid);
                 obj.ListOfCarriers = fnCarriers();
 
-                if (!String.IsNullOrEmpty(qPM.AlertNotesReceiving))
-                {
-                    obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
-                }
-                else
-                {
-                    obj.pm_alertnotesreceiving = "No receiving alert for this product";
-                }         
-     
+                // R/O fields from PM
                 obj.MasterCode = qPM.MasterCode;
                 obj.MasterName = qPM.MasterName;
-                obj.flammable = qPM.Flammable;
-                obj.freezer = qPM.FREEZERSTORAGE;
-                obj.refrigerated = qPM.Refrigerate;
-                obj.packout = qPM.PackOutOnReceipt;
-
-                // R/O fields from PM
-                var dbPM = db.tblProductMaster.Find(obj.productmasterid);
-                obj.pm_OtherHandlingInstr = dbPM.OtherHandlingInstr;
-                obj.pm_refrigerate = dbPM.Refrigerate;
-                obj.pm_flammablestorageroom = dbPM.FlammableStorageRoom;
-                obj.pm_freezablelist = dbPM.FreezableList;
-                obj.pm_refrigeratedlist = dbPM.RefrigeratedList;
+                obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
+                obj.pm_OtherHandlingInstr = qPM.OtherHandlingInstr;
+                obj.pm_refrigerate = qPM.Refrigerate;
+                obj.pm_flammablestorageroom = qPM.FlammableStorageRoom;
+                obj.pm_freezerstorage = qPM.FREEZERSTORAGE;
+                obj.pm_otherstorage = qPM.OtherStorage;
+                obj.pm_cleanroomgmp = qPM.CleanRoomGMP;
+                obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
+                obj.pm_restrictedtoamount = qPM.RestrictedToAmount;
+                obj.pm_tempraturecontrolledstorage = qPM.TemperatureControlledStorage;
+                obj.pm_shelflife = qPM.ShlfLife;
+                obj.pm_packoutonreceipt = qPM.PackOutOnReceipt;
 
                 // R/O from related PD
-                var dbPD = (from t in db.tblProductDetail 
-                            where t.ProductMasterID == obj.productmasterid
-                            select t).FirstOrDefault();
+                var qPD = (from t in db.tblProductDetail
+                           where t.ProductMasterID == obj.productmasterid
+                           select t).FirstOrDefault();
 
-                obj.pd_groundunnum = dbPD.GRNUNNUMBER;
-                obj.pd_groundpackinggrp = dbPD.GRNPKGRP;
-                obj.pd_airunnum = dbPD.AIRUNNUMBER;
-                obj.pd_airpackinggrp = dbPD.AIRPKGRP;
+                obj.pd_groundunnum = qPD.GRNUNNUMBER;
+                obj.pd_groundpackinggrp = qPD.GRNPKGRP;
+                obj.pd_groundhazardclass = qPD.GRNHAZCL;
+                obj.pd_groundhazardsubclass = qPD.GRNHAZSUBCL;
+                obj.pd_epabiocide = qPD.EPABiocide;
+
+                try
+                {
+                    var qGHS = (from t in db.tblGHS
+                                join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
+                                where pd.ProductMasterID == obj.productmasterid
+                                select t).FirstOrDefault();
+
+                    obj.ghs_signalword = qGHS.SignalWord;
+                    obj.ghs_symbol1 = qGHS.Symbol1;
+                    obj.ghs_symbol2 = qGHS.Symbol2;
+                    obj.ghs_symbol3 = qGHS.Symbol3;
+                    obj.ghs_symbol4 = qGHS.Symbol4;
+                    obj.ghs_symbol5 = qGHS.Symbol5;
+                }
+                catch (Exception)
+                {
+                    // if no ghs entry is found assign NONE to fields
+                    obj.ghs_signalword = "NONE";
+                    obj.ghs_symbol1 = "NONE";
+                    obj.ghs_symbol2 = "NONE";
+                    obj.ghs_symbol3 = "NONE";
+                    obj.ghs_symbol4 = "NONE";
+                    obj.ghs_symbol5 = "NONE";
+                }
 
                 return obj;
             }
         }
 
-        #endregion
+        #endregion Known Bulk Receiving Methods
 
         #region Unknown Bulk Receiving Methods
 
@@ -395,12 +427,7 @@ namespace MvcPhoenix.Services
                         ReturnLocation = incoming.returnlocation,
                         ContainerType = incoming.containertype,
                         BulkLabelNote = incoming.bulklabelnote,
-                        OtherStorage = incoming.otherstorage,
                         UM = incoming.um,
-                        flammable = incoming.flammable,
-                        refrigerator = incoming.refrigerated,
-                        freezer = incoming.freezer,
-                        PackOut = incoming.packout,
                         NoticeDate = DateTime.UtcNow,
                         LogNotes = "Unknown bulk stock received by " + HttpContext.Current.User.Identity.Name + " on " + DateTime.UtcNow.ToString("R"),
                         BulkStatus = "HOLD"
@@ -421,7 +448,7 @@ namespace MvcPhoenix.Services
             return retval;
         }
 
-        #endregion
+        #endregion Unknown Bulk Receiving Methods
 
         #region Prepack Receiving Methods
 
@@ -495,7 +522,7 @@ namespace MvcPhoenix.Services
                     newbulk.MSDSIncluded = vm.msdsincluded;
                     newbulk.BulkStatus = "PP";
                     newbulk.Bin = "PREPACK";
-                    
+
                     db.tblBulk.Add(newbulk);
                     db.SaveChanges();
 
@@ -511,16 +538,16 @@ namespace MvcPhoenix.Services
 
                         var newstock = new EF.tblStock();
 
-                        newstock.BulkID = newBulkID; 
-                        newstock.ShelfID = ThisShelfID; 
+                        newstock.BulkID = newBulkID;
+                        newstock.ShelfID = ThisShelfID;
                         newstock.CreateDate = DateTime.UtcNow;
                         newstock.CreateUser = HttpContext.Current.User.Identity.Name;
-                        newstock.Warehouse = vm.warehouse; 
+                        newstock.Warehouse = vm.warehouse;
                         newstock.QtyOnHand = ThisQty;
                         newstock.ShelfStatus = "RECD";
                         newstock.Bin = (from t in db.tblShelfMaster
                                         where t.ShelfID == newstock.ShelfID
-                                        select t.Bin).FirstOrDefault() ;
+                                        select t.Bin).FirstOrDefault();
 
                         db.tblStock.Add(newstock);
                         db.SaveChanges();
@@ -535,8 +562,8 @@ namespace MvcPhoenix.Services
 
             return retval;
         }
-        
-        #endregion
+
+        #endregion Prepack Receiving Methods
 
         #region Dropdownlist methods
 
@@ -720,6 +747,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        #endregion
+        #endregion Dropdownlist methods
     }
 }

@@ -55,13 +55,13 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <tr>
-                                <th colspan="4">Receiving Notes - Alert</th>
+                                <th colspan="6">Receiving Notes - Alert</th>
                             </tr>
                             <tr>
-                                <td colspan="4">
-                                    @if (@Model.pm_alertnotesreceiving == "No receiving alert for this product")
+                                <td colspan="6">
+                                    @if (@Model.pm_alertnotesreceiving == null || @Model.pm_alertnotesreceiving.Length <= 1)
                                     {
-                                        @Model.pm_alertnotesreceiving
+                                        <p>No receiving alert for this product</p>
                                     }
                                     else
                                     {
@@ -71,45 +71,77 @@
                             </tr>
                             <tr>
                                 <th>Master Code</th>
-                                <th>Name</th>
-                                <th>Current Weight on Hand</th>
-                                <th>Bulk Status</th>
+                                <th colspan="4" width="64%">Master Name</th>
+                                <th width="16%">Current Weight on Hand</th>
                             </tr>
                             <tr>
                                 <td>@Model.MasterCode</td>
-                                <td>@Model.MasterName</td>
+                                <td colspan="4">@Model.MasterName</td>
                                 <td>@Model.pm_sumofcurrentweight.ToString()</td>
-                                <td>@Html.DisplayFor(m => m.bulkstatus, new { @class = "form-control" })</td>
                             </tr>
+                        </table>
+                        <table class="table table-hover table-striped">
                             <tr>
                                 <th>Refrigerate</th>
-                                <th>Refrigerator List</th>
-                                <th>Flammable Room</th>
-                                <th>Freezable List</th>
+                                <th width="16%">Flammable Room</th>
+                                <th width="16%">Freezer Storage</th>
+                                <th width="16%">Temp. Controlled Storage</th>
+                                <th width="16%">Clean Room GMP</th>
+                                <th width="16%">Bulk Status</th>
                             </tr>
                             <tr>
                                 <td>@Model.pm_refrigerate</td>
-                                <td>@Model.pm_refrigeratedlist</td>
                                 <td>@Model.pm_flammablestorageroom</td>
-                                <td>@Model.pm_freezablelist</td>
+                                <td>@Model.pm_freezerstorage</td>
+                                <td>@Model.pm_tempraturecontrolledstorage</td>
+                                <td>@Model.pm_cleanroomgmp</td>
+                                <td>@Model.bulkstatus</td>
                             </tr>
                             <tr>
-                                <th colspan="4">Other Handling Instructions</th>
+                                <th colspan="3">Other Handling Instructions</th>
+                                <th>Other Storage</th>
+                                <th>Restricted to Amount</th>
+                                <th>Shelf Life</th>
                             </tr>
                             <tr>
-                                <td colspan="4">@Model.pm_OtherHandlingInstr &nbsp;</td>
+                                <td colspan="3">@Model.pm_OtherHandlingInstr &nbsp;</td>
+                                <td>@Model.pm_otherstorage</td>
+                                <td>@Model.pm_restrictedtoamount</td>
+                                <td>@Model.pm_shelflife</td>
                             </tr>
+                        </table>
+                        <table class="table table-hover table-striped">
                             <tr>
-                                <th>Ground UN Number</th>
-                                <th>Ground Packing Group</th>
-                                <th>Air UN Number</th>
-                                <th>Air Packing Group</th>
+                                <th>UN Number</th>
+                                <th width="16%">Packing Group</th>
+                                <th width="16%">Hazard Class</th>
+                                <th width="16%">Hazard Sub-Class</th>
+                                <th width="16%">EPA Biocide</th>
                             </tr>
                             <tr>
                                 <td>@Model.pd_groundunnum</td>
                                 <td>@Model.pd_groundpackinggrp</td>
-                                <td>@Model.pd_airunnum</td>
-                                <td>@Model.pd_airpackinggrp</td>
+                                <td>@Model.pd_groundhazardclass</td>
+                                <td>@Model.pd_groundhazardsubclass</td>
+                                <td>@Model.pd_epabiocide</td>
+                            </tr>
+                        </table>
+                        <table class="table table-hover table-striped">
+                            <tr>
+                                <th>Signal Word</th>
+                                <th width="16%">Symbol 1</th>
+                                <th width="16%">Symbol 2</th>
+                                <th width="16%">Symbol 3</th>
+                                <th width="16%">Symbol 4</th>
+                                <th width="16%">Symbol 5</th>
+                            </tr>
+                            <tr>
+                                <td>@Model.ghs_signalword</td>
+                                <td>@Model.ghs_symbol1</td>
+                                <td>@Model.ghs_symbol2</td>
+                                <td>@Model.ghs_symbol3</td>
+                                <td>@Model.ghs_symbol4</td>
+                                <td>@Model.ghs_symbol5</td>
                             </tr>
                         </table>
                     </div>
@@ -222,100 +254,50 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="col-md-6">
                                 <label>Container Note</label>
                                 @Html.TextAreaFor(m => m.containernotes, new { @class = "form-control", @rows = 5 })
                                 @Html.ValidationMessageFor(m => m.containernotes)
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label>Bulk Label Note</label>
                                 @Html.TextAreaFor(m => m.bulklabelnote, new { @class = "form-control", @rows = 5 })
                                 @Html.ValidationMessageFor(m => m.bulklabelnote)
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>Bin</label>
-                        @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.bin)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Container Color</label>
-                        @Html.TextBoxFor(m => m.containercolor, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.containercolor)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Return Location</label>
-                        @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.returnlocation)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Container Type</label>
-                        @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.containertype)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Other Storage</label>
-                        @Html.TextBoxFor(m => m.otherstorage, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.otherstorage)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Unit Measure</label>
-                        @if (Model.isknownmaterial == true)
-                        {
-                            @Html.DropDownListFor(m => m.um, Model.ListOfUMs, new { @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
-                        }
-                        @Html.ValidationMessageFor(m => m.um)
-                    </div>
                     <div class="col-md-6">
-                        @if (Model.isknownmaterial == false)
-                        {
-                            <ul class="list-unstyled list-2-col">
-                                <li>
-                                    @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox checkbox-inline" })
-                                    <label class="control-label">Flammable</label>
-                                </li>
-                                <li>
-                                    @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox checkbox-inline" })
-                                    <label class="control-label">Freezer</label>
-                                </li>
-                                <li>
-                                    @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox checkbox-inline" })
-                                    <label class="control-label">Refrigerate</label>
-                                </li>
-                                <li>
-                                    @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox checkbox-inline" })
-                                    <label class="control-label">Packout On Receipt</label>
-                                </li>
-                            </ul>
-                        }
-                        else
-                        {
-                            <ul class="list-unstyled list-2-col">
-                                <li>
-                                    @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                    <label class="control-label">Flammable</label>
-                                </li>
-                                <li>
-                                    @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                    <label class="control-label">Freezer</label>
-                                </li>
-                                <li>
-                                    @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                    <label class="control-label">Refrigerate</label>
-                                </li>
-                                <li>
-                                    @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                    <label class="control-label">Packout On Receipt</label>
-                                </li>
-                            </ul>
-                        }
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Bin</label>
+                                @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.bin)
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Container Color</label>
+                                @Html.TextBoxFor(m => m.containercolor, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.containercolor)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Container Type</label>
+                                @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.containertype)
+                            </div>
+                            <div class="col-md-6">
+                                <label>Unit Measure</label>
+                                @if (Model.isknownmaterial == true)
+                                {
+                                    @Html.DropDownListFor(m => m.um, Model.ListOfUMs, new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
+                                }
+                                @Html.ValidationMessageFor(m => m.um)
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
