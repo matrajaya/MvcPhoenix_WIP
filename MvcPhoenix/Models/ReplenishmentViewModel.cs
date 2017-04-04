@@ -73,6 +73,8 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Item Notes")]
         public string itemnotes { get; set; }
+
+        public bool? PrepackedBulk { get; set; }
     }
 
     public class BulkOrderEmailViewModel

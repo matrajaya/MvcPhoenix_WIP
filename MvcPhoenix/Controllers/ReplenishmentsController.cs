@@ -77,7 +77,7 @@ namespace MvcPhoenix.Controllers
 
         #endregion OrderEdit ---------------------------------------------------------
 
-        #region Email -----------------------------------------------------------
+        #region Email
 
         public ActionResult Email(BulkOrder obj)
         {
@@ -91,18 +91,10 @@ namespace MvcPhoenix.Controllers
             ReplenishmentsService.fnSendEmail(obj);
             return RedirectToAction("Index");
         }
+        
+        #endregion Email
 
-        //[HttpPost]
-        //public ActionResult SendEmail(BulkOrderEmailViewModel obj)
-        //{
-        //    ReplenishmentsService.fnSendEmail(obj);
-        //    //return RedirectToAction("Edit", new { id = obj.bulkorderid });
-        //    return View("Index");
-        //}
-
-        #endregion Email -----------------------------------------------------------
-
-        #region Items --------------------------------------------------------------------
+        #region Replenishment Order Items
 
         [HttpGet]
         public ActionResult CreateItem(int id)
@@ -143,9 +135,9 @@ namespace MvcPhoenix.Controllers
             return Content("Deleted");
         }
 
-        #endregion Items --------------------------------------------------------------------
+        #endregion
 
-        #region SuggestedBulkOrder ------------------------------------------------
+        #region SuggestedBulkOrder
 
         [HttpGet]
         public ActionResult Create()

@@ -55,7 +55,6 @@
         @Html.HiddenFor(m => m.productmasterid)
         @Html.HiddenFor(m => m.clientid)
         @Html.HiddenFor(m => m.productdetailid)
-        @Html.HiddenFor(m => m.prepacked)
 
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -235,11 +234,14 @@
                             <li>@Html.CheckBox("freezablelist", Model.freezablelist != null && (bool)Model.freezablelist) Freezable List</li>
                             <li>@Html.CheckBox("flammableground", Model.flammableground != null && (bool)Model.flammableground) Flammable Ground</li>
                             <li>@Html.CheckBox("flammablestorageroom", Model.flammablestorageroom != null && (bool)Model.flammablestorageroom) Flammable Storage</li>
+                            <li>@Html.CheckBox("prepacked", Model.prepacked != null && (bool)Model.prepacked) Prepacked Bulk</li>
                             <li>
                                 <b>Req By:</b>
-                                <ul>
-                                    <li>Client @Html.CheckBox("clientreq", Model.clientreq != null && (bool)Model.clientreq)</li>
-                                    <li>CMC @Html.CheckBox("cmcreq", Model.cmcreq != null && (bool)Model.cmcreq)</li>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        Client @Html.CheckBox("clientreq", Model.clientreq != null && (bool)Model.clientreq) &nbsp;
+                                        CMC @Html.CheckBox("cmcreq", Model.cmcreq != null && (bool)Model.cmcreq)
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
