@@ -65,7 +65,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblUser" Width="1.5" PointX="28.75" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblWasteCode" Width="1.5" PointX="22.75" PointY="28.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.vwBulkLevel" Width="1.5" PointX="28.75" PointY="23.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.vwProductsInfo" Width="1.5" PointX="10.75" PointY="29.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderImport" Width="1.5" PointX="17.375" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderSPSBilling" Width="1.5" PointX="3.375" PointY="30.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderItem" Width="1.5" PointX="19.375" PointY="29.75" />
