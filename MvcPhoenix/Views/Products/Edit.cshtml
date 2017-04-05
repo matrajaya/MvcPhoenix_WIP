@@ -42,7 +42,7 @@
                 <div class="pull-right">
                     @if (@Model.productdetailid != -1)
                     {
-                        <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Print View</a>
+                        <a href="@Url.Action("PrintProfile", "Products", new { id = @Model.productdetailid })" target="_blank" class="btn btn-xs btn-success"><i class="fa fa-file-pdf-o"></i> Print Profile</a>
                     }
                 </div>
             </div>
