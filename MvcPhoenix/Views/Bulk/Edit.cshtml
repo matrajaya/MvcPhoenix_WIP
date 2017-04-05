@@ -67,8 +67,9 @@
                         @Html.ValidationMessageFor(m => m.receivedate)
                     </div>
                     <div class="form-group col-md-2">
-                        <label>Bin</label>
-                        @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
+                        <label>Carrier</label>
+                        @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.carrier)
                     </div>
                     <div class="form-group col-md-2">
                         <label>Warehouse</label>
@@ -83,9 +84,8 @@
                         @Html.ValidationMessageFor(m => m.lotnumber)
                     </div>
                     <div class="form-group col-md-3">
-                        <label>Carrier</label>
-                        @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.carrier)
+                        <label>Bin</label>
+                        @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Current Weight</label>
@@ -151,69 +151,50 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="col-md-6">
                                 <label>Container Note</label>
                                 @Html.TextAreaFor(m => m.containernotes, new { @class = "form-control", @rows = 5 })
                                 @Html.ValidationMessageFor(m => m.containernotes)
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="col-md-6">
                                 <label>Bulk Label Note</label>
                                 @Html.TextAreaFor(m => m.bulklabelnote, new { @class = "form-control", @rows = 5 })
                                 @Html.ValidationMessageFor(m => m.bulklabelnote)
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>Bin</label>
-                        @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.bin)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Container Color</label>
-                        @Html.TextBoxFor(m => m.containercolor, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.containercolor)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Return Location</label>
-                        @Html.TextBoxFor(m => m.returnlocation, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.returnlocation)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Container Type</label>
-                        @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.containertype)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Other Storage</label>
-                        @Html.TextBoxFor(m => m.otherstorage, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.otherstorage)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Unit Measure</label>
-                        @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.um)
-                    </div>
                     <div class="col-md-6">
-                        <ul class="list-unstyled list-2-col">
-                            <li>
-                                @Html.CheckBox("flammable", Model.flammable != null && (bool)Model.flammable, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                <label class="control-label">Flammable</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("freezer", Model.freezer != null && (bool)Model.freezer, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                <label class="control-label">Freezer</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("refrigerated", Model.refrigerated != null && (bool)Model.refrigerated, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                <label class="control-label">Refrigerate</label>
-                            </li>
-                            <li>
-                                @Html.CheckBox("packout", Model.packout != null && (bool)Model.packout, new { @class = "checkbox checkbox-inline", disabled = "disabled" })
-                                <label class="control-label">Packout On Receipt</label>
-                            </li>
-                        </ul>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Bin</label>
+                                @Html.TextBoxFor(m => m.bin, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.bin)
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Container Color</label>
+                                @Html.TextBoxFor(m => m.containercolor, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.containercolor)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Container Type</label>
+                                @Html.DropDownListFor(m => m.containertype, Model.ListOfContainerTypeIDs, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.containertype)
+                            </div>
+                            <div class="col-md-6">
+                                <label>Unit Measure</label>
+                                @if (Model.isknownmaterial == true)
+                                {
+                                    @Html.DropDownListFor(m => m.um, Model.ListOfUMs, new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.um, new { @class = "form-control" })
+                                }
+                                @Html.ValidationMessageFor(m => m.um)
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

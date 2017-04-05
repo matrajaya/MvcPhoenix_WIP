@@ -87,6 +87,5 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblUN> tblUN { get; set; }
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
-        public virtual DbSet<vwBulkLevel> vwBulkLevel { get; set; }
     }
 }

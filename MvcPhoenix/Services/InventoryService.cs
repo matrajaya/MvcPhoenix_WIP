@@ -140,12 +140,14 @@ namespace MvcPhoenix.Services
         {
             using (var db = new EF.CMCSQL03Entities())
             {
-                var mylist = (from t in db.vwBulkLevel
-                              where t.ProductDetailID == id
+                var mylist = (from pd in db.tblProductDetail
+                              join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                              join b in db.tblBulk on pm.ProductMasterID equals b.ProductMasterID
+                              where pd.ProductDetailID == id
                               select new
                               {
-                                  stat = t.BulkStatus,
-                                  tot = (t.Qty == null ? 1 : t.Qty) * (t.CurrentWeight == null ? 0 : t.CurrentWeight)
+                                  stat = b.BulkStatus,
+                                  tot = (b.Qty == null ? 1 : b.Qty) * (b.CurrentWeight == null ? 0 : b.CurrentWeight)
                               });
 
                 decimal retval;
@@ -153,19 +155,28 @@ namespace MvcPhoenix.Services
                 switch (status)
                 {
                     case "TOTAL":
-                        var q1 = (from x in mylist select x.tot).Sum();
+                        var q1 = (from x in mylist 
+                                  select x.tot).Sum();
+
                         retval = Convert.ToDecimal(q1);
                         break;
 
                     case "OTHER":
-                        // todo this needs to be not in('AVAIL','etc')
-                        var ListOfStatus = (from t in db.tblBulk select t.BulkStatus).Distinct().ToList();
-                        var q2 = (from x in mylist where !ListOfStatus.Contains(x.stat) select x.tot).Sum();
+                        var ListOfStatus = (from t in db.tblBulk 
+                                            select t.BulkStatus).Distinct().ToList();
+
+                        var q2 = (from x in mylist 
+                                  where !(x.stat == "AVAIL" || x.stat == "TEST" || x.stat == "HOLD" || x.stat == "QC" || x.stat == "RETURN" || x.stat == "RECD")
+                                  select x.tot).Sum();
+
                         retval = Convert.ToDecimal(q2);
                         break;
 
                     default:
-                        var q3 = (from x in mylist where x.stat == status select x.tot).Sum();
+                        var q3 = (from x in mylist 
+                                  where x.stat == status 
+                                  select x.tot).Sum();
+
                         retval = Convert.ToDecimal(q3);
                         break;
                 }

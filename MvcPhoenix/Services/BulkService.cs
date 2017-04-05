@@ -87,7 +87,7 @@ namespace MvcPhoenix.Services
                 obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
                 obj.ListOfContainerTypeIDs = ReceivingService.fnContainerTypeIDs();
                 obj.ListOfCarriers = ReceivingService.fnCarriers();
-
+                obj.ListOfUMs = ReceivingService.fnUnitMeasure(obj.clientid);
                 obj.MasterCode = qPM.MasterCode;
                 obj.MasterName = qPM.MasterName;
 

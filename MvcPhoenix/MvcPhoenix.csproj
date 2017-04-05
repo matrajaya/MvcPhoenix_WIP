@@ -489,9 +489,6 @@
     <Compile Include="EF\tblWasteCode.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\vwBulkLevel.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
