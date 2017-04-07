@@ -14,9 +14,9 @@ namespace MvcPhoenix.Models
     {
         public static void EmailSmtpSend(string from, string to, string subject, string body)
         {
-            const string hostName = "";
-            const string userName = "";
-            const string password = "";
+            const string hostName = "secure.emailsrvr.com";
+            const string userName = "mailman@chemicalmarketing.com";
+            const string password = "SamPles!23";
             const int port = 587;
 
             var msg = new System.Net.Mail.MailMessage();
@@ -80,7 +80,7 @@ namespace MvcPhoenix.Models
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 mylist = (from t in db.tblCountry
                           orderby t.Country
-                          select new SelectListItem { Value = t.Country, Text = t.Country }).ToList();
+                          select new SelectListItem { Value = t.CountryID.ToString(), Text = t.Country }).ToList();
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Country" });
                 return mylist;
             }
@@ -217,8 +217,8 @@ namespace MvcPhoenix.Models
                 List<SelectListItem> mylist = new List<SelectListItem>();
                 mylist = (from t in db.tblDivision
                           where t.ClientID == id
-                          orderby t.DivisionName
-                          select new SelectListItem { Value = t.DivisionID.ToString(), Text = t.DivisionName }).ToList();
+                          orderby t.Division
+                          select new SelectListItem { Value = t.DivisionID.ToString(), Text = t.Division }).ToList();
                 mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Division" });
                 return mylist;
             }
