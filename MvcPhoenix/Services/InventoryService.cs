@@ -162,9 +162,6 @@ namespace MvcPhoenix.Services
                         break;
 
                     case "OTHER":
-                        var ListOfStatus = (from t in db.tblBulk 
-                                            select t.BulkStatus).Distinct().ToList();
-
                         var q2 = (from x in mylist 
                                   where !(x.stat == "AVAIL" || x.stat == "TEST" || x.stat == "HOLD" || x.stat == "QC" || x.stat == "RETURN" || x.stat == "RECD")
                                   select x.tot).Sum();

@@ -132,6 +132,7 @@ namespace MvcPhoenix.Services
                 obj.pm_tempraturecontrolledstorage = qPM.TemperatureControlledStorage;
                 obj.pm_shelflife = qPM.ShlfLife;
                 obj.pm_packoutonreceipt = qPM.PackOutOnReceipt;
+                obj.pm_ceaseshipdifferential = qPM.CeaseShipDifferential;
 
                 // R/O from related PD
                 var qPD = (from t in db.tblProductDetail

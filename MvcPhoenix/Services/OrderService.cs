@@ -532,7 +532,7 @@ namespace MvcPhoenix.Services
                     if (dbSM != null)
                     {
                         q.Size = dbSM.Size;
-                        q.Weight = dbSM.UnitWeight;
+                        q.Weight = dbSM.UnitWeight*q.Qty;
                     }
                 }
 

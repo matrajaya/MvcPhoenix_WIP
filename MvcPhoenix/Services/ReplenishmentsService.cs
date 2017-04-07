@@ -17,8 +17,12 @@ namespace MvcPhoenix.Services
             {
                 var mylist = (from t in db.tblBulkOrder
                               join t2 in db.tblClient on t.ClientID equals t2.ClientID
-                              let itemscount = (from items in db.tblBulkOrderItem where (items.BulkOrderID == t.BulkOrderID) select items).Count()
-                              let opencount = (from items in db.tblBulkOrderItem where (items.BulkOrderID == t.BulkOrderID) && (items.Status == "OP") select items).Count()
+                              let itemscount = (from items in db.tblBulkOrderItem 
+                                                where (items.BulkOrderID == t.BulkOrderID) 
+                                                select items).Count()
+                              let opencount = (from items in db.tblBulkOrderItem 
+                                               where (items.BulkOrderID == t.BulkOrderID) && (items.Status == "OP") 
+                                               select items).Count()
                               orderby t.BulkOrderID descending
                               select new MvcPhoenix.Models.BulkOrder
                               {

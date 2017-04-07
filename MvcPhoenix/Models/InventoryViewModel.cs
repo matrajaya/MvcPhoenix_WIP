@@ -131,6 +131,7 @@ namespace MvcPhoenix.Models
         public bool? pm_tempraturecontrolledstorage { get; set; }
         public decimal? pm_shelflife { get; set; }
         public bool? pm_packoutonreceipt { get; set; }
+        public int? pm_ceaseshipdifferential { get; set; }
 
         public string pd_groundunnum { get; set; }
         public string pd_groundpackinggrp { get; set; }

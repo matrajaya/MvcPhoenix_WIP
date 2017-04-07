@@ -65,7 +65,7 @@
                                     }
                                     else
                                     {
-                                        <marquee><h3>@Model.pm_alertnotesreceiving</h3></marquee>
+                                       <marquee><h4>@Model.pm_alertnotesreceiving</h4></marquee>
                                     }
                                 </td>
                             </tr>
@@ -321,3 +321,11 @@
         </div>
     }
 </div>
+
+<script>
+    window.onload = function () {
+        if ('@Model.pm_alertnotesreceiving'.length > 1) {
+            $.alert('@Model.pm_alertnotesreceiving', "Receiving Notes Alert")
+        }
+    };
+</script>
