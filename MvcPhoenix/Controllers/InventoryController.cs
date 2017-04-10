@@ -127,6 +127,7 @@ namespace MvcPhoenix.Controllers
                                        }).ToList();
 
             vm.ShelfMasterCount = vm.ListOfShelfMasterIDs.Count();
+            vm.BulkContainer.pm_ceaseshipdifferential = pm.CeaseShipDifferential;
 
             return View("~/Views/Inventory/PrePackStock.cshtml", vm);
         }

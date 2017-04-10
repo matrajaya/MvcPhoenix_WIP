@@ -90,6 +90,7 @@ namespace MvcPhoenix.Services
                 obj.ListOfUMs = ReceivingService.fnUnitMeasure(obj.clientid);
                 obj.MasterCode = qPM.MasterCode;
                 obj.MasterName = qPM.MasterName;
+                obj.pm_ceaseshipdifferential = qPM.CeaseShipDifferential;
 
                 return obj;
             }

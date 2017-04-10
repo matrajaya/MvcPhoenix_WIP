@@ -460,6 +460,7 @@ namespace MvcPhoenix.Services
             {
                 var dbClient = db.tblClient.Find(clientid);
                 var dbProductDetail = db.tblProductDetail.Find(productdetailid);
+                var qPM = db.tblProductMaster.Find(dbProductDetail.ProductMasterID);
 
                 obj.productmasterid = dbProductDetail.ProductMasterID;
                 obj.isknownmaterial = true;
@@ -482,6 +483,7 @@ namespace MvcPhoenix.Services
                 obj.coaincluded = null;
                 obj.productcode = dbProductDetail.ProductCode;
                 obj.productname = dbProductDetail.ProductName;
+                obj.pm_ceaseshipdifferential = qPM.CeaseShipDifferential;
 
                 obj.ListOfShelfMasters = (from t in db.tblShelfMaster
                                           orderby t.ShelfID

@@ -224,13 +224,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <label>Date Of Manufacture</label>
+                        <label>Manufacture Date</label>
                         @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.mfgdate)
                     </div>
                     <div class="col-md-3">
                         <label>Expiration Date</label>
-                        @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = " date-picker form-control" })
+                        @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @onchange = "ChangeCeaseShipDate(this.value);" })
                         @Html.ValidationMessageFor(m => m.expirationdate)
                     </div>
                     <div class="col-md-3">
@@ -307,7 +307,7 @@
                 <input id="btnSave" type="submit" value="Save Changes" class="btn btn-success btn-block" />
             </div>
             <div class="form-group col-md-6">
-                <input type="button" class="btn btn-danger btn-block" onclick="location.href = 'javascript:history.back()';" value="Cancel Order" />
+                <input type="button" class="btn btn-danger btn-block" onclick="location.href = 'javascript:history.back()';" value="Cancel" />
             </div>
         </div>
         <div class="row">
@@ -322,10 +322,23 @@
     }
 </div>
 
-<script>
-    window.onload = function () {
+<script type="text/javascript">
+    $(document).ready(function() {
         if ('@Model.pm_alertnotesreceiving'.length > 1) {
             $.alert('@Model.pm_alertnotesreceiving', "Receiving Notes Alert")
         }
-    };
+    });
+
+    function ChangeCeaseShipDate(date) {
+        var ceaseshipdiff = '@Model.pm_ceaseshipdifferential';
+        var expirationdate = date;
+        var ceasedate = addDays(expirationdate, ceaseshipdiff);
+        $('#ceaseshipdate').val($.datepicker.formatDate('dd-M-yy', ceasedate));
+    }
+
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(result.getDate() - days);
+        return result;
+    }
 </script>

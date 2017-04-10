@@ -36,6 +36,7 @@ namespace MvcPhoenix.Models
         public List<ItemForPrePackViewModel> ListOfShelfMasters { get; set; }
         public int ItemsCount { get; set; }
         public bool? isknownmaterial { get; set; }
+        public int? pm_ceaseshipdifferential { get; set; }
 
         public int? clientid { get; set; }
         public string clientname { get; set; }
@@ -82,7 +83,7 @@ namespace MvcPhoenix.Models
         [Display(Name = "Expiration Date")]
         public DateTime? expirationdate { get; set; }
 
-        //shelf life (moved to tblProductMaster
+        //shelf life (moved to tblProductMaster)
 
         [Display(Name = "Cease Ship Date")]
         public DateTime? ceaseshipdate { get; set; }

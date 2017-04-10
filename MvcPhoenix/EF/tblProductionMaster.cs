@@ -16,6 +16,7 @@ namespace MvcPhoenix.EF
     {
         public int ID { get; set; }
         public Nullable<int> BulkID { get; set; }
+        public Nullable<int> ClientID { get; set; }
         public Nullable<int> LegacyID { get; set; }
         public string CMCOrderNumber { get; set; }
         public string Company { get; set; }
@@ -52,7 +53,6 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> CeaseShipDate { get; set; }
         public Nullable<System.DateTime> ProdmastCreateDate { get; set; }
         public string BulkContainerNote { get; set; }
-        public Nullable<int> ClientID { get; set; }
         public byte[] TS { get; set; }
     }
 }

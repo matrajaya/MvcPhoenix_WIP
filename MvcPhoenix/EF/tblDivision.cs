@@ -23,9 +23,6 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> WasteRate_OffSpec { get; set; }
         public Nullable<decimal> WasteRate_Empty { get; set; }
         public Nullable<bool> Inactive { get; set; }
-        public Nullable<int> LegacyID { get; set; }
-        public string Location_MDB { get; set; }
-        public string Company_MDB { get; set; }
         public string ContactLabelName { get; set; }
         public string ContactLabelPhone { get; set; }
         public string ContactMSDSName { get; set; }
@@ -52,5 +49,8 @@ namespace MvcPhoenix.EF
         public string CompanyLogo2 { get; set; }
         public byte[] LogoFile { get; set; }
         public Nullable<bool> IncludeExpDtOnLabel { get; set; }
+        public Nullable<int> LegacyID { get; set; }
+        public string Location_MDB { get; set; }
+        public string Company_MDB { get; set; }
     }
 }

@@ -178,7 +178,7 @@ namespace MvcPhoenix.Services
                         break;
                 }
 
-                return System.Math.Round(retval, 0);
+                return Math.Round(retval, 0);
             }
         }
 
@@ -187,7 +187,7 @@ namespace MvcPhoenix.Services
             decimal s = StatusLevelShelf(id, status);
             decimal b = StatusLevelBulk(id, status);
 
-            return System.Math.Round(s + b, 1);
+            return Math.Round(s + b, 1);
         }
 
         public static StockViewModel fnFillStockViewModel(int id)

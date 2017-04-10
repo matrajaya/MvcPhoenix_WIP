@@ -38,62 +38,59 @@
             </div>
             <div id="prodinfopan" class="panel-body collapse in">
                 <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Date Received</label>
                         @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.receivedate)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Carrier</label>
                         @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Warehouse</label>
                         @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Lot Number</label>
+                        @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Manufacture Date</label>
+                        @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Docs Included</label>
+                        <ul class="list-unstyled">
+                            <li>
+                                COA @Html.CheckBox("coaincluded", Model.coaincluded != null && (bool)Model.coaincluded, new { @title = "COA Included" }) &nbsp;
+                                MSDS @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @title = "MSDS Included" })
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Received By</label>
+                        @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.receivedby)
                     </div>
                     <div class="form-group col-md-3">
                         <label>Entered By</label>
                         @Html.TextBoxFor(m => m.enteredby, new { @class = "form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.enteredby)
                     </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-3">
-                        <label>Lot Number</label>
-                        @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Received By</label>
-                        @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control"})
-                        @Html.ValidationMessageFor(m => m.receivedby)
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Date Of Manufacture</label>
-                        @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Expiration Date</label>
-                        @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @onchange = "ChangeCeaseShipDate(this.value);" })
                     </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Cease Ship Date</label>
                         @Html.TextBoxFor(m => m.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>QC Date</label>
                         @Html.TextBoxFor(m => m.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>COA Included?</label>
-                        @Html.CheckBox("coaincluded", Model.coaincluded != null && (bool)Model.coaincluded, new { @class = "checkbox" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>MSDS Included?</label>
-                        @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -123,7 +120,7 @@
                                     <td><input type="text" readonly="readonly" name='@fnRowKey(@i+1)' value="@Model.ListOfShelfMasters[i].shelfid" style="width:35px;text-align:center;border:none;"></td>
                                     <td>@Model.ListOfShelfMasters[i].bin</td>
                                     <td>@Model.ListOfShelfMasters[i].size</td>
-                                    <td style="text-align:center;"><input type="text" required name='@fnRowQty(@i+1)' style="width:55px;text-align:center;" value="0"/></td>
+                                    <td style="text-align:center;"><input type="text" required name='@fnRowQty(@i+1)' style="width:55px;text-align:center;" value="0" /></td>
                                 </tr>
                             }
                         </tbody>
@@ -162,7 +159,20 @@
     }
 
     function PostFailure() {
-        $.alert("An error occured while trying to save. Please re-check your entry. IT has been alerted.", "Error")
+        $.alert("An error occured while trying to save. Please re-check your entry.", "Error")
+    }
+
+    function ChangeCeaseShipDate(date) {
+        var ceaseshipdiff = '@Model.pm_ceaseshipdifferential';
+        var expirationdate = date;
+        var ceasedate = addDays(expirationdate, ceaseshipdiff);
+        $('#ceaseshipdate').val($.datepicker.formatDate('dd-M-yy', ceasedate));
+    }
+
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(result.getDate() - days);
+        return result;
     }
 </script>
 

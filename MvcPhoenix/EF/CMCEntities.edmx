@@ -331,11 +331,14 @@
           <Property Name="NonHazDHServLvl2" Type="int" />
           <Property Name="NonHazDHServLvl3" Type="int" />
           <Property Name="NonHazDHServLvl4" Type="int" />
-          <Property Name="MDB_CMCBE" Type="nvarchar" MaxLength="255" />
           <Property Name="LogoFile" Type="varbinary(max)" />
           <Property Name="CSRNumber" Type="int" />
           <Property Name="CSRName" Type="nvarchar" MaxLength="50" />
           <Property Name="IC" Type="nvarchar" MaxLength="50" />
+          <Property Name="MDB_CMCBE" Type="nvarchar" MaxLength="255" />
+          <Property Name="MDB_INV" Type="nvarchar" MaxLength="255" />
+          <Property Name="MDB_CS" Type="nvarchar" MaxLength="255" />
+          <Property Name="MDB_PACKPROCBE" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="tblClientContact">
           <Key>
@@ -500,9 +503,6 @@
           <Property Name="WasteRate_OffSpec" Type="numeric" Precision="10" Scale="2" />
           <Property Name="WasteRate_Empty" Type="numeric" Precision="10" Scale="2" />
           <Property Name="Inactive" Type="bit" />
-          <Property Name="LegacyID" Type="int" />
-          <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
-          <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
           <Property Name="ContactLabelName" Type="nvarchar" MaxLength="50" />
           <Property Name="ContactLabelPhone" Type="nvarchar" MaxLength="30" />
           <Property Name="ContactMSDSName" Type="nvarchar" MaxLength="50" />
@@ -529,6 +529,9 @@
           <Property Name="CompanyLogo2" Type="nvarchar" MaxLength="50" />
           <Property Name="LogoFile" Type="varbinary(max)" />
           <Property Name="IncludeExpDtOnLabel" Type="bit" />
+          <Property Name="LegacyID" Type="int" />
+          <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
+          <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
         </EntityType>
         <EntityType Name="tblEndUse">
           <Key>
@@ -818,6 +821,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GUID" Type="nvarchar" MaxLength="255" />
           <Property Name="ImportStatus" Type="nvarchar" MaxLength="10" />
+          <Property Name="ImportError" Type="nvarchar" MaxLength="1000" />
           <Property Name="CMCLocation" Type="nvarchar" MaxLength="2" />
           <Property Name="OrderID" Type="int" />
           <Property Name="ClientID" Type="int" />
@@ -980,7 +984,6 @@
           <Property Name="FrtSurcharge_MDB" Type="numeric" Precision="10" Scale="2" />
           <Property Name="DH_MDB" Type="numeric" Precision="10" Scale="2" />
           <Property Name="Other_MDB" Type="numeric" Precision="10" Scale="2" />
-          <Property Name="ImportError" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="tblOrderItem">
           <Key>
@@ -996,7 +999,7 @@
           <Property Name="ImportItemID" Type="nvarchar" MaxLength="50" />
           <Property Name="ProductCode" Type="nvarchar(max)" />
           <Property Name="ProductName" Type="nvarchar(max)" />
-          <Property Name="Mnemonic" Type="nvarchar(max)" />
+          <Property Name="Mnemonic" Type="nvarchar" MaxLength="50" />
           <Property Name="LotNumber" Type="nvarchar" MaxLength="25" />
           <Property Name="Qty" Type="int" />
           <Property Name="Size" Type="nvarchar" MaxLength="8" />
@@ -1422,7 +1425,7 @@
           <Property Name="SpecialInstructions" Type="nvarchar" MaxLength="255" />
           <Property Name="ShelfStockLocation" Type="nvarchar" MaxLength="20" />
           <Property Name="PackagePartNumber" Type="nvarchar" MaxLength="8" />
-          <Property Name="ts" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="TS" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="tblProductionMaster">
           <Key>
@@ -1430,6 +1433,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BulkID" Type="int" />
+          <Property Name="ClientID" Type="int" />
           <Property Name="LegacyID" Type="int" />
           <Property Name="CMCOrderNumber" Type="nvarchar" MaxLength="100" />
           <Property Name="Company" Type="nvarchar" MaxLength="50" />
@@ -1466,7 +1470,6 @@
           <Property Name="CeaseShipDate" Type="datetime" />
           <Property Name="ProdmastCreateDate" Type="datetime" />
           <Property Name="BulkContainerNote" Type="nvarchar" MaxLength="20" />
-          <Property Name="ClientID" Type="int" />
           <Property Name="TS" Type="timestamp" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="tblProductionStage">
@@ -1895,8 +1898,6 @@
           <Property Name="Division_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="ProdCode_MDB" Type="nvarchar" MaxLength="25" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityContainer Name="CMCSQL03ModelStoreContainer">
           <EntitySet Name="tblBillingGroup" EntityType="Self.tblBillingGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBulk" EntityType="Self.tblBulk" Schema="dbo" store:Type="Tables" />
@@ -2355,11 +2356,14 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="NonHazDHServLvl2" Type="Int32" />
           <Property Name="NonHazDHServLvl3" Type="Int32" />
           <Property Name="NonHazDHServLvl4" Type="Int32" />
-          <Property Name="MDB_CMCBE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LogoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="CSRNumber" Type="Int32" />
           <Property Name="CSRName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MDB_CMCBE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MDB_INV" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MDB_CS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MDB_PACKPROCBE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblClientContact">
           <Key>
@@ -2524,9 +2528,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="WasteRate_OffSpec" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="WasteRate_Empty" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Inactive" Type="Boolean" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="Company_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="ContactLabelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ContactLabelPhone" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="ContactMSDSName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2553,6 +2554,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="CompanyLogo2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LogoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="IncludeExpDtOnLabel" Type="Boolean" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Company_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblEndUse">
           <Key>
@@ -2842,6 +2846,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GUID" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ImportStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ImportError" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="CMCLocation" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Name="OrderID" Type="Int32" />
           <Property Name="ClientID" Type="Int32" />
@@ -3004,7 +3009,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="FrtSurcharge_MDB" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="DH_MDB" Type="Decimal" Precision="10" Scale="2" />
           <Property Name="Other_MDB" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="ImportError" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblOrderItem">
           <Key>
@@ -3020,7 +3024,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="ImportItemID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ProductCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Mnemonic" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Mnemonic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LotNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Qty" Type="Int32" />
           <Property Name="Size" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
@@ -3446,7 +3450,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="SpecialInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ShelfStockLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PackagePartNumber" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
-          <Property Name="ts" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="TS" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="tblProductionMaster">
           <Key>
@@ -3454,6 +3458,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BulkID" Type="Int32" />
+          <Property Name="ClientID" Type="Int32" />
           <Property Name="LegacyID" Type="Int32" />
           <Property Name="CMCOrderNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -3490,7 +3495,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
           <Property Name="ProdmastCreateDate" Type="DateTime" Precision="3" />
           <Property Name="BulkContainerNote" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="ClientID" Type="Int32" />
           <Property Name="TS" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="tblProductionStage">
@@ -4164,11 +4168,14 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <EntitySetMapping Name="tblClient">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblClient">
               <MappingFragment StoreEntitySet="tblClient">
+                <ScalarProperty Name="MDB_PACKPROCBE" ColumnName="MDB_PACKPROCBE" />
+                <ScalarProperty Name="MDB_CS" ColumnName="MDB_CS" />
+                <ScalarProperty Name="MDB_INV" ColumnName="MDB_INV" />
+                <ScalarProperty Name="MDB_CMCBE" ColumnName="MDB_CMCBE" />
                 <ScalarProperty Name="IC" ColumnName="IC" />
                 <ScalarProperty Name="CSRName" ColumnName="CSRName" />
                 <ScalarProperty Name="CSRNumber" ColumnName="CSRNumber" />
                 <ScalarProperty Name="LogoFile" ColumnName="LogoFile" />
-                <ScalarProperty Name="MDB_CMCBE" ColumnName="MDB_CMCBE" />
                 <ScalarProperty Name="NonHazDHServLvl4" ColumnName="NonHazDHServLvl4" />
                 <ScalarProperty Name="NonHazDHServLvl3" ColumnName="NonHazDHServLvl3" />
                 <ScalarProperty Name="NonHazDHServLvl2" ColumnName="NonHazDHServLvl2" />
@@ -4426,6 +4433,9 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <EntitySetMapping Name="tblDivision">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblDivision">
               <MappingFragment StoreEntitySet="tblDivision">
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="IncludeExpDtOnLabel" ColumnName="IncludeExpDtOnLabel" />
                 <ScalarProperty Name="LogoFile" ColumnName="LogoFile" />
                 <ScalarProperty Name="CompanyLogo2" ColumnName="CompanyLogo2" />
@@ -4452,9 +4462,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
                 <ScalarProperty Name="ContactMSDSName" ColumnName="ContactMSDSName" />
                 <ScalarProperty Name="ContactLabelPhone" ColumnName="ContactLabelPhone" />
                 <ScalarProperty Name="ContactLabelName" ColumnName="ContactLabelName" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="Inactive" ColumnName="Inactive" />
                 <ScalarProperty Name="WasteRate_Empty" ColumnName="WasteRate_Empty" />
                 <ScalarProperty Name="WasteRate_OffSpec" ColumnName="WasteRate_OffSpec" />
@@ -4763,7 +4770,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <EntitySetMapping Name="tblOrderImport">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderImport">
               <MappingFragment StoreEntitySet="tblOrderImport">
-                <ScalarProperty Name="ImportError" ColumnName="ImportError" />
                 <ScalarProperty Name="Other_MDB" ColumnName="Other_MDB" />
                 <ScalarProperty Name="DH_MDB" ColumnName="DH_MDB" />
                 <ScalarProperty Name="FrtSurcharge_MDB" ColumnName="FrtSurcharge_MDB" />
@@ -4926,6 +4932,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
+                <ScalarProperty Name="ImportError" ColumnName="ImportError" />
                 <ScalarProperty Name="ImportStatus" ColumnName="ImportStatus" />
                 <ScalarProperty Name="GUID" ColumnName="GUID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -5364,7 +5371,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
           <EntitySetMapping Name="tblProductionDetail">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionDetail">
               <MappingFragment StoreEntitySet="tblProductionDetail">
-                <ScalarProperty Name="ts" ColumnName="ts" />
+                <ScalarProperty Name="TS" ColumnName="TS" />
                 <ScalarProperty Name="PackagePartNumber" ColumnName="PackagePartNumber" />
                 <ScalarProperty Name="ShelfStockLocation" ColumnName="ShelfStockLocation" />
                 <ScalarProperty Name="SpecialInstructions" ColumnName="SpecialInstructions" />
@@ -5391,7 +5398,6 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductionMaster">
               <MappingFragment StoreEntitySet="tblProductionMaster">
                 <ScalarProperty Name="TS" ColumnName="TS" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="BulkContainerNote" ColumnName="BulkContainerNote" />
                 <ScalarProperty Name="ProdmastCreateDate" ColumnName="ProdmastCreateDate" />
                 <ScalarProperty Name="CeaseShipDate" ColumnName="CeaseShipDate" />
@@ -5428,6 +5434,7 @@ warning 6002: The table/view 'CMCSQL03.dbo.vwBulkLevel' does not have a primary 
                 <ScalarProperty Name="Company" ColumnName="Company" />
                 <ScalarProperty Name="CMCOrderNumber" ColumnName="CMCOrderNumber" />
                 <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="BulkID" ColumnName="BulkID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

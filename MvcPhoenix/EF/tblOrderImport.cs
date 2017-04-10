@@ -17,6 +17,7 @@ namespace MvcPhoenix.EF
         public int ID { get; set; }
         public string GUID { get; set; }
         public string ImportStatus { get; set; }
+        public string ImportError { get; set; }
         public string CMCLocation { get; set; }
         public Nullable<int> OrderID { get; set; }
         public Nullable<int> ClientID { get; set; }
@@ -179,6 +180,5 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> FrtSurcharge_MDB { get; set; }
         public Nullable<decimal> DH_MDB { get; set; }
         public Nullable<decimal> Other_MDB { get; set; }
-        public string ImportError { get; set; }
     }
 }
