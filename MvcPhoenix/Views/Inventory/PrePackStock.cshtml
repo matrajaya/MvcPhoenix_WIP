@@ -34,33 +34,30 @@
             </div>
             <div id="prodinfopan" class="panel-body collapse in">
                 <div class="row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label>Lot Number</label>
                         @Html.TextBoxFor(m => m.BulkContainer.lotnumber, new { required = "required", @class = "form-control" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Bulk Status</label>
-                        @Html.TextBoxFor(m => m.BulkContainer.bulkstatus, new { @class = "form-control", disabled = "disabled" })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Bulk Bin</label>
                         @Html.TextBoxFor(m => m.BulkContainer.bin, new { @class = "form-control", disabled = "disabled" })
                     </div>
+                    <div class="form-group col-md-3">
+                        <label>Bulk Status</label>
+                        @Html.TextBoxFor(m => m.BulkContainer.bulkstatus, new { @class = "form-control", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-md-2">
                         <label>Warehouse</label>
                         @Html.TextBoxFor(m => m.BulkContainer.warehouse, new { @class = "form-control", disabled = "disabled" })
                     </div>
-                    <div class="form-group col-md-3">
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Date Received</label>
                         @Html.TextBoxFor(m => m.BulkContainer.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.BulkContainer.receivedate)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Manufacture Date</label>
                         @Html.TextBoxFor(m => m.BulkContainer.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.BulkContainer.mfgdate)

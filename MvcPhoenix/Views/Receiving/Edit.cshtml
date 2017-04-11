@@ -61,11 +61,11 @@
                                 <td colspan="6">
                                     @if (@Model.pm_alertnotesreceiving == null || @Model.pm_alertnotesreceiving.Length <= 1)
                                     {
-                                        <p>No receiving alert for this product</p>
+                                    <p>No receiving alert for this product</p>
                                     }
                                     else
                                     {
-                                       <marquee><h4>@Model.pm_alertnotesreceiving</h4></marquee>
+                                    <marquee><h4>@Model.pm_alertnotesreceiving</h4></marquee>
                                     }
                                 </td>
                             </tr>
@@ -174,15 +174,24 @@
                         @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", @readonly = "readonly" })
                         @Html.ValidationMessageFor(m => m.clientname)
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>Date Received</label>
-                        @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                        @Html.ValidationMessageFor(m => m.receivedate)
-                    </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Warehouse</label>
                         @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.warehouse)
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Carrier</label>
+                        @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.carrier)
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Docs Included</label>
+                        <ul class="list-unstyled">
+                            <li>
+                                COA @Html.CheckBox("coaincluded", Model.coaincluded != null && (bool)Model.coaincluded, new { @title = "COA Included" }) &nbsp;
+                                MSDS @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @title = "MSDS Included" })
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row">
@@ -191,15 +200,20 @@
                         @Html.TextBoxFor(m => m.lotnumber, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.lotnumber)
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>Carrier</label>
-                        @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.carrier)
+                    <div class="form-group col-md-2">
+                        <label>Date Received</label>
+                        @Html.TextBoxFor(m => m.receivedate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.receivedate)
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label>Receive Weight</label>
                         @Html.TextBoxFor(m => m.receiveweight, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.receiveweight)
+                    </div>
+                    <div class="col-md-2">
+                        <label>Manufacture Date</label>
+                        @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.mfgdate)
                     </div>
                 </div>
                 <div class="row">
@@ -213,32 +227,17 @@
                         @Html.TextBoxFor(m => m.receivedby, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.receivedby)
                     </div>
-                    <div class="form-group col-md-3">
-                        <label>COA Included?</label>
-                        @Html.CheckBox("coaincluded", Model.coaincluded != null && (bool)Model.coaincluded, new { @class = "checkbox" })
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>MSDS Included?</label>
-                        @Html.CheckBox("msdsincluded", Model.msdsincluded != null && (bool)Model.msdsincluded, new { @class = "checkbox" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label>Manufacture Date</label>
-                        @Html.TextBoxFor(m => m.mfgdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                        @Html.ValidationMessageFor(m => m.mfgdate)
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label>Expiration Date</label>
                         @Html.TextBoxFor(m => m.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @onchange = "ChangeCeaseShipDate(this.value);" })
                         @Html.ValidationMessageFor(m => m.expirationdate)
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label>Cease Ship Date</label>
                         @Html.TextBoxFor(m => m.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.ceaseshipdate)
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label>QC Date</label>
                         @Html.TextBoxFor(m => m.qcdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.qcdate)
@@ -323,7 +322,7 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         if ('@Model.pm_alertnotesreceiving'.length > 1) {
             $.alert('@Model.pm_alertnotesreceiving', "Receiving Notes Alert")
         }
