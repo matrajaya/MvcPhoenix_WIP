@@ -1318,7 +1318,7 @@ namespace MvcPhoenix.Services
                            orderby t.Size
                            select t);
 
-                string s = "<option value='0' selected=true>Select Size</option>";
+                string s = "<option value='' selected=true></option>";
                 if (qry.Count() > 0)
                 {
                     foreach (var item in qry)
@@ -1347,6 +1347,7 @@ namespace MvcPhoenix.Services
 
                 mylist = (from t in db.tblShelfMaster
                           where t.ProductDetailID == id && t.InactiveSize != true
+                          orderby t.Size
                           select new SelectListItem
                           {
                               Value = t.ShelfID.ToString(),
@@ -1377,7 +1378,7 @@ namespace MvcPhoenix.Services
         {
             List<SelectListItem> mylist = new List<SelectListItem>();
 
-            mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Delay Reason" });
+            mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
             mylist.Insert(1, new SelectListItem { Value = "Backorder", Text = "Backorder" });
             mylist.Insert(2, new SelectListItem { Value = "Oven Product", Text = "Oven Product" });
             mylist.Insert(3, new SelectListItem { Value = "Humidity", Text = "Humidity" });
@@ -1602,7 +1603,7 @@ namespace MvcPhoenix.Services
                               Text = t.EndUse
                           }).ToList();
 
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return mylist;
             }
@@ -1622,32 +1623,12 @@ namespace MvcPhoenix.Services
                               Text = t.CarrierName
                           }).ToList();
 
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return mylist;
             }
         }
-
-        public static List<SelectListItem> fnListOfOrderSources()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblOrderSource
-                          orderby t.Source
-                          select new SelectListItem
-                          {
-                              Value = t.Source,
-                              Text = t.Source
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
+        
         public static List<SelectListItem> fnListOfProductCodes(int? id)
         {
             List<SelectListItem> mylist = new List<SelectListItem>();
@@ -1664,7 +1645,7 @@ namespace MvcPhoenix.Services
                               Text = t.ProductCode + " " + t.ProductName
                           }).ToList();
 
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return mylist;
             }
@@ -1684,7 +1665,7 @@ namespace MvcPhoenix.Services
                               Text = t.CarrierName
                           }).ToList();
 
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return mylist;
             }
@@ -1700,7 +1681,7 @@ namespace MvcPhoenix.Services
                 mylist.Add(new SelectListItem { Value = "S2", Text = "S2" });
                 mylist.Add(new SelectListItem { Value = "S3", Text = "S3" });
 
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return mylist;
             }
@@ -1720,7 +1701,7 @@ namespace MvcPhoenix.Services
                               Text = t.Note
                           }).ToList();
 
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
+                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return mylist;
             }
@@ -1968,7 +1949,7 @@ namespace MvcPhoenix.Services
                         NewItem.ShelfID = i.ShelfID;
                         if (i.ShelfID == null)                                          // TODO: If shelf id is null; GetShelfid()
                         {
-                            i.ShelfID = 0;                                           // needed for post save to pull SR
+                            i.ShelfID = 0;                                              // needed for post save to pull SR
 
                             decimal srsize;                                             // get rid of this when tblOrderImport.SRSize is changed to decimal
                             try

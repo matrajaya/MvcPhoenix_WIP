@@ -1161,14 +1161,6 @@
           <Property Name="UpdateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="LegacyID" Type="int" />
         </EntityType>
-        <EntityType Name="tblOrderSource">
-          <Key>
-            <PropertyRef Name="OrderSourceID" />
-          </Key>
-          <Property Name="OrderSourceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Source" Type="nvarchar" MaxLength="50" />
-          <Property Name="LegacyID" Type="int" />
-        </EntityType>
         <EntityType Name="tblOrderSPSBilling">
           <Key>
             <PropertyRef Name="SPSBillingID" />
@@ -1931,7 +1923,6 @@
           <EntitySet Name="tblOrderImport" EntityType="Self.tblOrderImport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderItem" EntityType="Self.tblOrderItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderMaster" EntityType="Self.tblOrderMaster" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tblOrderSource" EntityType="Self.tblOrderSource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderSPSBilling" EntityType="Self.tblOrderSPSBilling" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderTrans" EntityType="Self.tblOrderTrans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblOrderType" EntityType="Self.tblOrderType" Schema="dbo" store:Type="Tables" />
@@ -1999,7 +1990,6 @@
           <EntitySet Name="tblOrderImport" EntityType="CMCSQL03Model.tblOrderImport" />
           <EntitySet Name="tblOrderItem" EntityType="CMCSQL03Model.tblOrderItem" />
           <EntitySet Name="tblOrderMaster" EntityType="CMCSQL03Model.tblOrderMaster" />
-          <EntitySet Name="tblOrderSource" EntityType="CMCSQL03Model.tblOrderSource" />
           <EntitySet Name="tblOrderSPSBilling" EntityType="CMCSQL03Model.tblOrderSPSBilling" />
           <EntitySet Name="tblOrderTrans" EntityType="CMCSQL03Model.tblOrderTrans" />
           <EntitySet Name="tblOrderType" EntityType="CMCSQL03Model.tblOrderType" />
@@ -3184,14 +3174,6 @@
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="LegacyID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="tblOrderSource">
-          <Key>
-            <PropertyRef Name="OrderSourceID" />
-          </Key>
-          <Property Name="OrderSourceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Source" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LegacyID" Type="Int32" />
         </EntityType>
         <EntityType Name="tblOrderSPSBilling">
@@ -5114,15 +5096,6 @@
                 <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tblOrderSource">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderSource">
-              <MappingFragment StoreEntitySet="tblOrderSource">
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="OrderSourceID" ColumnName="OrderSourceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

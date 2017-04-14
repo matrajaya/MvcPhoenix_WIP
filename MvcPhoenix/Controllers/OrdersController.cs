@@ -249,7 +249,7 @@ namespace MvcPhoenix.Controllers
             {
                 var qry = (from t in db.tblOrderItem
                            where t.OrderID == id
-                           orderby t.ProductCode
+                           orderby t.CreateDate
                            select new MvcPhoenix.Models.OrderItem
                            {
                                OrderID = t.OrderID,
@@ -271,7 +271,9 @@ namespace MvcPhoenix.Controllers
                                CSAllocate = t.CSAllocate,
                                NonCMCDelay = t.NonCMCDelay,
                                QtyAvailable = (from x in db.tblStock
-                                               where (x.ShelfID != null) && (x.ShelfID == t.ShelfID) && (x.ShelfStatus == "AVAIL")
+                                               where (x.ShelfID != null) 
+                                               && (x.ShelfID == t.ShelfID) 
+                                               && (x.ShelfStatus == "AVAIL")
                                                select (x.QtyOnHand - x.QtyAllocated)).Sum(),
                                AllocatedDate = t.AllocatedDate,
                                GrnUnNumber = (from a in db.tblProductDetail
@@ -324,14 +326,16 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveItem(OrderItem incoming, string productdetailid)
         {
-            if (productdetailid == "0" || productdetailid == "")
+            if (productdetailid != "0" && productdetailid != "")
             {
-                return Content("Please Select a Product");
+                if (incoming.ShelfID != null)
+                {
+                    int pk = OrderService.fnSaveItem(incoming);
+                    return null;
+                }
             }
 
-            int pk = OrderService.fnSaveItem(incoming);
-
-            return Content("Item Saved at " + DateTime.UtcNow.ToString("R"));
+            return null;
         }
 
         public ActionResult DeleteItem(int id)
@@ -424,7 +428,7 @@ namespace MvcPhoenix.Controllers
                            join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
                            from qry2 in a.DefaultIfEmpty()
                            where t.OrderID == id
-                           orderby t.UpdateDate descending
+                           orderby t.OrderItemID
                            select new OrderTrans
                            {
                                ordertransid = t.OrderTransID,

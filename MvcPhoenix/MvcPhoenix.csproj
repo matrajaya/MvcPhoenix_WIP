@@ -399,9 +399,6 @@
     <Compile Include="EF\tblOrderMaster.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblOrderSource.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblOrderSPSBilling.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>

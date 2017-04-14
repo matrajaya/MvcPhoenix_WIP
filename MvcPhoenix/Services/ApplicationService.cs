@@ -111,20 +111,7 @@ namespace MvcPhoenix.Models
                 return mylist;
             }
         }
-
-        public static List<SelectListItem> fnOrderSources()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblOrderSource
-                          orderby t.Source
-                          select new SelectListItem { Value = t.Source, Text = t.Source }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Order Source" });
-                return mylist;
-            }
-        }
-
+        
         public static List<SelectListItem> fnOrderTypes()
         {
             using (var db = new CMCSQL03Entities())

@@ -37,7 +37,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderImport" Width="1.5" PointX="18.75" PointY="5.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderItem" Width="1.5" PointX="8.75" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderMaster" Width="1.5" PointX="14.75" PointY="19.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblOrderSource" Width="1.5" PointX="20.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderSPSBilling" Width="1.5" PointX="20.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderTrans" Width="1.5" PointX="20.75" PointY="9.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderType" Width="1.5" PointX="20.75" PointY="15.75" />
