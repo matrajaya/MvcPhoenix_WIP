@@ -481,6 +481,7 @@ namespace MvcPhoenix.Services
                 vm.StatusID = null;
                 vm.ListOfStatusNotesIDs = fnListOfStatusNotesIDs();
                 vm.ItemNotes = q.ItemNotes;
+                vm.WasteOrderTotalWeight = q.WasteOrderTotalWeight;
                 vm.AlertNotesShipping = q.AlertNotesShipping;
                 vm.AlertNotesPackOut = q.AlertNotesPackout;
                 vm.AlertNotesOrderEntry = q.AlertNotesOrderEntry;
@@ -532,7 +533,7 @@ namespace MvcPhoenix.Services
                     if (dbSM != null)
                     {
                         q.Size = dbSM.Size;
-                        q.Weight = dbSM.UnitWeight*q.Qty;
+                        q.Weight = dbSM.UnitWeight * q.Qty;
                     }
                 }
 
@@ -558,6 +559,7 @@ namespace MvcPhoenix.Services
                 q.DelayReason = vm.DelayReason;
                 q.SPSCharge = vm.SPSCharge;
                 q.ItemNotes = vm.ItemNotes;
+                q.WasteOrderTotalWeight = vm.WasteOrderTotalWeight;
                 q.AlertNotesShipping = dbPD.AlertNotesShipping;
                 q.AlertNotesOrderEntry = dbPD.AlertNotesOrderEntry;
                 q.AlertNotesPackout = dbPM.AlertNotesPackout;
@@ -785,7 +787,9 @@ namespace MvcPhoenix.Services
                 {
                     // Assume this is a SR size ??????????????????????
                     var tierSpecialRequest = (from t in db.tblTier
-                                              where t.ClientID == o.ClientID && t.Size == "1SR" && t.TierLevel == 1
+                                              where t.ClientID == o.ClientID 
+                                              && t.Size == "1SR" 
+                                              && t.TierLevel == 1
                                               select t).FirstOrDefault();
 
                     if (tierSpecialRequest != null)
@@ -1628,7 +1632,7 @@ namespace MvcPhoenix.Services
                 return mylist;
             }
         }
-        
+
         public static List<SelectListItem> fnListOfProductCodes(int? id)
         {
             List<SelectListItem> mylist = new List<SelectListItem>();

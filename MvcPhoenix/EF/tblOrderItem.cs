@@ -59,6 +59,7 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> ExpirationDate { get; set; }
         public Nullable<System.DateTime> CeaseShipDate { get; set; }
         public string ItemNotes { get; set; }
+        public Nullable<decimal> WasteOrderTotalWeight { get; set; }
         public string AlertNotesShipping { get; set; }
         public string AlertNotesPackout { get; set; }
         public string AlertNotesOrderEntry { get; set; }
@@ -78,7 +79,6 @@ namespace MvcPhoenix.EF
         public string UnitPrice_MDB { get; set; }
         public string CustCode_MDB { get; set; }
         public Nullable<bool> SAPClosed_MDB { get; set; }
-        public Nullable<decimal> WasteOrderTotalWeight_MDB { get; set; }
         public string CustStatus_MDB { get; set; }
         public Nullable<int> ProfileID_MDB { get; set; }
         public Nullable<int> LegacyID_MDB { get; set; }

@@ -153,8 +153,8 @@ namespace MvcPhoenix.Models
         public DateTime? CeaseShipDate { get; set; }
         public DateTime? ExpirationDate { get; set; }
 
-        [Display(Name = "Item Notes")]
         public string ItemNotes { get; set; }
+        public decimal? WasteOrderTotalWeight { get; set; }
 
         public string AlertNotesOrderEntry { get; set; }
         public string AlertNotesShipping { get; set; }
