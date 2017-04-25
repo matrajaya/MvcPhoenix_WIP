@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 
 namespace MvcPhoenix.Services
 {
@@ -16,11 +15,15 @@ namespace MvcPhoenix.Services
             // be propering decorated with onchange= etc..
             using (var db = new CMCSQL03Entities())
             {
-                var qry = (from t in db.tblProductMaster where t.ClientID == clientid orderby t.MasterCode, t.MasterName select t);
+                var products = (from t in db.tblProductMaster
+                                where t.ClientID == clientid
+                                orderby t.MasterCode, t.MasterName
+                                select t);
+
                 string s = "<option value='0' selected=true>Select Master Code</option>";
-                if (qry.Count() > 0)
+                if (products.Count() > 0)
                 {
-                    foreach (var item in qry)
+                    foreach (var item in products)
                     { s = s + "<option value=" + item.ProductMasterID.ToString() + ">" + item.MasterCode + " - " + item.MasterName + "</option>"; }
                 }
                 else
@@ -83,11 +86,6 @@ namespace MvcPhoenix.Services
 
                 obj.clientid = qPM.ClientID;
                 obj.clientname = qCL.ClientName;
-                obj.ListOfWareHouses = fnWarehouseIDs();
-                obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
-                obj.ListOfContainerTypeIDs = ReceivingService.fnContainerTypeIDs();
-                obj.ListOfCarriers = ReceivingService.fnCarriers();
-                obj.ListOfUMs = ReceivingService.fnUnitMeasure(obj.clientid);
                 obj.MasterCode = qPM.MasterCode;
                 obj.MasterName = qPM.MasterName;
                 obj.pm_ceaseshipdifferential = qPM.CeaseShipDifferential;
@@ -101,12 +99,12 @@ namespace MvcPhoenix.Services
             bool retval = true;
             try
             {
-                using (var db = new EF.CMCSQL03Entities())
+                using (var db = new CMCSQL03Entities())
                 {
                     int pk = incoming.bulkid;
                     if (incoming.bulkid == -1)
                     {
-                        var newrec = new EF.tblBulk { ProductMasterID = incoming.productmasterid };
+                        var newrec = new tblBulk { ProductMasterID = incoming.productmasterid };
                         db.tblBulk.Add(newrec);
                         newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = HttpContext.Current.User.Identity.Name;
@@ -116,37 +114,37 @@ namespace MvcPhoenix.Services
                         pk = newrec.BulkID;
                     }
 
-                    var qry = (from t in db.tblBulk
-                               where t.BulkID == pk
-                               select t).FirstOrDefault();
+                    var bulk = (from t in db.tblBulk
+                                where t.BulkID == pk
+                                select t).FirstOrDefault();
 
-                    qry.Warehouse = incoming.warehouse;
-                    qry.ReceiveDate = incoming.receivedate;
-                    qry.Carrier = incoming.carrier;
-                    qry.ReceivedBy = incoming.receivedby;
-                    qry.EnteredBy = incoming.enteredby;
-                    qry.ProductMasterID = incoming.productmasterid;
-                    qry.ReceiveWeight = incoming.receiveweight;
-                    qry.LotNumber = incoming.lotnumber;
-                    qry.MfgDate = incoming.mfgdate;
-                    qry.ExpirationDate = incoming.expirationdate;
-                    qry.CeaseShipDate = incoming.ceaseshipdate;
-                    qry.BulkStatus = incoming.bulkstatus;
-                    qry.UM = incoming.um;
-                    qry.ContainerColor = incoming.containercolor;
-                    qry.Bin = incoming.bin;
-                    qry.ContainerType = incoming.containertype;
-                    qry.COAIncluded = incoming.coaincluded;
-                    qry.MSDSIncluded = incoming.msdsincluded;
-                    qry.ContainerNotes = incoming.containernotes;
-                    qry.CurrentWeight = incoming.currentweight;
-                    qry.QCDate = incoming.qcdate;
-                    qry.NoticeDate = incoming.noticedate;
-                    qry.BulkLabelNote = incoming.bulklabelnote;
-                    qry.ReceivedAsCode = incoming.receivedascode;
-                    qry.ReceivedAsName = incoming.receivedasname;
-                    qry.UpdateDate = DateTime.UtcNow;
-                    qry.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    bulk.Warehouse = incoming.warehouse;
+                    bulk.ReceiveDate = incoming.receivedate;
+                    bulk.Carrier = incoming.carrier;
+                    bulk.ReceivedBy = incoming.receivedby;
+                    bulk.EnteredBy = incoming.enteredby;
+                    bulk.ProductMasterID = incoming.productmasterid;
+                    bulk.ReceiveWeight = incoming.receiveweight;
+                    bulk.LotNumber = incoming.lotnumber;
+                    bulk.MfgDate = incoming.mfgdate;
+                    bulk.ExpirationDate = incoming.expirationdate;
+                    bulk.CeaseShipDate = incoming.ceaseshipdate;
+                    bulk.BulkStatus = incoming.bulkstatus;
+                    bulk.UM = incoming.um;
+                    bulk.ContainerColor = incoming.containercolor;
+                    bulk.Bin = incoming.bin;
+                    bulk.ContainerType = incoming.containertype;
+                    bulk.COAIncluded = incoming.coaincluded;
+                    bulk.MSDSIncluded = incoming.msdsincluded;
+                    bulk.ContainerNotes = incoming.containernotes;
+                    bulk.CurrentWeight = incoming.currentweight;
+                    bulk.QCDate = incoming.qcdate;
+                    bulk.NoticeDate = incoming.noticedate;
+                    bulk.BulkLabelNote = incoming.bulklabelnote;
+                    bulk.ReceivedAsCode = incoming.receivedascode;
+                    bulk.ReceivedAsName = incoming.receivedasname;
+                    bulk.UpdateDate = DateTime.UtcNow;
+                    bulk.UpdateUser = HttpContext.Current.User.Identity.Name;
                     db.SaveChanges();
                     retval = true;
                 }
@@ -163,7 +161,6 @@ namespace MvcPhoenix.Services
 
         public static List<BulkContainerViewModel> fnBulkContainerList()
         {
-            // full list
             using (var db = new CMCSQL03Entities())
             {
                 var mylist = (from t in db.tblBulk
@@ -182,46 +179,6 @@ namespace MvcPhoenix.Services
                                   productmasterid = t.ProductMasterID,
                                   clientid = cl.ClientID
                               }).ToList();
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnClientIDs()
-        {
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblClient
-                          orderby t.ClientName
-                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnWarehouseIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist.Add(new SelectListItem { Value = "CO", Text = "CO" });
-                mylist.Add(new SelectListItem { Value = "CT", Text = "CT" });
-                mylist.Add(new SelectListItem { Value = "EU", Text = "EU" });
-                mylist.Add(new SelectListItem { Value = "AP", Text = "AP" });
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "All" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnBulkStatusIDs()
-        {
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblBulk
-                          orderby t.BulkStatus
-                          select new SelectListItem { Value = t.BulkStatus, Text = t.BulkStatus }).Distinct().ToList();
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "All" });
                 return mylist;
             }
         }

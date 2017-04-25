@@ -27,8 +27,8 @@
                 @Html.DisplayFor(m => m.clientname)
             </td>
             <td width="35%">
-                <label>Division/Business Unit</label><br />
-                @Html.DropDownListFor(m => m.divisionid, Model.ListOfDivisions, new { @class = "form-control" })
+                <label>Division / Business Unit</label><br />
+                @Html.DropDownListFor(m => m.divisionid, ApplicationService.ddlDivisionIDs(Model.clientid), new { @class = "form-control" })
             </td>
             <td width="20%">
                 <label>Product ID:</label><br />
@@ -67,11 +67,11 @@
         <tr>
             <td width="25%">
                 <label>Equivalents</label><br />
-                @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control form-group", @style = "width:100%;" })
+                @Html.ListBox("Equivalents", ApplicationService.ddlProductEquivalents(Model.productmasterid, Model.productcode), new { @class = "form-control form-group", @style = "width:100%;" })
             </td>
             <td width="25%">
                 <label>Cross Reference List</label><br />
-                @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control form-group", @style = "width:100%;" })
+                @Html.ListBox("Cross Reference List", ApplicationService.ddlProductCodesXRefs(Model.productcode), new { @class = "form-control form-group", @style = "width:100%;" })
             </td>
             <td>
                 Global @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct)

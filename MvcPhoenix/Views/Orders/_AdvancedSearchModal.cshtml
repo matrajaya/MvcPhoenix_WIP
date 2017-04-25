@@ -21,7 +21,7 @@
                         }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.DropDownList("ClientID", MvcPhoenix.Services.OrderService.fnListOfClientIDs(), new { name = "ClientID", @class = "form-control" })
+                        @Html.DropDownList("ClientID", ApplicationService.ddlClientIDs(), new { name = "ClientID", @class = "form-control" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Last 20" /></span>
                     </div>
                 }
@@ -34,7 +34,7 @@
                         }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        <input class="form-control date-picker" id="searchorderdate" name="searchorderdate" type="date" required />
+                        <input class="form-control date-picker" id="searchorderdate" name="searchorderdate" required />
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
@@ -84,3 +84,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function () {
+        $(".date-picker").datepicker({ dateFormat: 'dd-M-yy' });
+    });
+</script>

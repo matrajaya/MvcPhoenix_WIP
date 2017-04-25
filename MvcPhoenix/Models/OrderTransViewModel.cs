@@ -27,31 +27,6 @@ namespace MvcPhoenix.Models
         [Display(Name = "Type")]
         public string transtype { get; set; }
         
-        public enum OrderTransTypesChoice
-        {
-            MEMO,
-            MISC_G,
-            MISC_S,
-            MISC_C,
-            MISC_CF,
-            MISC_D,
-            MISC_EM,
-            MISC_FSC,
-            MISC_FSD,
-            MISC_FSM,
-            MISC_H,
-            MISC_I,
-            MISC_IN,
-            MISC_M,
-            MISC_P,
-            MISC_PM,
-            MISC_R,
-            MISC_SPS,
-            MISC_TDI,
-            MISC_U,            
-            OTHER
-        }
-
         [Display(Name = "Date")]
         [DataType(DataType.DateTime)]
         public DateTime? transdate { get; set; }

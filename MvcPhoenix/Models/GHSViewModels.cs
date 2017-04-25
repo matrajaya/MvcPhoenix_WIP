@@ -22,32 +22,13 @@ namespace MvcPhoenix.Models
         public string Language { get; set; }
         public string PHStatement { get; set; }
 
-        public string GHSSignalWord { get; set; }
-        public enum GHSSignalWordChoice 
-        {
-            None,
-            Caution,
-            Warning,
-            Danger
-        }
-
+        // ghs label fields
+        public string GHSSignalWord { get; set; }        
         public string GHSSymbol1 { get; set; }
         public string GHSSymbol2 { get; set; }
         public string GHSSymbol3 { get; set; }
         public string GHSSymbol4 { get; set; }
         public string GHSSymbol5 { get; set; }
-        public enum GHSSymbolChoice
-        {
-            None,
-            Flammable,
-            Oxidizing,
-            Compressed_Gas,
-            Corrosive,
-            Toxic,
-            Irritant,
-            Health_Hazard,
-            Environmental_Hazard
-        }
 
         [StringLength(250, ErrorMessage = "Other Label Information cannot be longer than 250 characters.")]
         public string OtherLabelInfo { get; set; }
@@ -61,7 +42,6 @@ namespace MvcPhoenix.Models
         public string PHNumber { get; set; }
         public string Language { get; set; }
         public string PHStatement { get; set; }
-
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }

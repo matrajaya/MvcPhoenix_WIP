@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-3 form-group">
                     <label>Size</label>
-                    @Html.DropDownListFor(m => m.size, Model.ListOfTierSizes, new { onchange = "OnChangeSize()", @class = "form-control" })
+                    @Html.DropDownListFor(m => m.size, ApplicationService.ddlTierSizes(Model.clientid), new { onchange = "OnChangeSize()", @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.size)
                 </div>
                 <div class="col-md-3 form-group">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-md-3 form-group">
                     <label>Warehouse</label>
-                    @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.warehouse, new SelectList(Enum.GetValues(typeof(ApplicationService.CMCLocationChoice))), new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.warehouse)
                 </div>
                 <div class="col-md-3 form-group">
@@ -36,7 +36,7 @@
                 <div class="col-md-12 form-group">
                     <label>Package</label>
                     <div id="dvPlaceholderPackageInitial">
-                        @Html.DropDownListFor(m => m.packageid, Model.ListOfPackages, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.packageid, ApplicationService.ddlPackageIDs(Model.size), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.packageid)
                     </div>
                     <div id="dvPlaceholderPackageUpdated" class="hidden">

@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-md-3 form-group">
                                 <label>Supplier</label>
-                                @Html.DropDownListFor(m => m.supplyid, Model.ListOfSupplyIDs, new { onchange = "GetSupplyIDEmail()", @class = "form-control" })
+                                @Html.DropDownListFor(m => m.supplyid, ApplicationService.ddlSupplyIDs(Model.clientid), new { onchange = "GetSupplyIDEmail()", @class = "form-control" })
                             </div>
                             <div class="col-md-3 form-group">
                                 <label>Supplier Email</label>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MvcPhoenix.EF;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,9 +15,9 @@ namespace MvcPhoenix.Models
     {
         public static string fnProductCodesDropDown(int id, string divid)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                var qry = (from t in db.tblProductDetail
+                var products = (from t in db.tblProductDetail
                            join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
                            where t2.ClientID == id
                            orderby t.ProductCode
@@ -34,7 +35,7 @@ namespace MvcPhoenix.Models
 
                 sb = sb + string.Format("<option value='{0}' selected=true >{1}</option>", "0", "Product Code");
 
-                foreach (var item in qry)
+                foreach (var item in products)
                 {
                     sb = sb + string.Format("<option value={0}> {1} - {2} - {3} </option>", item.ProductDetailID.ToString(), item.ProductCode, item.MasterCode, item.ProductName);
                 }
@@ -47,97 +48,8 @@ namespace MvcPhoenix.Models
 
         public static ProductProfile fnFillOtherPMProps(ProductProfile PP)
         {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                // Countries
-                PP.ListOfCountries = (from t in db.tblCountry
-                                      orderby t.Country
-                                      select new SelectListItem
-                                      {
-                                          Value = t.Country,
-                                          Text = t.Country
-                                      }).ToList();
-
-                PP.ListOfCountries.Insert(0, new SelectListItem { Value = "0", Text = "" });
-
-                //PackagePartNumbers
-                PP.ListOfPackagePartNumbers = (from t in db.tblPackage
-                                               orderby t.Size
-                                               select new SelectListItem
-                                               {
-                                                   Value = t.PackageID.ToString(),
-                                                   Text = t.Size + " " + t.PartNumber + " " + t.Description
-                                               }).ToList();
-
-                PP.ListOfPackagePartNumbers.Insert(0, new SelectListItem { Value = "0", Text = "" });
-
-                PP.ListOfOtherStorage = ListOfOtherStorage();
-
-                List<SelectListItem> gloves = new List<SelectListItem>();
-                gloves.Add(new SelectListItem { Value = "", Text = "" });
-                gloves.Add(new SelectListItem { Value = "GMP NITRILE", Text = "GMP NITRILE" });
-                gloves.Add(new SelectListItem { Value = "NEOPRENE", Text = "NEOPRENE" });
-                gloves.Add(new SelectListItem { Value = "NEOPRENE+NITRIL", Text = "NEOPRENE+NITRIL" });
-                gloves.Add(new SelectListItem { Value = "NITRILE", Text = "NITRILE" });
-                PP.ListOfGloves = gloves;
-
-                PP.ListOfEquivalents = (from t in db.tblProductDetail
-                                        where t.ProductMasterID == PP.productmasterid && t.ProductCode != PP.productcode
-                                        select new SelectListItem
-                                        {
-                                            Value = t.ProductCode,
-                                            Text = t.ProductCode
-                                        }).ToList();
-
-                PP.ListOfEndUsesForCustoms = (from t in db.tblEndUseForCustoms
-                                              orderby t.EndUse
-                                              select new SelectListItem
-                                              {
-                                                  Value = t.EndUse,
-                                                  Text = t.EndUse
-                                              }).ToList();
-
-                PP.ListOfEndUsesForCustoms.Insert(0, new SelectListItem { Value = "0", Text = "" });
-
-                PP.ListOfHarmonizedCodes = (from t in db.tblHSCode
-                                            orderby t.HarmonizedCode
-                                            select new SelectListItem
-                                            {
-                                                Value = t.HarmonizedCode,
-                                                Text = t.HarmonizedCode
-                                            }).ToList();
-
-                PP.ListOfHarmonizedCodes.Insert(0, new SelectListItem { Value = "0", Text = "" });
-
-                PP.ListOfProductCodesXRefs = (from t in db.tblProductXRef
-                                              where t.CMCProductCode == PP.mastercode
-                                              select new SelectListItem
-                                              {
-                                                  Value = t.ProductXRefID.ToString(),
-                                                  Text = t.CustProductCode
-                                              }).ToList();
-
-                PP.ListOfDivisions = (from t in db.tblDivision
-                                      where t.ClientID == PP.clientid
-                                      orderby t.DivisionName
-                                      select new SelectListItem
-                                      {
-                                          Value = t.DivisionID.ToString(),
-                                          Text = t.DivisionName + " / " + t.BusinessUnit
-                                      }).ToList();
-
-                PP.ListOfDivisions.Insert(0, (new SelectListItem { Value = "0", Text = "" }));
-
-                PP.ListOfSupplyIDs = (from t in db.tblBulkSupplier
-                                      where t.ClientID == PP.clientid
-                                      select new SelectListItem
-                                      {
-                                          Value = t.SupplyID,
-                                          Text = t.SupplyID
-                                      }).ToList();
-
-                PP.ListOfSupplyIDs.Insert(0, new SelectListItem { Value = "0", Text = "" });
-
+            using (var db = new CMCSQL03Entities())
+            {                                
                 PP.ListOfProductNotes = (from t in db.tblPPPDLogNote
                                          where t.ProductDetailID == PP.productdetailid
                                          select new ProductNote
@@ -194,7 +106,7 @@ namespace MvcPhoenix.Models
 
         public static ProductProfile FillFromPD(ProductProfile PP)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var qd = (from t in db.tblProductDetail
                           where t.ProductDetailID == PP.productdetailid
@@ -293,7 +205,7 @@ namespace MvcPhoenix.Models
 
         public static ProductProfile FillFromPM(ProductProfile PP)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = (from t in db.tblProductMaster
                          where t.ProductMasterID == PP.productmasterid
@@ -436,7 +348,7 @@ namespace MvcPhoenix.Models
         public static int fnProductMasterID(int id)
         {
             // return MasterID of a Detail
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = (from t in db.tblProductDetail
                          where t.ProductDetailID == id
@@ -461,9 +373,9 @@ namespace MvcPhoenix.Models
                 {
                     PPVM.productdetailid = fnNewProductDetailID();
 
-                    using (var db = new EF.CMCSQL03Entities())
+                    using (var db = new CMCSQL03Entities())
                     {
-                        var pdln = new EF.tblPPPDLogNote();
+                        var pdln = new tblPPPDLogNote();
 
                         pdln.ProductDetailID = PPVM.productdetailid;
                         pdln.NoteDate = DateTime.UtcNow;
@@ -495,7 +407,7 @@ namespace MvcPhoenix.Models
 
         public static void SaveProductDetail(ProductProfile PP)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = db.tblProductDetail.Find(PP.productdetailid);
 
@@ -595,7 +507,7 @@ namespace MvcPhoenix.Models
 
         public static void SaveProductMaster(ProductProfile pm)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = db.tblProductMaster.Find(pm.productmasterid);
 
@@ -727,9 +639,9 @@ namespace MvcPhoenix.Models
 
         public static int fnNewProductDetailID()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                var newrecord = new EF.tblProductDetail { }; // dont need to insert any fields, just need the new PK
+                var newrecord = new tblProductDetail {};
                 newrecord.CreateDate = DateTime.UtcNow;
                 newrecord.CreateUser = HttpContext.Current.User.Identity.Name;
 
@@ -756,9 +668,9 @@ namespace MvcPhoenix.Models
 
         public static int fnNewProductMasterID()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                var newrecord = new EF.tblProductMaster { };    // dont need to insert any fields, just need the new PK
+                var newrecord = new tblProductMaster { };
                 newrecord.CreateDate = DateTime.UtcNow;
                 newrecord.CreateUser = HttpContext.Current.User.Identity.Name;
 
@@ -773,9 +685,10 @@ namespace MvcPhoenix.Models
 
         public static void fnDeActivateProductMaster(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 string s = "Update tblProductMaster set Discontinued=1 where ProductMasterID=" + id;
+
                 db.Database.ExecuteSqlCommand(s);
             }
         }
@@ -783,7 +696,7 @@ namespace MvcPhoenix.Models
         public static UN fnGetUN(string id)
         {
             // fill a json object for View use
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 UN obj = new UN();
 
@@ -811,21 +724,13 @@ namespace MvcPhoenix.Models
         public static ProductNote fnCreateProductNote(int id)
         {
             ProductNote PN = new ProductNote();
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 PN.productnoteid = -1;
                 PN.productdetailid = id;  // important
                 PN.reasoncode = null;
                 PN.notedate = DateTime.UtcNow;
                 PN.notes = null;
-                PN.ListOfReasonCodes = (from t in db.tblReasonCode
-                                        orderby t.Reason
-                                        select new SelectListItem
-                                        {
-                                            Value = t.Reason,
-                                            Text = t.Reason
-                                        }).ToList();
-                PN.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
                 PN.UpdateDate = DateTime.UtcNow;
                 PN.UpdateUser = HttpContext.Current.User.Identity.Name;
                 PN.CreateDate = DateTime.UtcNow;
@@ -838,7 +743,7 @@ namespace MvcPhoenix.Models
         public static ProductNote fnGetProductNote(int id)
         {
             ProductNote PN = new ProductNote();
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = (from t in db.tblPPPDLogNote
                          where t.PPPDLogNoteID == id
@@ -849,14 +754,6 @@ namespace MvcPhoenix.Models
                 PN.reasoncode = q.ReasonCode;
                 PN.notedate = q.NoteDate;
                 PN.notes = q.Notes;
-                PN.ListOfReasonCodes = (from t in db.tblReasonCode
-                                        orderby t.Reason
-                                        select new SelectListItem
-                                        {
-                                            Value = t.Reason,
-                                            Text = t.Reason
-                                        }).ToList();
-                PN.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
                 PN.UpdateDate = q.UpdateDate;
                 PN.UpdateUser = q.UpdateUser;
                 PN.CreateDate = q.CreateDate;
@@ -868,11 +765,11 @@ namespace MvcPhoenix.Models
 
         public static int fnSaveProductNoteToDB(ProductNote PN)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (PN.productnoteid == -1)
                 {
-                    var newrec = new EF.tblPPPDLogNote();
+                    var newrec = new tblPPPDLogNote();
                     newrec.CreateDate = DateTime.UtcNow;
                     newrec.CreateUser = HttpContext.Current.User.Identity.Name;
 
@@ -901,7 +798,7 @@ namespace MvcPhoenix.Models
 
         public static int fnDeleteProductNote(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand("Delete from tblPPPDLogNote Where PPPDLogNoteID=" + id);
             }
@@ -925,7 +822,7 @@ namespace MvcPhoenix.Models
         public static Cas fnGetCAS(int id)
         {
             Cas CS = new Cas();
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = (from t in db.tblCAS
                          where t.CASID == id
@@ -949,11 +846,11 @@ namespace MvcPhoenix.Models
 
         public static int fnSaveCASToDB(Cas CS)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (CS.casid == -1)
                 {
-                    var newrec = new EF.tblCAS();
+                    var newrec = new tblCAS();
                     db.tblCAS.Add(newrec);
                     db.SaveChanges();
                     CS.casid = newrec.CASID;
@@ -982,7 +879,7 @@ namespace MvcPhoenix.Models
 
         public static int fnDeleteCAS(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand("Delete from tblCAS Where CASID=" + id);
             }
@@ -998,7 +895,7 @@ namespace MvcPhoenix.Models
         {
             ClientProductXRef CXRef = new ClientProductXRef();
 
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = (from t in db.tblProductXRef
                          where t.ProductXRefID == id
@@ -1019,11 +916,11 @@ namespace MvcPhoenix.Models
 
         public static int fnSaveXRefToDB(ClientProductXRef CXRef)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (CXRef.ProductXRefID == -1)
                 {
-                    var newrecord = new EF.tblProductXRef();
+                    var newrecord = new tblProductXRef();
                     db.tblProductXRef.Add(newrecord);
                     db.SaveChanges();
 
@@ -1049,7 +946,7 @@ namespace MvcPhoenix.Models
 
         public static int fnDeleteXRef(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand("Delete from tblProductXRef Where ProductXRefID=" + id);
             }
@@ -1059,50 +956,5 @@ namespace MvcPhoenix.Models
 
         #endregion Client Product Cross Reference Methods
 
-        public static List<SelectListItem> fnListOfClients()
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblClient
-                          orderby t.ClientName
-                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> ListOfOtherStorage()
-        {
-            List<SelectListItem> otherstoragelist = new List<SelectListItem>();
-            otherstoragelist.Add(new SelectListItem { Value = "", Text = "" });
-            otherstoragelist.Add(new SelectListItem { Value = "Toxic Storage", Text = "Toxic Storage" });
-            otherstoragelist.Add(new SelectListItem { Value = "Spontaneously Combustible", Text = "Spontaneously Combustible" });
-            otherstoragelist.Add(new SelectListItem { Value = "Oxidizer", Text = "Oxidizer" });
-            otherstoragelist.Add(new SelectListItem { Value = "Base", Text = "Base" });
-            otherstoragelist.Add(new SelectListItem { Value = "Acid", Text = "Acid" });
-            otherstoragelist.Add(new SelectListItem { Value = "Clean Storage", Text = "Clean Storage" });
-            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Corrosive", Text = "Flammable/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Toxic/Corrosive", Text = "Toxic/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide", Text = "Biocide" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Toxic", Text = "Biocide/Toxic" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Toxic/Corrosive", Text = "Biocide/Toxic/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive", Text = "Biocide/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Oxidizer", Text = "Biocide/Oxidizer" });
-            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Pueblo", Text = "Flammable/Pueblo" });
-            otherstoragelist.Add(new SelectListItem { Value = "Corrosive/Flammable", Text = "Corrosive/Flammable" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive/Toxic", Text = "Biocide/Corrosive/Toxic" });
-            otherstoragelist.Add(new SelectListItem { Value = "Corrosive/Toxic", Text = "Corrosive/Toxic" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive", Text = "Biocide/Flammable/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Toxic/Corrosive", Text = "Flammable/Toxic/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive/Flammable", Text = "Biocide/Corrosive/Flammable" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Toxic/Corrosive", Text = "Biocide/Flammable/Toxic/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive/Toxic", Text = "Biocide/Flammable/Corrosive/Toxic" });
-
-            return otherstoragelist;
-        }
     }
 }

@@ -39,7 +39,6 @@
                 <div class="pull-right">
                     @if (@Model.orderid != -1)
                     {
-                        @*<a href="@Url.Action("PrintOrder", "Orders", new { id = @Model.orderid })" target="_blank"><i class="fa fa-file-pdf-o"></i> Order Print View</a>*@
                         <a href="@Url.Action("PrintPickPack", "Orders", new { id = @Model.orderid })" target="_blank" class="btn btn-xs btn-success"><i class="fa fa-file-pdf-o"></i> Print Pick &amp; Pack Docs</a>
                     }
                 </div>
@@ -95,8 +94,8 @@
                         @Html.ValidationMessageFor(m => m.clientname)
                     </div>
                     <div class="col-md-6 form-group">
-                        <label>Division <i class="fa fa-fw fa-question-circle" title="Division / Business Unit"></i></label>
-                        @Html.DropDownListFor(m => m.divisionid, Model.ListOfDivisions, new { @class = "form-control" })
+                        <label>Division / Business Unit <i class="fa fa-fw fa-question-circle" title="Division / Business Unit"></i></label>
+                        @Html.DropDownListFor(m => m.divisionid, ApplicationService.ddlDivisionIDs(Model.clientid), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.divisionid)
                     </div>
                 </div>
@@ -113,12 +112,12 @@
                     </div>
                     <div class="col-md-2">
                         <label><abbr title="S = Samples&#13;D = Dormant&#13;R = Returns&#13;C = Commercial&#13;">Order Type <i class="fa fa-fw fa-question-circle" rel="tooltip"></i></abbr></label>
-                        @Html.DropDownListFor(m => m.ordertype, new SelectList(Enum.GetValues(typeof(OrderMasterFull.OrderTypeChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.ordertype, new SelectList(Enum.GetValues(typeof(ApplicationService.OrderTypeChoice))), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.ordertype)
                     </div>
                     <div class="col-md-2">
                         <label class="control-label">Order Source</label>
-                        @Html.DropDownListFor(m => m.source, new SelectList(Enum.GetValues(typeof(OrderMasterFull.OrderSourceChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.source, new SelectList(Enum.GetValues(typeof(ApplicationService.OrderSourceChoice))), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.source)
                     </div>
                     <div class="col-md-2">
@@ -198,7 +197,7 @@
                     </div>
                     <div class="col-md-5">
                         <label class="control-label">Country</label>
-                        @Html.DropDownListFor(m => m.country, Model.ListOfCountries, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.country, ApplicationService.ddlCountries(), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.country)
                     </div>
                 </div>
@@ -219,7 +218,7 @@
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label class="control-label">Use Contacts Directory</label>
-                        @Html.DropDownList("reqID", Model.ListOfRequestors, new { @class = "form-control", @onchange = "PullRequestor($(this).val());" })
+                        @Html.DropDownList("reqID", ApplicationService.ddlRequestors(Model.clientid), new { @class = "form-control", @onchange = "PullRequestor($(this).val());" })
                     </div>
                     <div class="form-group col-md-8">
                         <label class="control-label">Requestor's Name</label>
@@ -247,7 +246,7 @@
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label class="control-label">Use Contacts Directory</label>
-                        @Html.DropDownList("salesrepID", Model.ListOfSalesReps, new { @class = "form-control", @onchange = "PullSalesRep($(this).val());" })
+                        @Html.DropDownList("salesrepID", ApplicationService.ddlSalesReps(Model.clientid), new { @class = "form-control", @onchange = "PullSalesRep($(this).val());" })
                     </div>
                     <div class="form-group col-md-8">
                         <label class="control-label">Sales Rep's Name</label>
@@ -292,7 +291,7 @@
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">End Use</label>
-                        @Html.DropDownListFor(m => m.enduse, Model.ListOfEndUses, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.enduse, ApplicationService.ddlEndUses(Model.clientid), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.enduse)
                     </div>
                     <div class="col-md-3">
@@ -383,7 +382,7 @@
                         <div class="row">
                             <div class="col-md-4 form-group">
                                 <label class="control-label">Carrier/Ship Via</label>
-                                @Html.DropDownListFor(m => m.shipvia, Model.ListOfShipVias, new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.shipvia, ApplicationService.ddlShipVias(), new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.shipvia)
                             </div>
                             <div class="col-md-8 form-group">
@@ -408,16 +407,6 @@
                                     OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
                                 }, new { @class = "btn btn-primary btn-block" })
                             </div>
-                            @*<div class="col-md-4">
-                                    <label class="control-label">Freight Cost</label>
-                                    @Html.TextBoxFor(m => m.spsfreightcost, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.spsfreightcost)
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="control-label">Shipped Weight</label>
-                                    @Html.TextBoxFor(m => m.spsshippedwt, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(m => m.spsshippedwt)
-                                </div>*@
                         </div>
                     </div>
                     <div class="col-md-6">

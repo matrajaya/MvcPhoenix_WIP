@@ -14,28 +14,10 @@ namespace MvcPhoenix.Models
         public bool? ActiveProfile { get; set; }
         public DateTimeOffset? ActiveDate { get; set; }
         public string CMCLocation { get; set; }
-        public enum CMCLocationChoice
-        {
-            CT,
-            CO,
-            EU,
-            AP
-        }
         public string ClientReference { get; set; }
         public string ClientEntityName { get; set; }
-        public string ClientCurrency { get; set; }
-        public enum CurrencyChoice
-        {
-            USD,
-            EUR,
-            CNY
-        }
+        public string ClientCurrency { get; set; }        
         public string ClientUM { get; set; }
-        public enum UMChoice
-        {
-            KG,
-            LB,
-        }
         public string ClientNetTerm { get; set; }
         [AllowHtml]
         public string InvoiceAddress { get; set; }
@@ -74,7 +56,6 @@ namespace MvcPhoenix.Models
         public string CompanyPostalCode { get; set; }
         public string CompanyCity { get; set; }
         public string CompanyCountry { get; set; }
-        public List<SelectListItem> ListOfCountries { get; set; }
         public string CompanyTelephone { get; set; }
         public string CompanyFax { get; set; }
         public string CompanyEmergencyTelephone { get; set; }
@@ -87,8 +68,8 @@ namespace MvcPhoenix.Models
         public int BulkSupplierID { get; set; }
         public int? ClientID { get; set; }
         public string SupplyID { get; set; }
-        public string SupplierCode { get; set; } // ShortName
-        public string SupplierName { get; set; } // CompanyName
+        public string SupplierCode { get; set; }                    // ShortName
+        public string SupplierName { get; set; }                    // CompanyName
         public string ContactName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -98,9 +79,8 @@ namespace MvcPhoenix.Models
         public string Address3 { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string PostalCode { get; set; } // Zip
+        public string PostalCode { get; set; }                      // Zip
         public string Country { get; set; }
-        public List<SelectListItem> ListOfCountries { get; set; }
     }
 
     public class Contact
@@ -108,12 +88,6 @@ namespace MvcPhoenix.Models
         public int ClientContactID { get; set; }
         public int? ClientID { get; set; }
         public string ContactType { get; set; }
-        public enum ContactTypeChoice
-        {
-            Distributor,
-            Requestor,
-            SalesRep
-        }
         public string Account { get; set; }
         public string FullName { get; set; }
         public string DistributorName { get; set; }
@@ -127,7 +101,6 @@ namespace MvcPhoenix.Models
         public string State { get; set; }
         public string Zip { get; set; }
         public string Country { get; set; }
-        public List<SelectListItem> ListOfCountries { get; set; }
     }
 
     public class Tier

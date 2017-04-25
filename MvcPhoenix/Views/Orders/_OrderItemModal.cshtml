@@ -57,7 +57,7 @@
                             @if (@Model.CrudMode == "RW")
                             {
                                 <label>Product</label>
-                                @Html.DropDownListFor(m => m.ProductDetailID, Model.ListOfProductDetailIDs, new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.ProductDetailID, ApplicationService.ddlProductCodes(Model.ClientID), new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.ProductDetailID)
                             }
                         </div>
@@ -86,7 +86,7 @@
                             @if (@Model.CrudMode == "RW" && @Model.ShelfID > 0)
                             {
                                 <span id="FirstShelfID">
-                                    @Html.DropDownListFor(m => m.ShelfID, Model.ListOfShelfIDs, new { @class = "form-control" })
+                                    @Html.DropDownListFor(m => m.ShelfID, ApplicationService.ddlProductCodeSizes(Convert.ToInt32(Model.ProductDetailID)), new { @class = "form-control" })
                                 </span>
                             }
                             else
@@ -126,7 +126,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Carrier</label>
-                            @Html.DropDownListFor(m => m.ItemShipVia, Model.ListOfShipVias, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.ItemShipVia, ApplicationService.ddlCarriers(), new { @class = "form-control" })
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Ship Date</label>
@@ -154,7 +154,8 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Delay Reason</label>
-                            @Html.DropDownList("DelayReason", (List<SelectListItem>)ViewBag.ListOfDelayReasons, new { @class = "form-control" })
+                            @*@Html.DropDownList("DelayReason", (List<SelectListItem>)ViewBag.ListOfDelayReasons, new { @class = "form-control" })*@
+                            @Html.DropDownList("DelayReason", ApplicationService.ddlDelayReasons(), new { @class = "form-control" })
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Waste Weight</label>
@@ -168,7 +169,7 @@
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Add a Status to Notes</label>
-                            @Html.DropDownListFor(m => m.StatusID, Model.ListOfStatusNotesIDs, new { onchange = "AddStatusIDToStatus()", @class = "form-control" })
+                            @Html.DropDownListFor(m => m.StatusID, ApplicationService.ddlStatusNotesIDs(), new { onchange = "AddStatusIDToStatus()", @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.StatusID)
                         </div>
                     </div>
@@ -359,4 +360,8 @@
         // Show sample alert note
         SampleOrderAlert($('#ProductDetailID').val());
     }
+
+    $(function () {
+        $(".date-picker").datepicker({ dateFormat: 'dd-M-yy' });
+    });
 </script>

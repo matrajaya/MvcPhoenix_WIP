@@ -21,7 +21,7 @@
                     @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
                     {
                         <div class="input-group">
-                            @Html.DropDownList("NewClientID", (List<SelectListItem>)ViewBag.NewClientID, new { name = "NewClientID", @class = "form-control" })
+                            @Html.DropDownList("NewClientID", ApplicationService.ddlClientIDs(), new { name = "NewClientID", @class = "form-control" })
                             <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create New Order" /></span>
                         </div>
                     }

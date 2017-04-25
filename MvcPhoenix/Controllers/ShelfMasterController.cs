@@ -1,7 +1,8 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
 using MvcPhoenix.Services;
-using System.Web.Mvc;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
 {
@@ -22,10 +23,10 @@ namespace MvcPhoenix.Controllers
             var mylist = ShelfMasterService.fnListOfShelfMasters(id);
 
             // Exclude inactive sizes from shared list
-            var mylistx = (from x in mylist 
-                           where x.inactivesize == false 
+            var mylistx = (from x in mylist
+                           where x.inactivesize == false
                            select x).ToList();
-            
+
             ViewBag.ParentID = id;
             return PartialView("~/Views/Products/_ShelfSize.cshtml", mylistx);
         }
@@ -33,7 +34,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult FillIndexViewBag(int id)
         {
             // This will change later (after some DB changes)
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var dbProductDetail = db.tblProductDetail.Find(id);
                 var dbProductMaster = db.tblProductMaster.Find(dbProductDetail.ProductMasterID);

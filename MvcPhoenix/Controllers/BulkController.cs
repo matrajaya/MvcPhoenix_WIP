@@ -9,14 +9,8 @@ namespace MvcPhoenix.Controllers
 {
     public class BulkController : Controller
     {
-        private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-
         public ActionResult Index()
         {
-            // The index view is the landing page to search for a container for edit
-            ViewBag.ListOfClients = BulkService.fnClientIDs();
-            ViewBag.ListOfBulkStatus = BulkService.fnBulkStatusIDs();
-            ViewBag.ListOfWarehouses = BulkService.fnWarehouseIDs();
             return View("~/Views/Bulk/Index.cshtml");
         }
 
@@ -30,16 +24,21 @@ namespace MvcPhoenix.Controllers
         public ActionResult Search1()
         {
             int ClientID = Convert.ToInt32(Request.Form["clientid"]);
-            int PK = Convert.ToInt32(Request.Form["productmasterid"]);
-            if (ClientID == 0 || PK == 0)
+            int ProductMasterID = Convert.ToInt32(Request.Form["productmasterid"]);
+
+            if (ClientID == 0 || ProductMasterID == 0)
             {
                 return Content("<strong>Please Select a Client and Mastercode</strong>");
             }
             else
             {
-                List<BulkContainerViewModel> mylist = BulkService.fnBulkContainerList();
-                mylist = (from t in mylist where t.clientid == ClientID && t.productmasterid == PK select t).ToList();
-                return PartialView("~/Views/Bulk/_SearchResults.cshtml", mylist);
+                List<BulkContainerViewModel> result = BulkService.fnBulkContainerList();
+                result = (from t in result
+                          where t.clientid == ClientID
+                          && t.productmasterid == ProductMasterID
+                          select t).ToList();
+
+                return PartialView("~/Views/Bulk/_SearchResults.cshtml", result);
             }
         }
 
@@ -48,20 +47,28 @@ namespace MvcPhoenix.Controllers
         {
             string BulkStatus = Request.Form["BulkStatus"];
             string Warehouse = Request.Form["Warehouse"];
-            List<BulkContainerViewModel> mylist = BulkService.fnBulkContainerList();
+            List<BulkContainerViewModel> result = BulkService.fnBulkContainerList();
+
             if (String.IsNullOrEmpty(BulkStatus) && String.IsNullOrEmpty(Warehouse))
             {
                 return Content("<strong>Please Select a Bulk Status and/or a Warehouse</strong>");
             }
+
             if (!String.IsNullOrEmpty(BulkStatus))
             {
-                mylist = (from t in mylist where t.bulkstatus == BulkStatus select t).ToList();
+                result = (from t in result
+                          where t.bulkstatus == BulkStatus
+                          select t).ToList();
             }
+
             if (!String.IsNullOrEmpty(Warehouse))
             {
-                mylist = (from t in mylist where t.warehouse == Warehouse select t).ToList();
+                result = (from t in result
+                          where t.warehouse == Warehouse
+                          select t).ToList();
             }
-            return PartialView("~/Views/Bulk/_SearchResults.cshtml", mylist);
+
+            return PartialView("~/Views/Bulk/_SearchResults.cshtml", result);
         }
 
         [HttpGet]
@@ -69,6 +76,7 @@ namespace MvcPhoenix.Controllers
         {
             BulkContainerViewModel obj = new BulkContainerViewModel();
             obj = BulkService.fnFillBulkContainerFromDB(id);
+
             return View("~/Views/Bulk/Edit.cshtml", obj);
         }
 
@@ -78,6 +86,7 @@ namespace MvcPhoenix.Controllers
             // WIP
             bool bUpdate = BulkService.fnSaveBulk(obj);
             TempData["SaveResult"] = "Bulk Container Saved on " + DateTime.UtcNow.ToString();
+
             return RedirectToAction("Edit", new { id = obj.bulkid });
         }
     }

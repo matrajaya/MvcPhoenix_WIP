@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Extensions;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Extensions;
 using MvcPhoenix.Models;
 using PagedList;
 using Rotativa;
@@ -17,7 +18,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 ViewBag.CurrentSort = sortOrder;
                 ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
@@ -113,7 +114,7 @@ namespace MvcPhoenix.Controllers
 
             return View("~/Views/Products/Edit.cshtml", PP);
         }
-        
+
         [HttpPost]
         public ActionResult Equivalent(int productdetailid3)
         {
@@ -131,13 +132,13 @@ namespace MvcPhoenix.Controllers
             PP.sgrevisiondate = DateTime.UtcNow;
             PP.UpdateUserDetail = HttpContext.User.Identity.Name;
             PP.UpdateDateDetail = DateTime.UtcNow;
-            
+
             // save model held in memory to db
             int pk = ProductsService.fnSaveProductProfile(PP);
 
             // find entries for shelfsize info, ghs, cas where id = productdetailid3
             // clone these entries where id = PP.productdetailid
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 // Shelf
                 var shelf = (from s in db.tblShelfMaster
@@ -196,7 +197,7 @@ namespace MvcPhoenix.Controllers
                 }
 
                 // Product Notes Log
-                var pdln = new EF.tblPPPDLogNote();
+                var pdln = new tblPPPDLogNote();
 
                 pdln.ProductDetailID = PP.productdetailid;
                 pdln.NoteDate = DateTime.UtcNow;
@@ -220,11 +221,13 @@ namespace MvcPhoenix.Controllers
             if (String.IsNullOrEmpty(PPVM.productcode) || String.IsNullOrEmpty(PPVM.productname) || String.IsNullOrEmpty(PPVM.mastercode) || String.IsNullOrEmpty(PPVM.mastername))
             {
                 TempData["SaveResult"] = "Product Profile not saved. Missing product code/name";
-               return View("Edit", PPVM);
-            }           
+
+                return View("Edit", PPVM);
+            }
 
             int pk = ProductsService.fnSaveProductProfile(PPVM);
             TempData["SaveResult"] = "Product Profile updated on " + DateTime.UtcNow.ToString("R");
+
             return RedirectToAction("Edit", new { id = pk });
         }
 
@@ -243,6 +246,7 @@ namespace MvcPhoenix.Controllers
         {
             UN obj = new UN();
             obj = ProductsService.fnGetUN(id);
+
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -251,6 +255,7 @@ namespace MvcPhoenix.Controllers
         {
             UN obj = new UN();
             obj = ProductsService.fnGetUN(id);
+
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -259,6 +264,7 @@ namespace MvcPhoenix.Controllers
         {
             UN obj = new UN();
             obj = ProductsService.fnGetUN(id);
+
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -267,6 +273,7 @@ namespace MvcPhoenix.Controllers
         {
             UN obj = new UN();
             obj = ProductsService.fnGetUN(id);
+
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
@@ -276,7 +283,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult ProductLogList(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var obj = (from t in db.tblPPPDLogNote
                            where t.ProductDetailID == id
@@ -288,15 +295,14 @@ namespace MvcPhoenix.Controllers
                                notedate = t.NoteDate,
                                notes = t.Notes,
                                reasoncode = t.ReasonCode,
-                               ListOfReasonCodes = (from r in db.tblReasonCode
-                                                    orderby r.Reason
-                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList(),
                                UpdateDate = t.UpdateDate,
                                UpdateUser = t.UpdateUser,
                                CreateDate = t.CreateDate,
                                CreateUser = t.CreateUser
                            }).ToList();
+
                 ViewBag.ParentKey = id;
+
                 return PartialView("~/Views/Products/_LogNotes.cshtml", obj);
             }
         }
@@ -306,6 +312,7 @@ namespace MvcPhoenix.Controllers
         {
             // id=ProductDetailID as the FK
             var PN = ProductsService.fnCreateProductNote(id);
+
             return PartialView("~/Views/Products/_LogNotesModal.cshtml", PN);
         }
 
@@ -314,6 +321,7 @@ namespace MvcPhoenix.Controllers
         {
             // id=ProductNoteID as the PK
             var PN = ProductsService.fnGetProductNote(id);
+
             return PartialView("~/Views/Products/_LogNotesModal.cshtml", PN);
         }
 
@@ -321,6 +329,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveProductNote(ProductNote PN)
         {
             int pk = ProductsService.fnSaveProductNoteToDB(PN);
+
             return Content("Data Updated on " + DateTime.UtcNow.ToString("R"));
         }
 
@@ -328,6 +337,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult DeleteProductNote(int id, int ParentID)
         {
             int pk = ProductsService.fnDeleteProductNote(id);
+
             return null;
         }
 
@@ -338,7 +348,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CasList(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var obj = (from t in db.tblCAS
                            where t.ProductDetailID == id
@@ -368,6 +378,7 @@ namespace MvcPhoenix.Controllers
         {
             // id = ProductDetailID
             var CS = ProductsService.fnCreateCAS(id);
+
             return PartialView("~/Views/Products/_CasModal.cshtml", CS);
         }
 
@@ -376,6 +387,7 @@ namespace MvcPhoenix.Controllers
         {
             // id= CASID
             var CS = ProductsService.fnGetCAS(id);
+
             return PartialView("~/Views/Products/_CasModal.cshtml", CS);
         }
 
@@ -383,12 +395,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveCAS(Cas CS)
         {
             int pk = ProductsService.fnSaveCASToDB(CS);
+
             return Content("Data Updated on " + DateTime.UtcNow.ToString("R"));
         }
 
         public ActionResult DeleteCAS(int id)
         {
             int pk = ProductsService.fnDeleteCAS(id);
+
             return null;
         }
 
@@ -399,7 +413,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult XRefList(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var obj = (from t in db.tblProductXRef
                            orderby t.ProductXRefID
@@ -467,7 +481,6 @@ namespace MvcPhoenix.Controllers
         {
             ClientProductXRef CXRef = new ClientProductXRef();
             CXRef.ProductXRefID = -1;
-            CXRef.ListOfClients = ProductsService.fnListOfClients();
 
             return PartialView("~/Views/Products/_ClientXRefModal.cshtml", CXRef);
         }
@@ -477,7 +490,6 @@ namespace MvcPhoenix.Controllers
         {
             // id = ProductXRefID
             var CXRef = ProductsService.fnGetXRef(id);
-            CXRef.ListOfClients = ProductsService.fnListOfClients();
 
             return PartialView("~/Views/Products/_ClientXRefModal.cshtml", CXRef);
         }
@@ -486,12 +498,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveXRef(ClientProductXRef CXRef)
         {
             int pk = ProductsService.fnSaveXRefToDB(CXRef);
+
             return null;
         }
 
         public ActionResult DeleteXRef(int id)
         {
             int pk = ProductsService.fnDeleteXRef(id);
+
             return null;
         }
 

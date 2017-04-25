@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
 using PagedList;
 using Rotativa;
 using System;
@@ -12,7 +13,6 @@ namespace MvcPhoenix.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.ListOfClients = InvoiceService.ListOfClientIDs();
             List<InvoiceViewModel> mylist = InvoiceService.IndexList();
 
             return View(mylist);
@@ -20,12 +20,12 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BuildBillingGroupDDL(int id)
         {
-            return Content(InvoiceService.fnBuildBillingGroupDDL(id));
+            return Content(ApplicationService.ddlBuildBillingGroup(id));
         }
 
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 ViewBag.CurrentSort = sortOrder;
                 ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -122,6 +122,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult View(int id)
         {
             var vm = InvoiceService.FillInvoice(id);
+
             return View(vm);
         }
 
@@ -129,6 +130,7 @@ namespace MvcPhoenix.Controllers
         {
             string footer = DocumentFooter();
             var vm = InvoiceService.FillInvoice(id);
+
             return new ViewAsPdf(vm) { CustomSwitches = footer };
         }
 
@@ -139,6 +141,7 @@ namespace MvcPhoenix.Controllers
                 "                                                                                                                                    " +
                 " Page: [page]/[toPage]\"" +
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+
             return footer;
         }
     }

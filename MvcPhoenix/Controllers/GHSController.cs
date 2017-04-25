@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Extensions;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Extensions;
 using MvcPhoenix.Models;
 using PagedList;
 using System;
@@ -19,7 +20,7 @@ namespace MvcPhoenix.Controllers
 
             try
             {
-                using (var db = new EF.CMCSQL03Entities())
+                using (var db = new CMCSQL03Entities())
                 {
                     var pd = (from t in db.tblProductDetail
                               where t.ProductDetailID == id
@@ -54,13 +55,13 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Detail(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 List<GHSDetail> model = new List<GHSDetail>();
 
                 var phdetail = (from t in db.tblGHSPHDetail
                                 join tsrc in db.tblGHSPHSource on t.PHNumber equals tsrc.PHNumber
-                                where t.ProductDetailID == id //&& tsrc.Language == "EN"
+                                where t.ProductDetailID == id
                                 orderby t.PHNumber ascending
                                 select new
                                 {
@@ -73,7 +74,7 @@ namespace MvcPhoenix.Controllers
                                     tsrc.CreateUser
                                 }).ToList();
 
-                foreach (var item in phdetail) //retrieve each item and assign to model
+                foreach (var item in phdetail)
                 {
                     model.Add(new GHSDetail()
                     {
@@ -93,9 +94,11 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Save(GHSViewModel obj)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                var q = (from t in db.tblGHS where t.ProductDetailID == obj.ProductDetailID select t).FirstOrDefault();
+                var q = (from t in db.tblGHS 
+                         where t.ProductDetailID == obj.ProductDetailID 
+                         select t).FirstOrDefault();
 
                 if (q != null)
                 {
@@ -111,7 +114,7 @@ namespace MvcPhoenix.Controllers
                 }
                 else
                 {
-                    var newrecord = new EF.tblGHS
+                    var newrecord = new tblGHS
                     {
                         ProductDetailID = obj.ProductDetailID,
                         SignalWord = obj.GHSSignalWord,
@@ -133,7 +136,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 ViewBag.CurrentSort = sortOrder;
                 ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
@@ -187,11 +190,11 @@ namespace MvcPhoenix.Controllers
         {
             int proddetid = Convert.ToInt32(TempData["ProductDetId"]);
 
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var srcrcd = db.tblGHSPHSource.Find(id);
 
-                var newrecord = new EF.tblGHSPHDetail
+                var newrecord = new tblGHSPHDetail
                 {
                     PHNumber = srcrcd.PHNumber,
                     ProductDetailID = proddetid,
@@ -209,7 +212,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult ExcludePH(int id, bool isChecked)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var dtrcd = db.tblGHSPHDetail.Find(id);
 
@@ -222,7 +225,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult DeletePHDetail(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 string s = @"DELETE FROM tblGHSPHDetail WHERE PHDetailID=" + id.ToString();
                 db.Database.ExecuteSqlCommand(s);
@@ -236,10 +239,11 @@ namespace MvcPhoenix.Controllers
         {
             GHSPHSource PHSrc = new GHSPHSource();
             
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var phsrc = (from t in db.tblGHSPHSource
-                             where t.PHNumber == phnumber && t.Language == lang
+                             where t.PHNumber == phnumber 
+                             && t.Language == lang
                              select t).FirstOrDefault();
 
                 if (phsrc != null)
@@ -256,7 +260,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult SavePHSource(GHSPHSource obj)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var PH = (from t in db.tblGHSPHSource 
                                     where t.PHsourceID == obj.PHSourceID 
@@ -280,7 +284,7 @@ namespace MvcPhoenix.Controllers
             GHSPHSource PHSrc = new GHSPHSource();
             string[] Suffix = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var phsrc = (from t in db.tblGHSPHSource
                              where t.PHsourceID == id
@@ -309,7 +313,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult SaveClone(GHSPHSource obj, string oldPHNumber)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var ph = (from p in db.tblGHSPHSource
                           where p.PHNumber == oldPHNumber
@@ -355,7 +359,7 @@ namespace MvcPhoenix.Controllers
 
             try
             {
-                using (var db = new EF.CMCSQL03Entities())
+                using (var db = new CMCSQL03Entities())
                 {
                     var pd = (from t in db.tblProductDetail
                               where t.ProductDetailID == id

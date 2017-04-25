@@ -1,9 +1,25 @@
 ﻿@model List<MvcPhoenix.Models.InventoryLogNote>
 
+@if (Model.Count < 1)
+{
+    <label class="lead">No Inventory Log Entry Found.</label>
+    <span class="col-md-3 pull-right row">
+        @Ajax.ActionLink("Add New Log", "CreateInventoryLogNote", "Inventory", new { id = @ViewBag.ParentKey }, new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "GET",
+                UpdateTargetId = "dialogPlaceholder",
+                OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
+            }, new { @class = "btn btn-primary btn-block" })
+    </span>
+}
+
+@if (@Model.Count > 0)
+{
 <div id="dvLogNotes">
     <div class="row">
         <div class="col-md-3 pull-right">
-            @Ajax.ActionLink("+ Add New Log", "CreateInventoryLogNote", "Inventory", new { id = @ViewBag.ParentKey }, new AjaxOptions
+            @Ajax.ActionLink("Add New Log", "CreateInventoryLogNote", "Inventory", new { id = @ViewBag.ParentKey }, new AjaxOptions
             {
                 InsertionMode = InsertionMode.Replace,
                 HttpMethod = "GET",
@@ -60,7 +76,7 @@
         </table>
     </div>
 </div>
-
+}
 <script type="text/javascript">
     function UpdateInventoryNotesList() {
         $("#dvLogNotes").load('@Url.Action("InventoryLogList", "Inventory", new { id = @ViewBag.ParentKey })');

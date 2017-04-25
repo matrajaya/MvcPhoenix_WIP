@@ -47,7 +47,7 @@
                         {
                             <div class="col-md-3">
                                 <label>Client</label>
-                                @Html.DropDownList("ClientID", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
+                                @Html.DropDownList("ClientID", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientID()", @class = "form-control" })
                             </div>
                             <div class="col-md-3">
                                 <label>Billing Group</label>

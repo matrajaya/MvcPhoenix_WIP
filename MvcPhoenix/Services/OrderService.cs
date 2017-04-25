@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 
 namespace MvcPhoenix.Services
 {
@@ -20,16 +19,10 @@ namespace MvcPhoenix.Services
                 OrderMasterFull vm = new OrderMasterFull();
                 vm.orderid = -1;
                 vm.clientid = id;
-                vm.ListOfDivisions = fnListOfDivisions(id);
                 var cl = db.tblClient.Find(vm.clientid);
                 vm.clientname = cl.ClientName;
                 vm.orderstatus = "z";
                 vm.orderdate = DateTime.UtcNow;
-                vm.ListOfSalesReps = fnListOfSalesReps(id);
-                vm.ListOfRequestors = fnListOfRequestors(id);
-                vm.ListOfCountries = fnListOfCountries();
-                vm.ListOfEndUses = fnListOfEndUses(id);
-                vm.ListOfShipVias = fnListOfShipVias();
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 vm.CreateDate = DateTime.UtcNow;
                 vm.IsSDN = false;
@@ -56,13 +49,6 @@ namespace MvcPhoenix.Services
                                 select t).Count();
 
                 var cl = db.tblClient.Find(q.ClientID);
-
-                o.ListOfSalesReps = fnListOfSalesReps(cl.ClientID);
-                o.ListOfRequestors = fnListOfRequestors(cl.ClientID);
-                o.ListOfCountries = fnListOfCountries();
-                o.ListOfEndUses = fnListOfEndUses(cl.ClientID);
-                o.ListOfShipVias = fnListOfShipVias();
-                o.ListOfDivisions = fnListOfDivisions(cl.ClientID);
 
                 o.clientname = cl.ClientName;
                 o.clientcode = cl.ClientCode;
@@ -396,7 +382,6 @@ namespace MvcPhoenix.Services
                 vm.CreateDate = DateTime.UtcNow;
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 vm.ProductDetailID = -1;
-                vm.ListOfProductDetailIDs = fnListOfProductCodes(vm.ClientID);
                 vm.ProductCode = null;
                 vm.ProductName = null;
                 vm.Size = null;
@@ -405,14 +390,12 @@ namespace MvcPhoenix.Services
                 vm.LotNumber = null;
                 vm.ShipDate = null;
                 vm.ItemShipVia = "";
-                vm.ListOfShipVias = fnListOfShipVias();
                 vm.CSAllocate = true;
                 vm.AllocateStatus = null;
                 vm.NonCMCDelay = false;
                 vm.CarrierInvoiceRcvd = false;
                 vm.DelayReason = null;
                 vm.StatusID = -1;
-                vm.ListOfStatusNotesIDs = fnListOfStatusNotesIDs();
                 vm.AlertNotesShipping = "<< AlertNotesShipping >>";
                 vm.AlertNotesPackOut = "<< AlertNotesPackOut >>";
                 vm.AlertNotesOrderEntry = "<< AlertNotesOrderEntry >>";
@@ -458,17 +441,14 @@ namespace MvcPhoenix.Services
                 vm.UpdateDate = q.UpdateDate;
                 vm.UpdateUser = q.UpdateUser;
                 vm.ProductDetailID = q.ProductDetailID;
-                vm.ListOfProductDetailIDs = fnListOfProductCodes(vm.ClientID);
                 vm.ProductCode = q.ProductCode;
                 vm.ProductName = q.ProductName;
                 vm.ShelfID = q.ShelfID;
-                vm.ListOfShelfIDs = fnProductCodeSizes(Convert.ToInt32(vm.ProductDetailID));
                 vm.Size = q.Size;
                 vm.SRSize = q.SRSize;
                 vm.Qty = q.Qty;
                 vm.LotNumber = q.LotNumber;
                 vm.ItemShipVia = q.Via;
-                vm.ListOfShipVias = fnListOfShipVias();
                 vm.ShipDate = q.ShipDate;
                 vm.CSAllocate = q.CSAllocate;
                 vm.AllocateStatus = q.AllocateStatus;
@@ -479,7 +459,6 @@ namespace MvcPhoenix.Services
                 vm.SPSCharge = q.SPSCharge;
                 vm.Status = q.Status;
                 vm.StatusID = null;
-                vm.ListOfStatusNotesIDs = fnListOfStatusNotesIDs();
                 vm.ItemNotes = q.ItemNotes;
                 vm.WasteOrderTotalWeight = q.WasteOrderTotalWeight;
                 vm.AlertNotesShipping = q.AlertNotesShipping;
@@ -582,11 +561,11 @@ namespace MvcPhoenix.Services
             System.Threading.Thread.Sleep(1000);
             using (var db = new CMCSQL03Entities())
             {
-                var qry = (from t in db.tblOrderItem
-                           where t.ItemID == id
-                           select t).FirstOrDefault();
+                var result = (from t in db.tblOrderItem
+                              where t.ItemID == id
+                              select t).FirstOrDefault();
 
-                if (qry != null)
+                if (result != null)
                 {
                     string s = @"DELETE FROM tblOrderItem WHERE ItemID=" + id.ToString();
                     db.Database.ExecuteSqlCommand(s);
@@ -704,29 +683,29 @@ namespace MvcPhoenix.Services
 
         public static OrderTrans fnFillTrans(int id)
         {
-            OrderTrans vm = new OrderTrans();
+            OrderTrans orderitemtransaction = new OrderTrans();
 
             using (var db = new CMCSQL03Entities())
             {
-                var qry = (from t in db.tblOrderTrans
-                           where t.OrderTransID == id
-                           select t).FirstOrDefault();
+                var result = (from t in db.tblOrderTrans
+                              where t.OrderTransID == id
+                              select t).FirstOrDefault();
 
-                vm.ordertransid = qry.OrderTransID;
-                vm.orderid = qry.OrderID;
-                vm.orderitemid = qry.OrderItemID;
-                vm.clientid = qry.ClientID;
-                vm.transdate = qry.TransDate;
-                vm.transtype = qry.TransType;
-                vm.transqty = qry.TransQty;
-                vm.transamount = qry.TransAmount;
-                vm.comments = qry.Comments;
-                vm.createdate = qry.CreateDate;
-                vm.createuser = qry.CreateUser;
-                vm.updatedate = qry.UpdateDate;
-                vm.updateuser = qry.UpdateUser;
+                orderitemtransaction.ordertransid = result.OrderTransID;
+                orderitemtransaction.orderid = result.OrderID;
+                orderitemtransaction.orderitemid = result.OrderItemID;
+                orderitemtransaction.clientid = result.ClientID;
+                orderitemtransaction.transdate = result.TransDate;
+                orderitemtransaction.transtype = result.TransType;
+                orderitemtransaction.transqty = result.TransQty;
+                orderitemtransaction.transamount = result.TransAmount;
+                orderitemtransaction.comments = result.Comments;
+                orderitemtransaction.createdate = result.CreateDate;
+                orderitemtransaction.createuser = result.CreateUser;
+                orderitemtransaction.updatedate = result.UpdateDate;
+                orderitemtransaction.updateuser = result.UpdateUser;
 
-                return vm;
+                return orderitemtransaction;
             }
         }
 
@@ -787,8 +766,8 @@ namespace MvcPhoenix.Services
                 {
                     // Assume this is a SR size ??????????????????????
                     var tierSpecialRequest = (from t in db.tblTier
-                                              where t.ClientID == o.ClientID 
-                                              && t.Size == "1SR" 
+                                              where t.ClientID == o.ClientID
+                                              && t.Size == "1SR"
                                               && t.TierLevel == 1
                                               select t).FirstOrDefault();
 
@@ -849,40 +828,40 @@ namespace MvcPhoenix.Services
                     // this should rest me on a shelfmaster that is really the bulk size sample
                 }
 
-                var qrySurcharges = (from t in db.tblSurcharge
-                                     where t.ClientID == o.ClientID
-                                     select t).FirstOrDefault();
+                var surcharge = (from t in db.tblSurcharge
+                                 where t.ClientID == o.ClientID
+                                 select t).FirstOrDefault();
 
-                if (qrySurcharges != null)
+                if (surcharge != null)
                 {
                     if (sm.HazardSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "HAZD", qrySurcharges.Haz);
+                        fnInsertOrderTrans(oi.ItemID, "HAZD", surcharge.Haz);
                     }
 
                     if (sm.FlammableSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "FLAM", qrySurcharges.Flam);
+                        fnInsertOrderTrans(oi.ItemID, "FLAM", surcharge.Flam);
                     }
 
                     if (sm.HeatSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "HEAT", qrySurcharges.Heat);
+                        fnInsertOrderTrans(oi.ItemID, "HEAT", surcharge.Heat);
                     }
 
                     if (sm.RefrigSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "REFR", qrySurcharges.Refrig);
+                        fnInsertOrderTrans(oi.ItemID, "REFR", surcharge.Refrig);
                     }
 
                     if (sm.FreezerSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "FREZ", qrySurcharges.Freezer);
+                        fnInsertOrderTrans(oi.ItemID, "FREZ", surcharge.Freezer);
                     }
 
                     if (sm.CleanSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "CLEN", qrySurcharges.Clean);
+                        fnInsertOrderTrans(oi.ItemID, "CLEN", surcharge.Clean);
                     }
 
                     if (sm.BlendSurcharge == true)
@@ -892,7 +871,7 @@ namespace MvcPhoenix.Services
 
                     if (sm.NalgeneSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "NALG", qrySurcharges.Nalgene);
+                        fnInsertOrderTrans(oi.ItemID, "NALG", surcharge.Nalgene);
                     }
 
                     if (sm.NitrogenSurcharge == true)
@@ -912,7 +891,7 @@ namespace MvcPhoenix.Services
 
                     if (sm.LabelSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "LABL", qrySurcharges.LabelFee);
+                        fnInsertOrderTrans(oi.ItemID, "LABL", surcharge.LabelFee);
                     }
 
                     if (sm.OtherSurcharge == true)
@@ -969,7 +948,10 @@ namespace MvcPhoenix.Services
             {
                 int AllocationCount = 0;
                 var orderitems = (from t in db.tblOrderItem
-                                  where t.OrderID == OrderID && t.ShipDate == null && t.AllocateStatus == null && t.CSAllocate == true
+                                  where t.OrderID == OrderID
+                                  && t.ShipDate == null
+                                  && t.AllocateStatus == null
+                                  && t.CSAllocate == true
                                   select t).ToList();
 
                 if (orderitems == null)
@@ -1273,7 +1255,8 @@ namespace MvcPhoenix.Services
 
         public static List<OrderMasterFull> fnOrdersSearchResults()
         {
-            // default query join for the index_partial ORDERS search results, also used by all the search requests as the starting point
+            // default query join for the index_partial ORDERS search results,
+            // also used by all the search requests as the starting point
             using (var db = new CMCSQL03Entities())
             {
                 db.Configuration.AutoDetectChangesEnabled = false;
@@ -1285,7 +1268,12 @@ namespace MvcPhoenix.Services
                                            select items).Count()
 
                               let allocationcount = (from i in db.tblOrderItem
-                                                     where i.OrderID == t.OrderID && i.ShipDate == null && i.Qty > 0 && String.IsNullOrEmpty(i.AllocateStatus) && i.ProductDetailID != null && i.ShelfID == null
+                                                     where i.OrderID == t.OrderID
+                                                     && i.ShipDate == null
+                                                     && i.Qty > 0
+                                                     && String.IsNullOrEmpty(i.AllocateStatus)
+                                                     && i.ProductDetailID != null
+                                                     && i.ShelfID == null
                                                      select i).Count()
 
                               select new OrderMasterFull
@@ -1310,267 +1298,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        // TODO: Combine both size dropdownlists
-        public static string fnBuildSizeDropDown(int id)
-        {
-            // id=productdetailid
-            using (var db = new CMCSQL03Entities())
-            {
-                bool isSRcheck = false; //flag to avoid duplicate listing of 1SR
-                var qry = (from t in db.tblShelfMaster
-                           where t.ProductDetailID == id && t.InactiveSize != true
-                           orderby t.Size
-                           select t);
-
-                string s = "<option value='' selected=true></option>";
-                if (qry.Count() > 0)
-                {
-                    foreach (var item in qry)
-                    {
-                        if (item.Size == "1SR")
-                        {
-                            isSRcheck = true;
-                        }
-                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - " + item.UnitWeight + "</option>";
-                    }
-                }
-                if (!isSRcheck)
-                {
-                    s = s + "<option value='0'>1SR</option>";
-                }
-
-                return s;
-            }
-        }
-
-        public static List<SelectListItem> fnProductCodeSizes(int id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblShelfMaster
-                          where t.ProductDetailID == id && t.InactiveSize != true
-                          orderby t.Size
-                          select new SelectListItem
-                          {
-                              Value = t.ShelfID.ToString(),
-                              Text = t.Size + " - " + t.UnitWeight
-                          }).ToList();
-
-                return mylist;
-            }
-        }
-
-        // End: TODO: Combine both dropdownlists
-
-        public static List<SelectListItem> fnListOfOrderItemIDs(int? id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblOrderItem
-                          where t.OrderID == id
-                          orderby t.ProductCode
-                          select new SelectListItem { Value = t.ItemID.ToString(), Text = t.ProductCode }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "None" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfDelayReasons()
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-
-            mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
-            mylist.Insert(1, new SelectListItem { Value = "Backorder", Text = "Backorder" });
-            mylist.Insert(2, new SelectListItem { Value = "Oven Product", Text = "Oven Product" });
-            mylist.Insert(3, new SelectListItem { Value = "Humidity", Text = "Humidity" });
-            mylist.Insert(4, new SelectListItem { Value = "Very Large Order", Text = "Very Large Order" });
-            mylist.Insert(5, new SelectListItem { Value = "Questions/Info Needed", Text = "Questions/Info Needed" });
-            mylist.Insert(6, new SelectListItem { Value = "Special Doc Required", Text = "Special Doc Required" });
-            mylist.Insert(7, new SelectListItem { Value = "Special Request Size", Text = "Special Request Size" });
-            mylist.Insert(8, new SelectListItem { Value = "Return Order", Text = "Return Order" });
-            mylist.Insert(9, new SelectListItem { Value = "Waste", Text = "Waste" });
-            mylist.Insert(10, new SelectListItem { Value = "No partial delivery", Text = "No partial delivery" });
-            mylist.Insert(11, new SelectListItem { Value = "Special delivery date", Text = "Special delivery date" });
-            mylist.Insert(12, new SelectListItem { Value = "Public holiday", Text = "Public holiday" });
-            mylist.Insert(13, new SelectListItem { Value = "Freezable Procedure", Text = "Freezable Procedure" });
-            mylist.Insert(14, new SelectListItem { Value = "CMC delay, customer informed", Text = "CMC delay, customer informed" });
-            mylist.Insert(15, new SelectListItem { Value = "R&D flow", Text = "R&D flow" });
-            mylist.Insert(16, new SelectListItem { Value = "Special procedure", Text = "Special procedure" });
-            mylist.Insert(17, new SelectListItem { Value = "Misc. Charges", Text = "Misc. Charges" });
-            mylist.Insert(18, new SelectListItem { Value = "Transfer order", Text = "Transfer order" });
-            mylist.Insert(19, new SelectListItem { Value = "Consolidated Order", Text = "Consolidated Order" });
-            mylist.Insert(20, new SelectListItem { Value = "Approval Required", Text = "Approval Required" });
-            mylist.Insert(21, new SelectListItem { Value = "Conditioned packaging", Text = "Conditioned packaging" });
-            mylist.Insert(22, new SelectListItem { Value = "Product Not Setup", Text = "Product Not Setup" });
-            mylist.Insert(23, new SelectListItem { Value = "Frt Fwd-Pending Arrangement", Text = "Frt Fwd-Pending Arrangement" });
-            mylist.Insert(24, new SelectListItem { Value = "Labels, SDS", Text = "Labels, SDS" });
-
-            return mylist;
-        }
-
-        public static List<SelectListItem> fnListOfClientIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblClient
-                          orderby t.ClientName
-                          select new SelectListItem
-                          {
-                              Value = t.ClientID.ToString(),
-                              Text = t.ClientName
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfDivisions(int? id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblDivision
-                          where t.ClientID == id
-                          orderby t.DivisionName
-                          select new SelectListItem
-                          {
-                              Value = t.DivisionID.ToString(),
-                              Text = t.DivisionName + " / " + t.BusinessUnit
-                          }).Distinct().ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
-            }
-        }
-
-        public static List<OrderItem> fnListOfOrderItemsForOrderID(int OrderID)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<OrderItem> mylist = new List<OrderItem>();
-
-                var qry = (from t in db.tblOrderItem
-                           where t.OrderID == OrderID
-                           select t).ToList();
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnProductCodeXref(int? id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblProductXRef
-                          where t.ClientID == id
-                          orderby t.CustProductCode
-                          select new SelectListItem
-                          {
-                              Value = t.CustProductCode,
-                              Text = t.CustProductCode + " : " + t.CMCProductCode
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Client Product Code" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfOrderIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblOrderMaster
-                          orderby t.OrderID descending
-                          select new SelectListItem
-                          {
-                              Value = t.OrderID.ToString(),
-                              Text = t.OrderID.ToString()
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfCountries()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblCountry
-                          orderby t.Country
-                          select new SelectListItem
-                          {
-                              Value = t.Country,
-                              Text = t.Country
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfSalesReps(int? id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblClientContact
-                          where t.ClientID == id
-                          where t.ContactType == "SalesRep"
-                          orderby t.FullName
-                          select new SelectListItem
-                          {
-                              Value = t.ClientContactID.ToString(),
-                              Text = t.FullName
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfRequestors(int id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblClientContact
-                          where t.ClientID == id
-                          where t.ContactType == "Requestor"
-                          orderby t.FullName
-                          select new SelectListItem
-                          {
-                              Value = t.ClientContactID.ToString(),
-                              Text = t.FullName
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
         public static Contact fnGetClientContacts(int id)
         {
             // fill a json object for View use
@@ -1589,125 +1316,6 @@ namespace MvcPhoenix.Services
                 obj.Account = q.Account;
 
                 return obj;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfEndUses(int? id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblEndUse
-                          where t.ClientID == id
-                          orderby t.EndUse
-                          select new SelectListItem
-                          {
-                              Value = t.EndUse,
-                              Text = t.EndUse
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfShipVias()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblCarrier
-                          orderby t.CarrierName
-                          select new SelectListItem
-                          {
-                              Value = t.CarrierName,
-                              Text = t.CarrierName
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfProductCodes(int? id)
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                mylist = (from t in db.tblProductDetail
-                          join m in db.tblProductMaster on t.ProductMasterID equals m.ProductMasterID
-                          where m.ClientID == id
-                          orderby t.ProductCode
-                          select new SelectListItem
-                          {
-                              Value = t.ProductDetailID.ToString(),
-                              Text = t.ProductCode + " " + t.ProductName
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfShipViasItemLevel()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblCarrier
-                          orderby t.CarrierName
-                          select new SelectListItem
-                          {
-                              Value = t.CarrierName,
-                              Text = t.CarrierName
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfStatuses()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist.Add(new SelectListItem { Value = "S1", Text = "S1" });
-                mylist.Add(new SelectListItem { Value = "S2", Text = "S2" });
-                mylist.Add(new SelectListItem { Value = "S3", Text = "S3" });
-
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfStatusNotesIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblStatusNotes
-                          orderby t.Note
-                          select new SelectListItem
-                          {
-                              Value = t.Note,
-                              Text = t.Note
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
             }
         }
 
@@ -1731,7 +1339,8 @@ namespace MvcPhoenix.Services
                     r.ImportStatus = "FAIL";
 
                     var qclt = (from t in db.tblClient
-                                where t.CMCLongCustomer == r.Company_MDB && t.CMCLocation == r.Location_MDB
+                                where t.CMCLongCustomer == r.Company_MDB
+                                && t.CMCLocation == r.Location_MDB
                                 select t).FirstOrDefault();
 
                     if (qclt == null)
@@ -1743,7 +1352,8 @@ namespace MvcPhoenix.Services
                     {
                         r.ClientID = qclt.ClientID;
                         var qdiv = (from t in db.tblDivision
-                                    where t.ClientID == r.ClientID && t.DivisionName == r.Division_MDB
+                                    where t.ClientID == r.ClientID
+                                    && t.DivisionName == r.Division_MDB
                                     select t).FirstOrDefault();
 
                         if (qdiv != null)
@@ -1755,7 +1365,8 @@ namespace MvcPhoenix.Services
                     // will this always return one row ?????
                     var qPD = (from pd in db.tblProductDetail
                                join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                               where pd.ProductCode == r.ProductCode && pm.ClientID == r.ClientID
+                               where pd.ProductCode == r.ProductCode
+                               && pm.ClientID == r.ClientID
                                select new { pd, pm }).FirstOrDefault();
 
                     if (qPD == null)
@@ -1768,7 +1379,8 @@ namespace MvcPhoenix.Services
                         r.ProductDetailID = qPD.pd.ProductDetailID;
                         // note - there needs to be a SM record for size 1SR for each productdetailid that can be sampled in SR
                         var qSM = (from t in db.tblShelfMaster
-                                   where t.ProductDetailID == r.ProductDetailID && t.Size == r.Size
+                                   where t.ProductDetailID == r.ProductDetailID
+                                   && t.Size == r.Size
                                    select t).FirstOrDefault();
 
                         if (qSM == null)
@@ -1783,7 +1395,8 @@ namespace MvcPhoenix.Services
                         else
                         {
                             var qSM_SR = (from t in db.tblShelfMaster
-                                          where t.ProductDetailID == r.ProductDetailID && t.Size == "1SR"
+                                          where t.ProductDetailID == r.ProductDetailID
+                                          && t.Size == "1SR"
                                           select t).FirstOrDefault();
 
                             if (qSM_SR != null)
@@ -1831,7 +1444,8 @@ namespace MvcPhoenix.Services
                 // if ImportStatus=GOOD we can create VM objects as if it were data entry
 
                 var qGUIDs = (from t in db.tblOrderImport
-                              where t.ImportStatus == "PASS" && t.Location_MDB == sLocation
+                              where t.ImportStatus == "PASS"
+                              && t.Location_MDB == sLocation
                               select new { t.GUID }).ToList().Distinct();
 
                 foreach (var r in qGUIDs)
@@ -2018,7 +1632,7 @@ namespace MvcPhoenix.Services
 
         public static int ExecuteADOSQL(string sql)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand(sql);
                 return 1;

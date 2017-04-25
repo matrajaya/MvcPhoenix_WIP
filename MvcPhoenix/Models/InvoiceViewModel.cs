@@ -23,15 +23,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Warehouse Location")]
         public string warehouselocation { get; set; }
-
-        public enum WHChoice
-        {
-            CT,
-            CO,
-            EU,
-            AP
-        }
-
+        
         [Display(Name = "Client ID")]
         public int? clientid { get; set; }
 
@@ -61,20 +53,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Invoice Status")]
         public string status { get; set; }          // choices: NEW / REVIEWED / VERIFIED / EMAILED / CLOSED
-
-        /// InvoiceStatusChoice is not being used for UX atm.
-        /// Will leave here in enum as a reference of options.
-        /// Most choices are used in services and controllers.
-        /// Might use choice when creating admin ux for invoice filter
-        public enum InvoiceStatusChoice
-        {
-            NEW,
-            REVIEWED,
-            VERIFIED,
-            EMAILED,
-            CLOSED
-        }
-
+        
         [Display(Name = "Invoice Date")]
         public DateTimeOffset? invoicedate { get; set; }
 
@@ -97,14 +76,7 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Currency")]
         public string currency { get; set; }
-
-        public enum CurrencyChoice
-        {
-            USD,
-            EUR,
-            CNY
-        }
-
+        
         [Display(Name = "Tier")]
         public int? tier { get; set; }
 

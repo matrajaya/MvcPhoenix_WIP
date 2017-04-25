@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -66,30 +67,22 @@ namespace MvcPhoenix.Models
 
     public class StockViewModel
     {
-        // All fields from tblStock so this class can be used by CRUD
-        public int? StockID { get; set; }
-
-        public int? BulkID { get; set; }
-        public int? ShelfID { get; set; }
-
         public List<SelectListItem> ListOfShelfMasterIDs { get; set; }
         public List<SelectListItem> ListOfBulkIDs { get; set; }
         public List<SelectListItem> ListOfShelfStatusIDs { get; set; }
-        public List<SelectListItem> ListOfWareHouseIDs { get; set; }
 
+        public int? StockID { get; set; }
+        public int? BulkID { get; set; }
+        public int? ShelfID { get; set; }
         public string Warehouse { get; set; }
         public int? QtyOnHand { get; set; }
         public int? QtyAllocated { get; set; }
-
         [StringLength(15, ErrorMessage = "[Max 15]")]
         public string Bin { get; set; }
-
         public string ShelfStatus { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? WasteAccumStartDate { get; set; }
-
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
@@ -118,8 +111,7 @@ namespace MvcPhoenix.Models
 
     public class BulkContainerViewModel
     {
-        public decimal? pm_sumofcurrentweight { get; set; } // hold sum(CurrentWeight) for ProductMasterID
-        
+        public decimal? pm_sumofcurrentweight { get; set; }                         // hold sum(CurrentWeight) for ProductMasterID        
         public string pm_OtherHandlingInstr { get; set; }
         public bool? pm_refrigerate { get; set; }
         public bool? pm_flammablestorageroom { get; set; }
@@ -132,151 +124,76 @@ namespace MvcPhoenix.Models
         public decimal? pm_shelflife { get; set; }
         public bool? pm_packoutonreceipt { get; set; }
         public int? pm_ceaseshipdifferential { get; set; }
-
         public string pd_groundunnum { get; set; }
         public string pd_groundpackinggrp { get; set; }
         public string pd_groundhazardclass { get; set; }
         public string pd_groundhazardsubclass { get; set; }
         public bool? pd_epabiocide{ get; set; }
-
         public string ghs_signalword { get; set; }
         public string ghs_symbol1 { get; set; }
         public string ghs_symbol2 { get; set; }
         public string ghs_symbol3 { get; set; }
         public string ghs_symbol4 { get; set; }
         public string ghs_symbol5 { get; set; }
-        
         public bool? isknownmaterial { get; set; }
         public string closelist { get; set; }
         public int? clientid { get; set; }
         public string clientname { get; set; }
-        public List<SelectListItem> ListOfClients { get; set; }
-
         public string logofilename { get; set; }
 
         // ******* basic info
-        [Display(Name = "BulkID")]
         public int bulkid { get; set; }
-
-        [Display(Name = "Warehouse")]
         public string warehouse { get; set; }
-
-        public List<SelectListItem> ListOfWareHouses { get; set; }
-
-        [Display(Name = "Receive Date")]
         public DateTime? receivedate { get; set; }
-
-        [Display(Name = "Carrier")]
         [StringLength(12, ErrorMessage = "[Max 12]")]
         public string carrier { get; set; }
-
-        public List<SelectListItem> ListOfCarriers { get; set; }
-
-        [Display(Name = "Received By")]
         public string receivedby { get; set; }
-
-        [Display(Name = "Entered By")]
         public string enteredby { get; set; }
-
-        [Display(Name = "Master Code")]
         public int? productmasterid { get; set; }
-
         public string MasterName { get; set; }
         public string MasterCode { get; set; }
-
-        public List<SelectListItem> ListOfProductMasters { get; set; }
-
-        [Display(Name = "Receive Weight")]
         public decimal? receiveweight { get; set; }
 
         // ******* batch and lot info
-        [Display(Name = "Lot Number")]
         [StringLength(25, ErrorMessage = "Max 25)")]
         public string lotnumber { get; set; }
-
-        [Display(Name = "Mfg Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? mfgdate { get; set; }
-
-        [Display(Name = "Expiration Date")]
         public DateTime? expirationdate { get; set; }
-
-        [Display(Name = "Cease Ship Date")]
         public DateTime? ceaseshipdate { get; set; }
-
-        [Display(Name = "Bulk Status")]
         public string bulkstatus { get; set; }
-
-        public List<SelectListItem> ListOfBulkStatusIDs { get; set; }
-
-        public string qty { get; set; } // default=1, No user interface, remove from db?
-
-        [Display(Name = "Unit Measure")]  // previous fieldname was Container
+        public string qty { get; set; }                                         // default=1, No user interface, remove from db?
         [StringLength(20, ErrorMessage = "Max 20)")]
-        public string um { get; set; }
-        public List<SelectListItem> ListOfUMs { get; set; }
-
-        [Display(Name = "Container Color")]
+        public string um { get; set; }                                          // previous fieldname was Container
         [StringLength(15, ErrorMessage = "Max 15)")]
         public string containercolor { get; set; }
-
-        [Display(Name = "Bin")]
         [StringLength(25, ErrorMessage = "Max 25)")]
         public string bin { get; set; }
-
-        [Display(Name = "Container Type")]
-        [StringLength(1, ErrorMessage = "Max 1)")]
-        public string containertype { get; set; }  // Steel, Plastic, Fiber, Other
-
-        public List<SelectListItem> ListOfContainerTypeIDs { get; set; }
-
-        [Display(Name = "COA Included?")]
+        public string containertype { get; set; }                               // Steel, Plastic, Fiber, Other
         public bool? coaincluded { get; set; }
-
-        [Display(Name = "MSDS Included?")]
         public bool? msdsincluded { get; set; }
-
-        [Display(Name = "Current Weight")]
         public decimal? currentweight { get; set; }
-
-        [Display(Name = "QC Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? qcdate { get; set; }
-
-        [Display(Name = "Return Location")]
         [StringLength(10, ErrorMessage = "Max 10)")]
         public string returnlocation { get; set; }
-
-        [Display(Name = "Notice Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? noticedate { get; set; }
-
-        [Display(Name = "Bulk Label Note")]
         [StringLength(100, ErrorMessage = "Max 100)")]
         public string bulklabelnote { get; set; }
-
-        [Display(Name = "Received As Code")]
         [StringLength(20, ErrorMessage = "Max 20)")]
         public string receivedascode { get; set; }
-
-        [Display(Name = "Received As Name")]
         [StringLength(25, ErrorMessage = "Max 25)")]
         public string receivedasname { get; set; }
-
-        [Display(Name = "Container Notes")]
         [StringLength(500, ErrorMessage = "Max 500)")]
         public string containernotes { get; set; }
-        
-        [Display(Name = "Waste Accum Start Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? wasteaccumstartdate { get; set; }
-
         public bool? markedforreturn { get; set; }
-
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
@@ -287,11 +204,9 @@ namespace MvcPhoenix.Models
     {
         public int productnoteid { get; set; }
         public int? productmasterid { get; set; }
-        public List<SelectListItem> fnListOfProductCodes { get; set; }
         public DateTime? notedate { get; set; }
         public string notes { get; set; }
-        public string reasoncode { get; set; } //current represented as comments in table. Change later - Iffy
-        public List<SelectListItem> ListOfReasonCodes { get; set; }
+        public string reasoncode { get; set; }                                  //current represented as comments in table. Change later - Iffy
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }

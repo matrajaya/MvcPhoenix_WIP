@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using System;
 using System.Web.Mvc;
@@ -7,11 +8,9 @@ namespace MvcPhoenix.Controllers
 {
     public class PackOutController : Controller
     {
-        private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-
         public ActionResult Index(int id, int productdetailid)
         {
-            using (db)
+            using (var db = new CMCSQL03Entities())
             {
                 TempData["productdetailid"] = productdetailid;    // to stash calling parameter into form for read on postback cause PDid not part of Bulk vm
                 var vm = BulkService.fnFillBulkContainerFromDB(id);

@@ -26,7 +26,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-12">
-                        @Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { @class = "form-control", onchange = "UpdateProductCodeDD()" })
+                        @Html.DropDownList("clientid", ApplicationService.ddlClientIDs(), new { @class = "form-control", onchange = "UpdateProductCodeDD()" })
                     </div>
                 </div>
             </div>

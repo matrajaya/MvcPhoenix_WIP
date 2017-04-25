@@ -1,5 +1,4 @@
 ﻿@model MvcPhoenix.Models.StockViewModel
-@{}
 
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog" role="document">
@@ -12,7 +11,6 @@
                     OnSuccess = "CloseUpdate"
                 }))
             {
-
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -21,7 +19,6 @@
                 </div>
 
                 <div id="dialogPlaceholderBody" class="modal-body">
-
                     @Html.HiddenFor(m => m.StockID)
                     @Html.HiddenFor(m => m.ProductDetailID)
 
@@ -64,7 +61,7 @@
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Status</label>
-                            @Html.DropDownListFor(m => m.ShelfStatus, Model.ListOfShelfStatusIDs, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.ShelfStatus, ApplicationService.ddlShelfStatusIDs(), new { @class = "form-control" })
                         </div>
                     </div>
 
@@ -144,4 +141,8 @@
         $('#dialogPlaceholderModal').modal('hide');
         window.location.reload();
     }
+
+    $(function () {
+        $(".date-picker").datepicker({ dateFormat: 'dd-M-yy' });
+    });
 </script>

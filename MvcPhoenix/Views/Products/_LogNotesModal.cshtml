@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Reason</label>
-                            @Html.DropDownListFor(m => m.reasoncode, Model.ListOfReasonCodes, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.reasoncode, ApplicationService.ddlReasonCodes(), new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">

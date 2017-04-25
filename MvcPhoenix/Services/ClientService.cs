@@ -1,8 +1,7 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 // ************** ClientService.cs ********************
 // This class contains Client Management service methods
@@ -16,7 +15,7 @@ namespace MvcPhoenix.Services
 
         public static ClientProfile FillFromDB(ClientProfile CP)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = (from t in db.tblClient
                          where t.ClientID == CP.ClientID
@@ -60,9 +59,9 @@ namespace MvcPhoenix.Services
 
         public static int NewClientId()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                var newrow = new EF.tblClient { };
+                var newrow = new tblClient { };
 
                 db.tblClient.Add(newrow);
                 db.SaveChanges();
@@ -75,7 +74,7 @@ namespace MvcPhoenix.Services
 
         public static void CreateClient(int clientid, string clientname, string clientcode, string whlocation)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = db.tblClient.Find(clientid);
                 q.ClientName = clientname;
@@ -109,7 +108,7 @@ namespace MvcPhoenix.Services
 
         public static void SaveClient(ClientProfile CP)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var q = db.tblClient.Find(CP.ClientID);
                 q.ClientID = CP.ClientID;
@@ -137,48 +136,47 @@ namespace MvcPhoenix.Services
 
         public static Division FillDivisionDetails(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                Division vm = new Division();
+                Division division = new Division();
 
-                var qry = (from t in db.tblDivision
-                           where t.DivisionID == id
-                           select t).FirstOrDefault();
+                var result = (from t in db.tblDivision
+                              where t.DivisionID == id
+                              select t).FirstOrDefault();
 
-                vm.DivisionID = qry.DivisionID;
-                vm.ClientID = qry.ClientID;
-                vm.DivisionName = qry.DivisionName;
-                vm.BusinessUnit = qry.BusinessUnit;
-                vm.WasteRateOffSpec = qry.WasteRate_OffSpec;
-                vm.WasteRateEmpty = qry.WasteRate_Empty;
-                vm.Inactive = qry.Inactive;
-                vm.ContactLabelName = qry.ContactLabelName;
-                vm.ContactLabelPhone = qry.ContactLabelPhone;
-                vm.ContactMSDSName = qry.ContactMSDSName;
-                vm.ContactMSDSPhone = qry.ContactMSDSPhone;
-                vm.EmergencyNumber = qry.EmergencyNumber;
-                vm.MainContactName = qry.MainContactName;
-                vm.MainContactNumber = qry.MainContactNumber;
-                vm.Abbr = qry.Abbr;
-                vm.UPSHazBook = qry.UPSHazBook;
-                vm.ExtMSDS = qry.ExtMSDS;
-                vm.ExtLabel = qry.ExtLabel;
-                vm.CompanyName = qry.CompanyName;
-                vm.CompanyStreet1 = qry.CompanyStreet1;
-                vm.CompanyStreet2 = qry.CompanyStreet2;
-                vm.CompanyStreet3 = qry.CompanyStreet3;
-                vm.CompanyPostalCode = qry.CompanyPostalCode;
-                vm.CompanyCity = qry.CompanyCity;
-                vm.CompanyCountry = qry.CompanyCountry;
-                vm.ListOfCountries = fnListOfCountries();
-                vm.CompanyTelephone = qry.CompanyTelephone;
-                vm.CompanyFax = qry.CompanyFax;
-                vm.CompanyEmergencyTelephone = qry.CompanyEmergencyTelephone;
-                vm.CompanyEmail = qry.CompanyEmail;
-                vm.CompanyWebsite = qry.CompanyWebsite;
-                vm.IncludeExpDtOnLabel = qry.IncludeExpDtOnLabel;
+                division.DivisionID = result.DivisionID;
+                division.ClientID = result.ClientID;
+                division.DivisionName = result.DivisionName;
+                division.BusinessUnit = result.BusinessUnit;
+                division.WasteRateOffSpec = result.WasteRate_OffSpec;
+                division.WasteRateEmpty = result.WasteRate_Empty;
+                division.Inactive = result.Inactive;
+                division.ContactLabelName = result.ContactLabelName;
+                division.ContactLabelPhone = result.ContactLabelPhone;
+                division.ContactMSDSName = result.ContactMSDSName;
+                division.ContactMSDSPhone = result.ContactMSDSPhone;
+                division.EmergencyNumber = result.EmergencyNumber;
+                division.MainContactName = result.MainContactName;
+                division.MainContactNumber = result.MainContactNumber;
+                division.Abbr = result.Abbr;
+                division.UPSHazBook = result.UPSHazBook;
+                division.ExtMSDS = result.ExtMSDS;
+                division.ExtLabel = result.ExtLabel;
+                division.CompanyName = result.CompanyName;
+                division.CompanyStreet1 = result.CompanyStreet1;
+                division.CompanyStreet2 = result.CompanyStreet2;
+                division.CompanyStreet3 = result.CompanyStreet3;
+                division.CompanyPostalCode = result.CompanyPostalCode;
+                division.CompanyCity = result.CompanyCity;
+                division.CompanyCountry = result.CompanyCountry;
+                division.CompanyTelephone = result.CompanyTelephone;
+                division.CompanyFax = result.CompanyFax;
+                division.CompanyEmergencyTelephone = result.CompanyEmergencyTelephone;
+                division.CompanyEmail = result.CompanyEmail;
+                division.CompanyWebsite = result.CompanyWebsite;
+                division.IncludeExpDtOnLabel = result.IncludeExpDtOnLabel;
 
-                return vm;
+                return division;
             }
         }
 
@@ -188,33 +186,32 @@ namespace MvcPhoenix.Services
 
         public static Supplier FillSupplierDetails(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                Supplier vm = new Supplier();
+                Supplier supplier = new Supplier();
 
-                var qry = (from t in db.tblBulkSupplier
-                           where t.BulkSupplierID == id
-                           select t).FirstOrDefault();
+                var result = (from t in db.tblBulkSupplier
+                              where t.BulkSupplierID == id
+                              select t).FirstOrDefault();
 
-                vm.BulkSupplierID = qry.BulkSupplierID;
-                vm.ClientID = qry.ClientID;
-                vm.SupplyID = qry.SupplyID;
-                vm.SupplierCode = qry.ShortName;
-                vm.SupplierName = qry.CompanyName;
-                vm.ContactName = qry.ContactName;
-                vm.Address1 = qry.Address1;
-                vm.Address2 = qry.Address2;
-                vm.Address3 = qry.Address3;
-                vm.City = qry.City;
-                vm.State = qry.State;
-                vm.PostalCode = qry.Zip;
-                vm.Country = qry.Country;
-                vm.ListOfCountries = fnListOfCountries();
-                vm.Email = qry.Email;
-                vm.Phone = qry.Phone;
-                vm.Fax = qry.Fax;
+                supplier.BulkSupplierID = result.BulkSupplierID;
+                supplier.ClientID = result.ClientID;
+                supplier.SupplyID = result.SupplyID;
+                supplier.SupplierCode = result.ShortName;
+                supplier.SupplierName = result.CompanyName;
+                supplier.ContactName = result.ContactName;
+                supplier.Address1 = result.Address1;
+                supplier.Address2 = result.Address2;
+                supplier.Address3 = result.Address3;
+                supplier.City = result.City;
+                supplier.State = result.State;
+                supplier.PostalCode = result.Zip;
+                supplier.Country = result.Country;
+                supplier.Email = result.Email;
+                supplier.Phone = result.Phone;
+                supplier.Fax = result.Fax;
 
-                return vm;
+                return supplier;
             }
         }
 
@@ -224,78 +221,61 @@ namespace MvcPhoenix.Services
 
         public static Contact FillContactDetails(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                Contact vm = new Contact();
+                Contact contact = new Contact();
 
-                var qry = (from t in db.tblClientContact
-                           where t.ClientContactID == id
-                           select t).FirstOrDefault();
+                var result = (from t in db.tblClientContact
+                              where t.ClientContactID == id
+                              select t).FirstOrDefault();
 
-                vm.ClientContactID = qry.ClientContactID;
-                vm.ClientID = qry.ClientID;
-                vm.ContactType = qry.ContactType;
-                vm.Account = qry.Account;
-                vm.FullName = qry.FullName;
-                vm.Email = qry.Email;
-                vm.Phone = qry.Phone;
-                vm.Fax = qry.Fax;
-                vm.Company = qry.Company;
-                vm.DistributorName = qry.DistributorName;
-                vm.Address1 = qry.Address1;
-                vm.Address2 = qry.Address2;
-                vm.City = qry.City;
-                vm.State = qry.State;
-                vm.Zip = qry.Zip;
-                vm.Country = qry.Country;
-                vm.ListOfCountries = fnListOfCountries();
+                contact.ClientContactID = result.ClientContactID;
+                contact.ClientID = result.ClientID;
+                contact.ContactType = result.ContactType;
+                contact.Account = result.Account;
+                contact.FullName = result.FullName;
+                contact.Email = result.Email;
+                contact.Phone = result.Phone;
+                contact.Fax = result.Fax;
+                contact.Company = result.Company;
+                contact.DistributorName = result.DistributorName;
+                contact.Address1 = result.Address1;
+                contact.Address2 = result.Address2;
+                contact.City = result.City;
+                contact.State = result.State;
+                contact.Zip = result.Zip;
+                contact.Country = result.Country;
 
-                return vm;
+                return contact;
             }
         }
 
-        #endregion Supplier Services
+        #endregion Client Contact Services
 
         #region Tier Services
 
         public static Tier FillTierDetails(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                Tier vm = new Tier();
+                Tier tier = new Tier();
 
-                var qry = (from t in db.tblTier
-                           where t.TierID == id
-                           select t).FirstOrDefault();
+                var result = (from t in db.tblTier
+                              where t.TierID == id
+                              select t).FirstOrDefault();
 
-                vm.TierID = qry.TierID;
-                vm.ClientID = qry.ClientID;
-                vm.TierLevel = qry.TierLevel;
-                vm.Size = qry.Size;
-                vm.LoSampQty = qry.LoSampAmt;
-                vm.HiSampQty = qry.HiSampAmt;
-                vm.Price = qry.Price;
+                tier.TierID = result.TierID;
+                tier.ClientID = result.ClientID;
+                tier.TierLevel = result.TierLevel;
+                tier.Size = result.Size;
+                tier.LoSampQty = result.LoSampAmt;
+                tier.HiSampQty = result.HiSampAmt;
+                tier.Price = result.Price;
 
-                return vm;
+                return tier;
             }
         }
 
         #endregion Tier Services
-
-        public static List<SelectListItem> fnListOfCountries()
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblCountry
-                          orderby t.Country
-                          select new SelectListItem { Value = t.Country, Text = t.Country }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
     }
 }

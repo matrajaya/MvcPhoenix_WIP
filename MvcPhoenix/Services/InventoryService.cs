@@ -10,8 +10,6 @@ namespace MvcPhoenix.Services
 {
     public class InventoryService
     {
-        private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-
         public static Inventory fnFillInventoryVM(int id)
         {
             using (var db = new CMCSQL03Entities())
@@ -24,7 +22,8 @@ namespace MvcPhoenix.Services
                 PP = ProductsService.FillFromPM(PP);
                 PP = ProductsService.fnFillOtherPMProps(PP);
 
-                //vm.vmMasterNotesAlert = PP.masternotesalert;    // cannot get View to properly handle this when buried in PP
+                //vm.vmMasterNotesAlert = PP.masternotesalert;
+                // cannot get View to properly handle this when buried in PP
                 vm.ClientCode = (from t in db.tblClient
                                  where t.ClientID == PP.clientid
                                  select t.ClientCode).FirstOrDefault();
@@ -38,14 +37,19 @@ namespace MvcPhoenix.Services
                                select t.DivisionName).FirstOrDefault();
 
                 var q = (from t in db.tblBulkOrderItem
-                         where t.ProductMasterID == id && t.Status == "OP"
+                         where t.ProductMasterID == id
+                         && t.Status == "OP"
                          select t).FirstOrDefault();
 
                 vm.BackOrderPending = q == null ? false : true;
 
                 var q1 = (from t in db.tblBulkOrderItem
-                          where t.ProductMasterID == id && t.Status == "OP"
-                          select new { tot = t.Qty * t.Weight }).ToList();
+                          where t.ProductMasterID == id
+                          && t.Status == "OP"
+                          select new
+                          {
+                              tot = t.Qty * t.Weight
+                          }).ToList();
 
                 var q2 = (from x in q1 select x.tot).Sum();
 
@@ -82,7 +86,7 @@ namespace MvcPhoenix.Services
 
         public static void fnSaveInventory(Inventory vm)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var pd = db.tblProductDetail.Find(vm.PP.productdetailid);
                 var pm = db.tblProductMaster.Find(pd.ProductMasterID);
@@ -99,7 +103,7 @@ namespace MvcPhoenix.Services
         public static decimal StatusLevelShelf(int? id, string status)
         {
             // add up weight for a status and productdetailid
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var mylist = (from t in db.tblStock
                               join sm in db.tblShelfMaster on t.ShelfID equals sm.ShelfID
@@ -138,7 +142,7 @@ namespace MvcPhoenix.Services
 
         public static decimal StatusLevelBulk(int id, string status)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var mylist = (from pd in db.tblProductDetail
                               join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
@@ -155,14 +159,14 @@ namespace MvcPhoenix.Services
                 switch (status)
                 {
                     case "TOTAL":
-                        var q1 = (from x in mylist 
+                        var q1 = (from x in mylist
                                   select x.tot).Sum();
 
                         retval = Convert.ToDecimal(q1);
                         break;
 
                     case "OTHER":
-                        var q2 = (from x in mylist 
+                        var q2 = (from x in mylist
                                   where !(x.stat == "AVAIL" || x.stat == "TEST" || x.stat == "HOLD" || x.stat == "QC" || x.stat == "RETURN" || x.stat == "RECD")
                                   select x.tot).Sum();
 
@@ -170,8 +174,8 @@ namespace MvcPhoenix.Services
                         break;
 
                     default:
-                        var q3 = (from x in mylist 
-                                  where x.stat == status 
+                        var q3 = (from x in mylist
+                                  where x.stat == status
                                   select x.tot).Sum();
 
                         retval = Convert.ToDecimal(q3);
@@ -226,60 +230,11 @@ namespace MvcPhoenix.Services
                               UpdateUser = t.UpdateUser
                           }).FirstOrDefault();
 
-                vm.ListOfShelfStatusIDs = InventoryService.fnListOfShelfStatusIDs();
-                vm.ListOfShelfMasterIDs = InventoryService.fnListOfShelfMasterIDs(vm.ProductDetailID);
-                vm.ListOfBulkIDs = InventoryService.fnListOfBulkIDs(vm.ShelfID);
-                vm.ListOfWareHouseIDs = InventoryService.fnListOfWarehouseIDs();
+                vm.ListOfShelfStatusIDs = ApplicationService.ddlShelfStatusIDs();
+                vm.ListOfShelfMasterIDs = ApplicationService.ddlShelfMasterIDs(vm.ProductDetailID);
+                vm.ListOfBulkIDs = ApplicationService.ddlBulkIDs(vm.ShelfID);
 
                 return vm;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfShelfStatusIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist.Add(new SelectListItem { Text = "AVAIL", Value = "AVAIL" });
-                mylist.Add(new SelectListItem { Text = "TEST", Value = "TEST" });
-                mylist.Add(new SelectListItem { Text = "HOLD", Value = "HOLD" });
-                mylist.Add(new SelectListItem { Text = "QC", Value = "QC" });
-                mylist.Add(new SelectListItem { Text = "RETURN", Value = "RETURN" });
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfShelfMasterIDs(int? id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblShelfMaster
-                          join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
-                          where t.ProductDetailID == id
-                          select new SelectListItem { Value = t.ShelfID.ToString(), Text = t.Size }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Size" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnListOfBulkIDs(int? id)     // id=productdetailid
-        {
-            using (MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblBulk
-                          join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                          join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
-                          join sm in db.tblShelfMaster on pd.ProductDetailID equals sm.ProductDetailID
-                          where sm.ShelfID == id
-                          select new SelectListItem { Value = t.BulkID.ToString(), Text = t.LotNumber }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Bulk Container" });
-
-                return mylist;
             }
         }
 
@@ -339,7 +294,7 @@ namespace MvcPhoenix.Services
                     if (!String.IsNullOrEmpty(sThisQty))
                     {
                         Int32 ThisQty = Convert.ToInt32(sThisQty);
-                        var newstock = new EF.tblStock();
+                        var newstock = new tblStock();
                         newstock.ShelfID = ThisShelfID;
                         newstock.BulkID = vm.BulkContainer.bulkid;
                         newstock.Warehouse = vm.BulkContainer.warehouse;
@@ -364,9 +319,9 @@ namespace MvcPhoenix.Services
 
         public static int fnNewBulkID()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                EF.tblBulk newrec = new EF.tblBulk();
+                EF.tblBulk newrec = new tblBulk();
                 db.tblBulk.Add(newrec);
                 db.SaveChanges();
 
@@ -374,23 +329,11 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static List<SelectListItem> fnListOfWarehouseIDs()
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist.Add(new SelectListItem { Value = null, Text = "" });
-            mylist.Add(new SelectListItem { Value = "AP", Text = "AP" });
-            mylist.Add(new SelectListItem { Value = "CT", Text = "CT" });
-            mylist.Add(new SelectListItem { Value = "CO", Text = "CO" });
-            mylist.Add(new SelectListItem { Value = "EU", Text = "EU" });
-
-            return mylist;
-        }
-
         #region Inventory Product Master Log Notes
 
         public static List<InventoryLogNote> ListInvPMLogNotes(int? masterid)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var obj = (from t in db.tblInvPMLogNote
                            where t.ProductMasterID == masterid
@@ -401,10 +344,7 @@ namespace MvcPhoenix.Services
                                productmasterid = t.ProductMasterID,
                                notedate = t.NoteDate,
                                notes = t.Notes,
-                               reasoncode = t.Comment, //modify table field later - Iffy
-                               ListOfReasonCodes = (from r in db.tblReasonCode
-                                                    orderby r.Reason
-                                                    select new SelectListItem { Value = r.Reason, Text = r.Reason }).ToList(),
+                               reasoncode = t.Comment,                                      // TBD: modify table field later - Iffy
                                UpdateDate = t.UpdateDate,
                                UpdateUser = t.UpdateUser,
                                CreateDate = t.CreateDate,
@@ -417,9 +357,10 @@ namespace MvcPhoenix.Services
 
         public static InventoryLogNote fnGetInventoryNote(int id)
         {
-            InventoryLogNote obj = new InventoryLogNote();
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
+                InventoryLogNote obj = new InventoryLogNote();
+
                 var q = (from t in db.tblInvPMLogNote
                          where t.InvPMLogNoteIDID == id
                          select t).FirstOrDefault();
@@ -429,33 +370,25 @@ namespace MvcPhoenix.Services
                 obj.reasoncode = q.Comment;
                 obj.notedate = q.NoteDate;
                 obj.notes = q.Notes;
-                obj.ListOfReasonCodes = (from t in db.tblReasonCode
-                                         orderby t.Reason
-                                         select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
-                obj.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
                 obj.UpdateDate = q.UpdateDate;
                 obj.UpdateUser = q.UpdateUser;
                 obj.CreateDate = q.CreateDate;
                 obj.CreateUser = q.CreateUser;
-            }
 
-            return obj;
+                return obj;
+            }
         }
 
         public static InventoryLogNote fnCreateInventoryLogNote(int id)
         {
             InventoryLogNote obj = new InventoryLogNote();
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 obj.productnoteid = -1;
                 obj.productmasterid = id;  // important
                 obj.reasoncode = null;
                 obj.notedate = DateTime.UtcNow;
                 obj.notes = null;
-                obj.ListOfReasonCodes = (from t in db.tblReasonCode
-                                         orderby t.Reason
-                                         select new SelectListItem { Value = t.Reason, Text = t.Reason }).ToList();
-                obj.ListOfReasonCodes.Insert(0, new SelectListItem { Value = "", Text = "Select Reason Code" });
                 obj.UpdateDate = DateTime.UtcNow;
                 obj.UpdateUser = HttpContext.Current.User.Identity.Name;
                 obj.CreateDate = DateTime.UtcNow;
@@ -467,11 +400,11 @@ namespace MvcPhoenix.Services
 
         public static int fnSaveInventoryLogNote(InventoryLogNote obj)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (obj.productnoteid == -1)
                 {
-                    var newrec = new EF.tblInvPMLogNote();
+                    var newrec = new tblInvPMLogNote();
                     newrec.CreateDate = DateTime.UtcNow;
                     newrec.CreateUser = HttpContext.Current.User.Identity.Name;
 
@@ -500,7 +433,7 @@ namespace MvcPhoenix.Services
 
         public static int fnDeleteProductNote(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand("Delete from tblInvPMLogNote Where InvPMLogNoteIDID=" + id);
             }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MvcPhoenix.EF;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
 {
@@ -10,7 +10,7 @@ namespace MvcPhoenix.Models
     {
         public static InvoiceViewModel FillInvoice(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 InvoiceViewModel IVM = new InvoiceViewModel();
 
@@ -133,7 +133,7 @@ namespace MvcPhoenix.Models
 
         public static int SaveInvoice(InvoiceViewModel vm)
         {
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (vm.invoiceid == -1)
                 {
@@ -159,8 +159,8 @@ namespace MvcPhoenix.Models
                 vm.updatedby = HttpContext.Current.User.Identity.Name;
                 vm.updatedate = DateTime.UtcNow;
 
-                var q = (from t in db.tblInvoice 
-                         where t.InvoiceID == vm.invoiceid 
+                var q = (from t in db.tblInvoice
+                         where t.InvoiceID == vm.invoiceid
                          select t).FirstOrDefault();
 
                 q.InvoiceNumber = vm.invoiceid;                                    //there can be multiple invoice numbers which can be used to group different order types for an invoice
@@ -261,9 +261,9 @@ namespace MvcPhoenix.Models
 
         public static int NewInvoiceID()
         {
-            using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                MvcPhoenix.EF.tblInvoice nr = new MvcPhoenix.EF.tblInvoice();
+                tblInvoice nr = new tblInvoice();
                 db.tblInvoice.Add(nr);
 
                 db.SaveChanges();
@@ -276,7 +276,7 @@ namespace MvcPhoenix.Models
         {
             InvoiceViewModel obj = new InvoiceViewModel();
 
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 obj.invoiceid = -1;
                 obj.invoicedate = DateTime.UtcNow;
@@ -287,8 +287,9 @@ namespace MvcPhoenix.Models
                     var div = db.tblDivision.Find(division);
                     obj.billinggroup = div.DivisionName;
                 }
-                else { 
-                    obj.billinggroup = "All"; 
+                else
+                {
+                    obj.billinggroup = "All";
                 }
 
                 // Pull default values from Client table
@@ -339,12 +340,13 @@ namespace MvcPhoenix.Models
             // Go get shipped items for this invoice client and ship date range
             // add up qty shipped
             // adjust tblOrderTrans.TransAmount accordingly
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 // collect all Tier records for a client
-                var qTiers = (from t in db.tblTier 
-                              where t.ClientID == obj.clientid && t.TierLevel != 1 
-                              orderby t.TierLevel 
+                var qTiers = (from t in db.tblTier
+                              where t.ClientID == obj.clientid
+                              && t.TierLevel != 1
+                              orderby t.TierLevel
                               select t).ToList();
 
                 // For each Tier, go see if shipments in the date range qualify for Tier change
@@ -353,18 +355,26 @@ namespace MvcPhoenix.Models
                     var qitems = (from t in db.tblOrderItem
                                   join order in db.tblOrderMaster on t.OrderID equals order.OrderID
                                   where order.ClientID == obj.clientid
-                                  && t.ShipDate >= StartDate && t.ShipDate <= EndDate
-                                  select new { t.Qty, t.Size, t.ShipDate, order.ClientID, order.BillingGroup }).ToList();
+                                  && t.ShipDate >= StartDate
+                                  && t.ShipDate <= EndDate
+                                  select new
+                                  {
+                                      t.Qty,
+                                      t.Size,
+                                      t.ShipDate,
+                                      order.ClientID,
+                                      order.BillingGroup
+                                  }).ToList();
 
                     if (obj.billinggroup != "All")
                     {
-                        qitems = (from t in qitems 
-                                  where t.BillingGroup == obj.billinggroup 
+                        qitems = (from t in qitems
+                                  where t.BillingGroup == obj.billinggroup
                                   select t).ToList();
                     }
 
-                    var qitemsSum = (from t in qitems 
-                                     where t.Size == row.Size 
+                    var qitemsSum = (from t in qitems
+                                     where t.Size == row.Size
                                      select t.Qty).Sum();
 
                     if (qitemsSum.Value >= row.LoSampAmt)
@@ -385,14 +395,13 @@ namespace MvcPhoenix.Models
                             db.Database.ExecuteSqlCommand(s);
                         }
                     }
-
                 }
             }
         }
 
         private static InvoiceViewModel GetOrderTransCharges(InvoiceViewModel obj, DateTime StartDate, DateTime EndDate)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 //init
                 obj.totalcostsamples = 0;
@@ -410,178 +419,240 @@ namespace MvcPhoenix.Models
                                      join order in db.tblOrderMaster on t.OrderID equals order.OrderID
                                      where order.ClientID == obj.clientid
                                      && t.ShipDate != null
-                                     && (t.ShipDate >= StartDate && t.ShipDate <= EndDate)
+                                     && (t.ShipDate >= StartDate
+                                     && t.ShipDate <= EndDate)
                                      select new { t.Qty, order.BillingGroup }).ToList();
-                
+
                 if (obj.billinggroup != "All")
                 {
-                    qShippedCount = (from t in qShippedCount 
-                                     where t.BillingGroup == obj.billinggroup 
+                    qShippedCount = (from t in qShippedCount
+                                     where t.BillingGroup == obj.billinggroup
                                      select t).ToList();
                 }
 
-                obj.totalsamples = (from t in qShippedCount 
+                obj.totalsamples = (from t in qShippedCount
                                     select t.Qty).Sum();
-                
+
                 // shipped same, next, second, etc
                 var qShippedWhichDay = (from t in db.tblOrderItem
                                         join trans in db.tblOrderTrans on t.ItemID equals trans.OrderItemID
                                         join order in db.tblOrderMaster on t.OrderID equals order.OrderID
                                         where order.ClientID == obj.clientid
-                                        select new { t.ShipDate, trans.ChargeDate, t.Qty, order.BillingGroup }).ToList();
-                
+                                        select new
+                                        {
+                                            t.ShipDate,
+                                            trans.ChargeDate,
+                                            t.Qty,
+                                            order.BillingGroup
+                                        }).ToList();
+
                 if (obj.billinggroup != "All")
                 {
-                    qShippedWhichDay = (from t in qShippedWhichDay 
-                                        where t.BillingGroup == obj.billinggroup 
+                    qShippedWhichDay = (from t in qShippedWhichDay
+                                        where t.BillingGroup == obj.billinggroup
                                         select t).ToList();
                 }
 
-                obj.sampleshipsameday = (from t in qShippedWhichDay 
-                                         where t.ShipDate == t.ChargeDate 
+                obj.sampleshipsameday = (from t in qShippedWhichDay
+                                         where t.ShipDate == t.ChargeDate
                                          select t.Qty).Sum();
 
                 // TODO Confirm that following 3 lines work correctly
-                obj.sampleshipnextday = (from t in qShippedWhichDay 
-                                         where t.ShipDate.Value.AddDays(1) == t.ChargeDate 
+                obj.sampleshipnextday = (from t in qShippedWhichDay
+                                         where t.ShipDate.Value.AddDays(1) == t.ChargeDate
                                          select t.Qty).Sum();
 
-                obj.sampleshipsecondday = (from t in qShippedWhichDay 
-                                           where t.ShipDate.Value.AddDays(2) == t.ChargeDate 
+                obj.sampleshipsecondday = (from t in qShippedWhichDay
+                                           where t.ShipDate.Value.AddDays(2) == t.ChargeDate
                                            select t.Qty).Sum();
 
-                obj.sampleshipother = (from t in qShippedWhichDay 
-                                       where t.ShipDate != null & (t.ShipDate != t.ChargeDate) 
+                obj.sampleshipother = (from t in qShippedWhichDay
+                                       where t.ShipDate != null & (t.ShipDate != t.ChargeDate)
                                        select t.Qty).Sum();
 
                 // Sample level
                 string[] sSampleTransType = { "SAMP", "HAZD", "FLAM", "HEAT", "REFR", "FREZ", "CLEN", "BLND", "NALG", "NITR", "BIOC", "KOSH", "LABL" };
 
                 var qSampleCharges = (from t in db.tblOrderTrans
-                                      where t.OrderID != null && t.OrderItemID != null
-                                      && t.ChargeDate >= StartDate && t.ChargeDate <= EndDate
+                                      where t.OrderID != null
+                                      && t.OrderItemID != null
+                                      && t.ChargeDate >= StartDate
+                                      && t.ChargeDate <= EndDate
                                       && t.ClientID == obj.clientid
                                       && sSampleTransType.Contains(t.TransType)
-                                      select new { t.TransType, t.TransDate, t.TransQty, t.TransAmount, t.BillingGroup }).ToList();
+                                      select new
+                                      {
+                                          t.TransType,
+                                          t.TransDate,
+                                          t.TransQty,
+                                          t.TransAmount,
+                                          t.BillingGroup
+                                      }).ToList();
 
                 if (obj.billinggroup != "All")
                 {
-                    qSampleCharges = (from t in qSampleCharges 
-                                      where t.BillingGroup == obj.billinggroup 
+                    qSampleCharges = (from t in qSampleCharges
+                                      where t.BillingGroup == obj.billinggroup
                                       select t).ToList();
                 }
 
-                var qSampleChargesSum = (from t in qSampleCharges 
+                var qSampleChargesSum = (from t in qSampleCharges
                                          select (t.TransQty * t.TransAmount)).Sum();
-                
+
                 obj.totalcostsamples = obj.totalcostsamples + qSampleChargesSum;
-                
+
                 // TODO (Carrier FRT$ - these trans will come from ship verify)
                 // Note - ship verify will need to update ChargeDate
                 string[] sFreightTransType = { "CFRT" };
 
                 var qCarrierCharges = (from t in db.tblOrderTrans
-                                       where t.OrderID != null && t.OrderItemID != null
-                                       && t.ChargeDate >= StartDate && t.ChargeDate <= EndDate
+                                       where t.OrderID != null
+                                       && t.OrderItemID != null
+                                       && t.ChargeDate >= StartDate
+                                       && t.ChargeDate <= EndDate
                                        && t.ClientID == obj.clientid
                                        && sFreightTransType.Contains(t.TransType)
-                                       select new { t.TransType, t.TransQty, t.TransAmount, t.BillingGroup }).ToList();
+                                       select new
+                                       {
+                                           t.TransType,
+                                           t.TransQty,
+                                           t.TransAmount,
+                                           t.BillingGroup
+                                       }).ToList();
 
                 if (obj.billinggroup != "All")
                 {
-                    qCarrierCharges = (from t in qCarrierCharges 
-                                       where t.BillingGroup == obj.billinggroup 
+                    qCarrierCharges = (from t in qCarrierCharges
+                                       where t.BillingGroup == obj.billinggroup
                                        select t).ToList();
                 }
 
-                var qCarrierChargesSum = (from t in qCarrierCharges 
+                var qCarrierChargesSum = (from t in qCarrierCharges
                                           select (t.TransQty * t.TransAmount)).Sum();
 
                 obj.totalfreight = obj.totalfreight + qCarrierChargesSum;
-                
+
                 // frt_surcharge
                 string[] sFreightSurchargeTransType = { "SFRT" };
 
                 var qFreightSurcharges = (from t in db.tblOrderTrans
-                                          where t.OrderID != null && t.OrderItemID != null
-                                          && t.ChargeDate >= StartDate && t.ChargeDate <= EndDate
+                                          where t.OrderID != null
+                                          && t.OrderItemID != null
+                                          && t.ChargeDate >= StartDate
+                                          && t.ChargeDate <= EndDate
                                           && t.ClientID == obj.clientid
                                           && sFreightSurchargeTransType.Contains(t.TransType)
-                                          select new { t.TransType, t.TransQty, t.TransAmount, t.BillingGroup }).ToList();
+                                          select new
+                                          {
+                                              t.TransType,
+                                              t.TransQty,
+                                              t.TransAmount,
+                                              t.BillingGroup
+                                          }).ToList();
 
                 if (obj.billinggroup != "All")
                 {
-                    qFreightSurcharges = (from t in qFreightSurcharges 
-                                          where t.BillingGroup == obj.billinggroup 
+                    qFreightSurcharges = (from t in qFreightSurcharges
+                                          where t.BillingGroup == obj.billinggroup
                                           select t).ToList();
                 }
 
-                var qFreightSurchargesSum = (from t in qFreightSurcharges 
+                var qFreightSurchargesSum = (from t in qFreightSurcharges
                                              select (t.TransQty * t.TransAmount)).Sum();
-                                
+
                 obj.totalfrtHzdSchg = obj.totalfrtHzdSchg + qFreightSurchargesSum;
-                
+
                 // All other charges not considered above
                 string[] sAdminTransType = { "SAMP", "CFRT", "SFRT", "SAMP", "HAZD", "FLAM", "HEAT", "REFR", "FREZ", "CLEN", "BLND", "NALG", "NITR", "BIOC", "KOSH", "LABL" };
 
                 var qAdminCharges = (from t in db.tblOrderTrans
                                      where
-                                         t.ChargeDate >= StartDate && t.ChargeDate <= EndDate
+                                         t.ChargeDate >= StartDate
+                                         && t.ChargeDate <= EndDate
                                          && t.ClientID == obj.clientid
                                          && !sAdminTransType.Contains(t.TransType)
-                                     select new { t.TransType, t.TransQty, t.TransAmount, t.BillingGroup }).ToList();
+                                     select new
+                                     {
+                                         t.TransType,
+                                         t.TransQty,
+                                         t.TransAmount,
+                                         t.BillingGroup
+                                     }).ToList();
 
                 if (obj.billinggroup != "All")
                 {
-                    qAdminCharges = (from t in qAdminCharges 
-                                     where t.BillingGroup == obj.billinggroup 
+                    qAdminCharges = (from t in qAdminCharges
+                                     where t.BillingGroup == obj.billinggroup
                                      select t).ToList();
                 }
 
-                var qAdminChargesSum = (from t in qAdminCharges 
+                var qAdminChargesSum = (from t in qAdminCharges
                                         select (t.TransQty * t.TransAmount)).Sum();
 
                 obj.totaladmincharge = obj.totaladmincharge + qAdminChargesSum;
-                
+
                 // add in clientid level trans
                 var qClientTrans = (from t in db.tblOrderTrans
-                                    where t.OrderID == null && t.OrderItemID == null
-                                    && t.ChargeDate >= StartDate && t.ChargeDate <= EndDate
+                                    where t.OrderID == null
+                                    && t.OrderItemID == null
+                                    && t.ChargeDate >= StartDate
+                                    && t.ChargeDate <= EndDate
                                     && t.ClientID == obj.clientid
-                                    select new { t.ClientID, t.OrderID, t.OrderItemID, t.TransType, t.TransDate, t.TransQty, t.TransAmount, t.BillingGroup }).ToList();
+                                    select new
+                                    {
+                                        t.ClientID,
+                                        t.OrderID,
+                                        t.OrderItemID,
+                                        t.TransType,
+                                        t.TransDate,
+                                        t.TransQty,
+                                        t.TransAmount,
+                                        t.BillingGroup
+                                    }).ToList();
 
                 if (obj.billinggroup != "All")
                 {
-                    qClientTrans = (from t in qClientTrans 
-                                    where t.BillingGroup == obj.billinggroup 
+                    qClientTrans = (from t in qClientTrans
+                                    where t.BillingGroup == obj.billinggroup
                                     select t).ToList();
                 }
 
-                var qClientTransSum = (from t in qClientTrans 
+                var qClientTransSum = (from t in qClientTrans
                                        select (t.TransQty * t.TransAmount)).Sum();
 
                 obj.totaladmincharge = obj.totaladmincharge + qClientTransSum;
-                
+
                 // add in order level trans
                 var qOrderLevelTrans = (from t in db.tblOrderTrans
                                         where t.OrderID != null
                                         && t.OrderItemID == null
-                                        && t.ChargeDate >= StartDate && t.ChargeDate <= EndDate
+                                        && t.ChargeDate >= StartDate
+                                        && t.ChargeDate <= EndDate
                                         && t.ClientID == obj.clientid
-                                        select new { t.ClientID, t.OrderID, t.OrderItemID, t.TransType, t.TransDate, t.TransQty, t.TransAmount, t.BillingGroup }).ToList();
+                                        select new
+                                        {
+                                            t.ClientID,
+                                            t.OrderID,
+                                            t.OrderItemID,
+                                            t.TransType,
+                                            t.TransDate,
+                                            t.TransQty,
+                                            t.TransAmount,
+                                            t.BillingGroup
+                                        }).ToList();
 
                 if (obj.billinggroup != "All")
                 {
-                    qOrderLevelTrans = (from t in qOrderLevelTrans 
-                                        where t.BillingGroup == obj.billinggroup 
+                    qOrderLevelTrans = (from t in qOrderLevelTrans
+                                        where t.BillingGroup == obj.billinggroup
                                         select t).ToList();
                 }
 
-                var qOrderLevelTransSum = (from t in qOrderLevelTrans 
+                var qOrderLevelTransSum = (from t in qOrderLevelTrans
                                            select (t.TransQty * t.TransAmount)).Sum();
 
                 obj.totaladmincharge = obj.totaladmincharge + qOrderLevelTransSum;
-                
+
                 // return the passed object with more properties filled in
                 return obj;
             }
@@ -591,11 +662,9 @@ namespace MvcPhoenix.Models
         public static List<InvoiceViewModel> IndexList()
         {
             // List for the Index View
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var obj = (from t in db.tblInvoice
-                           //where t.Status == "NEW" ||
-                           //     t.Status == "PENDING"
                            orderby t.InvoiceNumber ascending
                            select new InvoiceViewModel
                            {
@@ -610,50 +679,6 @@ namespace MvcPhoenix.Models
                            }).ToList();
 
                 return obj;
-            }
-        }
-
-        public static List<SelectListItem> ListOfClientIDs()
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblClient
-                          orderby t.ClientName
-                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-
-                return mylist;
-            }
-        }
-
-        public static string fnBuildBillingGroupDDL(int clientid)
-        {
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                var qry = (from t in db.tblDivision
-                           where t.ClientID == clientid
-                           orderby t.DivisionID, t.DivisionName
-                           select t);
-
-                string s = "<option value='0' selected=true>Select Billing Group</option>";
-
-                if (qry.Count() > 0)
-                {
-                    foreach (var item in qry)
-                    {
-                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.DivisionName + "</option>";
-                    }
-                }
-                else
-                {
-                    s = s + "<option value=0>No Billing Group</option>";
-                }
-
-                s = s + "</select>";
-
-                return s;
             }
         }
     }

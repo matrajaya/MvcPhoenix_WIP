@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <div id="dvPlaceholderClientID">
-                    @Html.DropDownList("ClientID", (List<SelectListItem>)ViewBag.ListOfClients, new { onchange = "OnChangeClientID()", @class = "form-control" })
+                    @Html.DropDownList("ClientID", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientID()", @class = "form-control" })
                 </div>
             </div>
             <div class="col-md-6">

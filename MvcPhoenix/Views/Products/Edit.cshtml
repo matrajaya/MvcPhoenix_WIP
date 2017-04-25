@@ -70,7 +70,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label>Division / Business Unit</label>
-                        @Html.DropDownListFor(m => m.divisionid, Model.ListOfDivisions, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.divisionid, ApplicationService.ddlDivisionIDs(Model.clientid), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.divisionid)
                     </div>
                 </div>
@@ -127,11 +127,11 @@
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label>Equivalents</label><br />
-                        @Html.ListBox("List of Equivalents", @Model.ListOfEquivalents, new { @class = "form-control", @style = "overflow:auto", @size = 7 })
+                        @Html.ListBox("Equivalents", ApplicationService.ddlProductEquivalents(Model.productmasterid, Model.productcode), new { @class = "form-control", @style = "overflow:auto", @size = 7 })
                     </div>
                     <div class="form-group col-md-3">
                         <label>Cross Reference List</label><br />
-                        @Html.ListBox("Cross Reference List", @Model.ListOfProductCodesXRefs, new { @class = "form-control form-group", @style = "overflow:auto", @size = 5 })
+                        @Html.ListBox("Cross Reference List", ApplicationService.ddlProductCodesXRefs(Model.productcode), new { @class = "form-control form-group", @style = "overflow:auto", @size = 5 })
                         <span class="pull-right">@Html.ActionLink("Manage Cross Reference", "XRefList", "Products", null, new { @target = "_blank" })</span>
                     </div>
                     <div class="col-md-6" style="vertical-align:bottom;">
@@ -184,7 +184,7 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label>Supplier</label>
-                        @Html.DropDownListFor(m => m.supplyid, Model.ListOfSupplyIDs, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.supplyid, ApplicationService.ddlSupplyIDs(Model.clientid), new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.supplyid)
                     </div>
                     <div class="col-md-3 form-group">
@@ -265,7 +265,7 @@
                             <tr>
                                 <td>Other Storage: </td>
                                 <td>
-                                    @Html.DropDownListFor(m => m.otherstorage, Model.ListOfOtherStorage, new { @class = "form-control pull-right" })
+                                    @Html.DropDownListFor(m => m.otherstorage, ApplicationService.ddlOtherProductStorage(), new { @class = "form-control pull-right" })
                                         @Html.ValidationMessageFor(m => m.otherstorage)
                                     </td>
                                 </tr>
@@ -305,7 +305,7 @@
                         </div>
                         <div class="form-group col-md-1">
                             <label>Unit</label>
-                            @Html.DropDownListFor(m => m.customsvalueunit, new SelectList(Enum.GetValues(typeof(ProductProfile.ValueUnitChoice))), new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.customsvalueunit, new SelectList(Enum.GetValues(typeof(ApplicationService.ValueUnitChoice))), new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">
@@ -316,7 +316,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label>Country Of Origin</label>
-                            @Html.DropDownListFor(m => m.countryoforigin, Model.ListOfCountries, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.countryoforigin, ApplicationService.ddlCountries(), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.countryoforigin)
                         </div>
                         <div class="form-group col-md-2">
@@ -651,7 +651,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Glove Type</label>
-                                @Html.DropDownListFor(m => m.glovetype, Model.ListOfGloves, new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.glovetype, ApplicationService.ddlProductHandlingGloves(), new { @class = "form-control" })
                                 @Html.ValidationMessageFor(m => m.glovetype)
                             </div>
                             <div class="form-group">

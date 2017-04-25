@@ -87,9 +87,9 @@
                 </div>
                 <div class="row">
                     <div class=" form-group col-md-3">
-                        <label>Product Equivalents</label>
+                        <label>Equivalents</label>
                         <div>
-                            @Html.ListBox("List of Equivalents", @Model.PP.ListOfEquivalents, new { @class = "form-control", @size = 8 })
+                            @Html.ListBox("Equivalents", ApplicationService.ddlProductEquivalents(Model.PP.productmasterid, Model.PP.productcode), new { @class = "form-control", @size = 8 })
                         </div>
                     </div>
                     <div class="col-md-3 form-group">
@@ -256,7 +256,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title" data-toggle="collapse" data-target="#replenishorderpan"><i class="fa fa-file-text-o fa-fw"></i> Open Replenishment Orders</h3>
             </div>
-            <div id="replenishorderpan" class="panel-body collapse in" style="margin-bottom:-20px;">
+            <div id="replenishorderpan" class="panel-body collapse in">
                 @{Html.RenderAction("BulkOrdersList", "Inventory", new { id = @Model.PP.productdetailid });}
             </div>
         </div>

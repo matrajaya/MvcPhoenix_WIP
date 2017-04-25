@@ -116,7 +116,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label>Country</label>
-                            @Html.DropDownListFor(m => m.Country, Model.ListOfCountries, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.Country, ApplicationService.ddlCountries(), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Country)
                         </div>
                     </div>

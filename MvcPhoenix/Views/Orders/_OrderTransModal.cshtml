@@ -34,9 +34,9 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Type <i id="listtranstypes" class="fa fa-fw fa-question-circle"></i></label>
-                            @if (Enum.IsDefined(typeof(OrderTrans.OrderTransTypesChoice), Model.transtype) || Model.transtype == null)
+                            @if (Enum.IsDefined(typeof(ApplicationService.OrderTransTypesChoice), Model.transtype) || Model.transtype == null)
                             {
-                                @Html.DropDownListFor(m => m.transtype, new SelectList(Enum.GetValues(typeof(OrderTrans.OrderTransTypesChoice))), new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.transtype, new SelectList(Enum.GetValues(typeof(ApplicationService.OrderTransTypesChoice))), new { @class = "form-control" })
                             }
                             else
                             {
@@ -53,7 +53,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Order Item</label>
-                            @Html.DropDownListFor(m => m.orderitemid, ViewBag.ListOrderItemIDs as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.orderitemid, ApplicationService.ddlOrderItemIDs(Model.orderid), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.orderitemid)
                         </div>
                         <div class="col-md-3 form-group">

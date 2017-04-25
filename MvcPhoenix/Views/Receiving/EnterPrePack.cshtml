@@ -45,11 +45,11 @@
                     </div>
                     <div class="form-group col-md-2">
                         <label>Carrier</label>
-                        @Html.DropDownListFor(m => m.carrier, Model.ListOfCarriers, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.carrier, ApplicationService.ddlCarriers(), new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-2">
                         <label>Warehouse</label>
-                        @Html.DropDownListFor(m => m.warehouse, Model.ListOfWareHouses, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.warehouse, new SelectList(Enum.GetValues(typeof(ApplicationService.CMCLocationChoice))), new { @class = "form-control" })
                     </div>
                     <div class="form-group col-md-2">
                         <label>Lot Number</label>

@@ -1,8 +1,8 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 namespace MvcPhoenix.Services
 {
@@ -10,7 +10,7 @@ namespace MvcPhoenix.Services
     {
         public static List<ShelfMasterViewModel> fnListOfShelfMasters(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var mylist = (from t in db.tblShelfMaster
                               join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
@@ -66,7 +66,7 @@ namespace MvcPhoenix.Services
 
         public static int fnCloneShelfMaster(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 // copy a record, return the productdetailid
                 var dbrow = db.tblShelfMaster.Find(id);
@@ -82,21 +82,19 @@ namespace MvcPhoenix.Services
             ShelfMasterViewModel SM = new ShelfMasterViewModel();
             SM.shelfid = -1;
             SM.productdetailid = id;
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 // get a pointer to the ProductDetail and ProductMaster parent records
                 var PD = db.tblProductDetail.Find(id);
                 var PM = db.tblProductMaster.Find(PD.ProductMasterID);
-                SM.ListOfTierSizes = fnListOfTierSizes(PM.ClientID);
-                SM.ListOfPackages = fnListOfPackageIDs(null);
-                SM.ListOfWareHouses = fnWarehouseIDs();
+
                 return SM;
             }
         }
 
         public static void fnDeleteShelfMaster(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand("Delete from tblShelfMaster where ShelfID=" + id.ToString());
             }
@@ -104,13 +102,13 @@ namespace MvcPhoenix.Services
 
         public static int fnNewShelfID()
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                var newrecord = new EF.tblShelfMaster
+                var newrecord = new tblShelfMaster
                 {
                     // dont need to insert any fields, just need the new PK
                 };
-                db.tblShelfMaster.Add(newrecord); 
+                db.tblShelfMaster.Add(newrecord);
                 db.SaveChanges();
                 int newpk = newrecord.ShelfID;
                 return newpk;
@@ -119,7 +117,7 @@ namespace MvcPhoenix.Services
 
         public static ShelfMasterViewModel fnFillShelfMasterFromDB(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 ShelfMasterViewModel SM = new ShelfMasterViewModel();
                 var dbSM = db.tblShelfMaster.Find(id);
@@ -161,17 +159,13 @@ namespace MvcPhoenix.Services
                 SM.discontinued = dbSM.Discontinued;
                 SM.alert = dbSM.Alert;
                 SM.custcode = dbSM.CustCode;
-
-                SM.ListOfTierSizes = fnListOfTierSizes(PM.ClientID);
-                SM.ListOfPackages = fnListOfPackageIDs(dbSM.Size);
-                SM.ListOfWareHouses = fnWarehouseIDs();
                 return SM;
             }
         }
 
         public static void fnSaveShelfMaster(ShelfMasterViewModel obj)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 if (obj.shelfid == -1)
                 { obj.shelfid = fnNewShelfID(); }
@@ -213,79 +207,26 @@ namespace MvcPhoenix.Services
             }
         }
 
-        private static List<SelectListItem> fnWarehouseIDs()
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-
-            mylist.Add(new SelectListItem { Value = null, Text = "" });
-            mylist.Add(new SelectListItem { Value = "AP", Text = "AP" });
-            mylist.Add(new SelectListItem { Value = "CT", Text = "CT" });
-            mylist.Add(new SelectListItem { Value = "CO", Text = "CO" });
-            mylist.Add(new SelectListItem { Value = "EU", Text = "EU" });
-
-            return mylist;
-        }
-
-        private static List<SelectListItem> fnListOfTierSizes(int? ClientID)
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                mylist = (from t in db.tblTier
-                          where t.ClientID == ClientID
-                          orderby t.Size
-                          select new SelectListItem
-                          {
-                              Value = t.Size,
-                              Text = t.Size
-                          }).Distinct().ToList();
-
-                mylist.Add(new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
-            }
-        }
-
         public static string fnBuildShelfMasterPackagesDropDown(string size)
         {
             // This returns ONLY the <option> portion of the <select> tag
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
-                var qry = (from t in db.tblPackage
-                           //where t.Size == size
-                           orderby t.Size
-                           select t);
+                var packages = (from t in db.tblPackage
+                                //where t.Size == size
+                                orderby t.Size
+                                select t);
 
                 string s = "<option value='0' selected=true>Select Package</option>";
-                if (qry.Count() > 0)
+                if (packages.Count() > 0)
                 {
-                    foreach (var item in qry)
+                    foreach (var item in packages)
                     { s = s + "<option value=" + item.PackageID.ToString() + ">" + item.PartNumber + " - " + item.Description + "</option>"; }
                 }
                 else
                 { s = s + "<option value=0>No Packages Found</option>"; }
                 s = s + "</select>";
                 return s;
-            }
-        }
-
-        private static List<SelectListItem> fnListOfPackageIDs(string size)
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            using (var db = new EF.CMCSQL03Entities())
-            {
-                mylist = (from t in db.tblPackage
-                          //where t.Size == size
-                          orderby t.Size
-                          select new SelectListItem
-                          {
-                              Value = t.PackageID.ToString(),
-                              Text = t.PartNumber + "-" + t.Description
-                          }).ToList();
-
-                mylist.Add(new SelectListItem { Value = "", Text = "" });
-
-                return mylist;
             }
         }
     }

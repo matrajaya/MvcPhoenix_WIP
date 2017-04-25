@@ -17,10 +17,7 @@ namespace MvcPhoenix.Controllers
             using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand("Update tblBulk set MarkedForReturn=0");
-                db.Database.ExecuteSqlCommand("Update tblStock set MarkedForReturn=0");
-                ViewBag.ListOfClients = fnListOfClientIDs();
-                ViewBag.ListOfBulkStatusIDs = fnBulkStatusIDs();
-                ViewBag.ListOfStockStatusIDs = fnStockStatusIDs();
+                db.Database.ExecuteSqlCommand("Update tblStock set MarkedForReturn=0");                
                 Session["BulkRecords"] = null;
                 Session["StockRecords"] = null;
 
@@ -322,49 +319,6 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        private static List<SelectListItem> fnListOfClientIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblClient
-                          orderby t.ClientName
-                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.CMCLocation + " - " + t.ClientName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-
-                return mylist;
-            }
-        }
-
-        private static List<SelectListItem> fnBulkStatusIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblBulk
-                          orderby t.BulkStatus
-                          where t.BulkStatus != "R"
-                          select new SelectListItem { Value = t.BulkStatus, Text = t.BulkStatus }).Distinct().ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Bulk Status" });
-
-                return mylist;
-            }
-        }
-
-        private static List<SelectListItem> fnStockStatusIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblStock
-                          orderby t.ShelfStatus
-                          select new SelectListItem { Value = t.ShelfStatus, Text = t.ShelfStatus }).Distinct().ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Shelf Status" });
-
-                return mylist;
-            }
-        }
-
         public ActionResult BuildDivisionDropDown(int id)   // id=clientid
         {
             using (var db = new CMCSQL03Entities())
@@ -374,30 +328,9 @@ namespace MvcPhoenix.Controllers
                 Session["BulkRecords"] = null;
                 Session["StockRecords"] = null;
 
-                var qry = (from t in db.tblBulk
-                           join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                           join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
-                           join dv in db.tblDivision on pd.DivisionID equals dv.DivisionID
-                           where pm.ClientID == id
-                           orderby dv.DivisionName, dv.BusinessUnit
-                           select new
-                           {
-                               dvID = dv.DivisionID,
-                               dvDivisionName = dv.DivisionName,
-                               dvBusinessUnit = dv.BusinessUnit
-                           }).Distinct().ToList();
+                var ddldivision = ApplicationService.BuildDivisionDropDown(id);
 
-                string s = "<option value='0'>All Divisions</option>";
-                if (qry.Count() > 0)
-                {
-                    foreach (var item in qry)
-                    {
-                        s = s + "<option value=" + item.dvID.ToString() + ">" + item.dvDivisionName + " - " + item.dvBusinessUnit + "</option>";
-                    }
-                }
-                s = s + "</select>";
-
-                return Content(s);
+                return Content(ddldivision);
             }
         }
 

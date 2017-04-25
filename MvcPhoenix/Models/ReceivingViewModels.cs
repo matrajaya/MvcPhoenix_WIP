@@ -21,13 +21,8 @@ namespace MvcPhoenix.Models
 
     public class ItemForPrePackViewModel
     {
-        [Display(Name = "ShelfID")]
         public int shelfid { get; set; }
-        
-        [Display(Name = "Size")]
         public string size { get; set; }
-
-        [Display(Name = "Bin")]
         public string bin { get; set; }
     }
 
@@ -37,72 +32,37 @@ namespace MvcPhoenix.Models
         public int ItemsCount { get; set; }
         public bool? isknownmaterial { get; set; }
         public int? pm_ceaseshipdifferential { get; set; }
-
         public int? clientid { get; set; }
         public string clientname { get; set; }
         public string logofilename { get; set; }
-
         public int bulkid { get; set; }
-
-        [Display(Name = "Warehouse")]
         public string warehouse { get; set; }
-
-        public List<SelectListItem> ListOfWareHouses { get; set; }
-
-        [Display(Name = "Receive Date")]
         public DateTime? receivedate { get; set; }
-
-        [Display(Name = "Carrier")]
         [StringLength(12, ErrorMessage = "[Max 12]")]
         public string carrier { get; set; }
-
-        public List<SelectListItem> ListOfCarriers { get; set; }
-
-        [Display(Name = "Received By")]
         public string receivedby { get; set; }
-
-        [Display(Name = "Entered By")]
         public string enteredby { get; set; }
-
-        [Display(Name = "Master Code")]
         public int? productmasterid { get; set; }
-
-        [Display(Name = "Receive Weight")]
         public decimal? receiveweight { get; set; }
 
         // ******* batch and lot info
-        [Display(Name = "Lot Number")]
         [StringLength(25, ErrorMessage = "Max 25)")]
         public string lotnumber { get; set; }
-
-        [Display(Name = "Mfg Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? mfgdate { get; set; }
-
-        [Display(Name = "Expiration Date")]
         public DateTime? expirationdate { get; set; }
 
         //shelf life (moved to tblProductMaster)
 
-        [Display(Name = "Cease Ship Date")]
         public DateTime? ceaseshipdate { get; set; }
-
         public string bulkstatus { get; set; }
-
         public string qty { get; set; } // default=1, No user interface, remove from db?
-
-        [Display(Name = "COA Included?")]
         public bool? coaincluded { get; set; }
-
-        [Display(Name = "MSDS Included?")]
         public bool? msdsincluded { get; set; }
-
-        [Display(Name = "QC Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? qcdate { get; set; }
-
         public string productcode { get; set; }
         public string productname { get; set; }
     }

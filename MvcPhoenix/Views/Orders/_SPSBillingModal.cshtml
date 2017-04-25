@@ -102,7 +102,7 @@
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Country</label>
-                            @Html.DropDownListFor(m => m.InvoiceCountry, ViewBag.ListOfCountries as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.InvoiceCountry, ApplicationService.ddlCountries(), new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">

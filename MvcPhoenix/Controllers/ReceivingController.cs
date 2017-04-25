@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using PagedList;
 using System;
@@ -10,8 +11,6 @@ namespace MvcPhoenix.Controllers
 {
     public class ReceivingController : Controller
     {
-        private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-
         [HttpGet]
         public ActionResult Index()
         {
@@ -22,16 +21,19 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult UnkownBulkList()
         {
-            var obj = (from t in db.tblBulkUnKnown
-                       orderby t.BulkID descending
-                       select t).ToList();
+            using (var db = new CMCSQL03Entities())
+            {
+                var obj = (from t in db.tblBulkUnKnown
+                           orderby t.BulkID descending
+                           select t).ToList();
 
-            return PartialView("~/Views/Receiving/_UnknownBulkList.cshtml", obj);
+                return PartialView("~/Views/Receiving/_UnknownBulkList.cshtml", obj);
+            }
         }
 
         public ActionResult DeleteUnknownBulk(int id)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 string s = @"DELETE FROM tblBulkUnKnown WHERE BulkID=" + id.ToString();
                 db.Database.ExecuteSqlCommand(s);
@@ -42,7 +44,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 ViewBag.CurrentSort = sortOrder;
 
@@ -57,7 +59,8 @@ namespace MvcPhoenix.Controllers
                 var productCodes = (from pd in db.tblProductDetail
                                     join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
                                     join c in db.tblClient on pm.ClientID equals c.ClientID
-                                    select new ProductProfile{ 
+                                    select new ProductProfile
+                                    {
                                         clientid = c.ClientID,
                                         clientname = c.ClientName,
                                         productmasterid = pm.ProductMasterID,
@@ -85,19 +88,17 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public ActionResult SetUpReceiveKnown()
-        {
-            // Build client DD and load view to receive known
-            ViewBag.ListOfClients = ReceivingService.fnClientIDs();
-            return View("~/Views/Receiving/SelectProduct.cshtml");
-        }
+        // TODO: Repurpose for open orders check - Iffy
+        //public ActionResult SetUpReceiveKnown()
+        //{
+        //    return View("~/Views/Receiving/SelectProduct.cshtml");
+        //}
 
-        public ActionResult SetUpReceivePrePack()
-        {
-            // Build client DD and load view to receive Pre-Packs
-            ViewBag.ListOfClients = ReceivingService.fnClientIDs();
-            return View("~/Views/Receiving/SelectPrePack.cshtml");
-        }
+        // TODO: Repurpose for open orders check - Iffy
+        //public ActionResult SetUpReceivePrePack()
+        //{
+        //    return View("~/Views/Receiving/SelectPrePack.cshtml");
+        //}
 
         [HttpGet]
         public ActionResult SetupReceiveUnKnown()
@@ -111,17 +112,19 @@ namespace MvcPhoenix.Controllers
         public ActionResult BuildProductMasterDropDown(int id)
         {
             // id=clientid .. return the <option> values for the <select> tag
-            return Content(ReceivingService.fnBuildProductMasterDropDown(id));
+            return Content(ApplicationService.ddlBuildProductMasterDropDown(id));
         }
 
+        // TODO: Move to inventory - Iffy
+        // parse productmasterid to method instead of formcollection
         public ActionResult CheckForOpenOrderItems(FormCollection fc)
         {
             // Build list of open order items and return a partial
             int pk = Convert.ToInt32(fc["productmasterid"]);
-            List<OpenBulkOrderItems> mylist = ReceivingService.fnOpenBulkOrderItems(pk);
-            if (mylist.Count() > 0)
+            List<OpenBulkOrderItems> result = ReceivingService.fnOpenBulkOrderItems(pk);
+            if (result.Count() > 0)
             {
-                return PartialView("~/Views/Receiving/_OpenOrderItems.cshtml", mylist);
+                return PartialView("~/Views/Receiving/_OpenOrderItems.cshtml", result);
             }
             else
             {
@@ -138,7 +141,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BuildProductCodeDropDown(int clientid)
         {
-            return Content(ReceivingService.fnBuildProductCodeDropDown(clientid));
+            return Content(ApplicationService.ddlBuildProductCodeDropDown(clientid));
         }
 
         public ActionResult EnterPrePack(int clientid, int productdetailid)
@@ -161,7 +164,7 @@ namespace MvcPhoenix.Controllers
             // id = productmasterid .. Build a new viewmodel of a bulk container and load the edit view
             BulkContainerViewModel obj = new BulkContainerViewModel();
             obj = ReceivingService.fnNewBulkContainer(productmasterid, productdetailid);
-            return View("~/Views/Receiving/Edit.cshtml", obj); 
+            return View("~/Views/Receiving/Edit.cshtml", obj);
         }
 
         [HttpGet]
@@ -172,9 +175,7 @@ namespace MvcPhoenix.Controllers
             obj = ReceivingService.fnFillBulkContainerFromDB(id);
             return View("~/Views/Receiving/Edit.cshtml", obj);
         }
-
-        // No ActionResult to edit an unknown container ... it's a one way insert action
-
+        
         [HttpPost]
         public ActionResult SaveContainer(BulkContainerViewModel bc)
         {

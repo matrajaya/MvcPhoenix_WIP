@@ -13,7 +13,7 @@ namespace MvcPhoenix.Services
         public static List<BulkContainerViewModel> fnIndexList()
         {
             // List for the Index View
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 var obj = (from t in db.tblBulk
                            join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
@@ -43,14 +43,14 @@ namespace MvcPhoenix.Services
         public static List<OpenBulkOrderItems> fnOpenBulkOrderItems(int id)
         {
             // reset the flag on all order items first
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand("UPDATE tblBulkOrderItem SET ToBeClosed=null WHERE ProductMasterID=" + id);
             }
 
             // build a list of Open Bulk Order Items for the Partial View
             List<OpenBulkOrderItems> mylist = new List<OpenBulkOrderItems>();
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 mylist = (from t in db.tblBulkOrderItem
                           join t2 in db.tblBulkOrder on t.BulkOrderID equals t2.BulkOrderID
@@ -181,12 +181,7 @@ namespace MvcPhoenix.Services
                 obj.bulkstatus = "RECD";
                 obj.enteredby = HttpContext.Current.User.Identity.Name;
 
-                obj.ListOfWareHouses = fnWarehouseIDs();
-                obj.ListOfProductMasters = fnProductMasterIDs(obj.clientid, productmasterid);
-                obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
-                obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
-                obj.ListOfUMs = fnUnitMeasure(obj.clientid);
-                obj.ListOfCarriers = fnCarriers();
+                //obj.ListOfProductMasters = ApplicationService.ddlProductMasterIDs(obj.clientid, productmasterid);
 
                 return obj;
             }
@@ -197,12 +192,12 @@ namespace MvcPhoenix.Services
             bool retval = true;
             try
             {
-                using (var db = new EF.CMCSQL03Entities())
+                using (var db = new CMCSQL03Entities())
                 {
                     int pk = incoming.bulkid;
                     if (incoming.bulkid == -1)
                     {
-                        var newrec = new EF.tblBulk
+                        var newrec = new tblBulk
                         {
                             ProductMasterID = incoming.productmasterid
                         };
@@ -216,37 +211,37 @@ namespace MvcPhoenix.Services
                         pk = newrec.BulkID;
                     }
 
-                    var qry = (from t in db.tblBulk
-                               where t.BulkID == pk
-                               select t).FirstOrDefault();
+                    var bulk = (from t in db.tblBulk
+                                where t.BulkID == pk
+                                select t).FirstOrDefault();
 
-                    qry.Warehouse = incoming.warehouse;
-                    qry.ReceiveDate = incoming.receivedate;
-                    qry.Carrier = incoming.carrier;
-                    qry.ReceivedBy = incoming.receivedby;
-                    qry.EnteredBy = incoming.enteredby;
-                    qry.ProductMasterID = incoming.productmasterid;
-                    qry.ReceiveWeight = incoming.receiveweight;
-                    qry.LotNumber = incoming.lotnumber;
-                    qry.MfgDate = incoming.mfgdate;
-                    qry.ExpirationDate = incoming.expirationdate;
-                    qry.CeaseShipDate = incoming.ceaseshipdate;
-                    qry.BulkStatus = incoming.bulkstatus;
-                    qry.UM = incoming.um;
-                    qry.ContainerColor = incoming.containercolor;
-                    qry.Bin = incoming.bin;
-                    qry.ContainerType = incoming.containertype;
-                    qry.COAIncluded = incoming.coaincluded;
-                    qry.MSDSIncluded = incoming.msdsincluded;
-                    qry.ContainerNotes = incoming.containernotes;
-                    qry.CurrentWeight = incoming.receiveweight;
-                    qry.QCDate = incoming.qcdate;
-                    qry.NoticeDate = incoming.noticedate;
-                    qry.BulkLabelNote = incoming.bulklabelnote;
-                    qry.ReceivedAsCode = incoming.receivedascode;
-                    qry.ReceivedAsName = incoming.receivedasname;
-                    qry.UpdateDate = DateTime.UtcNow;
-                    qry.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    bulk.Warehouse = incoming.warehouse;
+                    bulk.ReceiveDate = incoming.receivedate;
+                    bulk.Carrier = incoming.carrier;
+                    bulk.ReceivedBy = incoming.receivedby;
+                    bulk.EnteredBy = incoming.enteredby;
+                    bulk.ProductMasterID = incoming.productmasterid;
+                    bulk.ReceiveWeight = incoming.receiveweight;
+                    bulk.LotNumber = incoming.lotnumber;
+                    bulk.MfgDate = incoming.mfgdate;
+                    bulk.ExpirationDate = incoming.expirationdate;
+                    bulk.CeaseShipDate = incoming.ceaseshipdate;
+                    bulk.BulkStatus = incoming.bulkstatus;
+                    bulk.UM = incoming.um;
+                    bulk.ContainerColor = incoming.containercolor;
+                    bulk.Bin = incoming.bin;
+                    bulk.ContainerType = incoming.containertype;
+                    bulk.COAIncluded = incoming.coaincluded;
+                    bulk.MSDSIncluded = incoming.msdsincluded;
+                    bulk.ContainerNotes = incoming.containernotes;
+                    bulk.CurrentWeight = incoming.receiveweight;
+                    bulk.QCDate = incoming.qcdate;
+                    bulk.NoticeDate = incoming.noticedate;
+                    bulk.BulkLabelNote = incoming.bulklabelnote;
+                    bulk.ReceivedAsCode = incoming.receivedascode;
+                    bulk.ReceivedAsName = incoming.receivedasname;
+                    bulk.UpdateDate = DateTime.UtcNow;
+                    bulk.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                     db.SaveChanges();
 
@@ -313,12 +308,6 @@ namespace MvcPhoenix.Services
 
                 obj.clientid = qPM.ClientID;
                 obj.clientname = qCL.ClientName;
-                obj.ListOfWareHouses = fnWarehouseIDs();
-                obj.ListOfProductMasters = fnProductMasterIDs(qPM.ClientID, qPM.ProductMasterID);
-                obj.ListOfBulkStatusIDs = fnBulkStatusIDs();
-                obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
-                obj.ListOfUMs = fnUnitMeasure(obj.clientid);
-                obj.ListOfCarriers = fnCarriers();
 
                 // R/O fields from PM
                 obj.MasterCode = qPM.MasterCode;
@@ -390,9 +379,7 @@ namespace MvcPhoenix.Services
                 obj.receivedate = DateTime.UtcNow;
                 obj.enteredby = HttpContext.Current.User.Identity.Name;
                 obj.receivedby = HttpContext.Current.User.Identity.Name;
-                obj.ListOfWareHouses = fnWarehouseIDs();
-                obj.ListOfContainerTypeIDs = fnContainerTypeIDs();
-                obj.ListOfCarriers = fnCarriers();
+
                 return obj;
             }
         }
@@ -402,9 +389,9 @@ namespace MvcPhoenix.Services
             bool retval = true;
             try
             {
-                using (var db = new EF.CMCSQL03Entities())
+                using (var db = new CMCSQL03Entities())
                 {
-                    var newitem = new EF.tblBulkUnKnown
+                    var newitem = new tblBulkUnKnown
                     {
                         ReceivedAsCode = incoming.receivedascode,
                         ReceivedAsName = incoming.receivedasname,
@@ -469,9 +456,7 @@ namespace MvcPhoenix.Services
                 obj.bulkid = -1;
                 obj.receivedate = DateTime.UtcNow;
                 obj.carrier = null;
-                obj.ListOfCarriers = fnCarriers();
                 obj.warehouse = null;
-                obj.ListOfWareHouses = fnWarehouseIDs();
                 obj.enteredby = HttpContext.Current.User.Identity.Name;
                 obj.lotnumber = null;
                 obj.receivedby = HttpContext.Current.User.Identity.Name;
@@ -506,9 +491,9 @@ namespace MvcPhoenix.Services
             bool retval = true;
             try
             {
-                using (var db = new EF.CMCSQL03Entities())
+                using (var db = new CMCSQL03Entities())
                 {
-                    var newbulk = new EF.tblBulk();
+                    var newbulk = new tblBulk();
 
                     newbulk.ProductMasterID = vm.productmasterid;
                     newbulk.ReceiveDate = vm.receivedate;
@@ -539,7 +524,7 @@ namespace MvcPhoenix.Services
                         string sThisQty = fc["Value" + i.ToString()];
                         int ThisQty = Convert.ToInt32(sThisQty);
 
-                        var newstock = new EF.tblStock();
+                        var newstock = new tblStock();
 
                         newstock.BulkID = newBulkID;
                         newstock.ShelfID = ThisShelfID;
@@ -567,189 +552,5 @@ namespace MvcPhoenix.Services
         }
 
         #endregion Prepack Receiving Methods
-
-        #region Dropdownlist methods
-
-        public static string fnBuildProductMasterDropDown(int clientid)
-        {
-            // This returns ONLY the <option> portion of the <select> tag, thus allowing the <select> tag to
-            // be propering decorated with onchange= etc..
-            using (var db = new CMCSQL03Entities())
-            {
-                var qry = (from t in db.tblProductMaster where t.ClientID == clientid orderby t.MasterCode, t.MasterName select t);
-                string s = "<option value='0' selected=true>Select Master Code</option>";
-                if (qry.Count() > 0)
-                {
-                    foreach (var item in qry)
-                    { s = s + "<option value=" + item.ProductMasterID.ToString() + ">" + item.MasterCode + " - " + item.MasterName + "</option>"; }
-                }
-                else
-                { s = s + "<option value=0>No Products Found</option>"; }
-                s = s + "</select>";
-                return s;
-            }
-        }
-
-        public static string fnBuildProductCodeDropDown(int clientid)
-        {
-            // This returns ONLY the <option> portion of the <select> tag, thus allowing the <select> tag to
-            // be propering decorated with onchange= etc..
-            using (var db = new CMCSQL03Entities())
-            {
-                var qry = (from t in db.tblProductDetail
-                           join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                           where pm.ClientID == clientid
-                           orderby t.ProductCode
-                           select t);
-                string s = "<option value='0' selected=true>Select Product Code</option>";
-                if (qry.Count() > 0)
-                {
-                    foreach (var item in qry)
-                    { s = s + "<option value=" + item.ProductDetailID.ToString() + ">" + item.ProductCode + " - " + item.ProductName + "</option>"; }
-                }
-                else
-                { s = s + "<option value=0>No Products Found</option>"; }
-                s = s + "</select>";
-                return s;
-            }
-        }
-
-        public static List<SelectListItem> fnCarriers()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblCarrier
-                          orderby t.CarrierName
-                          select new SelectListItem
-                          {
-                              Value = t.CarrierName,
-                              Text = t.CarrierName
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "", Text = "Select Carrier" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnClientIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblClient
-                          orderby t.ClientName
-                          select new SelectListItem
-                          {
-                              Value = t.ClientID.ToString(),
-                              Text = t.ClientName
-                          }).ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-
-                return mylist;
-            }
-        }
-
-        private static List<SelectListItem> fnWarehouseIDs()
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-
-            mylist.Add(new SelectListItem { Value = null, Text = "" });
-            mylist.Add(new SelectListItem { Value = "AP", Text = "AP" });
-            mylist.Add(new SelectListItem { Value = "CT", Text = "CT" });
-            mylist.Add(new SelectListItem { Value = "CO", Text = "CO" });
-            mylist.Add(new SelectListItem { Value = "EU", Text = "EU" });
-
-            return mylist;
-        }
-
-        public static List<SelectListItem> fnProductMasterIDs(int? id, int? PmID = null)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                if (PmID == null)
-                {
-                    mylist = (from t in db.tblProductMaster
-                              where t.ClientID == id
-                              orderby t.MasterCode, t.MasterName
-                              select new SelectListItem
-                              {
-                                  Value = t.ProductMasterID.ToString(),
-                                  Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25)
-                              }).ToList();
-
-                    mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-                }
-                else
-                {
-                    mylist = (from t in db.tblProductMaster
-                              where t.ClientID == id && t.ProductMasterID == PmID
-                              orderby t.MasterCode, t.MasterName
-                              select new SelectListItem
-                              {
-                                  Value = t.ProductMasterID.ToString(),
-                                  Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25)
-                              }).ToList();
-                }
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnBulkStatusIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblBulk
-                          orderby t.BulkStatus
-                          select new SelectListItem
-                          {
-                              Value = t.BulkStatus,
-                              Text = t.BulkStatus
-                          }).Distinct().ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnContainerTypeIDs()
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist.Add(new SelectListItem { Value = "", Text = "" });
-            mylist.Add(new SelectListItem { Value = "S", Text = "Steel" });
-            mylist.Add(new SelectListItem { Value = "P", Text = "Plastic" });
-            mylist.Add(new SelectListItem { Value = "F", Text = "Fiber" });
-            mylist.Add(new SelectListItem { Value = "O", Text = "Other" });
-            return mylist;
-        }
-
-        public static List<SelectListItem> fnUnitMeasure(int? clientid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblTier
-                          orderby t.ClientID
-                          where t.ClientID == clientid
-                          select new SelectListItem
-                          {
-                              Value = t.Size,
-                              Text = t.Size
-                          }).Distinct().ToList();
-
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Please Select" });
-
-                return mylist;
-            }
-        }
-
-        #endregion Dropdownlist methods
     }
 }

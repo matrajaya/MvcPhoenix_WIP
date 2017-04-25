@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.Models;
+﻿using MvcPhoenix.EF;
+using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using Neodynamic.SDK.Web;
 using PagedList;
@@ -13,8 +14,6 @@ namespace MvcPhoenix.Controllers
 {
     public class InventoryController : Controller
     {
-        private MvcPhoenix.EF.CMCSQL03Entities db = new MvcPhoenix.EF.CMCSQL03Entities();
-
         public ActionResult Index()
         {
             return View();
@@ -23,12 +22,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult RecentBulkReceived()   // build partial for index, same as receiving Index
         {
             List<BulkContainerViewModel> mylist = ReceivingService.fnIndexList();
+
             return PartialView("~/Views/Inventory/_RecentBulkReceived.cshtml", mylist);
         }
 
         public ActionResult Edit(int id)    // Entry point for ProductDetailID from Search Results
         {
             var vm = InventoryService.fnFillInventoryVM(id);
+
             return View("~/Views/Inventory/Edit.cshtml", vm);
         }
 
@@ -36,12 +37,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult Save(Inventory vm)
         {
             InventoryService.fnSaveInventory(vm);
+
             return RedirectToAction("Edit", new { id = vm.PP.productdetailid });
         }
 
         public ActionResult EditBulk(int id)   // redirect to bulk edit
         {
             var vm = BulkService.fnFillBulkContainerFromDB(id);
+
             return View("~/Views/Bulk/Edit.cshtml", vm);
         }
 
@@ -52,90 +55,102 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BulkStockList(int id, int productdetailid)  // return partial
         {
-            // fill a list<BulkContainerViewModel>
-            var vm = new List<BulkContainerViewModel>();
-
-            var q = (from t in db.tblBulk
-                     where t.ProductMasterID == id
-                     select t).ToList();
-
-            foreach (var row in q)
+            using (var db = new CMCSQL03Entities())
             {
-                vm.Add(BulkService.fnFillBulkContainerFromDB(row.BulkID));
+                // fill a list<BulkContainerViewModel>
+                var vm = new List<BulkContainerViewModel>();
+
+                var q = (from t in db.tblBulk
+                         where t.ProductMasterID == id
+                         select t).ToList();
+
+                foreach (var row in q)
+                {
+                    vm.Add(BulkService.fnFillBulkContainerFromDB(row.BulkID));
+                }
+
+                // pc 12/27 added for use by CreateNewPackout so can return to Inv Edit
+                TempData["productdetailid"] = productdetailid;
+
+                return PartialView("~/Views/Inventory/_BulkStock.cshtml", vm);
             }
-			
-			// pc 12/27 added for use by CreateNewPackout so can return to Inv Edit
-            TempData["productdetailid"] = productdetailid;
-            return PartialView("~/Views/Inventory/_BulkStock.cshtml", vm);
         }
 
         public ActionResult ShelfStockList(int id)  // return partial
         {
-            var vm = new List<StockViewModel>();
-            var q = (from t in db.tblStock
-                     join sm in db.tblShelfMaster on t.ShelfID equals sm.ShelfID
-                     join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
-                     join bk in db.tblBulk on t.BulkID equals bk.BulkID
-                     where pd.ProductDetailID == id && t.QtyOnHand > 0
-                     select t).ToList();
-
-            foreach (var row in q)
+            using (var db = new CMCSQL03Entities())
             {
-                vm.Add(InventoryService.fnFillStockViewModel(row.StockID));
+                var vm = new List<StockViewModel>();
+                var q = (from t in db.tblStock
+                         join sm in db.tblShelfMaster on t.ShelfID equals sm.ShelfID
+                         join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
+                         join bk in db.tblBulk on t.BulkID equals bk.BulkID
+                         where pd.ProductDetailID == id && t.QtyOnHand > 0
+                         select t).ToList();
+
+                foreach (var row in q)
+                {
+                    vm.Add(InventoryService.fnFillStockViewModel(row.StockID));
+                }
+
+                ViewBag.ParentID = id;
+
+                return PartialView("~/Views/Inventory/_ShelfStock.cshtml", vm);
             }
-
-            ViewBag.ParentID = id;
-
-            return PartialView("~/Views/Inventory/_ShelfStock.cshtml", vm);
         }
 
         public ActionResult EditStock(int id)
         {
             var vm = InventoryService.fnFillStockViewModel(id);
+
             return PartialView("~/Views/Inventory/_ShelfStockModal.cshtml", vm);
         }
 
         public ActionResult CreatePrePackStock(int id) //id=productdetailid
         {
-            var pd = db.tblProductDetail.Find(id);
-            var pm = db.tblProductMaster.Find(pd.ProductMasterID);
-            var cl = db.tblClient.Find(pm.ClientID);
+            using (var db = new CMCSQL03Entities())
+            {
+                var pd = db.tblProductDetail.Find(id);
+                var pm = db.tblProductMaster.Find(pd.ProductMasterID);
+                var cl = db.tblClient.Find(pm.ClientID);
 
-            PrePackStock vm = new PrePackStock();
+                PrePackStock vm = new PrePackStock();
 
-            vm.ProductDetailID = id;
-            vm.BulkContainer = new BulkContainerViewModel();
-            vm.BulkContainer.bulkid = -1;
-            vm.BulkContainer.receivedate = DateTime.UtcNow;
-            vm.BulkContainer.warehouse = cl.CMCLocation;
-            vm.BulkContainer.lotnumber = "lotnumber";
-            vm.BulkContainer.mfgdate = DateTime.UtcNow;
-            vm.BulkContainer.clientid = pm.ClientID;
-            vm.BulkContainer.productmasterid = pm.ProductMasterID;
-            vm.BulkContainer.bulkstatus = "AVAIL";
-            vm.ProductCode = pd.ProductCode;
-            vm.ProductName = pd.ProductName;
-            vm.BulkContainer.bin = "PREPACK";
-            vm.ListOfShelfMasterIDs = (from t in db.tblShelfMaster
-                                       where t.ProductDetailID == id && t.Discontinued == false
-                                       select new ShelfMasterViewModel
-                                       {
-                                           shelfid = t.ShelfID,
-                                           productdetailid = t.ProductDetailID,
-                                           bin = t.Bin,
-                                           size = t.Size
-                                       }).ToList();
+                vm.ProductDetailID = id;
+                vm.BulkContainer = new BulkContainerViewModel();
+                vm.BulkContainer.bulkid = -1;
+                vm.BulkContainer.receivedate = DateTime.UtcNow;
+                vm.BulkContainer.warehouse = cl.CMCLocation;
+                vm.BulkContainer.lotnumber = "lotnumber";
+                vm.BulkContainer.mfgdate = DateTime.UtcNow;
+                vm.BulkContainer.clientid = pm.ClientID;
+                vm.BulkContainer.productmasterid = pm.ProductMasterID;
+                vm.BulkContainer.bulkstatus = "AVAIL";
+                vm.ProductCode = pd.ProductCode;
+                vm.ProductName = pd.ProductName;
+                vm.BulkContainer.bin = "PREPACK";
+                vm.ListOfShelfMasterIDs = (from t in db.tblShelfMaster
+                                           where t.ProductDetailID == id && t.Discontinued == false
+                                           select new ShelfMasterViewModel
+                                           {
+                                               shelfid = t.ShelfID,
+                                               productdetailid = t.ProductDetailID,
+                                               bin = t.Bin,
+                                               size = t.Size
+                                           }).ToList();
 
-            vm.ShelfMasterCount = vm.ListOfShelfMasterIDs.Count();
-            vm.BulkContainer.pm_ceaseshipdifferential = pm.CeaseShipDifferential;
+                vm.ShelfMasterCount = vm.ListOfShelfMasterIDs.Count();
+                vm.BulkContainer.pm_ceaseshipdifferential = pm.CeaseShipDifferential;
 
-            return View("~/Views/Inventory/PrePackStock.cshtml", vm);
+                return View("~/Views/Inventory/PrePackStock.cshtml", vm);
+            }
         }
 
         [HttpPost]
         public ActionResult SavePrePackStock(PrePackStock vm, FormCollection fc)
         {
             InventoryService.fnSavePrePackStock(vm, fc);
+
             return RedirectToAction("Edit", new { id = vm.ProductDetailID });
         }
 
@@ -143,13 +158,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveStock(StockViewModel vm)
         {
             InventoryService.fnSaveStock(vm);
+
             return RedirectToAction("Edit", new { id = vm.ProductDetailID });
         }
 
         public ActionResult BulkOrdersList(int id)
         {
             // id=productdetailid
-            using (db)
+            using (var db = new CMCSQL03Entities())
             {
                 var pd = db.tblProductDetail.Find(id);
                 var pmx = db.tblProductMaster.Find(pd.ProductMasterID);
@@ -185,7 +201,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 ViewBag.CurrentSort = sortOrder;
                 ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
@@ -253,11 +269,14 @@ namespace MvcPhoenix.Controllers
 
         private int? GetProductMasterId(int id)
         {
-            var masterid = (from t in db.tblProductDetail
-                            where t.ProductDetailID == id
-                            select t.ProductMasterID).FirstOrDefault();
+            using (var db = new CMCSQL03Entities())
+            {
+                var masterid = (from t in db.tblProductDetail
+                                where t.ProductDetailID == id
+                                select t.ProductMasterID).FirstOrDefault();
 
-            return masterid;
+                return masterid;
+            }
         }
 
         /// <summary>
@@ -277,6 +296,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditInventoryLogNote(int id)
         {
             var obj = InventoryService.fnGetInventoryNote(id);
+
             return PartialView("~/Views/Inventory/_InventoryLogNotesModal.cshtml", obj);
         }
 
@@ -284,6 +304,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveInventoryLogNote(InventoryLogNote obj)
         {
             int pk = InventoryService.fnSaveInventoryLogNote(obj);
+
             return null;
         }
 
@@ -291,6 +312,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult DeleteInventoryLogNote(int id, int ParentID)
         {
             int pk = InventoryService.fnDeleteProductNote(id);
+
             return null;
         }
 
@@ -300,25 +322,28 @@ namespace MvcPhoenix.Controllers
         /// </summary>
         public ActionResult ProductLogList(int id)
         {
-            var obj = (from t in db.tblPPPDLogNote
-                       where t.ProductDetailID == id
-                       orderby t.NoteDate descending
-                       select new ProductNote
-                       {
-                           productnoteid = t.PPPDLogNoteID,
-                           productdetailid = t.ProductDetailID,
-                           notedate = t.NoteDate,
-                           notes = t.Notes,
-                           reasoncode = t.ReasonCode,
-                           UpdateDate = t.UpdateDate,
-                           UpdateUser = t.UpdateUser,
-                           CreateDate = t.CreateDate,
-                           CreateUser = t.CreateUser
-                       }).ToList();
+            using (var db = new CMCSQL03Entities())
+            {
+                var obj = (from t in db.tblPPPDLogNote
+                           where t.ProductDetailID == id
+                           orderby t.NoteDate descending
+                           select new ProductNote
+                           {
+                               productnoteid = t.PPPDLogNoteID,
+                               productdetailid = t.ProductDetailID,
+                               notedate = t.NoteDate,
+                               notes = t.Notes,
+                               reasoncode = t.ReasonCode,
+                               UpdateDate = t.UpdateDate,
+                               UpdateUser = t.UpdateUser,
+                               CreateDate = t.CreateDate,
+                               CreateUser = t.CreateUser
+                           }).ToList();
 
-            ViewBag.ParentKey = id;
+                ViewBag.ParentKey = id;
 
-            return PartialView("~/Views/Inventory/_ProductLogNotes.cshtml", obj);
+                return PartialView("~/Views/Inventory/_ProductLogNotes.cshtml", obj);
+            }
         }
 
         #endregion Inventory Product Master Log Notes
@@ -393,6 +418,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult PrintShelfStockLabel(int id)
         {
             var vm = InventoryService.fnFillStockViewModel(id);
+
             return View(vm);
         }
 

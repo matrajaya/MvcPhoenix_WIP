@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MvcPhoenix.EF;
+using System;
 using System.Linq;
 using System.Web;
 
@@ -8,7 +9,7 @@ namespace MvcPhoenix.Services
     {
         public static int fnCreatePackOutOrder(int id, int Priority)
         {
-            using (var db = new EF.CMCSQL03Entities())
+            using (var db = new CMCSQL03Entities())
             {
                 int retval = 0;
                 string s = "";
@@ -18,7 +19,9 @@ namespace MvcPhoenix.Services
                 
 				// check to see if there is an open packout already 
                 var qPackout = (from t in db.tblProductionMaster
-                                where t.Company == client.CMCLongCustomer && t.MasterCode == pmaster.MasterCode && (t.ProductionStage == 10 | t.ProductionStage == 20)
+                                where t.Company == client.CMCLongCustomer
+                                && t.MasterCode == pmaster.MasterCode
+                                && (t.ProductionStage == 10 | t.ProductionStage == 20)
                                 select t).FirstOrDefault();
                 if (qPackout != null)
                 {
@@ -90,13 +93,16 @@ namespace MvcPhoenix.Services
                     newdetail.LabelQty = 0;
 					
                     var qLog = (from t in db.tblInvLog
-                                where t.LogType == "SS-SHP" && t.ProductDetailID == row.pd.ProductDetailID
+                                where t.LogType == "SS-SHP" 
+                                && t.ProductDetailID == row.pd.ProductDetailID
                                 select t);
 
                     DateTime? d1 = DateTime.UtcNow.AddDays(-365);
 
                     var qSSPY = (from t in qLog
-                                 where t.LogType == "SS-SHP" && t.ProductDetailID == row.pd.ProductDetailID && t.ShipDate >= d1
+                                 where t.LogType == "SS-SHP" 
+                                 && t.ProductDetailID == row.pd.ProductDetailID 
+                                 && t.ShipDate >= d1
                                  select t);
 
                     int qShelfShippedPastYear = Convert.ToInt32((from t in qSSPY
@@ -105,7 +111,9 @@ namespace MvcPhoenix.Services
                     DateTime? d2 = DateTime.UtcNow.AddDays(-120);
 
                     var qSSP4M = (from t in qLog
-                                  where t.LogType == "SS-SHP" && t.ProductDetailID == row.pd.ProductDetailID && t.ShipDate >= d2
+                                  where t.LogType == "SS-SHP" 
+                                  && t.ProductDetailID == row.pd.ProductDetailID 
+                                  && t.ShipDate >= d2
                                   select t);
 
                     int qShelfShippedPastFourMonths = Convert.ToInt32((from t in qSSP4M
@@ -123,23 +131,24 @@ namespace MvcPhoenix.Services
                     }
 
                     //int dPK = newPackOutID;
-                    newdetail.UM = row.sm.Size; // string dUM = row.sm.Size;
-                    newdetail.Unit_Weight = row.sm.UnitWeight; //decimal? dUnitWeight = row.sm.UnitWeight;
+                    newdetail.UM = row.sm.Size;                                             // string dUM = row.sm.Size;
+                    newdetail.Unit_Weight = row.sm.UnitWeight;                              //decimal? dUnitWeight = row.sm.UnitWeight;
                     newdetail.SS_REORDMIN = dReorderMin;
-                    newdetail.SS_REORDMAX = (dReorderMin * 2); // decimal? dReorderMax = (dReorderMin * 2);
+                    newdetail.SS_REORDMAX = (dReorderMin * 2);                              // decimal? dReorderMax = (dReorderMin * 2);
 
                     var qStock = (from t in db.tblStock
-                                  where t.ShelfID == row.sm.ShelfID && t.ShelfStatus == "AVAIL"
+                                  where t.ShelfID == row.sm.ShelfID 
+                                  && t.ShelfStatus == "AVAIL"
                                   select t);
 
                     newdetail.OnHand = (from t in qStock
-                                        select t.QtyOnHand).Sum(); //decimal? dOnHand = (from t in qStock select t.QtyOnHand).Sum();
+                                        select t.QtyOnHand).Sum();                          //decimal? dOnHand = (from t in qStock select t.QtyOnHand).Sum();
 
-                    newdetail.RecQty = newdetail.SS_REORDMAX - newdetail.OnHand; //decimal? dRecQty = dReorderMax - dOnHand;
-                    newdetail.Status = row.t.BulkStatus; // string dStatus = row.t.BulkStatus;
-                    newdetail.ProdCode = row.pd.ProductCode; // string dProductCode = row.pd.ProductCode;
-                    newdetail.ProductName = row.pd.ProductName; //string dProductName = row.pd.ProductName;
-                    newdetail.ShelfStockLocation = row.sm.Bin; //string dShelfStockLocation = row.sm.Bin;
+                    newdetail.RecQty = newdetail.SS_REORDMAX - newdetail.OnHand;            //decimal? dRecQty = dReorderMax - dOnHand;
+                    newdetail.Status = row.t.BulkStatus;                                    // string dStatus = row.t.BulkStatus;
+                    newdetail.ProdCode = row.pd.ProductCode;                                // string dProductCode = row.pd.ProductCode;
+                    newdetail.ProductName = row.pd.ProductName;                             //string dProductName = row.pd.ProductName;
+                    newdetail.ShelfStockLocation = row.sm.Bin;                              //string dShelfStockLocation = row.sm.Bin;
 
                     var dPackage = (from t in db.tblPackage
                                     where t.PackageID == row.sm.PackageID

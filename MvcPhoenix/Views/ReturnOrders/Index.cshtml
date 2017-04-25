@@ -19,7 +19,7 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-6">
-                        @Html.DropDownList("clientid", (List<SelectListItem>)ViewBag.ListOfClients, new { @class = "form-control", onchange = "UpdateDivisionDD()" })
+                        @Html.DropDownList("clientid", ApplicationService.ddlClientIDs(), new { @class = "form-control", onchange = "UpdateDivisionDD()" })
                     </div>
                     <div class="col-md-6">
                         <div id="dvPlaceholderDivision">
@@ -41,10 +41,10 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
-                        @Html.DropDownList("bulkstatusid", (List<SelectListItem>)ViewBag.ListOfBulkStatusIDs, new { @class = "form-control" })
+                        @Html.DropDownList("bulkstatusid", new SelectList(Enum.GetValues(typeof(ApplicationService.StockStatusChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-4">
-                        @Html.DropDownList("stockstatusid", (List<SelectListItem>)ViewBag.ListOfStockStatusIDs, new { @class = "form-control" })
+                        @Html.DropDownList("stockstatusid", new SelectList(Enum.GetValues(typeof(ApplicationService.StockStatusChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-4">
                         @Ajax.ActionLink("Search", "Search", "ReturnOrders", new AjaxOptions { OnSuccess = "UpdateAllPartials" }, new { @class = "btn btn-success btn-block form-control" })
@@ -93,7 +93,6 @@
 
     function UpdateDivisionDD() {
         var myclientid = $('#clientid').val();
-
         var myurl = '@Url.Action("BuildDivisionDropDown", "ReturnOrders")';
         $("#divisionid").load(myurl, { id: myclientid });
 
@@ -110,7 +109,6 @@
         var mybulkstatusid = $('#bulkstatusid').val();
         var mystockstatusid = $('#stockstatusid').val();
         var mydivisionid = $('#divisionid').val();
-        //$("#hiddenclientid").val(myclientid);
         var myurl1 = '@Url.Action("LoadBulkPartial", "ReturnOrders")';
         $("#dvBulkPlaceHolder").load(myurl1, { clientid: myclientid, bulkstatusid: mybulkstatusid, divisionid: mydivisionid });
         var myurl3 = '@Url.Action("LoadMarkedBulkPartial", "ReturnOrders")';
@@ -123,7 +121,6 @@
         var mybulkstatusid = $('#bulkstatusid').val();
         var mystockstatusid = $('#stockstatusid').val();
         var mydivisionid = $('#divisionid').val();
-        //$("#hiddenclientid").val(myclientid);
         var myurl2 = '@Url.Action("LoadStockPartial", "ReturnOrders")';
         $("#dvStockPlaceHolder").load(myurl2, { clientid: myclientid, stockstatusid: mystockstatusid, divisionid: mydivisionid });
         var myurl4 = '@Url.Action("LoadMarkedStockPartial", "ReturnOrders")';

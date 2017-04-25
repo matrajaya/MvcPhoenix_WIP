@@ -1,5 +1,6 @@
 ﻿using MvcPhoenix.EF;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
@@ -12,6 +13,1184 @@ namespace MvcPhoenix.Models
 {
     public class ApplicationService
     {
+        public enum CMCLocationChoice
+        {
+            CT,
+            CO,
+            EU,
+            AP
+        }
+
+        public enum ContactTypeChoice
+        {
+            Distributor,
+            Requestor,
+            SalesRep
+        }
+
+        public enum ContainerTypeChoice
+        {
+            Steel,
+            Plastic,
+            Fiber,
+            Other
+        }
+
+        public enum CurrencyChoice
+        {
+            EUR,
+            USD,
+            CNY
+        }
+
+        public enum GHSSignalWordChoice
+        {
+            None,
+            Caution,
+            Warning,
+            Danger
+        }
+
+        public enum GHSSymbolChoice
+        {
+            None,
+            Flammable,
+            Oxidizing,
+            Compressed_Gas,
+            Corrosive,
+            Toxic,
+            Irritant,
+            Health_Hazard,
+            Environmental_Hazard
+        }
+
+        public enum OrderSourceChoice
+        {
+            Manual,
+            Web,
+            Download,
+            Transfer
+        }
+
+        public enum OrderTransTypesChoice
+        {
+            MEMO,
+            MISC_G,
+            MISC_S,
+            MISC_C,
+            MISC_CF,
+            MISC_D,
+            MISC_EM,
+            MISC_FSC,
+            MISC_FSD,
+            MISC_FSM,
+            MISC_H,
+            MISC_I,
+            MISC_IN,
+            MISC_M,
+            MISC_P,
+            MISC_PM,
+            MISC_R,
+            MISC_SPS,
+            MISC_TDI,
+            MISC_U,
+            OTHER
+        }
+
+        public enum OrderTypeChoice
+        {
+            [Display(Name = "Sample")]
+            S,
+
+            [Display(Name = "Dormant")]
+            D,
+
+            [Display(Name = "Return")]
+            R,
+
+            [Display(Name = "Commercial")]
+            C
+        }
+
+        public enum StockStatusChoice
+        {
+            AVAIL,
+            HOLD,
+            QC,
+            RETURN,
+            TEST
+        }
+
+        public enum UMChoice
+        {
+            [Display(Name = "Kilogram")]
+            KG,
+
+            [Display(Name = "Pound")]
+            LB,
+        }
+
+        public enum ValueUnitChoice
+        {
+            [Display(Name = "Gallon")]
+            Gal,
+
+            [Display(Name = "Kilogram")]
+            KG,
+
+            [Display(Name = "Liter")]
+            L,
+
+            [Display(Name = "Pound")]
+            LB,
+        }
+
+        public static string BuildDivisionDropDown(int id)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var divisions = (from t in db.tblDivision
+                                 where t.ClientID == id
+                                 orderby t.DivisionName, t.BusinessUnit
+                                 select t);
+
+                string s = "<option value='0'></option>";
+
+                if (divisions.Count() > 0)
+                {
+                    foreach (var item in divisions)
+                    {
+                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.DivisionName + " - " + item.BusinessUnit + "</option>";
+                    }
+                }
+                else
+                {
+                    s = s + "<option value=0>No Divisions Found</option>";
+                }
+
+                s = s + "</select>";
+
+                return s;
+            }
+        }
+
+        public static string BuildProductEquivalentDropdown(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var products = (from t in db.tblProductDetail
+                                join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                                where pm.ClientID == clientid
+                                && t.ProductCode != pm.MasterCode
+                                orderby t.ProductCode
+                                select new { t.ProductDetailID, t.ProductCode, t.ProductName }).ToList();
+
+                string s = "<option value='0'></option>";
+                if (products.Count() > 0)
+                {
+                    foreach (var item in products)
+                    {
+                        s = s + "<option value=" + item.ProductDetailID.ToString() + ">" + item.ProductCode + " - " + item.ProductName + "</option>";
+                    }
+                }
+                else
+                {
+                    s = s + "<option value=0>No Products Found</option>";
+                }
+                s = s + "</select>";
+
+                return s;
+            }
+        }
+
+        public static string ddlBuildBillingGroup(int clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var divisions = (from t in db.tblDivision
+                                 where t.ClientID == clientid
+                                 orderby t.DivisionID, t.DivisionName
+                                 select t);
+
+                string s = "<option value='' selected=true></option>";
+
+                if (divisions.Count() > 0)
+                {
+                    foreach (var item in divisions)
+                    {
+                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.DivisionName + "</option>";
+                    }
+                }
+                else
+                {
+                    s = s + "<option value=0>No Billing Group</option>";
+                }
+
+                s = s + "</select>";
+
+                return s;
+            }
+        }
+
+        public static string ddlBuildProductCodeDropDown(int clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var products = (from t in db.tblProductDetail
+                                join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                                where pm.ClientID == clientid
+                                orderby t.ProductCode
+                                select t);
+
+                string s = "<option value='' selected=true></option>";
+
+                if (products.Count() > 0)
+                {
+                    foreach (var item in products)
+                    { s = s + "<option value=" + item.ProductDetailID.ToString() + ">" + item.ProductCode + " - " + item.ProductName + "</option>"; }
+                }
+                else
+                {
+                    s = s + "<option value=0>No Products Found</option>";
+                }
+
+                s = s + "</select>";
+
+                return s;
+            }
+        }
+
+        public static string ddlBuildProductMasterDropDown(int clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var products = (from t in db.tblProductMaster
+                                where t.ClientID == clientid
+                                orderby t.MasterCode, t.MasterName
+                                select t);
+
+                string s = "<option value='' selected=true></option>";
+
+                if (products.Count() > 0)
+                {
+                    foreach (var item in products)
+                    { s = s + "<option value=" + item.ProductMasterID.ToString() + ">" + item.MasterCode + " - " + item.MasterName + "</option>"; }
+                }
+                else
+                {
+                    s = s + "<option value=0>No Products Found</option>";
+                }
+
+                s = s + "</select>";
+
+                return s;
+            }
+        }
+
+        public static string ddlBuildSizeDropDown(int productdetailid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                bool isSRcheck = false;                                     //flag to avoid duplicate listing of 1SR
+                var shelfsizes = (from t in db.tblShelfMaster
+                                  where t.ProductDetailID == productdetailid
+                                  && t.InactiveSize != true
+                                  orderby t.Size
+                                  select t);
+
+                string s = "<option value='' selected=true></option>";
+
+                if (shelfsizes.Count() > 0)
+                {
+                    foreach (var item in shelfsizes)
+                    {
+                        if (item.Size == "1SR")
+                        {
+                            isSRcheck = true;
+                        }
+                        s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - " + item.UnitWeight + "</option>";
+                    }
+                }
+
+                if (!isSRcheck)
+                {
+                    s = s + "<option value='0'>1SR</option>"; // TBD: change value to '1SR' and update checks in other services - iffy
+                }
+
+                return s;
+            }
+        }
+
+        public static List<SelectListItem> ddlBulkIDs(int? productdetailid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblBulk
+                          join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                          join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
+                          join sm in db.tblShelfMaster on pd.ProductDetailID equals sm.ProductDetailID
+                          where sm.ShelfID == productdetailid
+                          select new SelectListItem
+                          {
+                              Value = t.BulkID.ToString(),
+                              Text = t.LotNumber
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlBulkSuppliers(int clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblBulkSupplier
+                          where t.ClientID == clientid
+                          orderby t.SupplyID
+                          select new SelectListItem
+                          {
+                              Value = t.BulkSupplierID.ToString(),
+                              Text = t.SupplyID
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlCarriers()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblCarrier
+                          orderby t.CarrierName
+                          select new SelectListItem
+                          {
+                              Value = t.CarrierName,
+                              Text = t.CarrierName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlClientIDs()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblClient
+                          orderby t.ClientName
+                          select new SelectListItem
+                          {
+                              Value = t.ClientID.ToString(),
+                              Text = t.ClientName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlClientsContacts(int clientid, string sContactType)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblClientContact
+                          where t.ClientID == clientid
+                          && t.ContactType == sContactType
+                          orderby t.FullName
+                          select new SelectListItem
+                          {
+                              Value = t.ClientContactID.ToString(),
+                              Text = t.FullName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlCountries()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblCountry
+                          orderby t.Country
+                          select new SelectListItem
+                          {
+                              Value = t.Country,
+                              Text = t.Country
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlDelayReasons()
+        {
+            List<SelectListItem> result = new List<SelectListItem>();
+
+            result.Insert(0, new SelectListItem { Value = "", Text = "" });
+            result.Insert(1, new SelectListItem { Value = "Backorder", Text = "Backorder" });
+            result.Insert(2, new SelectListItem { Value = "Oven Product", Text = "Oven Product" });
+            result.Insert(3, new SelectListItem { Value = "Humidity", Text = "Humidity" });
+            result.Insert(4, new SelectListItem { Value = "Very Large Order", Text = "Very Large Order" });
+            result.Insert(5, new SelectListItem { Value = "Questions/Info Needed", Text = "Questions/Info Needed" });
+            result.Insert(6, new SelectListItem { Value = "Special Doc Required", Text = "Special Doc Required" });
+            result.Insert(7, new SelectListItem { Value = "Special Request Size", Text = "Special Request Size" });
+            result.Insert(8, new SelectListItem { Value = "Return Order", Text = "Return Order" });
+            result.Insert(9, new SelectListItem { Value = "Waste", Text = "Waste" });
+            result.Insert(10, new SelectListItem { Value = "No partial delivery", Text = "No partial delivery" });
+            result.Insert(11, new SelectListItem { Value = "Special delivery date", Text = "Special delivery date" });
+            result.Insert(12, new SelectListItem { Value = "Public holiday", Text = "Public holiday" });
+            result.Insert(13, new SelectListItem { Value = "Freezable Procedure", Text = "Freezable Procedure" });
+            result.Insert(14, new SelectListItem { Value = "CMC delay, customer informed", Text = "CMC delay, customer informed" });
+            result.Insert(15, new SelectListItem { Value = "R&D flow", Text = "R&D flow" });
+            result.Insert(16, new SelectListItem { Value = "Special procedure", Text = "Special procedure" });
+            result.Insert(17, new SelectListItem { Value = "Misc. Charges", Text = "Misc. Charges" });
+            result.Insert(18, new SelectListItem { Value = "Transfer order", Text = "Transfer order" });
+            result.Insert(19, new SelectListItem { Value = "Consolidated Order", Text = "Consolidated Order" });
+            result.Insert(20, new SelectListItem { Value = "Approval Required", Text = "Approval Required" });
+            result.Insert(21, new SelectListItem { Value = "Conditioned packaging", Text = "Conditioned packaging" });
+            result.Insert(22, new SelectListItem { Value = "Product Not Setup", Text = "Product Not Setup" });
+            result.Insert(23, new SelectListItem { Value = "Frt Fwd-Pending Arrangement", Text = "Frt Fwd-Pending Arrangement" });
+            result.Insert(24, new SelectListItem { Value = "Labels, SDS", Text = "Labels, SDS" });
+
+            return result;
+        }
+
+        public static List<SelectListItem> ddlDivisionIDs(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblDivision
+                          where t.ClientID == clientid
+                          orderby t.DivisionName
+                          select new SelectListItem
+                          {
+                              Value = t.DivisionID.ToString(),
+                              Text = t.DivisionName + " / " + t.BusinessUnit
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlEndUses(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblEndUse
+                          where t.ClientID == clientid
+                          orderby t.EndUse
+                          select new SelectListItem
+                          {
+                              Value = t.EndUse,
+                              Text = t.EndUse
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlEndUsesForCustoms()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblEndUseForCustoms
+                          orderby t.EndUse
+                          select new SelectListItem
+                          {
+                              Value = t.EndUse,
+                              Text = t.EndUse
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlHarmonizedCodes()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblHSCode
+                          orderby t.HarmonizedCode
+                          select new SelectListItem
+                          {
+                              Value = t.HarmonizedCode,
+                              Text = t.HarmonizedCode
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlHSCodes()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblHSCode
+                          orderby t.HarmonizedCode
+                          select new SelectListItem
+                          {
+                              Value = t.HarmonizedCode,
+                              Text = t.HarmonizedCode
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlOrderIDs()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblOrderMaster
+                          orderby t.OrderID descending
+                          select new SelectListItem
+                          {
+                              Value = t.OrderID.ToString(),
+                              Text = t.OrderID.ToString()
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlOrderItemIDs(int? orderid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblOrderItem
+                          where t.OrderID == orderid
+                          orderby t.ProductCode
+                          select new SelectListItem
+                          {
+                              Value = t.ItemID.ToString(),
+                              Text = t.ProductCode
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlOrderItemStatusIDs() // TBD: Convert to enum list - Iffy
+        {
+            List<SelectListItem> result = new List<SelectListItem>();
+
+            result.Insert(0, new SelectListItem { Value = "", Text = "" });
+            result.Insert(1, new SelectListItem { Value = "CL", Text = "Closed" });
+            result.Insert(2, new SelectListItem { Value = "OP", Text = "Open" });
+            result.Insert(3, new SelectListItem { Value = "CN", Text = "Cancelled" });
+
+            return result;
+        }
+
+        public static List<SelectListItem> ddlOrderTypes()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblOrderType
+                          orderby t.Description
+                          select new SelectListItem
+                          {
+                              Value = t.OrderType,
+                              Text = t.Description
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlOtherProductStorage()
+        {
+            List<SelectListItem> otherstoragelist = new List<SelectListItem>();
+
+            otherstoragelist.Add(new SelectListItem { Value = "", Text = "" });
+            otherstoragelist.Add(new SelectListItem { Value = "Toxic Storage", Text = "Toxic Storage" });
+            otherstoragelist.Add(new SelectListItem { Value = "Spontaneously Combustible", Text = "Spontaneously Combustible" });
+            otherstoragelist.Add(new SelectListItem { Value = "Oxidizer", Text = "Oxidizer" });
+            otherstoragelist.Add(new SelectListItem { Value = "Base", Text = "Base" });
+            otherstoragelist.Add(new SelectListItem { Value = "Acid", Text = "Acid" });
+            otherstoragelist.Add(new SelectListItem { Value = "Clean Storage", Text = "Clean Storage" });
+            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Corrosive", Text = "Flammable/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Toxic/Corrosive", Text = "Toxic/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide", Text = "Biocide" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Toxic", Text = "Biocide/Toxic" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Toxic/Corrosive", Text = "Biocide/Toxic/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive", Text = "Biocide/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Oxidizer", Text = "Biocide/Oxidizer" });
+            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Pueblo", Text = "Flammable/Pueblo" });
+            otherstoragelist.Add(new SelectListItem { Value = "Corrosive/Flammable", Text = "Corrosive/Flammable" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive/Toxic", Text = "Biocide/Corrosive/Toxic" });
+            otherstoragelist.Add(new SelectListItem { Value = "Corrosive/Toxic", Text = "Corrosive/Toxic" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive", Text = "Biocide/Flammable/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Toxic/Corrosive", Text = "Flammable/Toxic/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive/Flammable", Text = "Biocide/Corrosive/Flammable" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Toxic/Corrosive", Text = "Biocide/Flammable/Toxic/Corrosive" });
+            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive/Toxic", Text = "Biocide/Flammable/Corrosive/Toxic" });
+
+            return otherstoragelist;
+        }
+
+        public static List<SelectListItem> ddlPackageIDs(string size)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblPackage
+                          orderby t.Size
+                          select new SelectListItem
+                          {
+                              Value = t.PackageID.ToString(),
+                              Text = t.PartNumber + "-" + t.Description
+                          }).ToList();
+                result.Add(new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlProductCodes(int? clientid)
+        {
+            List<SelectListItem> result = new List<SelectListItem>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                result = (from t in db.tblProductDetail
+                          join m in db.tblProductMaster on t.ProductMasterID equals m.ProductMasterID
+                          where m.ClientID == clientid
+                          orderby t.ProductCode
+                          select new SelectListItem
+                          {
+                              Value = t.ProductDetailID.ToString(),
+                              Text = t.ProductCode + " " + t.ProductName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlProductCodeSizes(int productdetailid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblShelfMaster
+                          where t.ProductDetailID == productdetailid
+                          && t.InactiveSize != true
+                          orderby t.Size
+                          select new SelectListItem
+                          {
+                              Value = t.ShelfID.ToString(),
+                              Text = t.Size + " - " + t.UnitWeight
+                          }).ToList();
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlProductCodesXRefs(string productcode)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblProductXRef
+                          where t.CMCProductCode == productcode
+                          select new SelectListItem
+                          {
+                              Value = t.CustProductCode + " - " + t.CustProductName,
+                              Text = t.CustProductCode + " - " + t.CustProductName
+                          }).ToList();
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlProductCodeXref(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblProductXRef
+                          where t.ClientID == clientid
+                          orderby t.CustProductCode
+                          select new SelectListItem
+                          {
+                              Value = t.CustProductCode,
+                              Text = t.CustProductCode + " : " + t.CMCProductCode
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlProductEquivalents(int? productmasterid, string productcode)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblProductDetail
+                          where t.ProductMasterID == productmasterid
+                          && t.ProductCode != productcode
+                          select new SelectListItem
+                          {
+                              Value = t.ProductCode + " / " + t.ProductName,
+                              Text = t.ProductCode + " / " + t.ProductName
+                          }).ToList();
+
+                return result;
+            }
+        }
+
+        //May Not be used -  Iffy
+        public static List<SelectListItem> ddlProductEquivalents(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblProductDetail
+                          join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                          where pm.ClientID == clientid
+                          && t.ProductCode != pm.MasterCode
+                          orderby t.ProductCode
+                          select new SelectListItem
+                          {
+                              Value = t.ProductDetailID.ToString(),
+                              Text = t.ProductCode + " - " + t.ProductName
+                          }).ToList();
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlProductHandlingGloves()
+        {
+            List<SelectListItem> gloves = new List<SelectListItem>();
+
+            gloves.Add(new SelectListItem { Value = "", Text = "" });
+            gloves.Add(new SelectListItem { Value = "GMP NITRILE", Text = "GMP NITRILE" });
+            gloves.Add(new SelectListItem { Value = "NEOPRENE", Text = "NEOPRENE" });
+            gloves.Add(new SelectListItem { Value = "NEOPRENE+NITRIL", Text = "NEOPRENE+NITRIL" });
+            gloves.Add(new SelectListItem { Value = "NITRILE", Text = "NITRILE" });
+
+            return gloves;
+        }
+
+        public static List<SelectListItem> ddlProductMasterIDs(int? clientid)
+        {
+            // 06/13/2016 This now is a list of PD-PN records
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblProductMaster
+                          where t.ClientID == clientid
+                          orderby t.MasterCode
+                          select new SelectListItem
+                          {
+                              Value = t.ProductMasterID.ToString(),
+                              Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25)
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlProductMasterIDs(int? clientid, int? PmID = null)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                if (PmID == null)
+                {
+                    result = (from t in db.tblProductMaster
+                              where t.ClientID == clientid
+                              orderby t.MasterCode, t.MasterName
+                              select new SelectListItem
+                              {
+                                  Value = t.ProductMasterID.ToString(),
+                                  Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25)
+                              }).ToList();
+                    result.Insert(0, new SelectListItem { Value = "", Text = "" });
+                }
+                else
+                {
+                    result = (from t in db.tblProductMaster
+                              where t.ClientID == clientid
+                              && t.ProductMasterID == PmID
+                              orderby t.MasterCode, t.MasterName
+                              select new SelectListItem
+                              {
+                                  Value = t.ProductMasterID.ToString(),
+                                  Text = t.MasterCode + " - " + t.MasterName.Substring(0, 25)
+                              }).ToList();
+                }
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlProductPackagePartNumbers()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblPackage
+                          orderby t.Size
+                          select new SelectListItem
+                          {
+                              Value = t.PackageID.ToString(),
+                              Text = t.Size + " " + t.PartNumber + " " + t.Description
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlReasonCodes()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblReasonCode
+                          orderby t.Reason
+                          select new SelectListItem
+                          {
+                              Value = t.Reason,
+                              Text = t.Reason
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlReportCriterias()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblReportCriteria
+                          orderby t.Display
+                          select new SelectListItem
+                          {
+                              Value = t.Display,
+                              Text = t.ReportName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlRequestors(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblClientContact
+                          where t.ClientID == clientid
+                          where t.ContactType == "Requestor"
+                          orderby t.FullName
+                          select new SelectListItem
+                          {
+                              Value = t.ClientContactID.ToString(),
+                              Text = t.FullName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlSalesReps(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblClientContact
+                          where t.ClientID == clientid
+                          where t.ContactType == "SalesRep"
+                          orderby t.FullName
+                          select new SelectListItem
+                          {
+                              Value = t.ClientContactID.ToString(),
+                              Text = t.FullName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlShelfMasterIDs(int? productdetailid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblShelfMaster
+                          join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
+                          where t.ProductDetailID == productdetailid
+                          select new SelectListItem
+                          {
+                              Value = t.ShelfID.ToString(),
+                              Text = t.Size
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        // From InventoryService
+        public static List<SelectListItem> ddlShelfStatusIDs()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result.Add(new SelectListItem { Text = "AVAIL", Value = "AVAIL" });
+                result.Add(new SelectListItem { Text = "TEST", Value = "TEST" });
+                result.Add(new SelectListItem { Text = "HOLD", Value = "HOLD" });
+                result.Add(new SelectListItem { Text = "QC", Value = "QC" });
+                result.Add(new SelectListItem { Text = "RETURN", Value = "RETURN" });
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlShipVias()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblCarrier
+                          orderby t.CarrierName
+                          select new SelectListItem
+                          {
+                              Value = t.CarrierName,
+                              Text = t.CarrierName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlShipViasItemLevel()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblCarrier
+                          orderby t.CarrierName
+                          select new SelectListItem
+                          {
+                              Value = t.CarrierName,
+                              Text = t.CarrierName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlStates()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblState
+                          orderby t.StateName
+                          select new SelectListItem
+                          {
+                              Value = t.StateAbbr,
+                              Text = t.StateName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlStatusNotes()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblStatusNotes
+                          orderby t.Note
+                          select new SelectListItem
+                          {
+                              Value = t.StatusNotesID.ToString(),
+                              Text = t.Note
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlStatusNotesIDs()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblStatusNotes
+                          orderby t.Note
+                          select new SelectListItem
+                          {
+                              Value = t.Note,
+                              Text = t.Note
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlSupplyIDs(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblBulkSupplier
+                          where t.ClientID == clientid
+                          orderby t.SupplyID
+                          select new SelectListItem
+                          {
+                              Value = t.SupplyID,
+                              Text = t.SupplyID
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlTierSizes(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblTier
+                          where t.ClientID == clientid
+                          orderby t.Size
+                          select new SelectListItem
+                          {
+                              Value = t.Size,
+                              Text = t.Size
+                          }).Distinct().ToList();
+                result.Add(new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlUnitMeasure(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblTier
+                          orderby t.ClientID
+                          where t.ClientID == clientid
+                          select new SelectListItem
+                          {
+                              Value = t.Size,
+                              Text = t.Size
+                          }).Distinct().ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
+        public static List<SelectListItem> ddlUsers()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.tblUser
+                          orderby t.UserName
+                          select new SelectListItem
+                          {
+                              Value = t.UserID.ToString(),
+                              Text = t.UserName
+                          }).ToList();
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
         public static void EmailSmtpSend(string from, string to, string subject, string body)
         {
             const string hostName = "secure.emailsrvr.com";
@@ -44,187 +1223,5 @@ namespace MvcPhoenix.Models
                 smtp.Send(msg);
             }
         }
-
-        #region generic select lists
-
-        public static List<SelectListItem> fnClientIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblClient
-                          orderby t.ClientName
-                          select new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnStates()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblState
-                          orderby t.StateName
-                          select new SelectListItem { Value = t.StateAbbr, Text = t.StateName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select State" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnCountries()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblCountry
-                          orderby t.Country
-                          select new SelectListItem { Value = t.CountryID.ToString(), Text = t.Country }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Country" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnCarriers()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblCarrier
-                          orderby t.CarrierName
-                          select new SelectListItem { Value = t.CarrierName, Text = t.CarrierName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Carrier" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnHSCodes()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblHSCode
-                          orderby t.HarmonizedCode
-                          select new SelectListItem { Value = t.HarmonizedCode, Text = t.HarmonizedCode }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Harmonized Code" });
-                return mylist;
-            }
-        }
-        
-        public static List<SelectListItem> fnOrderTypes()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblOrderType
-                          orderby t.Description
-                          select new SelectListItem { Value = t.OrderType, Text = t.Description }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Order Type" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnReportCriterias()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblReportCriteria
-                          orderby t.Display
-                          select new SelectListItem { Value = t.Display, Text = t.ReportName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Report Criteria" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnStatusNotes()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblStatusNotes
-                          orderby t.Note
-                          select new SelectListItem { Value = t.StatusNotesID.ToString(), Text = t.Note }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Status Note" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnUsers()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblUser
-                          orderby t.UserName
-                          select new SelectListItem { Value = t.UserID.ToString(), Text = t.UserName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select User" });
-                return mylist;
-            }
-        }
-
-        #endregion generic select lists
-
-        #region specific select lists
-
-        public static List<SelectListItem> fnBulkSuppliers(int id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblBulkSupplier
-                          where t.ClientID == id
-                          orderby t.SupplyID
-                          select new SelectListItem { Value = t.BulkSupplierID.ToString(), Text = t.SupplyID }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Supplier" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnClientsContacts(int id, string sContactType)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-
-                mylist = (from t in db.tblClientContact
-                          where t.ClientID == id && t.ContactType == sContactType
-                          orderby t.FullName
-                          select new SelectListItem { Value = t.ClientContactID.ToString(), Text = t.FullName }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Supplier" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnDivisions(int id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblDivision
-                          where t.ClientID == id
-                          orderby t.Division
-                          select new SelectListItem { Value = t.DivisionID.ToString(), Text = t.Division }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Division" });
-                return mylist;
-            }
-        }
-
-        public static List<SelectListItem> fnEndUses(int id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> mylist = new List<SelectListItem>();
-                mylist = (from t in db.tblEndUse
-                          where t.ClientID == id
-                          orderby t.EndUse
-                          select new SelectListItem { Value = t.EndUseID.ToString(), Text = t.EndUse }).ToList();
-                mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select End Use" });
-                return mylist;
-            }
-        }
-
-        #endregion specific select lists
     }
 }

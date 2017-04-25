@@ -532,7 +532,6 @@
     <Compile Include="Models\ApplicationRole.cs" />
     <Compile Include="Models\ApplicationRoleViewModel.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ClientViewModel.cs" />
     <Compile Include="Models\GHSViewModels.cs" />
     <Compile Include="Models\InventoryViewModel.cs" />
@@ -983,6 +982,8 @@
     <Content Include="Views\Orders\Import.cshtml" />
     <Content Include="Views\GHS\EditPHSource.cshtml" />
     <Content Include="Views\Orders\_SPSBillingModal.cshtml" />
+    <Content Include="Views\Receiving\SelectProduct.cshtml" />
+    <Content Include="Views\Receiving\SelectPrePack.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

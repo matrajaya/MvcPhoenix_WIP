@@ -176,7 +176,7 @@
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Country</label>
-                            @Html.DropDownListFor(m => m.CompanyCountry, Model.ListOfCountries, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.CompanyCountry, ApplicationService.ddlCountries(), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.CompanyCountry)
                         </div>
                         <div class="col-md-3 form-group">

@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Contact Type</label>
-                            @Html.DropDownListFor(m => m.ContactType, new SelectList(Enum.GetValues(typeof(Contact.ContactTypeChoice))), new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.ContactType, new SelectList(Enum.GetValues(typeof(ApplicationService.ContactTypeChoice))), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.ContactType)
                         </div>
                         <div class="col-md-6 form-group">
@@ -114,7 +114,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label>Country</label>
-                            @Html.DropDownListFor(m => m.Country, Model.ListOfCountries, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.Country,  ApplicationService.ddlCountries(), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Country)
                         </div>
                     </div>

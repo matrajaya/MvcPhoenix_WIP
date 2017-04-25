@@ -76,7 +76,7 @@
                     </div>
                     <div class="col-md-2 form-group">
                         <label>CMC Location</label>
-                        @Html.DropDownListFor(m => m.CMCLocation, new SelectList(Enum.GetValues(typeof(ClientProfile.CMCLocationChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.CMCLocation, new SelectList(Enum.GetValues(typeof(ApplicationService.CMCLocationChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-2 form-group">
                         <label>Active Profile</label>
@@ -109,11 +109,11 @@
                 <div class="row">
                     <div class="col-md-2 form-group">
                         <label>Client Currency</label>
-                        @Html.DropDownListFor(m => m.ClientCurrency, new SelectList(Enum.GetValues(typeof(ClientProfile.CurrencyChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.ClientCurrency, new SelectList(Enum.GetValues(typeof(ApplicationService.CurrencyChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-2 form-group">
                         <label>Client UM</label>
-                        @Html.DropDownListFor(m => m.ClientUM, new SelectList(Enum.GetValues(typeof(ClientProfile.UMChoice))), new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.ClientUM, new SelectList(Enum.GetValues(typeof(ApplicationService.UMChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-2 form-group">
                         <label>Client Net Term</label>
@@ -272,7 +272,7 @@
                     }))
                     {
                         <div class="input-group">
-                            <input type="text" id="EndUseString" name="endusestring" class="form-control" placeholder="Add New End Use" required pattern=".*\S+.*" title="Type End Use" />
+                            <input type="text" id="EndUseString" name="endusestring" class="form-control" placeholder="Add New End Use" required pattern=".*\S+.*" title="Type End Use" onfocus='javascript: this.value = ""' />
                             <input hidden value="@Model.ClientID" id="clientid" name="clientid" />
                             <div class="input-group-btn">
                                 <input type="submit" value="+ Add" class="btn btn-success" />

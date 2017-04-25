@@ -33,7 +33,7 @@
                         @using (Html.BeginForm("Create", "Products"))
                         {
                             <div class="input-group">
-                                @Html.DropDownList("clientid2", fnClientIDs(), new { @class = "form-control" })
+                                @Html.DropDownList("clientid2", ApplicationService.ddlClientIDs(), new { @class = "form-control" })
                                 <span class="input-group-btn">
                                     <input type="submit" id="btnNew" value="Create" class="btn btn-success" />
                                 </span>
@@ -48,12 +48,12 @@
                         @using (Html.BeginForm("Equivalent", "Products"))
                         {
                             <div class="form-group">
-                                @Html.DropDownList("clientid3", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
+                                @Html.DropDownList("clientid3", ApplicationService.ddlClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
                             </div>
                             <div class="input-group">
                                 <div id="dvProductMasterIDs3">
                                     <select name="productdetailid3" id='productdetailid3' class='form-control'>
-                                        <option value="0"></option>
+                                        <option value=""></option>
                                     </select>
                                 </div>
                                 <span class="input-group-btn">
@@ -102,7 +102,7 @@
                             @using (Html.BeginForm("Edit", "Products"))
                             {
                                 <div class="form-group">
-                                    @Html.DropDownList("clientid1", fnClientIDs(), new { onchange = "BuildProductCodesDropDown('Edit')", @class = "form-control" })
+                                    @Html.DropDownList("clientid1", ApplicationService.ddlClientIDs(), new { onchange = "BuildProductCodesDropDown('Edit')", @class = "form-control" })
                                 </div>
                                 <div class="input-group">
                                     <div id="dvProductMasterIDs1">
@@ -164,21 +164,3 @@
         document.getElementById("submitEdit").setAttribute("href", editpath);
     }
 </script>
-
-<!-- Local Razor -->
-@functions
-{
-    private static List<SelectListItem> fnClientIDs()
-    {
-        using (var db = new MvcPhoenix.EF.CMCSQL03Entities())
-        {
-            List<SelectListItem> mylist = new List<SelectListItem>();
-            mylist = (from t in db.tblClient
-                      orderby t.ClientName
-                      select
-                        new SelectListItem { Value = t.ClientID.ToString(), Text = t.ClientName }).ToList();
-            mylist.Insert(0, new SelectListItem { Value = "0", Text = "Select Client" });
-            return mylist;
-        }
-    }
-}
