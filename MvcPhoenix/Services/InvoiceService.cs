@@ -339,7 +339,7 @@ namespace MvcPhoenix.Models
             // Look at each tier record
             // Go get shipped items for this invoice client and ship date range
             // add up qty shipped
-            // adjust tblOrderTrans.TransAmount accordingly
+            // adjust tblOrderTrans.TransRate accordingly
             using (var db = new CMCSQL03Entities())
             {
                 // collect all Tier records for a client
@@ -386,12 +386,17 @@ namespace MvcPhoenix.Models
                                        && oi.ShipDate >= StartDate
                                        && oi.ShipDate <= EndDate
                                        && oi.Size == row.Size
-                                       select new { t.OrderTransID, t.OrderItemID, t.TransAmount }).ToList();
+                                       select new
+                                       { 
+                                           t.OrderTransID,
+                                           t.OrderItemID,
+                                           t.TransRate
+                                       }).ToList();
 
                         foreach (var trans in qUpdate)
                         {
                             // Do the price update
-                            string s = String.Format("Update tblOrderTrans Set TransAmount = {0},UpdateDate=getdate(),updateUser='System' where OrderTransID={1}", row.Price, trans.OrderTransID);
+                            string s = String.Format("Update tblOrderTrans Set TransRate = {0},UpdateDate=getdate(),updateUser='System' where OrderTransID={1}", row.Price, trans.OrderTransID);
                             db.Database.ExecuteSqlCommand(s);
                         }
                     }
@@ -421,7 +426,11 @@ namespace MvcPhoenix.Models
                                      && t.ShipDate != null
                                      && (t.ShipDate >= StartDate
                                      && t.ShipDate <= EndDate)
-                                     select new { t.Qty, order.BillingGroup }).ToList();
+                                     select new
+                                     {
+                                         t.Qty,
+                                         order.BillingGroup
+                                     }).ToList();
 
                 if (obj.billinggroup != "All")
                 {
@@ -467,7 +476,8 @@ namespace MvcPhoenix.Models
                                            select t.Qty).Sum();
 
                 obj.sampleshipother = (from t in qShippedWhichDay
-                                       where t.ShipDate != null & (t.ShipDate != t.ChargeDate)
+                                       where t.ShipDate != null
+                                       & (t.ShipDate != t.ChargeDate)
                                        select t.Qty).Sum();
 
                 // Sample level
@@ -485,7 +495,7 @@ namespace MvcPhoenix.Models
                                           t.TransType,
                                           t.TransDate,
                                           t.TransQty,
-                                          t.TransAmount,
+                                          t.TransRate,
                                           t.BillingGroup
                                       }).ToList();
 
@@ -497,7 +507,7 @@ namespace MvcPhoenix.Models
                 }
 
                 var qSampleChargesSum = (from t in qSampleCharges
-                                         select (t.TransQty * t.TransAmount)).Sum();
+                                         select (t.TransQty * t.TransRate)).Sum();
 
                 obj.totalcostsamples = obj.totalcostsamples + qSampleChargesSum;
 
@@ -516,7 +526,7 @@ namespace MvcPhoenix.Models
                                        {
                                            t.TransType,
                                            t.TransQty,
-                                           t.TransAmount,
+                                           t.TransRate,
                                            t.BillingGroup
                                        }).ToList();
 
@@ -528,7 +538,7 @@ namespace MvcPhoenix.Models
                 }
 
                 var qCarrierChargesSum = (from t in qCarrierCharges
-                                          select (t.TransQty * t.TransAmount)).Sum();
+                                          select (t.TransQty * t.TransRate)).Sum();
 
                 obj.totalfreight = obj.totalfreight + qCarrierChargesSum;
 
@@ -546,7 +556,7 @@ namespace MvcPhoenix.Models
                                           {
                                               t.TransType,
                                               t.TransQty,
-                                              t.TransAmount,
+                                              t.TransRate,
                                               t.BillingGroup
                                           }).ToList();
 
@@ -558,7 +568,7 @@ namespace MvcPhoenix.Models
                 }
 
                 var qFreightSurchargesSum = (from t in qFreightSurcharges
-                                             select (t.TransQty * t.TransAmount)).Sum();
+                                             select (t.TransQty * t.TransRate)).Sum();
 
                 obj.totalfrtHzdSchg = obj.totalfrtHzdSchg + qFreightSurchargesSum;
 
@@ -575,7 +585,7 @@ namespace MvcPhoenix.Models
                                      {
                                          t.TransType,
                                          t.TransQty,
-                                         t.TransAmount,
+                                         t.TransRate,
                                          t.BillingGroup
                                      }).ToList();
 
@@ -587,7 +597,7 @@ namespace MvcPhoenix.Models
                 }
 
                 var qAdminChargesSum = (from t in qAdminCharges
-                                        select (t.TransQty * t.TransAmount)).Sum();
+                                        select (t.TransQty * t.TransRate)).Sum();
 
                 obj.totaladmincharge = obj.totaladmincharge + qAdminChargesSum;
 
@@ -606,7 +616,7 @@ namespace MvcPhoenix.Models
                                         t.TransType,
                                         t.TransDate,
                                         t.TransQty,
-                                        t.TransAmount,
+                                        t.TransRate,
                                         t.BillingGroup
                                     }).ToList();
 
@@ -618,7 +628,7 @@ namespace MvcPhoenix.Models
                 }
 
                 var qClientTransSum = (from t in qClientTrans
-                                       select (t.TransQty * t.TransAmount)).Sum();
+                                       select (t.TransQty * t.TransRate)).Sum();
 
                 obj.totaladmincharge = obj.totaladmincharge + qClientTransSum;
 
@@ -637,7 +647,7 @@ namespace MvcPhoenix.Models
                                             t.TransType,
                                             t.TransDate,
                                             t.TransQty,
-                                            t.TransAmount,
+                                            t.TransRate,
                                             t.BillingGroup
                                         }).ToList();
 
@@ -649,7 +659,7 @@ namespace MvcPhoenix.Models
                 }
 
                 var qOrderLevelTransSum = (from t in qOrderLevelTrans
-                                           select (t.TransQty * t.TransAmount)).Sum();
+                                           select (t.TransQty * t.TransRate)).Sum();
 
                 obj.totaladmincharge = obj.totaladmincharge + qOrderLevelTransSum;
 

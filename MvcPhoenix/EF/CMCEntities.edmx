@@ -1204,7 +1204,7 @@
           <Property Name="TransDate" Type="datetime" />
           <Property Name="ChargeDate" Type="datetime" />
           <Property Name="TransQty" Type="int" />
-          <Property Name="TransAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TransRate" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Comments" Type="nvarchar(max)" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
@@ -1750,6 +1750,7 @@
           <Property Name="BulkID" Type="int" />
           <Property Name="Warehouse" Type="nvarchar" MaxLength="2" />
           <Property Name="QtyOnHand" Type="int" />
+          <Property Name="QtyAvailable" Type="int" />
           <Property Name="QtyAllocated" Type="int" />
           <Property Name="Bin" Type="nvarchar" MaxLength="15" />
           <Property Name="ShelfStatus" Type="nvarchar" MaxLength="6" />
@@ -2008,7 +2009,6 @@
           <EntitySet Name="tblSQlTable" EntityType="CMCSQL03Model.tblSQlTable" />
           <EntitySet Name="tblState" EntityType="CMCSQL03Model.tblState" />
           <EntitySet Name="tblStatusNotes" EntityType="CMCSQL03Model.tblStatusNotes" />
-          <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
           <EntitySet Name="tblSuggestedBulk" EntityType="CMCSQL03Model.tblSuggestedBulk" />
           <EntitySet Name="tblSurcharge" EntityType="CMCSQL03Model.tblSurcharge" />
           <EntitySet Name="tblTier" EntityType="CMCSQL03Model.tblTier" />
@@ -2019,6 +2019,7 @@
           <EntitySet Name="tblOrderTrans" EntityType="CMCSQL03Model.tblOrderTrans" />
           <EntitySet Name="tblOrderItem" EntityType="CMCSQL03Model.tblOrderItem" />
           <EntitySet Name="tblBulk" EntityType="CMCSQL03Model.tblBulk" />
+          <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
         </EntityContainer>
         <EntityType Name="tblBillingGroup">
           <Key>
@@ -3590,33 +3591,6 @@
           <Property Name="Note" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="LegacyID" Type="Int32" />
         </EntityType>
-        <EntityType Name="tblStock">
-          <Key>
-            <PropertyRef Name="StockID" />
-          </Key>
-          <Property Name="StockID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LegacyID" Type="Int32" />
-          <Property Name="ShelfID" Type="Int32" />
-          <Property Name="BulkID" Type="Int32" />
-          <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="QtyOnHand" Type="Int32" />
-          <Property Name="QtyAllocated" Type="Int32" />
-          <Property Name="Bin" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="ShelfStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
-          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
-          <Property Name="ProdCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="UM_MDB" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="LotNumber_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="WasteAccumStartDate" Type="DateTime" Precision="3" />
-          <Property Name="MarkedForReturn" Type="Boolean" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="MigrationNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tblSuggestedBulk">
           <Key>
             <PropertyRef Name="id" />
@@ -3755,7 +3729,7 @@
           <Property Name="TransDate" Type="DateTime" Precision="3" />
           <Property Name="ChargeDate" Type="DateTime" Precision="3" />
           <Property Name="TransQty" Type="Int32" />
-          <Property Name="TransAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TransRate" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
@@ -3899,6 +3873,34 @@
           <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ProductName_MDB" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="MigrationNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblStock">
+          <Key>
+            <PropertyRef Name="StockID" />
+          </Key>
+          <Property Name="StockID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="ShelfID" Type="Int32" />
+          <Property Name="BulkID" Type="Int32" />
+          <Property Name="Warehouse" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="QtyOnHand" Type="Int32" />
+          <Property Name="QtyAvailable" Type="Int32" />
+          <Property Name="QtyAllocated" Type="Int32" />
+          <Property Name="Bin" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ShelfStatus" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Division_MDB" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="ProdCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UM_MDB" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="LotNumber_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="MasterCode_MDB" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="WasteAccumStartDate" Type="DateTime" Precision="3" />
+          <Property Name="MarkedForReturn" Type="Boolean" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
@@ -5531,34 +5533,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblStock">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblStock">
-              <MappingFragment StoreEntitySet="tblStock">
-                <ScalarProperty Name="MigrationNotes" ColumnName="MigrationNotes" />
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="MarkedForReturn" ColumnName="MarkedForReturn" />
-                <ScalarProperty Name="WasteAccumStartDate" ColumnName="WasteAccumStartDate" />
-                <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
-                <ScalarProperty Name="LotNumber_MDB" ColumnName="LotNumber_MDB" />
-                <ScalarProperty Name="UM_MDB" ColumnName="UM_MDB" />
-                <ScalarProperty Name="ProdCode_MDB" ColumnName="ProdCode_MDB" />
-                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="ShelfStatus" ColumnName="ShelfStatus" />
-                <ScalarProperty Name="Bin" ColumnName="Bin" />
-                <ScalarProperty Name="QtyAllocated" ColumnName="QtyAllocated" />
-                <ScalarProperty Name="QtyOnHand" ColumnName="QtyOnHand" />
-                <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
-                <ScalarProperty Name="BulkID" ColumnName="BulkID" />
-                <ScalarProperty Name="ShelfID" ColumnName="ShelfID" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
-                <ScalarProperty Name="StockID" ColumnName="StockID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblSuggestedBulk">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblSuggestedBulk">
               <MappingFragment StoreEntitySet="tblSuggestedBulk">
@@ -5703,7 +5677,7 @@
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="TransAmount" ColumnName="TransAmount" />
+                <ScalarProperty Name="TransRate" ColumnName="TransRate" />
                 <ScalarProperty Name="TransQty" ColumnName="TransQty" />
                 <ScalarProperty Name="ChargeDate" ColumnName="ChargeDate" />
                 <ScalarProperty Name="TransDate" ColumnName="TransDate" />
@@ -5854,6 +5828,35 @@
                 <ScalarProperty Name="LegacyBulkStockID" ColumnName="LegacyBulkStockID" />
                 <ScalarProperty Name="LegacyLogID" ColumnName="LegacyLogID" />
                 <ScalarProperty Name="BulkID" ColumnName="BulkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStock">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblStock">
+              <MappingFragment StoreEntitySet="tblStock">
+                <ScalarProperty Name="MigrationNotes" ColumnName="MigrationNotes" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="MarkedForReturn" ColumnName="MarkedForReturn" />
+                <ScalarProperty Name="WasteAccumStartDate" ColumnName="WasteAccumStartDate" />
+                <ScalarProperty Name="MasterCode_MDB" ColumnName="MasterCode_MDB" />
+                <ScalarProperty Name="LotNumber_MDB" ColumnName="LotNumber_MDB" />
+                <ScalarProperty Name="UM_MDB" ColumnName="UM_MDB" />
+                <ScalarProperty Name="ProdCode_MDB" ColumnName="ProdCode_MDB" />
+                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="ShelfStatus" ColumnName="ShelfStatus" />
+                <ScalarProperty Name="Bin" ColumnName="Bin" />
+                <ScalarProperty Name="QtyAllocated" ColumnName="QtyAllocated" />
+                <ScalarProperty Name="QtyAvailable" ColumnName="QtyAvailable" />
+                <ScalarProperty Name="QtyOnHand" ColumnName="QtyOnHand" />
+                <ScalarProperty Name="Warehouse" ColumnName="Warehouse" />
+                <ScalarProperty Name="BulkID" ColumnName="BulkID" />
+                <ScalarProperty Name="ShelfID" ColumnName="ShelfID" />
+                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="StockID" ColumnName="StockID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

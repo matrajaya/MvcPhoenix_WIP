@@ -17,15 +17,16 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 OrderMasterFull vm = new OrderMasterFull();
+
                 vm.orderid = -1;
                 vm.clientid = id;
                 var cl = db.tblClient.Find(vm.clientid);
                 vm.clientname = cl.ClientName;
                 vm.orderstatus = "z";
+                vm.IsSDN = false;
                 vm.orderdate = DateTime.UtcNow;
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 vm.CreateDate = DateTime.UtcNow;
-                vm.IsSDN = false;
 
                 return vm;
             }
@@ -280,7 +281,8 @@ namespace MvcPhoenix.Services
                          select t).FirstOrDefault();
 
                 var qCountry = (from t in db.tblCountry
-                                where t.Country == vm.country && t.DoNotShip == true
+                                where t.Country == vm.country
+                                && t.DoNotShip == true
                                 select t).FirstOrDefault();
 
                 if (qCountry != null)
@@ -288,7 +290,8 @@ namespace MvcPhoenix.Services
                     // flag the order record and the item records that are yet to be allocated
                     q.IsSDN = true;
                     var orderitems = (from t in db.tblOrderItem
-                                      where t.OrderID == vm.orderid && t.AllocateStatus == null
+                                      where t.OrderID == vm.orderid
+                                      && t.AllocateStatus == null
                                       select t).ToList();
 
                     foreach (var item in orderitems)
@@ -305,7 +308,8 @@ namespace MvcPhoenix.Services
                     // flag the order record and the item records that are yet to be allocated (again maybe)
                     q.IsSDN = true;
                     var orderitems = (from t in db.tblOrderItem
-                                      where t.OrderID == vm.orderid && t.AllocateStatus == null
+                                      where t.OrderID == vm.orderid
+                                      && t.AllocateStatus == null
                                       select t).ToList();
 
                     foreach (var item in orderitems)
@@ -324,7 +328,8 @@ namespace MvcPhoenix.Services
                                      select t).FirstOrDefault(); // need the ID
 
                     var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet
-                                            where t.ClientID == vm.clientid && t.CountryID == qCountry2.CountryID
+                                            where t.ClientID == vm.clientid
+                                            && t.CountryID == qCountry2.CountryID
                                             select t).FirstOrDefault();
 
                     if (qCeaseShipOffset != null)
@@ -368,16 +373,67 @@ namespace MvcPhoenix.Services
 
         #region Order Item Methods
 
+        public static List<OrderItem> ListOrderItems(int id)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var orderitems = (from t in db.tblOrderItem
+                                  join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID into productdetailleftjoin
+                                  from productdetail in productdetailleftjoin.DefaultIfEmpty()
+                                  where t.OrderID == id
+                                  orderby t.ItemID
+                                  select new MvcPhoenix.Models.OrderItem
+                                  {
+                                      OrderID = t.OrderID,
+                                      ItemID = t.ItemID,
+                                      ShelfID = t.ShelfID,
+                                      BulkID = t.BulkID,
+                                      ProductDetailID = t.ProductDetailID,
+                                      ProductCode = t.ProductCode,
+                                      Mnemonic = t.Mnemonic,
+                                      ProductName = t.ProductName,
+                                      Size = t.Size,
+                                      SRSize = t.SRSize,
+                                      LotNumber = t.LotNumber,
+                                      Qty = t.Qty,
+                                      ShipDate = t.ShipDate,
+                                      Via = t.Via,
+                                      BackOrdered = t.BackOrdered,
+                                      AllocateStatus = t.AllocateStatus,
+                                      AllocatedDate = t.AllocatedDate,
+                                      CSAllocate = t.CSAllocate,
+                                      NonCMCDelay = t.NonCMCDelay,
+                                      GrnUnNumber = productdetail.GRNUNNUMBER,
+                                      GrnPkGroup = productdetail.GRNPKGRP,
+                                      AirUnNumber = productdetail.AIRUNNUMBER,
+                                      AirPkGroup = productdetail.AIRPKGRP,
+                                      QtyAvailable = (from x in db.tblStock
+                                                      where (x.ShelfID != null)
+                                                      && (x.ShelfID == t.ShelfID)
+                                                      && (x.ShelfStatus == "AVAIL")
+                                                      select (x.QtyOnHand - x.QtyAllocated)).Sum(),
+                                      CreateDate = t.CreateDate,
+                                      CreateUser = t.CreateUser,
+                                      UpdateDate = t.UpdateDate,
+                                      UpdateUser = t.UpdateUser
+                                  }).ToList();
+
+                return orderitems;
+            }
+        }
+
         public static OrderItem fnCreateItem(int id)
         {
             // id=OrderID
             using (var db = new CMCSQL03Entities())
             {
+                var dbOrder = db.tblOrderMaster.Find(id);
+
                 OrderItem vm = new OrderItem();
+
                 vm.CrudMode = "RW";
                 vm.ItemID = -1;
                 vm.OrderID = id;
-                var dbOrder = db.tblOrderMaster.Find(id);
                 vm.ClientID = dbOrder.ClientID;
                 vm.CreateDate = DateTime.UtcNow;
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
@@ -417,6 +473,20 @@ namespace MvcPhoenix.Services
             }
         }
 
+        public static int GetProductDetailId(int? productmasterid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                int getproductdetailid = (from pd in db.tblProductDetail
+                                          join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                                          where pm.ProductMasterID == productmasterid
+                                          && pd.ProductCode == pm.MasterCode
+                                          select pd.ProductDetailID).FirstOrDefault();
+
+                return getproductdetailid;
+            }
+        }
+
         public static OrderItem fnFillOrderItem(int id)
         {
             // id=itemid
@@ -430,7 +500,7 @@ namespace MvcPhoenix.Services
 
                 var cl = db.tblOrderMaster.Find(q.OrderID);
 
-                vm.CrudMode = "RW";    // default value
+                vm.CrudMode = "RW";                                         // default value
 
                 // Hidden fields to persist for postback
                 vm.ItemID = q.ItemID;
@@ -512,7 +582,7 @@ namespace MvcPhoenix.Services
                     if (dbSM != null)
                     {
                         q.Size = dbSM.Size;
-                        q.Weight = dbSM.UnitWeight * q.Qty;
+                        q.Weight = dbSM.UnitWeight * vm.Qty;
                     }
                 }
 
@@ -567,14 +637,62 @@ namespace MvcPhoenix.Services
 
                 if (result != null)
                 {
+                    // Delete orderitem
                     string s = @"DELETE FROM tblOrderItem WHERE ItemID=" + id.ToString();
                     db.Database.ExecuteSqlCommand(s);
 
-                    // TODO do we really want to delete all the transactons?
+                    // DElete transactions associated with the related order items
                     s = @"DELETE FROM tblOrderTrans WHERE OrderItemID=" + id.ToString();
                     db.Database.ExecuteSqlCommand(s);
                 }
             }
+        }
+
+        /// <summary>
+        /// find original productdetailid, ignore equivalent products
+        //  use productdetailid and um(size) to check shelfmaster
+        //  if true: get shelfid ?: insert new record in shelfmaster using productdetailid and size = um
+        /// </summary>
+        public static int GetShelfId(int? productmasterid, string um)
+        {
+            int getproductdetailid = GetProductDetailId(productmasterid);
+
+            int xshelfid = 0;
+            try
+            {
+                using (var db = new CMCSQL03Entities())
+                {
+                    // check table to see if the size has been set up on the shelf already
+                    int qshelfid = (from t in db.tblShelfMaster
+                                    where t.ProductDetailID == getproductdetailid
+                                    && t.Size == um
+                                    select t.ShelfID).FirstOrDefault();
+
+                    // if it exists then assign the shelfid to xshelfid
+                    if (qshelfid != 0)
+                    {
+                        xshelfid = qshelfid;
+                    }
+                    else
+                    {
+                        var newrecord = new tblShelfMaster
+                        {
+                            ProductDetailID = getproductdetailid,
+                            Size = um
+                        };
+                        db.tblShelfMaster.Add(newrecord);
+                        db.SaveChanges();
+
+                        xshelfid = newrecord.ShelfID;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                xshelfid = 0;
+            }
+
+            return xshelfid;
         }
 
         public static int GetShelfIdfor1SR(int? productdetailid, string size)
@@ -585,7 +703,8 @@ namespace MvcPhoenix.Services
                 using (var db = new CMCSQL03Entities())
                 {
                     int qshelfid = (from t in db.tblShelfMaster
-                                    where t.ProductDetailID == productdetailid && t.Size == size
+                                    where t.ProductDetailID == productdetailid
+                                    && t.Size == size
                                     select t.ShelfID).FirstOrDefault();
 
                     if (qshelfid != 0)
@@ -668,7 +787,7 @@ namespace MvcPhoenix.Services
                 d.TransDate = vm.transdate;
                 d.TransType = vm.transtype;
                 d.TransQty = vm.transqty;
-                d.TransAmount = vm.transamount;
+                d.TransRate = vm.transrate;
                 d.Comments = vm.comments;
                 d.CreateDate = vm.createdate;
                 d.CreateUser = vm.createuser;
@@ -698,7 +817,7 @@ namespace MvcPhoenix.Services
                 orderitemtransaction.transdate = result.TransDate;
                 orderitemtransaction.transtype = result.TransType;
                 orderitemtransaction.transqty = result.TransQty;
-                orderitemtransaction.transamount = result.TransAmount;
+                orderitemtransaction.transrate = result.TransRate;
                 orderitemtransaction.comments = result.Comments;
                 orderitemtransaction.createdate = result.CreateDate;
                 orderitemtransaction.createuser = result.CreateUser;
@@ -740,7 +859,9 @@ namespace MvcPhoenix.Services
                 db.Database.ExecuteSqlCommand(s);
 
                 var tierSize = (from t in db.tblTier
-                                where t.ClientID == o.ClientID && t.Size == oi.Size && t.TierLevel == 1
+                                where t.ClientID == o.ClientID
+                                && t.Size == oi.Size
+                                && t.TierLevel == 1
                                 select t).FirstOrDefault();
 
                 if (tierSize != null)
@@ -753,7 +874,7 @@ namespace MvcPhoenix.Services
                     newrec.BillingGroup = o.BillingGroup;
                     newrec.TransType = "SAMP";
                     newrec.TransQty = oi.Qty;
-                    newrec.TransAmount = tierSize.Price;
+                    newrec.TransRate = tierSize.Price;
                     newrec.CreateDate = DateTime.UtcNow;
                     newrec.CreateUser = "System";
                     newrec.UpdateDate = DateTime.UtcNow;
@@ -764,7 +885,7 @@ namespace MvcPhoenix.Services
                 }
                 else
                 {
-                    // Assume this is a SR size ??????????????????????
+                    // Assume this is a SR size? - pc
                     var tierSpecialRequest = (from t in db.tblTier
                                               where t.ClientID == o.ClientID
                                               && t.Size == "1SR"
@@ -781,7 +902,7 @@ namespace MvcPhoenix.Services
                         newrec.BillingGroup = o.BillingGroup;
                         newrec.TransType = "SAMP";
                         newrec.TransQty = oi.Qty;
-                        newrec.TransAmount = tierSpecialRequest.Price;
+                        newrec.TransRate = tierSpecialRequest.Price;
                         newrec.Comments = "Special Request";
                         newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = "System";
@@ -813,11 +934,13 @@ namespace MvcPhoenix.Services
                               select t).FirstOrDefault();
 
                     var pd = (from t in db.tblProductDetail
-                              where t.ProductMasterID == bl.ProductMasterID && t.ProductCode == pm.MasterCode
+                              where t.ProductMasterID == bl.ProductMasterID
+                              && t.ProductCode == pm.MasterCode
                               select t).FirstOrDefault();
 
                     sm = (from t in db.tblShelfMaster
-                          where t.ProductDetailID == pd.ProductDetailID && t.Size == oi.Size
+                          where t.ProductDetailID == pd.ProductDetailID
+                          && t.Size == oi.Size
                           select t).FirstOrDefault();
 
                     if (sm == null)
@@ -902,7 +1025,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static void fnInsertOrderTrans(int? ItemID, string TransType, decimal? TransAmount)
+        public static void fnInsertOrderTrans(int? ItemID, string TransType, decimal? TransRate)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -927,7 +1050,7 @@ namespace MvcPhoenix.Services
                 newrec.TransDate = DateTime.UtcNow;
                 newrec.TransType = TransType;
                 newrec.TransQty = oi.Qty;
-                newrec.TransAmount = TransAmount;
+                newrec.TransRate = TransRate;
                 newrec.CreateDate = DateTime.UtcNow;
                 newrec.CreateUser = "System";
                 newrec.UpdateDate = DateTime.UtcNow;
@@ -942,103 +1065,108 @@ namespace MvcPhoenix.Services
 
         #region Allocate Methods
 
-        public static int fnAllocateBulk(int OrderID, bool IncludeQCStock)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                int AllocationCount = 0;
-                var orderitems = (from t in db.tblOrderItem
-                                  where t.OrderID == OrderID
-                                  && t.ShipDate == null
-                                  && t.AllocateStatus == null
-                                  && t.CSAllocate == true
-                                  select t).ToList();
+        #region Bulk Allocate not being implemented currently
 
-                if (orderitems == null)
-                {
-                    return AllocationCount;
-                }
+        //public static int fnAllocateBulk(int OrderID, bool IncludeQCStock)
+        //{
+        //    using (var db = new CMCSQL03Entities())
+        //    {
+        //        int AllocationCount = 0;
+        //        var orderitems = (from t in db.tblOrderItem
+        //                          where t.OrderID == OrderID
+        //                          && t.ShipDate == null
+        //                          && t.AllocateStatus == null
+        //                          && t.CSAllocate == true
+        //                          select t).ToList();
 
-                foreach (var item in orderitems)
-                {
-                    var tblbulk = (from t in db.tblBulk
-                                   join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                                   join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
-                                   where (pd.ProductDetailID == item.ProductDetailID)
-                                   select new
-                                   {
-                                       BulkID = t.BulkID,
-                                       Warehouse = t.Warehouse,
-                                       Qty = t.Qty,
-                                       LotNumber = t.LotNumber,
-                                       CurrentWeight = t.CurrentWeight,
-                                       CeaseShipDate = t.CeaseShipDate,
-                                       BulkStatus = t.BulkStatus,
-                                       Bin = t.Bin
-                                   }).ToList();
+        //        if (orderitems == null)
+        //        {
+        //            return AllocationCount;
+        //        }
 
-                    var qOffset = db.tblOrderMaster.Find(OrderID);
-                    int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
-                    if (iOffset != 0)
-                    {
-                        // if there's an offset on the order record, add that to today to build in extra time
-                        DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
+        //        foreach (var item in orderitems)
+        //        {
+        //            var tblbulk = (from t in db.tblBulk
+        //                           join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+        //                           join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
+        //                           where (pd.ProductDetailID == item.ProductDetailID)
+        //                           select new
+        //                           {
+        //                               BulkID = t.BulkID,
+        //                               Warehouse = t.Warehouse,
+        //                               Qty = t.Qty,
+        //                               LotNumber = t.LotNumber,
+        //                               CurrentWeight = t.CurrentWeight,
+        //                               CeaseShipDate = t.CeaseShipDate,
+        //                               BulkStatus = t.BulkStatus,
+        //                               Bin = t.Bin
+        //                           }).ToList();
 
-                        tblbulk = (from t in tblbulk
-                                   where t.CeaseShipDate > dCease
-                                   select t).ToList();
-                    }
+        //            var qOffset = db.tblOrderMaster.Find(OrderID);
+        //            int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
 
-                    if (IncludeQCStock == true)
-                    {
-                        tblbulk = (from t in tblbulk
-                                   where t.BulkStatus == "AVAIL" || t.BulkStatus == "QC"
-                                   select t).ToList();
-                    }
-                    else
-                    {
-                        tblbulk = (from t in tblbulk
-                                   where t.BulkStatus == "AVAIL"
-                                   select t).ToList();
-                    }
+        //            if (iOffset != 0)
+        //            {
+        //                // if there's an offset on the order record, add that to today to build in extra time
+        //                DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
 
-                    tblbulk = (from t in tblbulk
-                               where t.CurrentWeight >= (item.Qty * item.Weight)
-                               select t).ToList();
+        //                tblbulk = (from t in tblbulk
+        //                           where t.CeaseShipDate > dCease
+        //                           select t).ToList();
+        //            }
 
-                    tblbulk = (from t in tblbulk
-                               orderby t.CeaseShipDate ascending
-                               select t).ToList();
+        //            if (IncludeQCStock == true)
+        //            {
+        //                tblbulk = (from t in tblbulk
+        //                           where t.BulkStatus == "AVAIL" || t.BulkStatus == "QC"
+        //                           select t).ToList();
+        //            }
+        //            else
+        //            {
+        //                tblbulk = (from t in tblbulk
+        //                           where t.BulkStatus == "AVAIL"
+        //                           select t).ToList();
+        //            }
 
-                    foreach (var row in tblbulk)
-                    {
-                        // update tblstock record (need to use separate qry)
-                        if (row.CurrentWeight >= item.Qty * item.Weight)
-                        {
-                            AllocationCount = AllocationCount + 1;
-                            var q = db.tblBulk.Find(row.BulkID);
+        //            tblbulk = (from t in tblbulk
+        //                       where t.CurrentWeight >= (item.Qty * item.Weight)
+        //                       select t).ToList();
 
-                            q.CurrentWeight = q.CurrentWeight - (item.Qty * item.Weight);
-                            item.AllocatedBulkID = row.BulkID;
-                            item.Warehouse = row.Warehouse;
-                            item.LotNumber = row.LotNumber;
-                            item.AllocateStatus = "A";
-                            item.Bin = row.Bin;
-                            item.ExpirationDate = q.ExpirationDate;
-                            item.CeaseShipDate = q.CeaseShipDate;
+        //            tblbulk = (from t in tblbulk
+        //                       orderby t.CeaseShipDate ascending
+        //                       select t).ToList();
 
-                            fnInsertLogRecord("BS-ALC", DateTime.UtcNow, null, row.BulkID, item.Qty, item.Weight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+        //            foreach (var row in tblbulk)
+        //            {
+        //                // update tblstock record (need to use separate qry)
+        //                if (row.CurrentWeight >= item.Qty * item.Weight)
+        //                {
+        //                    AllocationCount = AllocationCount + 1;
+        //                    var q = db.tblBulk.Find(row.BulkID);
 
-                            db.SaveChanges();
+        //                    q.CurrentWeight = q.CurrentWeight - (item.Qty * item.Weight);
+        //                    item.AllocatedBulkID = row.BulkID;
+        //                    item.Warehouse = row.Warehouse;
+        //                    item.LotNumber = row.LotNumber;
+        //                    item.AllocateStatus = "A";
+        //                    item.Bin = row.Bin;
+        //                    item.ExpirationDate = q.ExpirationDate;
+        //                    item.CeaseShipDate = q.CeaseShipDate;
 
-                            break;
-                        }
-                    }
-                }
+        //                    fnInsertLogRecord("BS-ALC", DateTime.UtcNow, null, row.BulkID, item.Qty, item.Weight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
 
-                return AllocationCount;
-            }
-        }
+        //                    db.SaveChanges();
+
+        //                    break;
+        //                }
+        //            }
+        //        }
+
+        //        return AllocationCount;
+        //    }
+        //}
+
+        #endregion Bulk Allocate not being implemented currently
 
         public static int fnAllocateShelf(int OrderID, bool IncludeQCStock)
         {
@@ -1046,37 +1174,44 @@ namespace MvcPhoenix.Services
             {
                 int AllocationCount = 0;
 
-                var items = (from t in db.tblOrderItem
-                             join om in db.tblOrderMaster on t.OrderID equals om.OrderID
-                             where t.OrderID == OrderID && t.ShipDate == null && t.AllocateStatus == null && t.CSAllocate == true
-                             select t).ToList();
+                // check order for items
+                var orderitems = (from t in db.tblOrderItem
+                                  join om in db.tblOrderMaster on t.OrderID equals om.OrderID
+                                  where t.OrderID == OrderID
+                                  && t.ShipDate == null
+                                  && t.AllocateStatus == null
+                                  && t.CSAllocate == true
+                                  select t).ToList();
 
-                if (items == null)
+                // escape if nothing matches the criteria for allocation
+                if (orderitems == null)
                 {
                     return AllocationCount;
                 }
 
-                foreach (var item in items)
+                // check stock for each item in order
+                foreach (var item in orderitems)
                 {
-                    var tblstock = (from t in db.tblStock
-                                    join b in db.tblBulk on t.BulkID equals b.BulkID
-                                    orderby b.CeaseShipDate
-                                    where t.ShelfID == item.ShelfID
-                                    select new
-                                        {
-                                            StockID = t.StockID,
-                                            Warehouse = t.Warehouse,
-                                            QtyOnHand = t.QtyOnHand,
-                                            QtyAllocated = t.QtyAllocated ?? 0,
-                                            Bin = t.Bin,
-                                            ShelfStatus = t.ShelfStatus,
-                                            ExpirationDate = b.ExpirationDate,
-                                            CeaseShipDate = b.CeaseShipDate,
-                                            LotNumber = b.LotNumber
-                                        }
-                                    ).ToList();
+                    var stock = (from t in db.tblStock
+                                 join b in db.tblBulk on t.BulkID equals b.BulkID
+                                 orderby b.CeaseShipDate
+                                 where t.ShelfID == item.ShelfID
+                                 select new
+                                 {
+                                     StockID = t.StockID,
+                                     Warehouse = t.Warehouse,
+                                     QtyOnHand = t.QtyOnHand,
+                                     QtyAllocated = t.QtyAllocated ?? 0,
+                                     Bin = t.Bin,
+                                     ShelfStatus = t.ShelfStatus,
+                                     ExpirationDate = b.ExpirationDate,
+                                     CeaseShipDate = b.CeaseShipDate,
+                                     LotNumber = b.LotNumber
+                                 }).ToList();
 
-                    var qOffset = db.tblOrderMaster.Find(items[0].OrderID);
+                    // get ceaseshipdateoffset to consider if eligible for allocation on an order.
+                    // consider ignoring this when handling returns, even though returns sidesteps this - Iffy
+                    var qOffset = db.tblOrderMaster.Find(orderitems[0].OrderID);
                     int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
 
                     // change to take negative numbers
@@ -1084,50 +1219,46 @@ namespace MvcPhoenix.Services
                     {
                         // if there's an offset on the order record, add that to today to build in extra time
                         DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
-                        tblstock = (from t in tblstock
-                                    where t.CeaseShipDate > dCease
-                                    select t).ToList();
+                        stock = (from t in stock
+                                 where t.CeaseShipDate > dCease
+                                 select t).ToList();
                     }
 
-                    if (item.LotNumber != null) // specific lot number requested
+                    // specific lot number requested
+                    if (item.LotNumber != null)
                     {
-                        tblstock = (from t in tblstock
-                                    where t.LotNumber == item.LotNumber
-                                    select t).ToList();
+                        stock = stock.Where(s => s.LotNumber == item.LotNumber).ToList();
                     }
 
+                    // check for qcstock if requested
                     if (IncludeQCStock == true)
                     {
-                        tblstock = (from t in tblstock
-                                    where t.ShelfStatus == "AVAIL" || t.ShelfStatus == "QC"
-                                    select t).ToList();
+                        stock = stock.Where(s => s.ShelfStatus == "AVAIL" || s.ShelfStatus == "QC").ToList();
                     }
                     else
                     {
-                        tblstock = (from t in tblstock
-                                    where t.ShelfStatus == "AVAIL"
-                                    select t).ToList();
+                        stock = stock.Where(s => s.ShelfStatus == "AVAIL").ToList();
                     }
 
-                    // Do something with the Profiles alert message (add to tblOrderItem on creation?
-                    // Do something with the Special Transport Provision Alert - add to tblOrderitem on creation?
-
-                    tblstock = (from t in tblstock
-                                orderby t.CeaseShipDate ascending
-                                select t).ToList();
+                    // Distilled stock list
+                    stock = stock.OrderBy(s => s.CeaseShipDate).ToList();
 
                     // Page thru tblstock rows looking for the first record that has enough qty then bailout
-                    foreach (var row in tblstock)
+                    foreach (var row in stock)
                     {
                         if (row.QtyOnHand - row.QtyAllocated >= item.Qty)
                         {
                             AllocationCount = AllocationCount + 1;
+
                             // update tblstock record (need to use separate qry)
                             var q = db.tblStock.Find(row.StockID);
+
                             q.QtyAllocated = (q.QtyAllocated ?? 0) + item.Qty;
+                            q.QtyAvailable = q.QtyOnHand - item.Qty;
 
                             // update tblorderitem record
                             item.AllocatedStockID = row.StockID;
+                            item.BulkID = q.BulkID;
                             item.Warehouse = row.Warehouse;
                             item.LotNumber = row.LotNumber;
                             item.AllocateStatus = "A";
@@ -1135,6 +1266,8 @@ namespace MvcPhoenix.Services
                             item.ExpirationDate = row.ExpirationDate;
                             item.CeaseShipDate = row.CeaseShipDate;
                             item.AllocatedDate = DateTime.UtcNow;
+                            item.UpdateDate = DateTime.UtcNow;
+                            item.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                             db.SaveChanges();
 
@@ -1149,7 +1282,231 @@ namespace MvcPhoenix.Services
             }
         }
 
+        public static void fnReverseAllocatedItem(int orderitemid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var success = false;
+
+                // Check if order item meets criteria for reversal
+                var orderitem = (from t in db.tblOrderItem
+                                 where t.ItemID == orderitemid
+                                 && t.AllocateStatus == "A"
+                                 && t.ShipDate == null
+                                 select t).FirstOrDefault();
+
+                // Check if bulk allocated order item and update bulk record
+                if (orderitem.AllocatedStockID == null && orderitem.AllocatedBulkID != null)
+                {
+                    var updatebulk = (from t in db.tblBulk
+                                      where t.BulkID == orderitem.AllocatedBulkID
+                                      select t).FirstOrDefault();
+
+                    // Note: User will need to delete order item to re-activate bulk status via Returns again
+                    // unless we create bulk allocate method - Iffy
+                    updatebulk.CurrentWeight = orderitem.Weight;
+                    updatebulk.BulkStatus = "AVAIL";
+                    updatebulk.MarkedForReturn = false;
+                    updatebulk.UpdateDate = DateTime.UtcNow;
+                    updatebulk.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    success = true;
+                }
+
+                // Check if stock allocated order item and update stock record
+                if (orderitem.AllocatedStockID != null)
+                {
+                    var updatestock = (from t in db.tblStock
+                                       where t.ShelfID == orderitem.ShelfID
+                                       && t.Bin == orderitem.Bin
+                                       select t).FirstOrDefault();
+
+                    updatestock.QtyAvailable = updatestock.QtyAvailable + orderitem.Qty;
+                    updatestock.QtyAllocated -= orderitem.Qty;
+                    if (updatestock.QtyAllocated < 0)
+                    {
+                        // zero out QtyAllocated if negative
+                        updatestock.QtyAllocated = 0;
+                    }
+                    updatestock.UpdateDate = DateTime.UtcNow;
+                    updatestock.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    success = true;
+                }
+
+                // Make sure there is something to reverse before wiping out fields
+                if (success == true)
+                {
+                    try
+                    {
+                        // Clear allocation related fields for order item
+                        orderitem.AllocatedStockID = null;
+                        orderitem.AllocatedBulkID = null;
+                        orderitem.BulkID = null;
+                        orderitem.AllocateStatus = null;
+                        orderitem.AllocatedDate = null;
+                        orderitem.CSAllocate = null;
+                        orderitem.Bin = null;
+                        orderitem.LotNumber = null;
+                        orderitem.Warehouse = null;
+                        orderitem.ExpirationDate = null;
+                        orderitem.CeaseShipDate = null;
+                        orderitem.UpdateDate = DateTime.UtcNow;
+                        orderitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                        db.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
         #endregion Allocate Methods
+
+        #region Return Order Methods
+
+        public static void CreateReturnOrderBulkItems(int orderid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var bulk = (from t in db.tblBulk
+                            where t.MarkedForReturn == true
+                            select t).ToList();
+
+                foreach (var row in bulk)
+                {
+                    var pm = (from t in db.tblProductMaster
+                              where t.ProductMasterID == row.ProductMasterID
+                              select t).FirstOrDefault();
+
+                    var productdetailid = OrderService.GetProductDetailId(pm.ProductMasterID);
+                    var pd = db.tblProductDetail.Find(productdetailid);
+
+                    int newItemId = OrderService.fnNewItemID();
+
+                    var newitem = (from t in db.tblOrderItem
+                                   where t.ItemID == newItemId
+                                   select t).FirstOrDefault();
+
+                    newitem.OrderID = orderid;
+                    newitem.BulkID = row.BulkID;
+                    newitem.ShelfID = OrderService.GetShelfId(pm.ProductMasterID, row.UM);
+                    newitem.ProductDetailID = productdetailid;
+                    newitem.ProductCode = pm.MasterCode;
+                    newitem.ProductName = pm.MasterName;
+                    newitem.LotNumber = row.LotNumber;
+                    newitem.Qty = 1;
+                    newitem.Size = row.UM;
+                    newitem.Weight = row.CurrentWeight;
+                    newitem.Bin = row.Bin;
+                    newitem.CSAllocate = true;
+                    newitem.AllocatedBulkID = row.BulkID;
+                    newitem.AllocateStatus = "A";
+                    newitem.AllocatedDate = DateTime.UtcNow;
+                    newitem.Warehouse = row.Warehouse;
+                    newitem.GrnUnNumber = pd.GRNUNNUMBER;
+                    newitem.GrnPkGroup = pd.GRNPKGRP;
+                    newitem.AirUnNumber = pd.AIRUNNUMBER;
+                    newitem.AirPkGroup = pd.AIRPKGRP;
+                    newitem.AlertNotesOrderEntry = pd.AlertNotesOrderEntry;
+                    newitem.AlertNotesShipping = pd.AlertNotesShipping;
+                    newitem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + row.UM + " with a current weight of " + row.CurrentWeight;
+                    newitem.CreateDate = DateTime.UtcNow;
+                    newitem.CreateUser = HttpContext.Current.User.Identity.Name;
+                    newitem.UpdateDate = DateTime.UtcNow;
+                    newitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    // Insert log record
+                    OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, row.BulkID, 1, row.CurrentWeight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+
+                    //update bulk record
+                    row.CurrentWeight = 0;
+                    row.BulkStatus = "RETURN";
+                    row.MarkedForReturn = true;
+                    row.UpdateDate = DateTime.UtcNow;
+                    row.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    db.SaveChanges();
+
+                    OrderService.fnGenerateOrderTransactions(newItemId);
+                }
+            }
+        }
+
+        public static void CreateReturnOrderStockItems(int orderid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                // This assumes that all marked items are acoped for a particular client
+                // what happens if multiple users execute at the same time, or if there are
+                // pending marked items not intended for the intended client?
+                // There is a potential for leaky abstractions here -- Iffy
+                var stock = (from t in db.tblStock
+                             where t.MarkedForReturn == true
+                             select t).ToList();
+
+                foreach (var row in stock)
+                {
+                    var bl = db.tblBulk.Find(row.BulkID);
+                    var sm = db.tblShelfMaster.Find(row.ShelfID);
+                    var pd = db.tblProductDetail.Find(sm.ProductDetailID);
+                    var pm = db.tblProductMaster.Find(bl.ProductMasterID);
+
+                    int newItemId = OrderService.fnNewItemID();
+                    var newitem = (from t in db.tblOrderItem
+                                   where t.ItemID == newItemId
+                                   select t).FirstOrDefault();
+
+                    newitem.OrderID = orderid;
+                    newitem.ShelfID = sm.ShelfID;
+                    newitem.ProductDetailID = pd.ProductDetailID;
+                    newitem.ProductCode = pd.ProductCode;
+                    newitem.ProductName = pd.ProductName;
+                    newitem.LotNumber = bl.LotNumber;
+                    newitem.Qty = row.QtyOnHand;
+                    newitem.Size = sm.Size;
+                    newitem.Weight = Convert.ToDecimal(sm.UnitWeight * row.QtyOnHand);
+                    newitem.Bin = row.Bin;
+                    newitem.CSAllocate = true;
+                    newitem.AllocatedBulkID = row.BulkID;
+                    newitem.AllocatedStockID = row.StockID;
+                    newitem.AllocateStatus = "A";
+                    newitem.AllocatedDate = DateTime.UtcNow;
+                    newitem.Warehouse = row.Warehouse;
+                    newitem.GrnUnNumber = pd.GRNUNNUMBER;
+                    newitem.GrnPkGroup = pd.GRNPKGRP;
+                    newitem.AirUnNumber = pd.AIRUNNUMBER;
+                    newitem.AirPkGroup = pd.AIRPKGRP;
+                    newitem.AlertNotesOrderEntry = pd.AlertNotesOrderEntry;
+                    newitem.AlertNotesShipping = pd.AlertNotesShipping;
+                    newitem.ItemNotes = "Return Shelf Order Item";
+                    newitem.CreateDate = DateTime.UtcNow;
+                    newitem.CreateUser = HttpContext.Current.User.Identity.Name;
+                    newitem.UpdateDate = DateTime.UtcNow;
+                    newitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    // Insert log record
+                    OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, row.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+
+                    //update tblstock record
+                    row.QtyAllocated = row.QtyAvailable;
+                    row.QtyAvailable = 0;                                               // Clear out available stock
+                    row.ShelfStatus = "RETURN";
+                    row.MarkedForReturn = true;
+                    row.UpdateDate = DateTime.UtcNow;
+                    row.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    db.SaveChanges();
+
+                    OrderService.fnGenerateOrderTransactions(newItemId);
+                }
+            }
+        }
+
+        #endregion Return Order Methods
 
         #region SPS Billing Methods
 

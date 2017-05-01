@@ -461,17 +461,11 @@
     });
 
     function SampleOrderAlert(productdetailid) {
-        $.ajax({
-            url: "/Orders/CheckProductForAlert/" + productdetailid,
-            type: "GET",
-            success: showalert
-        });
-
-        function showalert(data) {
-            if ((data.length > 0)) {
-                $.alert(data, "Product ID: " + productdetailid);
-            }
-        }
+        var alerturl = '@Url.Action("CheckProductForAlert", "Orders")';
+        $.getJSON(alerturl, { id: productdetailid },
+                    function (jsonobj) {
+                        $.alert(jsonobj, "Product ID: " + productdetailid);
+                    });
     }
 
     function PullRequestor(requestorid) {

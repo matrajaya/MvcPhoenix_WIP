@@ -251,63 +251,14 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult fnOrderItemsList(int id)
         {
-            // list of items for a given order
-            using (var db = new CMCSQL03Entities())
+            var orderitems = OrderService.ListOrderItems(id);
+
+            if (orderitems.Count > 0)
             {
-                var orderitems = (from t in db.tblOrderItem
-                                  where t.OrderID == id
-                                  orderby t.CreateDate
-                                  select new MvcPhoenix.Models.OrderItem
-                                  {
-                                      OrderID = t.OrderID,
-                                      ItemID = t.ItemID,
-                                      ShelfID = t.ShelfID,
-                                      BulkID = t.BulkID,
-                                      ProductDetailID = t.ProductDetailID,
-                                      ProductCode = t.ProductCode,
-                                      Mnemonic = t.Mnemonic,
-                                      ProductName = t.ProductName,
-                                      Size = t.Size,
-                                      SRSize = t.SRSize,
-                                      LotNumber = t.LotNumber,
-                                      Qty = t.Qty,
-                                      ShipDate = t.ShipDate,
-                                      Via = t.Via,
-                                      BackOrdered = t.BackOrdered,
-                                      AllocateStatus = t.AllocateStatus,
-                                      CSAllocate = t.CSAllocate,
-                                      NonCMCDelay = t.NonCMCDelay,
-                                      QtyAvailable = (from x in db.tblStock
-                                                      where (x.ShelfID != null)
-                                                      && (x.ShelfID == t.ShelfID)
-                                                      && (x.ShelfStatus == "AVAIL")
-                                                      select (x.QtyOnHand - x.QtyAllocated)).Sum(),
-                                      AllocatedDate = t.AllocatedDate,
-                                      GrnUnNumber = (from a in db.tblProductDetail
-                                                     where (a.ProductDetailID == t.ProductDetailID)
-                                                     select a.GRNUNNUMBER).FirstOrDefault(),
-                                      GrnPkGroup = (from b in db.tblProductDetail
-                                                    where (b.ProductDetailID == t.ProductDetailID)
-                                                    select b.GRNPKGRP).FirstOrDefault(),
-                                      AirUnNumber = (from c in db.tblProductDetail
-                                                     where (c.ProductDetailID == t.ProductDetailID)
-                                                     select c.AIRUNNUMBER).FirstOrDefault(),
-                                      AirPkGroup = (from d in db.tblProductDetail
-                                                    where (d.ProductDetailID == t.ProductDetailID)
-                                                    select d.AIRPKGRP).FirstOrDefault(),
-                                      CreateDate = t.CreateDate,
-                                      CreateUser = t.CreateUser,
-                                      UpdateDate = t.UpdateDate,
-                                      UpdateUser = t.UpdateUser
-                                  }).ToList();
-
-                if (orderitems.Count > 0)
-                {
-                    return PartialView("~/Views/Orders/_OrderItems.cshtml", orderitems);
-                }
-
-                return null;
+                return PartialView("~/Views/Orders/_OrderItems.cshtml", orderitems);
             }
+
+            return null;
         }
 
         [HttpGet]
@@ -357,15 +308,15 @@ namespace MvcPhoenix.Controllers
             return Content(ApplicationService.ddlBuildSizeDropDown(id));
         }
 
-        public ActionResult CheckProductForAlert(int id)
+        public ActionResult CheckProductForAlert(int? id)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var obj = (from t in db.tblProductDetail
-                           where t.ProductDetailID == id
-                           select t.AlertNotesOrderEntry).FirstOrDefault();
+                var productorderalert = (from t in db.tblProductDetail
+                                         where t.ProductDetailID == id
+                                         select t.AlertNotesOrderEntry).FirstOrDefault();
 
-                return Content(obj);
+                return Json(productorderalert, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -419,11 +370,19 @@ namespace MvcPhoenix.Controllers
             return Content(AllocationCount.ToString() + " item(s) allocated");
         }
 
-        public ActionResult AllocateFromBulk(int id, bool IncludeQCStock)
-        {
-            int AllocationCount = OrderService.fnAllocateBulk(id, IncludeQCStock);
+        // Bulk Allocation is not currently implemented
+        //public ActionResult AllocateFromBulk(int id, bool IncludeQCStock)
+        //{
+        //    int AllocationCount = OrderService.fnAllocateBulk(id, IncludeQCStock);
 
-            return Content(AllocationCount.ToString() + " item(s) allocated");
+        //    return Content(AllocationCount.ToString() + " item(s) allocated");
+        //}
+
+        public ActionResult ReverseAllocatedItem(int orderitemid)
+        {
+            OrderService.fnReverseAllocatedItem(orderitemid);
+
+            return Content("Item allocation reversed");
         }
 
         #endregion Allocate Methods
@@ -451,7 +410,7 @@ namespace MvcPhoenix.Controllers
                                                  transdate = t.TransDate,
                                                  transtype = t.TransType,
                                                  transqty = t.TransQty,
-                                                 transamount = t.TransAmount,
+                                                 transrate = t.TransRate,
                                                  comments = t.Comments,
                                                  createdate = t.CreateDate,
                                                  createuser = t.CreateUser,

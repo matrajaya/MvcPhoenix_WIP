@@ -435,7 +435,7 @@ namespace MvcPhoenix.Models
                               Value = t.Country,
                               Text = t.Country
                           }).ToList();
-                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+                result.Insert(0, new SelectListItem { Value = "0", Text = "" });
 
                 return result;
             }
@@ -610,7 +610,7 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static List<SelectListItem> ddlOrderItemStatusIDs() // TBD: Convert to enum list - Iffy
+        public static List<SelectListItem> ddlOrderItemStatusIDs()
         {
             List<SelectListItem> result = new List<SelectListItem>();
 
@@ -999,24 +999,8 @@ namespace MvcPhoenix.Models
             }
         }
 
-        // From InventoryService
-        public static List<SelectListItem> ddlShelfStatusIDs()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> result = new List<SelectListItem>();
 
-                result.Add(new SelectListItem { Text = "AVAIL", Value = "AVAIL" });
-                result.Add(new SelectListItem { Text = "TEST", Value = "TEST" });
-                result.Add(new SelectListItem { Text = "HOLD", Value = "HOLD" });
-                result.Add(new SelectListItem { Text = "QC", Value = "QC" });
-                result.Add(new SelectListItem { Text = "RETURN", Value = "RETURN" });
-                result.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return result;
-            }
-        }
-
+        // replace 
         public static List<SelectListItem> ddlShipVias()
         {
             using (var db = new CMCSQL03Entities())
@@ -1036,6 +1020,7 @@ namespace MvcPhoenix.Models
             }
         }
 
+        //r
         public static List<SelectListItem> ddlShipViasItemLevel()
         {
             using (var db = new CMCSQL03Entities())

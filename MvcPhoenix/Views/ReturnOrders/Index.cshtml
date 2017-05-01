@@ -24,7 +24,7 @@
                     <div class="col-md-6">
                         <div id="dvPlaceholderDivision">
                             <select name="divisionid" id='divisionid' class='form-control'>
-                                <option>Select Division</option>
+                                <option></option>
                             </select>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
     function UpdateDivisionDD() {
         var myclientid = $('#clientid').val();
         var myurl = '@Url.Action("BuildDivisionDropDown", "ReturnOrders")';
-        $("#divisionid").load(myurl, { id: myclientid });
+        $("#divisionid").load(myurl, { clientid: myclientid });
 
         // empty the divs holding the partials
         $("#dvBulkPlaceHolder").empty();

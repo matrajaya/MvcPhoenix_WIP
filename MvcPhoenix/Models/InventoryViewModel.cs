@@ -14,6 +14,7 @@ namespace MvcPhoenix.Models
         public string ClientUM { get; set; }
         public bool BackOrderPending { get; set; }
         public decimal BulkWeightCurrentlyOnOrder { get; set; }
+
         public decimal ShelfLevelTotal { get; set; }
         public decimal ShelfLevelAvail { get; set; }
         public decimal ShelfLevelTest { get; set; }
@@ -44,9 +45,7 @@ namespace MvcPhoenix.Models
 
     public class BulkOrderItemForInventory
     {
-        // detail
         public int bulkorderitemid { get; set; }
-
         public int? bulkorderid { get; set; }
         public int? productmasterid { get; set; }
         public string mastercode { get; set; }
@@ -56,10 +55,7 @@ namespace MvcPhoenix.Models
         public DateTime? eta { get; set; }
         public DateTime? datereceived { get; set; }
         public string itemnotes { get; set; }
-
-        // master
         public DateTime? OrderDate { get; set; }
-
         public string SupplyID { get; set; }
         public string OrderStatus { get; set; }
         public string OrderComment { get; set; }
@@ -68,14 +64,13 @@ namespace MvcPhoenix.Models
     public class StockViewModel
     {
         public List<SelectListItem> ListOfShelfMasterIDs { get; set; }
-        public List<SelectListItem> ListOfBulkIDs { get; set; }
-        public List<SelectListItem> ListOfShelfStatusIDs { get; set; }
 
         public int? StockID { get; set; }
         public int? BulkID { get; set; }
         public int? ShelfID { get; set; }
         public string Warehouse { get; set; }
         public int? QtyOnHand { get; set; }
+        public int? QtyAvailable { get; set; }
         public int? QtyAllocated { get; set; }
         [StringLength(15, ErrorMessage = "[Max 15]")]
         public string Bin { get; set; }

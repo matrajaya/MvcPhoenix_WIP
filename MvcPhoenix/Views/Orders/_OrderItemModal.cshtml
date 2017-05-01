@@ -204,7 +204,10 @@
                     {
                         <span>&nbsp;</span>
                     }
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    @if (@Model.AllocateStatus != "A")
+                    {
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    }
                 </div>
             }
         </div>

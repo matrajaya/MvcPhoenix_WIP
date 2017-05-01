@@ -115,7 +115,9 @@ namespace MvcPhoenix.Services
                 switch (status)
                 {
                     case "TOTAL":
-                        var q1 = (from x in mylist select x.tot).Sum();
+                        var q1 = (from x in mylist 
+                                  select x.tot).Sum();
+
                         retval = Convert.ToDecimal(q1);
                         break;
 
@@ -131,7 +133,10 @@ namespace MvcPhoenix.Services
                         break;
 
                     default:
-                        var q3 = (from x in mylist where x.stat == status select x.tot).Sum();
+                        var q3 = (from x in mylist 
+                                  where x.stat == status 
+                                  select x.tot).Sum();
+
                         retval = Convert.ToDecimal(q3);
                         break;
                 }
@@ -210,6 +215,7 @@ namespace MvcPhoenix.Services
                               BulkID = t.BulkID,
                               Warehouse = t.Warehouse,
                               QtyOnHand = t.QtyOnHand,
+                              QtyAvailable = t.QtyAvailable,
                               QtyAllocated = t.QtyAllocated,
                               Bin = t.Bin,
                               ShelfStatus = t.ShelfStatus,
@@ -230,9 +236,7 @@ namespace MvcPhoenix.Services
                               UpdateUser = t.UpdateUser
                           }).FirstOrDefault();
 
-                vm.ListOfShelfStatusIDs = ApplicationService.ddlShelfStatusIDs();
                 vm.ListOfShelfMasterIDs = ApplicationService.ddlShelfMasterIDs(vm.ProductDetailID);
-                vm.ListOfBulkIDs = ApplicationService.ddlBulkIDs(vm.ShelfID);
 
                 return vm;
             }
@@ -344,7 +348,7 @@ namespace MvcPhoenix.Services
                                productmasterid = t.ProductMasterID,
                                notedate = t.NoteDate,
                                notes = t.Notes,
-                               reasoncode = t.Comment,                                      // TBD: modify table field later - Iffy
+                               reasoncode = t.Comment,                                      // TBD: modify table field later to become reasoncode - Iffy
                                UpdateDate = t.UpdateDate,
                                UpdateUser = t.UpdateUser,
                                CreateDate = t.CreateDate,

@@ -20,6 +20,7 @@ namespace MvcPhoenix.EF
         public Nullable<int> BulkID { get; set; }
         public string Warehouse { get; set; }
         public Nullable<int> QtyOnHand { get; set; }
+        public Nullable<int> QtyAvailable { get; set; }
         public Nullable<int> QtyAllocated { get; set; }
         public string Bin { get; set; }
         public string ShelfStatus { get; set; }

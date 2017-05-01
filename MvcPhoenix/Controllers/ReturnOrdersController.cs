@@ -319,7 +319,7 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public ActionResult BuildDivisionDropDown(int id)   // id=clientid
+        public ActionResult BuildDivisionDropDown(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -328,7 +328,7 @@ namespace MvcPhoenix.Controllers
                 Session["BulkRecords"] = null;
                 Session["StockRecords"] = null;
 
-                var ddldivision = ApplicationService.BuildDivisionDropDown(id);
+                var ddldivision = ApplicationService.BuildDivisionDropDown(clientid);
 
                 return Content(ddldivision);
             }
@@ -351,220 +351,64 @@ namespace MvcPhoenix.Controllers
                 return mycount;
             }
         }
-
-        public ActionResult CreateReturnOrderBulkItems(int orderid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var bulk = (from t in db.tblBulk
-                            where t.MarkedForReturn == true
-                            select t).ToList();
-
-                foreach (var row in bulk)
-                {
-                    var pm = (from t in db.tblProductMaster
-                              where t.ProductMasterID == row.ProductMasterID
-                              select t).FirstOrDefault();
-
-                    int newItemId = OrderService.fnNewItemID();
-
-                    var newitem = (from t in db.tblOrderItem
-                                   where t.ItemID == newItemId
-                                   select t).FirstOrDefault();
-
-                    newitem.OrderID = orderid;
-                    newitem.BulkID = row.BulkID;
-                    newitem.ShelfID = GetShelfId(pm.ProductMasterID, row.UM);
-                    newitem.ProductDetailID = GetProductDetailId(pm.ProductMasterID);
-                    newitem.ProductCode = pm.MasterCode;
-                    newitem.ProductName = pm.MasterName;
-                    newitem.LotNumber = row.LotNumber;
-                    newitem.Qty = 1;
-                    newitem.Size = row.UM;
-                    newitem.Weight = row.CurrentWeight;
-                    newitem.Bin = row.Bin;
-                    newitem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + row.UM + " with a current weight of " + row.CurrentWeight;
-                    newitem.CreateDate = DateTime.UtcNow;
-                    newitem.CreateUser = HttpContext.User.Identity.Name;
-                    newitem.UpdateDate = DateTime.UtcNow;
-                    newitem.UpdateUser = HttpContext.User.Identity.Name;
-
-                    // Insert log record
-                    OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, row.BulkID, 1, row.CurrentWeight, DateTime.UtcNow, User.Identity.Name, null, null);
-
-                    //update bulk record
-                    row.CurrentWeight = 0;
-                    row.BulkStatus = "RETURN";
-                    row.MarkedForReturn = null;
-                    db.SaveChanges();
-
-                    OrderService.fnGenerateOrderTransactions(newItemId);
-                }
-            }
-
-            return null;
-        }
-
-        private int GetProductDetailId(int? productmasterid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                int getproductdetailid = (from pd in db.tblProductDetail
-                                          join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                                          where pm.ProductMasterID == productmasterid && pd.ProductCode == pm.MasterCode
-                                          select pd.ProductDetailID).FirstOrDefault();
-
-                return getproductdetailid;
-            }
-        }
-
-        /// <summary>
-        /// find original productdetailid, ignore equivalent products
-        //  use productdetailid and um(size) to check shelfmaster
-        //  if true: get shelfid ?: insert new record in shelfmaster using productdetailid and size = um
-        /// </summary>
-        /// <param name="productmasterid"></param>
-        /// <param name="um"></param>
-        /// <returns></returns>
-        public int GetShelfId(int? productmasterid, string um)
-        {
-            int getproductdetailid = GetProductDetailId(productmasterid);
-
-            int xshelfid = 0;
-            try
-            {
-                using (var db = new CMCSQL03Entities())
-                {
-                    int qshelfid = (from t in db.tblShelfMaster
-                                    where t.ProductDetailID == getproductdetailid && t.Size == um
-                                    select t.ShelfID).FirstOrDefault();
-
-                    if (qshelfid != 0)
-                    {
-                        xshelfid = qshelfid;
-                    }
-                    else
-                    {
-                        var newrecord = new tblShelfMaster
-                        {
-                            ProductDetailID = getproductdetailid,
-                            Size = um
-                        };
-                        db.tblShelfMaster.Add(newrecord);
-                        db.SaveChanges();
-
-                        xshelfid = newrecord.ShelfID;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                xshelfid = 0;
-            }
-
-            return xshelfid;
-        }
-
-        public ActionResult CreateReturnOrderStockItems(int orderid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var stock = (from t in db.tblStock
-                             where t.MarkedForReturn == true
-                             select t).ToList();
-
-                foreach (var row in stock)
-                {
-                    var bl = db.tblBulk.Find(row.BulkID);
-                    var sm = db.tblShelfMaster.Find(row.ShelfID);
-                    var pd = db.tblProductDetail.Find(sm.ProductDetailID);
-                    var pm = db.tblProductMaster.Find(bl.ProductMasterID);
-
-                    int newItemId = OrderService.fnNewItemID();
-                    var newitem = (from t in db.tblOrderItem
-                                   where t.ItemID == newItemId
-                                   select t).FirstOrDefault();
-
-                    newitem.OrderID = orderid;
-                    newitem.ShelfID = sm.ShelfID;
-                    newitem.ProductDetailID = pd.ProductDetailID;
-                    newitem.ProductCode = pd.ProductCode;
-                    newitem.ProductName = pd.ProductName;
-                    newitem.LotNumber = bl.LotNumber;
-                    newitem.Qty = row.QtyOnHand;
-                    newitem.Size = sm.Size;
-                    newitem.Weight = Convert.ToDecimal(sm.UnitWeight * row.QtyOnHand);
-                    newitem.Bin = row.Bin;
-                    newitem.ItemNotes = "Return Shelf Order Item";
-                    newitem.CreateDate = DateTime.UtcNow;
-                    newitem.CreateUser = HttpContext.User.Identity.Name;
-                    newitem.UpdateDate = DateTime.UtcNow;
-                    newitem.UpdateUser = HttpContext.User.Identity.Name;
-
-                    // Insert log record
-                    OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, row.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, User.Identity.Name, null, null);
-
-                    //update bulk record
-                    row.QtyOnHand = 0;
-                    row.ShelfStatus = "RETURN";
-                    row.MarkedForReturn = null;
-                    db.SaveChanges();
-
-                    OrderService.fnGenerateOrderTransactions(newItemId);
-                    // Should we DELETE the tblStock record? - pc
-                }
-            }
-            return null;
-        }
-
+                
         [HttpPost]
         public ActionResult CreateReturnOrder(FormCollection fc)
         {
             using (var db = new CMCSQL03Entities())
             {
+                // check for clientid, exit if none found
                 if (String.IsNullOrEmpty(fc["hiddenclientid"]))
                 {
-                    return RedirectToAction("Index");   // nothing to do; clientid missing -> start over
+                    return RedirectToAction("Index");
                 }
 
-                int MyClientID = Convert.ToInt32(fc["hiddenclientid"]);
-                int MyDivisionID = Convert.ToInt32(fc["hiddendivisionid"]);
+                // pull client and division ids from submitted form
+                int clientid = Convert.ToInt32(fc["hiddenclientid"]);
+                int divisionid = Convert.ToInt32(fc["hiddendivisionid"]);
                 
-                // be sure user added items
+                // count bulk returns
                 var qbulkcnt = (from t in db.tblBulk
                                 where t.MarkedForReturn == true
                                 select t.BulkID).Count();
 
+                // count stock returns
                 var qstockcnt = (from t in db.tblStock
                                  where t.MarkedForReturn == true
                                  select t.StockID).Count();
 
+                // exit if no item is marked for return
                 if (qbulkcnt == 0 && qstockcnt == 0)
                 {
-                    return RedirectToAction("Index");   // nothing to do
+                    return RedirectToAction("Index");
                 }
 
-                int NewOrderID = 0; // New OrderID record
-                NewOrderID = OrderService.fnNewOrderID();
+                // create new orderid
+                int NewOrderID = OrderService.fnNewOrderID();
+
+                // write order master level info to order
                 var om = (from t in db.tblOrderMaster
                           where t.OrderID == NewOrderID
                           select t).FirstOrDefault();
 
                 var cl = (from t in db.tblClient
-                          where t.ClientID == MyClientID
+                          where t.ClientID == clientid
                           select t).FirstOrDefault();
 
-                om.ClientID = MyClientID;
-                om.DivisionID = MyDivisionID;
+                om.ClientID = clientid;
+                om.DivisionID = divisionid;
                 om.OrderType = "R";
                 om.OrderDate = DateTime.UtcNow;
                 om.Company = cl.ClientName;
                 om.CreateDate = DateTime.UtcNow;
-                om.CreateUser = System.Web.HttpContext.Current.User.Identity.Name;
+                om.CreateUser = HttpContext.User.Identity.Name;
+                om.UpdateDate = DateTime.UtcNow;
+                om.UpdateUser = HttpContext.User.Identity.Name;
                 db.SaveChanges();
 
-                CreateReturnOrderBulkItems(NewOrderID);
-                CreateReturnOrderStockItems(NewOrderID);
+                // Fill order items for newly created order
+                OrderService.CreateReturnOrderBulkItems(NewOrderID);
+                OrderService.CreateReturnOrderStockItems(NewOrderID);
 
                 return RedirectToAction("Edit", "Orders", new { id = NewOrderID });
             }

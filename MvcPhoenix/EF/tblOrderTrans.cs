@@ -25,7 +25,7 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> TransDate { get; set; }
         public Nullable<System.DateTime> ChargeDate { get; set; }
         public Nullable<int> TransQty { get; set; }
-        public Nullable<decimal> TransAmount { get; set; }
+        public Nullable<decimal> TransRate { get; set; }
         public string Comments { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
