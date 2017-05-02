@@ -64,7 +64,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static int? fnCloneShelfMaster(int shelfid)
+        public static int fnCloneShelfMaster(int shelfid)
         {
             using (var db = new CMCSQL03Entities())
             {

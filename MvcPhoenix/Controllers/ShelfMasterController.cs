@@ -68,7 +68,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult CloneShelfMaster(int id)
         {
             // id=shelfid
-            int productid = ShelfMasterService.fnCloneShelfMaster(id) ?? 0;
+            int productid = ShelfMasterService.fnCloneShelfMaster(id);
 
             if (productid == 0)
             {
