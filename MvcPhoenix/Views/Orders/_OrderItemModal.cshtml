@@ -35,6 +35,9 @@
                     @Html.HiddenFor(m => m.ItemID)
                     @Html.HiddenFor(m => m.OrderID)
                     @Html.HiddenFor(m => m.ClientID)
+                    @Html.HiddenFor(m => m.BulkID)
+                    @Html.HiddenFor(m => m.AllocateStatus)
+                    @Html.HiddenFor(m => m.LotNumber)
                     @Html.HiddenFor(m => m.CreateDate)
                     @Html.HiddenFor(m => m.CreateUser)
                     @Html.HiddenFor(m => m.UpdateDate)
@@ -204,7 +207,7 @@
                     {
                         <span>&nbsp;</span>
                     }
-                    @if (@Model.AllocateStatus != "A")
+                    @if (Model.ShipDate > DateTime.Now.AddDays(-5) || Model.ShipDate == null)
                     {
                         <button type="submit" class="btn btn-primary">Save</button>
                     }

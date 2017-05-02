@@ -104,7 +104,7 @@
                              }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From Available Shelf Stock" })
                     </div>
                     <div class="col-md-6">
-                        @Ajax.ActionLink("Available + QC Stock", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = true },
+                        @Ajax.ActionLink("QC Stock Only", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = true },
                         new AjaxOptions
                              {
                                  UpdateTargetId = "dvAllocateResult",

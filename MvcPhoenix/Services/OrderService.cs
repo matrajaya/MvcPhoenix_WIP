@@ -1230,10 +1230,11 @@ namespace MvcPhoenix.Services
                         stock = stock.Where(s => s.LotNumber == item.LotNumber).ToList();
                     }
 
-                    // check for qcstock if requested
+                    // check for qcstock if requested, 
+                    // available and qc stock are exclusive to themselves as discussed with Chris - Iffy
                     if (IncludeQCStock == true)
                     {
-                        stock = stock.Where(s => s.ShelfStatus == "AVAIL" || s.ShelfStatus == "QC").ToList();
+                        stock = stock.Where(s => s.ShelfStatus == "QC").ToList();
                     }
                     else
                     {
