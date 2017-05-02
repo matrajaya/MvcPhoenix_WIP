@@ -276,9 +276,7 @@ namespace MvcPhoenix.Controllers
             return null;
         }
 
-        /// <summary>
-        /// Generates temporary model values in clone modal
-        /// </summary>
+        // Generates temporary model values in clone modal
         public ActionResult Clone(int id)
         {
             GHSPHSource PHSrc = new GHSPHSource();

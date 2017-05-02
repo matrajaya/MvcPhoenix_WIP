@@ -1,6 +1,6 @@
 ﻿using MvcPhoenix.EF;
+using MvcPhoenix.Extensions;
 using MvcPhoenix.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -64,16 +64,22 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static int fnCloneShelfMaster(int id)
+        public static int? fnCloneShelfMaster(int shelfid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                // copy a record, return the productdetailid
-                var dbrow = db.tblShelfMaster.Find(id);
-                int pdid = Convert.ToInt32(dbrow.ProductDetailID);
-                string s = String.Format("Insert into tblShelfMaster (ProductDetailID,Warehouse,Size,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge) Select ProductDetailID,Warehouse,Size,Bin,ReorderMin,ReorderMax,ReorderQty,Notes,HazardSurcharge,FlammableSurcharge,HeatSurcharge,RefrigSurcharge,FreezerSurcharge,CleanSurcharge,BlendSurcharge,NalgeneSurcharge,NitrogenSurcharge,BiocideSurcharge,KosherSurcharge,LabelSurcharge,OtherSurcharge from tblShelfMaster where shelfid={0}", id);
-                db.Database.ExecuteSqlCommand(s);
-                return pdid;
+                // clone shelf, return the productdetailid
+                var shelf = (from s in db.tblShelfMaster
+                             where s.ShelfID == shelfid
+                             select s).FirstOrDefault();
+
+                var newShelf = shelf.Clone();
+                int productdetailid = newShelf.ProductDetailID ?? 0;
+                db.tblShelfMaster.Add(newShelf);
+
+                db.SaveChanges();
+
+                return productdetailid;
             }
         }
 

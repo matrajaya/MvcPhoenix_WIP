@@ -54,9 +54,9 @@
             <div class="col-md-3"><b>Updated By</b></div>
         </div>
         <div class="row">
-            <div class="col-md-3">@String.Format("{0:r}", @Model.CreateDate)</div>
+            <div class="col-md-3">@String.Format("{0:dd MMM yyyy}", @Model.CreateDate)</div>
             <div class="col-md-3">@Model.CreateUser</div>
-            <div class="col-md-3">@String.Format("{0:r}", @Model.UpdateDate)</div>
+            <div class="col-md-3">@String.Format("{0:dd MMM yyyy}",  @Model.UpdateDate)</div>
             <div class="col-md-3">@Model.UpdateUser</div>
         </div>
     </div>

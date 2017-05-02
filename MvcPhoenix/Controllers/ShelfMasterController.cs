@@ -68,8 +68,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult CloneShelfMaster(int id)
         {
             // id=shelfid
-            int PDid = ShelfMasterService.fnCloneShelfMaster(id);
-            return RedirectToAction("Index", new { id = PDid });
+            int productid = ShelfMasterService.fnCloneShelfMaster(id) ?? 0;
+
+            if (productid == 0)
+            {
+                return null;
+            }
+
+            return RedirectToAction("Index", new { id = productid });
         }
 
         public ActionResult BuildShelfMasterPackagesDropDown(string id)

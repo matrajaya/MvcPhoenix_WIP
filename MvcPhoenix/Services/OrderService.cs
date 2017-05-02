@@ -1440,10 +1440,8 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                // This assumes that all marked items are acoped for a particular client
-                // what happens if multiple users execute at the same time, or if there are
-                // pending marked items not intended for the intended client?
-                // There is a potential for leaky abstractions here -- Iffy
+                // Note: potential for leakiness, this assumes that all marked pending items are for one client
+                // TODO: need filter to protect integrity if multiple users are working on returns concurrently -- Iffy
                 var stock = (from t in db.tblStock
                              where t.MarkedForReturn == true
                              select t).ToList();
