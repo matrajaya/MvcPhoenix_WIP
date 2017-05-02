@@ -130,7 +130,7 @@ namespace MvcPhoenix.Services
                 obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
                 obj.pm_restrictedtoamount = qPM.RestrictedToAmount;
                 obj.pm_tempraturecontrolledstorage = qPM.TemperatureControlledStorage;
-                obj.pm_shelflife = qPM.ShlfLife;
+                obj.pm_shelflife = qPM.ShelfLife;
                 obj.pm_packoutonreceipt = qPM.PackOutOnReceipt;
                 obj.pm_ceaseshipdifferential = qPM.CeaseShipDifferential;
 
@@ -322,7 +322,7 @@ namespace MvcPhoenix.Services
                 obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
                 obj.pm_restrictedtoamount = qPM.RestrictedToAmount;
                 obj.pm_tempraturecontrolledstorage = qPM.TemperatureControlledStorage;
-                obj.pm_shelflife = qPM.ShlfLife;
+                obj.pm_shelflife = qPM.ShelfLife;
                 obj.pm_packoutonreceipt = qPM.PackOutOnReceipt;
 
                 // R/O from related PD

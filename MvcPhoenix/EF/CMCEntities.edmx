@@ -1547,7 +1547,7 @@
           <Property Name="Flammability" Type="nvarchar" MaxLength="1" />
           <Property Name="Reactivity" Type="nvarchar" MaxLength="3" />
           <Property Name="OtherEquipmentDescription" Type="nvarchar" MaxLength="100" />
-          <Property Name="ShlfLife" Type="int" />
+          <Property Name="ShelfLife" Type="int" />
           <Property Name="Booties" Type="bit" />
           <Property Name="HazardClassGround_SG" Type="nvarchar" MaxLength="10" />
           <Property Name="irritant" Type="bit" />
@@ -1591,6 +1591,7 @@
           <Property Name="PhysicalToxic" Type="bit" />
           <Property Name="WasteCode" Type="nvarchar" MaxLength="20" />
           <Property Name="WasteAccumStartDate" Type="datetime" />
+          <Property Name="RCRAReviewDate" Type="datetime" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -2000,7 +2001,6 @@
           <EntitySet Name="tblProductionDetail" EntityType="CMCSQL03Model.tblProductionDetail" />
           <EntitySet Name="tblProductionMaster" EntityType="CMCSQL03Model.tblProductionMaster" />
           <EntitySet Name="tblProductionStage" EntityType="CMCSQL03Model.tblProductionStage" />
-          <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
           <EntitySet Name="tblProductXRef" EntityType="CMCSQL03Model.tblProductXRef" />
           <EntitySet Name="tblRates" EntityType="CMCSQL03Model.tblRates" />
           <EntitySet Name="tblReasonCode" EntityType="CMCSQL03Model.tblReasonCode" />
@@ -2020,6 +2020,7 @@
           <EntitySet Name="tblOrderItem" EntityType="CMCSQL03Model.tblOrderItem" />
           <EntitySet Name="tblBulk" EntityType="CMCSQL03Model.tblBulk" />
           <EntitySet Name="tblStock" EntityType="CMCSQL03Model.tblStock" />
+          <EntitySet Name="tblProductMaster" EntityType="CMCSQL03Model.tblProductMaster" />
         </EntityContainer>
         <EntityType Name="tblBillingGroup">
           <Key>
@@ -3323,141 +3324,6 @@
           <Property Name="ProductionStageNumber" Type="Int32" />
           <Property Name="ProductionStageDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblProductMaster">
-          <Key>
-            <PropertyRef Name="ProductMasterID" />
-          </Key>
-          <Property Name="ProductMasterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="SGLegacyID" Type="Int32" />
-          <Property Name="SDLegacyID" Type="Int32" />
-          <Property Name="MasterCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="MasterName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
-          <Property Name="SUPPLYID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Discontinued" Type="Boolean" />
-          <Property Name="NoReorder" Type="Boolean" />
-          <Property Name="PackOutOnReceipt" Type="Boolean" />
-          <Property Name="RestrictedToAmount" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="MasterNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="MasterNotesAlert" Type="Boolean" />
-          <Property Name="ReOrderAdjustmentDays" Type="Int32" />
-          <Property Name="CeaseShipDifferential" Type="Int32" />
-          <Property Name="CleanRoomGMP" Type="Boolean" />
-          <Property Name="NitrogenBlanket" Type="Boolean" />
-          <Property Name="MoistureSensitive" Type="Boolean" />
-          <Property Name="MixWell" Type="Boolean" />
-          <Property Name="MixingInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Refrigerate" Type="Boolean" />
-          <Property Name="DoNotPackAbove60" Type="Boolean" />
-          <Property Name="HandlingOther" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FlammableGround" Type="Boolean" />
-          <Property Name="HeatPriorToFilling" Type="Boolean" />
-          <Property Name="FlashPoint" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="HeatingInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="OtherHandlingInstr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="NormalAppearence" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RejectionCriterion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Hood" Type="Boolean" />
-          <Property Name="LabHood" Type="Boolean" />
-          <Property Name="WalkInHood" Type="Boolean" />
-          <Property Name="SafetyGlasses" Type="Boolean" />
-          <Property Name="Gloves" Type="Boolean" />
-          <Property Name="GloveType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Apron" Type="Boolean" />
-          <Property Name="ArmSleeves" Type="Boolean" />
-          <Property Name="Respirator" Type="Boolean" />
-          <Property Name="FaceShield" Type="Boolean" />
-          <Property Name="FullSuit" Type="Boolean" />
-          <Property Name="CleanRoomEquipment" Type="Boolean" />
-          <Property Name="OtherEquipment" Type="Boolean" />
-          <Property Name="Toxic" Type="Boolean" />
-          <Property Name="HighlyToxic" Type="Boolean" />
-          <Property Name="ReproductiveToxin" Type="Boolean" />
-          <Property Name="CorrosiveHaz" Type="Boolean" />
-          <Property Name="Sensitizer" Type="Boolean" />
-          <Property Name="Carcinogen" Type="Boolean" />
-          <Property Name="Ingestion" Type="Boolean" />
-          <Property Name="Inhalation" Type="Boolean" />
-          <Property Name="Skin" Type="Boolean" />
-          <Property Name="SkinContact" Type="Boolean" />
-          <Property Name="EyeContact" Type="Boolean" />
-          <Property Name="Combustible" Type="Boolean" />
-          <Property Name="Corrosive" Type="Boolean" />
-          <Property Name="Flammable" Type="Boolean" />
-          <Property Name="Oxidizer" Type="Boolean" />
-          <Property Name="Reactive" Type="Boolean" />
-          <Property Name="Hepatotoxins" Type="Boolean" />
-          <Property Name="Nephrotoxins" Type="Boolean" />
-          <Property Name="Neurotoxins" Type="Boolean" />
-          <Property Name="Hepatopoetics" Type="Boolean" />
-          <Property Name="PulmonaryDisfunction" Type="Boolean" />
-          <Property Name="ReporductiveToxin" Type="Boolean" />
-          <Property Name="CutaneousHazards" Type="Boolean" />
-          <Property Name="EyeHazards" Type="Boolean" />
-          <Property Name="Health" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="Flammability" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="Reactivity" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="OtherEquipmentDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ShlfLife" Type="Int32" />
-          <Property Name="Booties" Type="Boolean" />
-          <Property Name="HazardClassGround_SG" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="irritant" Type="Boolean" />
-          <Property Name="RighttoKnow" Type="Boolean" />
-          <Property Name="SARA" Type="Boolean" />
-          <Property Name="FlammableStorageRoom" Type="Boolean" />
-          <Property Name="FireList" Type="Boolean" />
-          <Property Name="FreezableList" Type="Boolean" />
-          <Property Name="RefrigeratedList" Type="Boolean" />
-          <Property Name="MSDSOTHERNUMBER" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="FREEZERSTORAGE" Type="Boolean" />
-          <Property Name="CLIENTREQ" Type="Boolean" />
-          <Property Name="CMCREQ" Type="Boolean" />
-          <Property Name="RETURNLOCATION" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DENSITY" Type="Decimal" Precision="12" Scale="3" />
-          <Property Name="SpecialBlend" Type="Boolean" />
-          <Property Name="SARA302EHS" Type="Boolean" />
-          <Property Name="SARA313" Type="Boolean" />
-          <Property Name="HalfMaskRespirator" Type="Boolean" />
-          <Property Name="FullFaceRespirator" Type="Boolean" />
-          <Property Name="Torque" Type="Boolean" />
-          <Property Name="TorqueRequirements" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OtherStorage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EECAll" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RPhrasesAll" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SPhrasesAll" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PHAll" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="English" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="German" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Dutch" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EECSymbol1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EECSymbol2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EECSymbol3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Handling" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ShippingNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="OtherLabelNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PeroxideFormer" Type="Boolean" />
-          <Property Name="SpecificGravity" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="phValue" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="PhysicalToxic" Type="Boolean" />
-          <Property Name="WasteCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="WasteAccumStartDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="CountryOfOrigin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LeadTime" Type="Int32" />
-          <Property Name="DustFilter" Type="Boolean" />
-          <Property Name="TemperatureControlledStorage" Type="Boolean" />
-          <Property Name="PrePacked" Type="Boolean" />
-          <Property Name="AlertNotesReceiving" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="AlertNotesPackout" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="ProductSetupDate" Type="DateTime" Precision="3" />
-          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tblProductXRef">
           <Key>
             <PropertyRef Name="ProductXRefID" />
@@ -3906,6 +3772,142 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="MigrationNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblProductMaster">
+          <Key>
+            <PropertyRef Name="ProductMasterID" />
+          </Key>
+          <Property Name="ProductMasterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="SGLegacyID" Type="Int32" />
+          <Property Name="SDLegacyID" Type="Int32" />
+          <Property Name="MasterCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MasterName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="SUPPLYID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Discontinued" Type="Boolean" />
+          <Property Name="NoReorder" Type="Boolean" />
+          <Property Name="PackOutOnReceipt" Type="Boolean" />
+          <Property Name="RestrictedToAmount" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="MasterNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MasterNotesAlert" Type="Boolean" />
+          <Property Name="ReOrderAdjustmentDays" Type="Int32" />
+          <Property Name="CeaseShipDifferential" Type="Int32" />
+          <Property Name="CleanRoomGMP" Type="Boolean" />
+          <Property Name="NitrogenBlanket" Type="Boolean" />
+          <Property Name="MoistureSensitive" Type="Boolean" />
+          <Property Name="MixWell" Type="Boolean" />
+          <Property Name="MixingInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Refrigerate" Type="Boolean" />
+          <Property Name="DoNotPackAbove60" Type="Boolean" />
+          <Property Name="HandlingOther" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlammableGround" Type="Boolean" />
+          <Property Name="HeatPriorToFilling" Type="Boolean" />
+          <Property Name="FlashPoint" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="HeatingInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OtherHandlingInstr" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NormalAppearence" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RejectionCriterion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Hood" Type="Boolean" />
+          <Property Name="LabHood" Type="Boolean" />
+          <Property Name="WalkInHood" Type="Boolean" />
+          <Property Name="SafetyGlasses" Type="Boolean" />
+          <Property Name="Gloves" Type="Boolean" />
+          <Property Name="GloveType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Apron" Type="Boolean" />
+          <Property Name="ArmSleeves" Type="Boolean" />
+          <Property Name="Respirator" Type="Boolean" />
+          <Property Name="FaceShield" Type="Boolean" />
+          <Property Name="FullSuit" Type="Boolean" />
+          <Property Name="CleanRoomEquipment" Type="Boolean" />
+          <Property Name="OtherEquipment" Type="Boolean" />
+          <Property Name="Toxic" Type="Boolean" />
+          <Property Name="HighlyToxic" Type="Boolean" />
+          <Property Name="ReproductiveToxin" Type="Boolean" />
+          <Property Name="CorrosiveHaz" Type="Boolean" />
+          <Property Name="Sensitizer" Type="Boolean" />
+          <Property Name="Carcinogen" Type="Boolean" />
+          <Property Name="Ingestion" Type="Boolean" />
+          <Property Name="Inhalation" Type="Boolean" />
+          <Property Name="Skin" Type="Boolean" />
+          <Property Name="SkinContact" Type="Boolean" />
+          <Property Name="EyeContact" Type="Boolean" />
+          <Property Name="Combustible" Type="Boolean" />
+          <Property Name="Corrosive" Type="Boolean" />
+          <Property Name="Flammable" Type="Boolean" />
+          <Property Name="Oxidizer" Type="Boolean" />
+          <Property Name="Reactive" Type="Boolean" />
+          <Property Name="Hepatotoxins" Type="Boolean" />
+          <Property Name="Nephrotoxins" Type="Boolean" />
+          <Property Name="Neurotoxins" Type="Boolean" />
+          <Property Name="Hepatopoetics" Type="Boolean" />
+          <Property Name="PulmonaryDisfunction" Type="Boolean" />
+          <Property Name="ReporductiveToxin" Type="Boolean" />
+          <Property Name="CutaneousHazards" Type="Boolean" />
+          <Property Name="EyeHazards" Type="Boolean" />
+          <Property Name="Health" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Flammability" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Reactivity" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="OtherEquipmentDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ShelfLife" Type="Int32" />
+          <Property Name="Booties" Type="Boolean" />
+          <Property Name="HazardClassGround_SG" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="irritant" Type="Boolean" />
+          <Property Name="RighttoKnow" Type="Boolean" />
+          <Property Name="SARA" Type="Boolean" />
+          <Property Name="FlammableStorageRoom" Type="Boolean" />
+          <Property Name="FireList" Type="Boolean" />
+          <Property Name="FreezableList" Type="Boolean" />
+          <Property Name="RefrigeratedList" Type="Boolean" />
+          <Property Name="MSDSOTHERNUMBER" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="FREEZERSTORAGE" Type="Boolean" />
+          <Property Name="CLIENTREQ" Type="Boolean" />
+          <Property Name="CMCREQ" Type="Boolean" />
+          <Property Name="RETURNLOCATION" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DENSITY" Type="Decimal" Precision="12" Scale="3" />
+          <Property Name="SpecialBlend" Type="Boolean" />
+          <Property Name="SARA302EHS" Type="Boolean" />
+          <Property Name="SARA313" Type="Boolean" />
+          <Property Name="HalfMaskRespirator" Type="Boolean" />
+          <Property Name="FullFaceRespirator" Type="Boolean" />
+          <Property Name="Torque" Type="Boolean" />
+          <Property Name="TorqueRequirements" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OtherStorage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EECAll" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RPhrasesAll" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SPhrasesAll" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PHAll" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="English" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="German" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Dutch" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EECSymbol1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EECSymbol2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EECSymbol3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Handling" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OtherLabelNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ProductDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PeroxideFormer" Type="Boolean" />
+          <Property Name="SpecificGravity" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="phValue" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="PhysicalToxic" Type="Boolean" />
+          <Property Name="WasteCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="WasteAccumStartDate" Type="DateTime" Precision="3" />
+          <Property Name="RCRAReviewDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CountryOfOrigin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LeadTime" Type="Int32" />
+          <Property Name="DustFilter" Type="Boolean" />
+          <Property Name="TemperatureControlledStorage" Type="Boolean" />
+          <Property Name="PrePacked" Type="Boolean" />
+          <Property Name="AlertNotesReceiving" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AlertNotesPackout" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ProductSetupDate" Type="DateTime" Precision="3" />
+          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Division_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5256,142 +5258,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblProductMaster">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductMaster">
-              <MappingFragment StoreEntitySet="tblProductMaster">
-                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
-                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="ProductSetupDate" ColumnName="ProductSetupDate" />
-                <ScalarProperty Name="AlertNotesPackout" ColumnName="AlertNotesPackout" />
-                <ScalarProperty Name="AlertNotesReceiving" ColumnName="AlertNotesReceiving" />
-                <ScalarProperty Name="PrePacked" ColumnName="PrePacked" />
-                <ScalarProperty Name="TemperatureControlledStorage" ColumnName="TemperatureControlledStorage" />
-                <ScalarProperty Name="DustFilter" ColumnName="DustFilter" />
-                <ScalarProperty Name="LeadTime" ColumnName="LeadTime" />
-                <ScalarProperty Name="CountryOfOrigin" ColumnName="CountryOfOrigin" />
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="WasteAccumStartDate" ColumnName="WasteAccumStartDate" />
-                <ScalarProperty Name="WasteCode" ColumnName="WasteCode" />
-                <ScalarProperty Name="PhysicalToxic" ColumnName="PhysicalToxic" />
-                <ScalarProperty Name="phValue" ColumnName="phValue" />
-                <ScalarProperty Name="SpecificGravity" ColumnName="SpecificGravity" />
-                <ScalarProperty Name="PeroxideFormer" ColumnName="PeroxideFormer" />
-                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
-                <ScalarProperty Name="OtherLabelNotes" ColumnName="OtherLabelNotes" />
-                <ScalarProperty Name="ShippingNotes" ColumnName="ShippingNotes" />
-                <ScalarProperty Name="Handling" ColumnName="Handling" />
-                <ScalarProperty Name="EECSymbol3" ColumnName="EECSymbol3" />
-                <ScalarProperty Name="EECSymbol2" ColumnName="EECSymbol2" />
-                <ScalarProperty Name="EECSymbol1" ColumnName="EECSymbol1" />
-                <ScalarProperty Name="Dutch" ColumnName="Dutch" />
-                <ScalarProperty Name="German" ColumnName="German" />
-                <ScalarProperty Name="English" ColumnName="English" />
-                <ScalarProperty Name="PHAll" ColumnName="PHAll" />
-                <ScalarProperty Name="SPhrasesAll" ColumnName="SPhrasesAll" />
-                <ScalarProperty Name="RPhrasesAll" ColumnName="RPhrasesAll" />
-                <ScalarProperty Name="EECAll" ColumnName="EECAll" />
-                <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
-                <ScalarProperty Name="TorqueRequirements" ColumnName="TorqueRequirements" />
-                <ScalarProperty Name="Torque" ColumnName="Torque" />
-                <ScalarProperty Name="FullFaceRespirator" ColumnName="FullFaceRespirator" />
-                <ScalarProperty Name="HalfMaskRespirator" ColumnName="HalfMaskRespirator" />
-                <ScalarProperty Name="SARA313" ColumnName="SARA313" />
-                <ScalarProperty Name="SARA302EHS" ColumnName="SARA302EHS" />
-                <ScalarProperty Name="SpecialBlend" ColumnName="SpecialBlend" />
-                <ScalarProperty Name="DENSITY" ColumnName="DENSITY" />
-                <ScalarProperty Name="RETURNLOCATION" ColumnName="RETURNLOCATION" />
-                <ScalarProperty Name="CMCREQ" ColumnName="CMCREQ" />
-                <ScalarProperty Name="CLIENTREQ" ColumnName="CLIENTREQ" />
-                <ScalarProperty Name="FREEZERSTORAGE" ColumnName="FREEZERSTORAGE" />
-                <ScalarProperty Name="MSDSOTHERNUMBER" ColumnName="MSDSOTHERNUMBER" />
-                <ScalarProperty Name="RefrigeratedList" ColumnName="RefrigeratedList" />
-                <ScalarProperty Name="FreezableList" ColumnName="FreezableList" />
-                <ScalarProperty Name="FireList" ColumnName="FireList" />
-                <ScalarProperty Name="FlammableStorageRoom" ColumnName="FlammableStorageRoom" />
-                <ScalarProperty Name="SARA" ColumnName="SARA" />
-                <ScalarProperty Name="RighttoKnow" ColumnName="RighttoKnow" />
-                <ScalarProperty Name="irritant" ColumnName="irritant" />
-                <ScalarProperty Name="HazardClassGround_SG" ColumnName="HazardClassGround_SG" />
-                <ScalarProperty Name="Booties" ColumnName="Booties" />
-                <ScalarProperty Name="ShlfLife" ColumnName="ShlfLife" />
-                <ScalarProperty Name="OtherEquipmentDescription" ColumnName="OtherEquipmentDescription" />
-                <ScalarProperty Name="Reactivity" ColumnName="Reactivity" />
-                <ScalarProperty Name="Flammability" ColumnName="Flammability" />
-                <ScalarProperty Name="Health" ColumnName="Health" />
-                <ScalarProperty Name="EyeHazards" ColumnName="EyeHazards" />
-                <ScalarProperty Name="CutaneousHazards" ColumnName="CutaneousHazards" />
-                <ScalarProperty Name="ReporductiveToxin" ColumnName="ReporductiveToxin" />
-                <ScalarProperty Name="PulmonaryDisfunction" ColumnName="PulmonaryDisfunction" />
-                <ScalarProperty Name="Hepatopoetics" ColumnName="Hepatopoetics" />
-                <ScalarProperty Name="Neurotoxins" ColumnName="Neurotoxins" />
-                <ScalarProperty Name="Nephrotoxins" ColumnName="Nephrotoxins" />
-                <ScalarProperty Name="Hepatotoxins" ColumnName="Hepatotoxins" />
-                <ScalarProperty Name="Reactive" ColumnName="Reactive" />
-                <ScalarProperty Name="Oxidizer" ColumnName="Oxidizer" />
-                <ScalarProperty Name="Flammable" ColumnName="Flammable" />
-                <ScalarProperty Name="Corrosive" ColumnName="Corrosive" />
-                <ScalarProperty Name="Combustible" ColumnName="Combustible" />
-                <ScalarProperty Name="EyeContact" ColumnName="EyeContact" />
-                <ScalarProperty Name="SkinContact" ColumnName="SkinContact" />
-                <ScalarProperty Name="Skin" ColumnName="Skin" />
-                <ScalarProperty Name="Inhalation" ColumnName="Inhalation" />
-                <ScalarProperty Name="Ingestion" ColumnName="Ingestion" />
-                <ScalarProperty Name="Carcinogen" ColumnName="Carcinogen" />
-                <ScalarProperty Name="Sensitizer" ColumnName="Sensitizer" />
-                <ScalarProperty Name="CorrosiveHaz" ColumnName="CorrosiveHaz" />
-                <ScalarProperty Name="ReproductiveToxin" ColumnName="ReproductiveToxin" />
-                <ScalarProperty Name="HighlyToxic" ColumnName="HighlyToxic" />
-                <ScalarProperty Name="Toxic" ColumnName="Toxic" />
-                <ScalarProperty Name="OtherEquipment" ColumnName="OtherEquipment" />
-                <ScalarProperty Name="CleanRoomEquipment" ColumnName="CleanRoomEquipment" />
-                <ScalarProperty Name="FullSuit" ColumnName="FullSuit" />
-                <ScalarProperty Name="FaceShield" ColumnName="FaceShield" />
-                <ScalarProperty Name="Respirator" ColumnName="Respirator" />
-                <ScalarProperty Name="ArmSleeves" ColumnName="ArmSleeves" />
-                <ScalarProperty Name="Apron" ColumnName="Apron" />
-                <ScalarProperty Name="GloveType" ColumnName="GloveType" />
-                <ScalarProperty Name="Gloves" ColumnName="Gloves" />
-                <ScalarProperty Name="SafetyGlasses" ColumnName="SafetyGlasses" />
-                <ScalarProperty Name="WalkInHood" ColumnName="WalkInHood" />
-                <ScalarProperty Name="LabHood" ColumnName="LabHood" />
-                <ScalarProperty Name="Hood" ColumnName="Hood" />
-                <ScalarProperty Name="RejectionCriterion" ColumnName="RejectionCriterion" />
-                <ScalarProperty Name="NormalAppearence" ColumnName="NormalAppearence" />
-                <ScalarProperty Name="OtherHandlingInstr" ColumnName="OtherHandlingInstr" />
-                <ScalarProperty Name="HeatingInstructions" ColumnName="HeatingInstructions" />
-                <ScalarProperty Name="FlashPoint" ColumnName="FlashPoint" />
-                <ScalarProperty Name="HeatPriorToFilling" ColumnName="HeatPriorToFilling" />
-                <ScalarProperty Name="FlammableGround" ColumnName="FlammableGround" />
-                <ScalarProperty Name="HandlingOther" ColumnName="HandlingOther" />
-                <ScalarProperty Name="DoNotPackAbove60" ColumnName="DoNotPackAbove60" />
-                <ScalarProperty Name="Refrigerate" ColumnName="Refrigerate" />
-                <ScalarProperty Name="MixingInstructions" ColumnName="MixingInstructions" />
-                <ScalarProperty Name="MixWell" ColumnName="MixWell" />
-                <ScalarProperty Name="MoistureSensitive" ColumnName="MoistureSensitive" />
-                <ScalarProperty Name="NitrogenBlanket" ColumnName="NitrogenBlanket" />
-                <ScalarProperty Name="CleanRoomGMP" ColumnName="CleanRoomGMP" />
-                <ScalarProperty Name="CeaseShipDifferential" ColumnName="CeaseShipDifferential" />
-                <ScalarProperty Name="ReOrderAdjustmentDays" ColumnName="ReOrderAdjustmentDays" />
-                <ScalarProperty Name="MasterNotesAlert" ColumnName="MasterNotesAlert" />
-                <ScalarProperty Name="MasterNotes" ColumnName="MasterNotes" />
-                <ScalarProperty Name="RestrictedToAmount" ColumnName="RestrictedToAmount" />
-                <ScalarProperty Name="PackOutOnReceipt" ColumnName="PackOutOnReceipt" />
-                <ScalarProperty Name="NoReorder" ColumnName="NoReorder" />
-                <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
-                <ScalarProperty Name="SUPPLYID" ColumnName="SUPPLYID" />
-                <ScalarProperty Name="MasterName" ColumnName="MasterName" />
-                <ScalarProperty Name="MasterCode" ColumnName="MasterCode" />
-                <ScalarProperty Name="SDLegacyID" ColumnName="SDLegacyID" />
-                <ScalarProperty Name="SGLegacyID" ColumnName="SGLegacyID" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblProductXRef">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblProductXRef">
               <MappingFragment StoreEntitySet="tblProductXRef">
@@ -5857,6 +5723,143 @@
                 <ScalarProperty Name="ShelfID" ColumnName="ShelfID" />
                 <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
                 <ScalarProperty Name="StockID" ColumnName="StockID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProductMaster">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblProductMaster">
+              <MappingFragment StoreEntitySet="tblProductMaster">
+                <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
+                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="ProductSetupDate" ColumnName="ProductSetupDate" />
+                <ScalarProperty Name="AlertNotesPackout" ColumnName="AlertNotesPackout" />
+                <ScalarProperty Name="AlertNotesReceiving" ColumnName="AlertNotesReceiving" />
+                <ScalarProperty Name="PrePacked" ColumnName="PrePacked" />
+                <ScalarProperty Name="TemperatureControlledStorage" ColumnName="TemperatureControlledStorage" />
+                <ScalarProperty Name="DustFilter" ColumnName="DustFilter" />
+                <ScalarProperty Name="LeadTime" ColumnName="LeadTime" />
+                <ScalarProperty Name="CountryOfOrigin" ColumnName="CountryOfOrigin" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="RCRAReviewDate" ColumnName="RCRAReviewDate" />
+                <ScalarProperty Name="WasteAccumStartDate" ColumnName="WasteAccumStartDate" />
+                <ScalarProperty Name="WasteCode" ColumnName="WasteCode" />
+                <ScalarProperty Name="PhysicalToxic" ColumnName="PhysicalToxic" />
+                <ScalarProperty Name="phValue" ColumnName="phValue" />
+                <ScalarProperty Name="SpecificGravity" ColumnName="SpecificGravity" />
+                <ScalarProperty Name="PeroxideFormer" ColumnName="PeroxideFormer" />
+                <ScalarProperty Name="ProductDescription" ColumnName="ProductDescription" />
+                <ScalarProperty Name="OtherLabelNotes" ColumnName="OtherLabelNotes" />
+                <ScalarProperty Name="ShippingNotes" ColumnName="ShippingNotes" />
+                <ScalarProperty Name="Handling" ColumnName="Handling" />
+                <ScalarProperty Name="EECSymbol3" ColumnName="EECSymbol3" />
+                <ScalarProperty Name="EECSymbol2" ColumnName="EECSymbol2" />
+                <ScalarProperty Name="EECSymbol1" ColumnName="EECSymbol1" />
+                <ScalarProperty Name="Dutch" ColumnName="Dutch" />
+                <ScalarProperty Name="German" ColumnName="German" />
+                <ScalarProperty Name="English" ColumnName="English" />
+                <ScalarProperty Name="PHAll" ColumnName="PHAll" />
+                <ScalarProperty Name="SPhrasesAll" ColumnName="SPhrasesAll" />
+                <ScalarProperty Name="RPhrasesAll" ColumnName="RPhrasesAll" />
+                <ScalarProperty Name="EECAll" ColumnName="EECAll" />
+                <ScalarProperty Name="OtherStorage" ColumnName="OtherStorage" />
+                <ScalarProperty Name="TorqueRequirements" ColumnName="TorqueRequirements" />
+                <ScalarProperty Name="Torque" ColumnName="Torque" />
+                <ScalarProperty Name="FullFaceRespirator" ColumnName="FullFaceRespirator" />
+                <ScalarProperty Name="HalfMaskRespirator" ColumnName="HalfMaskRespirator" />
+                <ScalarProperty Name="SARA313" ColumnName="SARA313" />
+                <ScalarProperty Name="SARA302EHS" ColumnName="SARA302EHS" />
+                <ScalarProperty Name="SpecialBlend" ColumnName="SpecialBlend" />
+                <ScalarProperty Name="DENSITY" ColumnName="DENSITY" />
+                <ScalarProperty Name="RETURNLOCATION" ColumnName="RETURNLOCATION" />
+                <ScalarProperty Name="CMCREQ" ColumnName="CMCREQ" />
+                <ScalarProperty Name="CLIENTREQ" ColumnName="CLIENTREQ" />
+                <ScalarProperty Name="FREEZERSTORAGE" ColumnName="FREEZERSTORAGE" />
+                <ScalarProperty Name="MSDSOTHERNUMBER" ColumnName="MSDSOTHERNUMBER" />
+                <ScalarProperty Name="RefrigeratedList" ColumnName="RefrigeratedList" />
+                <ScalarProperty Name="FreezableList" ColumnName="FreezableList" />
+                <ScalarProperty Name="FireList" ColumnName="FireList" />
+                <ScalarProperty Name="FlammableStorageRoom" ColumnName="FlammableStorageRoom" />
+                <ScalarProperty Name="SARA" ColumnName="SARA" />
+                <ScalarProperty Name="RighttoKnow" ColumnName="RighttoKnow" />
+                <ScalarProperty Name="irritant" ColumnName="irritant" />
+                <ScalarProperty Name="HazardClassGround_SG" ColumnName="HazardClassGround_SG" />
+                <ScalarProperty Name="Booties" ColumnName="Booties" />
+                <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
+                <ScalarProperty Name="OtherEquipmentDescription" ColumnName="OtherEquipmentDescription" />
+                <ScalarProperty Name="Reactivity" ColumnName="Reactivity" />
+                <ScalarProperty Name="Flammability" ColumnName="Flammability" />
+                <ScalarProperty Name="Health" ColumnName="Health" />
+                <ScalarProperty Name="EyeHazards" ColumnName="EyeHazards" />
+                <ScalarProperty Name="CutaneousHazards" ColumnName="CutaneousHazards" />
+                <ScalarProperty Name="ReporductiveToxin" ColumnName="ReporductiveToxin" />
+                <ScalarProperty Name="PulmonaryDisfunction" ColumnName="PulmonaryDisfunction" />
+                <ScalarProperty Name="Hepatopoetics" ColumnName="Hepatopoetics" />
+                <ScalarProperty Name="Neurotoxins" ColumnName="Neurotoxins" />
+                <ScalarProperty Name="Nephrotoxins" ColumnName="Nephrotoxins" />
+                <ScalarProperty Name="Hepatotoxins" ColumnName="Hepatotoxins" />
+                <ScalarProperty Name="Reactive" ColumnName="Reactive" />
+                <ScalarProperty Name="Oxidizer" ColumnName="Oxidizer" />
+                <ScalarProperty Name="Flammable" ColumnName="Flammable" />
+                <ScalarProperty Name="Corrosive" ColumnName="Corrosive" />
+                <ScalarProperty Name="Combustible" ColumnName="Combustible" />
+                <ScalarProperty Name="EyeContact" ColumnName="EyeContact" />
+                <ScalarProperty Name="SkinContact" ColumnName="SkinContact" />
+                <ScalarProperty Name="Skin" ColumnName="Skin" />
+                <ScalarProperty Name="Inhalation" ColumnName="Inhalation" />
+                <ScalarProperty Name="Ingestion" ColumnName="Ingestion" />
+                <ScalarProperty Name="Carcinogen" ColumnName="Carcinogen" />
+                <ScalarProperty Name="Sensitizer" ColumnName="Sensitizer" />
+                <ScalarProperty Name="CorrosiveHaz" ColumnName="CorrosiveHaz" />
+                <ScalarProperty Name="ReproductiveToxin" ColumnName="ReproductiveToxin" />
+                <ScalarProperty Name="HighlyToxic" ColumnName="HighlyToxic" />
+                <ScalarProperty Name="Toxic" ColumnName="Toxic" />
+                <ScalarProperty Name="OtherEquipment" ColumnName="OtherEquipment" />
+                <ScalarProperty Name="CleanRoomEquipment" ColumnName="CleanRoomEquipment" />
+                <ScalarProperty Name="FullSuit" ColumnName="FullSuit" />
+                <ScalarProperty Name="FaceShield" ColumnName="FaceShield" />
+                <ScalarProperty Name="Respirator" ColumnName="Respirator" />
+                <ScalarProperty Name="ArmSleeves" ColumnName="ArmSleeves" />
+                <ScalarProperty Name="Apron" ColumnName="Apron" />
+                <ScalarProperty Name="GloveType" ColumnName="GloveType" />
+                <ScalarProperty Name="Gloves" ColumnName="Gloves" />
+                <ScalarProperty Name="SafetyGlasses" ColumnName="SafetyGlasses" />
+                <ScalarProperty Name="WalkInHood" ColumnName="WalkInHood" />
+                <ScalarProperty Name="LabHood" ColumnName="LabHood" />
+                <ScalarProperty Name="Hood" ColumnName="Hood" />
+                <ScalarProperty Name="RejectionCriterion" ColumnName="RejectionCriterion" />
+                <ScalarProperty Name="NormalAppearence" ColumnName="NormalAppearence" />
+                <ScalarProperty Name="OtherHandlingInstr" ColumnName="OtherHandlingInstr" />
+                <ScalarProperty Name="HeatingInstructions" ColumnName="HeatingInstructions" />
+                <ScalarProperty Name="FlashPoint" ColumnName="FlashPoint" />
+                <ScalarProperty Name="HeatPriorToFilling" ColumnName="HeatPriorToFilling" />
+                <ScalarProperty Name="FlammableGround" ColumnName="FlammableGround" />
+                <ScalarProperty Name="HandlingOther" ColumnName="HandlingOther" />
+                <ScalarProperty Name="DoNotPackAbove60" ColumnName="DoNotPackAbove60" />
+                <ScalarProperty Name="Refrigerate" ColumnName="Refrigerate" />
+                <ScalarProperty Name="MixingInstructions" ColumnName="MixingInstructions" />
+                <ScalarProperty Name="MixWell" ColumnName="MixWell" />
+                <ScalarProperty Name="MoistureSensitive" ColumnName="MoistureSensitive" />
+                <ScalarProperty Name="NitrogenBlanket" ColumnName="NitrogenBlanket" />
+                <ScalarProperty Name="CleanRoomGMP" ColumnName="CleanRoomGMP" />
+                <ScalarProperty Name="CeaseShipDifferential" ColumnName="CeaseShipDifferential" />
+                <ScalarProperty Name="ReOrderAdjustmentDays" ColumnName="ReOrderAdjustmentDays" />
+                <ScalarProperty Name="MasterNotesAlert" ColumnName="MasterNotesAlert" />
+                <ScalarProperty Name="MasterNotes" ColumnName="MasterNotes" />
+                <ScalarProperty Name="RestrictedToAmount" ColumnName="RestrictedToAmount" />
+                <ScalarProperty Name="PackOutOnReceipt" ColumnName="PackOutOnReceipt" />
+                <ScalarProperty Name="NoReorder" ColumnName="NoReorder" />
+                <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
+                <ScalarProperty Name="SUPPLYID" ColumnName="SUPPLYID" />
+                <ScalarProperty Name="MasterName" ColumnName="MasterName" />
+                <ScalarProperty Name="MasterCode" ColumnName="MasterCode" />
+                <ScalarProperty Name="SDLegacyID" ColumnName="SDLegacyID" />
+                <ScalarProperty Name="SGLegacyID" ColumnName="SGLegacyID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ProductMasterID" ColumnName="ProductMasterID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

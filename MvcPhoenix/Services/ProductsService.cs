@@ -285,7 +285,7 @@ namespace MvcPhoenix.Models
                 PP.flammability = q.Flammability;
                 PP.reactivity = q.Reactivity;
                 PP.otherequipmentdescription = q.OtherEquipmentDescription;
-                PP.shelflife = q.ShlfLife;
+                PP.shelflife = q.ShelfLife;
                 PP.booties = q.Booties;
                 PP.hazardclassground_sg = q.HazardClassGround_SG;
                 PP.irritant = q.irritant;
@@ -334,6 +334,7 @@ namespace MvcPhoenix.Models
                 PP.prepacked = q.PrePacked;
                 PP.alertnotesreceiving = q.AlertNotesReceiving;
                 PP.alertnotespackout = q.AlertNotesPackout;
+                PP.rcrareviewdate = q.RCRAReviewDate;
                 PP.wasteaccumstartdate = q.WasteAccumStartDate;
                 PP.productsetupdate = q.ProductSetupDate;
                 PP.CreateDateMaster = q.CreateDate;
@@ -581,7 +582,7 @@ namespace MvcPhoenix.Models
                 q.Flammability = pm.flammability;
                 q.Reactivity = pm.reactivity;
                 q.OtherEquipmentDescription = pm.otherequipmentdescription;
-                q.ShlfLife = pm.shelflife;
+                q.ShelfLife = pm.shelflife;
                 q.Booties = pm.booties;
                 q.HazardClassGround_SG = pm.hazardclassground_sg;
                 q.irritant = pm.irritant;
@@ -630,6 +631,7 @@ namespace MvcPhoenix.Models
                 q.PrePacked = pm.prepacked;
                 q.AlertNotesReceiving = pm.alertnotesreceiving;
                 q.AlertNotesPackout = pm.alertnotespackout;
+                q.RCRAReviewDate = pm.rcrareviewdate;
                 q.WasteAccumStartDate = pm.wasteaccumstartdate;
                 q.ProductSetupDate = pm.productsetupdate;
 

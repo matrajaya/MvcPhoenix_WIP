@@ -85,7 +85,7 @@ namespace MvcPhoenix.EF
         public string Flammability { get; set; }
         public string Reactivity { get; set; }
         public string OtherEquipmentDescription { get; set; }
-        public Nullable<int> ShlfLife { get; set; }
+        public Nullable<int> ShelfLife { get; set; }
         public Nullable<bool> Booties { get; set; }
         public string HazardClassGround_SG { get; set; }
         public Nullable<bool> irritant { get; set; }
@@ -129,6 +129,7 @@ namespace MvcPhoenix.EF
         public Nullable<bool> PhysicalToxic { get; set; }
         public string WasteCode { get; set; }
         public Nullable<System.DateTime> WasteAccumStartDate { get; set; }
+        public Nullable<System.DateTime> RCRAReviewDate { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

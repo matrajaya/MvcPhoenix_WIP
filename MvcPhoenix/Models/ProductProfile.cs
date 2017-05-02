@@ -285,6 +285,7 @@ namespace MvcPhoenix.Models
         public string wastecode { get; set; }
         public bool? temperaturecontrolledstorage { get; set; }
         public bool? prepacked { get; set; }
+        public DateTime? rcrareviewdate { get; set; }
         public DateTime? wasteaccumstartdate { get; set; }
         public DateTime? productsetupdate { get; set; }
         public DateTime? CreateDateMaster { get; set; }

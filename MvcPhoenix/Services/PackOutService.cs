@@ -65,7 +65,7 @@ namespace MvcPhoenix.Services
                 newMaster.Lot_Number = bulk.LotNumber;
                 newMaster.Bulk_Location = bulk.Bin;
                 newMaster.Contents_Weight = bulk.CurrentWeight;
-                newMaster.Shelf__Life = pmaster.ShlfLife;
+                newMaster.Shelf__Life = pmaster.ShelfLife;
                 newMaster.ExpDt = bulk.ExpirationDate;
                 newMaster.CeaseShipDate = bulk.CeaseShipDate;
                 newMaster.RecDate = bulk.ReceiveDate;

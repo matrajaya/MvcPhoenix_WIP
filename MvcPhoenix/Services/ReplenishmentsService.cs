@@ -419,7 +419,7 @@ namespace MvcPhoenix.Services
                               pm.ClientID,
                               pm.ProductMasterID,
                               pm.SUPPLYID,
-                              pm.ShlfLife,
+                              pm.ShelfLife,
                               pm.ProductSetupDate,
                               pd.DivisionID,
                           }).ToList();
@@ -440,7 +440,7 @@ namespace MvcPhoenix.Services
                     newrec.UserName = username;
                     newrec.ProductMasterID = row.ProductMasterID;
                     newrec.SupplyID = row.SUPPLYID;
-                    newrec.ShelfLife = row.ShlfLife;
+                    newrec.ShelfLife = row.ShelfLife;
                     newrec.ProductSetupDate = row.ProductSetupDate;
                     newrec.DivisionID = row.DivisionID;
                     newrec.BulkCurrentAvailable = 0;

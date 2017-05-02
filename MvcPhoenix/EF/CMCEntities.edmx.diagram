@@ -47,7 +47,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductionDetail" Width="1.5" PointX="0.75" PointY="23.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductionMaster" Width="1.5" PointX="2.75" PointY="23.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductionStage" Width="1.5" PointX="24.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblProductMaster" Width="1.5" PointX="24.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductXRef" Width="1.5" PointX="10.75" PointY="24.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblRates" Width="1.5" PointX="20.75" PointY="25.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblReasonCode" Width="1.5" PointX="26.75" PointY="0.75" />
@@ -66,6 +65,7 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblBulk" Width="1.5" PointX="29.375" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderTrans" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblStock" Width="1.5" PointX="25.375" PointY="27.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblProductMaster" Width="1.5" PointX="27.375" PointY="30.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
