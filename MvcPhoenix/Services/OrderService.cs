@@ -550,6 +550,7 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
+                // get new order item id if submission is a new entry
                 if (vm.ItemID == -1)
                 {
                     vm.ItemID = fnNewItemID();
@@ -557,65 +558,68 @@ namespace MvcPhoenix.Services
                     vm.CreateUser = HttpContext.Current.User.Identity.Name;
                 }
 
-                var q = (from t in db.tblOrderItem
-                         where t.ItemID == vm.ItemID
-                         select t).FirstOrDefault();
+                var orderitem = (from t in db.tblOrderItem
+                                 where t.ItemID == vm.ItemID
+                                 select t).FirstOrDefault();
 
-                var dbPD = (from t in db.tblProductDetail
-                            where t.ProductDetailID == vm.ProductDetailID
-                            select t).FirstOrDefault();
+                var productdetail = (from t in db.tblProductDetail
+                                     where t.ProductDetailID == vm.ProductDetailID
+                                     select t).FirstOrDefault();
 
-                var dbPM = db.tblProductMaster.Find(dbPD.ProductMasterID);
+                var productmaster = db.tblProductMaster.Find(productdetail.ProductMasterID);
 
+                // handle special request sizes
                 if (vm.ShelfID == 0 || vm.SRSize != null)
                 {
-                    q.SRSize = vm.SRSize;
-                    q.Size = "1SR";
+                    orderitem.SRSize = vm.SRSize;
+                    orderitem.Size = "1SR";
                     vm.ShelfID = GetShelfIdfor1SR(vm.ProductDetailID, "1SR");
                 }
                 else
                 {
-                    var dbSM = (from t in db.tblShelfMaster
-                                where t.ShelfID == vm.ShelfID
-                                select t).FirstOrDefault();
-
-                    if (dbSM != null)
+                    var shelfmaster = (from t in db.tblShelfMaster
+                                       where t.ShelfID == vm.ShelfID
+                                       select t).FirstOrDefault();
+                    
+                    // if shelf record is found 
+                    if (shelfmaster != null)
                     {
-                        q.Size = dbSM.Size;
-                        q.Weight = dbSM.UnitWeight * vm.Qty;
+                        orderitem.Size = shelfmaster.Size;
+                        shelfmaster.UnitWeight = shelfmaster.UnitWeight ?? orderitem.Weight;    // if unit weight is null, set current item weight; -> bulk order item edits
+                        orderitem.Weight = shelfmaster.UnitWeight * vm.Qty;
                     }
                 }
 
-                q.OrderID = vm.OrderID;
-                q.CreateDate = vm.CreateDate;
-                q.CreateUser = vm.CreateUser;
-                q.UpdateDate = DateTime.UtcNow;
-                q.UpdateUser = HttpContext.Current.User.Identity.Name;
-                q.ProductDetailID = vm.ProductDetailID;
-                q.ProductCode = dbPD.ProductCode;
-                q.ProductName = dbPD.ProductName;
-                q.ShelfID = vm.ShelfID;
-                q.Qty = vm.Qty;
-                q.LotNumber = vm.LotNumber;
-                q.Via = vm.ItemShipVia;
-                q.ShipDate = vm.ShipDate;
-                q.CSAllocate = vm.CSAllocate;
-                q.AllocateStatus = vm.AllocateStatus;
-                q.NonCMCDelay = vm.NonCMCDelay;
-                q.BackOrdered = vm.BackOrdered;
-                q.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
-                q.Status = vm.Status;
-                q.DelayReason = vm.DelayReason;
-                q.SPSCharge = vm.SPSCharge;
-                q.ItemNotes = vm.ItemNotes;
-                q.WasteOrderTotalWeight = vm.WasteOrderTotalWeight;
-                q.AlertNotesShipping = dbPD.AlertNotesShipping;
-                q.AlertNotesOrderEntry = dbPD.AlertNotesOrderEntry;
-                q.AlertNotesPackout = dbPM.AlertNotesPackout;
+                orderitem.OrderID = vm.OrderID;
+                orderitem.CreateDate = vm.CreateDate;
+                orderitem.CreateUser = vm.CreateUser;
+                orderitem.UpdateDate = DateTime.UtcNow;
+                orderitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                orderitem.ProductDetailID = vm.ProductDetailID;
+                orderitem.ProductCode = productdetail.ProductCode;
+                orderitem.ProductName = productdetail.ProductName;
+                orderitem.ShelfID = vm.ShelfID;
+                orderitem.Qty = vm.Qty;
+                orderitem.LotNumber = vm.LotNumber;
+                orderitem.Via = vm.ItemShipVia;
+                orderitem.ShipDate = vm.ShipDate;
+                orderitem.CSAllocate = vm.CSAllocate;
+                orderitem.AllocateStatus = vm.AllocateStatus;
+                orderitem.NonCMCDelay = vm.NonCMCDelay;
+                orderitem.BackOrdered = vm.BackOrdered;
+                orderitem.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
+                orderitem.Status = vm.Status;
+                orderitem.DelayReason = vm.DelayReason;
+                orderitem.SPSCharge = vm.SPSCharge;
+                orderitem.ItemNotes = vm.ItemNotes;
+                orderitem.WasteOrderTotalWeight = vm.WasteOrderTotalWeight;
+                orderitem.AlertNotesShipping = productdetail.AlertNotesShipping;
+                orderitem.AlertNotesOrderEntry = productdetail.AlertNotesOrderEntry;
+                orderitem.AlertNotesPackout = productmaster.AlertNotesPackout;
 
-                if (dbPD.AIRUNNUMBER == "UN3082" | dbPD.AIRUNNUMBER == "UN3077" | dbPD.GRNUNNUMBER == "UN3082" | dbPD.GRNUNNUMBER == "UN3077")
+                if (productdetail.AIRUNNUMBER == "UN3082" | productdetail.AIRUNNUMBER == "UN3077" | productdetail.GRNUNNUMBER == "UN3082" | productdetail.GRNUNNUMBER == "UN3077")
                 {
-                    q.AlertNotesOther = "Products with UN3082 and UN3077 may be shipped as non hazardous if under 5 kg";
+                    orderitem.AlertNotesOther = "Products with UN3082 and UN3077 may be shipped as non hazardous if under 5 kg";
                 }
 
                 db.SaveChanges();
@@ -1230,7 +1234,7 @@ namespace MvcPhoenix.Services
                         stock = stock.Where(s => s.LotNumber == item.LotNumber).ToList();
                     }
 
-                    // check for qcstock if requested, 
+                    // check for qcstock if requested,
                     // available and qc stock are exclusive to themselves as discussed with Chris - Iffy
                     if (IncludeQCStock == true)
                     {
