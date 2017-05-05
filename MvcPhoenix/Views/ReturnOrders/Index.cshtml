@@ -85,8 +85,9 @@
     // animation when form is submitted
     $("#orderform").submit(function (e) {
         var myclientid = $('#clientid').val();
-        $("#hiddenclientid").val(myclientid);
         var mydivisionid = $('#divisionid').val();
+
+        $("#hiddenclientid").val(myclientid);
         $("#hiddendivisionid").val(mydivisionid);
         $("#dvspinner").show();
     });
@@ -94,6 +95,7 @@
     function UpdateDivisionDD() {
         var myclientid = $('#clientid').val();
         var myurl = '@Url.Action("BuildDivisionDropDown", "ReturnOrders")';
+
         $("#divisionid").load(myurl, { clientid: myclientid });
 
         // empty the divs holding the partials
@@ -109,11 +111,34 @@
         var mybulkstatusid = $('#bulkstatusid').val();
         var mystockstatusid = $('#stockstatusid').val();
         var mydivisionid = $('#divisionid').val();
-        var myurl1 = '@Url.Action("LoadBulkPartial", "ReturnOrders")';
-        $("#dvBulkPlaceHolder").load(myurl1, { clientid: myclientid, bulkstatusid: mybulkstatusid, divisionid: mydivisionid });
-        var myurl3 = '@Url.Action("LoadMarkedBulkPartial", "ReturnOrders")';
-        $("#dvMarkedBulkPlaceHolder").load(myurl3);
-        ShowHideCreateButton()
+        var unmarkedbulkurl = '@Url.Action("LoadBulkPartial", "ReturnOrders")';
+        var markedbulkurl = '@Url.Action("LoadMarkedBulkPartial", "ReturnOrders")';
+
+        // get unmarked bulk items
+        $("#dvBulkPlaceHolder").load(unmarkedbulkurl,
+        {
+            clientid: myclientid,
+            bulkstatusid: mybulkstatusid,
+            divisionid: mydivisionid
+        });
+
+        @*
+        $.ajax({
+            url: unmarkedbulkurl,
+            type: "GET",
+            dataType: 'text',
+            cache: false,
+            data: {
+                clientid: myclientid,
+                divisionid: mydivisionid,
+                bulkstatusid: mybulkstatusid
+            }
+        });*@
+
+        // get marked bulk items
+        $("#dvMarkedBulkPlaceHolder").load(markedbulkurl);
+
+        ShowHideCreateButton();
     }
 
     function UpdateStockPartials() {
@@ -121,11 +146,19 @@
         var mybulkstatusid = $('#bulkstatusid').val();
         var mystockstatusid = $('#stockstatusid').val();
         var mydivisionid = $('#divisionid').val();
-        var myurl2 = '@Url.Action("LoadStockPartial", "ReturnOrders")';
-        $("#dvStockPlaceHolder").load(myurl2, { clientid: myclientid, stockstatusid: mystockstatusid, divisionid: mydivisionid });
-        var myurl4 = '@Url.Action("LoadMarkedStockPartial", "ReturnOrders")';
-        $("#dvMarkedStockPlaceHolder").load(myurl4);
-        ShowHideCreateButton()
+        var unmarkedstockurl = '@Url.Action("LoadStockPartial", "ReturnOrders")';
+        var markedstockurl = '@Url.Action("LoadMarkedStockPartial", "ReturnOrders")';
+
+        $("#dvStockPlaceHolder").load(unmarkedstockurl,
+        {
+            clientid: myclientid,
+            stockstatusid: mystockstatusid,
+            divisionid: mydivisionid
+        });
+
+        $("#dvMarkedStockPlaceHolder").load(markedstockurl);
+
+        ShowHideCreateButton();
     }
 
     function ShowHideCreateButton() {
@@ -141,7 +174,7 @@
     }
 
     function UpdateAllPartials() {
-        UpdateBulkPartials()
-        UpdateStockPartials()
+        UpdateBulkPartials();
+        UpdateStockPartials();
     }
 </script>

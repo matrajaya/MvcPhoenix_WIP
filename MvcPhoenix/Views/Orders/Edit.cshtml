@@ -462,31 +462,37 @@
 
     function SampleOrderAlert(productdetailid) {
         var alerturl = '@Url.Action("CheckProductForAlert", "Orders")';
-        $.getJSON(alerturl, { id: productdetailid },
-                    function (jsonobj) {
-                        $.alert(jsonobj, "Product ID: " + productdetailid);
-                    });
+
+        $.getJSON(alerturl,
+            { id: productdetailid },
+            function (jsonobj) {
+                $.alert(jsonobj, "Product ID: " + productdetailid);
+            });
     }
 
     function PullRequestor(requestorid) {
-        var myurl = '@Url.Action("PullContactDetails", "Orders")';
-        $.getJSON(myurl, { id: requestorid },
-                    function (jsonobj) {
-                        $("#req").val(jsonobj.FullName);
-                        $("#reqemail").val(jsonobj.Email);
-                        $("#reqphone").val(jsonobj.Phone);
-                        $("#reqfax").val(jsonobj.Fax);
-                    });
+        var contactdetailurl = '@Url.Action("PullContactDetails", "Orders")';
+
+        $.getJSON(contactdetailurl,
+            { id: requestorid },
+            function (jsonobj) {
+                $("#req").val(jsonobj.FullName);
+                $("#reqemail").val(jsonobj.Email);
+                $("#reqphone").val(jsonobj.Phone);
+                $("#reqfax").val(jsonobj.Fax);
+            });
     }
 
     function PullSalesRep(salesrepid) {
-        var myurl = '@Url.Action("PullContactDetails", "Orders")';
-        $.getJSON(myurl, { id: salesrepid },
-                    function (jsonobj) {
-                        $("#salesrep").val(jsonobj.FullName);
-                        $("#sales_email").val(jsonobj.Email);
-                        $("#salesrepphone").val(jsonobj.Phone);
-                        $("#salesrepterritory").val(jsonobj.Account);
-                    });
+        var contactdetailurl = '@Url.Action("PullContactDetails", "Orders")';
+
+        $.getJSON(contactdetailurl,
+            { id: salesrepid },
+            function (jsonobj) {
+                $("#salesrep").val(jsonobj.FullName);
+                $("#sales_email").val(jsonobj.Email);
+                $("#salesrepphone").val(jsonobj.Phone);
+                $("#salesrepterritory").val(jsonobj.Account);
+            });
     }
 </script>
