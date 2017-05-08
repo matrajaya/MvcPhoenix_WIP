@@ -41,10 +41,10 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
-                        @Html.DropDownList("bulkstatusid", new SelectList(Enum.GetValues(typeof(ApplicationService.StockStatusChoice))), new { @class = "form-control" })
+                        @Html.DropDownList("bulkstatus", new SelectList(Enum.GetValues(typeof(ApplicationService.StockStatusChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-4">
-                        @Html.DropDownList("stockstatusid", new SelectList(Enum.GetValues(typeof(ApplicationService.StockStatusChoice))), new { @class = "form-control" })
+                        @Html.DropDownList("stockstatus", new SelectList(Enum.GetValues(typeof(ApplicationService.StockStatusChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-4">
                         @Ajax.ActionLink("Search", "Search", "ReturnOrders", new AjaxOptions { OnSuccess = "UpdateAllPartials" }, new { @class = "btn btn-success btn-block form-control" })
@@ -108,8 +108,8 @@
 
     function UpdateBulkPartials() {
         var myclientid = $('#clientid').val();
-        var mybulkstatusid = $('#bulkstatusid').val();
-        var mystockstatusid = $('#stockstatusid').val();
+        var mybulkstatus = $('#bulkstatus').val();
+        var mystockstatus = $('#stockstatus').val();
         var mydivisionid = $('#divisionid').val();
         var unmarkedbulkurl = '@Url.Action("LoadBulkPartial", "ReturnOrders")';
         var markedbulkurl = '@Url.Action("LoadMarkedBulkPartial", "ReturnOrders")';
@@ -118,8 +118,8 @@
         $("#dvBulkPlaceHolder").load(unmarkedbulkurl,
         {
             clientid: myclientid,
-            bulkstatusid: mybulkstatusid,
-            divisionid: mydivisionid
+            divisionid: mydivisionid,
+            bulkstatus: mybulkstatus
         });
 
         @*
@@ -131,20 +131,20 @@
             data: {
                 clientid: myclientid,
                 divisionid: mydivisionid,
-                bulkstatusid: mybulkstatusid
+                bulkstatusid: mybulkstatus
             }
         });*@
 
         // get marked bulk items
-        $("#dvMarkedBulkPlaceHolder").load(markedbulkurl);
+        $("#dvMarkedBulkPlaceHolder").load(markedbulkurl, { clientid: myclientid });
 
         ShowHideCreateButton();
     }
 
     function UpdateStockPartials() {
         var myclientid = $('#clientid').val();
-        var mybulkstatusid = $('#bulkstatusid').val();
-        var mystockstatusid = $('#stockstatusid').val();
+        var mybulkstatus = $('#bulkstatus').val();
+        var mystockstatus = $('#stockstatus').val();
         var mydivisionid = $('#divisionid').val();
         var unmarkedstockurl = '@Url.Action("LoadStockPartial", "ReturnOrders")';
         var markedstockurl = '@Url.Action("LoadMarkedStockPartial", "ReturnOrders")';
@@ -152,11 +152,11 @@
         $("#dvStockPlaceHolder").load(unmarkedstockurl,
         {
             clientid: myclientid,
-            stockstatusid: mystockstatusid,
-            divisionid: mydivisionid
+            divisionid: mydivisionid,
+            stockstatus: mystockstatus
         });
 
-        $("#dvMarkedStockPlaceHolder").load(markedstockurl);
+        $("#dvMarkedStockPlaceHolder").load(markedstockurl, {clientid: myclientid});
 
         ShowHideCreateButton();
     }

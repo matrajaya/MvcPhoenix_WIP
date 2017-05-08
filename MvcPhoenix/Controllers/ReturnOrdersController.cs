@@ -33,40 +33,53 @@ namespace MvcPhoenix.Controllers
             return null;
         }
 
-        public ActionResult LoadBulkPartial(int clientid, string bulkstatusid, int divisionid)
+        //public ActionResult UnMarkedBulkLoad(int clientid, int divisionid, string bulkstatus)
+        //{
+        //    using (var db = new CMCSQL03Entities())
+        //    {
+        //        var obj = fnListOfBulkRecords(clientid);
+        //        obj = obj.Where(t => t.clientid == clientid).ToList();
+                
+        //        if (divisionid > 0)
+        //        {
+        //            obj = obj.Where(t => t.divisionid == divisionid).ToList();
+        //        }
+        //        if (!String.IsNullOrEmpty(bulkstatus))
+        //        {
+        //            obj = obj.Where(t => t.bulkstatus == bulkstatus).ToList();
+        //        }
+
+        //        return Json(obj, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+        public ActionResult LoadBulkPartial(int clientid, int divisionid, string bulkstatus)
         {
             // build vm and return partial
             using (var db = new CMCSQL03Entities())
             {
-                var vm = fnListOfBulkRecords();
-                vm = (from t in vm
-                      where t.clientid == clientid
-                      select t).ToList();
+                var obj = fnListOfBulkRecords(clientid);
+                
+                //obj = (from t in obj
+                //      where t.clientid == clientid
+                //      select t).ToList();
 
-                if (!String.IsNullOrEmpty(bulkstatusid))
-                {
-                    vm = (from t in vm
-                          where t.bulkstatus == bulkstatusid
-                          select t).ToList();
-                }
                 if (divisionid > 0)
                 {
-                    vm = (from t in vm
-                          where t.divisionid == divisionid
-                          select t).ToList();
+                    obj = obj.Where(t => t.divisionid == divisionid).ToList();
                 }
 
-                vm = (from t in vm
-                      where (t.markedforreturn == false)
-                      select t).ToList();
+                if (!String.IsNullOrEmpty(bulkstatus))
+                {
+                    obj = obj.Where(t => t.bulkstatus == bulkstatus).ToList();
+                    obj = obj.Where(t => t.bulkstatus != "RETURN").ToList();
+                }
 
-                vm = (from t in vm
-                      where (t.bulkstatus != "RETURN")
-                      select t).ToList();
-
+                obj = obj.Where(t => t.markedforreturn == false).ToList();
+                
                 ViewBag.TableHeader = "Bulk Stock Records";
                 ViewBag.TableStyle = "height:350px;overflow-y:scroll;font-size:.95em;";
-                ViewBag.RecordCount = vm.Count();
+                ViewBag.RecordCount = obj.Count();
 
                 ViewBag.MarkedCount = (from t in db.tblBulk
                                        where t.MarkedForReturn == true
@@ -76,52 +89,53 @@ namespace MvcPhoenix.Controllers
                                          where t.MarkedForReturn == false
                                          select t.BulkID).Count();
 
-                ViewBag.ShowTheMarkAllBulkButton = (vm.Count() > 0) ? true : false;
-                Session["BulkRecords"] = vm;    //stash list
+                ViewBag.ShowTheMarkAllBulkButton = (obj.Count() > 0) ? true : false;
 
-                return PartialView("~/Views/ReturnOrders/_ReturnBulkRecords.cshtml", vm);
+                Session["BulkRecords"] = obj;    //stash list
+
+                return PartialView("~/Views/ReturnOrders/_ReturnBulkRecords.cshtml", obj);
             }
         }
 
-        public ActionResult LoadStockPartial(int clientid, string stockstatusid, int divisionid)
+        public ActionResult LoadStockPartial(int clientid, int divisionid, string stockstatus)
         {
             using (var db = new CMCSQL03Entities())
             {
-                // build vm and return partial
-                var vm = fnListOfStockRecords();
-                vm = (from t in vm
-                      where t.ClientID == clientid
-                      select t).ToList();
-
-                if (!String.IsNullOrEmpty(stockstatusid))
-                {
-                    vm = (from t in vm
-                          where t.ShelfStatus == stockstatusid
-                          select t).ToList();
-                }
+                var obj = fnListOfStockRecords(clientid);
+                //obj = (from t in obj
+                //      where t.ClientID == clientid
+                //      select t).ToList();
 
                 if (divisionid > 0)
                 {
-                    vm = (from t in vm
-                          where t.divisionid == divisionid
-                          select t).ToList();
+                    obj = obj = obj.Where(t => t.divisionid == divisionid).ToList();
                 }
 
-                vm = (from t in vm
-                      where (t.markedforreturn == false)
-                      select t).ToList();
+                if (!String.IsNullOrEmpty(stockstatus))
+                {
+                    obj = obj = obj.Where(t => t.ShelfStatus == stockstatus).ToList();
+                    obj = obj = obj.Where(t => t.ShelfStatus != "RETURN").ToList();
+                }
 
-                vm = (from t in vm
-                      where (t.ShelfStatus != "RETURN")
-                      select t).ToList();
+                obj = obj.Where(t => t.markedforreturn == false).ToList();
+
+                //obj = (from t in obj
+                //      where (t.markedforreturn == false)
+                //      select t).ToList();
+
+                //obj = (from t in obj
+                //      where (t.ShelfStatus != "RETURN")
+                //      select t).ToList();
 
                 ViewBag.TableHeader = "Shelf Stock Records";
                 ViewBag.TableStyle = "height:350px;overflow-y:scroll;font-size:.95em;";
-                ViewBag.RecordCount = vm.Count();
-                ViewBag.ShowTheMarkAllStockButton = (vm.Count() > 0) ? true : false;
-                Session["StockRecords"] = vm;   //stash list
+                ViewBag.RecordCount = obj.Count();
 
-                return PartialView("~/Views/ReturnOrders/_ReturnStockRecords.cshtml", vm);
+                ViewBag.ShowTheMarkAllStockButton = (obj.Count() > 0) ? true : false;
+
+                Session["StockRecords"] = obj;   //stash list
+
+                return PartialView("~/Views/ReturnOrders/_ReturnStockRecords.cshtml", obj);
             }
         }
 
@@ -214,11 +228,11 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public ActionResult LoadMarkedBulkPartial()
+        public ActionResult LoadMarkedBulkPartial(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var vm = fnListOfBulkRecords();
+                var vm = fnListOfBulkRecords(clientid);
                 vm = (from t in vm
                       where t.markedforreturn == true
                       select t).ToList();
@@ -232,11 +246,11 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public ActionResult LoadMarkedStockPartial()
+        public ActionResult LoadMarkedStockPartial(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var vm = fnListOfStockRecords();
+                var vm = fnListOfStockRecords(clientid);
                 vm = (from t in vm
                       where t.markedforreturn == true
                       select t).ToList();
@@ -250,7 +264,7 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public static List<ReturnBulkViewModel> fnListOfBulkRecords()
+        public static List<ReturnBulkViewModel> fnListOfBulkRecords(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -260,6 +274,7 @@ namespace MvcPhoenix.Controllers
                           join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
                           join dv in db.tblDivision on pd.DivisionID equals dv.DivisionID
                           join cl in db.tblClient on pm.ClientID equals cl.ClientID
+                          where cl.ClientID == clientid
                           orderby pm.MasterCode
                           select new Models.ReturnBulkViewModel
                           {
@@ -286,7 +301,7 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public static List<ReturnStockViewModel> fnListOfStockRecords()
+        public static List<ReturnStockViewModel> fnListOfStockRecords(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -296,6 +311,7 @@ namespace MvcPhoenix.Controllers
                           join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
                           join bl in db.tblBulk on t.BulkID equals bl.BulkID
                           join dv in db.tblDivision on pd.DivisionID equals dv.DivisionID
+                          where pm.ClientID == clientid
                           orderby pd.ProductCode
                           select new ReturnStockViewModel
                               {
