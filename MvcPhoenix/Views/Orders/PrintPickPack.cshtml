@@ -113,11 +113,26 @@
                     <div style="zoom:30%; float:left">@Html.GenerateLinearCode(Convert.ToString(@Html.DisplayFor(m => m.clientcode) + "" + @Model.orderid))</div>
                 </td>
             </tr>
-            <tr>
-                <td colspan="2">
-                    <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.special)</em>
-                </td>
-            </tr>
+            @if (Model.specialinternal != null)
+            {
+                <tr>
+                    <td colspan="2">
+
+                        <label>Internal Instrutions: </label><em>@Html.DisplayFor(m => m.specialinternal)</em>
+
+                    </td>
+                </tr>
+            }
+
+            @if (Model.special != null)
+            {
+                <tr>
+                    <td colspan="2">
+                        <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.special)</em>
+
+                    </td>
+                </tr>
+            }
         </table>
     </div>
 
@@ -247,7 +262,10 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.special)</em>
+                    @if (Model.special != null)
+                    {
+                        <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.special)</em>
+                    }                    
                 </td>
             </tr>
         </table>
