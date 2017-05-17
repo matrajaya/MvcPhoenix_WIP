@@ -37,6 +37,7 @@ namespace MvcPhoenix.Models
         public Nullable<DateTime> ShipDate { get; set; }
         public string ItemShipVia { get; set; }
         public bool? NonCMCDelay { get; set; }
+        public bool? RDTransfer { get; set; }                   // EU needs this for pass through orders that are handled virutally
         public string DelayReason { get; set; }
         public Nullable<bool> BackOrdered { get; set; }
         public string Status { get; set; }

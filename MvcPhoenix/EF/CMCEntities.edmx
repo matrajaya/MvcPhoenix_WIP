@@ -196,8 +196,9 @@
             <PropertyRef Name="CarrierID" />
           </Key>
           <Property Name="CarrierID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MasterCarrierID" Type="int" />
           <Property Name="CarrierName" Type="nvarchar" MaxLength="10" />
-          <Property Name="LegacyID" Type="int" />
+          <Property Name="ServiceLevel" Type="int" />
           <Property Name="CMCLocation" Type="nvarchar" MaxLength="2" />
         </EntityType>
         <EntityType Name="tblCAS">
@@ -1008,6 +1009,7 @@
           <Property Name="NonCMCDelay" Type="bit" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="50" />
           <Property Name="BackOrdered" Type="bit" />
+          <Property Name="RDTransfer" Type="bit" />
           <Property Name="Status" Type="nvarchar" MaxLength="1000" />
           <Property Name="AllocateStatus" Type="nvarchar" MaxLength="1" />
           <Property Name="CSAllocate" Type="bit" />
@@ -2154,8 +2156,9 @@
             <PropertyRef Name="CarrierID" />
           </Key>
           <Property Name="CarrierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MasterCarrierID" Type="Int32" />
           <Property Name="CarrierName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="LegacyID" Type="Int32" />
+          <Property Name="ServiceLevel" Type="Int32" />
           <Property Name="CMCLocation" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblCAS">
@@ -3631,6 +3634,7 @@
           <Property Name="NonCMCDelay" Type="Boolean" />
           <Property Name="DelayReason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BackOrdered" Type="Boolean" />
+          <Property Name="RDTransfer" Type="Boolean" />
           <Property Name="Status" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="AllocateStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
           <Property Name="CSAllocate" Type="Boolean" />
@@ -4051,8 +4055,9 @@
             <EntityTypeMapping TypeName="CMCSQL03Model.tblCarrier">
               <MappingFragment StoreEntitySet="tblCarrier">
                 <ScalarProperty Name="CMCLocation" ColumnName="CMCLocation" />
-                <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="ServiceLevel" ColumnName="ServiceLevel" />
                 <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+                <ScalarProperty Name="MasterCarrierID" ColumnName="MasterCarrierID" />
                 <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -5615,6 +5620,7 @@
                 <ScalarProperty Name="CSAllocate" ColumnName="CSAllocate" />
                 <ScalarProperty Name="AllocateStatus" ColumnName="AllocateStatus" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RDTransfer" ColumnName="RDTransfer" />
                 <ScalarProperty Name="BackOrdered" ColumnName="BackOrdered" />
                 <ScalarProperty Name="DelayReason" ColumnName="DelayReason" />
                 <ScalarProperty Name="NonCMCDelay" ColumnName="NonCMCDelay" />

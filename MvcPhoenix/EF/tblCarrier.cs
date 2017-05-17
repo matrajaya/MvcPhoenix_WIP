@@ -15,8 +15,9 @@ namespace MvcPhoenix.EF
     public partial class tblCarrier
     {
         public int CarrierID { get; set; }
+        public Nullable<int> MasterCarrierID { get; set; }
         public string CarrierName { get; set; }
-        public Nullable<int> LegacyID { get; set; }
+        public Nullable<int> ServiceLevel { get; set; }
         public string CMCLocation { get; set; }
     }
 }

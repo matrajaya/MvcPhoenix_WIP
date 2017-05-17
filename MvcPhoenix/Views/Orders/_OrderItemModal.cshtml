@@ -137,19 +137,26 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <ul class="list-unstyled list-3-col">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled list-2-col">
                                 <li>
                                     <label>CS Allocate</label>
                                     @Html.CheckBox("CSAllocate", Model.CSAllocate != null && (bool)Model.CSAllocate)
                                 </li>
                                 <li>
-                                    <label>Carrier Inv Rec'd</label>
+                                    <label><abbr title="Carrier Invoice Received">Carrier Inv Rcv</abbr></label>
                                     @Html.CheckBox("CarrierInvoiceRcvd", Model.CarrierInvoiceRcvd != null && (bool)Model.CarrierInvoiceRcvd)
                                 </li>
+                            </ul></div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled list-2-col">
                                 <li>
-                                    <label>Non CMC Delay</label>
+                                    <label><abbr title="Non CMC Delay">Non Delay</abbr></label>
                                     @Html.CheckBox("NonCMCDelay", Model.NonCMCDelay != null && (bool)Model.NonCMCDelay)
+                                </li>
+                                <li>
+                                    <label>R&D/Transfer</label>
+                                    @Html.CheckBox("RDTransfer", Model.RDTransfer != null && (bool)Model.RDTransfer)
                                 </li>
                             </ul>
                         </div>
@@ -157,7 +164,6 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Delay Reason</label>
-                            @*@Html.DropDownList("DelayReason", (List<SelectListItem>)ViewBag.ListOfDelayReasons, new { @class = "form-control" })*@
                             @Html.DropDownList("DelayReason", ApplicationService.ddlDelayReasons(), new { @class = "form-control" })
                         </div>
                         <div class="col-md-3 form-group">

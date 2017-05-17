@@ -404,6 +404,7 @@ namespace MvcPhoenix.Services
                                       AllocatedDate = t.AllocatedDate,
                                       CSAllocate = t.CSAllocate,
                                       NonCMCDelay = t.NonCMCDelay,
+                                      RDTransfer = t.RDTransfer,
                                       GrnUnNumber = productdetail.GRNUNNUMBER,
                                       GrnPkGroup = productdetail.GRNPKGRP,
                                       AirUnNumber = productdetail.AIRUNNUMBER,
@@ -450,6 +451,7 @@ namespace MvcPhoenix.Services
                 vm.CSAllocate = true;
                 vm.AllocateStatus = null;
                 vm.NonCMCDelay = false;
+                vm.RDTransfer = false;
                 vm.CarrierInvoiceRcvd = false;
                 vm.DelayReason = null;
                 vm.StatusID = -1;
@@ -524,6 +526,7 @@ namespace MvcPhoenix.Services
                 vm.CSAllocate = q.CSAllocate;
                 vm.AllocateStatus = q.AllocateStatus;
                 vm.NonCMCDelay = q.NonCMCDelay;
+                vm.RDTransfer = q.RDTransfer;
                 vm.BackOrdered = q.BackOrdered;
                 vm.CarrierInvoiceRcvd = q.CarrierInvoiceRcvd;
                 vm.DelayReason = q.DelayReason;
@@ -607,6 +610,7 @@ namespace MvcPhoenix.Services
                 orderitem.CSAllocate = vm.CSAllocate;
                 orderitem.AllocateStatus = vm.AllocateStatus;
                 orderitem.NonCMCDelay = vm.NonCMCDelay;
+                orderitem.RDTransfer = vm.RDTransfer;
                 orderitem.BackOrdered = vm.BackOrdered;
                 orderitem.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
                 orderitem.Status = vm.Status;
@@ -1069,110 +1073,7 @@ namespace MvcPhoenix.Services
         #endregion Order Transaction Methods
 
         #region Allocate Methods
-
-        #region Bulk Allocate not being implemented currently
-
-        //public static int fnAllocateBulk(int OrderID, bool IncludeQCStock)
-        //{
-        //    using (var db = new CMCSQL03Entities())
-        //    {
-        //        int AllocationCount = 0;
-        //        var orderitems = (from t in db.tblOrderItem
-        //                          where t.OrderID == OrderID
-        //                          && t.ShipDate == null
-        //                          && t.AllocateStatus == null
-        //                          && t.CSAllocate == true
-        //                          select t).ToList();
-
-        //        if (orderitems == null)
-        //        {
-        //            return AllocationCount;
-        //        }
-
-        //        foreach (var item in orderitems)
-        //        {
-        //            var tblbulk = (from t in db.tblBulk
-        //                           join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-        //                           join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
-        //                           where (pd.ProductDetailID == item.ProductDetailID)
-        //                           select new
-        //                           {
-        //                               BulkID = t.BulkID,
-        //                               Warehouse = t.Warehouse,
-        //                               Qty = t.Qty,
-        //                               LotNumber = t.LotNumber,
-        //                               CurrentWeight = t.CurrentWeight,
-        //                               CeaseShipDate = t.CeaseShipDate,
-        //                               BulkStatus = t.BulkStatus,
-        //                               Bin = t.Bin
-        //                           }).ToList();
-
-        //            var qOffset = db.tblOrderMaster.Find(OrderID);
-        //            int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
-
-        //            if (iOffset != 0)
-        //            {
-        //                // if there's an offset on the order record, add that to today to build in extra time
-        //                DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
-
-        //                tblbulk = (from t in tblbulk
-        //                           where t.CeaseShipDate > dCease
-        //                           select t).ToList();
-        //            }
-
-        //            if (IncludeQCStock == true)
-        //            {
-        //                tblbulk = (from t in tblbulk
-        //                           where t.BulkStatus == "AVAIL" || t.BulkStatus == "QC"
-        //                           select t).ToList();
-        //            }
-        //            else
-        //            {
-        //                tblbulk = (from t in tblbulk
-        //                           where t.BulkStatus == "AVAIL"
-        //                           select t).ToList();
-        //            }
-
-        //            tblbulk = (from t in tblbulk
-        //                       where t.CurrentWeight >= (item.Qty * item.Weight)
-        //                       select t).ToList();
-
-        //            tblbulk = (from t in tblbulk
-        //                       orderby t.CeaseShipDate ascending
-        //                       select t).ToList();
-
-        //            foreach (var row in tblbulk)
-        //            {
-        //                // update tblstock record (need to use separate qry)
-        //                if (row.CurrentWeight >= item.Qty * item.Weight)
-        //                {
-        //                    AllocationCount = AllocationCount + 1;
-        //                    var q = db.tblBulk.Find(row.BulkID);
-
-        //                    q.CurrentWeight = q.CurrentWeight - (item.Qty * item.Weight);
-        //                    item.AllocatedBulkID = row.BulkID;
-        //                    item.Warehouse = row.Warehouse;
-        //                    item.LotNumber = row.LotNumber;
-        //                    item.AllocateStatus = "A";
-        //                    item.Bin = row.Bin;
-        //                    item.ExpirationDate = q.ExpirationDate;
-        //                    item.CeaseShipDate = q.CeaseShipDate;
-
-        //                    fnInsertLogRecord("BS-ALC", DateTime.UtcNow, null, row.BulkID, item.Qty, item.Weight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
-
-        //                    db.SaveChanges();
-
-        //                    break;
-        //                }
-        //            }
-        //        }
-
-        //        return AllocationCount;
-        //    }
-        //}
-
-        #endregion Bulk Allocate not being implemented currently
-
+        
         public static int fnAllocateShelf(int OrderID, bool IncludeQCStock)
         {
             using (var db = new CMCSQL03Entities())

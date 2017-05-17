@@ -10,7 +10,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblBulkOrderItem" Width="1.5" PointX="4.75" PointY="5.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblBulkSupplier" Width="1.5" PointX="6.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblBulkUnKnown" Width="1.5" PointX="6.75" PointY="5.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblCarrier" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblCAS" Width="1.5" PointX="8.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblCeaseShipOffSet" Width="1.5" PointX="8.75" PointY="8.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblClient" Width="1.5" PointX="10.75" PointY="0.75" />
@@ -66,6 +65,7 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderTrans" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblStock" Width="1.5" PointX="25.375" PointY="27.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductMaster" Width="1.5" PointX="27.375" PointY="30.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblCarrier" Width="1.5" PointX="29.375" PointY="30.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

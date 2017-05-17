@@ -109,7 +109,10 @@ namespace MvcPhoenix.Models
             R,
 
             [Display(Name = "Commercial")]
-            C
+            C,
+
+            [Display(Name = "R&D/Transfer")]
+            X
         }
 
         public enum StockStatusChoice

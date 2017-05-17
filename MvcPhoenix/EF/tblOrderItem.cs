@@ -33,6 +33,7 @@ namespace MvcPhoenix.EF
         public Nullable<bool> NonCMCDelay { get; set; }
         public string DelayReason { get; set; }
         public Nullable<bool> BackOrdered { get; set; }
+        public Nullable<bool> RDTransfer { get; set; }
         public string Status { get; set; }
         public string AllocateStatus { get; set; }
         public Nullable<bool> CSAllocate { get; set; }
