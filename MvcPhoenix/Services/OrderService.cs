@@ -347,6 +347,7 @@ namespace MvcPhoenix.Services
             }
         }
 
+        // Search through SDN List and return true if a name match occurs
         public static bool fnIsSDN(OrderMasterFull vm)
         {
             var filecontent = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/sdnlist.txt"));
@@ -580,8 +581,8 @@ namespace MvcPhoenix.Services
                     var shelfmaster = (from t in db.tblShelfMaster
                                        where t.ShelfID == vm.ShelfID
                                        select t).FirstOrDefault();
-                    
-                    // if shelf record is found 
+
+                    // if shelf record is found
                     if (shelfmaster != null)
                     {
                         orderitem.Size = shelfmaster.Size;
@@ -1328,10 +1329,14 @@ namespace MvcPhoenix.Services
 
                     updatestock.QtyAvailable = updatestock.QtyAvailable + orderitem.Qty;
                     updatestock.QtyAllocated -= orderitem.Qty;
-                    if (updatestock.QtyAllocated < 0)
+                    if (updatestock.ShelfStatus == "RETURN")
                     {
-                        // zero out QtyAllocated if negative
-                        updatestock.QtyAllocated = 0;
+                        updatestock.ShelfStatus = "AVAIL";
+                        updatestock.MarkedForReturn = false;
+                    }
+                    if (updatestock.QtyAllocated < 0)
+                    {                        
+                        updatestock.QtyAllocated = 0;                                           // zero out QtyAllocated if negative
                     }
                     updatestock.UpdateDate = DateTime.UtcNow;
                     updatestock.UpdateUser = HttpContext.Current.User.Identity.Name;
@@ -1373,139 +1378,132 @@ namespace MvcPhoenix.Services
 
         #region Return Order Methods
 
-        public static void CreateReturnOrderBulkItems(int orderid)
+        // Add bulk item to return order
+        public static void AddBulkItemToReturnOrder(int orderid, int bulkid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var bulk = (from t in db.tblBulk
-                            where t.MarkedForReturn == true
-                            select t).ToList();
+                var bulkitem = (from t in db.tblBulk
+                                where t.BulkID == bulkid
+                                select t).FirstOrDefault();
 
-                foreach (var row in bulk)
-                {
-                    var pm = (from t in db.tblProductMaster
-                              where t.ProductMasterID == row.ProductMasterID
-                              select t).FirstOrDefault();
+                var pm = (from t in db.tblProductMaster
+                          where t.ProductMasterID == bulkitem.ProductMasterID
+                          select t).FirstOrDefault();
 
-                    var productdetailid = OrderService.GetProductDetailId(pm.ProductMasterID);
-                    var pd = db.tblProductDetail.Find(productdetailid);
+                var productdetailid = OrderService.GetProductDetailId(pm.ProductMasterID);
+                var pd = db.tblProductDetail.Find(productdetailid);
 
-                    int newItemId = OrderService.fnNewItemID();
+                int newitemid = OrderService.fnNewItemID();
+                var newitem = (from t in db.tblOrderItem
+                               where t.ItemID == newitemid
+                               select t).FirstOrDefault();
 
-                    var newitem = (from t in db.tblOrderItem
-                                   where t.ItemID == newItemId
-                                   select t).FirstOrDefault();
+                newitem.OrderID = orderid;
+                newitem.BulkID = bulkitem.BulkID;
+                newitem.ShelfID = OrderService.GetShelfId(pm.ProductMasterID, bulkitem.UM);
+                newitem.ProductDetailID = productdetailid;
+                newitem.ProductCode = pm.MasterCode;
+                newitem.ProductName = pm.MasterName;
+                newitem.LotNumber = bulkitem.LotNumber;
+                newitem.Qty = 1;
+                newitem.Size = bulkitem.UM;
+                newitem.Weight = bulkitem.CurrentWeight;
+                newitem.Bin = bulkitem.Bin;
+                newitem.CSAllocate = true;
+                newitem.AllocatedBulkID = bulkitem.BulkID;
+                newitem.AllocateStatus = "A";
+                newitem.AllocatedDate = DateTime.UtcNow;
+                newitem.Warehouse = bulkitem.Warehouse;
+                newitem.GrnUnNumber = pd.GRNUNNUMBER;
+                newitem.GrnPkGroup = pd.GRNPKGRP;
+                newitem.AirUnNumber = pd.AIRUNNUMBER;
+                newitem.AirPkGroup = pd.AIRPKGRP;
+                newitem.AlertNotesOrderEntry = pd.AlertNotesOrderEntry;
+                newitem.AlertNotesShipping = pd.AlertNotesShipping;
+                newitem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + bulkitem.UM + " with a current weight of " + bulkitem.CurrentWeight;
+                newitem.CreateDate = DateTime.UtcNow;
+                newitem.CreateUser = HttpContext.Current.User.Identity.Name;
+                newitem.UpdateDate = DateTime.UtcNow;
+                newitem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                    newitem.OrderID = orderid;
-                    newitem.BulkID = row.BulkID;
-                    newitem.ShelfID = OrderService.GetShelfId(pm.ProductMasterID, row.UM);
-                    newitem.ProductDetailID = productdetailid;
-                    newitem.ProductCode = pm.MasterCode;
-                    newitem.ProductName = pm.MasterName;
-                    newitem.LotNumber = row.LotNumber;
-                    newitem.Qty = 1;
-                    newitem.Size = row.UM;
-                    newitem.Weight = row.CurrentWeight;
-                    newitem.Bin = row.Bin;
-                    newitem.CSAllocate = true;
-                    newitem.AllocatedBulkID = row.BulkID;
-                    newitem.AllocateStatus = "A";
-                    newitem.AllocatedDate = DateTime.UtcNow;
-                    newitem.Warehouse = row.Warehouse;
-                    newitem.GrnUnNumber = pd.GRNUNNUMBER;
-                    newitem.GrnPkGroup = pd.GRNPKGRP;
-                    newitem.AirUnNumber = pd.AIRUNNUMBER;
-                    newitem.AirPkGroup = pd.AIRPKGRP;
-                    newitem.AlertNotesOrderEntry = pd.AlertNotesOrderEntry;
-                    newitem.AlertNotesShipping = pd.AlertNotesShipping;
-                    newitem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + row.UM + " with a current weight of " + row.CurrentWeight;
-                    newitem.CreateDate = DateTime.UtcNow;
-                    newitem.CreateUser = HttpContext.Current.User.Identity.Name;
-                    newitem.UpdateDate = DateTime.UtcNow;
-                    newitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                // Insert log record
+                OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, bulkitem.BulkID, 1, bulkitem.CurrentWeight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
 
-                    // Insert log record
-                    OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, row.BulkID, 1, row.CurrentWeight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+                //update bulk record
+                bulkitem.CurrentWeight = 0;
+                bulkitem.BulkStatus = "RETURN";
+                bulkitem.MarkedForReturn = true;
+                bulkitem.UpdateDate = DateTime.UtcNow;
+                bulkitem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                    //update bulk record
-                    row.CurrentWeight = 0;
-                    row.BulkStatus = "RETURN";
-                    row.MarkedForReturn = true;
-                    row.UpdateDate = DateTime.UtcNow;
-                    row.UpdateUser = HttpContext.Current.User.Identity.Name;
+                db.SaveChanges();
 
-                    db.SaveChanges();
-
-                    OrderService.fnGenerateOrderTransactions(newItemId);
-                }
+                OrderService.fnGenerateOrderTransactions(newitemid);
             }
         }
 
-        public static void CreateReturnOrderStockItems(int orderid)
+        // Add stock item to new return order
+        public static void AddStockItemToReturnOrder (int orderid, int stockid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                // Note: potential for leakiness, this assumes that all marked pending items are for one client
-                // TODO: need filter to protect integrity if multiple users are working on returns concurrently -- Iffy
-                var stock = (from t in db.tblStock
-                             where t.MarkedForReturn == true
-                             select t).ToList();
+                var stockitem = (from t in db.tblStock
+                                 where t.StockID == stockid
+                                 select t).FirstOrDefault();
 
-                foreach (var row in stock)
-                {
-                    var bl = db.tblBulk.Find(row.BulkID);
-                    var sm = db.tblShelfMaster.Find(row.ShelfID);
-                    var pd = db.tblProductDetail.Find(sm.ProductDetailID);
-                    var pm = db.tblProductMaster.Find(bl.ProductMasterID);
+                var bl = db.tblBulk.Find(stockitem.BulkID);
+                var sm = db.tblShelfMaster.Find(stockitem.ShelfID);
+                var pd = db.tblProductDetail.Find(sm.ProductDetailID);
+                var pm = db.tblProductMaster.Find(bl.ProductMasterID);
 
-                    int newItemId = OrderService.fnNewItemID();
-                    var newitem = (from t in db.tblOrderItem
-                                   where t.ItemID == newItemId
-                                   select t).FirstOrDefault();
+                int newitemid = OrderService.fnNewItemID();
+                var newitem = (from t in db.tblOrderItem
+                               where t.ItemID == newitemid
+                               select t).FirstOrDefault();
 
-                    newitem.OrderID = orderid;
-                    newitem.ShelfID = sm.ShelfID;
-                    newitem.ProductDetailID = pd.ProductDetailID;
-                    newitem.ProductCode = pd.ProductCode;
-                    newitem.ProductName = pd.ProductName;
-                    newitem.LotNumber = bl.LotNumber;
-                    newitem.Qty = row.QtyOnHand;
-                    newitem.Size = sm.Size;
-                    newitem.Weight = Convert.ToDecimal(sm.UnitWeight * row.QtyOnHand);
-                    newitem.Bin = row.Bin;
-                    newitem.CSAllocate = true;
-                    newitem.AllocatedBulkID = row.BulkID;
-                    newitem.AllocatedStockID = row.StockID;
-                    newitem.AllocateStatus = "A";
-                    newitem.AllocatedDate = DateTime.UtcNow;
-                    newitem.Warehouse = row.Warehouse;
-                    newitem.GrnUnNumber = pd.GRNUNNUMBER;
-                    newitem.GrnPkGroup = pd.GRNPKGRP;
-                    newitem.AirUnNumber = pd.AIRUNNUMBER;
-                    newitem.AirPkGroup = pd.AIRPKGRP;
-                    newitem.AlertNotesOrderEntry = pd.AlertNotesOrderEntry;
-                    newitem.AlertNotesShipping = pd.AlertNotesShipping;
-                    newitem.ItemNotes = "Return Shelf Order Item";
-                    newitem.CreateDate = DateTime.UtcNow;
-                    newitem.CreateUser = HttpContext.Current.User.Identity.Name;
-                    newitem.UpdateDate = DateTime.UtcNow;
-                    newitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                newitem.OrderID = orderid;
+                newitem.ShelfID = sm.ShelfID;
+                newitem.ProductDetailID = pd.ProductDetailID;
+                newitem.ProductCode = pd.ProductCode;
+                newitem.ProductName = pd.ProductName;
+                newitem.LotNumber = bl.LotNumber;
+                newitem.Qty = stockitem.QtyOnHand;
+                newitem.Size = sm.Size;
+                newitem.Weight = Convert.ToDecimal(sm.UnitWeight * stockitem.QtyOnHand);
+                newitem.Bin = stockitem.Bin;
+                newitem.CSAllocate = true;
+                newitem.AllocatedBulkID = stockitem.BulkID;
+                newitem.AllocatedStockID = stockitem.StockID;
+                newitem.AllocateStatus = "A";
+                newitem.AllocatedDate = DateTime.UtcNow;
+                newitem.Warehouse = stockitem.Warehouse;
+                newitem.GrnUnNumber = pd.GRNUNNUMBER;
+                newitem.GrnPkGroup = pd.GRNPKGRP;
+                newitem.AirUnNumber = pd.AIRUNNUMBER;
+                newitem.AirPkGroup = pd.AIRPKGRP;
+                newitem.AlertNotesOrderEntry = pd.AlertNotesOrderEntry;
+                newitem.AlertNotesShipping = pd.AlertNotesShipping;
+                newitem.ItemNotes = "Return Shelf Order Item";
+                newitem.CreateDate = DateTime.UtcNow;
+                newitem.CreateUser = HttpContext.Current.User.Identity.Name;
+                newitem.UpdateDate = DateTime.UtcNow;
+                newitem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                    // Insert log record
-                    OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, row.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+                // Insert log record
+                OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, stockitem.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
 
-                    //update tblstock record
-                    row.QtyAllocated = row.QtyAvailable;
-                    row.QtyAvailable = 0;                                               // Clear out available stock
-                    row.ShelfStatus = "RETURN";
-                    row.MarkedForReturn = true;
-                    row.UpdateDate = DateTime.UtcNow;
-                    row.UpdateUser = HttpContext.Current.User.Identity.Name;
+                //update tblstock record
+                stockitem.QtyAllocated = stockitem.QtyAvailable;
+                stockitem.QtyAvailable = 0;                                               // Clear out available stock
+                stockitem.ShelfStatus = "RETURN";
+                stockitem.MarkedForReturn = true;
+                stockitem.UpdateDate = DateTime.UtcNow;
+                stockitem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                    db.SaveChanges();
+                db.SaveChanges();
 
-                    OrderService.fnGenerateOrderTransactions(newItemId);
-                }
+                OrderService.fnGenerateOrderTransactions(newitemid);
             }
         }
 

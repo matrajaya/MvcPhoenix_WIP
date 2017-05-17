@@ -30,9 +30,7 @@
                     <td>@item.LotNumber</td>
                     <td>
                         @if (item.ShipDate != null)
-                        { <p>Shipped on @String.Format("{0:dd MMM yyyy}", item.ShipDate).</p> }
-                        @if (item.AllocateStatus == null)
-                        { <p>Open.</p>}
+                        { <p>Shipped on @String.Format("{0:dd MMM yyyy}", item.ShipDate).</p> }                       
                     </td>
                 </tr>
             }

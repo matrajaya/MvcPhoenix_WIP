@@ -48,6 +48,7 @@ namespace MvcPhoenix.Models
         public string ShelfStatus { get; set; }
         public int? ProductDetailID { get; set; }
         public string Size { get; set; }
+        public decimal? CurrentWeight { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string LotNumber { get; set; }

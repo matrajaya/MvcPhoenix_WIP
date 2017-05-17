@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MvcPhoenix.Models.ClientProfile
+@{
     ViewBag.Title = "Create Return Order";
 }
 
@@ -32,7 +33,6 @@
             </div>
         </div>
     </div>
-
     <div class="col-md-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -47,8 +47,32 @@
                         @Html.DropDownList("stockstatus", new SelectList(Enum.GetValues(typeof(ApplicationService.StockStatusChoice))), new { @class = "form-control" })
                     </div>
                     <div class="col-md-4">
-                        @Ajax.ActionLink("Search", "Search", "ReturnOrders", new AjaxOptions { OnSuccess = "UpdateAllPartials" }, new { @class = "btn btn-success btn-block form-control" })
+                        <button id="search" class="btn btn-success btn-block form-control">Search</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="table-responsive" style="height:500px;overflow-y:scroll;">
+                    <table class="table table-hover table-condensed" id="bulkitemstable">
+                        <tbody id="bulkitems"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="table-responsive" style="height:500px;overflow-y:scroll;">
+                    <table class="table table-hover table-condensed" id="stockitemstable">
+                        <tbody id="stockitems"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -56,12 +80,9 @@
 </div>
 
 <div class="row">
-    <div id="dvBulkPlaceHolder" class="col-md-6"></div>
-    <div id="dvStockPlaceHolder" class="col-md-6"></div>
-</div>
-<div class="row">
-    <div id="dvMarkedBulkPlaceHolder" class="col-md-6"></div>
-    <div id="dvMarkedStockPlaceHolder" class="col-md-6"></div>
+    <div class="col-md-4 col-md-offset-4" id="createorderbutton">
+        <input type="button" id="createorder" value="Create  Order" class="btn btn-block btn-success" />
+    </div>
 </div>
 
 <div class="form-group row center-block">
@@ -70,111 +91,207 @@
     </div>
 </div>
 
-<div id="dvCreateRow" class="row hidden">
-    <div class="col-md-4 col-md-offset-4">
-        @using (Html.BeginForm("CreateReturnOrder", "ReturnOrders", FormMethod.Post, new { id = "orderform" }))
-        {
-            <input type="hidden" id="hiddenclientid" name="hiddenclientid" />
-            <input type="hidden" id="hiddendivisionid" name="hiddendivisionid" />
-            <input id="SubmitOrder" type="submit" value="Create Return Order" onclick="return confirm('Create Return Order?');" class="btn btn-success btn-block" />
-        }
-    </div>
-</div>
-
 <script type="text/javascript">
-    // animation when form is submitted
-    $("#orderform").submit(function (e) {
-        var myclientid = $('#clientid').val();
-        var mydivisionid = $('#divisionid').val();
+    // Global arrays holding selected items in current state
+    // passed to controller for processing on save
+    var bulkselecteditemsarray = [];
+    var stockselecteditemsarray = [];
 
-        $("#hiddenclientid").val(myclientid);
-        $("#hiddendivisionid").val(mydivisionid);
+    // Initialize tables with results and enforce client selection
+    $("#search").click(function (event) {
+        event.preventDefault();
+
+        if ($('#clientid').val() !== "") {
+            UpdateAllPartials();
+        }
+
+        if ($('#clientid').val() === "") {
+            $.alert("Please select a client.");
+        }
+    });
+
+    // Clear results if ddl changes
+    $('select').change(function () {
+        $("#bulkitemstable tbody").remove();
+        $("#stockitemstable tbody").remove();
+        $("#bulkitemscount").html("0");
+        $("#stockitemscount").html("0");
+        $("#dvspinner").hide();
+    });
+
+    // Submit values to controller to create order
+    $("#createorder").click(function (event) {
+        event.preventDefault();
+
+        var xclientid = $('#clientid').val();
+        var xdivisionid = $('#divisionid').val();
+
+        // capture selected bulk items in array
+        var bulkids = $("#bulkitemstable input:checkbox:checked").map(function () {
+            return $(this).attr("id");
+        }).get();
+        bulkselecteditemsarray = bulkids;
+        if (bulkids.length < 1) {
+            bulkselecteditemsarray = [];
+        }
+
+        // capture selected stock items in array
+        var stockids = $("#stockitemstable input:checkbox:checked").map(function () {
+            return $(this).attr("id");
+        }).get();
+        stockselecteditemsarray = stockids;
+        if (stockids.length < 1) {
+            stockselecteditemsarray = [];
+        }
+
+        if (xclientid === "") {                                                                             // alert user if client is not selected
+            $.alert("Please select a client.");
+            $("#dvspinner").html.hide();
+        }
+        else {
+            if ((bulkselecteditemsarray.length === 0) == (stockselecteditemsarray.length === 0)) {          // alert user if no selection is made
+                $.alert("Select an item from bulk or stock listings.");
+            }
+
+            if (bulkselecteditemsarray.length !== 0 || stockselecteditemsarray.length !== 0) {              // make sure user selects items
+                // Pass client & division ids, bulk & stock arrays to controller to create order
+                $.ajax({
+                    url: "/ReturnOrders/SaveSelectedItems",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ inputclientid: xclientid, inputdivisionid: xdivisionid, bulkids: bulkselecteditemsarray, stockids: stockselecteditemsarray }),
+                    dataType: "json",
+                    success: function (result) {
+                        var redirecturl = '/Orders/Edit/' + result;
+                        $.alert('Success! Order Created.');
+                        window.location.replace(redirecturl);
+                    },
+                    error: function (result) {
+                        $.alert('Nope. Something is wrong.');
+                    }
+                });
+            }
+
+            $("#dvspinner").html.hide();
+        }
+    });
+
+    // Toggle check all bulk items
+    $(document).on('click', '#togglecheckallbulk', function () {
+        $(".bulkcheckbox").prop('checked', $(this).prop('checked'));
+
+        $(".bulkcheckbox").change(function () {
+            if (!$(this).prop("checked")) {
+                $("#togglecheckallbulk").prop("checked", false);
+            }
+        });
+    });
+
+    // Toggle check all stock items
+    $(document).on('click', '#togglecheckallstock', function () {
+        $(".stockcheckbox").prop('checked', $(this).prop('checked'));
+
+        $(".stockcheckbox").change(function () {
+            if (!$(this).prop("checked")) {
+                $("#togglecheckallstock").prop("checked", false);
+            }
+        });
+    });
+
+    // Get data and build 'bulkitemstable' table displaying unmarked bulk items
+    function GetBulkItems() {
+        var xclientid = $('#clientid').val();
+        var xdivisionid = $('#divisionid').val();
+        var xbulkstatus = $('#bulkstatus').val();
+        var row = "";
+        var count = 0;
+
+        $.ajax({
+            url: "/ReturnOrders/GetBulkItems",
+            data: { 'clientid': xclientid, 'divisionid': xdivisionid, 'bulkstatus': xbulkstatus },
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                row = "<thead><tr><th colspan='6' class='text-center info'>Bulk Stock Records(<span id='bulkitemscount'></span> items )</th> \
+                       </tr><tr><th><input type='checkbox' id='togglecheckallbulk' class='togglecheckallbulk' title='Check/Uncheck All'/></th> \
+                       <th>Master Code</th><th>Location/<br />Lot</th><th class='text-center'>Weight/<br />Size</th><th class='text-center'>Status</th></tr></thead>";
+                $.each(data, function (index, item) {
+                    count++;
+                    row += "<tr> \
+                            <td><input type='checkbox' id=" + item.bulkid + " class = 'bulkcheckbox'/></td> \
+                            <td>" + item.MasterCode + "<br />" + item.MasterName + "</td> \
+                            <td>" + item.warehouse + ": " + item.bin + "<br />" + item.lotnumber + "</td> \
+                            <td class='text-center'>" + item.currentweight + "<br />" + item.um + "</td> \
+                            <td class='text-center'>" + item.bulkstatus + "</td> \
+                            </tr>";
+                });
+                $("#bulkitemstable").html(row);
+                $("#bulkitemscount").html(count);
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+    }
+
+    // Get data and build 'stockitemstable' table displaying unmarked stock items
+    function GetStockItems() {
+        var xclientid = $('#clientid').val();
+        var xdivisionid = $('#divisionid').val();
+        var xstockstatus = $('#stockstatus').val();
+        var row = "";
+        var count = 0;
+
+        $.ajax({
+            url: "/ReturnOrders/GetStockItems",
+            data: { 'clientid': xclientid, 'divisionid': xdivisionid, 'stockstatus': xstockstatus },
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                row = "<thead><tr><th colspan='7' class='text-center info'>Shelf Stock Records ( <span id='stockitemscount'></span> items )</th> \
+                       </tr><tr><th><input type='checkbox' id='togglecheckallstock' class='togglecheckallstock' title='Check/Uncheck All'/></th><th>Product Code</th> \
+                       <th>Location/<br />Lot</th><th class='text-center'>Weight/<br />Size</th><th class='text-center'>On Hand</th><th class='text-center'>Status</th></tr></thead>";
+                $.each(data, function (index, item) {
+                    count++;
+                    row += "<tr> \
+                            <td><input type='checkbox' id=" + item.StockID + " class = 'stockcheckbox' /></td> \
+                            <td>" + item.ProductCode + "<br />" + item.ProductName + "</td> \
+                            <td>" + item.Warehouse + ": " + item.Bin + "<br />" + item.LotNumber + "</td> \
+                            <td class='text-center'>" + item.CurrentWeight + "<br />" + item.Size + "</td> \
+                            <td class='text-center'>" + item.QtyOnHand + "</td> \
+                            <td class='text-center'>" + item.ShelfStatus + "</td> \
+                            </tr>";
+                });
+                $("#stockitemstable").html(row);
+                $("#stockitemscount").html(count);
+            },
+            error: function (result) {
+                alert("Error");
+            }
+        });
+    }
+
+    // Animation when form is submitted
+    $("#createorder").click(function (e)
+    {
         $("#dvspinner").show();
     });
 
+    // Get division list for selected client id
     function UpdateDivisionDD() {
-        var myclientid = $('#clientid').val();
-        var myurl = '@Url.Action("BuildDivisionDropDown", "ReturnOrders")';
+        var clientid = $('#clientid').val();
+        var url = '@Url.Action("BuildDivisionDropDown", "ReturnOrders")';
 
-        $("#divisionid").load(myurl, { clientid: myclientid });
-
-        // empty the divs holding the partials
-        $("#dvBulkPlaceHolder").empty();
-        $("#dvStockPlaceHolder").empty();
-        $("#dvMarkedBulkPlaceHolder").empty();
-        $("#dvMarkedStockPlaceHolder").empty();
-        $("#dvCreateRow").addClass("hidden");
+        $("#divisionid").load(url, { clientid: clientid });
     }
 
-    function UpdateBulkPartials() {
-        var myclientid = $('#clientid').val();
-        var mybulkstatus = $('#bulkstatus').val();
-        var mystockstatus = $('#stockstatus').val();
-        var mydivisionid = $('#divisionid').val();
-        var unmarkedbulkurl = '@Url.Action("LoadBulkPartial", "ReturnOrders")';
-        var markedbulkurl = '@Url.Action("LoadMarkedBulkPartial", "ReturnOrders")';
-
-        // get unmarked bulk items
-        $("#dvBulkPlaceHolder").load(unmarkedbulkurl,
-        {
-            clientid: myclientid,
-            divisionid: mydivisionid,
-            bulkstatus: mybulkstatus
-        });
-
-        @*
-        $.ajax({
-            url: unmarkedbulkurl,
-            type: "GET",
-            dataType: 'text',
-            cache: false,
-            data: {
-                clientid: myclientid,
-                divisionid: mydivisionid,
-                bulkstatusid: mybulkstatus
-            }
-        });*@
-
-        // get marked bulk items
-        $("#dvMarkedBulkPlaceHolder").load(markedbulkurl, { clientid: myclientid });
-
-        ShowHideCreateButton();
-    }
-
-    function UpdateStockPartials() {
-        var myclientid = $('#clientid').val();
-        var mybulkstatus = $('#bulkstatus').val();
-        var mystockstatus = $('#stockstatus').val();
-        var mydivisionid = $('#divisionid').val();
-        var unmarkedstockurl = '@Url.Action("LoadStockPartial", "ReturnOrders")';
-        var markedstockurl = '@Url.Action("LoadMarkedStockPartial", "ReturnOrders")';
-
-        $("#dvStockPlaceHolder").load(unmarkedstockurl,
-        {
-            clientid: myclientid,
-            divisionid: mydivisionid,
-            stockstatus: mystockstatus
-        });
-
-        $("#dvMarkedStockPlaceHolder").load(markedstockurl, {clientid: myclientid});
-
-        ShowHideCreateButton();
-    }
-
-    function ShowHideCreateButton() {
-        $.get('@Url.Action("fnMarkedCount", "ReturnOrders")', function (markedCount) {
-            if (parseInt(markedCount) >= 1) {
-                $("#dvCreateRow").removeClass("hidden");
-                $("#SubmitOrder").val("Create Return Order - " + markedCount + ' Item(s)');
-            }
-            else {
-                $("#dvCreateRow").addClass("hidden");
-            }
-        });
-    }
-
+    // Display results by initializing tables
     function UpdateAllPartials() {
-        UpdateBulkPartials();
-        UpdateStockPartials();
+        GetBulkItems();
+        GetStockItems();
     }
 </script>
