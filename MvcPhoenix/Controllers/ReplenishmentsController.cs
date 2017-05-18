@@ -173,10 +173,10 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public ActionResult BuildDivisionDropDown(int id)
+        public ActionResult BuildDivisionDropDown(int clientid)
         {
             // id=clientid
-            return Content(ApplicationService.BuildDivisionDropDown(id));
+            return Content(ApplicationService.ddlBuildDivisionDropDown(clientid));
         }
 
         [HttpPost]

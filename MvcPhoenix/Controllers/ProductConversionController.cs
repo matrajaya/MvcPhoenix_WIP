@@ -48,7 +48,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BuildProductCodeDropDown(int id)
         {
-            var ddlproductcode = ApplicationService.BuildProductEquivalentDropdown(id);
+            var ddlproductcode = ApplicationService.ddlBuildProductEquivalentDropdown(id);
 
             return Content(ddlproductcode);
         }

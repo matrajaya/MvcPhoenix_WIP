@@ -33,10 +33,10 @@
                     @Html.HiddenFor(m => m.createuser)
                     <div class="row">
                         <div class="col-md-6 form-group">
-                            <label>Type <i id="listtranstypes" class="fa fa-fw fa-question-circle"></i></label>
-                            @if (Enum.IsDefined(typeof(ApplicationService.OrderTransTypesChoice), Model.transtype) || Model.transtype == null)
+                            <label>Transaction Type</label>
+                            @if (Model.transtype == null)
                             {
-                                @Html.DropDownListFor(m => m.transtype, new SelectList(Enum.GetValues(typeof(ApplicationService.OrderTransTypesChoice))), new { @class = "form-control" })
+                                @Html.DropDownListFor(m => m.transtype, ApplicationService.ddlOrderTransactionTypes(), new { @class = "form-control"})
                             }
                             else
                             {
@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Date</label>
-                            @Html.TextBoxFor(m => m.transdate, "{0:dd-MMM-yyyy}", new { @class = "form-control", @readonly = "readonly" })
+                            @Html.TextBoxFor(m => m.transdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                             @Html.ValidationMessageFor(m => m.transdate)
                         </div>
                     </div>
@@ -94,79 +94,6 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        var tableref = (function () {/*
-             <table class="table table-bordered table-condensed" style="font-size:0.8em;">
-                    <tr>
-                        <th>Code</th>
-                        <th>Descriptive Reference</th>
-                        <th>Code</th>
-                        <th>Descriptive Reference</th>
-                        <th>Code</th>
-                        <th>Descriptive Reference</th>
-                    </tr>
-                    <tr>
-                        <td>MISC_G</td>
-                        <td>G-Shipref - SPECIAL - GENERIC</td>
-                        <td>MISC_S</td>
-                        <td>S-Shipref - SET - UP</td>
-                        <td>MISC_C</td>
-                        <td>C-ShiprefDiv - CREDIT - DIVISION</td>
-                    </tr>
-                    <tr>
-                        <td>MISC_CF</td>
-                        <td>CF- ShiprefDiv - CORRECTION - FREIGHT DIVISION</td>
-                        <td>MISC_D</td>
-                        <td>D-ShiprefDiv - DOCUMENTS - (AFTER SHIPPING) DIVISION</td>
-                        <td>MISC_EM</td>
-                        <td>EM-ShiprefDiv - EMPTY PACKAGING - DIVISION</td>
-                    </tr>
-                    <tr>
-                        <td>MISC_FSC</td>
-                        <td>FSC- ShiprefDiv - FREIGHT SURCHARGES - CUSTOMS / DOCUMENTS DIVISION</td>
-                        <td>MISC_FSD</td>
-                        <td>FSD-ShiprefDiv - FREIGHT SURCHARGES - DELIVERY / DUTIES  / TAXES DIVISION</td>
-                        <td>MISC_FSM</td>
-                        <td>FSM-ShiprefDiv - FREIGHT SURCHARGES - MAUT / FUEL / TOLL / SECURITY DIV</td>
-                    </tr>
-                    <tr>
-                        <td>MISC_H</td>
-                        <td>H-ShiprefDiv - HANDLING - CMC DIVISION</td>
-                        <td>MISC_I</td>
-                        <td>I- ShiprefDiv - TEMAX - ISOLATION DIVISION</td>
-                        <td>MISC_IN</td>
-                        <td>IN-ShifrefDiv - INACTIVE - PRODUCTS DIVISION</td>
-                    </tr>
-                    <tr>
-                        <td>MISC_M</td>
-                        <td>M-ShiprefDiv - MANUAL - ORDER / ADJUSTMENT DIVISION</td>
-                        <td>MISC_P</td>
-                        <td>P-ShiprefDiv - "SMALL PACK SALES /PAID ORDER" - DIVISION</td>
-                        <td>MISC_PM</td>
-                        <td>PM-ShipfefDiv - PRODUCT MAINTENANCE - DIVISION</td>
-                    </tr>
-                    <tr>
-                        <td>MISC_R</td>
-                        <td>R-ShiprefDiv - R&D SAMPLE HANDLING - DIVISION</td>
-                        <td>MISC_SPS</td>
-                        <td>SPS-ShiprefDiv - PAYMENT - SPS ORDER</td>
-                        <td>MISC_TDI</td>
-                        <td>TDI-ShiprefDiv - TDI - STORAGE AND HANDLING</td>
-                    </tr>
-                    <tr>
-                        <td>MISC_U</td>
-                        <td>U-ShiprefDiv - UN BOX - DIVISION</td>
-                    </tr>
-                </table>
-        */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
-
-        $('#listtranstypes').tooltip({
-            title: tableref,
-            html: true,
-            placement: "bottom",
-        });
-    });
-
     function UpdateAndClose() {
         $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.orderid })');
         $('#dialogPlaceholderModal').modal('hide')
@@ -175,4 +102,8 @@
     function UpdateTransList() {
         $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.orderid })');
     }
+
+    $(function () {
+        $(".date-picker").datepicker({ dateFormat: 'dd-M-yy' });
+    });
 </script>

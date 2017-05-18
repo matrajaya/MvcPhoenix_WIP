@@ -759,7 +759,7 @@ namespace MvcPhoenix.Services
 
                 vm.ordertransid = -1;
                 vm.orderid = id;
-                vm.transtype = "MEMO";
+                vm.transtype = null;
                 vm.createdate = DateTime.UtcNow;
                 vm.transdate = DateTime.UtcNow.Date;
                 vm.createuser = HttpContext.Current.User.Identity.Name;

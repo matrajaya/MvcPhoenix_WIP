@@ -13,6 +13,8 @@ namespace MvcPhoenix.Models
 {
     public class ApplicationService
     {
+        #region Choice Enum Lists
+
         public enum CMCLocationChoice
         {
             CT,
@@ -29,17 +31,17 @@ namespace MvcPhoenix.Models
         }
 
         public enum ContainerTypeChoice
-        {
-            Steel,
-            Plastic,
+        {            
             Fiber,
-            Other
+            Other,
+            Plastic,
+            Steel,
         }
 
         public enum CurrencyChoice
         {
-            EUR,
             USD,
+            EUR,
             CNY
         }
 
@@ -71,32 +73,7 @@ namespace MvcPhoenix.Models
             Download,
             Transfer
         }
-
-        public enum OrderTransTypesChoice
-        {
-            MEMO,
-            MISC_G,
-            MISC_S,
-            MISC_C,
-            MISC_CF,
-            MISC_D,
-            MISC_EM,
-            MISC_FSC,
-            MISC_FSD,
-            MISC_FSM,
-            MISC_H,
-            MISC_I,
-            MISC_IN,
-            MISC_M,
-            MISC_P,
-            MISC_PM,
-            MISC_R,
-            MISC_SPS,
-            MISC_TDI,
-            MISC_U,
-            OTHER
-        }
-
+        
         public enum OrderTypeChoice
         {
             [Display(Name = "Sample")]
@@ -136,7 +113,7 @@ namespace MvcPhoenix.Models
         public enum ValueUnitChoice
         {
             [Display(Name = "Gallon")]
-            Gal,
+            GAL,
 
             [Display(Name = "Kilogram")]
             KG,
@@ -148,7 +125,11 @@ namespace MvcPhoenix.Models
             LB,
         }
 
-        public static string BuildDivisionDropDown(int id)
+        #endregion
+
+        #region DropDown Lists Construction
+        
+        public static string ddlBuildDivisionDropDown(int id)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -177,7 +158,7 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static string BuildProductEquivalentDropdown(int? clientid)
+        public static string ddlBuildProductEquivalentDropdown(int? clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -294,7 +275,7 @@ namespace MvcPhoenix.Models
         {
             using (var db = new CMCSQL03Entities())
             {
-                bool isSRcheck = false;                                     //flag to avoid duplicate listing of 1SR
+                bool isSRcheck = false;                                             // flag to avoid duplicate listing of 1SR
                 var shelfsizes = (from t in db.tblShelfMaster
                                   where t.ProductDetailID == productdetailid
                                   && t.InactiveSize != true
@@ -317,13 +298,17 @@ namespace MvcPhoenix.Models
 
                 if (!isSRcheck)
                 {
-                    s = s + "<option value='0'>1SR</option>"; // TBD: change value to '1SR' and update checks in other services - iffy
+                    s = s + "<option value='0'>1SR</option>";                       // TBD: change value to '1SR' and update checks in other services - iffy
                 }
 
                 return s;
             }
         }
 
+        #endregion
+
+        #region SelectListItem Objects
+        
         public static List<SelectListItem> ddlBulkIDs(int? productdetailid)
         {
             using (var db = new CMCSQL03Entities())
@@ -625,23 +610,42 @@ namespace MvcPhoenix.Models
             return result;
         }
 
-        public static List<SelectListItem> ddlOrderTypes()
+        public static List<SelectListItem> ddlOrderTransactionTypes()
         {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> result = new List<SelectListItem>();
+            List<SelectListItem> transactiontypes = new List<SelectListItem>();
 
-                result = (from t in db.tblOrderType
-                          orderby t.Description
-                          select new SelectListItem
-                          {
-                              Value = t.OrderType,
-                              Text = t.Description
-                          }).ToList();
-                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+            transactiontypes.Add(new SelectListItem { Value = "", Text = "" });
+            transactiontypes.Add(new SelectListItem { Value = "Admin Waste Fee", Text = "Admin Waste Fee" });
+            transactiontypes.Add(new SelectListItem { Value = "BPCS_Change", Text = "BPCS Change" });
+            transactiontypes.Add(new SelectListItem { Value = "Certificate_Of_Origin", Text = "Certificate Of Origin" });
+            transactiontypes.Add(new SelectListItem { Value = "Cool Pack", Text = "Cool Pack" });
+            transactiontypes.Add(new SelectListItem { Value = "Correction Freight", Text = "Correction Freight" });
+            transactiontypes.Add(new SelectListItem { Value = "Credit", Text = "Credit" });
+            transactiontypes.Add(new SelectListItem { Value = "Credit Card Credit", Text = "Credit Card Credit" });
+            transactiontypes.Add(new SelectListItem { Value = "Credit Card Fee", Text = "Credit Card Fee" });
+            transactiontypes.Add(new SelectListItem { Value = "Credit Card Order", Text = "Credit Card Order" });
+            transactiontypes.Add(new SelectListItem { Value = "Customs Documents", Text = "Customs Documents" });
+            transactiontypes.Add(new SelectListItem { Value = "Delivery Duties Taxes", Text = "Delivery Duties Taxes" });
+            transactiontypes.Add(new SelectListItem { Value = "Documents", Text = "Documents" });
+            transactiontypes.Add(new SelectListItem { Value = "Documents and Handling", Text = "Documents and Handling" });
+            transactiontypes.Add(new SelectListItem { Value = "Freight Surcharge", Text = "Freight Surcharge" });
+            transactiontypes.Add(new SelectListItem { Value = "Handling", Text = "Handling" });
+            transactiontypes.Add(new SelectListItem { Value = "Isolation", Text = "Isolation" });
+            transactiontypes.Add(new SelectListItem { Value = "Isolation Box", Text = "Isolation Box" });
+            transactiontypes.Add(new SelectListItem { Value = "Manual Handling", Text = "Manual Handling" });
+            transactiontypes.Add(new SelectListItem { Value = "Maut Fuel", Text = "Maut Fuel" });
+            transactiontypes.Add(new SelectListItem { Value = "Memo", Text = "Memo" });
+            transactiontypes.Add(new SelectListItem { Value = "Order Entry", Text = "Order Entry" });
+            transactiontypes.Add(new SelectListItem { Value = "Other", Text = "Other" });
+            transactiontypes.Add(new SelectListItem { Value = "RD Handling ADR", Text = "RD Handling ADR" });
+            transactiontypes.Add(new SelectListItem { Value = "RD Handling IATA", Text = "RD Handling IATA" });
+            transactiontypes.Add(new SelectListItem { Value = "RD Handling LQ", Text = "RD Handling LQ" });
+            transactiontypes.Add(new SelectListItem { Value = "RD Handling None", Text = "RD Handling None" });
+            transactiontypes.Add(new SelectListItem { Value = "Rush Shipment", Text = "Rush Shipment" });
+            transactiontypes.Add(new SelectListItem { Value = "SPS Paid Order", Text = "SPS Paid Order" });
+            transactiontypes.Add(new SelectListItem { Value = "UN Box", Text = "UN Box" });
 
-                return result;
-            }
+            return transactiontypes;
         }
 
         public static List<SelectListItem> ddlOtherProductStorage()
@@ -792,7 +796,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-        //May Not be used -  Iffy
         public static List<SelectListItem> ddlProductEquivalents(int? clientid)
         {
             using (var db = new CMCSQL03Entities())
@@ -826,11 +829,10 @@ namespace MvcPhoenix.Models
 
             return gloves;
         }
-
+        
         public static List<SelectListItem> ddlProductMasterIDs(int? clientid)
-        {
-            // 06/13/2016 This now is a list of PD-PN records
-            using (var db = new CMCSQL03Entities())
+        {            
+            using (var db = new CMCSQL03Entities())                                                             // 06/13/2016 This now is a list of PD-PN records
             {
                 List<SelectListItem> result = new List<SelectListItem>();
 
@@ -1002,8 +1004,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-
-        // replace 
         public static List<SelectListItem> ddlShipVias()
         {
             using (var db = new CMCSQL03Entities())
@@ -1023,7 +1023,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-        //r
         public static List<SelectListItem> ddlShipViasItemLevel()
         {
             using (var db = new CMCSQL03Entities())
@@ -1178,6 +1177,8 @@ namespace MvcPhoenix.Models
                 return result;
             }
         }
+
+        #endregion
 
         public static void EmailSmtpSend(string from, string to, string subject, string body)
         {

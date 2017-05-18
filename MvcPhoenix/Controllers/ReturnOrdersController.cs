@@ -18,7 +18,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BuildDivisionDropDown(int clientid)
         {
-            var ddldivision = ApplicationService.BuildDivisionDropDown(clientid);
+            var ddldivision = ApplicationService.ddlBuildDivisionDropDown(clientid);
 
             return Content(ddldivision);
         }

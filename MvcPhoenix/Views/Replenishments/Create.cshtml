@@ -67,14 +67,14 @@
 <!-- Local javascript -->
 <script type="text/javascript">
     function OnChangeClientID() {
-        var myurl = '@Url.Action("BuildDivisionDropDown", "Replenishments")';
+        var url = '@Url.Action("BuildDivisionDropDown", "Replenishments")';
         var data = $('#clientid').val();
-        $("#divisionid").load(myurl, { id: data });
+        $("#divisionid").load(url, { clientid: data });
     }
 
     function UpdateItemsPartial() {
         // load/update the partial
-        var myurl = '@Url.Action("SuggestedItemsList", "Replenishments")';
-        $("#dvGridPlaceHolder").load(myurl);
+        var url = '@Url.Action("SuggestedItemsList", "Replenishments")';
+        $("#dvGridPlaceHolder").load(url);
     }
 </script>
