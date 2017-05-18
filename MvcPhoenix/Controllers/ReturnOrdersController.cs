@@ -4,6 +4,7 @@ using MvcPhoenix.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Controllers
@@ -139,7 +140,7 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public ActionResult SaveSelectedItems(string inputclientid, string inputdivisionid, object[] bulkids, object[] stockids)
+        public async Task<ActionResult> SaveSelectedItems(string inputclientid, string inputdivisionid, object[] bulkids, object[] stockids)
         {
             // Make sure cientid is passed
             if (String.IsNullOrEmpty(inputclientid))
@@ -187,7 +188,7 @@ namespace MvcPhoenix.Controllers
                 for (int i = 0; i < bulkids.Length; i++)
                 {
                     int bulkid = Convert.ToInt32(bulkids[i]);
-                    OrderService.AddBulkItemToReturnOrder(orderid, bulkid);
+                    int x = await OrderService.AddBulkItemToReturnOrder(orderid, bulkid);
                 }
             }
 
@@ -197,10 +198,11 @@ namespace MvcPhoenix.Controllers
                 for (int i = 0; i < stockids.Length; i++)
                 {
                     int stockid = Convert.ToInt32(stockids[i]);
-                    OrderService.AddStockItemToReturnOrder(orderid, stockid);
+                    int x = await OrderService.AddStockItemToReturnOrder(orderid, stockid);
                 }
             }
 
+            await Task.Delay(10000);
             return Json(orderid, JsonRequestBehavior.AllowGet);
         }
     }

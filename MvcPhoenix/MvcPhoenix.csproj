@@ -959,8 +959,6 @@
     <Content Include="Views\Inventory\ShelfStockLabel.cshtml" />
     <Content Include="Views\Inventory\_ShelfStockModal.cshtml" />
     <Content Include="Views\ReturnOrders\Index.cshtml" />
-    <Content Include="Views\ReturnOrders\_ReturnBulkRecords.cshtml" />
-    <Content Include="Views\ReturnOrders\_ReturnStockRecords.cshtml" />
     <Content Include="Views\Shared\_ShowDownloadWCPP.cshtml" />
     <Content Include="Views\Inventory\PrintShelfStockLabel.cshtml" />
     <Content Include="Views\ProductConversion\DetailToMaster.cshtml" />

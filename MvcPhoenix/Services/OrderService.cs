@@ -3,6 +3,7 @@ using MvcPhoenix.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace MvcPhoenix.Services
@@ -1280,7 +1281,7 @@ namespace MvcPhoenix.Services
         #region Return Order Methods
 
         // Add bulk item to return order
-        public static void AddBulkItemToReturnOrder(int orderid, int bulkid)
+        public static async Task<int> AddBulkItemToReturnOrder(int orderid, int bulkid)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -1342,10 +1343,12 @@ namespace MvcPhoenix.Services
 
                 OrderService.fnGenerateOrderTransactions(newitemid);
             }
+
+            return orderid;
         }
 
         // Add stock item to new return order
-        public static void AddStockItemToReturnOrder (int orderid, int stockid)
+        public static async Task<int> AddStockItemToReturnOrder (int orderid, int stockid)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -1406,6 +1409,8 @@ namespace MvcPhoenix.Services
 
                 OrderService.fnGenerateOrderTransactions(newitemid);
             }
+
+            return orderid;
         }
 
         #endregion Return Order Methods

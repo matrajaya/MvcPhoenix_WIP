@@ -146,54 +146,51 @@
 
         if (xclientid === "") {                                                                             // alert user if client is not selected
             $.alert("Please select a client.");
-            $("#dvspinner").html.hide();
         }
-        else {
-            if ((bulkselecteditemsarray.length === 0) == (stockselecteditemsarray.length === 0)) {          // alert user if no selection is made
-                $.alert("Select an item from bulk or stock listings.");
-            }
 
+        if(xclientid.length > 0){
             if (bulkselecteditemsarray.length !== 0 || stockselecteditemsarray.length !== 0) {              // make sure user selects items
                 // Pass client & division ids, bulk & stock arrays to controller to create order
+                $("#dvspinner").show();
                 $.ajax({
                     url: "/ReturnOrders/SaveSelectedItems",
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({ inputclientid: xclientid, inputdivisionid: xdivisionid, bulkids: bulkselecteditemsarray, stockids: stockselecteditemsarray }),
-                    dataType: "json",
                     success: function (result) {
-                        var redirecturl = '/Orders/Edit/' + result;
+                        $("#dvspinner").hide();
                         $.alert('Success! Order Created.');
+                        var redirecturl = '/Orders/Edit/' + result;
                         window.location.replace(redirecturl);
-                    },
-                    error: function (result) {
-                        $.alert('Nope. Something is wrong.');
                     }
                 });
             }
-
-            $("#dvspinner").html.hide();
         }
+
+        if (xclientid.length > 0 && ((bulkselecteditemsarray.length < 1) == (stockselecteditemsarray.length < 1))) {          // alert user if no selection is made
+            $.alert("Select an item from bulk or stock listings.");
+        }
+
     });
 
     // Toggle check all bulk items
-    $(document).on('click', '#togglecheckallbulk', function () {
+    $(document).on('click', '.togglecheckallbulk', function () {
         $(".bulkcheckbox").prop('checked', $(this).prop('checked'));
 
         $(".bulkcheckbox").change(function () {
             if (!$(this).prop("checked")) {
-                $("#togglecheckallbulk").prop("checked", false);
+                $(".togglecheckallbulk").prop("checked", false);
             }
         });
     });
 
     // Toggle check all stock items
-    $(document).on('click', '#togglecheckallstock', function () {
+    $(document).on('click', '.togglecheckallstock', function () {
         $(".stockcheckbox").prop('checked', $(this).prop('checked'));
 
         $(".stockcheckbox").change(function () {
             if (!$(this).prop("checked")) {
-                $("#togglecheckallstock").prop("checked", false);
+                $(".togglecheckallstock").prop("checked", false);
             }
         });
     });
@@ -206,34 +203,36 @@
         var row = "";
         var count = 0;
 
-        $.ajax({
-            url: "/ReturnOrders/GetBulkItems",
-            data: { 'clientid': xclientid, 'divisionid': xdivisionid, 'bulkstatus': xbulkstatus },
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            cache: false,
-            success: function (data) {
-                row = "<thead><tr><th colspan='6' class='text-center info'>Bulk Stock Records(<span id='bulkitemscount'></span> items )</th> \
-                       </tr><tr><th><input type='checkbox' id='togglecheckallbulk' class='togglecheckallbulk' title='Check/Uncheck All'/></th> \
+        if (xclientid.length > 0) {
+            $.ajax({
+                url: "/ReturnOrders/GetBulkItems",
+                data: { 'clientid': xclientid, 'divisionid': xdivisionid, 'bulkstatus': xbulkstatus },
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                cache: false,
+                success: function (data) {
+                    row = "<thead><tr><th colspan='6' class='text-center info'>Bulk Stock Records(<span id='bulkitemscount'></span> items )</th> \
+                       </tr><tr><th><input type='checkbox' class='togglecheckallbulk' title='Check/Uncheck All'/></th> \
                        <th>Master Code</th><th>Location/<br />Lot</th><th class='text-center'>Weight/<br />Size</th><th class='text-center'>Status</th></tr></thead>";
-                $.each(data, function (index, item) {
-                    count++;
-                    row += "<tr> \
+                    $.each(data, function (index, item) {
+                        count++;
+                        row += "<tr> \
                             <td><input type='checkbox' id=" + item.bulkid + " class = 'bulkcheckbox'/></td> \
                             <td>" + item.MasterCode + "<br />" + item.MasterName + "</td> \
                             <td>" + item.warehouse + ": " + item.bin + "<br />" + item.lotnumber + "</td> \
                             <td class='text-center'>" + item.currentweight + "<br />" + item.um + "</td> \
                             <td class='text-center'>" + item.bulkstatus + "</td> \
                             </tr>";
-                });
-                $("#bulkitemstable").html(row);
-                $("#bulkitemscount").html(count);
-            },
-            error: function (result) {
-                alert("Error");
-            }
-        });
+                    });
+                    $("#bulkitemstable").html(row);
+                    $("#bulkitemscount").html(count);
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        }        
     }
 
     // Get data and build 'stockitemstable' table displaying unmarked stock items
@@ -244,20 +243,21 @@
         var row = "";
         var count = 0;
 
-        $.ajax({
-            url: "/ReturnOrders/GetStockItems",
-            data: { 'clientid': xclientid, 'divisionid': xdivisionid, 'stockstatus': xstockstatus },
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            cache: false,
-            success: function (data) {
-                row = "<thead><tr><th colspan='7' class='text-center info'>Shelf Stock Records ( <span id='stockitemscount'></span> items )</th> \
-                       </tr><tr><th><input type='checkbox' id='togglecheckallstock' class='togglecheckallstock' title='Check/Uncheck All'/></th><th>Product Code</th> \
+        if (xclientid.length > 0) {
+            $.ajax({
+                url: "/ReturnOrders/GetStockItems",
+                data: { 'clientid': xclientid, 'divisionid': xdivisionid, 'stockstatus': xstockstatus },
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                cache: false,
+                success: function (data) {
+                    row = "<thead><tr><th colspan='7' class='text-center info'>Shelf Stock Records ( <span id='stockitemscount'></span> items )</th> \
+                       </tr><tr><th><input type='checkbox' class='togglecheckallstock' title='Check/Uncheck All'/></th><th>Product Code</th> \
                        <th>Location/<br />Lot</th><th class='text-center'>Weight/<br />Size</th><th class='text-center'>On Hand</th><th class='text-center'>Status</th></tr></thead>";
-                $.each(data, function (index, item) {
-                    count++;
-                    row += "<tr> \
+                    $.each(data, function (index, item) {
+                        count++;
+                        row += "<tr> \
                             <td><input type='checkbox' id=" + item.StockID + " class = 'stockcheckbox' /></td> \
                             <td>" + item.ProductCode + "<br />" + item.ProductName + "</td> \
                             <td>" + item.Warehouse + ": " + item.Bin + "<br />" + item.LotNumber + "</td> \
@@ -265,22 +265,17 @@
                             <td class='text-center'>" + item.QtyOnHand + "</td> \
                             <td class='text-center'>" + item.ShelfStatus + "</td> \
                             </tr>";
-                });
-                $("#stockitemstable").html(row);
-                $("#stockitemscount").html(count);
-            },
-            error: function (result) {
-                alert("Error");
-            }
-        });
+                    });
+                    $("#stockitemstable").html(row);
+                    $("#stockitemscount").html(count);
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        }        
     }
-
-    // Animation when form is submitted
-    $("#createorder").click(function (e)
-    {
-        $("#dvspinner").show();
-    });
-
+    
     // Get division list for selected client id
     function UpdateDivisionDD() {
         var clientid = $('#clientid').val();
