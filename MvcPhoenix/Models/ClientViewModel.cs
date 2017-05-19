@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace MvcPhoenix.Models
@@ -16,16 +15,20 @@ namespace MvcPhoenix.Models
         public string CMCLocation { get; set; }
         public string ClientReference { get; set; }
         public string ClientEntityName { get; set; }
-        public string ClientCurrency { get; set; }        
+        public string ClientCurrency { get; set; }
         public string ClientUM { get; set; }
         public string ClientNetTerm { get; set; }
+
         [AllowHtml]
         public string InvoiceAddress { get; set; }
+
         [AllowHtml]
         public string InvoiceEmailTo { get; set; }
+
         [AllowHtml]
         public string KeyContactDir { get; set; }
-        public byte[] LogoFile { get; set; }        
+
+        public byte[] LogoFile { get; set; }
     }
 
     public class Division
@@ -129,6 +132,23 @@ namespace MvcPhoenix.Models
         public decimal? Biocide { get; set; }
         public decimal? Blend { get; set; }
         public decimal? Kosher { get; set; }
+        public decimal? OrderChargeCertificateOfOrigin { get; set; }
+        public decimal? OrderChargeDocumentsHandling { get; set; }
+        public decimal? OrderChargeManualHandling { get; set; }
+        public decimal? OrderChargeRDHandlingNone { get; set; }
+        public decimal? OrderChargeRDHandlingLQ { get; set; }
+        public decimal? OrderChargeRDHandlingADR { get; set; }
+        public decimal? OrderChargeRDHandlingIATA { get; set; }
+        public decimal? OrderChargeSPSPaidOrder { get; set; }
+        public decimal? OrderChargeBPCSChange { get; set; }
+        public decimal? OrderChargeCreditCardFee { get; set; }
+        public decimal? OrderChargeCreditCardOrder { get; set; }
+        public decimal? OrderChargeOrderEntry { get; set; }
+        public decimal? PPSChargeCoolPack { get; set; }
+        public decimal? PPSChargeIsolation { get; set; }
+        public decimal? PPSChargeIsolationBox { get; set; }
+        public decimal? PPSChargeUNBox { get; set; }
+        public decimal? CarrierChargeRushShipment { get; set; }
     }
 
     public class EndUse

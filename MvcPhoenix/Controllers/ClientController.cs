@@ -715,7 +715,24 @@ namespace MvcPhoenix.Controllers
                                       Nitrogen = t.Nitrogen,
                                       Biocide = t.Biocide,
                                       Blend = t.Blend,
-                                      Kosher = t.Kosher
+                                      Kosher = t.Kosher,
+                                      OrderChargeCertificateOfOrigin = t.OrderChargeCertificateOfOrigin,
+                                      OrderChargeDocumentsHandling = t.OrderChargeDocumentsHandling,
+                                      OrderChargeManualHandling = t.OrderChargeManualHandling,
+                                      OrderChargeRDHandlingNone = t.OrderChargeRDHandlingNone,
+                                      OrderChargeRDHandlingLQ = t.OrderChargeRDHandlingLQ,
+                                      OrderChargeRDHandlingADR = t.OrderChargeRDHandlingADR,
+                                      OrderChargeRDHandlingIATA = t.OrderChargeRDHandlingIATA,
+                                      OrderChargeSPSPaidOrder = t.OrderChargeSPSPaidOrder,
+                                      OrderChargeBPCSChange = t.OrderChargeBPCSChange,
+                                      OrderChargeCreditCardFee = t.OrderChargeCreditCardFee,
+                                      OrderChargeCreditCardOrder = t.OrderChargeCreditCardOrder,
+                                      OrderChargeOrderEntry = t.OrderChargeOrderEntry,
+                                      PPSChargeCoolPack = t.PPSChargeCoolPack,
+                                      PPSChargeIsolation = t.PPSChargeIsolation,
+                                      PPSChargeIsolationBox = t.PPSChargeIsolationBox,
+                                      PPSChargeUNBox = t.PPSChargeUNBox,
+                                      CarrierChargeRushShipment = t.CarrierChargeRushShipment,
                                   }).FirstOrDefault();
 
                 if (surcharges != null)
@@ -749,6 +766,23 @@ namespace MvcPhoenix.Controllers
                         q.Biocide = obj.Biocide;
                         q.Blend = obj.Blend;
                         q.Kosher = obj.Kosher;
+                        q.OrderChargeCertificateOfOrigin = obj.OrderChargeCertificateOfOrigin;
+                        q.OrderChargeDocumentsHandling = obj.OrderChargeDocumentsHandling;
+                        q.OrderChargeManualHandling = obj.OrderChargeManualHandling;
+                        q.OrderChargeRDHandlingNone = obj.OrderChargeRDHandlingNone;
+                        q.OrderChargeRDHandlingLQ = obj.OrderChargeRDHandlingLQ;
+                        q.OrderChargeRDHandlingADR = obj.OrderChargeRDHandlingADR;
+                        q.OrderChargeRDHandlingIATA = obj.OrderChargeRDHandlingIATA;
+                        q.OrderChargeSPSPaidOrder = obj.OrderChargeSPSPaidOrder;
+                        q.OrderChargeBPCSChange = obj.OrderChargeBPCSChange;
+                        q.OrderChargeCreditCardFee = obj.OrderChargeCreditCardFee;
+                        q.OrderChargeCreditCardOrder = obj.OrderChargeCreditCardOrder;
+                        q.OrderChargeOrderEntry = obj.OrderChargeOrderEntry;
+                        q.PPSChargeCoolPack = obj.PPSChargeCoolPack;
+                        q.PPSChargeIsolation = obj.PPSChargeIsolation;
+                        q.PPSChargeIsolationBox = obj.PPSChargeIsolationBox;
+                        q.PPSChargeUNBox = obj.PPSChargeUNBox;
+                        q.CarrierChargeRushShipment = obj.CarrierChargeRushShipment;
 
                         db.SaveChanges();
                     }
@@ -767,7 +801,24 @@ namespace MvcPhoenix.Controllers
                             Nitrogen = obj.Nitrogen,
                             Biocide = obj.Biocide,
                             Blend = obj.Blend,
-                            Kosher = obj.Kosher
+                            Kosher = obj.Kosher,
+                            OrderChargeCertificateOfOrigin = obj.OrderChargeCertificateOfOrigin,
+                            OrderChargeDocumentsHandling = obj.OrderChargeDocumentsHandling,
+                            OrderChargeManualHandling = obj.OrderChargeManualHandling,
+                            OrderChargeRDHandlingNone = obj.OrderChargeRDHandlingNone,
+                            OrderChargeRDHandlingLQ = obj.OrderChargeRDHandlingLQ,
+                            OrderChargeRDHandlingADR = obj.OrderChargeRDHandlingADR,
+                            OrderChargeRDHandlingIATA = obj.OrderChargeRDHandlingIATA,
+                            OrderChargeSPSPaidOrder = obj.OrderChargeSPSPaidOrder,
+                            OrderChargeBPCSChange = obj.OrderChargeBPCSChange,
+                            OrderChargeCreditCardFee = obj.OrderChargeCreditCardFee,
+                            OrderChargeCreditCardOrder = obj.OrderChargeCreditCardOrder,
+                            OrderChargeOrderEntry = obj.OrderChargeOrderEntry,
+                            PPSChargeCoolPack = obj.PPSChargeCoolPack,
+                            PPSChargeIsolation = obj.PPSChargeIsolation,
+                            PPSChargeIsolationBox = obj.PPSChargeIsolationBox,
+                            PPSChargeUNBox = obj.PPSChargeUNBox,
+                            CarrierChargeRushShipment = obj.CarrierChargeRushShipment,
                         };
 
                         db.tblSurcharge.Add(newrecord);

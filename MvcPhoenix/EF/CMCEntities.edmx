@@ -1825,6 +1825,23 @@
           <Property Name="Biocide" Type="numeric" Precision="8" Scale="2" />
           <Property Name="Blend" Type="numeric" Precision="8" Scale="2" />
           <Property Name="Kosher" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeCertificateOfOrigin" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeDocumentsHandling" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeManualHandling" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeRDHandlingNone" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeRDHandlingLQ" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeRDHandlingADR" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeRDHandlingIATA" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeSPSPaidOrder" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeBPCSChange" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeCreditCardFee" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeCreditCardOrder" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="OrderChargeOrderEntry" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="PPSChargeCoolPack" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="PPSChargeIsolation" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="PPSChargeIsolationBox" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="PPSChargeUNBox" Type="numeric" Precision="8" Scale="2" />
+          <Property Name="CarrierChargeRushShipment" Type="numeric" Precision="8" Scale="2" />
           <Property Name="LegacyID" Type="int" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="50" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -3514,6 +3531,23 @@
           <Property Name="Biocide" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="Blend" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="Kosher" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeCertificateOfOrigin" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeDocumentsHandling" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeManualHandling" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeRDHandlingNone" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeRDHandlingLQ" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeRDHandlingADR" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeRDHandlingIATA" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeSPSPaidOrder" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeBPCSChange" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeCreditCardFee" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeCreditCardOrder" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="OrderChargeOrderEntry" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="PPSChargeCoolPack" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="PPSChargeIsolation" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="PPSChargeIsolationBox" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="PPSChargeUNBox" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="CarrierChargeRushShipment" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="LegacyID" Type="Int32" />
           <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
@@ -5447,6 +5481,23 @@
                 <ScalarProperty Name="Location_MDB" ColumnName="Location_MDB" />
                 <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
                 <ScalarProperty Name="LegacyID" ColumnName="LegacyID" />
+                <ScalarProperty Name="CarrierChargeRushShipment" ColumnName="CarrierChargeRushShipment" />
+                <ScalarProperty Name="PPSChargeUNBox" ColumnName="PPSChargeUNBox" />
+                <ScalarProperty Name="PPSChargeIsolationBox" ColumnName="PPSChargeIsolationBox" />
+                <ScalarProperty Name="PPSChargeIsolation" ColumnName="PPSChargeIsolation" />
+                <ScalarProperty Name="PPSChargeCoolPack" ColumnName="PPSChargeCoolPack" />
+                <ScalarProperty Name="OrderChargeOrderEntry" ColumnName="OrderChargeOrderEntry" />
+                <ScalarProperty Name="OrderChargeCreditCardOrder" ColumnName="OrderChargeCreditCardOrder" />
+                <ScalarProperty Name="OrderChargeCreditCardFee" ColumnName="OrderChargeCreditCardFee" />
+                <ScalarProperty Name="OrderChargeBPCSChange" ColumnName="OrderChargeBPCSChange" />
+                <ScalarProperty Name="OrderChargeSPSPaidOrder" ColumnName="OrderChargeSPSPaidOrder" />
+                <ScalarProperty Name="OrderChargeRDHandlingIATA" ColumnName="OrderChargeRDHandlingIATA" />
+                <ScalarProperty Name="OrderChargeRDHandlingADR" ColumnName="OrderChargeRDHandlingADR" />
+                <ScalarProperty Name="OrderChargeRDHandlingLQ" ColumnName="OrderChargeRDHandlingLQ" />
+                <ScalarProperty Name="OrderChargeRDHandlingNone" ColumnName="OrderChargeRDHandlingNone" />
+                <ScalarProperty Name="OrderChargeManualHandling" ColumnName="OrderChargeManualHandling" />
+                <ScalarProperty Name="OrderChargeDocumentsHandling" ColumnName="OrderChargeDocumentsHandling" />
+                <ScalarProperty Name="OrderChargeCertificateOfOrigin" ColumnName="OrderChargeCertificateOfOrigin" />
                 <ScalarProperty Name="Kosher" ColumnName="Kosher" />
                 <ScalarProperty Name="Blend" ColumnName="Blend" />
                 <ScalarProperty Name="Biocide" ColumnName="Biocide" />
