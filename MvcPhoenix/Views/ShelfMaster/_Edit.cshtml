@@ -160,12 +160,11 @@
 
 <script type="text/javascript">
     function OnChangeSize() {
-        var myurl = '@Url.Action("BuildShelfMasterPackagesDropDown", "ShelfMaster")';
-        var data = $('#size').val();
-
+        var url = '@Url.Action("BuildShelfMasterPackagesDropDown", "ShelfMaster")';
+        
         $("#dvPlaceholderPackageInitial").empty();
         $("#dvPlaceholderPackageUpdated").removeClass("hidden");
 
-        $("#packageid").load(myurl, { id: data });
+        $("#packageid").load(url);
     }
 </script>

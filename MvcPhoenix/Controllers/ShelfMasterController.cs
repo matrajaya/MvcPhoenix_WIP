@@ -61,6 +61,7 @@ namespace MvcPhoenix.Controllers
         {
             ShelfMasterViewModel obj = new ShelfMasterViewModel();
             obj = ShelfMasterService.fnFillShelfMasterFromDB(id);
+
             return PartialView("~/Views/ShelfMaster/_Edit.cshtml", obj);
         }
 
@@ -78,10 +79,9 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("Index", new { id = productid });
         }
 
-        public ActionResult BuildShelfMasterPackagesDropDown(string id)
+        public ActionResult BuildShelfMasterPackagesDropDown()
         {
-            // id=clientid .. return the <option> values for the <select> tag
-            return Content(ShelfMasterService.fnBuildShelfMasterPackagesDropDown(id));
+            return Content(ApplicationService.ddlBuildShelfMasterPackagesDropDown());
         }
 
         [HttpPost]
@@ -104,6 +104,7 @@ namespace MvcPhoenix.Controllers
                 // Need server side validation for Delete - no tblStock records
                 ShelfMasterService.fnDeleteShelfMaster(obj.shelfid);
             }
+
             return RedirectToAction("Index", new { id = obj.productdetailid });
         }
     }

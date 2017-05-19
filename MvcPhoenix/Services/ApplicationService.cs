@@ -128,64 +128,6 @@ namespace MvcPhoenix.Models
         #endregion
 
         #region DropDown Lists Construction
-        
-        public static string ddlBuildDivisionDropDown(int id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var divisions = (from t in db.tblDivision
-                                 where t.ClientID == id
-                                 orderby t.DivisionName, t.BusinessUnit
-                                 select t);
-
-                string s = "<option value='0'></option>";
-
-                if (divisions.Count() > 0)
-                {
-                    foreach (var item in divisions)
-                    {
-                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.DivisionName + " - " + item.BusinessUnit + "</option>";
-                    }
-                }
-                else
-                {
-                    s = s + "<option value=0>No Divisions Found</option>";
-                }
-
-                s = s + "</select>";
-
-                return s;
-            }
-        }
-
-        public static string ddlBuildProductEquivalentDropdown(int? clientid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var products = (from t in db.tblProductDetail
-                                join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                                where pm.ClientID == clientid
-                                && t.ProductCode != pm.MasterCode
-                                orderby t.ProductCode
-                                select new { t.ProductDetailID, t.ProductCode, t.ProductName }).ToList();
-
-                string s = "<option value='0'></option>";
-                if (products.Count() > 0)
-                {
-                    foreach (var item in products)
-                    {
-                        s = s + "<option value=" + item.ProductDetailID.ToString() + ">" + item.ProductCode + " - " + item.ProductName + "</option>";
-                    }
-                }
-                else
-                {
-                    s = s + "<option value=0>No Products Found</option>";
-                }
-                s = s + "</select>";
-
-                return s;
-            }
-        }
 
         public static string ddlBuildBillingGroup(int clientid)
         {
@@ -208,6 +150,35 @@ namespace MvcPhoenix.Models
                 else
                 {
                     s = s + "<option value=0>No Billing Group</option>";
+                }
+
+                s = s + "</select>";
+
+                return s;
+            }
+        }
+
+        public static string ddlBuildDivisionDropDown(int id)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var divisions = (from t in db.tblDivision
+                                 where t.ClientID == id
+                                 orderby t.DivisionName, t.BusinessUnit
+                                 select t);
+
+                string s = "<option value='0'></option>";
+
+                if (divisions.Count() > 0)
+                {
+                    foreach (var item in divisions)
+                    {
+                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.DivisionName + " - " + item.BusinessUnit + "</option>";
+                    }
+                }
+                else
+                {
+                    s = s + "<option value=0>No Divisions Found</option>";
                 }
 
                 s = s + "</select>";
@@ -244,6 +215,34 @@ namespace MvcPhoenix.Models
             }
         }
 
+        public static string ddlBuildProductEquivalentDropdown(int? clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var products = (from t in db.tblProductDetail
+                                join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                                where pm.ClientID == clientid
+                                && t.ProductCode != pm.MasterCode
+                                orderby t.ProductCode
+                                select new { t.ProductDetailID, t.ProductCode, t.ProductName }).ToList();
+
+                string s = "<option value='0'></option>";
+                if (products.Count() > 0)
+                {
+                    foreach (var item in products)
+                    {
+                        s = s + "<option value=" + item.ProductDetailID.ToString() + ">" + item.ProductCode + " - " + item.ProductName + "</option>";
+                    }
+                }
+                else
+                {
+                    s = s + "<option value=0>No Products Found</option>";
+                }
+                s = s + "</select>";
+
+                return s;
+            }
+        }
         public static string ddlBuildProductMasterDropDown(int clientid)
         {
             using (var db = new CMCSQL03Entities())
@@ -267,6 +266,28 @@ namespace MvcPhoenix.Models
 
                 s = s + "</select>";
 
+                return s;
+            }
+        }
+
+        public static string ddlBuildShelfMasterPackagesDropDown()
+        {
+            // This returns ONLY the <option> portion of the <select> tag
+            using (var db = new CMCSQL03Entities())
+            {
+                var packages = (from t in db.tblPackage
+                                orderby t.Size
+                                select t);
+
+                string s = "<option value='0' selected=true>Select Package</option>";
+                if (packages.Count() > 0)
+                {
+                    foreach (var item in packages)
+                    { s = s + "<option value=" + item.PackageID.ToString() + ">" + item.PartNumber + " - " + item.Description + "</option>"; }
+                }
+                else
+                { s = s + "<option value=0>No Packages Found</option>"; }
+                s = s + "</select>";
                 return s;
             }
         }
@@ -304,7 +325,6 @@ namespace MvcPhoenix.Models
                 return s;
             }
         }
-
         #endregion
 
         #region SelectListItem Objects
@@ -692,7 +712,7 @@ namespace MvcPhoenix.Models
                               Value = t.PackageID.ToString(),
                               Text = t.PartNumber + "-" + t.Description
                           }).ToList();
-                result.Add(new SelectListItem { Value = "", Text = "" });
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return result;
             }
@@ -1133,7 +1153,7 @@ namespace MvcPhoenix.Models
                               Value = t.Size,
                               Text = t.Size
                           }).Distinct().ToList();
-                result.Add(new SelectListItem { Value = "", Text = "" });
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return result;
             }
