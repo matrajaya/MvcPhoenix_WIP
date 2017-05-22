@@ -232,5 +232,35 @@ namespace MvcPhoenix.Models
 
         [Display(Name = "Minimal Sample Charge")]
         public decimal? minimalsamplecharge { get; set; }
+
+        /////////////////////////////////////////////
+        // New Billing Worksheet
+        /////////////////////////////////////////////
+        
+        // Charges
+        public decimal? EmptyPackaging { get; set; }
+        public decimal? Handling { get; set; }
+        public decimal? InactiveProducts { get; set; }
+        public decimal? ProductSetupChanges { get; set; }
+        public decimal? MiscellaneousLabor { get; set; }
+        public decimal? FollowUpOrder { get; set; }
+        public decimal? RefrigeratorStorage { get; set; }
+        public decimal? GHSLabels { get; set; }
+        public decimal? ITFee { get; set; }
+        public decimal? LabelsPrinted { get; set; }
+        public decimal? LaborRelabel { get; set; }
+        public decimal? Literature { get; set; }
+        public decimal? LabelStock { get; set; }
+        public decimal? LabelMaintainance { get; set; }
+        public decimal? MSDSPrints { get; set; }
+        public decimal? NewLabelSetup { get; set; }
+        public decimal? NewProductSetup { get; set; }
+        public decimal? Other { get; set; }
+        public decimal? PalletReturn { get; set; }
+        public decimal? QCStorage { get; set; }
+        public decimal? Relabels { get; set; }
+        public decimal? WarehouseStorage { get; set; }
+        public decimal? WHMISLabels { get; set; }
+        public decimal? WasteProcessing { get; set; }        
     }
 }
