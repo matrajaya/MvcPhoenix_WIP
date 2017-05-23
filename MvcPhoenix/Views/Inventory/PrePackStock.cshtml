@@ -63,12 +63,12 @@
                         @Html.ValidationMessageFor(m => m.BulkContainer.mfgdate)
                     </div>
                     <div class="form-group col-md-2">
-                        <label>Expiration Date</label>
+                        <label><abbr title="Shelf Life: @Model.BulkContainer.pm_shelflife">Expiration Date <i class="fa fa-question-circle"></i></abbr></label>
                         @Html.TextBoxFor(m => m.BulkContainer.expirationdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control", @onchange = "ChangeCeaseShipDate(this.value);" })
                         @Html.ValidationMessageFor(m => m.BulkContainer.expirationdate)
                     </div>
                     <div class="form-group col-md-2">
-                        <label>Cease Ship Date</label>
+                        <label><abbr title="Cease Ship Days: @Model.BulkContainer.pm_ceaseshipdifferential">Cease Ship Date <i class="fa fa-question-circle"></i></abbr></label>
                         @Html.TextBoxFor(m => m.BulkContainer.ceaseshipdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
                         @Html.ValidationMessageFor(m => m.BulkContainer.ceaseshipdate)
                     </div>

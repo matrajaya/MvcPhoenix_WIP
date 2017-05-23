@@ -81,6 +81,7 @@ namespace MvcPhoenix.Controllers
             using (var db = new CMCSQL03Entities())
             {
                 var vm = new List<StockViewModel>();
+
                 var q = (from t in db.tblStock
                          join sm in db.tblShelfMaster on t.ShelfID equals sm.ShelfID
                          join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
@@ -88,12 +89,19 @@ namespace MvcPhoenix.Controllers
                          where pd.ProductDetailID == id && t.QtyOnHand > 0
                          select t).ToList();
 
+                var productreference = (from pm in db.tblProductMaster
+                                        join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
+                                        where pd.ProductDetailID == id
+                                        select pm).FirstOrDefault();
+
                 foreach (var row in q)
                 {
                     vm.Add(InventoryService.fnFillStockViewModel(row.StockID));
                 }
 
                 ViewBag.ParentID = id;
+                ViewBag.ShelfLife = productreference.ShelfLife;
+                ViewBag.CeaseShipDays = productreference.CeaseShipDifferential;
 
                 return PartialView("~/Views/Inventory/_ShelfStock.cshtml", vm);
             }
@@ -141,6 +149,7 @@ namespace MvcPhoenix.Controllers
 
                 vm.ShelfMasterCount = vm.ListOfShelfMasterIDs.Count();
                 vm.BulkContainer.pm_ceaseshipdifferential = pm.CeaseShipDifferential;
+                vm.BulkContainer.pm_shelflife = pm.ShelfLife;
 
                 return View("~/Views/Inventory/PrePackStock.cshtml", vm);
             }
