@@ -99,9 +99,10 @@ namespace MvcPhoenix.Extensions
         private static string PadString(string inputentry)
         {
             int stringlength = inputentry.Length;
+            int optimumsize = 25;
             var spacefiller = "";
 
-            if (stringlength < 25)
+            if (stringlength < optimumsize)
             {
                 int n = 25 - stringlength;
                 spacefiller = new String(' ', n);
