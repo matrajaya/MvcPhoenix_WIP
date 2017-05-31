@@ -77,7 +77,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }
         public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
         public virtual DbSet<tblTier> tblTier { get; set; }
-        public virtual DbSet<tblTransType> tblTransType { get; set; }
         public virtual DbSet<tblUN> tblUN { get; set; }
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }

@@ -690,6 +690,61 @@ namespace MvcPhoenix.Controllers
 
         #endregion Tier Methods
 
+        #region End Use Methods
+
+        public ActionResult ListEndUses(int id)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                // id = clientid;
+                ViewBag.ClientKey = id;
+                var obj = (from t in db.tblEndUse
+                           where t.ClientID == id
+                           orderby t.EndUse
+                           select new MvcPhoenix.Models.EndUse
+                           {
+                               EndUseID = t.EndUseID,
+                               ClientID = t.ClientID,
+                               EndUseString = t.EndUse
+                           }).ToList();
+
+                if (obj.Count > 0)
+                {
+                    return PartialView("~/Views/Client/_EndUses.cshtml", obj);
+                }
+
+                return null;
+            }
+        }
+
+        public ActionResult AddEndUse(int clientid, string endusestring)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var newrow = new tblEndUse { };
+                newrow.ClientID = clientid;
+                newrow.EndUse = endusestring;
+
+                db.tblEndUse.Add(newrow);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ListEndUses", new { id = clientid });
+        }
+
+        public ActionResult DeleteEndUse(int id, int clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                string s = @"DELETE FROM tblEndUse WHERE EndUseID=" + id.ToString();
+                db.Database.ExecuteSqlCommand(s);
+            }
+
+            return RedirectToAction("ListEndUses", new { id = clientid });
+        }
+
+        #endregion End Use Methods
+
         #region Surcharge methods
 
         public ActionResult DisplaySurcharges(int? id)
@@ -840,59 +895,142 @@ namespace MvcPhoenix.Controllers
 
         #endregion Surcharge methods
 
-        #region End Use Methods
+        #region Administrative Rates methods
 
-        public ActionResult ListEndUses(int id)
+        public ActionResult DisplayAdministrativeRates(int? id)
         {
             using (var db = new CMCSQL03Entities())
             {
-                // id = clientid;
                 ViewBag.ClientKey = id;
-                var obj = (from t in db.tblEndUse
-                           where t.ClientID == id
-                           orderby t.EndUse
-                           select new MvcPhoenix.Models.EndUse
-                           {
-                               EndUseID = t.EndUseID,
-                               ClientID = t.ClientID,
-                               EndUseString = t.EndUse
-                           }).ToList();
 
-                if (obj.Count > 0)
+                var administrativerates = (from t in db.tblRates
+                                           where t.ClientID == id
+                                           select new MvcPhoenix.Models.AdministativeRates
+                                           {
+                                               RatesID = t.RatesID,
+                                               ClientID = t.ClientID,
+                                               EmptyPackagingRate = t.EmptyPackagingRate,
+                                               HandlingRate = t.HandlingRate,
+                                               InactiveProductsRate = t.InactiveProductRate,
+                                               ProductSetupChangesRate = t.ProductSetupChangesRate,
+                                               MiscellaneousLaborRate = t.MiscellaneousLaborRate,
+                                               FollowUpOrderRate = t.FollowUpOrderRate,
+                                               RefrigeratorStorageRate = t.RefrigeratorStorageRate,
+                                               GHSLabelsRate = t.GHSLabelsRate,
+                                               ITFeeRate = t.ITFeeRate,
+                                               LabelsPrintedRate = t.LabelsPrintedRate,
+                                               LaborRelabelRate = t.LaborRelabelRate,
+                                               LiteratureRate = t.LiteratureRate,
+                                               LabelStockRate = t.LabelStockRate,
+                                               LabelMaintainanceRate = t.LabelMaintainanceRate,
+                                               MSDSPrintsRate = t.MSDSPrintsRate,
+                                               NewLabelSetupRate = t.NewLabelSetupRate,
+                                               NewProductSetupRate = t.NewProductSetupRate,
+                                               OtherRate = t.OtherRate,
+                                               PalletReturnRate = t.PalletReturnRate,
+                                               QCStorageRate = t.QCStorageRate,
+                                               RelabelsRate = t.RelabelsRate,
+                                               WarehouseStorageRate = t.WarehouseStorageRate,
+                                               WHMISLabelsRate = t.WHMISLabelsRate,
+                                               WasteProcessingRate = t.WasteProcessingRate,
+                                           }).FirstOrDefault();
+
+                if (administrativerates != null)
                 {
-                    return PartialView("~/Views/Client/_EndUses.cshtml", obj);
+                    return PartialView("~/Views/Client/_AdministrativeRates.cshtml", administrativerates);
                 }
 
-                return null;
+                return PartialView("~/Views/Client/_AdministrativeRates.cshtml");
             }
         }
 
-        public ActionResult AddEndUse(int clientid, string endusestring)
+        public ActionResult SaveAdministrativeRates(AdministativeRates obj, int clientkey)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var newrow = new tblEndUse { };
-                newrow.ClientID = clientid;
-                newrow.EndUse = endusestring;
+                var q = db.tblRates.Find(obj.RatesID);
+                var msg = "Save Successful!";
 
-                db.tblEndUse.Add(newrow);
-                db.SaveChanges();
+                try
+                {
+                    if (q != null)
+                    {
+                        q.RatesID = obj.RatesID;
+                        q.EmptyPackagingRate = obj.EmptyPackagingRate;
+                        q.HandlingRate = obj.HandlingRate;
+                        q.InactiveProductRate = obj.InactiveProductsRate;
+                        q.ProductSetupChangesRate = obj.ProductSetupChangesRate;
+                        q.MiscellaneousLaborRate = obj.MiscellaneousLaborRate;
+                        q.FollowUpOrderRate = obj.FollowUpOrderRate;
+                        q.RefrigeratorStorageRate = obj.RefrigeratorStorageRate;
+                        q.GHSLabelsRate = obj.GHSLabelsRate;
+                        q.ITFeeRate = obj.ITFeeRate;
+                        q.LabelsPrintedRate = obj.LabelsPrintedRate;
+                        q.LaborRelabelRate = obj.LaborRelabelRate;
+                        q.LiteratureRate = obj.LiteratureRate;
+                        q.LabelStockRate = obj.LabelStockRate;
+                        q.LabelMaintainanceRate = obj.LabelMaintainanceRate;
+                        q.MSDSPrintsRate = obj.MSDSPrintsRate;
+                        q.NewLabelSetupRate = obj.NewLabelSetupRate;
+                        q.NewProductSetupRate = obj.NewProductSetupRate;
+                        q.OtherRate = obj.OtherRate;
+                        q.PalletReturnRate = obj.PalletReturnRate;
+                        q.QCStorageRate = obj.QCStorageRate;
+                        q.RelabelsRate = obj.RelabelsRate;
+                        q.WarehouseStorageRate = obj.WarehouseStorageRate;
+                        q.WHMISLabelsRate = obj.WHMISLabelsRate;
+                        q.WasteProcessingRate = obj.WasteProcessingRate;
+
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        var newrecord = new tblRates
+                        {
+                            ClientID = Convert.ToInt32(clientkey),
+                            EmptyPackagingRate = obj.EmptyPackagingRate,
+                            HandlingRate = obj.HandlingRate,
+                            InactiveProductRate = obj.InactiveProductsRate,
+                            ProductSetupChangesRate = obj.ProductSetupChangesRate,
+                            MiscellaneousLaborRate = obj.MiscellaneousLaborRate,
+                            FollowUpOrderRate = obj.FollowUpOrderRate,
+                            RefrigeratorStorageRate = obj.RefrigeratorStorageRate,
+                            GHSLabelsRate = obj.GHSLabelsRate,
+                            ITFeeRate = obj.ITFeeRate,
+                            LabelsPrintedRate = obj.LabelsPrintedRate,
+                            LaborRelabelRate = obj.LaborRelabelRate,
+                            LiteratureRate = obj.LiteratureRate,
+                            LabelStockRate = obj.LabelStockRate,
+                            LabelMaintainanceRate = obj.LabelMaintainanceRate,
+                            MSDSPrintsRate = obj.MSDSPrintsRate,
+                            NewLabelSetupRate = obj.NewLabelSetupRate,
+                            NewProductSetupRate = obj.NewProductSetupRate,
+                            OtherRate = obj.OtherRate,
+                            PalletReturnRate = obj.PalletReturnRate,
+                            QCStorageRate = obj.QCStorageRate,
+                            RelabelsRate = obj.RelabelsRate,
+                            WarehouseStorageRate = obj.WarehouseStorageRate,
+                            WHMISLabelsRate = obj.WHMISLabelsRate,
+                            WasteProcessingRate = obj.WasteProcessingRate,
+                        };
+
+                        db.tblRates.Add(newrecord);
+                        db.SaveChanges();
+
+                        msg = "New record added";
+                    }
+                }
+                catch (Exception)
+                {
+                    // catch if null or beyond reasonable bounds. Unforseen errors.
+                    msg = "Something is wrong with your input...";
+                }
+
+                ViewBag.Message = "<label class='text-success'>" + msg + "</label>";
+                return Content(ViewBag.Message);
             }
-
-            return RedirectToAction("ListEndUses", new { id = clientid });
         }
 
-        public ActionResult DeleteEndUse(int id, int clientid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                string s = @"DELETE FROM tblEndUse WHERE EndUseID=" + id.ToString();
-                db.Database.ExecuteSqlCommand(s);
-            }
-
-            return RedirectToAction("ListEndUses", new { id = clientid });
-        }
-
-        #endregion End Use Methods
+        #endregion Administrative Rates methods
     }
 }

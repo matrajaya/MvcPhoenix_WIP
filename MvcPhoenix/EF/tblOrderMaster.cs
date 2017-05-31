@@ -101,6 +101,7 @@ namespace MvcPhoenix.EF
         public string PreferredCarrier { get; set; }
         public Nullable<bool> ApprovalNeeded { get; set; }
         public Nullable<bool> IsSDN { get; set; }
+        public Nullable<bool> IsSDNOverride { get; set; }
         public Nullable<int> CeaseShipOffset { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }

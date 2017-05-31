@@ -28,13 +28,11 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblHSCode" Width="1.5" PointX="16.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblInvLog" Width="1.5" PointX="16.75" PointY="6.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblInvLogType" Width="1.5" PointX="16.75" PointY="16.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblInvoice" Width="1.5" PointX="6.75" PointY="17.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblInvoiceDetail" Width="1.5" PointX="12.75" PointY="17.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblInvoiceMaster" Width="1.5" PointX="18.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblInvPMLogNote" Width="1.5" PointX="2.75" PointY="18.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderImport" Width="1.5" PointX="18.75" PointY="5.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderItem" Width="1.5" PointX="8.75" PointY="19.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblOrderMaster" Width="1.5" PointX="14.75" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderSPSBilling" Width="1.5" PointX="20.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderType" Width="1.5" PointX="20.75" PointY="15.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblPackage" Width="1.5" PointX="20.75" PointY="18.75" />
@@ -47,7 +45,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductionMaster" Width="1.5" PointX="2.75" PointY="23.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductionStage" Width="1.5" PointX="24.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductXRef" Width="1.5" PointX="10.75" PointY="24.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblRates" Width="1.5" PointX="20.75" PointY="25.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblReasonCode" Width="1.5" PointX="26.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblReportCriteria" Width="1.5" PointX="26.75" PointY="3.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblShelfMaster" Width="1.5" PointX="26.75" PointY="7.75" />
@@ -57,7 +54,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblSuggestedBulk" Width="1.5" PointX="22.75" PointY="27.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblSurcharge" Width="1.5" PointX="28.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblTier" Width="1.5" PointX="28.75" PointY="5.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblTransType" Width="1.5" PointX="28.75" PointY="9.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblUN" Width="1.5" PointX="10.75" PointY="28.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblUser" Width="1.5" PointX="28.75" PointY="12.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblWasteCode" Width="1.5" PointX="28.75" PointY="16.75" />
@@ -66,6 +62,9 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblStock" Width="1.5" PointX="25.375" PointY="27.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductMaster" Width="1.5" PointX="27.375" PointY="30.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblCarrier" Width="1.5" PointX="29.375" PointY="30.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblInvoice" Width="1.5" PointX="5.375" PointY="18.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblRates" Width="1.5" PointX="31.375" PointY="0.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblOrderMaster" Width="1.5" PointX="15.375" PointY="19.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

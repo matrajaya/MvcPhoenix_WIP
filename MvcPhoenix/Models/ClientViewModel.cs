@@ -117,6 +117,13 @@ namespace MvcPhoenix.Models
         public decimal? Price { get; set; }
     }
 
+    public class EndUse
+    {
+        public int EndUseID { get; set; }
+        public int? ClientID { get; set; }
+        public string EndUseString { get; set; }
+    }
+
     public class Surcharge
     {
         public int SurchargeID { get; set; }
@@ -151,10 +158,33 @@ namespace MvcPhoenix.Models
         public decimal? CarrierChargeRushShipment { get; set; }
     }
 
-    public class EndUse
+    public class AdministativeRates
     {
-        public int EndUseID { get; set; }
-        public int? ClientID { get; set; }
-        public string EndUseString { get; set; }
+        public int RatesID { get; set; }
+        public int ClientID { get; set; }
+        public decimal? EmptyPackagingRate { get; set; }
+        public decimal? HandlingRate { get; set; }
+        public decimal? InactiveProductsRate { get; set; }
+        public decimal? ProductSetupChangesRate { get; set; }
+        public decimal? MiscellaneousLaborRate { get; set; }
+        public decimal? FollowUpOrderRate { get; set; }
+        public decimal? RefrigeratorStorageRate { get; set; }
+        public decimal? GHSLabelsRate { get; set; }
+        public decimal? ITFeeRate { get; set; }
+        public decimal? LabelsPrintedRate { get; set; }
+        public decimal? LaborRelabelRate { get; set; }
+        public decimal? LiteratureRate { get; set; }
+        public decimal? LabelStockRate { get; set; }
+        public decimal? LabelMaintainanceRate { get; set; }
+        public decimal? MSDSPrintsRate { get; set; }
+        public decimal? NewLabelSetupRate { get; set; }
+        public decimal? NewProductSetupRate { get; set; }
+        public decimal? OtherRate { get; set; }
+        public decimal? PalletReturnRate { get; set; }
+        public decimal? QCStorageRate { get; set; }
+        public decimal? RelabelsRate { get; set; }
+        public decimal? WarehouseStorageRate { get; set; }
+        public decimal? WHMISLabelsRate { get; set; }
+        public decimal? WasteProcessingRate { get; set; }
     }
 }

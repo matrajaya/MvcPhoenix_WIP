@@ -297,6 +297,16 @@
         </div>
     </div>
 
+    @* Administrative Rates *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#administrativeratespanel"><i class="fa fa-book fa-fw"></i> Administrative Rates</h3>
+        </div>
+        <div id="administrativeratespanel" class="panel-body collapse in">
+            @Html.Action("DisplayAdministrativeRates", "Client", new { clientid = @Model.ClientID })
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-lg-12">
             <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>

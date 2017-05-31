@@ -13,14 +13,9 @@ namespace MvcPhoenix.Controllers
     {
         public ActionResult Index()
         {
-            List<InvoiceViewModel> mylist = InvoiceService.IndexList();
+            List<InvoiceViewModel> invoicelist = InvoiceService.IndexList();
 
-            return View(mylist);
-        }
-
-        public ActionResult BuildBillingGroupDDL(int id)
-        {
-            return Content(ApplicationService.ddlBuildBillingGroup(id));
+            return View(invoicelist);
         }
 
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
@@ -81,21 +76,17 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection fc)
         {
-            /// string client, string division,
-            /// Assign invoice period based on current date: Get: ClientID, BillingGroup, Period
-            /// Automated business rules from service
-            /// Assign Invoice ID = -1 ansd go to edit action
-            /// Ephemeral until the user executes save action
             int ClientID = Convert.ToInt32(fc["ClientID"]);
             int DivisionID = Convert.ToInt32(fc["billinggroupid"]);
-            string InvoicePeriod = fc["invoiceperiod"];
             DateTime StartDate = Convert.ToDateTime(fc["startdate"]);
             DateTime EndDate = Convert.ToDateTime(fc["enddate"]);
 
-            InvoiceViewModel obj = new InvoiceViewModel();
-            obj = InvoiceService.CreateInvoice(ClientID, DivisionID, InvoicePeriod, StartDate, EndDate);
+            int invoiceid = InvoiceService.CreateInvoice(ClientID, DivisionID, StartDate, EndDate);
 
-            return View("Edit", obj);
+            //System.Threading.Thread.Sleep(10000);
+            InvoiceService.GenerateInvoice(invoiceid);
+
+            return RedirectToAction("Edit", new { id = invoiceid });
         }
 
         public ActionResult Edit(int id)
@@ -104,6 +95,19 @@ namespace MvcPhoenix.Controllers
 
             return View(vm);
         }
+
+        //public ActionResult Generate(int invoiceid)
+        //{
+        //    int pk = invoiceid;
+
+        //    if (invoiceid > 0)
+        //    {
+        //        pk = InvoiceService.GenerateInvoice(invoiceid);
+        //        TempData["SaveResult"] = "Invoice updated on " + DateTime.UtcNow.ToString("R");
+        //    }
+
+        //    return RedirectToAction("Edit", new { id = pk });
+        //}
 
         [HttpPost]
         public ActionResult SaveInvoice(InvoiceViewModel vm)
@@ -143,6 +147,11 @@ namespace MvcPhoenix.Controllers
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
 
             return footer;
+        }
+
+        public ActionResult BuildBillingGroupDDL(int id)
+        {
+            return Content(ApplicationService.ddlBuildBillingGroup(id));
         }
     }
 }

@@ -107,7 +107,7 @@ namespace MvcPhoenix.Controllers
             {
                 var orderitems = (from t in db.tblOrderItem
                                   where t.OrderID == id
-                                  && t.AllocateStatus == "A" | (t.RDTransfer != null && t.RDTransfer!=false)
+                                  && t.AllocateStatus == "A" | (t.RDTransfer != null && t.RDTransfer != false)
                                   && t.ShipDate == null
                                   orderby t.ProductCode
                                   select new MvcPhoenix.Models.OrderItem
@@ -120,7 +120,7 @@ namespace MvcPhoenix.Controllers
                                       Qty = t.Qty,
                                       Size = t.Size,
                                       ShipDate = t.ShipDate,
-                                      CeaseShipDate = t.ShipDate,                          //Note TBD: ceaseshipdate = (stock:expiration_date) minus (profile:cease_ship_differential)
+                                      CeaseShipDate = t.CeaseShipDate,
                                       LotNumber = t.LotNumber,
                                       Bin = t.Bin,
                                       AirUnNumber = t.AirUnNumber,
@@ -267,7 +267,7 @@ namespace MvcPhoenix.Controllers
 
         [HttpGet]
         public ActionResult CreateItem(int id)
-        {            
+        {
             var vm = OrderService.fnCreateItem(id);                             // id=orderid
 
             return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
@@ -306,7 +306,7 @@ namespace MvcPhoenix.Controllers
         }
 
         public ActionResult BuildSizeDropDown(int id)
-        {           
+        {
             return Content(ApplicationService.ddlBuildSizeDropDown(id));                 // id=clientid / return a <select> for <div>
         }
 
@@ -370,7 +370,7 @@ namespace MvcPhoenix.Controllers
 
             return Content(AllocationCount.ToString() + " item(s) allocated");
         }
-        
+
         public ActionResult ReverseAllocatedItem(int orderitemid)
         {
             OrderService.fnReverseAllocatedItem(orderitemid);

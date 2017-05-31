@@ -153,6 +153,7 @@ namespace MvcPhoenix.Services
                 o.UpdateUser = q.UpdateUser;
                 o.UpdateDate = q.UpdateDate;
                 o.IsSDN = q.IsSDN;
+                o.IsSDNOverride = q.IsSDNOverride;
 
                 return o;
             }
@@ -260,6 +261,7 @@ namespace MvcPhoenix.Services
                 q.UpdateDate = vm.UpdateDate;
                 q.CreateUser = vm.CreateUser;
                 q.CreateDate = vm.CreateDate;
+                q.IsSDNOverride = vm.IsSDNOverride;
                 q.IsSDN = false;
 
                 db.SaveChanges();
@@ -272,78 +274,81 @@ namespace MvcPhoenix.Services
 
         public static void fnSaveOrderPostUpdate(OrderMasterFull vm)
         {
-            // changes to order record after it is saved
-            using (var db = new CMCSQL03Entities())
+            if (vm.IsSDNOverride != true)
             {
-                bool ShowAlert = false;
-
-                var q = (from t in db.tblOrderMaster
-                         where t.OrderID == vm.orderid
-                         select t).FirstOrDefault();
-
-                var qCountry = (from t in db.tblCountry
-                                where t.Country == vm.country
-                                && t.DoNotShip == true
-                                select t).FirstOrDefault();
-
-                if (qCountry != null)
+                // changes to order record after it is saved
+                using (var db = new CMCSQL03Entities())
                 {
-                    // flag the order record and the item records that are yet to be allocated
-                    q.IsSDN = true;
-                    var orderitems = (from t in db.tblOrderItem
-                                      where t.OrderID == vm.orderid
-                                      && t.AllocateStatus == null
-                                      select t).ToList();
+                    bool ShowAlert = false;
 
-                    foreach (var item in orderitems)
+                    var q = (from t in db.tblOrderMaster
+                             where t.OrderID == vm.orderid
+                             select t).FirstOrDefault();
+
+                    var qCountry = (from t in db.tblCountry
+                                    where t.Country == vm.country
+                                    && t.DoNotShip == true
+                                    select t).FirstOrDefault();
+
+                    if (qCountry != null)
                     {
-                        item.CSAllocate = false;
-                        db.SaveChanges();
+                        // flag the order record and the item records that are yet to be allocated
+                        q.IsSDN = true;
+                        var orderitems = (from t in db.tblOrderItem
+                                          where t.OrderID == vm.orderid
+                                          && t.AllocateStatus == null
+                                          select t).ToList();
+
+                        foreach (var item in orderitems)
+                        {
+                            item.CSAllocate = false;
+                            db.SaveChanges();
+                        }
+
+                        ShowAlert = true;
                     }
 
-                    ShowAlert = true;
-                }
-
-                if (fnIsSDN(vm) == true)
-                {
-                    // flag the order record and the item records that are yet to be allocated (again maybe)
-                    q.IsSDN = true;
-                    var orderitems = (from t in db.tblOrderItem
-                                      where t.OrderID == vm.orderid
-                                      && t.AllocateStatus == null
-                                      select t).ToList();
-
-                    foreach (var item in orderitems)
+                    if (fnIsSDN(vm) == true)
                     {
-                        item.CSAllocate = false;
-                        db.SaveChanges();
+                        // flag the order record and the item records that are yet to be allocated (again maybe)
+                        q.IsSDN = true;
+                        var orderitems = (from t in db.tblOrderItem
+                                          where t.OrderID == vm.orderid
+                                          && t.AllocateStatus == null
+                                          select t).ToList();
+
+                        foreach (var item in orderitems)
+                        {
+                            item.CSAllocate = false;
+                            db.SaveChanges();
+                        }
+
+                        ShowAlert = true;
                     }
 
-                    ShowAlert = true;
-                }
-
-                if (vm.country != "0")
-                {
-                    var qCountry2 = (from t in db.tblCountry
-                                     where t.Country == vm.country
-                                     select t).FirstOrDefault(); // need the ID
-
-                    var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet
-                                            where t.ClientID == vm.clientid
-                                            && t.CountryID == qCountry2.CountryID
-                                            select t).FirstOrDefault();
-
-                    if (qCeaseShipOffset != null)
+                    if (vm.country != "0")
                     {
-                        q.CeaseShipOffset = qCeaseShipOffset.OffsetDays;
+                        var qCountry2 = (from t in db.tblCountry
+                                         where t.Country == vm.country
+                                         select t).FirstOrDefault(); // need the ID
+
+                        var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet
+                                                where t.ClientID == vm.clientid
+                                                && t.CountryID == qCountry2.CountryID
+                                                select t).FirstOrDefault();
+
+                        if (qCeaseShipOffset != null)
+                        {
+                            q.CeaseShipOffset = qCeaseShipOffset.OffsetDays;
+                        }
                     }
-                }
 
-                db.SaveChanges();
+                    db.SaveChanges();
 
-                if (ShowAlert == true)
-                {
-                    // do something , return js alert ???
+                    if (ShowAlert == true)
+                    {
+                        // do something , return js alert ???
+                    }
                 }
             }
         }
@@ -1074,7 +1079,7 @@ namespace MvcPhoenix.Services
         #endregion Order Transaction Methods
 
         #region Allocate Methods
-        
+
         public static int fnAllocateShelf(int OrderID, bool IncludeQCStock)
         {
             using (var db = new CMCSQL03Entities())
@@ -1237,7 +1242,7 @@ namespace MvcPhoenix.Services
                         updatestock.MarkedForReturn = false;
                     }
                     if (updatestock.QtyAllocated < 0)
-                    {                        
+                    {
                         updatestock.QtyAllocated = 0;                                           // zero out QtyAllocated if negative
                     }
                     updatestock.UpdateDate = DateTime.UtcNow;
@@ -1348,7 +1353,7 @@ namespace MvcPhoenix.Services
         }
 
         // Add stock item to new return order
-        public static async Task<int> AddStockItemToReturnOrder (int orderid, int stockid)
+        public static async Task<int> AddStockItemToReturnOrder(int orderid, int stockid)
         {
             using (var db = new CMCSQL03Entities())
             {
