@@ -933,7 +933,6 @@
     <Content Include="Views\Inventory\Search.cshtml" />
     <Content Include="Views\Replenishments\PrintSuggested.cshtml" />
     <Content Include="Views\Receiving\Search.cshtml" />
-    <Content Include="Views\Invoice\View.cshtml" />
     <Content Include="Views\Invoice\Edit.cshtml" />
     <Content Include="Views\Invoice\Search.cshtml" />
     <Content Include="Views\Inventory\_RecentBulkReceived.cshtml" />

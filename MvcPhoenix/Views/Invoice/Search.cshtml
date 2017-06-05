@@ -26,28 +26,40 @@
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
+                                    <th width="10px"></th>
                                     <th width="30px">Invoice#</th>
                                     <th>Client</th>
                                     <th>Billing Group</th>
                                     <th>Period</th>
                                     <th style="text-align:center;">Location</th>
                                     <th>Status</th>
+                                    <th>Created On</th>
+                                    <th>Last Update</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             @foreach (var item in Model)
                             {
                                 <tr>
+                                    <td>
+                                        @Ajax.ActionLink(" ", "DeleteInvoice", new { id = @item.InvoiceID }, new AjaxOptions
+                                       {
+                                           Confirm = "Are you sure you want to delete this invoice?",
+                                           HttpMethod = "POST",
+                                           OnSuccess = "$.alert('Invoice Deleted');$(this).closest('tr').hide();"
+                                       }, new { @class = "fa fa-fw fa-times-circle", @style = "color:red", @title = "Delete Invoice" })
+                                    </td>
                                     <td data-label="Invoice #" style="text-align:center">@item.InvoiceID.ToString()</td>
                                     <td data-label="Client">@item.ClientName</td>
                                     <td data-label="Billing Group">@item.BillingGroup</td>
                                     <td data-label="Period">@item.InvoicePeriod</td>
                                     <td data-label="Location" style="text-align:center;">@item.WarehouseLocation</td>
                                     <td data-label="Status">@item.Status</td>
+                                    <td data-label="Created On"><abbr title="by @item.CreatedBy">@String.Format("{0:dd MMM yyyy}", @item.CreateDate)</abbr></td>
+                                    <td data-label="Last Update"><abbr title="by @item.UpdatedBy">@String.Format("{0:dd MMM yyyy}", @item.UpdateDate)</abbr></td>
                                     <td class="text-right">
                                         @Html.ActionLink(" ", "Edit", new { id = item.InvoiceID }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Invoice" })
-                                        @Html.ActionLink(" ", "View", new { id = item.InvoiceID }, new { @class = "btn btn-primary fa fa-eye", @title = "View Invoice" })
-                                </td>
+                                    </td>
                                 </tr>
                             }
                         </table>

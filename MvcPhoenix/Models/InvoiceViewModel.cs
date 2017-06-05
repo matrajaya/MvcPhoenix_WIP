@@ -7,59 +7,60 @@ namespace MvcPhoenix.Models
     public class InvoiceViewModel
     {
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
-        public DateTime? invoicestartdate { get; set; }
+        public DateTime? InvoiceStartDate { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
-        public DateTime? invoiceenddate { get; set; }
+        public DateTime? InvoiceEndDate { get; set; }
 		
-        public int invoiceid { get; set; }
-        public int? invoicenumber { get; set; }
-        public string billinggroup { get; set; }
-        public string warehouselocation { get; set; }
-        public int? clientid { get; set; }
-        public string clientname { get; set; }
-        public string createdby { get; set; }
-        public DateTimeOffset? createdate { get; set; }
-        public string updatedby { get; set; }
-        public DateTimeOffset? updatedate { get; set; }
-        public bool? verifiedaccuracy { get; set; }
-        public string verifiedby { get; set; }
-        public DateTimeOffset? verifieddate { get; set; }
-        public string status { get; set; }                          // choices: NEW / REVIEWED / VERIFIED / EMAILED / CLOSED
-        public DateTimeOffset? invoicedate { get; set; }
-        public string invoiceperiod { get; set; }
-        public string ponumber { get; set; }
-        public string netterm { get; set; }
+        public int InvoiceId { get; set; }
+        public int? InvoiceNumber { get; set; }
+        public string BillingGroup { get; set; }
+        public string WarehouseLocation { get; set; }
+        public int? ClientId { get; set; }
+        public string ClientName { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTimeOffset? CreateDate { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTimeOffset? UpdateDate { get; set; }
+        public bool? VerifiedAccuracy { get; set; }
+        public string VerifiedBy { get; set; }
+        public DateTimeOffset? VerifiedDate { get; set; }
+        public string Status { get; set; }                          // choices: NEW / REVIEWED / VERIFIED / EMAILED / CLOSED
+        public DateTimeOffset? InvoiceDate { get; set; }
+        public string InvoicePeriod { get; set; }
+        public string PONumber { get; set; }
+        public string NetTerm { get; set; }
+        public string Comments { get; set; }
 
         [AllowHtml]
-        public string billto { get; set; }
+        public string BillTo { get; set; }
 
         [AllowHtml]
-        public string remitto { get; set; }
+        public string RemitTo { get; set; }
 
-        public string currency { get; set; }
-        public int? tier { get; set; }
-        public string ordertype { get; set; }                       //Sample(domestic)/international/Revenue does not apply to all clients
+        public string Currency { get; set; }
+        public int? Tier { get; set; }
+        public string OrderType { get; set; }                       //Sample(domestic)/international/Revenue does not apply to all clients
 
         /////////////////////////////////////////////
         // Shipping Performance
         /////////////////////////////////////////////
         
-        public int? sampleshipsameday { get; set; }
-        public int? sampleshipnextday { get; set; }
-        public int? sampleshipsecondday { get; set; }
-        public int? sampleshipother { get; set; }
+        public int? SampleShipSameDay { get; set; }
+        public int? SampleShipNextDay { get; set; }
+        public int? SampleShipSecondDay { get; set; }
+        public int? SampleShipOther { get; set; }
 
         /////////////////////////////////////////////
         // Master Invoice Summary
         /////////////////////////////////////////////
         
-        public int? totalsamples { get; set; }
-        public decimal? totalcostsamples { get; set; }
-        public decimal? totalfreight { get; set; }
-        public decimal? totalfrtHzdSchg { get; set; }
-        public decimal? totaladmincharge { get; set; }
-        public decimal? totaldue { get; set; }
+        public int? TotalSamples { get; set; }
+        public decimal? TotalCostSamples { get; set; }
+        public decimal? TotalFreight { get; set; }
+        public decimal? TotalFrtHzdSchg { get; set; }
+        public decimal? TotalAdminCharge { get; set; }
+        public decimal? TotalDue { get; set; }
 
         /////////////////////////////////////////////
         #region// Billing Worksheet

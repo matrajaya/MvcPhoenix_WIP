@@ -9,7 +9,7 @@
             <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="cmc logo">
         </div>
         <div class="col-lg-12">
-            <h1 class="page-header">@ViewBag.Title: <small>@Html.DisplayFor(m => m.invoiceid) for @Html.DisplayFor(m => m.clientname) - @Html.DisplayFor(m => m.billinggroup)</small> </h1>
+            <h1 class="page-header">@ViewBag.Title: <small>@Html.DisplayFor(m => m.InvoiceId) for @Html.DisplayFor(m => m.ClientName) - @Html.DisplayFor(m => m.BillingGroup)</small> </h1>
         </div>
     </div>
     <div class="row form-group">
@@ -20,7 +20,7 @@
             <div style="text-align:center;">
                 <span id="dvTopMessage" style="color:green;font-weight:bold;"> @TempData["SaveResult"]</span><!-- show message after save -->
                 <div class="pull-right">
-                    <a href="@Url.Action("View", "Invoice", new { id = @Model.invoiceid })"><i class="fa fa-fw fa-eye"></i> View Mode</a>
+                    <a href="#"><i class="fa fa-fw fa-print"></i> Download Print Version</a>
                 </div>
             </div>
         </div>
@@ -30,29 +30,30 @@
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(m => m.invoiceid)
-        @Html.HiddenFor(m => m.billinggroup)
-        @Html.HiddenFor(m => m.clientid)
-        @Html.HiddenFor(m => m.clientname)
-        @Html.HiddenFor(m => m.status)
-        @Html.HiddenFor(m => m.tier)
-        @Html.HiddenFor(m => m.ordertype)
-        @Html.HiddenFor(m => m.invoicedate)
-        //@Html.HiddenFor(m => m.ponumber)
-        @Html.HiddenFor(m => m.netterm)
-        @Html.HiddenFor(m => m.invoiceperiod)
-        @Html.HiddenFor(m => m.invoicestartdate)
-        @Html.HiddenFor(m => m.invoiceenddate)
+        @Html.HiddenFor(m => m.InvoiceId)
+        @Html.HiddenFor(m => m.BillingGroup)
+        @Html.HiddenFor(m => m.ClientId)
+        @Html.HiddenFor(m => m.ClientName)
+        @Html.HiddenFor(m => m.Status)
+        @Html.HiddenFor(m => m.Tier)
+        @Html.HiddenFor(m => m.OrderType)
+        @Html.HiddenFor(m => m.InvoiceDate)
+        @Html.HiddenFor(m => m.NetTerm)
+        @Html.HiddenFor(m => m.InvoicePeriod)
+        @Html.HiddenFor(m => m.InvoiceStartDate)
+        @Html.HiddenFor(m => m.InvoiceEndDate)
+        @Html.HiddenFor(m => m.CreatedBy)
+        @Html.HiddenFor(m => m.CreateDate)
 
         <div class="row">
             <div class="col-md-4">
                 <div class="panel panel-primary">
                     <div class="panel-heading">TERMS</div>
                     <div class="panel-body">
-                        <b>Invoice Number:</b> @Html.DisplayFor(m => m.invoicenumber)<br>
-                        <b>Invoice Date:</b> @Model.invoicedate.Value.ToString("d")<br>
-                        <b>PO Number:</b>  @Html.TextBoxFor(m => m.ponumber, new { @style = "height: 70%; border-style:none", @placeholder = "Enter PO# Here" })<br />
-                        <b>@Html.DisplayFor(m => m.netterm)</b>
+                        <b>Invoice Number:</b> @Html.DisplayFor(m => m.InvoiceNumber)<br>
+                        <b>Invoice Date:</b> @Model.InvoiceDate.Value.ToString("d")<br>
+                        <b>PO Number:</b>  @Html.TextBoxFor(m => m.PONumber, new { @style = "height: 70%; border-style:none", @placeholder = "Enter PO# Here" })<br />
+                        <b>@Html.DisplayFor(m => m.NetTerm)</b>
                     </div>
                 </div>
             </div>
@@ -61,7 +62,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">BILL TO</div>
                     <div class="panel-body" style="margin-bottom: -10px;">
-                        @Html.TextAreaFor(m => m.billto, new { @class = "form-control", @rows = "4" })
+                        @Html.TextAreaFor(m => m.BillTo, new { @class = "form-control", @rows = "4" })
                     </div>
                 </div>
             </div>
@@ -70,7 +71,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">REMIT TO</div>
                     <div class="panel-body" style="margin-bottom: -10px;">
-                        @Html.TextAreaFor(m => m.remitto, new { @class = "form-control", @rows = "4" })
+                        @Html.TextAreaFor(m => m.RemitTo, new { @class = "form-control", @rows = "4" })
                     </div>
                 </div>
             </div>
@@ -82,9 +83,9 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <b>Invoice Period:</b> @Html.DisplayFor(m => m.invoiceperiod)
+                                <b>Invoice Period:</b> @Html.DisplayFor(m => m.InvoicePeriod)
                                 <span class="pull-right">
-                                    <b title="Invoice Range">@Html.DisplayFor(m => m.invoicestartdate) - @Html.DisplayFor(m => m.invoiceenddate)</b>
+                                    <b title="Invoice Range">@Html.DisplayFor(m => m.InvoiceStartDate) - @Html.DisplayFor(m => m.InvoiceEndDate)</b>
                                 </span>
                             </div>
                         </div>
@@ -95,9 +96,9 @@
                                     <tr>
                                         <th>Number of Samples</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totalsamples, "{0:N0}", new { @class = "pull-right", @style = "width: 100px", @data_cell = "A1", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.totalsamples)
-                                            @Html.ValidationMessageFor(m => m.totalsamples)
+                                            @Html.TextBoxFor(m => m.TotalSamples, "{0:N0}", new { @class = "pull-right", @style = "width: 100px", @data_cell = "A1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.TotalSamples)
+                                            @Html.ValidationMessageFor(m => m.TotalSamples)
                                         </td>
                                     </tr>
                                     <tr>
@@ -105,9 +106,9 @@
                                             <abbr title="SAMP, HAZD, FLAM, HEAT, REFR, FREZ, CLEN, BLND, NALG, NITR, BIOC, KOSH, LABL">Totals Cost of Processing Samples</abbr>
                                         </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totalcostsamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "B1", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.totalcostsamples)
-                                            @Html.ValidationMessageFor(m => m.totalcostsamples)
+                                            @Html.TextBoxFor(m => m.TotalCostSamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "B1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.TotalCostSamples)
+                                            @Html.ValidationMessageFor(m => m.TotalCostSamples)
                                         </td>
                                     </tr>
                                     <tr>
@@ -115,9 +116,9 @@
                                             <abbr title="CFRT">Freight</abbr>
                                         </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totalfreight, new { @class = "pull-right", @style = "width: 100px", @data_cell = "C1", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.totalfreight)
-                                            @Html.ValidationMessageFor(m => m.totalfreight)
+                                            @Html.TextBoxFor(m => m.TotalFreight, new { @class = "pull-right", @style = "width: 100px", @data_cell = "C1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.TotalFreight)
+                                            @Html.ValidationMessageFor(m => m.TotalFreight)
                                         </td>
                                     </tr>
                                     <tr>
@@ -125,9 +126,9 @@
                                             <abbr title="SFRT">Freight Harzardous Surcharge</abbr>
                                         </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totalfrtHzdSchg, new { @class = "pull-right", @style = "width: 100px", @data_cell = "D1", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.totalfrtHzdSchg)
-                                            @Html.ValidationMessageFor(m => m.totalfrtHzdSchg)
+                                            @Html.TextBoxFor(m => m.TotalFrtHzdSchg, new { @class = "pull-right", @style = "width: 100px", @data_cell = "D1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.TotalFrtHzdSchg)
+                                            @Html.ValidationMessageFor(m => m.TotalFrtHzdSchg)
                                         </td>
                                     </tr>
                                     <tr>
@@ -135,17 +136,17 @@
                                             <abbr title="All Others">Administrative Charges</abbr>
                                         </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.totaladmincharge, new { @class = "pull-right", @style = "width: 100px", @data_cell = "E1", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.totaladmincharge)
-                                            @Html.ValidationMessageFor(m => m.totaladmincharge)
+                                            @Html.TextBoxFor(m => m.TotalAdminCharge, new { @class = "pull-right", @style = "width: 100px", @data_cell = "E1", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.TotalAdminCharge)
+                                            @Html.ValidationMessageFor(m => m.TotalAdminCharge)
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Total Due</th>
                                         <th>
-                                            @Html.TextBoxFor(m => m.totaldue, new { @class = "pull-right", @style = "width: 100px", @readonly = "readonly", @data_cell = "F1" })
-                                            @Html.HiddenFor(m => m.totaldue)
-                                            @Html.ValidationMessageFor(m => m.totaldue)
+                                            @Html.TextBoxFor(m => m.TotalDue, new { @class = "pull-right", @style = "width: 100px", @readonly = "readonly", @data_cell = "F1" })
+                                            @Html.HiddenFor(m => m.TotalDue)
+                                            @Html.ValidationMessageFor(m => m.TotalDue)
                                         </th>
                                     </tr>
                                 </table>
@@ -157,49 +158,36 @@
                                     <tr>
                                         <th>Same Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.sampleshipsameday, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.sampleshipsameday)
-                                            @Html.ValidationMessageFor(m => m.sampleshipsameday)
+                                            @Html.TextBoxFor(m => m.SampleShipSameDay, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.SampleShipSameDay)
+                                            @Html.ValidationMessageFor(m => m.SampleShipSameDay)
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Next Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.sampleshipnextday, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.sampleshipnextday)
-                                            @Html.ValidationMessageFor(m => m.sampleshipnextday)
+                                            @Html.TextBoxFor(m => m.SampleShipNextDay, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.SampleShipNextDay)
+                                            @Html.ValidationMessageFor(m => m.SampleShipNextDay)
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Second Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.sampleshipsecondday, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.sampleshipsecondday)
-                                            @Html.ValidationMessageFor(m => m.sampleshipsecondday)
+                                            @Html.TextBoxFor(m => m.SampleShipSecondDay, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.SampleShipSecondDay)
+                                            @Html.ValidationMessageFor(m => m.SampleShipSecondDay)
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Other</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.sampleshipother, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
-                                            @Html.HiddenFor(m => m.sampleshipother)
-                                            @Html.ValidationMessageFor(m => m.sampleshipother)
+                                            @Html.TextBoxFor(m => m.SampleShipOther, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.HiddenFor(m => m.SampleShipOther)
+                                            @Html.ValidationMessageFor(m => m.SampleShipOther)
                                         </td>
                                     </tr>
                                 </table>
-                                @*<div class="pull-right">
-                                    <a href="@Url.Action("Generate", "Invoice", new { id = @Model.invoiceid })" class="btn btn-warning"><i class="fa fa-fw fa-cloud-download"></i> Generate Invoice</a>
-                                    @Ajax.ActionLink("Re-Generate Invoice", "Generate", "Invoice", new { invoiceid = @Model.invoiceid },
-                                    new AjaxOptions
-                                    {
-                                        HttpMethod = "POST",
-                                        Confirm = "Values Entered will be replaced",
-                                    })
-                                </div>*@
-                                @*<div class="pull-right" id="verificationcalc">
-                                        <label><abbr title="Total Due minus Grand Total.&#13;This number should be 0.">Totals</abbr> Balance</label>
-                                        <input id="totalsdiff" class="form-control input-sm" readonly style="width: 100px" data-cell="C1">
-                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -216,15 +204,15 @@
                             </div>
                             <div class="col-md-6">
                                 <span class="pull-right">
-                                    <b>Location: </b>@Html.DropDownListFor(m => m.warehouselocation, new SelectList(Enum.GetValues(typeof(ApplicationService.CMCLocationChoice)))) |
-                                    <b>Currency: </b>@Html.DropDownListFor(m => m.currency, new SelectList(Enum.GetValues(typeof(ApplicationService.CurrencyChoice)))) |
-                                    <b>Tier: </b>@Html.DisplayFor(m => m.tier)
+                                    <b>Location: </b>@Html.DropDownListFor(m => m.WarehouseLocation, new SelectList(Enum.GetValues(typeof(ApplicationService.CMCLocationChoice)))) |
+                                    <b>Currency: </b>@Html.DropDownListFor(m => m.Currency, new SelectList(Enum.GetValues(typeof(ApplicationService.CurrencyChoice)))) |
+                                    <b>Tier: </b>@Html.DisplayFor(m => m.Tier)
                                 </span>
                             </div>
                         </div>
                         <div class="tab-content">
                             <div id="samplestab" class="tab-pane fade in active">
-                                <div class="table-responsive" id="billingworksheetcalc">
+                                <div class="table-responsive form-group" id="billingworksheetcalc">
                                     <table class="table table-hover table-striped">
                                         <thead>
                                             <tr>
@@ -607,15 +595,25 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                @if (Model.verifiedaccuracy == false || Model.verifiedaccuracy == null)
-                                {
-                                    @Html.CheckBox("verifiedaccuracy", Model.verifiedaccuracy != null && (bool)Model.verifiedaccuracy, new { @class = "checkbox-inline" })
-                                    <label class="control-label">Check to verify invoice accuracy</label>
-                                }
-                                @if (Model.verifiedaccuracy == true)
-                                {
-                                    <em>Invoice accuracy verified by @Html.DisplayFor(m => m.verifiedby) on @Html.DisplayFor(m => m.verifieddate)</em>
-                                }
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <label>General Invoice Comments &amp; Notes</label>
+                                        @Html.TextAreaFor(m => m.Comments, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @if (Model.VerifiedAccuracy == false || Model.VerifiedAccuracy == null)
+                                        {
+                                            @Html.CheckBox("verifiedaccuracy", Model.VerifiedAccuracy != null && (bool)Model.VerifiedAccuracy, new { @class = "checkbox-inline" })
+                                            <label class="control-label">Check to verify invoice accuracy</label>
+                                        }
+                                        @if (Model.VerifiedAccuracy == true)
+                                        {
+                                            <em>Invoice accuracy verified by @Html.DisplayFor(m => m.VerifiedBy) on @Html.DisplayFor(m => m.VerifiedDate)</em>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -623,11 +621,15 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12 form-group">
-                <input type="submit" value="Save Changes" class="btn btn-success btn-block" />
+        if (Model.VerifiedAccuracy == false || Model.VerifiedAccuracy == null)
+        {
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <input type="submit" value="Save Changes" class="btn btn-success btn-block" />
+                </div>
             </div>
-        </div>
+        }
+
         <div class="row">
             <div class="col-lg-12">
                 <span><i class="fa fa-arrow-circle-up"></i> <a href="#top">Back to Top</a></span>
@@ -641,15 +643,10 @@
         </div>
     }
 </div>
-<script type="text/javascript">
-    CKEDITOR.inline('billto');
-    CKEDITOR.inline('remitto');
 
-    //$('#masterinvoicecalc').calx({
-    //    data: {
-    //        E1: { formula: 'SUM(A1:D1)' }
-    //    }
-    //})
+<script type="text/javascript">
+    CKEDITOR.inline('BillTo');
+    CKEDITOR.inline('RemitTo');
 
     $('#billingworksheetcalc').calx({
         data: {
@@ -680,12 +677,4 @@
             EE1: { formula: 'SUM(G3:DD3)' }
         }
     })
-
-    //$('#verificationcalc').calx({
-    //    data: {
-    //        A1: { formula: '#masterinvoicecalc!E1' },
-    //        B1: { formula: '#billingworksheetcalc!C24' },
-    //        C1: { formula: 'A1-B1' }
-    //    }
-    //})
 </script>

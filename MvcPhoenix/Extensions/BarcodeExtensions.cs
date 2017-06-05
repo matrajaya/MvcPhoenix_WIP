@@ -112,6 +112,5 @@ namespace MvcPhoenix.Extensions
 
             return qrValue;
         }
-
     }
 }

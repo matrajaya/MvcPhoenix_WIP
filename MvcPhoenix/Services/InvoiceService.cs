@@ -14,17 +14,22 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 var obj = (from t in db.tblInvoice
-                           orderby t.InvoiceNumber ascending
+                           orderby t.CreateDate descending
                            select new InvoiceViewModel
                            {
-                               invoiceid = t.InvoiceID,
-                               invoicenumber = t.InvoiceNumber,
-                               clientname = t.ClientName,
-                               billinggroup = t.BillingGroup,
-                               invoicedate = t.InvoiceDate,
-                               invoiceperiod = t.InvoicePeriod,
-                               warehouselocation = t.WarehouseLocation,
-                               status = t.Status
+                               InvoiceId = t.InvoiceID,
+                               InvoiceNumber = t.InvoiceNumber,
+                               ClientName = t.ClientName,
+                               BillingGroup = t.BillingGroup,
+                               InvoiceDate = t.InvoiceDate,
+                               InvoicePeriod = t.InvoicePeriod,
+                               WarehouseLocation = t.WarehouseLocation,
+                               Status = t.Status,
+                               Comments = t.Comments,
+                               UpdateDate = t.UpdateDate,
+                               UpdatedBy = t.UpdatedBy,
+                               CreateDate = t.CreateDate,
+                               CreatedBy = t.CreatedBy
                            }).ToList();
 
                 return obj;
@@ -41,45 +46,46 @@ namespace MvcPhoenix.Models
                          where t.InvoiceID == id
                          select t).FirstOrDefault();
 
-                obj.invoiceid = q.InvoiceID;
-                obj.invoicenumber = q.InvoiceNumber;
-                obj.billinggroup = q.BillingGroup;
-                obj.warehouselocation = q.WarehouseLocation;
-                obj.clientid = q.ClientID;
-                obj.clientname = q.ClientName;
-                obj.createdby = q.CreatedBy;
-                obj.createdate = q.CreateDate;
-                obj.updatedby = q.UpdatedBy;
-                obj.updatedate = q.UpdateDate;
-                obj.verifiedaccuracy = q.VerifiedAccuracy;
-                obj.verifiedby = q.VerifiedBy;
-                obj.verifieddate = q.VerifyDate;
-                obj.status = q.Status;
-                obj.invoicedate = q.InvoiceDate;
-                obj.invoiceperiod = q.InvoicePeriod;        //extract month and year from invoice date convert to string
-                obj.invoicestartdate = q.InvoiceStartDate;
-                obj.invoiceenddate = q.InvoiceEndDate;
-                obj.ponumber = q.PONumber;
-                obj.netterm = q.NetTerm;
-                obj.billto = q.BillTo;
-                obj.remitto = q.RemitTo;
-                obj.currency = q.Currency;                  // USD / EUR / CNY
-                obj.tier = q.Tier;
-                obj.ordertype = q.OrderType;                // Sample/International/Revenue does not apply to all clients
+                obj.InvoiceId = q.InvoiceID;
+                obj.InvoiceNumber = q.InvoiceNumber;
+                obj.BillingGroup = q.BillingGroup;
+                obj.WarehouseLocation = q.WarehouseLocation;
+                obj.ClientId = q.ClientID;
+                obj.ClientName = q.ClientName;
+                obj.CreatedBy = q.CreatedBy;
+                obj.CreateDate = q.CreateDate;
+                obj.UpdatedBy = q.UpdatedBy;
+                obj.UpdateDate = q.UpdateDate;
+                obj.VerifiedAccuracy = q.VerifiedAccuracy;
+                obj.VerifiedBy = q.VerifiedBy;
+                obj.VerifiedDate = q.VerifyDate;
+                obj.Status = q.Status;
+                obj.Comments = q.Comments;
+                obj.InvoiceDate = q.InvoiceDate;
+                obj.InvoicePeriod = q.InvoicePeriod;        //extract month and year from invoice date convert to string
+                obj.InvoiceStartDate = q.InvoiceStartDate;
+                obj.InvoiceEndDate = q.InvoiceEndDate;
+                obj.PONumber = q.PONumber;
+                obj.NetTerm = q.NetTerm;
+                obj.BillTo = q.BillTo;
+                obj.RemitTo = q.RemitTo;
+                obj.Currency = q.Currency;                  // USD / EUR / CNY
+                obj.Tier = q.Tier;
+                obj.OrderType = q.OrderType;                // Sample/International/Revenue does not apply to all clients
 
                 // Shipping Performance
-                obj.sampleshipsameday = q.SampleShipSameDay;
-                obj.sampleshipnextday = q.SampleShipNextDay;
-                obj.sampleshipsecondday = q.SampleShipSecondDay;
-                obj.sampleshipother = q.SampleShipOther;
+                obj.SampleShipSameDay = q.SampleShipSameDay;
+                obj.SampleShipNextDay = q.SampleShipNextDay;
+                obj.SampleShipSecondDay = q.SampleShipSecondDay;
+                obj.SampleShipOther = q.SampleShipOther;
 
                 // Invoice Summary
-                obj.totalsamples = q.TotalSamples;
-                obj.totalcostsamples = q.TotalCostSamples;
-                obj.totalfreight = q.TotalFreight;
-                obj.totalfrtHzdSchg = q.TotalFrtHzdSchg;
-                obj.totaladmincharge = q.TotalAdminCharge;
-                obj.totaldue = q.TotalDue;
+                obj.TotalSamples = q.TotalSamples;
+                obj.TotalCostSamples = q.TotalCostSamples;
+                obj.TotalFreight = q.TotalFreight;
+                obj.TotalFrtHzdSchg = q.TotalFrtHzdSchg;
+                obj.TotalAdminCharge = q.TotalAdminCharge;
+                obj.TotalDue = q.TotalDue;
 
                 // Billing Worksheet
                 obj.GrandTotalCharge = q.GrandTotal;
@@ -194,6 +200,8 @@ namespace MvcPhoenix.Models
                 obj.CreateDate = DateTime.UtcNow;
                 obj.CreatedBy = HttpContext.Current.User.Identity.Name;
                 obj.Status = "NEW";
+                obj.UpdateDate = obj.CreateDate;
+                obj.UpdatedBy = obj.CreatedBy;
 
                 obj.ClientID = cl.ClientID;
                 obj.ClientName = cl.ClientName;
@@ -219,63 +227,64 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 var confirmVerify = false;
-                if (vm.verifiedaccuracy == true)
+                if (vm.VerifiedAccuracy == true)
                 {
                     /// Add logic to check invoice status if not new or verified already
                     /// check if verified by user == created user. should be different
                     /// capture verified datetime and user identity and save to db
                     /// verified invoices should be locked from further edits.
-                    vm.status = "VERIFIED";
+                    vm.Status = "VERIFIED";
                     confirmVerify = true;
                 }
 
                 // Capture user info in viewmodel
-                vm.updatedby = HttpContext.Current.User.Identity.Name;
-                vm.updatedate = DateTime.UtcNow;
+                vm.UpdatedBy = HttpContext.Current.User.Identity.Name;
+                vm.UpdateDate = DateTime.UtcNow;
 
                 var q = (from t in db.tblInvoice
-                         where t.InvoiceID == vm.invoiceid
+                         where t.InvoiceID == vm.InvoiceId
                          select t).FirstOrDefault();
 
-                q.InvoiceNumber = vm.invoiceid;
-                q.BillingGroup = vm.billinggroup;
-                q.WarehouseLocation = vm.warehouselocation;
-                q.ClientID = vm.clientid;
-                q.ClientName = vm.clientname;
-                q.CreatedBy = vm.createdby;
-                q.CreateDate = vm.createdate;
-                q.UpdatedBy = vm.updatedby;
-                q.UpdateDate = vm.updatedate;
-                q.InvoiceStartDate = vm.invoicestartdate;
-                q.InvoiceEndDate = vm.invoiceenddate;
+                q.InvoiceNumber = vm.InvoiceId;
+                q.BillingGroup = vm.BillingGroup;
+                q.WarehouseLocation = vm.WarehouseLocation;
+                q.ClientID = vm.ClientId;
+                q.ClientName = vm.ClientName;
+                q.CreatedBy = vm.CreatedBy;
+                q.CreateDate = vm.CreateDate;
+                q.UpdatedBy = vm.UpdatedBy;
+                q.UpdateDate = vm.UpdateDate;
+                q.InvoiceStartDate = vm.InvoiceStartDate;
+                q.InvoiceEndDate = vm.InvoiceEndDate;
 
                 if (confirmVerify == true)
                 {
-                    q.VerifiedAccuracy = vm.verifiedaccuracy;
+                    q.VerifiedAccuracy = vm.VerifiedAccuracy;
                     q.VerifiedBy = HttpContext.Current.User.Identity.Name;
                     q.VerifyDate = System.DateTimeOffset.UtcNow;
                 }
 
-                q.Status = vm.status;
-                q.InvoiceDate = vm.invoicedate;
-                q.InvoicePeriod = vm.invoiceperiod;
-                q.PONumber = vm.ponumber;
-                q.NetTerm = vm.netterm;
-                q.BillTo = vm.billto;
-                q.RemitTo = vm.remitto;
-                q.Currency = vm.currency;
-                q.Tier = vm.tier;
-                q.OrderType = vm.ordertype;
-                q.SampleShipSameDay = vm.sampleshipsameday;
-                q.SampleShipNextDay = vm.sampleshipnextday;
-                q.SampleShipSecondDay = vm.sampleshipsecondday;
-                q.SampleShipOther = vm.sampleshipother;
-                q.TotalSamples = vm.totalsamples;
-                q.TotalCostSamples = vm.totalcostsamples;
-                q.TotalFreight = vm.totalfreight;
-                q.TotalFrtHzdSchg = vm.totalfrtHzdSchg;
+                q.Status = vm.Status;
+                q.Comments = vm.Comments;
+                q.InvoiceDate = vm.InvoiceDate;
+                q.InvoicePeriod = vm.InvoicePeriod;
+                q.PONumber = vm.PONumber;
+                q.NetTerm = vm.NetTerm;
+                q.BillTo = vm.BillTo;
+                q.RemitTo = vm.RemitTo;
+                q.Currency = vm.Currency;
+                q.Tier = vm.Tier;
+                q.OrderType = vm.OrderType;
+                q.SampleShipSameDay = vm.SampleShipSameDay;
+                q.SampleShipNextDay = vm.SampleShipNextDay;
+                q.SampleShipSecondDay = vm.SampleShipSecondDay;
+                q.SampleShipOther = vm.SampleShipOther;
+                q.TotalSamples = vm.TotalSamples;
+                q.TotalCostSamples = vm.TotalCostSamples;
+                q.TotalFreight = vm.TotalFreight;
+                q.TotalFrtHzdSchg = vm.TotalFrtHzdSchg;
                 //q.TotalAdminCharge = vm.totaladmincharge;
-                q.TotalDue = vm.totaldue;
+                q.TotalDue = vm.TotalDue;
 
                 decimal? grandtotal = 0;
 
@@ -362,7 +371,7 @@ namespace MvcPhoenix.Models
 
                 db.SaveChanges();
 
-                return vm.invoiceid;
+                return vm.InvoiceId;
             }
         }
 

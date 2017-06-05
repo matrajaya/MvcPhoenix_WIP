@@ -83,7 +83,6 @@ namespace MvcPhoenix.Controllers
 
             int invoiceid = InvoiceService.CreateInvoice(ClientID, DivisionID, StartDate, EndDate);
 
-            //System.Threading.Thread.Sleep(10000);
             InvoiceService.GenerateInvoice(invoiceid);
 
             return RedirectToAction("Edit", new { id = invoiceid });
@@ -96,23 +95,10 @@ namespace MvcPhoenix.Controllers
             return View(vm);
         }
 
-        //public ActionResult Generate(int invoiceid)
-        //{
-        //    int pk = invoiceid;
-
-        //    if (invoiceid > 0)
-        //    {
-        //        pk = InvoiceService.GenerateInvoice(invoiceid);
-        //        TempData["SaveResult"] = "Invoice updated on " + DateTime.UtcNow.ToString("R");
-        //    }
-
-        //    return RedirectToAction("Edit", new { id = pk });
-        //}
-
         [HttpPost]
         public ActionResult SaveInvoice(InvoiceViewModel vm)
         {
-            int pk = vm.invoiceid;
+            int pk = vm.InvoiceId;
 
             if (ModelState.IsValid)
             {
@@ -123,11 +109,15 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("Edit", new { id = pk });
         }
 
-        public ActionResult View(int id)
+        public ActionResult DeleteInvoice(int id)
         {
-            var vm = InvoiceService.FillInvoice(id);
+            using (var db = new CMCSQL03Entities())
+            {
+                string s = @"DELETE FROM tblInvoice WHERE InvoiceID=" + id.ToString();
+                db.Database.ExecuteSqlCommand(s);
+            }
 
-            return View(vm);
+            return null;
         }
 
         public ActionResult PrintInvoice(int id)
