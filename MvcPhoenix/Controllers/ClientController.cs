@@ -770,24 +770,7 @@ namespace MvcPhoenix.Controllers
                                       Nitrogen = t.Nitrogen,
                                       Biocide = t.Biocide,
                                       Blend = t.Blend,
-                                      Kosher = t.Kosher,
-                                      OrderChargeCertificateOfOrigin = t.OrderChargeCertificateOfOrigin,
-                                      OrderChargeDocumentsHandling = t.OrderChargeDocumentsHandling,
-                                      OrderChargeManualHandling = t.OrderChargeManualHandling,
-                                      OrderChargeRDHandlingNone = t.OrderChargeRDHandlingNone,
-                                      OrderChargeRDHandlingLQ = t.OrderChargeRDHandlingLQ,
-                                      OrderChargeRDHandlingADR = t.OrderChargeRDHandlingADR,
-                                      OrderChargeRDHandlingIATA = t.OrderChargeRDHandlingIATA,
-                                      OrderChargeSPSPaidOrder = t.OrderChargeSPSPaidOrder,
-                                      OrderChargeBPCSChange = t.OrderChargeBPCSChange,
-                                      OrderChargeCreditCardFee = t.OrderChargeCreditCardFee,
-                                      OrderChargeCreditCardOrder = t.OrderChargeCreditCardOrder,
-                                      OrderChargeOrderEntry = t.OrderChargeOrderEntry,
-                                      PPSChargeCoolPack = t.PPSChargeCoolPack,
-                                      PPSChargeIsolation = t.PPSChargeIsolation,
-                                      PPSChargeIsolationBox = t.PPSChargeIsolationBox,
-                                      PPSChargeUNBox = t.PPSChargeUNBox,
-                                      CarrierChargeRushShipment = t.CarrierChargeRushShipment,
+                                      Kosher = t.Kosher
                                   }).FirstOrDefault();
 
                 if (surcharges != null)
@@ -821,23 +804,6 @@ namespace MvcPhoenix.Controllers
                         q.Biocide = obj.Biocide;
                         q.Blend = obj.Blend;
                         q.Kosher = obj.Kosher;
-                        q.OrderChargeCertificateOfOrigin = obj.OrderChargeCertificateOfOrigin;
-                        q.OrderChargeDocumentsHandling = obj.OrderChargeDocumentsHandling;
-                        q.OrderChargeManualHandling = obj.OrderChargeManualHandling;
-                        q.OrderChargeRDHandlingNone = obj.OrderChargeRDHandlingNone;
-                        q.OrderChargeRDHandlingLQ = obj.OrderChargeRDHandlingLQ;
-                        q.OrderChargeRDHandlingADR = obj.OrderChargeRDHandlingADR;
-                        q.OrderChargeRDHandlingIATA = obj.OrderChargeRDHandlingIATA;
-                        q.OrderChargeSPSPaidOrder = obj.OrderChargeSPSPaidOrder;
-                        q.OrderChargeBPCSChange = obj.OrderChargeBPCSChange;
-                        q.OrderChargeCreditCardFee = obj.OrderChargeCreditCardFee;
-                        q.OrderChargeCreditCardOrder = obj.OrderChargeCreditCardOrder;
-                        q.OrderChargeOrderEntry = obj.OrderChargeOrderEntry;
-                        q.PPSChargeCoolPack = obj.PPSChargeCoolPack;
-                        q.PPSChargeIsolation = obj.PPSChargeIsolation;
-                        q.PPSChargeIsolationBox = obj.PPSChargeIsolationBox;
-                        q.PPSChargeUNBox = obj.PPSChargeUNBox;
-                        q.CarrierChargeRushShipment = obj.CarrierChargeRushShipment;
 
                         db.SaveChanges();
                     }
@@ -856,24 +822,7 @@ namespace MvcPhoenix.Controllers
                             Nitrogen = obj.Nitrogen,
                             Biocide = obj.Biocide,
                             Blend = obj.Blend,
-                            Kosher = obj.Kosher,
-                            OrderChargeCertificateOfOrigin = obj.OrderChargeCertificateOfOrigin,
-                            OrderChargeDocumentsHandling = obj.OrderChargeDocumentsHandling,
-                            OrderChargeManualHandling = obj.OrderChargeManualHandling,
-                            OrderChargeRDHandlingNone = obj.OrderChargeRDHandlingNone,
-                            OrderChargeRDHandlingLQ = obj.OrderChargeRDHandlingLQ,
-                            OrderChargeRDHandlingADR = obj.OrderChargeRDHandlingADR,
-                            OrderChargeRDHandlingIATA = obj.OrderChargeRDHandlingIATA,
-                            OrderChargeSPSPaidOrder = obj.OrderChargeSPSPaidOrder,
-                            OrderChargeBPCSChange = obj.OrderChargeBPCSChange,
-                            OrderChargeCreditCardFee = obj.OrderChargeCreditCardFee,
-                            OrderChargeCreditCardOrder = obj.OrderChargeCreditCardOrder,
-                            OrderChargeOrderEntry = obj.OrderChargeOrderEntry,
-                            PPSChargeCoolPack = obj.PPSChargeCoolPack,
-                            PPSChargeIsolation = obj.PPSChargeIsolation,
-                            PPSChargeIsolationBox = obj.PPSChargeIsolationBox,
-                            PPSChargeUNBox = obj.PPSChargeUNBox,
-                            CarrierChargeRushShipment = obj.CarrierChargeRushShipment,
+                            Kosher = obj.Kosher
                         };
 
                         db.tblSurcharge.Add(newrecord);
@@ -897,54 +846,75 @@ namespace MvcPhoenix.Controllers
 
         #region Administrative Rates methods
 
-        public ActionResult DisplayAdministrativeRates(int? id)
+        public ActionResult DisplayServiceChargeRates(int? id)
         {
             using (var db = new CMCSQL03Entities())
             {
                 ViewBag.ClientKey = id;
 
-                var administrativerates = (from t in db.tblRates
+                var servicechargerates = (from t in db.tblRates
                                            where t.ClientID == id
-                                           select new MvcPhoenix.Models.AdministativeRates
+                                           select new MvcPhoenix.Models.ServiceChargeRates
                                            {
                                                RatesID = t.RatesID,
                                                ClientID = t.ClientID,
+                                               AirHzdOnlyRate = t.AirHzdOnlyRate,
+                                               CertificateOfOriginRate = t.CertificateOfOriginRate,
+                                               CMCPackRate = t.CMCPackRate,
+                                               CoolPackRate = t.CoolPackRate,
+                                               CreditCardFeeRate = t.CreditCardFeeRate,
+                                               CreditCardOrderRate = t.CreditCardOrderRate,
+                                               DocumentationHandlingRate = t.DocumentationHandlingRate,
                                                EmptyPackagingRate = t.EmptyPackagingRate,
-                                               HandlingRate = t.HandlingRate,
-                                               InactiveProductsRate = t.InactiveProductRate,
-                                               ProductSetupChangesRate = t.ProductSetupChangesRate,
-                                               MiscellaneousLaborRate = t.MiscellaneousLaborRate,
+                                               ExternalSystemRate = t.ExternalSystemRate,
                                                FollowUpOrderRate = t.FollowUpOrderRate,
-                                               RefrigeratorStorageRate = t.RefrigeratorStorageRate,
+                                               FreezerPackRate = t.FreezerPackRate,
                                                GHSLabelsRate = t.GHSLabelsRate,
+                                               InactiveProductsRate = t.InactiveProductsRate,
+                                               IsolationRate = t.IsolationRate,
+                                               IsolationBoxRate = t.IsolationBoxRate,
                                                ITFeeRate = t.ITFeeRate,
+                                               LabelMaintainanceRate = t.LabelMaintainanceRate,
+                                               LabelStockRate = t.LabelStockRate,
                                                LabelsPrintedRate = t.LabelsPrintedRate,
                                                LaborRelabelRate = t.LaborRelabelRate,
-                                               LiteratureRate = t.LiteratureRate,
-                                               LabelStockRate = t.LabelStockRate,
-                                               LabelMaintainanceRate = t.LabelMaintainanceRate,
+                                               LiteratureFeeRate = t.LiteratureFeeRate,
+                                               LimitedQtyRate = t.LimitedQtyRate,
+                                               ManualHandlingRate = t.ManualHandlingRate,
                                                MSDSPrintsRate = t.MSDSPrintsRate,
                                                NewLabelSetupRate = t.NewLabelSetupRate,
                                                NewProductSetupRate = t.NewProductSetupRate,
-                                               OtherRate = t.OtherRate,
+                                               OberkPackRate = t.OberkPackRate,
+                                               OrderEntryRate = t.OrderEntryRate,
+                                               OverPackRate = t.OverPackRate,
                                                PalletReturnRate = t.PalletReturnRate,
+                                               PoisonPackRate = t.PoisonPackRate,
+                                               ProductSetupChangesRate = t.ProductSetupChangesRate,
                                                QCStorageRate = t.QCStorageRate,
+                                               RDHandlingADRRate = t.RDHandlingADRRate,
+                                               RDHandlingIATARate = t.RDHandlingIATARate,
+                                               RDHandlingLQRate = t.RDHandlingLQRate,
+                                               RDHandlingNonHzdRate = t.RDHandlingNonHzdRate,
+                                               RefrigeratorStorageRate = t.RefrigeratorStorageRate,
                                                RelabelsRate = t.RelabelsRate,
+                                               RushShipmentRate = t.RushShipmentRate,
+                                               SPA197AppliedRate = t.SPA197AppliedRate,
+                                               SPSPaidOrderRate = t.SPSPaidOrderRate,
+                                               UNBoxRate = t.UNBoxRate,
                                                WarehouseStorageRate = t.WarehouseStorageRate,
                                                WHMISLabelsRate = t.WHMISLabelsRate,
-                                               WasteProcessingRate = t.WasteProcessingRate,
                                            }).FirstOrDefault();
 
-                if (administrativerates != null)
+                if (servicechargerates != null)
                 {
-                    return PartialView("~/Views/Client/_AdministrativeRates.cshtml", administrativerates);
+                    return PartialView("~/Views/Client/_ServiceChargeRates.cshtml", servicechargerates);
                 }
 
-                return PartialView("~/Views/Client/_AdministrativeRates.cshtml");
+                return PartialView("~/Views/Client/_ServiceChargeRates.cshtml");
             }
         }
 
-        public ActionResult SaveAdministrativeRates(AdministativeRates obj, int clientkey)
+        public ActionResult SaveServiceChargeRates(ServiceChargeRates obj, int clientkey)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -956,30 +926,51 @@ namespace MvcPhoenix.Controllers
                     if (q != null)
                     {
                         q.RatesID = obj.RatesID;
+                        q.AirHzdOnlyRate = obj.AirHzdOnlyRate;
+                        q.CertificateOfOriginRate = obj.CertificateOfOriginRate;
+                        q.CMCPackRate = obj.CMCPackRate;
+                        q.CoolPackRate = obj.CoolPackRate;
+                        q.CreditCardFeeRate = obj.CreditCardFeeRate;
+                        q.CreditCardOrderRate = obj.CreditCardOrderRate;
+                        q.DocumentationHandlingRate = obj.DocumentationHandlingRate;
                         q.EmptyPackagingRate = obj.EmptyPackagingRate;
-                        q.HandlingRate = obj.HandlingRate;
-                        q.InactiveProductRate = obj.InactiveProductsRate;
-                        q.ProductSetupChangesRate = obj.ProductSetupChangesRate;
-                        q.MiscellaneousLaborRate = obj.MiscellaneousLaborRate;
+                        q.ExternalSystemRate = obj.ExternalSystemRate;
                         q.FollowUpOrderRate = obj.FollowUpOrderRate;
-                        q.RefrigeratorStorageRate = obj.RefrigeratorStorageRate;
+                        q.FreezerPackRate = obj.FreezerPackRate;
                         q.GHSLabelsRate = obj.GHSLabelsRate;
+                        q.InactiveProductsRate = obj.InactiveProductsRate;
+                        q.IsolationRate = obj.IsolationRate;
+                        q.IsolationBoxRate = obj.IsolationBoxRate;
                         q.ITFeeRate = obj.ITFeeRate;
+                        q.LabelMaintainanceRate = obj.LabelMaintainanceRate;
+                        q.LabelStockRate = obj.LabelStockRate;
                         q.LabelsPrintedRate = obj.LabelsPrintedRate;
                         q.LaborRelabelRate = obj.LaborRelabelRate;
-                        q.LiteratureRate = obj.LiteratureRate;
-                        q.LabelStockRate = obj.LabelStockRate;
-                        q.LabelMaintainanceRate = obj.LabelMaintainanceRate;
+                        q.LiteratureFeeRate = obj.LiteratureFeeRate;
+                        q.LimitedQtyRate = obj.LimitedQtyRate;
+                        q.ManualHandlingRate = obj.ManualHandlingRate;
                         q.MSDSPrintsRate = obj.MSDSPrintsRate;
                         q.NewLabelSetupRate = obj.NewLabelSetupRate;
                         q.NewProductSetupRate = obj.NewProductSetupRate;
-                        q.OtherRate = obj.OtherRate;
+                        q.OberkPackRate = obj.OberkPackRate;
+                        q.OrderEntryRate = obj.OrderEntryRate;
+                        q.OverPackRate = obj.OverPackRate;
                         q.PalletReturnRate = obj.PalletReturnRate;
+                        q.PoisonPackRate = obj.PoisonPackRate;
+                        q.ProductSetupChangesRate = obj.ProductSetupChangesRate;
                         q.QCStorageRate = obj.QCStorageRate;
+                        q.RDHandlingADRRate = obj.RDHandlingADRRate;
+                        q.RDHandlingIATARate = obj.RDHandlingIATARate;
+                        q.RDHandlingLQRate = obj.RDHandlingLQRate;
+                        q.RDHandlingNonHzdRate = obj.RDHandlingNonHzdRate;
+                        q.RefrigeratorStorageRate = obj.RefrigeratorStorageRate;
                         q.RelabelsRate = obj.RelabelsRate;
+                        q.RushShipmentRate = obj.RushShipmentRate;
+                        q.SPA197AppliedRate = obj.SPA197AppliedRate;
+                        q.SPSPaidOrderRate = obj.SPSPaidOrderRate;
+                        q.UNBoxRate = obj.UNBoxRate;
                         q.WarehouseStorageRate = obj.WarehouseStorageRate;
                         q.WHMISLabelsRate = obj.WHMISLabelsRate;
-                        q.WasteProcessingRate = obj.WasteProcessingRate;
 
                         db.SaveChanges();
                     }
@@ -988,30 +979,51 @@ namespace MvcPhoenix.Controllers
                         var newrecord = new tblRates
                         {
                             ClientID = Convert.ToInt32(clientkey),
+                            AirHzdOnlyRate = obj.AirHzdOnlyRate,
+                            CertificateOfOriginRate = obj.CertificateOfOriginRate,
+                            CMCPackRate = obj.CMCPackRate,
+                            CoolPackRate = obj.CoolPackRate,
+                            CreditCardFeeRate = obj.CreditCardFeeRate,
+                            CreditCardOrderRate = obj.CreditCardOrderRate,
+                            DocumentationHandlingRate = obj.DocumentationHandlingRate,
                             EmptyPackagingRate = obj.EmptyPackagingRate,
-                            HandlingRate = obj.HandlingRate,
-                            InactiveProductRate = obj.InactiveProductsRate,
-                            ProductSetupChangesRate = obj.ProductSetupChangesRate,
-                            MiscellaneousLaborRate = obj.MiscellaneousLaborRate,
+                            ExternalSystemRate = obj.ExternalSystemRate,
                             FollowUpOrderRate = obj.FollowUpOrderRate,
-                            RefrigeratorStorageRate = obj.RefrigeratorStorageRate,
+                            FreezerPackRate = obj.FreezerPackRate,
                             GHSLabelsRate = obj.GHSLabelsRate,
+                            InactiveProductsRate = obj.InactiveProductsRate,
+                            IsolationRate = obj.IsolationRate,
+                            IsolationBoxRate = obj.IsolationBoxRate,
                             ITFeeRate = obj.ITFeeRate,
+                            LabelMaintainanceRate = obj.LabelMaintainanceRate,
+                            LabelStockRate = obj.LabelStockRate,
                             LabelsPrintedRate = obj.LabelsPrintedRate,
                             LaborRelabelRate = obj.LaborRelabelRate,
-                            LiteratureRate = obj.LiteratureRate,
-                            LabelStockRate = obj.LabelStockRate,
-                            LabelMaintainanceRate = obj.LabelMaintainanceRate,
+                            LiteratureFeeRate = obj.LiteratureFeeRate,
+                            LimitedQtyRate = obj.LimitedQtyRate,
+                            ManualHandlingRate = obj.ManualHandlingRate,
                             MSDSPrintsRate = obj.MSDSPrintsRate,
                             NewLabelSetupRate = obj.NewLabelSetupRate,
                             NewProductSetupRate = obj.NewProductSetupRate,
-                            OtherRate = obj.OtherRate,
+                            OberkPackRate = obj.OberkPackRate,
+                            OrderEntryRate = obj.OrderEntryRate,
+                            OverPackRate = obj.OverPackRate,
                             PalletReturnRate = obj.PalletReturnRate,
+                            PoisonPackRate = obj.PoisonPackRate,
+                            ProductSetupChangesRate = obj.ProductSetupChangesRate,
                             QCStorageRate = obj.QCStorageRate,
+                            RDHandlingADRRate = obj.RDHandlingADRRate,
+                            RDHandlingIATARate = obj.RDHandlingIATARate,
+                            RDHandlingLQRate = obj.RDHandlingLQRate,
+                            RDHandlingNonHzdRate = obj.RDHandlingNonHzdRate,
+                            RefrigeratorStorageRate = obj.RefrigeratorStorageRate,
                             RelabelsRate = obj.RelabelsRate,
+                            RushShipmentRate = obj.RushShipmentRate,
+                            SPA197AppliedRate = obj.SPA197AppliedRate,
+                            SPSPaidOrderRate = obj.SPSPaidOrderRate,
+                            UNBoxRate = obj.UNBoxRate,
                             WarehouseStorageRate = obj.WarehouseStorageRate,
                             WHMISLabelsRate = obj.WHMISLabelsRate,
-                            WasteProcessingRate = obj.WasteProcessingRate,
                         };
 
                         db.tblRates.Add(newrecord);

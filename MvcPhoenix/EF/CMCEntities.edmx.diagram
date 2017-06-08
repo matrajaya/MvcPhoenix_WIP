@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1a452c590eed4e0aa76ed5757ce2fba0" Name="Diagram1" ZoomLevel="42">
+      <Diagram DiagramId="1a452c590eed4e0aa76ed5757ce2fba0" Name="Diagram1" ZoomLevel="46">
         <EntityTypeShape EntityType="CMCSQL03Model.tblBillingGroup" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblBulkOrder" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblBulkOrderItem" Width="1.5" PointX="4.75" PointY="5.75" />
@@ -52,7 +52,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblState" Width="1.5" PointX="26.75" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblStatusNotes" Width="1.5" PointX="26.75" PointY="22.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblSuggestedBulk" Width="1.5" PointX="22.75" PointY="27.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblSurcharge" Width="1.5" PointX="28.75" PointY="0.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblTier" Width="1.5" PointX="28.75" PointY="5.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblUN" Width="1.5" PointX="10.75" PointY="28.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblUser" Width="1.5" PointX="28.75" PointY="12.75" />
@@ -62,9 +61,10 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblStock" Width="1.5" PointX="25.375" PointY="27.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblProductMaster" Width="1.5" PointX="27.375" PointY="30.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblCarrier" Width="1.5" PointX="29.375" PointY="30.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblOrderMaster" Width="1.5" PointX="15.375" PointY="19.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblInvoice" Width="1.5" PointX="5.375" PointY="18.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblRates" Width="1.5" PointX="31.375" PointY="0.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblOrderMaster" Width="1.5" PointX="15.375" PointY="19.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblSurcharge" Width="1.5" PointX="31.375" PointY="10.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

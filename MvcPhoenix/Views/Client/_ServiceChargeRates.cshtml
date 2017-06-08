@@ -1,0 +1,280 @@
+﻿@model MvcPhoenix.Models.ServiceChargeRates
+@using MvcPhoenix.Extensions;
+
+@{
+    ViewBag.Title = "Administrative Rates";
+    Layout = null;
+}
+
+@using (Ajax.BeginForm("SaveServiceChargeRates", "Client", new { clientkey = ViewBag.ClientKey }, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "saveadminrates",
+        OnFailure = "$.alert('Something is wrong!')",
+        InsertionMode = InsertionMode.Replace
+    }))
+{
+    @Html.HiddenFor(m => m.RatesID)
+    @Html.HiddenFor(m => m.ClientID)
+
+    <div class="row">
+        <div class="col-md-2 form-group">
+            <label>Air Hazard Only</label>
+            @Html.TextBoxFor(m => m.AirHzdOnlyRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.AirHzdOnlyRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Cert. Of Origin</label>
+            @Html.TextBoxFor(m => m.CertificateOfOriginRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CertificateOfOriginRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>CMC Pack</label>
+            @Html.TextBoxFor(m => m.CMCPackRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CMCPackRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Cool Pack</label>
+            @Html.TextBoxFor(m => m.CoolPackRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CoolPackRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Credit Card Fee</label>
+            @Html.TextBoxFor(m => m.CreditCardFeeRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CreditCardFeeRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Credit Card Order</label>
+            @Html.TextBoxFor(m => m.CreditCardOrderRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CreditCardOrderRate)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 form-group">
+            <label>Doc &amp; Handling</label>
+            @Html.TextBoxFor(m => m.DocumentationHandlingRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DocumentationHandlingRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Empty Packaging</label>
+            @Html.TextBoxFor(m => m.EmptyPackagingRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.EmptyPackagingRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>External System</label>
+            @Html.TextBoxFor(m => m.ExternalSystemRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ExternalSystemRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Follow Up Order</label>
+            @Html.TextBoxFor(m => m.FollowUpOrderRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FollowUpOrderRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Freezer Pack</label>
+            @Html.TextBoxFor(m => m.FreezerPackRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FreezerPackRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>GHS Labels</label>
+            @Html.TextBoxFor(m => m.GHSLabelsRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.GHSLabelsRate)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 form-group">
+            <label>Inactive Products</label>
+            @Html.TextBoxFor(m => m.InactiveProductsRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.InactiveProductsRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Isolation</label>
+            @Html.TextBoxFor(m => m.IsolationRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.IsolationRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Isolation Box</label>
+            @Html.TextBoxFor(m => m.IsolationBoxRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.IsolationBoxRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>IT Fee</label>
+            @Html.TextBoxFor(m => m.ITFeeRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ITFeeRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Label Maintainance</label>
+            @Html.TextBoxFor(m => m.LabelMaintainanceRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LabelMaintainanceRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Label Stock</label>
+            @Html.TextBoxFor(m => m.LabelStockRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LabelStockRate)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 form-group">
+            <label>Labels Printed</label>
+            @Html.TextBoxFor(m => m.LabelsPrintedRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LabelsPrintedRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Labor Relabel</label>
+            @Html.TextBoxFor(m => m.LaborRelabelRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LaborRelabelRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Literature Fee</label>
+            @Html.TextBoxFor(m => m.LiteratureFeeRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LiteratureFeeRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Limited Quantity</label>
+            @Html.TextBoxFor(m => m.LimitedQtyRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LimitedQtyRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Manual Handling</label>
+            @Html.TextBoxFor(m => m.ManualHandlingRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ManualHandlingRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>MSDS Prints</label>
+            @Html.TextBoxFor(m => m.MSDSPrintsRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MSDSPrintsRate)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 form-group">
+            <label>New Label Setup</label>
+            @Html.TextBoxFor(m => m.NewLabelSetupRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NewLabelSetupRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>New Product Setup</label>
+            @Html.TextBoxFor(m => m.NewProductSetupRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NewProductSetupRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Oberk Pack</label>
+            @Html.TextBoxFor(m => m.OberkPackRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.OberkPackRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Order Entry</label>
+            @Html.TextBoxFor(m => m.OrderEntryRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.OrderEntryRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Over Pack</label>
+            @Html.TextBoxFor(m => m.OverPackRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.OverPackRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Pallet Return</label>
+            @Html.TextBoxFor(m => m.PalletReturnRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PalletReturnRate)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 form-group">
+            <label>Poison Pack</label>
+            @Html.TextBoxFor(m => m.PoisonPackRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PoisonPackRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Product Setup Chg</label>
+            @Html.TextBoxFor(m => m.ProductSetupChangesRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ProductSetupChangesRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>QC Storage</label>
+            @Html.TextBoxFor(m => m.QCStorageRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.QCStorageRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>R&amp;D Handling ADR</label>
+            @Html.TextBoxFor(m => m.RDHandlingADRRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.RDHandlingADRRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>R&amp;D Handling IATA</label>
+            @Html.TextBoxFor(m => m.RDHandlingIATARate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.RDHandlingIATARate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>R&amp;D Handling LQ</label>
+            @Html.TextBoxFor(m => m.RDHandlingLQRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.RDHandlingLQRate)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 form-group">
+            <label>R&amp;D Hnd. Non Hzd</label>
+            @Html.TextBoxFor(m => m.RDHandlingNonHzdRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.RDHandlingNonHzdRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Refrig. Storage</label>
+            @Html.TextBoxFor(m => m.RefrigeratorStorageRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.RefrigeratorStorageRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Relabels</label>
+            @Html.TextBoxFor(m => m.RelabelsRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.RelabelsRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Rush Shipment</label>
+            @Html.TextBoxFor(m => m.RushShipmentRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.RushShipmentRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>SPA 197 Applied</label>
+            @Html.TextBoxFor(m => m.SPA197AppliedRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.SPA197AppliedRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>SPS Paid Order</label>
+            @Html.TextBoxFor(m => m.SPSPaidOrderRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.SPSPaidOrderRate)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 form-group">
+            <label>UN Box</label>
+            @Html.TextBoxFor(m => m.UNBoxRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UNBoxRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>Warehouse Storage</label>
+            @Html.TextBoxFor(m => m.WarehouseStorageRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.WarehouseStorageRate)
+        </div>
+        <div class="col-md-2 form-group">
+            <label>WHMIS Labels</label>
+            @Html.TextBoxFor(m => m.WHMISLabelsRate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.WHMISLabelsRate)
+        </div>
+        <div id="hideeditbutton" class="col-md-3 pull-right form-group">
+            <label class="invisible">.</label>
+            <button type="submit" class="btn btn-block btn-success">
+                Save Changes
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6" id="saveadminrates">
+            @ViewBag.Message
+        </div>
+    </div>
+}

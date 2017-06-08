@@ -51,51 +51,75 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> TotalAdminCharge { get; set; }
         public Nullable<decimal> TotalDue { get; set; }
         public Nullable<decimal> GrandTotal { get; set; }
-        public Nullable<int> SamplesQty { get; set; }
-        public Nullable<decimal> SamplesRate { get; set; }
-        public Nullable<decimal> SamplesCharge { get; set; }
+        public Nullable<int> AirHzdOnlyQuantity { get; set; }
+        public Nullable<decimal> AirHzdOnlyRate { get; set; }
+        public Nullable<decimal> AirHzdOnlyCharge { get; set; }
+        public Nullable<int> CertificateOfOriginQuantity { get; set; }
+        public Nullable<decimal> CertificateOfOriginRate { get; set; }
+        public Nullable<decimal> CertificateOfOriginCharge { get; set; }
+        public Nullable<int> CMCPackQuantity { get; set; }
+        public Nullable<decimal> CMCPackRate { get; set; }
+        public Nullable<decimal> CMCPackCharge { get; set; }
+        public Nullable<int> CoolPackQuantity { get; set; }
+        public Nullable<decimal> CoolPackRate { get; set; }
+        public Nullable<decimal> CoolPackCharge { get; set; }
+        public Nullable<int> CreditCardFeeQuantity { get; set; }
+        public Nullable<decimal> CreditCardFeeRate { get; set; }
+        public Nullable<decimal> CreditCardFeeCharge { get; set; }
+        public Nullable<int> CreditCardOrderQuantity { get; set; }
+        public Nullable<decimal> CreditCardOrderRate { get; set; }
+        public Nullable<decimal> CreditCardOrderCharge { get; set; }
+        public Nullable<int> DocumentationHandlingQuantity { get; set; }
+        public Nullable<decimal> DocumentationHandlingRate { get; set; }
+        public Nullable<decimal> DocumentationHandlingCharge { get; set; }
         public Nullable<int> EmptyPackagingQuantity { get; set; }
         public Nullable<decimal> EmptyPackagingRate { get; set; }
         public Nullable<decimal> EmptyPackagingCharge { get; set; }
-        public Nullable<int> HandlingQuantity { get; set; }
-        public Nullable<decimal> HandlingRate { get; set; }
-        public Nullable<decimal> HandlingCharge { get; set; }
-        public Nullable<int> InactiveProductsQuantity { get; set; }
-        public Nullable<decimal> InactiveProductsRate { get; set; }
-        public Nullable<decimal> InactiveProductsCharge { get; set; }
-        public Nullable<int> ProductSetupChangesQuantity { get; set; }
-        public Nullable<decimal> ProductSetupChangesRate { get; set; }
-        public Nullable<decimal> ProductSetupChangesCharge { get; set; }
-        public Nullable<int> MiscellaneousLaborQuantity { get; set; }
-        public Nullable<decimal> MiscellaneousLaborRate { get; set; }
-        public Nullable<decimal> MiscellaneousLaborCharge { get; set; }
+        public Nullable<int> ExternalSystemQuantity { get; set; }
+        public Nullable<decimal> ExternalSystemRate { get; set; }
+        public Nullable<decimal> ExternalSystemCharge { get; set; }
         public Nullable<int> FollowUpOrderQuantity { get; set; }
         public Nullable<decimal> FollowUpOrderRate { get; set; }
         public Nullable<decimal> FollowUpOrderCharge { get; set; }
-        public Nullable<int> RefrigeratorStorageQuantity { get; set; }
-        public Nullable<decimal> RefrigeratorStorageRate { get; set; }
-        public Nullable<decimal> RefrigeratorStorageCharge { get; set; }
+        public Nullable<int> FreezerPackQuantity { get; set; }
+        public Nullable<decimal> FreezerPackRate { get; set; }
+        public Nullable<decimal> FreezerPackCharge { get; set; }
         public Nullable<int> GHSLabelsQuantity { get; set; }
         public Nullable<decimal> GHSLabelsRate { get; set; }
         public Nullable<decimal> GHSLabelsCharge { get; set; }
+        public Nullable<int> InactiveProductsQuantity { get; set; }
+        public Nullable<decimal> InactiveProductsRate { get; set; }
+        public Nullable<decimal> InactiveProductsCharge { get; set; }
+        public Nullable<int> IsolationQuantity { get; set; }
+        public Nullable<decimal> IsolationRate { get; set; }
+        public Nullable<decimal> IsolationCharge { get; set; }
+        public Nullable<int> IsolationBoxQuantity { get; set; }
+        public Nullable<decimal> IsolationBoxRate { get; set; }
+        public Nullable<decimal> IsolationBoxCharge { get; set; }
         public Nullable<int> ITFeeQuantity { get; set; }
         public Nullable<decimal> ITFeeRate { get; set; }
         public Nullable<decimal> ITFeeCharge { get; set; }
+        public Nullable<int> LabelMaintainanceQuantity { get; set; }
+        public Nullable<decimal> LabelMaintainanceRate { get; set; }
+        public Nullable<decimal> LabelMaintainanceCharge { get; set; }
+        public Nullable<int> LabelStockQuantity { get; set; }
+        public Nullable<decimal> LabelStockRate { get; set; }
+        public Nullable<decimal> LabelStockCharge { get; set; }
         public Nullable<int> LabelsPrintedQuantity { get; set; }
         public Nullable<decimal> LabelsPrintedRate { get; set; }
         public Nullable<decimal> LabelsPrintedCharge { get; set; }
         public Nullable<int> LaborRelabelQuantity { get; set; }
         public Nullable<decimal> LaborRelabelRate { get; set; }
         public Nullable<decimal> LaborRelabelCharge { get; set; }
-        public Nullable<int> LiteratureQuantity { get; set; }
-        public Nullable<decimal> LiteratureRate { get; set; }
-        public Nullable<decimal> LiteratureCharge { get; set; }
-        public Nullable<int> LabelStockQuantity { get; set; }
-        public Nullable<decimal> LabelStockRate { get; set; }
-        public Nullable<decimal> LabelStockCharge { get; set; }
-        public Nullable<int> LabelMaintainanceQuantity { get; set; }
-        public Nullable<decimal> LabelMaintainanceRate { get; set; }
-        public Nullable<decimal> LabelMaintainanceCharge { get; set; }
+        public Nullable<int> LiteratureFeeQuantity { get; set; }
+        public Nullable<decimal> LiteratureFeeRate { get; set; }
+        public Nullable<decimal> LiteratureFeeCharge { get; set; }
+        public Nullable<int> LimitedQtyQuantity { get; set; }
+        public Nullable<decimal> LimitedQtyRate { get; set; }
+        public Nullable<decimal> LimitedQtyCharge { get; set; }
+        public Nullable<int> ManualHandlingQuantity { get; set; }
+        public Nullable<decimal> ManualHandlingRate { get; set; }
+        public Nullable<decimal> ManualHandlingCharge { get; set; }
         public Nullable<int> MSDSPrintsQuantity { get; set; }
         public Nullable<decimal> MSDSPrintsRate { get; set; }
         public Nullable<decimal> MSDSPrintsCharge { get; set; }
@@ -105,26 +129,72 @@ namespace MvcPhoenix.EF
         public Nullable<int> NewProductSetupQuantity { get; set; }
         public Nullable<decimal> NewProductSetupRate { get; set; }
         public Nullable<decimal> NewProductSetupCharge { get; set; }
-        public Nullable<int> OtherQuantity { get; set; }
-        public Nullable<decimal> OtherRate { get; set; }
-        public Nullable<decimal> OtherCharge { get; set; }
+        public Nullable<int> OberkPackQuantity { get; set; }
+        public Nullable<decimal> OberkPackRate { get; set; }
+        public Nullable<decimal> OberkPackCharge { get; set; }
+        public Nullable<int> OrderEntryQuantity { get; set; }
+        public Nullable<decimal> OrderEntryRate { get; set; }
+        public Nullable<decimal> OrderEntryCharge { get; set; }
+        public Nullable<int> OverPackQuantity { get; set; }
+        public Nullable<decimal> OverPackRate { get; set; }
+        public Nullable<decimal> OverPackCharge { get; set; }
         public Nullable<int> PalletReturnQuantity { get; set; }
         public Nullable<decimal> PalletReturnRate { get; set; }
         public Nullable<decimal> PalletReturnCharge { get; set; }
+        public Nullable<int> PoisonPackQuantity { get; set; }
+        public Nullable<decimal> PoisonPackRate { get; set; }
+        public Nullable<decimal> PoisonPackCharge { get; set; }
+        public Nullable<int> ProductSetupChangesQuantity { get; set; }
+        public Nullable<decimal> ProductSetupChangesRate { get; set; }
+        public Nullable<decimal> ProductSetupChangesCharge { get; set; }
         public Nullable<int> QCStorageQuantity { get; set; }
         public Nullable<decimal> QCStorageRate { get; set; }
         public Nullable<decimal> QCStorageCharge { get; set; }
+        public Nullable<int> RDHandlingADRQuantity { get; set; }
+        public Nullable<decimal> RDHandlingADRRate { get; set; }
+        public Nullable<decimal> RDHandlingADRCharge { get; set; }
+        public Nullable<int> RDHandlingIATAQuantity { get; set; }
+        public Nullable<decimal> RDHandlingIATARate { get; set; }
+        public Nullable<decimal> RDHandlingIATACharge { get; set; }
+        public Nullable<int> RDHandlingLQQuantity { get; set; }
+        public Nullable<decimal> RDHandlingLQRate { get; set; }
+        public Nullable<decimal> RDHandlingLQCharge { get; set; }
+        public Nullable<int> RDHandlingNonHzdQuantity { get; set; }
+        public Nullable<decimal> RDHandlingNonHzdRate { get; set; }
+        public Nullable<decimal> RDHandlingNonHzdCharge { get; set; }
+        public Nullable<int> RefrigeratorStorageQuantity { get; set; }
+        public Nullable<decimal> RefrigeratorStorageRate { get; set; }
+        public Nullable<decimal> RefrigeratorStorageCharge { get; set; }
         public Nullable<int> RelabelsQuantity { get; set; }
         public Nullable<decimal> RelabelsRate { get; set; }
         public Nullable<decimal> RelabelsCharge { get; set; }
+        public Nullable<int> RushShipmentQuantity { get; set; }
+        public Nullable<decimal> RushShipmentRate { get; set; }
+        public Nullable<decimal> RushShipmentCharge { get; set; }
+        public Nullable<int> SPA197AppliedQuantity { get; set; }
+        public Nullable<decimal> SPA197AppliedRate { get; set; }
+        public Nullable<decimal> SPA197AppliedCharge { get; set; }
+        public Nullable<int> SPSPaidOrderQuantity { get; set; }
+        public Nullable<decimal> SPSPaidOrderRate { get; set; }
+        public Nullable<decimal> SPSPaidOrderCharge { get; set; }
+        public Nullable<int> UNBoxQuantity { get; set; }
+        public Nullable<decimal> UNBoxRate { get; set; }
+        public Nullable<decimal> UNBoxCharge { get; set; }
         public Nullable<int> WarehouseStorageQuantity { get; set; }
         public Nullable<decimal> WarehouseStorageRate { get; set; }
         public Nullable<decimal> WarehouseStorageCharge { get; set; }
         public Nullable<int> WHMISLabelsQuantity { get; set; }
         public Nullable<decimal> WHMISLabelsRate { get; set; }
         public Nullable<decimal> WHMISLabelsCharge { get; set; }
-        public Nullable<int> WasteProcessingQuantity { get; set; }
-        public Nullable<decimal> WasteProcessingRate { get; set; }
+        public Nullable<decimal> AdministrativeWasteFeeCharge { get; set; }
+        public Nullable<decimal> CreditCharge { get; set; }
+        public Nullable<decimal> CustomsDocumentsCharge { get; set; }
+        public Nullable<decimal> DeliveryDutiesTaxesCharge { get; set; }
+        public Nullable<decimal> DocumentsCharge { get; set; }
+        public Nullable<decimal> HandlingCharge { get; set; }
+        public Nullable<decimal> MautFuel { get; set; }
+        public Nullable<decimal> MiscellaneousLaborCharge { get; set; }
+        public Nullable<decimal> OtherCharge { get; set; }
         public Nullable<decimal> WasteProcessingCharge { get; set; }
     }
 }

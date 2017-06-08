@@ -200,10 +200,20 @@
     @* Surcharges *@
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title" data-toggle="collapse" data-target="#surchargepanel"><i class="fa fa-book fa-fw"></i> Surcharges</h3>
+            <h3 class="panel-title" data-toggle="collapse" data-target="#surchargepanel"><i class="fa fa-book fa-fw"></i> Product Surcharges</h3>
         </div>
         <div id="surchargepanel" class="panel-body collapse in">
             @Html.Action("DisplaySurcharges", "Client", new { clientid = @Model.ClientID })
+        </div>
+    </div>
+
+    @* Service Charge Rates *@
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" data-toggle="collapse" data-target="#servicechargeratespanel"><i class="fa fa-book fa-fw"></i> Service Charge Rates</h3>
+        </div>
+        <div id="servicechargeratespanel" class="panel-body collapse in">
+            @Html.Action("DisplayServiceChargeRates", "Client", new { clientid = @Model.ClientID })
         </div>
     </div>
 

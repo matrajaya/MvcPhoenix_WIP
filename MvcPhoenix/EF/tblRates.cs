@@ -16,30 +16,50 @@ namespace MvcPhoenix.EF
     {
         public int RatesID { get; set; }
         public int ClientID { get; set; }
+        public Nullable<decimal> AirHzdOnlyRate { get; set; }
+        public Nullable<decimal> CertificateOfOriginRate { get; set; }
+        public Nullable<decimal> CMCPackRate { get; set; }
+        public Nullable<decimal> CoolPackRate { get; set; }
+        public Nullable<decimal> CreditCardFeeRate { get; set; }
+        public Nullable<decimal> CreditCardOrderRate { get; set; }
+        public Nullable<decimal> DocumentationHandlingRate { get; set; }
         public Nullable<decimal> EmptyPackagingRate { get; set; }
-        public Nullable<decimal> HandlingRate { get; set; }
-        public Nullable<decimal> InactiveProductRate { get; set; }
-        public Nullable<decimal> ProductSetupChangesRate { get; set; }
-        public Nullable<decimal> MiscellaneousLaborRate { get; set; }
+        public Nullable<decimal> ExternalSystemRate { get; set; }
         public Nullable<decimal> FollowUpOrderRate { get; set; }
-        public Nullable<decimal> RefrigeratorStorageRate { get; set; }
+        public Nullable<decimal> FreezerPackRate { get; set; }
         public Nullable<decimal> GHSLabelsRate { get; set; }
+        public Nullable<decimal> InactiveProductsRate { get; set; }
+        public Nullable<decimal> IsolationRate { get; set; }
+        public Nullable<decimal> IsolationBoxRate { get; set; }
         public Nullable<decimal> ITFeeRate { get; set; }
+        public Nullable<decimal> LabelMaintainanceRate { get; set; }
+        public Nullable<decimal> LabelStockRate { get; set; }
         public Nullable<decimal> LabelsPrintedRate { get; set; }
         public Nullable<decimal> LaborRelabelRate { get; set; }
-        public Nullable<decimal> LiteratureRate { get; set; }
-        public Nullable<decimal> LabelStockRate { get; set; }
-        public Nullable<decimal> LabelMaintainanceRate { get; set; }
+        public Nullable<decimal> LiteratureFeeRate { get; set; }
+        public Nullable<decimal> LimitedQtyRate { get; set; }
+        public Nullable<decimal> ManualHandlingRate { get; set; }
         public Nullable<decimal> MSDSPrintsRate { get; set; }
         public Nullable<decimal> NewLabelSetupRate { get; set; }
         public Nullable<decimal> NewProductSetupRate { get; set; }
-        public Nullable<decimal> OtherRate { get; set; }
+        public Nullable<decimal> OberkPackRate { get; set; }
+        public Nullable<decimal> OrderEntryRate { get; set; }
+        public Nullable<decimal> OverPackRate { get; set; }
         public Nullable<decimal> PalletReturnRate { get; set; }
+        public Nullable<decimal> PoisonPackRate { get; set; }
+        public Nullable<decimal> ProductSetupChangesRate { get; set; }
         public Nullable<decimal> QCStorageRate { get; set; }
+        public Nullable<decimal> RDHandlingADRRate { get; set; }
+        public Nullable<decimal> RDHandlingIATARate { get; set; }
+        public Nullable<decimal> RDHandlingLQRate { get; set; }
+        public Nullable<decimal> RDHandlingNonHzdRate { get; set; }
+        public Nullable<decimal> RefrigeratorStorageRate { get; set; }
         public Nullable<decimal> RelabelsRate { get; set; }
+        public Nullable<decimal> RushShipmentRate { get; set; }
+        public Nullable<decimal> SPA197AppliedRate { get; set; }
+        public Nullable<decimal> SPSPaidOrderRate { get; set; }
+        public Nullable<decimal> UNBoxRate { get; set; }
         public Nullable<decimal> WarehouseStorageRate { get; set; }
         public Nullable<decimal> WHMISLabelsRate { get; set; }
-        public Nullable<decimal> WasteProcessingRate { get; set; }
-        public Nullable<decimal> MinimumInvoiceCharge { get; set; }
     }
 }

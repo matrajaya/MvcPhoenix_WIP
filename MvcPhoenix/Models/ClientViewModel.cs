@@ -139,52 +139,56 @@ namespace MvcPhoenix.Models
         public decimal? Biocide { get; set; }
         public decimal? Blend { get; set; }
         public decimal? Kosher { get; set; }
-        public decimal? OrderChargeCertificateOfOrigin { get; set; }
-        public decimal? OrderChargeDocumentsHandling { get; set; }
-        public decimal? OrderChargeManualHandling { get; set; }
-        public decimal? OrderChargeRDHandlingNone { get; set; }
-        public decimal? OrderChargeRDHandlingLQ { get; set; }
-        public decimal? OrderChargeRDHandlingADR { get; set; }
-        public decimal? OrderChargeRDHandlingIATA { get; set; }
-        public decimal? OrderChargeSPSPaidOrder { get; set; }
-        public decimal? OrderChargeBPCSChange { get; set; }
-        public decimal? OrderChargeCreditCardFee { get; set; }
-        public decimal? OrderChargeCreditCardOrder { get; set; }
-        public decimal? OrderChargeOrderEntry { get; set; }
-        public decimal? PPSChargeCoolPack { get; set; }
-        public decimal? PPSChargeIsolation { get; set; }
-        public decimal? PPSChargeIsolationBox { get; set; }
-        public decimal? PPSChargeUNBox { get; set; }
-        public decimal? CarrierChargeRushShipment { get; set; }
     }
 
-    public class AdministativeRates
+    public class ServiceChargeRates
     {
         public int RatesID { get; set; }
         public int ClientID { get; set; }
+        public decimal? AirHzdOnlyRate { get; set; }
+        public decimal? CertificateOfOriginRate { get; set; }
+        public decimal? CMCPackRate { get; set; }
+        public decimal? CoolPackRate { get; set; }
+        public decimal? CreditCardFeeRate { get; set; }
+        public decimal? CreditCardOrderRate { get; set; }
+        public decimal? DocumentationHandlingRate { get; set; }
         public decimal? EmptyPackagingRate { get; set; }
-        public decimal? HandlingRate { get; set; }
-        public decimal? InactiveProductsRate { get; set; }
-        public decimal? ProductSetupChangesRate { get; set; }
-        public decimal? MiscellaneousLaborRate { get; set; }
+        public decimal? ExternalSystemRate { get; set; }
         public decimal? FollowUpOrderRate { get; set; }
-        public decimal? RefrigeratorStorageRate { get; set; }
+        public decimal? FreezerPackRate { get; set; }
         public decimal? GHSLabelsRate { get; set; }
+        public decimal? InactiveProductsRate { get; set; }
+        public decimal? IsolationRate { get; set; }
+        public decimal? IsolationBoxRate { get; set; }
         public decimal? ITFeeRate { get; set; }
+        public decimal? LabelMaintainanceRate { get; set; }
+        public decimal? LabelStockRate { get; set; }
         public decimal? LabelsPrintedRate { get; set; }
         public decimal? LaborRelabelRate { get; set; }
-        public decimal? LiteratureRate { get; set; }
-        public decimal? LabelStockRate { get; set; }
-        public decimal? LabelMaintainanceRate { get; set; }
+        public decimal? LiteratureFeeRate { get; set; }
+        public decimal? LimitedQtyRate { get; set; }
+        public decimal? ManualHandlingRate { get; set; }
         public decimal? MSDSPrintsRate { get; set; }
         public decimal? NewLabelSetupRate { get; set; }
         public decimal? NewProductSetupRate { get; set; }
-        public decimal? OtherRate { get; set; }
+        public decimal? OberkPackRate { get; set; }
+        public decimal? OrderEntryRate { get; set; }
+        public decimal? OverPackRate { get; set; }
         public decimal? PalletReturnRate { get; set; }
+        public decimal? PoisonPackRate { get; set; }
+        public decimal? ProductSetupChangesRate { get; set; }
         public decimal? QCStorageRate { get; set; }
+        public decimal? RDHandlingADRRate { get; set; }
+        public decimal? RDHandlingIATARate { get; set; }
+        public decimal? RDHandlingLQRate { get; set; }
+        public decimal? RDHandlingNonHzdRate { get; set; }
+        public decimal? RefrigeratorStorageRate { get; set; }
         public decimal? RelabelsRate { get; set; }
+        public decimal? RushShipmentRate { get; set; }
+        public decimal? SPA197AppliedRate { get; set; }
+        public decimal? SPSPaidOrderRate { get; set; }
+        public decimal? UNBoxRate { get; set; }
         public decimal? WarehouseStorageRate { get; set; }
         public decimal? WHMISLabelsRate { get; set; }
-        public decimal? WasteProcessingRate { get; set; }
     }
 }

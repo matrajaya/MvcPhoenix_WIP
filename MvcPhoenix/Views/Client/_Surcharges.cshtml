@@ -77,112 +77,17 @@
             @Html.TextBoxFor(m => m.Kosher, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Kosher)
         </div>
-        <div class="col-md-3 form-group">
-            <label>Rush Shipment</label>
-            @Html.TextBoxFor(m => m.CarrierChargeRushShipment, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.CarrierChargeRushShipment)
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-3 form-group">
-            <label>Certificate Of Origin</label>
-            @Html.TextBoxFor(m => m.OrderChargeCertificateOfOrigin, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.OrderChargeCertificateOfOrigin)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>Documents &amp; Handling (D&amp;H)</label>
-            @Html.TextBoxFor(m => m.OrderChargeDocumentsHandling, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.OrderChargeDocumentsHandling)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>Manual Handling</label>
-            @Html.TextBoxFor(m => m.OrderChargeManualHandling, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.OrderChargeManualHandling)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>SPS Paid Order</label>
-            @Html.TextBoxFor(m => m.OrderChargeSPSPaidOrder, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.OrderChargeSPSPaidOrder)
-        </div>
-    </div>
-        <div class="row">
-            <div class="col-md-3 form-group">
-                <label>BPCS Change</label>
-                @Html.TextBoxFor(m => m.OrderChargeBPCSChange, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.OrderChargeBPCSChange)
-            </div>
-            <div class="col-md-3 form-group">
-                <label>Credit Card Fee</label>
-                @Html.TextBoxFor(m => m.OrderChargeCreditCardFee, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.OrderChargeCreditCardFee)
-            </div>
-            <div class="col-md-3 form-group">
-                <label>Credit Card Order</label>
-                @Html.TextBoxFor(m => m.OrderChargeCreditCardOrder, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.OrderChargeCreditCardOrder)
-            </div>
-            <div class="col-md-3 form-group">
-                <label>Order Entry</label>
-                @Html.TextBoxFor(m => m.OrderChargeOrderEntry, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.OrderChargeOrderEntry)
-            </div>
-        </div>
-    <div class="row">
-        <div class="col-md-3 form-group">
-            <label>R&amp;D Handling LQ</label>
-            @Html.TextBoxFor(m => m.OrderChargeRDHandlingLQ, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.OrderChargeRDHandlingLQ)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>R&amp;D Handling ADR</label>
-            @Html.TextBoxFor(m => m.OrderChargeRDHandlingADR, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.OrderChargeRDHandlingADR)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>R&amp;D Handling IATA</label>
-            @Html.TextBoxFor(m => m.OrderChargeRDHandlingIATA, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.OrderChargeRDHandlingIATA)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>R&amp;D Handling None</label>
-            @Html.TextBoxFor(m => m.OrderChargeRDHandlingNone, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.OrderChargeRDHandlingNone)
-        </div>
-    </div>
-    
-    @* Charge via PPS system *@
-    <div class="row">
-        <div class="col-md-3 form-group">
-            <label>Cool Pack</label>
-            @Html.TextBoxFor(m => m.PPSChargeCoolPack, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.PPSChargeCoolPack)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>Isolation</label>
-            @Html.TextBoxFor(m => m.PPSChargeIsolation, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.PPSChargeIsolation)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>Isolation Box</label>
-            @Html.TextBoxFor(m => m.PPSChargeIsolationBox, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.PPSChargeIsolationBox)
-        </div>
-        <div class="col-md-3 form-group">
-            <label>UN Box</label>
-            @Html.TextBoxFor(m => m.PPSChargeUNBox, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.PPSChargeUNBox)
+        <div id="hideeditbutton" class="col-md-3 pull-right form-group">
+            <label class="invisible">.</label>
+            <button type="submit" class="btn btn-block btn-success">
+                Save Changes
+            </button>
         </div>
     </div>
     
     <div class="row">
         <div class="col-md-6" id="dialogResult">
             @ViewBag.Message
-        </div>
-        <div id="hideeditbutton" class="col-md-3 pull-right form-group">
-            <button type="submit" class="btn btn-block btn-success">
-                Save Changes
-            </button>
         </div>
     </div>
 }

@@ -1,6 +1,15 @@
 ﻿@model List<MvcPhoenix.Models.InvoiceViewModel>
 @{
     ViewBag.Title = "Invoice Management";
+
+    //Calculate default invoice period
+    DateTime dateLastMonth = DateTime.Now.AddMonths(-1);
+    int daysInPreviousMonth = DateTime.DaysInMonth(dateLastMonth.Year, dateLastMonth.Month);
+    DateTime defaultFirst = new DateTime(dateLastMonth.Year, dateLastMonth.Month, 1);
+    DateTime defaultLast = new DateTime(dateLastMonth.Year, dateLastMonth.Month, daysInPreviousMonth);
+    
+    ViewBag.DefaultStartDate = defaultFirst.ToString("dd-MMM-yyyy");
+    ViewBag.DefaultEndDate = defaultLast.ToString("dd-MMM-yyyy");
 }
 
 <div class="container-fluid">
@@ -57,10 +66,10 @@
                                 <label>Invoice Period</label>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input name="startdate" id="startdate" class="form-control date-picker" placeholder="Start Date" required />
+                                        <input name="startdate" id="startdate" class="form-control date-picker" placeholder="Start Date" value="@ViewBag.DefaultStartDate" required />
                                     </div>
                                     <div class="col-md-6">
-                                        <input name="enddate" id="enddate" class="form-control date-picker" placeholder="End Date" required />
+                                        <input name="enddate" id="enddate" class="form-control date-picker" placeholder="End Date" value="@ViewBag.DefaultEndDate" required />
                                     </div>
                                 </div>
                             </div>

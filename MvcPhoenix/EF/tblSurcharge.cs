@@ -28,23 +28,6 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> Biocide { get; set; }
         public Nullable<decimal> Blend { get; set; }
         public Nullable<decimal> Kosher { get; set; }
-        public Nullable<decimal> OrderChargeCertificateOfOrigin { get; set; }
-        public Nullable<decimal> OrderChargeDocumentsHandling { get; set; }
-        public Nullable<decimal> OrderChargeManualHandling { get; set; }
-        public Nullable<decimal> OrderChargeRDHandlingNone { get; set; }
-        public Nullable<decimal> OrderChargeRDHandlingLQ { get; set; }
-        public Nullable<decimal> OrderChargeRDHandlingADR { get; set; }
-        public Nullable<decimal> OrderChargeRDHandlingIATA { get; set; }
-        public Nullable<decimal> OrderChargeSPSPaidOrder { get; set; }
-        public Nullable<decimal> OrderChargeBPCSChange { get; set; }
-        public Nullable<decimal> OrderChargeCreditCardFee { get; set; }
-        public Nullable<decimal> OrderChargeCreditCardOrder { get; set; }
-        public Nullable<decimal> OrderChargeOrderEntry { get; set; }
-        public Nullable<decimal> PPSChargeCoolPack { get; set; }
-        public Nullable<decimal> PPSChargeIsolation { get; set; }
-        public Nullable<decimal> PPSChargeIsolationBox { get; set; }
-        public Nullable<decimal> PPSChargeUNBox { get; set; }
-        public Nullable<decimal> CarrierChargeRushShipment { get; set; }
         public Nullable<int> LegacyID { get; set; }
         public string Company_MDB { get; set; }
         public string Location_MDB { get; set; }
