@@ -89,7 +89,7 @@ namespace MvcPhoenix.Models
 
                 // Billing Worksheet
                 obj.GrandTotalCharge = q.GrandTotal;
-                                
+
                 // Quantity
                 obj.AirHzdOnlyQuantity = q.AirHzdOnlyQuantity;
                 obj.CertificateOfOriginQuantity = q.CertificateOfOriginQuantity;
@@ -183,7 +183,7 @@ namespace MvcPhoenix.Models
                 obj.UNBoxRate = q.UNBoxRate;
                 obj.WarehouseStorageRate = q.WarehouseStorageRate;
                 obj.WHMISLabelsRate = q.WHMISLabelsRate;
-                
+
                 // Charges
                 obj.AirHzdOnlyCharge = q.AirHzdOnlyCharge;
                 obj.CertificateOfOriginCharge = q.CertificateOfOriginCharge;
@@ -584,19 +584,19 @@ namespace MvcPhoenix.Models
                 var calcfreighthazdsurcharges = random.Next(100, 999);
 
                 // Calculate Administrative Charges
-                var administrativecharges = (from t in transactions
-                                             where !sampletranstypes.Contains(t.TransType)
-                                             select new
-                                             {
-                                                 t.TransQty,
-                                                 t.TransRate
-                                             }).ToList();
+                var servicecharges = (from t in transactions
+                                      where !sampletranstypes.Contains(t.TransType)
+                                      select new
+                                      {
+                                          t.TransQty,
+                                          t.TransRate
+                                      }).ToList();
 
-                var calcadministrativecharges = (from t in administrativecharges
-                                                 select (t.TransQty * t.TransRate)).Sum();
+                var calcservicecharges = (from t in servicecharges
+                                          select (t.TransQty * t.TransRate)).Sum();
 
                 // Calculate All Charges
-                var calcsumcharges = calcsamplecharges + calcfreightcharges + calcfreighthazdsurcharges + calcadministrativecharges;
+                var calcsumcharges = calcsamplecharges + calcfreightcharges + calcfreighthazdsurcharges + calcservicecharges;
 
                 // Calculate Shipping Performance
                 // TODO
@@ -612,7 +612,7 @@ namespace MvcPhoenix.Models
                 invoice.TotalCostSamples = calcsamplecharges;
                 invoice.TotalFreight = calcfreightcharges;                          // TODO: Random for now
                 invoice.TotalFrtHzdSchg = calcfreighthazdsurcharges;                // TODO: Random for now
-                invoice.TotalAdminCharge = calcadministrativecharges;
+                invoice.TotalAdminCharge = calcservicecharges;
                 invoice.TotalDue = calcsumcharges;
                 invoice.SampleShipSameDay = calcsamedayshipping;
                 invoice.SampleShipNextDay = calcnextdayshipping;
@@ -620,51 +620,51 @@ namespace MvcPhoenix.Models
                 invoice.SampleShipOther = calcothershipping;
 
                 // Quantities
-                invoice.AirHzdOnlyQuantity = 1;
-                invoice.CertificateOfOriginQuantity = 1;
-                invoice.CMCPackQuantity = 1;
-                invoice.CoolPackQuantity = 1;
-                invoice.CreditCardFeeQuantity = 1;
-                invoice.CreditCardOrderQuantity = 1;
-                invoice.DocumentationHandlingQuantity = 1;
-                invoice.EmptyPackagingQuantity = 1;
-                invoice.ExternalSystemQuantity = 1;
-                invoice.FollowUpOrderQuantity = 1;
-                invoice.FreezerPackQuantity = 1;
-                invoice.GHSLabelsQuantity = 1;
-                invoice.InactiveProductsQuantity = 1;
-                invoice.IsolationQuantity = 1;
-                invoice.IsolationBoxQuantity = 1;
-                invoice.ITFeeQuantity = 1;
-                invoice.LabelMaintainanceQuantity = 1;
-                invoice.LabelStockQuantity = 1;
-                invoice.LabelsPrintedQuantity = 1;
-                invoice.LaborRelabelQuantity = 1;
-                invoice.LiteratureFeeQuantity = 1;
-                invoice.LimitedQtyQuantity = 1;
-                invoice.ManualHandlingQuantity = 1;
-                invoice.MSDSPrintsQuantity = 1;
-                invoice.NewLabelSetupQuantity = 1;
-                invoice.NewProductSetupQuantity = 1;
-                invoice.OberkPackQuantity = 1;
-                invoice.OrderEntryQuantity = 1;
-                invoice.OverPackQuantity = 1;
-                invoice.PalletReturnQuantity = 1;
-                invoice.PoisonPackQuantity = 1;
-                invoice.ProductSetupChangesQuantity = 1;
-                invoice.QCStorageQuantity = 1;
-                invoice.RDHandlingADRQuantity = 1;
-                invoice.RDHandlingIATAQuantity = 1;
-                invoice.RDHandlingLQQuantity = 1;
-                invoice.RDHandlingNonHzdQuantity = 1;
-                invoice.RefrigeratorStorageQuantity = 1;
-                invoice.RelabelsQuantity = 1;
-                invoice.RushShipmentQuantity = 1;
-                invoice.SPA197AppliedQuantity = 1;
-                invoice.SPSPaidOrderQuantity = 1;
-                invoice.UNBoxQuantity = 1;
-                invoice.WarehouseStorageQuantity = 1;
-                invoice.WHMISLabelsQuantity = 1;
+                invoice.AirHzdOnlyQuantity = 0;
+                invoice.CertificateOfOriginQuantity = 0;
+                invoice.CMCPackQuantity = 0;
+                invoice.CoolPackQuantity = 0;
+                invoice.CreditCardFeeQuantity = 0;
+                invoice.CreditCardOrderQuantity = 0;
+                invoice.DocumentationHandlingQuantity = 0;
+                invoice.EmptyPackagingQuantity = 0;
+                invoice.ExternalSystemQuantity = 0;
+                invoice.FollowUpOrderQuantity = 0;
+                invoice.FreezerPackQuantity = 0;
+                invoice.GHSLabelsQuantity = 0;
+                invoice.InactiveProductsQuantity = 0;
+                invoice.IsolationQuantity = 0;
+                invoice.IsolationBoxQuantity = 0;
+                invoice.ITFeeQuantity = 0;
+                invoice.LabelMaintainanceQuantity = 0;
+                invoice.LabelStockQuantity = 0;
+                invoice.LabelsPrintedQuantity = 0;
+                invoice.LaborRelabelQuantity = 0;
+                invoice.LiteratureFeeQuantity = 0;
+                invoice.LimitedQtyQuantity = 0;
+                invoice.ManualHandlingQuantity = 0;
+                invoice.MSDSPrintsQuantity = 0;
+                invoice.NewLabelSetupQuantity = 0;
+                invoice.NewProductSetupQuantity = 0;
+                invoice.OberkPackQuantity = 0;
+                invoice.OrderEntryQuantity = 0;
+                invoice.OverPackQuantity = 0;
+                invoice.PalletReturnQuantity = 0;
+                invoice.PoisonPackQuantity = 0;
+                invoice.ProductSetupChangesQuantity = 0;
+                invoice.QCStorageQuantity = 0;
+                invoice.RDHandlingADRQuantity = 0;
+                invoice.RDHandlingIATAQuantity = 0;
+                invoice.RDHandlingLQQuantity = 0;
+                invoice.RDHandlingNonHzdQuantity = 0;
+                invoice.RefrigeratorStorageQuantity = 0;
+                invoice.RelabelsQuantity = 0;
+                invoice.RushShipmentQuantity = 0;
+                invoice.SPA197AppliedQuantity = 0;
+                invoice.SPSPaidOrderQuantity = 0;
+                invoice.UNBoxQuantity = 0;
+                invoice.WarehouseStorageQuantity = 0;
+                invoice.WHMISLabelsQuantity = 0;
 
                 // Rates
                 invoice.AirHzdOnlyRate = adminrate.AirHzdOnlyRate ?? 1;
@@ -712,7 +712,6 @@ namespace MvcPhoenix.Models
                 invoice.UNBoxRate = adminrate.UNBoxRate ?? 1;
                 invoice.WarehouseStorageRate = adminrate.WarehouseStorageRate ?? 1;
                 invoice.WHMISLabelsRate = adminrate.WHMISLabelsRate ?? 1;
-
 
                 // Calulated Charges
                 grandtotal += invoice.AirHzdOnlyCharge = invoice.AirHzdOnlyQuantity * invoice.AirHzdOnlyRate;
