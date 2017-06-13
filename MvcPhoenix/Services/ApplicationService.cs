@@ -1,6 +1,8 @@
 ﻿using MvcPhoenix.EF;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
 using System.Web.Mvc;
@@ -642,63 +644,63 @@ namespace MvcPhoenix.Models
             transactiontypes.Add(new SelectListItem { Value = "MEMO", Text = "Memo", Selected = true });
 
             // Fixed Charges
-            transactiontypes.Add(new SelectListItem { Value = "AirHzdOnlyRate", Text = "Air Hazard Only", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "CertificateOfOriginRate", Text = "Certificate Of Origin", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "CMCPackRate", Text = "CMC Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "CoolPackRate", Text = "Cool Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "CreditCardFeeRate", Text = "Credit Card Fee", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "CreditCardOrderRate", Text = "Credit Card Order", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "DocumentationHandlingRate", Text = "Document Handling", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "EmptyPackagingRate", Text = "Empty Packaging", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "ExternalSystemRate", Text = "External System", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "FollowUpOrderRate", Text = "Follow Up Order", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "FreezerPackRate", Text = "Freezer Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "GHSLabelsRate", Text = "GHS Labels", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "InactiveProductsRate", Text = "Inactive Products", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "IsolationRate", Text = "Isolation", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "IsolationBoxRate", Text = "Isolation Box", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "ITFeeRate", Text = "IT Fee", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "LabelMaintainanceRate", Text = "Label Maintainance", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "LabelStockRate", Text = "Label Stock", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "LabelsPrintedRate", Text = "Labels Printed", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "LaborRelabelRate", Text = "Labor Relabel", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "LiteratureFeeRate", Text = "Literature Fee", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "LimitedQtyRate", Text = "Limited Quantity", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "ManualHandlingRate", Text = "Manual Handling", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "MSDSPrintsRate", Text = "MSDS Prints", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "NewLabelSetupRate", Text = "New Label Setup", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "NewProductSetupRate", Text = "New Product Setup", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "OberkPackRate", Text = "Oberk Pack Rate", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "OrderEntryRate", Text = "Order Entry", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "OverPackRate", Text = "Over Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "PalletReturnRate", Text = "Pallet Return", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "PoisonPackRate", Text = "Poison Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "ProductSetupChangesRate", Text = "Product Setup Changes", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "QCStorageRate", Text = "QC Storage", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RDHandlingADRRate", Text = "R&D Handling ADR", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RDHandlingIATARate", Text = "R&D Handling IATA", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RDHandlingLQRate", Text = "R&D Handling LQ", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RDHandlingNonHzdRate", Text = "R&D Handling Non Hazard", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RefrigeratorStorageRate", Text = "Refrigerator Storage", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RelabelsRate", Text = "Relabels", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RushShipmentRate", Text = "Rush Shipment", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "SPA197AppliedRate", Text = "SPA 197 Applied", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "SPSPaidOrderRate", Text = "SPS Paid Order", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "UNBoxRate", Text = "UN Box", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "WarehouseStorageRate", Text = "Warehouse Storage", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "WHMISLabelsRate", Text = "WHMIS Labels", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Air Hazard Only", Text = "Air Hazard Only", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Certificate Of Origin", Text = "Certificate Of Origin", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "CMC Pack", Text = "CMC Pack", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Cool Pack", Text = "Cool Pack", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Credit Card Fee", Text = "Credit Card Fee", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Credit Card Order", Text = "Credit Card Order", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Document Handling", Text = "Document Handling", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Empty Packaging", Text = "Empty Packaging", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "External System", Text = "External System", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Follow Up Order", Text = "Follow Up Order", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Freezer Pack", Text = "Freezer Pack", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "GHS Labels", Text = "GHS Labels", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Inactive Products", Text = "Inactive Products", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Isolation", Text = "Isolation", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Isolation Box", Text = "Isolation Box", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "IT Fee", Text = "IT Fee", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Label Maintainance", Text = "Label Maintainance", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Label Stock", Text = "Label Stock", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Labels Printed", Text = "Labels Printed", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Labor Relabel", Text = "Labor Relabel", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Literature Fee", Text = "Literature Fee", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Limited Quantity", Text = "Limited Quantity", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Manual Handling", Text = "Manual Handling", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "MSDS Prints", Text = "MSDS Prints", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "New Label Setup", Text = "New Label Setup", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "New Product Setup", Text = "New Product Setup", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Oberk Pack", Text = "Oberk Pack", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Order Entry", Text = "Order Entry", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Over Pack", Text = "Over Pack", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Pallet Return", Text = "Pallet Return", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Poison Pack", Text = "Poison Pack", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Product Setup Changes", Text = "Product Setup Changes", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "QC Storage", Text = "QC Storage", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "RD Handling ADR", Text = "R&D Handling ADR", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "RD Handling IATA", Text = "R&D Handling IATA", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "RD Handling LQ", Text = "R&D Handling LQ", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "RD Handling Non Hazard", Text = "R&D Handling Non Hazard", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Refrigerator Storage", Text = "Refrigerator Storage", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Relabels", Text = "Relabels", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Rush Shipment", Text = "Rush Shipment", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "SPA 197 Applied", Text = "SPA 197 Applied", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "SPS Paid Order", Text = "SPS Paid Order", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "UN Box", Text = "UN Box", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Warehouse Storage", Text = "Warehouse Storage", Group = FixedCharges });
+            transactiontypes.Add(new SelectListItem { Value = "WHMIS Labels", Text = "WHMIS Labels", Group = FixedCharges });
 
             // Variable Charges
-            transactiontypes.Add(new SelectListItem { Value = "AdministrativeWasteFeeCharge", Text = "Administrative Waste Fee", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "CreditCharge", Text = "Credit", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "CustomsDocumentsCharge", Text = "Customs Documents", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "DeliveryDutiesTaxesCharge", Text = "Delivery Duties Taxes", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "DocumentsCharge", Text = "Documents", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "HandlingCharge", Text = "Handling", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Administrative Waste Fee", Text = "Administrative Waste Fee", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Credit", Text = "Credit", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Customs Documents", Text = "Customs Documents", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Delivery Duties Taxes", Text = "Delivery Duties Taxes", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Documents", Text = "Documents", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Handling", Text = "Handling", Group = VariableCharges });
             transactiontypes.Add(new SelectListItem { Value = "MautFuel", Text = "Maut Fuel", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "MiscellaneousLaborCharge", Text = "Miscellaneous Labor", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "OtherCharge", Text = "Other", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "WasteProcessingCharge", Text = "Waste Processing", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Miscellaneous Labor", Text = "Miscellaneous Labor", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Other", Text = "Other", Group = VariableCharges });
+            transactiontypes.Add(new SelectListItem { Value = "Waste Processing", Text = "Waste Processing", Group = VariableCharges });
 
             return transactiontypes;
         }
@@ -1237,16 +1239,16 @@ namespace MvcPhoenix.Models
 
         public static void EmailSmtpSend(string from, string to, string subject, string body)
         {
-            const string hostName = "secure.emailsrvr.com";
-            const string userName = "mailman@chemicalmarketing.com";
-            const string password = "SamPles!23";
-            const int port = 587;
+            string hostName = ConfigurationManager.AppSettings["rackspace.hostname"];
+            string userName = ConfigurationManager.AppSettings["rackspace.username"];
+            string password = ConfigurationManager.AppSettings["rackspace.password"];
+            string port = ConfigurationManager.AppSettings["rackspace.port"];
 
             var msg = new System.Net.Mail.MailMessage();
 
             msg.From = new MailAddress(from);
             msg.To.Add(new MailAddress(to));
-            msg.Bcc.Add(new MailAddress(from)); //send email copy to self
+            msg.Bcc.Add(new MailAddress(from));                                                             //send email copy to self
             msg.Subject = subject;
             msg.Body = body;
             msg.IsBodyHtml = true;
@@ -1261,7 +1263,7 @@ namespace MvcPhoenix.Models
 
                 smtp.Credentials = credential;
                 smtp.Host = hostName;
-                smtp.Port = port;
+                smtp.Port = Convert.ToInt32(port);
                 smtp.EnableSsl = true;
 
                 smtp.Send(msg);

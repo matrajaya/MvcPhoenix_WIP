@@ -404,6 +404,7 @@ namespace MvcPhoenix.Controllers
                                                  transtype = t.TransType,
                                                  transqty = t.TransQty,
                                                  transrate = t.TransRate,
+                                                 transamount = t.TransAmount,
                                                  comments = t.Comments,
                                                  createdate = t.CreateDate,
                                                  createuser = t.CreateUser,

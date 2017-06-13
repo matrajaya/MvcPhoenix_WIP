@@ -76,14 +76,14 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblUN> tblUN { get; set; }
         public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
-        public virtual DbSet<tblOrderTrans> tblOrderTrans { get; set; }
         public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
         public virtual DbSet<tblBulk> tblBulk { get; set; }
         public virtual DbSet<tblStock> tblStock { get; set; }
         public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
         public virtual DbSet<tblInvoice> tblInvoice { get; set; }
-        public virtual DbSet<tblRates> tblRates { get; set; }
         public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
+        public virtual DbSet<tblOrderTrans> tblOrderTrans { get; set; }
+        public virtual DbSet<tblRates> tblRates { get; set; }
     }
 }

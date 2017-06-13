@@ -209,9 +209,7 @@ namespace MvcPhoenix.Models
         public decimal? WarehouseStorageCharge { get; set; }
         public decimal? WHMISLabelsCharge { get; set; }
         
-        /// <summary>
-        /// Variable Charges manually entered with no prior rates in system
-        /// </summary>
+        // Variable Charges manually entered with no prior rates in system
         public decimal? AdministrativeWasteFeeCharge { get; set; }
         public decimal? CreditCharge { get; set; }
         public decimal? CustomsDocumentsCharge { get; set; }

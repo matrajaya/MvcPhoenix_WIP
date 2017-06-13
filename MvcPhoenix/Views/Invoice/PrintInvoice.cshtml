@@ -5,8 +5,13 @@
 }
 
 <style>
-    .table-cell-right tr td:last-child {
+    .table-cell-right tr td {
         text-align: right;
+    }
+
+    .table-cell-right tr td:first-child {
+        text-align: left;
+        width: 8px;
     }
 </style>
 
@@ -56,27 +61,27 @@
                 <table>
                     <tr>
                         <th>Number of Samples</th>
-                        <th>@Html.DisplayFor(m => m.TotalSamples)</th>
+                        <th style="text-align:right">@Html.DisplayFor(m => m.TotalSamples)</th>
                     </tr>
                     <tr>
                         <th>Totals Cost of Processing Samples</th>
-                        <td>@Html.DisplayFor(m => m.TotalCostSamples)</td>
+                        <td style="text-align:right">@Html.DisplayFor(m => m.TotalCostSamples)</td>
                     </tr>
                     <tr>
                         <th>Freight</th>
-                        <td>@Html.DisplayFor(m => m.TotalFreight)</td>
+                        <td style="text-align:right">@Html.DisplayFor(m => m.TotalFreight)</td>
                     </tr>
                     <tr>
                         <th>Freight Hazardous Surcharge</th>
-                        <td>@Html.DisplayFor(m => m.TotalFrtHzdSchg)</td>
+                        <td style="text-align:right">@Html.DisplayFor(m => m.TotalFrtHzdSchg)</td>
                     </tr>
                     <tr>
                         <th>Service Charges</th>
-                        <td>@Html.DisplayFor(m => m.TotalAdminCharge)</td>
+                        <td style="text-align:right">@Html.DisplayFor(m => m.TotalAdminCharge)</td>
                     </tr>
                     <tr>
                         <th>Total Due</th>
-                        <th>@Html.DisplayFor(m => m.TotalDue)</th>
+                        <th style="text-align:right">@Html.DisplayFor(m => m.TotalDue)</th>
                     </tr>
                 </table>
             </td>
@@ -109,10 +114,8 @@
 <div class="form-group">
     <table class="table-cell-right">
         <tr>
-            <th width="75%">Service Charge Worksheet</th>
-        </tr>
-        <tr>
-            <td colspan="4">
+            <th width="65%">Service Charge Worksheet</th>
+            <td colspan="3">
                 <span class="pull-right">
                     <b>Location: </b>@Html.DisplayFor(m => m.WarehouseLocation) |
                     <b>Currency: </b>@Html.DisplayFor(m => m.Currency) |
@@ -121,10 +124,10 @@
             </td>
         </tr>
         <tr>
-            <th>Charge Item</th>
-            <th>Quantity</th>
-            <th>Rate</th>
-            <th style="text-align:right">Charge</th>
+            <td><b>Charge Item</b></td>
+            <td><b>Quantity</b></td>
+            <td><b>Rate</b></td>
+            <td><b>Charge</b></td>
         </tr>
         <tbody>
             <tr>

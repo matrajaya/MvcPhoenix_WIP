@@ -20,20 +20,36 @@
     <!-- /.Page Heading -->
     <div class="row">
         <div class="form-group col-md-6">
-            <div class="form-group">
-                @using (Html.BeginForm("Index", "Client", FormMethod.Get))
-                {
-                    <label>Search Clients</label>
-                    <div class="input-group">
-                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by Client or Location" })
-                        <div class="input-group-btn">
-                            <input type="submit" value="Search" class="btn btn-success" />
-                        </div>
+            @using (Html.BeginForm("Index", "Client", FormMethod.Get))
+            {
+                <label>Search Clients</label>
+                <div class="input-group">
+                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by Client or Location" })
+                    <div class="input-group-btn">
+                        <input type="submit" value="Search" class="btn btn-success" />
                     </div>
-                }
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Clients Index", "Index")
+        </div>
+        <div class="col-md-6">
+            <div class="pull-right">
+                <a href="@Url.Action("View", "Client", new { id = @Model.ClientID })"><i class="fa fa-eye fa-fw"></i> View Mode</a>
             </div>
         </div>
-        <div class="clearfix"></div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-6">
+            <div class="pull-left">
+                <a href="#_" type="button" onclick="$('.panel-body').collapse('show');" value="open all"> Open All</a> |
+                <a href="#__" type="button" onclick="$('.panel-body').collapse('hide');" value="close all"> Close All</a>
+            </div>
+        </div>
     </div>
 
     @using (Html.BeginForm("SaveClientProfile", "Client", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -43,17 +59,6 @@
         @Html.HiddenFor(m => m.ClientID)
         @Html.HiddenFor(m => m.LegacyID)
         @Html.HiddenFor(m => m.GlobalClientID)
-
-        <div class="form-group row">
-            <div class="col-md-6">
-                <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Clients Index", "Index")
-            </div>
-            <div class="col-md-6">
-                <div class="pull-right">
-                    <a href="@Url.Action("View", "Client", new { id = @Model.ClientID })"><i class="fa fa-eye fa-fw"></i> View Mode</a>
-                </div>
-            </div>
-        </div>
 
         @* Client Information *@
         <div class="panel panel-primary">

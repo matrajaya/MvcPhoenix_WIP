@@ -11,6 +11,7 @@
                 <th>Type</th>
                 <th style="text-align:center;">Qty</th>
                 <th style="text-align:right;">Rate</th>
+                <th style="text-align:center;">Amount</th>
                 <th>Date</th>
                 <th>Comments</th>
                 <th>Updated By</th>
@@ -27,6 +28,7 @@
                     <td>@item.transtype</td>
                     <td style="text-align:center;">@item.transqty</td>
                     <td style="text-align:right;">@item.transrate</td>
+                    <td style="text-align:center;">@item.transamount</td>
                     <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
                     <td width="30%">@item.comments</td>
                     <td title="Created By: @item.createuser">@item.updateuser</td>

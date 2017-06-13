@@ -20,6 +20,8 @@ namespace MvcPhoenix.Models
         public int? transqty { get; set; }
         [DataType(DataType.Currency)]
         public decimal? transrate { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal? transamount { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime? chargedate { get; set; }
         public string comments { get; set; }

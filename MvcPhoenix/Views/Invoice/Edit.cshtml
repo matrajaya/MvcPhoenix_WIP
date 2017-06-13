@@ -94,7 +94,7 @@
                                     <tr>
                                         <th>Number of Samples</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.TotalSamples, "{0:N0}", new { @class = "pull-right", @style = "width: 100px", @data_cell = "A1", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.TotalSamples, "{0:N0}", new { @class = "pull-right", @style = "width: 100px; text-align: right;", @data_cell = "A1", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.TotalSamples)
                                             @Html.ValidationMessageFor(m => m.TotalSamples)
                                         </td>
@@ -104,7 +104,7 @@
                                             <abbr title="SAMP, HAZD, FLAM, HEAT, REFR, FREZ, CLEN, BLND, NALG, NITR, BIOC, KOSH, LABL">Totals Cost of Processing Samples</abbr>
                                         </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.TotalCostSamples, new { @class = "pull-right", @style = "width: 100px", @data_cell = "B1", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.TotalCostSamples, new { @class = "pull-right", @style = "width: 100px; text-align: right;", @data_cell = "B1", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.TotalCostSamples)
                                             @Html.ValidationMessageFor(m => m.TotalCostSamples)
                                         </td>
@@ -114,7 +114,7 @@
                                             <abbr title="CFRT">Freight</abbr>
                                         </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.TotalFreight, new { @class = "pull-right", @style = "width: 100px", @data_cell = "C1", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.TotalFreight, new { @class = "pull-right", @style = "width: 100px; text-align: right;", @data_cell = "C1", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.TotalFreight)
                                             @Html.ValidationMessageFor(m => m.TotalFreight)
                                         </td>
@@ -124,7 +124,7 @@
                                             <abbr title="SFRT">Freight Hazardous Surcharge</abbr>
                                         </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.TotalFrtHzdSchg, new { @class = "pull-right", @style = "width: 100px", @data_cell = "D1", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.TotalFrtHzdSchg, new { @class = "pull-right", @style = "width: 100px; text-align: right;", @data_cell = "D1", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.TotalFrtHzdSchg)
                                             @Html.ValidationMessageFor(m => m.TotalFrtHzdSchg)
                                         </td>
@@ -134,7 +134,7 @@
                                             <abbr title="All Others">Service Charges</abbr>
                                         </th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.TotalAdminCharge, new { @class = "pull-right", @style = "width: 100px", @data_cell = "E1", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.TotalAdminCharge, new { @class = "pull-right", @style = "width: 100px; text-align: right;", @data_cell = "E1", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.TotalAdminCharge)
                                             @Html.ValidationMessageFor(m => m.TotalAdminCharge)
                                         </td>
@@ -142,7 +142,7 @@
                                     <tr>
                                         <th>Total Due</th>
                                         <th>
-                                            @Html.TextBoxFor(m => m.TotalDue, new { @class = "pull-right", @style = "width: 100px", @readonly = "readonly", @data_cell = "F1" })
+                                            @Html.TextBoxFor(m => m.TotalDue, new { @class = "pull-right", @style = "width: 100px; text-align: right;", @readonly = "readonly", @data_cell = "F1" })
                                             @Html.HiddenFor(m => m.TotalDue)
                                             @Html.ValidationMessageFor(m => m.TotalDue)
                                         </th>
@@ -155,7 +155,7 @@
                                     <tr>
                                         <th>Same Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.SampleShipSameDay, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.SampleShipSameDay, new { @class = "pull-right", @style = "width: 100px; text-align: right;", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.SampleShipSameDay)
                                             @Html.ValidationMessageFor(m => m.SampleShipSameDay)
                                         </td>
@@ -163,7 +163,7 @@
                                     <tr>
                                         <th>Next Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.SampleShipNextDay, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.SampleShipNextDay, new { @class = "pull-right", @style = "width: 100px; text-align: right;", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.SampleShipNextDay)
                                             @Html.ValidationMessageFor(m => m.SampleShipNextDay)
                                         </td>
@@ -171,7 +171,7 @@
                                     <tr>
                                         <th>Second Day</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.SampleShipSecondDay, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.SampleShipSecondDay, new { @class = "pull-right", @style = "width: 100px; text-align: right;", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.SampleShipSecondDay)
                                             @Html.ValidationMessageFor(m => m.SampleShipSecondDay)
                                         </td>
@@ -179,7 +179,7 @@
                                     <tr>
                                         <th>Other</th>
                                         <td>
-                                            @Html.TextBoxFor(m => m.SampleShipOther, new { @class = "pull-right", @style = "width: 100px", disabled = "disabled" })
+                                            @Html.TextBoxFor(m => m.SampleShipOther, new { @class = "pull-right", @style = "width: 100px; text-align: right;", disabled = "disabled" })
                                             @Html.HiddenFor(m => m.SampleShipOther)
                                             @Html.ValidationMessageFor(m => m.SampleShipOther)
                                         </td>

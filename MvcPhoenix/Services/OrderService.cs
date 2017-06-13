@@ -795,14 +795,15 @@ namespace MvcPhoenix.Services
                 var d = (from t in db.tblOrderTrans
                          where t.OrderTransID == vm.ordertransid
                          select t).FirstOrDefault();
-
+                
                 d.OrderID = vm.orderid;
                 d.OrderItemID = vm.orderitemid;
                 d.ClientID = vm.clientid;
                 d.TransDate = vm.transdate;
                 d.TransType = vm.transtype;
-                d.TransQty = vm.transqty;
-                d.TransRate = vm.transrate;
+                d.TransQty = vm.transqty ?? 1;
+                d.TransRate = GetTransactionRate(vm.clientid, vm.transtype, vm.transrate);
+                d.TransAmount = d.TransQty * d.TransRate;
                 d.Comments = vm.comments;
                 d.CreateDate = vm.createdate;
                 d.CreateUser = vm.createuser;
@@ -813,6 +814,207 @@ namespace MvcPhoenix.Services
 
                 return vm.ordertransid;
             }
+        }
+
+        public static decimal? GetTransactionRate(int? clientid, string transtype, decimal? transrate)
+        {
+            decimal? rate = 0;
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var rates = (from t in db.tblRates
+                             where t.ClientID == clientid
+                             select t).FirstOrDefault();
+
+                switch (transtype)
+                {
+                    case "Air Hazard Only":
+                        rate = rates.AirHazardOnly;
+                        break;
+
+                    case "Certificate Of Origin":
+                        rate = rates.CertificateOfOrigin;
+                        break;
+
+                    case "CMC Pack":
+                        rate = rates.CMCPack;
+                        break;
+
+                    case "Cool Pack":
+                        rate = rates.CoolPack;
+                        break;
+
+                    case "Credit Card Fee":
+                        rate = rates.CreditCardFee;
+                        break;
+
+                    case "Credit Card Order":
+                        rate = rates.CreditCardOrder;
+                        break;
+
+                    case "Document Handling":
+                        rate = rates.DocumentHandling;
+                        break;
+
+                    case "Empty Packaging":
+                        rate = rates.EmptyPackaging;
+                        break;
+
+                    case "External System":
+                        rate = rates.ExternalSystem;
+                        break;
+
+                    case "Follow Up Order":
+                        rate = rates.FollowUpOrder;
+                        break;
+
+                    case "Freezer Pack":
+                        rate = rates.FreezerPack;
+                        break;
+
+                    case "GHS Labels":
+                        rate = rates.GHSLabels;
+                        break;
+
+                    case "Inactive Products":
+                        rate = rates.InactiveProducts;
+                        break;
+
+                    case "Isolation":
+                        rate = rates.Isolation;
+                        break;
+
+                    case "Isolation Box":
+                        rate = rates.IsolationBox;
+                        break;
+
+                    case "IT Fee":
+                        rate = rates.ITFee;
+                        break;
+
+                    case "Label Maintainance":
+                        rate = rates.LabelMaintainance;
+                        break;
+
+                    case "Label Stock":
+                        rate = rates.LabelStock;
+                        break;
+
+                    case "Labels Printed":
+                        rate = rates.LabelsPrinted;
+                        break;
+
+                    case "Labor Relabel":
+                        rate = rates.LaborRelabel;
+                        break;
+
+                    case "Literature Fee":
+                        rate = rates.LiteratureFee;
+                        break;
+
+                    case "Limited Quantity":
+                        rate = rates.LimitedQuantity;
+                        break;
+
+                    case "Manual Handling":
+                        rate = rates.ManualHandling;
+                        break;
+
+                    case "MSDS Prints":
+                        rate = rates.MSDSPrints;
+                        break;
+
+                    case "New Label Setup":
+                        rate = rates.NewLabelSetup;
+                        break;
+
+                    case "New Product Setup":
+                        rate = rates.NewProductSetup;
+                        break;
+
+                    case "Oberk Pack":
+                        rate = rates.OberkPack;
+                        break;
+
+                    case "Order Entry":
+                        rate = rates.OrderEntry;
+                        break;
+
+                    case "Over Pack":
+                        rate = rates.OverPack;
+                        break;
+
+                    case "Pallet Return":
+                        rate = rates.PalletReturn;
+                        break;
+
+                    case "Poison Pack":
+                        rate = rates.PoisonPack;
+                        break;
+
+                    case "Product Setup Changes":
+                        rate = rates.ProductSetupChanges;
+                        break;
+
+                    case "QC Storage":
+                        rate = rates.QCStorage;
+                        break;
+
+                    case "RD Handling ADR":
+                        rate = rates.RDHandlingADR;
+                        break;
+
+                    case "RD Handling IATA":
+                        rate = rates.RDHandlingIATA;
+                        break;
+
+                    case "RD Handling LQ":
+                        rate = rates.RDHandlingLQ;
+                        break;
+
+                    case "RD Handling Non Hazard":
+                        rate = rates.RDHandlingNonHazard;
+                        break;
+
+                    case "Refrigerator Storage":
+                        rate = rates.RefrigeratorStorage;
+                        break;
+
+                    case "Relabels":
+                        rate = rates.Relabels;
+                        break;
+
+                    case "Rush Shipment":
+                        rate = rates.RushShipment;
+                        break;
+
+                    case "SPA 197 Applied":
+                        rate = rates.SPA197Applied;
+                        break;
+
+                    case "SPS Paid Order":
+                        rate = rates.SPSPaidOrder;
+                        break;
+
+                    case "UN Box":
+                        rate = rates.UNBox;
+                        break;
+
+                    case "Warehouse Storage":
+                        rate = rates.WarehouseStorage;
+                        break;
+
+                    case "WHMIS Labels":
+                        rate = rates.WHMISLabels;
+                        break;
+
+                    default:
+                        rate = transrate;
+                        break;
+                }
+            }
+
+            return rate;
         }
 
         public static OrderTrans fnFillTrans(int id)
@@ -833,6 +1035,7 @@ namespace MvcPhoenix.Services
                 orderitemtransaction.transtype = result.TransType;
                 orderitemtransaction.transqty = result.TransQty;
                 orderitemtransaction.transrate = result.TransRate;
+                orderitemtransaction.transamount = result.TransAmount;
                 orderitemtransaction.comments = result.Comments;
                 orderitemtransaction.createdate = result.CreateDate;
                 orderitemtransaction.createuser = result.CreateUser;
@@ -890,6 +1093,7 @@ namespace MvcPhoenix.Services
                     newrec.TransType = "SAMP";
                     newrec.TransQty = oi.Qty;
                     newrec.TransRate = tierSize.Price;
+                    newrec.TransAmount = newrec.TransQty * newrec.TransRate;
                     newrec.CreateDate = DateTime.UtcNow;
                     newrec.CreateUser = "System";
                     newrec.UpdateDate = DateTime.UtcNow;
@@ -918,6 +1122,7 @@ namespace MvcPhoenix.Services
                         newrec.TransType = "SAMP";
                         newrec.TransQty = oi.Qty;
                         newrec.TransRate = tierSpecialRequest.Price;
+                        newrec.TransAmount = newrec.TransQty * newrec.TransRate;
                         newrec.Comments = "Special Request";
                         newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = "System";
@@ -1066,6 +1271,7 @@ namespace MvcPhoenix.Services
                 newrec.TransType = TransType;
                 newrec.TransQty = oi.Qty;
                 newrec.TransRate = TransRate;
+                newrec.TransAmount = newrec.TransQty * newrec.TransRate;
                 newrec.CreateDate = DateTime.UtcNow;
                 newrec.CreateUser = "System";
                 newrec.UpdateDate = DateTime.UtcNow;
