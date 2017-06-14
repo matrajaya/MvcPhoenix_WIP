@@ -303,9 +303,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CMCEntities.edmx</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblBillingGroup.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblBulk.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -334,12 +331,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblClientContact.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblClientIncidentalRate.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblClientInvoiceTrans.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblCountry.cs">
@@ -451,9 +442,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblShelfMaster.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblSQlTable.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblState.cs">

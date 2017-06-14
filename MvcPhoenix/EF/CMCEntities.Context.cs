@@ -25,7 +25,6 @@ namespace MvcPhoenix.EF
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<tblBillingGroup> tblBillingGroup { get; set; }
         public virtual DbSet<tblBulkOrder> tblBulkOrder { get; set; }
         public virtual DbSet<tblBulkOrderItem> tblBulkOrderItem { get; set; }
         public virtual DbSet<tblBulkSupplier> tblBulkSupplier { get; set; }
@@ -35,8 +34,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblCeaseShipOffSet> tblCeaseShipOffSet { get; set; }
         public virtual DbSet<tblClient> tblClient { get; set; }
         public virtual DbSet<tblClientContact> tblClientContact { get; set; }
-        public virtual DbSet<tblClientIncidentalRate> tblClientIncidentalRate { get; set; }
-        public virtual DbSet<tblClientInvoiceTrans> tblClientInvoiceTrans { get; set; }
         public virtual DbSet<tblCountry> tblCountry { get; set; }
         public virtual DbSet<tblCustomer> tblCustomer { get; set; }
         public virtual DbSet<tblDhRate> tblDhRate { get; set; }
@@ -68,7 +65,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblReasonCode> tblReasonCode { get; set; }
         public virtual DbSet<tblReportCriteria> tblReportCriteria { get; set; }
         public virtual DbSet<tblShelfMaster> tblShelfMaster { get; set; }
-        public virtual DbSet<tblSQlTable> tblSQlTable { get; set; }
         public virtual DbSet<tblState> tblState { get; set; }
         public virtual DbSet<tblStatusNotes> tblStatusNotes { get; set; }
         public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }

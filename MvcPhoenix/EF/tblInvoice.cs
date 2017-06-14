@@ -48,7 +48,7 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> TotalCostSamples { get; set; }
         public Nullable<decimal> TotalFreight { get; set; }
         public Nullable<decimal> TotalFrtHzdSchg { get; set; }
-        public Nullable<decimal> TotalAdminCharge { get; set; }
+        public Nullable<decimal> TotalServiceCharge { get; set; }
         public Nullable<decimal> TotalDue { get; set; }
         public Nullable<decimal> GrandTotal { get; set; }
         public Nullable<int> AirHzdOnlyQuantity { get; set; }

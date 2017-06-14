@@ -8,7 +8,6 @@ namespace MvcPhoenix.Models
 {
     public class InvoiceService
     {
-        // List for the Index View
         public static List<InvoiceViewModel> IndexList()
         {
             using (var db = new CMCSQL03Entities())
@@ -62,16 +61,16 @@ namespace MvcPhoenix.Models
                 obj.Status = q.Status;
                 obj.Comments = q.Comments;
                 obj.InvoiceDate = q.InvoiceDate;
-                obj.InvoicePeriod = q.InvoicePeriod;        //extract month and year from invoice date convert to string
+                obj.InvoicePeriod = q.InvoicePeriod;
                 obj.InvoiceStartDate = q.InvoiceStartDate;
                 obj.InvoiceEndDate = q.InvoiceEndDate;
                 obj.PONumber = q.PONumber;
                 obj.NetTerm = q.NetTerm;
                 obj.BillTo = q.BillTo;
                 obj.RemitTo = q.RemitTo;
-                obj.Currency = q.Currency;                  // USD / EUR / CNY
+                obj.Currency = q.Currency;
                 obj.Tier = q.Tier;
-                obj.OrderType = q.OrderType;                // Sample/International/Revenue does not apply to all clients
+                obj.OrderType = q.OrderType;                // Sample/International/Revenue - ignore for now
 
                 // Shipping Performance
                 obj.SampleShipSameDay = q.SampleShipSameDay;
@@ -84,7 +83,7 @@ namespace MvcPhoenix.Models
                 obj.TotalCostSamples = q.TotalCostSamples;
                 obj.TotalFreight = q.TotalFreight;
                 obj.TotalFrtHzdSchg = q.TotalFrtHzdSchg;
-                obj.TotalAdminCharge = q.TotalAdminCharge;
+                obj.TotalServiceCharge = q.TotalServiceCharge;
                 obj.TotalDue = q.TotalDue;
 
                 // Billing Worksheet
@@ -247,12 +246,11 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static int CreateInvoice(int client, int division, DateTime startdate, DateTime enddate)
+        public static int CreateInvoice(int client, string billinggroup, DateTime startdate, DateTime enddate)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var cl = db.tblClient.Find(client);
-                var div = db.tblDivision.Find(division);
+                var getclient = db.tblClient.Find(client);
                 string period = startdate.ToString("MMMM") + ", " + startdate.Year;
 
                 int invoiceid = NewInvoiceID();
@@ -263,27 +261,19 @@ namespace MvcPhoenix.Models
                 obj.InvoiceDate = DateTime.UtcNow;
                 obj.Status = "New";
 
-                if (division > 0)
-                {
-                    obj.BillingGroup = div.DivisionName;
-                }
-                else
-                {
-                    obj.BillingGroup = "All";                                   // TODO: Address this condition later in GenerateInvoice method
-                }
-
                 obj.CreateDate = DateTime.UtcNow;
                 obj.CreatedBy = HttpContext.Current.User.Identity.Name;
                 obj.Status = "NEW";
                 obj.UpdateDate = obj.CreateDate;
                 obj.UpdatedBy = obj.CreatedBy;
 
-                obj.ClientID = cl.ClientID;
-                obj.ClientName = cl.ClientName;
-                obj.WarehouseLocation = cl.CMCLocation;
-                obj.BillTo = cl.InvoiceAddress;
-                obj.NetTerm = String.IsNullOrEmpty(cl.ClientNetTerm) ? "Net 30 Days" : cl.ClientNetTerm;
-                obj.Currency = cl.ClientCurrency;
+                obj.ClientID = getclient.ClientID;
+                obj.ClientName = getclient.ClientName;
+                obj.BillingGroup = billinggroup;                                    // division, business unit, enduse are available entries
+                obj.WarehouseLocation = getclient.CMCLocation;
+                obj.BillTo = getclient.InvoiceAddress;
+                obj.NetTerm = String.IsNullOrEmpty(getclient.ClientNetTerm) ? "Net 30 Days" : getclient.ClientNetTerm;
+                obj.Currency = getclient.ClientCurrency;
                 obj.PONumber = "Enter PO Number";
                 obj.Tier = 1;
                 obj.InvoicePeriod = period;
@@ -358,7 +348,6 @@ namespace MvcPhoenix.Models
                 q.TotalCostSamples = vm.TotalCostSamples;
                 q.TotalFreight = vm.TotalFreight;
                 q.TotalFrtHzdSchg = vm.TotalFrtHzdSchg;
-                //q.TotalAdminCharge = vm.totaladmincharge;
                 q.TotalDue = vm.TotalDue;
 
                 decimal? grandtotal = 0;
@@ -517,7 +506,7 @@ namespace MvcPhoenix.Models
                 grandtotal += q.WasteProcessingCharge = vm.WasteProcessingCharge;
 
                 q.GrandTotal = grandtotal;
-                q.TotalAdminCharge = grandtotal;
+                q.TotalServiceCharge = grandtotal;
 
                 db.SaveChanges();
 
@@ -533,9 +522,13 @@ namespace MvcPhoenix.Models
             string[] sampletranstypes = { "SAMP", "HAZD", "FLAM", "HEAT", "REFR", "FREZ", "CLEN", "BLND", "NALG", "NITR", "BIOC", "KOSH", "LABL" };
             Random random = new Random();
             decimal? grandtotal = 0;
+            decimal? calcsumcharges;
+            decimal? calcfreightcharges;
+            decimal? calcservicecharges;
 
             using (var db = new CMCSQL03Entities())
             {
+                // Get invoice info
                 var invoice = (from t in db.tblInvoice
                                where t.InvoiceID == invoiceid
                                select t).FirstOrDefault();
@@ -544,28 +537,36 @@ namespace MvcPhoenix.Models
                 startdate = Convert.ToDateTime(invoice.InvoiceStartDate);
                 enddate = Convert.ToDateTime(invoice.InvoiceEndDate);
 
+                // Get client info
                 var client = (from t in db.tblClient
                               where t.ClientID == clientid
                               select t).FirstOrDefault();
 
+                // Get predetermined rates set for client.
+                var servicerates = (from t in db.tblRates
+                                    where t.ClientID == clientid
+                                    select t).FirstOrDefault();
+
+                // Get order details for client within date range.
                 var orderitems = (from t in db.tblOrderItem
                                   join o in db.tblOrderMaster on t.OrderID equals o.OrderID
                                   where o.ClientID == clientid
                                   && (t.ShipDate >= startdate && t.ShipDate <= enddate)
                                   select t).ToList();
 
-                var adminrate = (from t in db.tblRates
-                                 where t.ClientID == clientid
-                                 select t).FirstOrDefault();
-
+                // Get order transactions within date range.
                 var transactions = (from t in db.tblOrderTrans
                                     where t.ClientID == clientid
                                     && (t.TransDate >= startdate && t.TransDate <= enddate)
                                     select t).ToList();
 
-                // Calculate Sample Related Charges
+                // TODO
+                // Group and sum transaction charges for sample related charges.
+                // Calculate sample related charges
                 var samplecharges = (from t in transactions
-                                     where sampletranstypes.Contains(t.TransType)
+                                     // join OrderMaster here
+                                     where sampletranstypes.Contains(t.TransType) 
+                                     // add billing group filter on order master here
                                      select new
                                      {
                                          t.TransQty,
@@ -575,145 +576,131 @@ namespace MvcPhoenix.Models
                 var calcsamplecharges = (from t in samplecharges
                                          select (t.TransQty * t.TransRate)).Sum();
 
-                // Calculate Freight Charges
-                // TODO
-                var calcfreightcharges = random.Next(100, 999);
+                // Group and sum transaction quantities for fixed charges; and amounts for variable charges.
+                var getservicetransactions = from transaction in transactions
+                                             group transaction by transaction.TransType into transactiongroup
+                                             select new
+                                             {
+                                                 TransType = transactiongroup.Key,
+                                                 TransQty = transactiongroup.Sum(x => x.TransQty),
+                                                 TransAmount = transactiongroup.Sum(x => x.TransAmount),
+                                             };
 
-                // Calculate Freight Hazard Surcharge
                 // TODO
+                // Calculate Freight Charges
+                calcfreightcharges = random.Next(100, 999);
+
+                // TODO
+                // Calculate Freight Hazard Surcharge
                 var calcfreighthazdsurcharges = random.Next(100, 999);
 
-                // Calculate Administrative Charges
-                var servicecharges = (from t in transactions
-                                      where !sampletranstypes.Contains(t.TransType)
-                                      select new
-                                      {
-                                          t.TransQty,
-                                          t.TransRate
-                                      }).ToList();
-
-                var calcservicecharges = (from t in servicecharges
-                                          select (t.TransQty * t.TransRate)).Sum();
-
-                // Calculate All Charges
-                var calcsumcharges = calcsamplecharges + calcfreightcharges + calcfreighthazdsurcharges + calcservicecharges;
-
-                // Calculate Shipping Performance
                 // TODO
+                // Calculate shipping performance
                 // Is shipping calculated per sample or per order?
                 int countorderitems = orderitems.Count();
-                var calcsamedayshipping = (int)(countorderitems * 0.70);
-                var calcnextdayshipping = (int)(countorderitems * 0.25);
-                var calcseconddayshipping = (int)(countorderitems * 0.04);
-                var calcothershipping = (int)(countorderitems * 0.01);
-
-                // Fill table fields
-                invoice.TotalSamples = orderitems.Count();
-                invoice.TotalCostSamples = calcsamplecharges;
-                invoice.TotalFreight = calcfreightcharges;                          // TODO: Random for now
-                invoice.TotalFrtHzdSchg = calcfreighthazdsurcharges;                // TODO: Random for now
-                invoice.TotalAdminCharge = calcservicecharges;
-                invoice.TotalDue = calcsumcharges;
-                invoice.SampleShipSameDay = calcsamedayshipping;
-                invoice.SampleShipNextDay = calcnextdayshipping;
-                invoice.SampleShipSecondDay = calcseconddayshipping;
-                invoice.SampleShipOther = calcothershipping;
+                invoice.SampleShipSameDay = (int)(countorderitems * 0.5);
+                invoice.SampleShipNextDay = (int)(countorderitems * 0.25);
+                invoice.SampleShipSecondDay = (int)(countorderitems * 0.15);
+                invoice.SampleShipOther = (int)(countorderitems * 0.1);
 
                 // Quantities
-                invoice.AirHzdOnlyQuantity = 0;
-                invoice.CertificateOfOriginQuantity = 0;
-                invoice.CMCPackQuantity = 0;
-                invoice.CoolPackQuantity = 0;
-                invoice.CreditCardFeeQuantity = 0;
-                invoice.CreditCardOrderQuantity = 0;
-                invoice.DocumentationHandlingQuantity = 0;
-                invoice.EmptyPackagingQuantity = 0;
-                invoice.ExternalSystemQuantity = 0;
-                invoice.FollowUpOrderQuantity = 0;
-                invoice.FreezerPackQuantity = 0;
-                invoice.GHSLabelsQuantity = 0;
-                invoice.InactiveProductsQuantity = 0;
-                invoice.IsolationQuantity = 0;
-                invoice.IsolationBoxQuantity = 0;
-                invoice.ITFeeQuantity = 0;
-                invoice.LabelMaintainanceQuantity = 0;
-                invoice.LabelStockQuantity = 0;
-                invoice.LabelsPrintedQuantity = 0;
-                invoice.LaborRelabelQuantity = 0;
-                invoice.LiteratureFeeQuantity = 0;
-                invoice.LimitedQtyQuantity = 0;
-                invoice.ManualHandlingQuantity = 0;
-                invoice.MSDSPrintsQuantity = 0;
-                invoice.NewLabelSetupQuantity = 0;
-                invoice.NewProductSetupQuantity = 0;
-                invoice.OberkPackQuantity = 0;
-                invoice.OrderEntryQuantity = 0;
-                invoice.OverPackQuantity = 0;
-                invoice.PalletReturnQuantity = 0;
-                invoice.PoisonPackQuantity = 0;
-                invoice.ProductSetupChangesQuantity = 0;
-                invoice.QCStorageQuantity = 0;
-                invoice.RDHandlingADRQuantity = 0;
-                invoice.RDHandlingIATAQuantity = 0;
-                invoice.RDHandlingLQQuantity = 0;
-                invoice.RDHandlingNonHzdQuantity = 0;
-                invoice.RefrigeratorStorageQuantity = 0;
-                invoice.RelabelsQuantity = 0;
-                invoice.RushShipmentQuantity = 0;
-                invoice.SPA197AppliedQuantity = 0;
-                invoice.SPSPaidOrderQuantity = 0;
-                invoice.UNBoxQuantity = 0;
-                invoice.WarehouseStorageQuantity = 0;
-                invoice.WHMISLabelsQuantity = 0;
+                // Assign sum of quantities from order transaction to corresponding transaction type fields
+                invoice.AirHzdOnlyQuantity = getservicetransactions.Where(j => j.TransType == "Air Hazard Only").Select(i => i.TransQty).Sum();
+                invoice.CertificateOfOriginQuantity = getservicetransactions.Where(j => j.TransType == "Certificate Of Origin").Select(i => i.TransQty).Sum();
+                invoice.CMCPackQuantity = getservicetransactions.Where(j => j.TransType == "CMC Pack").Select(i => i.TransQty).Sum();
+                invoice.CoolPackQuantity = getservicetransactions.Where(j => j.TransType == "Cool Pack").Select(i => i.TransQty).Sum();
+                invoice.CreditCardFeeQuantity = getservicetransactions.Where(j => j.TransType == "Credit Card Fee").Select(i => i.TransQty).Sum();
+                invoice.CreditCardOrderQuantity = getservicetransactions.Where(j => j.TransType == "Credit Card Order").Select(i => i.TransQty).Sum();
+                invoice.DocumentationHandlingQuantity = getservicetransactions.Where(j => j.TransType == "Document Handling").Select(i => i.TransQty).Sum();
+                invoice.EmptyPackagingQuantity = getservicetransactions.Where(j => j.TransType == "Empty Packaging").Select(i => i.TransQty).Sum();
+                invoice.ExternalSystemQuantity = getservicetransactions.Where(j => j.TransType == "External System").Select(i => i.TransQty).Sum();
+                invoice.FollowUpOrderQuantity = getservicetransactions.Where(j => j.TransType == "Follow Up Order").Select(i => i.TransQty).Sum();
+                invoice.FreezerPackQuantity = getservicetransactions.Where(j => j.TransType == "Freezer Pack").Select(i => i.TransQty).Sum();
+                invoice.GHSLabelsQuantity = getservicetransactions.Where(j => j.TransType == "GHS Labels").Select(i => i.TransQty).Sum();
+                invoice.InactiveProductsQuantity = getservicetransactions.Where(j => j.TransType == "Inactive Products").Select(i => i.TransQty).Sum();
+                invoice.IsolationQuantity = getservicetransactions.Where(j => j.TransType == "Isolation").Select(i => i.TransQty).Sum();
+                invoice.IsolationBoxQuantity = getservicetransactions.Where(j => j.TransType == "Isolation Box").Select(i => i.TransQty).Sum();
+                invoice.ITFeeQuantity = getservicetransactions.Where(j => j.TransType == "IT Fee").Select(i => i.TransQty).Sum();
+                invoice.LabelMaintainanceQuantity = getservicetransactions.Where(j => j.TransType == "Label Maintainance").Select(i => i.TransQty).Sum();
+                invoice.LabelStockQuantity = getservicetransactions.Where(j => j.TransType == "Label Stock").Select(i => i.TransQty).Sum();
+                invoice.LabelsPrintedQuantity = getservicetransactions.Where(j => j.TransType == "Labels Printed").Select(i => i.TransQty).Sum();
+                invoice.LaborRelabelQuantity = getservicetransactions.Where(j => j.TransType == "Labor Relabel").Select(i => i.TransQty).Sum();
+                invoice.LiteratureFeeQuantity = getservicetransactions.Where(j => j.TransType == "Literature Fee").Select(i => i.TransQty).Sum();
+                invoice.LimitedQtyQuantity = getservicetransactions.Where(j => j.TransType == "Limited Quantity").Select(i => i.TransQty).Sum();
+                invoice.ManualHandlingQuantity = getservicetransactions.Where(j => j.TransType == "Manual Handling").Select(i => i.TransQty).Sum();
+                invoice.MSDSPrintsQuantity = getservicetransactions.Where(j => j.TransType == "MSDS Prints").Select(i => i.TransQty).Sum();
+                invoice.NewLabelSetupQuantity = getservicetransactions.Where(j => j.TransType == "New Label Setup").Select(i => i.TransQty).Sum();
+                invoice.NewProductSetupQuantity = getservicetransactions.Where(j => j.TransType == "New Product Setup").Select(i => i.TransQty).Sum();
+                invoice.OberkPackQuantity = getservicetransactions.Where(j => j.TransType == "Oberk Pack").Select(i => i.TransQty).Sum();
+                invoice.OrderEntryQuantity = getservicetransactions.Where(j => j.TransType == "Order Entry").Select(i => i.TransQty).Sum();
+                invoice.OverPackQuantity = getservicetransactions.Where(j => j.TransType == "Over Pack").Select(i => i.TransQty).Sum();
+                invoice.PalletReturnQuantity = getservicetransactions.Where(j => j.TransType == "Pallet Return").Select(i => i.TransQty).Sum();
+                invoice.PoisonPackQuantity = getservicetransactions.Where(j => j.TransType == "Poison Pack").Select(i => i.TransQty).Sum();
+                invoice.ProductSetupChangesQuantity = getservicetransactions.Where(j => j.TransType == "Product Setup Changes").Select(i => i.TransQty).Sum();
+                invoice.QCStorageQuantity = getservicetransactions.Where(j => j.TransType == "QC Storage").Select(i => i.TransQty).Sum();
+                invoice.RDHandlingADRQuantity = getservicetransactions.Where(j => j.TransType == "RD Handling ADR").Select(i => i.TransQty).Sum();
+                invoice.RDHandlingIATAQuantity = getservicetransactions.Where(j => j.TransType == "RD Handling IATA").Select(i => i.TransQty).Sum();
+                invoice.RDHandlingLQQuantity = getservicetransactions.Where(j => j.TransType == "RD Handling LQ").Select(i => i.TransQty).Sum();
+                invoice.RDHandlingNonHzdQuantity = getservicetransactions.Where(j => j.TransType == "RD Handling Non Hazard").Select(i => i.TransQty).Sum();
+                invoice.RefrigeratorStorageQuantity = getservicetransactions.Where(j => j.TransType == "Refrigerator Storage").Select(i => i.TransQty).Sum();
+                invoice.RelabelsQuantity = getservicetransactions.Where(j => j.TransType == "Relabels").Select(i => i.TransQty).Sum();
+                invoice.RushShipmentQuantity = getservicetransactions.Where(j => j.TransType == "Rush Shipment").Select(i => i.TransQty).Sum();
+                invoice.SPA197AppliedQuantity = getservicetransactions.Where(j => j.TransType == "SPA 197 Applied").Select(i => i.TransQty).Sum();
+                invoice.SPSPaidOrderQuantity = getservicetransactions.Where(j => j.TransType == "SPS Paid Order").Select(i => i.TransQty).Sum();
+                invoice.UNBoxQuantity = getservicetransactions.Where(j => j.TransType == "UN Box").Select(i => i.TransQty).Sum();
+                invoice.WarehouseStorageQuantity = getservicetransactions.Where(j => j.TransType == "Warehouse Storage").Select(i => i.TransQty).Sum();
+                invoice.WHMISLabelsQuantity = getservicetransactions.Where(j => j.TransType == "WHMIS Labels").Select(i => i.TransQty).Sum();
 
-                // Rates
-                invoice.AirHzdOnlyRate = adminrate.AirHazardOnly ?? 1;
-                invoice.CertificateOfOriginRate = adminrate.CertificateOfOrigin ?? 1;
-                invoice.CMCPackRate = adminrate.CMCPack ?? 1;
-                invoice.CoolPackRate = adminrate.CoolPack ?? 1;
-                invoice.CreditCardFeeRate = adminrate.CreditCardFee ?? 1;
-                invoice.CreditCardOrderRate = adminrate.CreditCardOrder ?? 1;
-                invoice.DocumentationHandlingRate = adminrate.DocumentHandling ?? 1;
-                invoice.EmptyPackagingRate = adminrate.EmptyPackaging ?? 1;
-                invoice.ExternalSystemRate = adminrate.ExternalSystem ?? 1;
-                invoice.FollowUpOrderRate = adminrate.FollowUpOrder ?? 1;
-                invoice.FreezerPackRate = adminrate.FreezerPack ?? 1;
-                invoice.GHSLabelsRate = adminrate.GHSLabels ?? 1;
-                invoice.InactiveProductsRate = adminrate.InactiveProducts ?? 1;
-                invoice.IsolationRate = adminrate.Isolation ?? 1;
-                invoice.IsolationBoxRate = adminrate.IsolationBox ?? 1;
-                invoice.ITFeeRate = adminrate.ITFee ?? 1;
-                invoice.LabelMaintainanceRate = adminrate.LabelMaintainance ?? 1;
-                invoice.LabelStockRate = adminrate.LabelStock ?? 1;
-                invoice.LabelsPrintedRate = adminrate.LabelsPrinted ?? 1;
-                invoice.LaborRelabelRate = adminrate.LaborRelabel ?? 1;
-                invoice.LiteratureFeeRate = adminrate.LiteratureFee ?? 1;
-                invoice.LimitedQtyRate = adminrate.LimitedQuantity ?? 1;
-                invoice.ManualHandlingRate = adminrate.ManualHandling ?? 1;
-                invoice.MSDSPrintsRate = adminrate.MSDSPrints ?? 1;
-                invoice.NewLabelSetupRate = adminrate.NewLabelSetup ?? 1;
-                invoice.NewProductSetupRate = adminrate.NewProductSetup ?? 1;
-                invoice.OberkPackRate = adminrate.OberkPack ?? 1;
-                invoice.OrderEntryRate = adminrate.OrderEntry ?? 1;
-                invoice.OverPackRate = adminrate.OverPack ?? 1;
-                invoice.PalletReturnRate = adminrate.PalletReturn ?? 1;
-                invoice.PoisonPackRate = adminrate.PoisonPack ?? 1;
-                invoice.ProductSetupChangesRate = adminrate.ProductSetupChanges ?? 1;
-                invoice.QCStorageRate = adminrate.QCStorage ?? 1;
-                invoice.RDHandlingADRRate = adminrate.RDHandlingADR ?? 1;
-                invoice.RDHandlingIATARate = adminrate.RDHandlingIATA ?? 1;
-                invoice.RDHandlingLQRate = adminrate.RDHandlingLQ ?? 1;
-                invoice.RDHandlingNonHzdRate = adminrate.RDHandlingNonHazard ?? 1;
-                invoice.RefrigeratorStorageRate = adminrate.RefrigeratorStorage ?? 1;
-                invoice.RelabelsRate = adminrate.Relabels ?? 1;
-                invoice.RushShipmentRate = adminrate.RushShipment ?? 1;
-                invoice.SPA197AppliedRate = adminrate.SPA197Applied ?? 1;
-                invoice.SPSPaidOrderRate = adminrate.SPSPaidOrder ?? 1;
-                invoice.UNBoxRate = adminrate.UNBox ?? 1;
-                invoice.WarehouseStorageRate = adminrate.WarehouseStorage ?? 1;
-                invoice.WHMISLabelsRate = adminrate.WHMISLabels ?? 1;
+                // Populate corresponding rates.
+                // Assign set rates established in client profile with 1 as default
+                invoice.AirHzdOnlyRate = servicerates.AirHazardOnly ?? 1;
+                invoice.CertificateOfOriginRate = servicerates.CertificateOfOrigin ?? 1;
+                invoice.CMCPackRate = servicerates.CMCPack ?? 1;
+                invoice.CoolPackRate = servicerates.CoolPack ?? 1;
+                invoice.CreditCardFeeRate = servicerates.CreditCardFee ?? 1;
+                invoice.CreditCardOrderRate = servicerates.CreditCardOrder ?? 1;
+                invoice.DocumentationHandlingRate = servicerates.DocumentHandling ?? 1;
+                invoice.EmptyPackagingRate = servicerates.EmptyPackaging ?? 1;
+                invoice.ExternalSystemRate = servicerates.ExternalSystem ?? 1;
+                invoice.FollowUpOrderRate = servicerates.FollowUpOrder ?? 1;
+                invoice.FreezerPackRate = servicerates.FreezerPack ?? 1;
+                invoice.GHSLabelsRate = servicerates.GHSLabels ?? 1;
+                invoice.InactiveProductsRate = servicerates.InactiveProducts ?? 1;
+                invoice.IsolationRate = servicerates.Isolation ?? 1;
+                invoice.IsolationBoxRate = servicerates.IsolationBox ?? 1;
+                invoice.ITFeeRate = servicerates.ITFee ?? 1;
+                invoice.LabelMaintainanceRate = servicerates.LabelMaintainance ?? 1;
+                invoice.LabelStockRate = servicerates.LabelStock ?? 1;
+                invoice.LabelsPrintedRate = servicerates.LabelsPrinted ?? 1;
+                invoice.LaborRelabelRate = servicerates.LaborRelabel ?? 1;
+                invoice.LiteratureFeeRate = servicerates.LiteratureFee ?? 1;
+                invoice.LimitedQtyRate = servicerates.LimitedQuantity ?? 1;
+                invoice.ManualHandlingRate = servicerates.ManualHandling ?? 1;
+                invoice.MSDSPrintsRate = servicerates.MSDSPrints ?? 1;
+                invoice.NewLabelSetupRate = servicerates.NewLabelSetup ?? 1;
+                invoice.NewProductSetupRate = servicerates.NewProductSetup ?? 1;
+                invoice.OberkPackRate = servicerates.OberkPack ?? 1;
+                invoice.OrderEntryRate = servicerates.OrderEntry ?? 1;
+                invoice.OverPackRate = servicerates.OverPack ?? 1;
+                invoice.PalletReturnRate = servicerates.PalletReturn ?? 1;
+                invoice.PoisonPackRate = servicerates.PoisonPack ?? 1;
+                invoice.ProductSetupChangesRate = servicerates.ProductSetupChanges ?? 1;
+                invoice.QCStorageRate = servicerates.QCStorage ?? 1;
+                invoice.RDHandlingADRRate = servicerates.RDHandlingADR ?? 1;
+                invoice.RDHandlingIATARate = servicerates.RDHandlingIATA ?? 1;
+                invoice.RDHandlingLQRate = servicerates.RDHandlingLQ ?? 1;
+                invoice.RDHandlingNonHzdRate = servicerates.RDHandlingNonHazard ?? 1;
+                invoice.RefrigeratorStorageRate = servicerates.RefrigeratorStorage ?? 1;
+                invoice.RelabelsRate = servicerates.Relabels ?? 1;
+                invoice.RushShipmentRate = servicerates.RushShipment ?? 1;
+                invoice.SPA197AppliedRate = servicerates.SPA197Applied ?? 1;
+                invoice.SPSPaidOrderRate = servicerates.SPSPaidOrder ?? 1;
+                invoice.UNBoxRate = servicerates.UNBox ?? 1;
+                invoice.WarehouseStorageRate = servicerates.WarehouseStorage ?? 1;
+                invoice.WHMISLabelsRate = servicerates.WHMISLabels ?? 1;
 
-                // Calulated Charges
+                // Calculate charges by multiplying quantities with corresponding rates.
+                // Aggregate sum into grandtotal.
                 grandtotal += invoice.AirHzdOnlyCharge = invoice.AirHzdOnlyQuantity * invoice.AirHzdOnlyRate;
                 grandtotal += invoice.CertificateOfOriginCharge = invoice.CertificateOfOriginQuantity * invoice.CertificateOfOriginRate;
                 grandtotal += invoice.CMCPackCharge = invoice.CMCPackQuantity * invoice.CMCPackRate;
@@ -760,20 +747,31 @@ namespace MvcPhoenix.Models
                 grandtotal += invoice.WarehouseStorageCharge = invoice.WarehouseStorageQuantity * invoice.WarehouseStorageRate;
                 grandtotal += invoice.WHMISLabelsCharge = invoice.WHMISLabelsQuantity * invoice.WHMISLabelsRate;
 
-                // Variables Charges
-                grandtotal += invoice.AdministrativeWasteFeeCharge = 0;
-                grandtotal += invoice.CreditCharge = 0;
-                grandtotal += invoice.CustomsDocumentsCharge = 0;
-                grandtotal += invoice.DeliveryDutiesTaxesCharge = 0;
-                grandtotal += invoice.DocumentsCharge = 0;
-                grandtotal += invoice.HandlingCharge = 0;
-                grandtotal += invoice.MautFuel = 0;
-                grandtotal += invoice.MiscellaneousLaborCharge = 0;
-                grandtotal += invoice.OtherCharge = 0;
-                grandtotal += invoice.WasteProcessingCharge = 0;
+                // Variables charges by group summing amounts with corresponding transaction types.
+                // Aggregate sum into grandtotal.
+                grandtotal += invoice.AdministrativeWasteFeeCharge = getservicetransactions.Where(j => j.TransType == "Administrative Waste Fee").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.CreditCharge = getservicetransactions.Where(j => j.TransType == "Credit").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.CustomsDocumentsCharge = getservicetransactions.Where(j => j.TransType == "Customs Documents").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.DeliveryDutiesTaxesCharge = getservicetransactions.Where(j => j.TransType == "Delivery Duties Taxes").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.DocumentsCharge = getservicetransactions.Where(j => j.TransType == "Documents").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.HandlingCharge = getservicetransactions.Where(j => j.TransType == "Handling").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.MautFuel = getservicetransactions.Where(j => j.TransType == "MautFuel").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.MiscellaneousLaborCharge = getservicetransactions.Where(j => j.TransType == "Miscellaneous Labor").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.OtherCharge = getservicetransactions.Where(j => j.TransType == "Other").Select(i => i.TransAmount).Sum();
+                grandtotal += invoice.WasteProcessingCharge = getservicetransactions.Where(j => j.TransType == "Waste Processing").Select(i => i.TransAmount).Sum();
 
                 invoice.GrandTotal = grandtotal;
-                invoice.TotalAdminCharge = grandtotal;
+
+                // Calculate all charges due.
+                calcsumcharges = calcsamplecharges + calcfreightcharges + calcfreighthazdsurcharges + grandtotal;
+
+                // Fill summary fields.
+                invoice.TotalSamples = orderitems.Count();
+                invoice.TotalCostSamples = calcsamplecharges;                       // TODO: Random for now
+                invoice.TotalFreight = calcfreightcharges;                          // TODO: Random for now
+                invoice.TotalFrtHzdSchg = calcfreighthazdsurcharges;                // TODO: Random for now
+                invoice.TotalServiceCharge = grandtotal;
+                invoice.TotalDue = calcsumcharges;
 
                 db.SaveChanges();
 
@@ -937,7 +935,7 @@ namespace MvcPhoenix.Models
         //        obj.totalcostsamples = 0;
         //        obj.totalfreight = 0;
         //        obj.totalfrtHzdSchg = 0;
-        //        obj.totaladmincharge = 0;
+        //        obj.totalservicecharge = 0;
         //        obj.totaldue = 0;
         //        obj.sampleshipsameday = 0;
         //        obj.sampleshipnextday = 0;
@@ -1124,7 +1122,7 @@ namespace MvcPhoenix.Models
         //        var qAdminChargesSum = (from t in qAdminCharges
         //                                select (t.TransQty * t.TransRate)).Sum();
 
-        //        obj.totaladmincharge = obj.totaladmincharge + qAdminChargesSum;
+        //        obj.totalservicecharge = obj.totalservicecharge + qAdminChargesSum;
 
         //        // add in clientid level trans
         //        var qClientTrans = (from t in db.tblOrderTrans
@@ -1155,7 +1153,7 @@ namespace MvcPhoenix.Models
         //        var qClientTransSum = (from t in qClientTrans
         //                               select (t.TransQty * t.TransRate)).Sum();
 
-        //        obj.totaladmincharge = obj.totaladmincharge + qClientTransSum;
+        //        obj.totalservicecharge = obj.totalservicecharge + qClientTransSum;
 
         //        // add in order level trans
         //        var qOrderLevelTrans = (from t in db.tblOrderTrans
@@ -1186,7 +1184,7 @@ namespace MvcPhoenix.Models
         //        var qOrderLevelTransSum = (from t in qOrderLevelTrans
         //                                   select (t.TransQty * t.TransRate)).Sum();
 
-        //        obj.totaladmincharge = obj.totaladmincharge + qOrderLevelTransSum;
+        //        obj.totalservicecharge = obj.totalservicecharge + qOrderLevelTransSum;
 
         //        // return the passed object with more properties filled in
         //        return obj;

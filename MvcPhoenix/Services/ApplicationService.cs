@@ -135,23 +135,49 @@ namespace MvcPhoenix.Models
         {
             using (var db = new CMCSQL03Entities())
             {
-                var divisions = (from t in db.tblDivision
-                                 where t.ClientID == clientid
-                                 orderby t.DivisionID, t.DivisionName
-                                 select t);
+                var businessunits = db.tblDivision.Where(x => x.ClientID == clientid)
+                                                  .GroupBy(x => x.BusinessUnit)
+                                                  .Select(g => g.FirstOrDefault());
 
-                string s = "<option value='' selected=true></option>";
+                var divisions = db.tblDivision.Where(x => x.ClientID == clientid)
+                                              .GroupBy(x => x.DivisionName)
+                                              .Select(g => g.FirstOrDefault());
+
+                var enduses = (from t in db.tblEndUse
+                               where t.ClientID == clientid
+                               orderby t.EndUse
+                               select t);
+
+                string s = "<option value='ALL' selected=true>ALL</option>";
+
+                if (businessunits.Count() > 0)
+                {
+                    s = s + "<optgroup label='Business Unit'>";
+                    foreach (var item in businessunits)
+                    {
+                        s = s + "<option value=" + item.BusinessUnit + ">" + item.BusinessUnit + "</option>";
+                    }
+                    s = s + "</optgroup>";
+                }
 
                 if (divisions.Count() > 0)
                 {
+                    s = s + "<optgroup label='Division'>";
                     foreach (var item in divisions)
                     {
-                        s = s + "<option value=" + item.DivisionID.ToString() + ">" + item.DivisionName + " / " + item.BusinessUnit + "</option>";
+                        s = s + "<option value=" + item.DivisionName + ">" + item.DivisionName + "</option>";
                     }
+                    s = s + "</optgroup>";
                 }
-                else
+
+                if (enduses.Count() > 0)
                 {
-                    s = s + "<option value=0>No Billing Group</option>";
+                    s = s + "<optgroup label='End Use'>";
+                    foreach (var item in enduses)
+                    {
+                        s = s + "<option value=" + item.EndUse + ">" + item.EndUse + "</option>";
+                    }
+                    s = s + "</optgroup>";
                 }
 
                 s = s + "</select>";

@@ -77,11 +77,11 @@ namespace MvcPhoenix.Controllers
         public ActionResult Create(FormCollection fc)
         {
             int ClientID = Convert.ToInt32(fc["ClientID"]);
-            int DivisionID = Convert.ToInt32(fc["billinggroupid"]);
+            string BillingGroup = (fc["billinggroup"]);
             DateTime StartDate = Convert.ToDateTime(fc["startdate"]);
             DateTime EndDate = Convert.ToDateTime(fc["enddate"]);
 
-            int invoiceid = InvoiceService.CreateInvoice(ClientID, DivisionID, StartDate, EndDate);
+            int invoiceid = InvoiceService.CreateInvoice(ClientID, BillingGroup, StartDate, EndDate);
 
             InvoiceService.GenerateInvoice(invoiceid);
 

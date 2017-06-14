@@ -59,7 +59,7 @@ namespace MvcPhoenix.Models
         public decimal? TotalCostSamples { get; set; }
         public decimal? TotalFreight { get; set; }
         public decimal? TotalFrtHzdSchg { get; set; }
-        public decimal? TotalAdminCharge { get; set; }
+        public decimal? TotalServiceCharge { get; set; }
         public decimal? TotalDue { get; set; }
 
         /////////////////////////////////////////////
