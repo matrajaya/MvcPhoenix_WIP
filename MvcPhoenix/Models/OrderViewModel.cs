@@ -12,7 +12,9 @@ namespace MvcPhoenix.Models
         public int transcount { get; set; }
         public int needallocationcount { get; set; }
         public int orderid { get; set; }
+        [Required]
         public int? clientid { get; set; }
+        [Required]
         public int? divisionid { get; set; }
         public string clientname { get; set; }
         public string clientcode { get; set; }

@@ -96,6 +96,7 @@ namespace MvcPhoenix.Models
         public string rcranosname { get; set; }
         [Required]
         public int productdetailid { get; set; }
+        [Required]
         public int? divisionid { get; set; }
         [Required]
         public string productcode { get; set; }

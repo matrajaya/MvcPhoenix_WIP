@@ -269,6 +269,7 @@ namespace MvcPhoenix.Models
 
                 obj.ClientID = getclient.ClientID;
                 obj.ClientName = getclient.ClientName;
+
                 obj.BillingGroup = billinggroup;                                    // division, business unit, enduse are available entries
                 obj.WarehouseLocation = getclient.CMCLocation;
                 obj.BillTo = getclient.InvoiceAddress;
@@ -345,10 +346,6 @@ namespace MvcPhoenix.Models
                 q.SampleShipSecondDay = vm.SampleShipSecondDay;
                 q.SampleShipOther = vm.SampleShipOther;
                 q.TotalSamples = vm.TotalSamples;
-                q.TotalCostSamples = vm.TotalCostSamples;
-                q.TotalFreight = vm.TotalFreight;
-                q.TotalFrtHzdSchg = vm.TotalFrtHzdSchg;
-                q.TotalDue = vm.TotalDue;
 
                 decimal? grandtotal = 0;
 
@@ -508,6 +505,11 @@ namespace MvcPhoenix.Models
                 q.GrandTotal = grandtotal;
                 q.TotalServiceCharge = grandtotal;
 
+                q.TotalCostSamples = vm.TotalCostSamples;
+                q.TotalFreight = vm.TotalFreight;
+                q.TotalFrtHzdSchg = vm.TotalFrtHzdSchg;
+                q.TotalDue = vm.TotalCostSamples + vm.TotalFreight + vm.TotalFrtHzdSchg + grandtotal;
+
                 db.SaveChanges();
 
                 return vm.InvoiceId;
@@ -517,14 +519,18 @@ namespace MvcPhoenix.Models
         public static int GenerateInvoice(int invoiceid)
         {
             int clientid = 0;
+            int divisionid = 0;
+            string billinggroup;
             DateTime startdate = DateTime.UtcNow;
             DateTime enddate = DateTime.UtcNow;
+            int? sampleitemscount = 0;
             string[] sampletranstypes = { "SAMP", "HAZD", "FLAM", "HEAT", "REFR", "FREZ", "CLEN", "BLND", "NALG", "NITR", "BIOC", "KOSH", "LABL" };
             Random random = new Random();
             decimal? grandtotal = 0;
-            decimal? calcsumcharges;
+            decimal? sumsamplecharges;
             decimal? calcfreightcharges;
             decimal? calcservicecharges;
+            decimal? sumchargesdue;
 
             using (var db = new CMCSQL03Entities())
             {
@@ -537,6 +543,28 @@ namespace MvcPhoenix.Models
                 startdate = Convert.ToDateTime(invoice.InvoiceStartDate);
                 enddate = Convert.ToDateTime(invoice.InvoiceEndDate);
 
+                // Check input for type and determine whether billing group is division or enduse
+                int n;
+                bool isDivision = int.TryParse(invoice.BillingGroup, out n);
+
+                if (isDivision == true)
+                {
+                    divisionid = Convert.ToInt32(invoice.BillingGroup);
+                    var getDivision = (from t in db.tblDivision
+                                       where t.DivisionID == divisionid
+                                       select t).FirstOrDefault();
+
+                    billinggroup = getDivision.DivisionName + " / " + getDivision.BusinessUnit;
+                }
+                else if (isDivision == false)
+                {
+                    billinggroup = invoice.BillingGroup;                        // Could be "All" or End Use
+                }
+                else
+                {
+                    billinggroup = "ALL";
+                }
+
                 // Get client info
                 var client = (from t in db.tblClient
                               where t.ClientID == clientid
@@ -547,12 +575,14 @@ namespace MvcPhoenix.Models
                                     where t.ClientID == clientid
                                     select t).FirstOrDefault();
 
-                // Get order details for client within date range.
+                // Get order items for client within date range.
                 var orderitems = (from t in db.tblOrderItem
                                   join o in db.tblOrderMaster on t.OrderID equals o.OrderID
                                   where o.ClientID == clientid
                                   && (t.ShipDate >= startdate && t.ShipDate <= enddate)
                                   select t).ToList();
+
+                sampleitemscount = orderitems.Count();
 
                 // Get order transactions within date range.
                 var transactions = (from t in db.tblOrderTrans
@@ -560,21 +590,82 @@ namespace MvcPhoenix.Models
                                     && (t.TransDate >= startdate && t.TransDate <= enddate)
                                     select t).ToList();
 
-                // TODO
-                // Group and sum transaction charges for sample related charges.
-                // Calculate sample related charges
-                var samplecharges = (from t in transactions
-                                     // join OrderMaster here
-                                     where sampletranstypes.Contains(t.TransType) 
-                                     // add billing group filter on order master here
-                                     select new
-                                     {
-                                         t.TransQty,
-                                         t.TransRate
-                                     }).ToList();
+                var samplechargetrans = transactions.Where(x => sampletranstypes.Contains(x.TransType)).ToList();
 
-                var calcsamplecharges = (from t in samplecharges
-                                         select (t.TransQty * t.TransRate)).Sum();
+                sumsamplecharges = (from t in samplechargetrans
+                                    select (t.TransAmount)).Sum();
+
+                // Bypass business rules within condition if 'ALL' is selected
+                if (billinggroup != "ALL")
+                {
+                    // Filter transactions by billing group if division/businessunit is selected
+                    if (isDivision == true)
+                    {
+                        var billinggrouptransactions = transactions.Where(x => x.DivisionID == divisionid).ToList();
+
+                        transactions = billinggrouptransactions;
+
+                        // Filter order items by divisionid, count, and sum up the sample charges
+                        var sampleitems = (from orderitem in orderitems
+                                           join order in db.tblOrderMaster on orderitem.OrderID equals order.OrderID
+                                           where order.DivisionID == divisionid
+                                           select orderitem).ToList();
+
+                        sampleitemscount = sampleitems.Count();
+
+                        samplechargetrans = transactions.Where(x => sampletranstypes.Contains(x.TransType)).ToList(); // TODO: Add orderitem shipdate filter
+
+                        sumsamplecharges = (from t in samplechargetrans
+                                            select (t.TransAmount)).Sum();
+                    }
+
+                    // Filter orders by enduse if enduse is selected and match orders to transactions
+                    if (isDivision == false)
+                    {
+                        string enduse = billinggroup;
+
+                        var enduseorders = (from t in db.tblOrderMaster
+                                            where t.ClientID == clientid
+                                            && t.EndUse == enduse
+                                            select t).ToList();
+
+                        var endusetransactions = (from trans in transactions
+                                                  join order in enduseorders on trans.OrderID equals order.OrderID
+                                                  select trans).ToList();
+
+                        transactions = endusetransactions;
+
+                        // Filter order items by enduse, count, and sum up the sample charges
+                        var sampleitems = (from orderitem in orderitems
+                                           join order in db.tblOrderMaster on orderitem.OrderID equals order.OrderID
+                                           where order.EndUse == enduse
+                                           select orderitem).ToList();
+
+                        sampleitemscount = sampleitems.Count();
+
+                        samplechargetrans = transactions.Where(x => sampletranstypes.Contains(x.TransType)).ToList();
+
+                        sumsamplecharges = (from t in samplechargetrans
+                                            select (t.TransAmount)).Sum();
+                    }
+                }
+
+                // TODO
+                // Calculate Freight Charges
+                calcfreightcharges = 0; // random.Next(100, 999);
+
+                // TODO
+                // Calculate Freight Hazard Surcharge
+                var calcfreighthazdsurcharges = 0; // random.Next(100, 999);
+
+                // TODO
+                // Calculate shipping performance
+                // Is shipping calculated per sample or per order?
+                int? countorderitems = sampleitemscount;
+                invoice.SampleShipSameDay = sampleitemscount; // (int)(sampleitemscount * 0.5);
+                invoice.SampleShipNextDay = 0; // (int)(sampleitemscount * 0.25);
+                invoice.SampleShipSecondDay = 0; // (int)(sampleitemscount * 0.15);
+                invoice.SampleShipOther = 0; // (int)(sampleitemscount * 0.1);
 
                 // Group and sum transaction quantities for fixed charges; and amounts for variable charges.
                 var getservicetransactions = from transaction in transactions
@@ -586,24 +677,7 @@ namespace MvcPhoenix.Models
                                                  TransAmount = transactiongroup.Sum(x => x.TransAmount),
                                              };
 
-                // TODO
-                // Calculate Freight Charges
-                calcfreightcharges = random.Next(100, 999);
-
-                // TODO
-                // Calculate Freight Hazard Surcharge
-                var calcfreighthazdsurcharges = random.Next(100, 999);
-
-                // TODO
-                // Calculate shipping performance
-                // Is shipping calculated per sample or per order?
-                int countorderitems = orderitems.Count();
-                invoice.SampleShipSameDay = (int)(countorderitems * 0.5);
-                invoice.SampleShipNextDay = (int)(countorderitems * 0.25);
-                invoice.SampleShipSecondDay = (int)(countorderitems * 0.15);
-                invoice.SampleShipOther = (int)(countorderitems * 0.1);
-
-                // Quantities
+                // Populate corresponding quantities
                 // Assign sum of quantities from order transaction to corresponding transaction type fields
                 invoice.AirHzdOnlyQuantity = getservicetransactions.Where(j => j.TransType == "Air Hazard Only").Select(i => i.TransQty).Sum();
                 invoice.CertificateOfOriginQuantity = getservicetransactions.Where(j => j.TransType == "Certificate Of Origin").Select(i => i.TransQty).Sum();
@@ -763,15 +837,18 @@ namespace MvcPhoenix.Models
                 invoice.GrandTotal = grandtotal;
 
                 // Calculate all charges due.
-                calcsumcharges = calcsamplecharges + calcfreightcharges + calcfreighthazdsurcharges + grandtotal;
+                sumchargesdue = sumsamplecharges + calcfreightcharges + calcfreighthazdsurcharges + grandtotal;
 
                 // Fill summary fields.
-                invoice.TotalSamples = orderitems.Count();
-                invoice.TotalCostSamples = calcsamplecharges;                       // TODO: Random for now
+                invoice.TotalSamples = sampleitemscount;
+                invoice.TotalCostSamples = sumsamplecharges;
                 invoice.TotalFreight = calcfreightcharges;                          // TODO: Random for now
                 invoice.TotalFrtHzdSchg = calcfreighthazdsurcharges;                // TODO: Random for now
                 invoice.TotalServiceCharge = grandtotal;
-                invoice.TotalDue = calcsumcharges;
+                invoice.TotalDue = sumchargesdue;
+
+                // Revisit
+                invoice.BillingGroup = billinggroup;
 
                 db.SaveChanges();
 

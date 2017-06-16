@@ -62,10 +62,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <label>Comments</label>
                             @Html.TextAreaFor(m => m.comments, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.comments)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Billing Group</label>
+                            @Html.DropDownListFor(m => m.divisionid, ApplicationService.ddlDivisionIDs(Model.clientid), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.divisionid)
                         </div>
                     </div>
                 </div>

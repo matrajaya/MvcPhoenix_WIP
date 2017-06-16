@@ -10,6 +10,7 @@ namespace MvcPhoenix.Models
         public int ordertransid { get; set; }
         public string pagemode { get; set; }
         public int? clientid { get; set; }
+        public int? divisionid { get; set; }
         public int? orderid { get; set; }
         public int? orderitemid { get; set; }
         public string productcode { get; set; }

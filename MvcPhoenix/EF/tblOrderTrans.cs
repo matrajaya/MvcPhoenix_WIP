@@ -17,6 +17,7 @@ namespace MvcPhoenix.EF
         public int OrderTransID { get; set; }
         public Nullable<int> SourceID { get; set; }
         public Nullable<int> ClientID { get; set; }
+        public Nullable<int> DivisionID { get; set; }
         public Nullable<int> OrderID { get; set; }
         public Nullable<int> OrderItemID { get; set; }
         public Nullable<int> InvoiceID { get; set; }

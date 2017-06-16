@@ -560,12 +560,14 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
+                bool isNewItem = false;
                 // get new order item id if submission is a new entry
                 if (vm.ItemID == -1)
                 {
                     vm.ItemID = fnNewItemID();
                     vm.CreateDate = DateTime.UtcNow;
                     vm.CreateUser = HttpContext.Current.User.Identity.Name;
+                    isNewItem = true;
                 }
 
                 var orderitem = (from t in db.tblOrderItem
@@ -635,7 +637,10 @@ namespace MvcPhoenix.Services
 
                 db.SaveChanges();
 
-                fnGenerateOrderTransactions(vm.ItemID);         // Go do the Order Trans work....
+                if (isNewItem)
+                {
+                    fnGenerateOrderTransactions(vm.ItemID);         // Go do the Order Trans work....
+                }                
 
                 return vm.ItemID;
             }
@@ -758,9 +763,9 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var vm = new OrderTrans();
-                var cl = (from t in db.tblOrderMaster
-                          where t.OrderID == id
-                          select t).FirstOrDefault();
+                var order = (from t in db.tblOrderMaster
+                             where t.OrderID == id
+                             select t).FirstOrDefault();
 
                 vm.ordertransid = -1;
                 vm.orderid = id;
@@ -768,7 +773,8 @@ namespace MvcPhoenix.Services
                 vm.createdate = DateTime.UtcNow;
                 vm.transdate = DateTime.UtcNow.Date;
                 vm.createuser = HttpContext.Current.User.Identity.Name;
-                vm.clientid = cl.ClientID;
+                vm.clientid = order.ClientID;
+                vm.divisionid = order.DivisionID;
 
                 return vm;
             }
@@ -795,10 +801,11 @@ namespace MvcPhoenix.Services
                 var d = (from t in db.tblOrderTrans
                          where t.OrderTransID == vm.ordertransid
                          select t).FirstOrDefault();
-                
+
                 d.OrderID = vm.orderid;
                 d.OrderItemID = vm.orderitemid;
                 d.ClientID = vm.clientid;
+                d.DivisionID = vm.divisionid;
                 d.TransDate = vm.transdate;
                 d.TransType = vm.transtype;
                 d.TransQty = vm.transqty ?? 1;
@@ -1031,6 +1038,7 @@ namespace MvcPhoenix.Services
                 orderitemtransaction.orderid = result.OrderID;
                 orderitemtransaction.orderitemid = result.OrderItemID;
                 orderitemtransaction.clientid = result.ClientID;
+                orderitemtransaction.divisionid = result.DivisionID;
                 orderitemtransaction.transdate = result.TransDate;
                 orderitemtransaction.transtype = result.TransType;
                 orderitemtransaction.transqty = result.TransQty;
@@ -1059,26 +1067,23 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                var oi = (from t in db.tblOrderItem
-                          where t.ItemID == id
-                          select t).FirstOrDefault();
+                var orderitem = (from t in db.tblOrderItem
+                                 where t.ItemID == id
+                                 select t).FirstOrDefault();
 
-                var o = (from t in db.tblOrderMaster
-                         where t.OrderID == oi.OrderID
-                         select t).FirstOrDefault();
+                var order = (from t in db.tblOrderMaster
+                             where t.OrderID == orderitem.OrderID
+                             select t).FirstOrDefault();
 
-                var clt = (from t in db.tblClient
-                           where t.ClientID == o.ClientID
-                           select t).FirstOrDefault();
-                string s = "";
+                string sqlquery = "";
 
                 // Tier 1 sample charge
-                s = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + oi.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
-                db.Database.ExecuteSqlCommand(s);
+                sqlquery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderitem.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
+                db.Database.ExecuteSqlCommand(sqlquery);
 
                 var tierSize = (from t in db.tblTier
-                                where t.ClientID == o.ClientID
-                                && t.Size == oi.Size
+                                where t.ClientID == order.ClientID
+                                && t.Size == orderitem.Size
                                 && t.TierLevel == 1
                                 select t).FirstOrDefault();
 
@@ -1086,18 +1091,19 @@ namespace MvcPhoenix.Services
                 {
                     tblOrderTrans newrec = new tblOrderTrans();
                     newrec.TransDate = DateTime.UtcNow;
-                    newrec.OrderItemID = oi.ItemID;
-                    newrec.OrderID = oi.OrderID;
-                    newrec.ClientID = o.ClientID;
-                    newrec.BillingGroup = o.BillingGroup;
+                    newrec.OrderItemID = orderitem.ItemID;
+                    newrec.OrderID = orderitem.OrderID;
+                    newrec.ClientID = order.ClientID;
+                    newrec.DivisionID = order.DivisionID;
+                    newrec.BillingGroup = order.BillingGroup;
                     newrec.TransType = "SAMP";
-                    newrec.TransQty = oi.Qty;
+                    newrec.TransQty = orderitem.Qty;
                     newrec.TransRate = tierSize.Price;
                     newrec.TransAmount = newrec.TransQty * newrec.TransRate;
                     newrec.CreateDate = DateTime.UtcNow;
-                    newrec.CreateUser = "System";
+                    newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                     newrec.UpdateDate = DateTime.UtcNow;
-                    newrec.UpdateUser = "System";
+                    newrec.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                     db.tblOrderTrans.Add(newrec);
                     db.SaveChanges();
@@ -1106,7 +1112,7 @@ namespace MvcPhoenix.Services
                 {
                     // Assume this is a SR size? - pc
                     var tierSpecialRequest = (from t in db.tblTier
-                                              where t.ClientID == o.ClientID
+                                              where t.ClientID == order.ClientID
                                               && t.Size == "1SR"
                                               && t.TierLevel == 1
                                               select t).FirstOrDefault();
@@ -1115,19 +1121,20 @@ namespace MvcPhoenix.Services
                     {
                         tblOrderTrans newrec = new tblOrderTrans();
                         newrec.TransDate = DateTime.UtcNow;
-                        newrec.OrderItemID = oi.ItemID;
-                        newrec.OrderID = oi.OrderID;
-                        newrec.ClientID = o.ClientID;
-                        newrec.BillingGroup = o.BillingGroup;
+                        newrec.OrderItemID = orderitem.ItemID;
+                        newrec.OrderID = orderitem.OrderID;
+                        newrec.ClientID = order.ClientID;
+                        newrec.DivisionID = order.DivisionID;
+                        newrec.BillingGroup = order.BillingGroup;
                         newrec.TransType = "SAMP";
-                        newrec.TransQty = oi.Qty;
+                        newrec.TransQty = orderitem.Qty;
                         newrec.TransRate = tierSpecialRequest.Price;
                         newrec.TransAmount = newrec.TransQty * newrec.TransRate;
                         newrec.Comments = "Special Request";
                         newrec.CreateDate = DateTime.UtcNow;
-                        newrec.CreateUser = "System";
+                        newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                         newrec.UpdateDate = DateTime.UtcNow;
-                        newrec.UpdateUser = "System";
+                        newrec.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                         db.tblOrderTrans.Add(newrec);
                         db.SaveChanges();
@@ -1138,32 +1145,32 @@ namespace MvcPhoenix.Services
 
                 // pc 10/27/16 Need to know if we are trying to price a Bulk or Stock item
                 // assume a shelfmaster, then change to bulk if necessary
-                var sm = (from t in db.tblShelfMaster
-                          where t.ShelfID == oi.ShelfID
-                          select t).FirstOrDefault();
+                var shelf = (from t in db.tblShelfMaster
+                             where t.ShelfID == orderitem.ShelfID
+                             select t).FirstOrDefault();
 
-                if (oi.BulkID != null)
+                if (orderitem.BulkID != null)
                 {
                     // find a SM record to use to surcharge this order item
-                    var bl = (from t in db.tblBulk
-                              where t.BulkID == oi.BulkID
-                              select t).FirstOrDefault();
+                    var bulk = (from t in db.tblBulk
+                                where t.BulkID == orderitem.BulkID
+                                select t).FirstOrDefault();
 
-                    var pm = (from t in db.tblProductMaster
-                              where t.ProductMasterID == bl.ProductMasterID
-                              select t).FirstOrDefault();
+                    var productmaster = (from t in db.tblProductMaster
+                                         where t.ProductMasterID == bulk.ProductMasterID
+                                         select t).FirstOrDefault();
 
-                    var pd = (from t in db.tblProductDetail
-                              where t.ProductMasterID == bl.ProductMasterID
-                              && t.ProductCode == pm.MasterCode
-                              select t).FirstOrDefault();
+                    var productdetail = (from t in db.tblProductDetail
+                                         where t.ProductMasterID == bulk.ProductMasterID
+                                         && t.ProductCode == productmaster.MasterCode
+                                         select t).FirstOrDefault();
 
-                    sm = (from t in db.tblShelfMaster
-                          where t.ProductDetailID == pd.ProductDetailID
-                          && t.Size == oi.Size
-                          select t).FirstOrDefault();
+                    shelf = (from t in db.tblShelfMaster
+                             where t.ProductDetailID == productdetail.ProductDetailID
+                             && t.Size == orderitem.Size
+                             select t).FirstOrDefault();
 
-                    if (sm == null)
+                    if (shelf == null)
                     {
                         // go no further
                         return;
@@ -1172,74 +1179,74 @@ namespace MvcPhoenix.Services
                 }
 
                 var surcharge = (from t in db.tblSurcharge
-                                 where t.ClientID == o.ClientID
+                                 where t.ClientID == order.ClientID
                                  select t).FirstOrDefault();
 
                 if (surcharge != null)
                 {
-                    if (sm.HazardSurcharge == true)
+                    if (shelf.HazardSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "HAZD", surcharge.Haz);
+                        fnInsertOrderTrans(orderitem.ItemID, "HAZD", surcharge.Haz);
                     }
 
-                    if (sm.FlammableSurcharge == true)
+                    if (shelf.FlammableSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "FLAM", surcharge.Flam);
+                        fnInsertOrderTrans(orderitem.ItemID, "FLAM", surcharge.Flam);
                     }
 
-                    if (sm.HeatSurcharge == true)
+                    if (shelf.HeatSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "HEAT", surcharge.Heat);
+                        fnInsertOrderTrans(orderitem.ItemID, "HEAT", surcharge.Heat);
                     }
 
-                    if (sm.RefrigSurcharge == true)
+                    if (shelf.RefrigSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "REFR", surcharge.Refrig);
+                        fnInsertOrderTrans(orderitem.ItemID, "REFR", surcharge.Refrig);
                     }
 
-                    if (sm.FreezerSurcharge == true)
+                    if (shelf.FreezerSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "FREZ", surcharge.Freezer);
+                        fnInsertOrderTrans(orderitem.ItemID, "FREZ", surcharge.Freezer);
                     }
 
-                    if (sm.CleanSurcharge == true)
+                    if (shelf.CleanSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "CLEN", surcharge.Clean);
+                        fnInsertOrderTrans(orderitem.ItemID, "CLEN", surcharge.Clean);
                     }
 
-                    if (sm.BlendSurcharge == true)
+                    if (shelf.BlendSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "BLND", 0);
+                        fnInsertOrderTrans(orderitem.ItemID, "BLND", 0);
                     }
 
-                    if (sm.NalgeneSurcharge == true)
+                    if (shelf.NalgeneSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "NALG", surcharge.Nalgene);
+                        fnInsertOrderTrans(orderitem.ItemID, "NALG", surcharge.Nalgene);
                     }
 
-                    if (sm.NitrogenSurcharge == true)
+                    if (shelf.NitrogenSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "NITR", 0);
+                        fnInsertOrderTrans(orderitem.ItemID, "NITR", 0);
                     }
 
-                    if (sm.BiocideSurcharge == true)
+                    if (shelf.BiocideSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "BIOC", 0);
+                        fnInsertOrderTrans(orderitem.ItemID, "BIOC", 0);
                     }
 
-                    if (sm.KosherSurcharge == true)
+                    if (shelf.KosherSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "KOSH", 0);
+                        fnInsertOrderTrans(orderitem.ItemID, "KOSH", 0);
                     }
 
-                    if (sm.LabelSurcharge == true)
+                    if (shelf.LabelSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "LABL", surcharge.LabelFee);
+                        fnInsertOrderTrans(orderitem.ItemID, "LABL", surcharge.LabelFee);
                     }
 
-                    if (sm.OtherSurcharge == true)
+                    if (shelf.OtherSurcharge == true)
                     {
-                        fnInsertOrderTrans(oi.ItemID, "OTHR", sm.OtherSurchargeAmt);
+                        fnInsertOrderTrans(orderitem.ItemID, "OTHR", shelf.OtherSurchargeAmt);
                     }
                 }
             }
@@ -1253,29 +1260,30 @@ namespace MvcPhoenix.Services
 
                 db.Database.ExecuteSqlCommand(s);
 
-                var oi = (from t in db.tblOrderItem
-                          where t.ItemID == ItemID
-                          select t).FirstOrDefault();
+                var orderitem = (from t in db.tblOrderItem
+                                 where t.ItemID == ItemID
+                                 select t).FirstOrDefault();
 
-                var o = (from t in db.tblOrderMaster
-                         where t.OrderID == oi.OrderID
-                         select t).FirstOrDefault();
+                var order = (from t in db.tblOrderMaster
+                             where t.OrderID == orderitem.OrderID
+                             select t).FirstOrDefault();
 
                 tblOrderTrans newrec = new tblOrderTrans();
                 newrec.TransDate = DateTime.UtcNow;
                 newrec.OrderItemID = ItemID;
-                newrec.OrderID = oi.OrderID;
-                newrec.ClientID = o.ClientID;
-                newrec.BillingGroup = o.BillingGroup;
+                newrec.OrderID = orderitem.OrderID;
+                newrec.ClientID = order.ClientID;
+                newrec.DivisionID = order.DivisionID;
+                newrec.BillingGroup = order.BillingGroup;
                 newrec.TransDate = DateTime.UtcNow;
                 newrec.TransType = TransType;
-                newrec.TransQty = oi.Qty;
+                newrec.TransQty = orderitem.Qty;
                 newrec.TransRate = TransRate;
                 newrec.TransAmount = newrec.TransQty * newrec.TransRate;
                 newrec.CreateDate = DateTime.UtcNow;
-                newrec.CreateUser = "System";
+                newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                 newrec.UpdateDate = DateTime.UtcNow;
-                newrec.UpdateUser = "System";
+                newrec.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.tblOrderTrans.Add(newrec);
                 db.SaveChanges();
@@ -1500,12 +1508,12 @@ namespace MvcPhoenix.Services
                                 where t.BulkID == bulkid
                                 select t).FirstOrDefault();
 
-                var pm = (from t in db.tblProductMaster
-                          where t.ProductMasterID == bulkitem.ProductMasterID
-                          select t).FirstOrDefault();
+                var productmaster = (from t in db.tblProductMaster
+                                     where t.ProductMasterID == bulkitem.ProductMasterID
+                                     select t).FirstOrDefault();
 
-                var productdetailid = OrderService.GetProductDetailId(pm.ProductMasterID);
-                var pd = db.tblProductDetail.Find(productdetailid);
+                var productdetailid = OrderService.GetProductDetailId(productmaster.ProductMasterID);
+                var productdetail = db.tblProductDetail.Find(productdetailid);
 
                 int newitemid = OrderService.fnNewItemID();
                 var newitem = (from t in db.tblOrderItem
@@ -1514,10 +1522,10 @@ namespace MvcPhoenix.Services
 
                 newitem.OrderID = orderid;
                 newitem.BulkID = bulkitem.BulkID;
-                newitem.ShelfID = OrderService.GetShelfId(pm.ProductMasterID, bulkitem.UM);
+                newitem.ShelfID = OrderService.GetShelfId(productmaster.ProductMasterID, bulkitem.UM);
                 newitem.ProductDetailID = productdetailid;
-                newitem.ProductCode = pm.MasterCode;
-                newitem.ProductName = pm.MasterName;
+                newitem.ProductCode = productmaster.MasterCode;
+                newitem.ProductName = productmaster.MasterName;
                 newitem.LotNumber = bulkitem.LotNumber;
                 newitem.Qty = 1;
                 newitem.Size = bulkitem.UM;
@@ -1528,12 +1536,12 @@ namespace MvcPhoenix.Services
                 newitem.AllocateStatus = "A";
                 newitem.AllocatedDate = DateTime.UtcNow;
                 newitem.Warehouse = bulkitem.Warehouse;
-                newitem.GrnUnNumber = pd.GRNUNNUMBER;
-                newitem.GrnPkGroup = pd.GRNPKGRP;
-                newitem.AirUnNumber = pd.AIRUNNUMBER;
-                newitem.AirPkGroup = pd.AIRPKGRP;
-                newitem.AlertNotesOrderEntry = pd.AlertNotesOrderEntry;
-                newitem.AlertNotesShipping = pd.AlertNotesShipping;
+                newitem.GrnUnNumber = productdetail.GRNUNNUMBER;
+                newitem.GrnPkGroup = productdetail.GRNPKGRP;
+                newitem.AirUnNumber = productdetail.AIRUNNUMBER;
+                newitem.AirPkGroup = productdetail.AIRPKGRP;
+                newitem.AlertNotesOrderEntry = productdetail.AlertNotesOrderEntry;
+                newitem.AlertNotesShipping = productdetail.AlertNotesShipping;
                 newitem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + bulkitem.UM + " with a current weight of " + bulkitem.CurrentWeight;
                 newitem.CreateDate = DateTime.UtcNow;
                 newitem.CreateUser = HttpContext.Current.User.Identity.Name;

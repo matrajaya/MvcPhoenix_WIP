@@ -1199,6 +1199,7 @@
           <Property Name="OrderTransID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SourceID" Type="int" />
           <Property Name="ClientID" Type="int" />
+          <Property Name="DivisionID" Type="int" />
           <Property Name="OrderID" Type="int" />
           <Property Name="OrderItemID" Type="int" />
           <Property Name="InvoiceID" Type="int" />
@@ -3859,6 +3860,7 @@
           <Property Name="OrderTransID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SourceID" Type="Int32" />
           <Property Name="ClientID" Type="Int32" />
+          <Property Name="DivisionID" Type="Int32" />
           <Property Name="OrderID" Type="Int32" />
           <Property Name="OrderItemID" Type="Int32" />
           <Property Name="InvoiceID" Type="Int32" />
@@ -5840,6 +5842,7 @@
                 <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
                 <ScalarProperty Name="OrderItemID" ColumnName="OrderItemID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="SourceID" ColumnName="SourceID" />
                 <ScalarProperty Name="OrderTransID" ColumnName="OrderTransID" />
