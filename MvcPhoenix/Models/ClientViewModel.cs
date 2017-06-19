@@ -47,6 +47,8 @@ namespace MvcPhoenix.Models
         public string ContactMSDSName { get; set; }
         public string ContactMSDSPhone { get; set; }
         public string EmergencyNumber { get; set; }
+        public string ERProvider { get; set; }
+        public string ERRegistrant { get; set; }
         public string UPSHazBook { get; set; }
         public string ExtMSDS { get; set; }
         public string ExtLabel { get; set; }

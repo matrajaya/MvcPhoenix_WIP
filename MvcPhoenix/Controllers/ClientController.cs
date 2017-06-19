@@ -165,6 +165,8 @@ namespace MvcPhoenix.Controllers
                                      ContactMSDSName = t.ContactMSDSName,
                                      ContactMSDSPhone = t.ContactMSDSPhone,
                                      EmergencyNumber = t.EmergencyNumber,
+                                     ERProvider = t.ERProvider,
+                                     ERRegistrant = t.ERRegistrant,
                                      UPSHazBook = t.UPSHazBook,
                                      ExtMSDS = t.ExtMSDS,
                                      ExtLabel = t.ExtLabel,
@@ -232,6 +234,8 @@ namespace MvcPhoenix.Controllers
                     q.DivisionName = obj.DivisionName;
                     q.BusinessUnit = obj.BusinessUnit;
                     q.EmergencyNumber = obj.EmergencyNumber;
+                    q.ERProvider = obj.ERProvider;
+                    q.ERRegistrant = obj.ERRegistrant;
                     q.Inactive = obj.Inactive;
                     q.MainContactName = obj.MainContactName;
                     q.MainContactNumber = obj.MainContactNumber;
@@ -270,6 +274,8 @@ namespace MvcPhoenix.Controllers
                         DivisionName = obj.DivisionName,
                         BusinessUnit = obj.BusinessUnit,
                         EmergencyNumber = obj.EmergencyNumber,
+                        ERProvider = obj.ERProvider,
+                        ERRegistrant = obj.ERRegistrant,
                         Inactive = obj.Inactive,
                         MainContactName = obj.MainContactName,
                         MainContactNumber = obj.MainContactNumber,
@@ -328,6 +334,14 @@ namespace MvcPhoenix.Controllers
             using (var db = new CMCSQL03Entities())
             {
                 var fileToRetrieve = db.tblDivision.Find(id);
+
+                if (fileToRetrieve.LogoFile == null)
+                {
+                    fileToRetrieve.LogoFile = (from client in db.tblClient
+                                               where client.ClientID == fileToRetrieve.ClientID
+                                               select client.LogoFile).FirstOrDefault();
+                }
+
                 return File(fileToRetrieve.LogoFile, "gif");
             }
         }

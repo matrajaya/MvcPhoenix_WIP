@@ -91,6 +91,16 @@
                             @Html.ValidationMessageFor(m => m.EmergencyNumber)
                         </div>
                         <div class="col-md-2 form-group">
+                            <label>Emergency Response Provider</label>
+                            @Html.TextBoxFor(m => m.ERProvider, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ERProvider)
+                        </div>
+                        <div class="col-md-2 form-group">
+                            <label>Emergency Response Registrant ID</label>
+                            @Html.TextBoxFor(m => m.ERRegistrant, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ERRegistrant)
+                        </div>
+                        <div class="col-md-2 form-group">
                             <label>Waste Rate - Off Spec</label>
                             @Html.TextBoxFor(m => m.WasteRateOffSpec, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.WasteRateOffSpec)
@@ -104,6 +114,8 @@
                             <label>UPS Haz Book</label>
                             @Html.TextBoxFor(m => m.UPSHazBook, new { @class = "form-control" })
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-2 form-group">
                             <label>Ext MSDS</label>
                             @Html.TextBoxFor(m => m.ExtMSDS, new { @class = "form-control" })
@@ -112,14 +124,12 @@
                             <label>Ext Label</label>
                             @Html.TextBoxFor(m => m.ExtLabel, new { @class = "form-control" })
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-3 form-group">
                             <label>Upload Logo</label>
                             <input type="file" name="logouploaddivision" accept="image/gif,image/jpeg" />
                             <em>upload .gif less than 100kb in size</em>
                         </div>
-                        <div class="col-md-3 form-group">
+                        <div class="col-md-5 form-group">
                             <label class="invisible">.</label>
                             <div style="border:solid 1px lightgrey;">
                                 <img src="~/Client/DivisionLogoFile?id=@Model.DivisionID" alt="@Model.DivisionName Logo" title="@Model.DivisionName Logo" style="width: auto; height: 50px;">

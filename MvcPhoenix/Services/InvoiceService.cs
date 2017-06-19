@@ -252,24 +252,21 @@ namespace MvcPhoenix.Models
             {
                 var getclient = db.tblClient.Find(client);
                 string period = startdate.ToString("MMMM") + ", " + startdate.Year;
-
                 int invoiceid = NewInvoiceID();
+
                 var obj = (from t in db.tblInvoice
                            where t.InvoiceID == invoiceid
                            select t).FirstOrDefault();
 
                 obj.InvoiceDate = DateTime.UtcNow;
                 obj.Status = "New";
-
                 obj.CreateDate = DateTime.UtcNow;
                 obj.CreatedBy = HttpContext.Current.User.Identity.Name;
                 obj.Status = "NEW";
                 obj.UpdateDate = obj.CreateDate;
                 obj.UpdatedBy = obj.CreatedBy;
-
                 obj.ClientID = getclient.ClientID;
                 obj.ClientName = getclient.ClientName;
-
                 obj.BillingGroup = billinggroup;                                    // division, business unit, enduse are available entries
                 obj.WarehouseLocation = getclient.CMCLocation;
                 obj.BillTo = getclient.InvoiceAddress;
@@ -582,7 +579,8 @@ namespace MvcPhoenix.Models
                                   && (t.ShipDate >= startdate && t.ShipDate <= enddate)
                                   select t).ToList();
 
-                sampleitemscount = orderitems.Count();
+                sampleitemscount = (from t in orderitems
+                                   select (t.Qty)).Sum();
 
                 // Get order transactions within date range.
                 var transactions = (from t in db.tblOrderTrans
@@ -593,7 +591,7 @@ namespace MvcPhoenix.Models
                 var samplechargetrans = transactions.Where(x => sampletranstypes.Contains(x.TransType)).ToList();
 
                 sumsamplecharges = (from t in samplechargetrans
-                                    select (t.TransAmount)).Sum();
+                                    select (t.TransQty * t.TransRate)).Sum();
 
                 // Bypass business rules within condition if 'ALL' is selected
                 if (billinggroup != "ALL")
@@ -611,9 +609,13 @@ namespace MvcPhoenix.Models
                                            where order.DivisionID == divisionid
                                            select orderitem).ToList();
 
-                        sampleitemscount = sampleitems.Count();
+                        sampleitemscount = (from t in sampleitems
+                                            select (t.Qty)).Sum();
 
-                        samplechargetrans = transactions.Where(x => sampletranstypes.Contains(x.TransType)).ToList(); // TODO: Add orderitem shipdate filter
+                        samplechargetrans = (from trans in transactions
+                                             join orderitem in orderitems on trans.OrderItemID equals orderitem.ItemID
+                                             where sampletranstypes.Contains(trans.TransType)
+                                             select trans).ToList();
 
                         sumsamplecharges = (from t in samplechargetrans
                                             select (t.TransAmount)).Sum();
@@ -641,7 +643,8 @@ namespace MvcPhoenix.Models
                                            where order.EndUse == enduse
                                            select orderitem).ToList();
 
-                        sampleitemscount = sampleitems.Count();
+                        sampleitemscount = (from t in sampleitems
+                                            select (t.Qty)).Sum();
 
                         samplechargetrans = transactions.Where(x => sampletranstypes.Contains(x.TransType)).ToList();
 

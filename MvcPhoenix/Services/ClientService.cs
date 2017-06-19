@@ -156,6 +156,8 @@ namespace MvcPhoenix.Services
                 division.ContactMSDSName = result.ContactMSDSName;
                 division.ContactMSDSPhone = result.ContactMSDSPhone;
                 division.EmergencyNumber = result.EmergencyNumber;
+                division.ERProvider = result.ERProvider;
+                division.ERRegistrant = result.ERRegistrant;
                 division.MainContactName = result.MainContactName;
                 division.MainContactNumber = result.MainContactNumber;
                 division.Abbr = result.Abbr;

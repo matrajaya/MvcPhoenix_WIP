@@ -162,7 +162,7 @@ namespace MvcPhoenix.Models
                     s = s + "<optgroup label='End Uses'>";
                     foreach (var item in enduses)
                     {
-                        s = s + "<option value=" + item.EndUse + ">" + item.EndUse + "</option>";
+                        s = s + "<option value='" + item.EndUse + "'>" + item.EndUse + "</option>";
                     }
                     s = s + "</optgroup>";
                 }

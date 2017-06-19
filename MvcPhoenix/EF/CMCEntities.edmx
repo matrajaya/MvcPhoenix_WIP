@@ -417,6 +417,8 @@
           <Property Name="ContactMSDSName" Type="nvarchar" MaxLength="50" />
           <Property Name="ContactMSDSPhone" Type="nvarchar" MaxLength="30" />
           <Property Name="EmergencyNumber" Type="nvarchar" MaxLength="15" />
+          <Property Name="ERProvider" Type="nvarchar" MaxLength="20" />
+          <Property Name="ERRegistrant" Type="nvarchar" MaxLength="20" />
           <Property Name="UPSHazBook" Type="nvarchar" MaxLength="12" />
           <Property Name="ExtMSDS" Type="nvarchar" MaxLength="6" />
           <Property Name="ExtLabel" Type="nvarchar" MaxLength="6" />
@@ -2383,6 +2385,8 @@
           <Property Name="ContactMSDSName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ContactMSDSPhone" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="EmergencyNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ERProvider" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ERRegistrant" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="UPSHazBook" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="ExtMSDS" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
           <Property Name="ExtLabel" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
@@ -4315,6 +4319,8 @@
                 <ScalarProperty Name="ExtLabel" ColumnName="ExtLabel" />
                 <ScalarProperty Name="ExtMSDS" ColumnName="ExtMSDS" />
                 <ScalarProperty Name="UPSHazBook" ColumnName="UPSHazBook" />
+                <ScalarProperty Name="ERRegistrant" ColumnName="ERRegistrant" />
+                <ScalarProperty Name="ERProvider" ColumnName="ERProvider" />
                 <ScalarProperty Name="EmergencyNumber" ColumnName="EmergencyNumber" />
                 <ScalarProperty Name="ContactMSDSPhone" ColumnName="ContactMSDSPhone" />
                 <ScalarProperty Name="ContactMSDSName" ColumnName="ContactMSDSName" />
