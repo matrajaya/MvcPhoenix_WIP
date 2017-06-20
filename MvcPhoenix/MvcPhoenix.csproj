@@ -967,6 +967,7 @@
     <Content Include="Views\Receiving\SelectProduct.cshtml" />
     <Content Include="Views\Receiving\SelectPrePack.cshtml" />
     <Content Include="Views\Client\_ServiceChargeRates.cshtml" />
+    <Content Include="Views\Inventory\_ShelfStockConvertToBulkModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

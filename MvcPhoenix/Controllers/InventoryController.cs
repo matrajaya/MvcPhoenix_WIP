@@ -114,6 +114,66 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Inventory/_ShelfStockModal.cshtml", vm);
         }
 
+        public ActionResult ShelfStockConvertToBulk(int shelfstockid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var shelfstock = db.tblStock.Find(shelfstockid);
+                ViewBag.StockItemId = shelfstock.StockID;
+                ViewBag.StockQty = shelfstock.QtyAvailable;
+
+                return PartialView("~/Views/Inventory/_ShelfStockConvertToBulkModal.cshtml");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ShelfStockConvertToBulk(int StockItemId, int stockquantity)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                try
+                {
+                    // Verify validity of shelfstockid and pull values
+                    var shelfstock = db.tblStock.Find(StockItemId);
+                    shelfstock.QtyAvailable = shelfstock.QtyAvailable - stockquantity;
+                    shelfstock.QtyOnHand = shelfstock.QtyOnHand - stockquantity;
+                    shelfstock.UpdateDate = DateTime.UtcNow;
+                    shelfstock.UpdateUser = HttpContext.User.Identity.Name;
+
+                    int? bulkid = shelfstock.BulkID;
+                    int? shelfid = shelfstock.ShelfID;
+
+                    var getunitweight = db.tblShelfMaster.Find(shelfid);
+                    decimal? unitweight = getunitweight.UnitWeight;
+
+                    // Verify bulk, calculate weight
+                    var bulkstock = db.tblBulk.Find(bulkid);
+                    decimal? shelfstockweight = stockquantity * unitweight;
+                    bulkstock.CurrentWeight = bulkstock.CurrentWeight + shelfstockweight;
+                    bulkstock.UpdateDate = DateTime.UtcNow;
+                    bulkstock.UpdateUser = HttpContext.User.Identity.Name;
+
+                    db.SaveChanges();
+
+                    // Write to inventory log
+                    InventoryLogNote obj = new InventoryLogNote();
+                    obj.productnoteid = -1;
+                    obj.productmasterid = bulkstock.ProductMasterID;
+                    obj.notes = String.Format("Converted ({0}) x {1} from shelf stock id: {2} to bulk stock id: {3}.",
+                                                stockquantity, getunitweight.Size, shelfstock.StockID, bulkstock.BulkID);
+                    obj.reasoncode = "Change Packaging";
+
+                    InventoryService.fnSaveInventoryLogNote(obj);
+
+                    return null;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
         public ActionResult CreatePrePackStock(int id) //id=productdetailid
         {
             using (var db = new CMCSQL03Entities())
@@ -361,7 +421,7 @@ namespace MvcPhoenix.Controllers
 
         [AllowAnonymous]
         public ActionResult PrintLabel()
-        {            
+        {
             return View();                                                      // Generate plain html label
         }
 
@@ -370,7 +430,7 @@ namespace MvcPhoenix.Controllers
         public void LabelPrint()
         {
             int pagecopies = 1;
-            //string printerName = @"AThermalZebraNet";                           
+            //string printerName = @"AThermalZebraNet";
             //string printerName = @"\\CMCNMPS2\RcvShelf";
             string printerName = @"\\cmcnmps2\ZebraIT";
 

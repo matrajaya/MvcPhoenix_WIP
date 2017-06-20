@@ -70,6 +70,21 @@
                             <span class="pull-right">
                                 @if (@row.QtyOnHand > 0)
                                 {
+                                    @Ajax.ActionLink(" ", "ShelfStockConvertToBulk", "Inventory", new { shelfstockid = @row.StockID }, new AjaxOptions
+                                    {
+                                        UpdateTargetId = "dialogPlaceholder",
+                                        InsertionMode = InsertionMode.Replace,
+                                        HttpMethod = "GET",
+                                        OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                                    }, new { @class = "btn btn-primary fa fa-cog", @title = "Convert To Bulk Stock" })
+                                }
+                                else
+                                {
+                                    @:&nbsp;
+                                } | 
+
+                                @if (@row.QtyOnHand > 0)
+                                {
                                     @Ajax.ActionLink(" ", "EditStock", "Inventory", new { id = @row.StockID }, new AjaxOptions
                                      {
                                          UpdateTargetId = "dialogPlaceholder",

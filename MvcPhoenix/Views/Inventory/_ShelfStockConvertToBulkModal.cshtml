@@ -1,0 +1,49 @@
+﻿<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Ajax.BeginForm("ShelfStockConvertToBulk", "Inventory", new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    UpdateTargetId = "dialogResult",
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "CloseUpdate"
+                }))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Convert Stock Item: @ViewBag.StockItemId</h4>
+                </div>
+
+                <div id="dialogPlaceholderBody" class="modal-body">
+                    <input type="hidden" id="StockItemId" name="StockItemId" value="@ViewBag.StockItemId" />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>How much quantity would you like to convert to bulk?</label>
+                            <input id="stockquantity" name="stockquantity" type="number" class="form-control" min="1" max="@ViewBag.StockQty" required />
+                            <p><em>Quantity Available: @ViewBag.StockQty</em></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function CloseUpdate() {
+        $('#dialogPlaceholderModal').modal('hide');
+        window.location.reload();
+    }
+
+    $(function () {
+        $(".date-picker").datepicker({ dateFormat: 'dd-M-yy' });
+    });
+</script>
