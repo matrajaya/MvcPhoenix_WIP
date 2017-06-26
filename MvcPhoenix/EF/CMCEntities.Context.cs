@@ -25,6 +25,7 @@ namespace MvcPhoenix.EF
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<tblBulk> tblBulk { get; set; }
         public virtual DbSet<tblBulkOrder> tblBulkOrder { get; set; }
         public virtual DbSet<tblBulkOrderItem> tblBulkOrderItem { get; set; }
         public virtual DbSet<tblBulkSupplier> tblBulkSupplier { get; set; }
@@ -35,8 +36,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblClient> tblClient { get; set; }
         public virtual DbSet<tblClientContact> tblClientContact { get; set; }
         public virtual DbSet<tblCountry> tblCountry { get; set; }
-        public virtual DbSet<tblCustomer> tblCustomer { get; set; }
-        public virtual DbSet<tblDhRate> tblDhRate { get; set; }
         public virtual DbSet<tblDivision> tblDivision { get; set; }
         public virtual DbSet<tblEndUse> tblEndUse { get; set; }
         public virtual DbSet<tblEndUseForCustoms> tblEndUseForCustoms { get; set; }
@@ -45,13 +44,13 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblGHSPHSource> tblGHSPHSource { get; set; }
         public virtual DbSet<tblHSCode> tblHSCode { get; set; }
         public virtual DbSet<tblInvLog> tblInvLog { get; set; }
-        public virtual DbSet<tblInvLogType> tblInvLogType { get; set; }
+        public virtual DbSet<tblInvoice> tblInvoice { get; set; }
         public virtual DbSet<tblInvoiceDetail> tblInvoiceDetail { get; set; }
         public virtual DbSet<tblInvoiceMaster> tblInvoiceMaster { get; set; }
         public virtual DbSet<tblInvPMLogNote> tblInvPMLogNote { get; set; }
         public virtual DbSet<tblOrderImport> tblOrderImport { get; set; }
         public virtual DbSet<tblOrderSPSBilling> tblOrderSPSBilling { get; set; }
-        public virtual DbSet<tblOrderType> tblOrderType { get; set; }
+        public virtual DbSet<tblOrderTrans> tblOrderTrans { get; set; }
         public virtual DbSet<tblPackage> tblPackage { get; set; }
         public virtual DbSet<tblPackageType> tblPackageType { get; set; }
         public virtual DbSet<tblPPPDLogNote> tblPPPDLogNote { get; set; }
@@ -61,25 +60,22 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblProductionDetail> tblProductionDetail { get; set; }
         public virtual DbSet<tblProductionMaster> tblProductionMaster { get; set; }
         public virtual DbSet<tblProductionStage> tblProductionStage { get; set; }
+        public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblProductXRef> tblProductXRef { get; set; }
+        public virtual DbSet<tblRates> tblRates { get; set; }
         public virtual DbSet<tblReasonCode> tblReasonCode { get; set; }
         public virtual DbSet<tblReportCriteria> tblReportCriteria { get; set; }
         public virtual DbSet<tblShelfMaster> tblShelfMaster { get; set; }
         public virtual DbSet<tblState> tblState { get; set; }
         public virtual DbSet<tblStatusNotes> tblStatusNotes { get; set; }
+        public virtual DbSet<tblStock> tblStock { get; set; }
         public virtual DbSet<tblSuggestedBulk> tblSuggestedBulk { get; set; }
+        public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
         public virtual DbSet<tblTier> tblTier { get; set; }
         public virtual DbSet<tblUN> tblUN { get; set; }
-        public virtual DbSet<tblUser> tblUser { get; set; }
         public virtual DbSet<tblWasteCode> tblWasteCode { get; set; }
-        public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
-        public virtual DbSet<tblBulk> tblBulk { get; set; }
-        public virtual DbSet<tblStock> tblStock { get; set; }
-        public virtual DbSet<tblProductMaster> tblProductMaster { get; set; }
         public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
-        public virtual DbSet<tblInvoice> tblInvoice { get; set; }
-        public virtual DbSet<tblSurcharge> tblSurcharge { get; set; }
-        public virtual DbSet<tblOrderTrans> tblOrderTrans { get; set; }
-        public virtual DbSet<tblRates> tblRates { get; set; }
+        public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
+        public virtual DbSet<tblShipTrans> tblShipTrans { get; set; }
     }
 }

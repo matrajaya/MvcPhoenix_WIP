@@ -1228,26 +1228,7 @@ namespace MvcPhoenix.Models
                 return result;
             }
         }
-
-        public static List<SelectListItem> ddlUsers()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                List<SelectListItem> result = new List<SelectListItem>();
-
-                result = (from t in db.tblUser
-                          orderby t.UserName
-                          select new SelectListItem
-                          {
-                              Value = t.UserID.ToString(),
-                              Text = t.UserName
-                          }).ToList();
-                result.Insert(0, new SelectListItem { Value = "", Text = "" });
-
-                return result;
-            }
-        }
-
+        
         #endregion SelectListItem Objects
 
         public static void EmailSmtpSend(string from, string to, string subject, string body)

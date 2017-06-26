@@ -103,10 +103,17 @@ namespace MvcPhoenix.EF
         public Nullable<bool> IsSDN { get; set; }
         public Nullable<bool> IsSDNOverride { get; set; }
         public Nullable<int> CeaseShipOffset { get; set; }
+        public string RefNum { get; set; }
+        public string PONumber { get; set; }
+        public string Misc1 { get; set; }
+        public string Misc2 { get; set; }
+        public string ApprovedBy { get; set; }
+        public Nullable<System.DateTime> ApprovedByDate { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateUser { get; set; }
         public Nullable<int> LegacyID { get; set; }
+        public byte[] TS { get; set; }
     }
 }

@@ -50,6 +50,7 @@ namespace MvcPhoenix.EF
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public string UpdateUser { get; set; }
+        public byte[] TS { get; set; }
         public Nullable<int> LegacyID { get; set; }
         public string LogRecordStatus_MDB { get; set; }
         public string Company_MDB { get; set; }

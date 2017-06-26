@@ -113,6 +113,7 @@ namespace MvcPhoenix.EF
         public Nullable<int> CSRNumber { get; set; }
         public string CSRName { get; set; }
         public string IC { get; set; }
+        public byte[] TS { get; set; }
         public string MDB_CMCBE { get; set; }
         public string MDB_INV { get; set; }
         public string MDB_CS { get; set; }

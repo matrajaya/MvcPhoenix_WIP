@@ -88,5 +88,7 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> FrtSurcharge_MDB { get; set; }
         public Nullable<decimal> DH_MDB { get; set; }
         public Nullable<decimal> Other_MDB { get; set; }
+        public string MigrationNote { get; set; }
+        public byte[] TS { get; set; }
     }
 }

@@ -336,12 +336,6 @@
     <Compile Include="EF\tblCountry.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\tblCustomer.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblDhRate.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\tblDivision.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -364,9 +358,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblInvLog.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblInvLogType.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblInvoice.cs">
@@ -394,9 +385,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblOrderTrans.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblOrderType.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblPackage.cs">
@@ -444,6 +432,9 @@
     <Compile Include="EF\tblShelfMaster.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblShipTrans.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblState.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -463,9 +454,6 @@
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblUN.cs">
-      <DependentUpon>CMCEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\tblUser.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\tblWasteCode.cs">

@@ -19,5 +19,6 @@ namespace MvcPhoenix.EF
         public string CarrierName { get; set; }
         public Nullable<int> ServiceLevel { get; set; }
         public string CMCLocation { get; set; }
+        public byte[] TS { get; set; }
     }
 }
