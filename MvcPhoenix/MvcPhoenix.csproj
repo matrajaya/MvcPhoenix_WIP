@@ -330,6 +330,9 @@
     <Compile Include="EF\tblClient.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\tblClientAccountRep.cs">
+      <DependentUpon>CMCEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\tblClientContact.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
@@ -956,6 +959,7 @@
     <Content Include="Views\Receiving\SelectPrePack.cshtml" />
     <Content Include="Views\Client\_ServiceChargeRates.cshtml" />
     <Content Include="Views\Inventory\_ShelfStockConvertToBulkModal.cshtml" />
+    <Content Include="Views\Client\_AccountReps.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

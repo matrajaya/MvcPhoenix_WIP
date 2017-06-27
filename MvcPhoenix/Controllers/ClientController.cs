@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.EF;
+﻿using MvcPhoenix.DataLayer;
+using MvcPhoenix.EF;
 using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using PagedList;
@@ -867,57 +868,57 @@ namespace MvcPhoenix.Controllers
                 ViewBag.ClientKey = id;
 
                 var servicechargerates = (from t in db.tblRates
-                                           where t.ClientID == id
-                                           select new MvcPhoenix.Models.ServiceChargeRates
-                                           {
-                                               RatesID = t.RatesID,
-                                               ClientID = t.ClientID,
-                                               AirHazardOnly = t.AirHazardOnly,
-                                               CertificateOfOrigin = t.CertificateOfOrigin,
-                                               CMCPack = t.CMCPack,
-                                               CoolPack = t.CoolPack,
-                                               CreditCardFee = t.CreditCardFee,
-                                               CreditCardOrder = t.CreditCardOrder,
-                                               DocumentHandling = t.DocumentHandling,
-                                               EmptyPackaging = t.EmptyPackaging,
-                                               ExternalSystem = t.ExternalSystem,
-                                               FollowUpOrder = t.FollowUpOrder,
-                                               FreezerPack = t.FreezerPack,
-                                               GHSLabels = t.GHSLabels,
-                                               InactiveProducts = t.InactiveProducts,
-                                               Isolation = t.Isolation,
-                                               IsolationBox = t.IsolationBox,
-                                               ITFee = t.ITFee,
-                                               LabelMaintainance = t.LabelMaintainance,
-                                               LabelStock = t.LabelStock,
-                                               LabelsPrinted = t.LabelsPrinted,
-                                               LaborRelabel = t.LaborRelabel,
-                                               LiteratureFee = t.LiteratureFee,
-                                               LimitedQuantity = t.LimitedQuantity,
-                                               ManualHandling = t.ManualHandling,
-                                               MSDSPrints = t.MSDSPrints,
-                                               NewLabelSetup = t.NewLabelSetup,
-                                               NewProductSetup = t.NewProductSetup,
-                                               OberkPack = t.OberkPack,
-                                               OrderEntry = t.OrderEntry,
-                                               OverPack = t.OverPack,
-                                               PalletReturn = t.PalletReturn,
-                                               PoisonPack = t.PoisonPack,
-                                               ProductSetupChanges = t.ProductSetupChanges,
-                                               QCStorage = t.QCStorage,
-                                               RDHandlingADR = t.RDHandlingADR,
-                                               RDHandlingIATA = t.RDHandlingIATA,
-                                               RDHandlingLQ = t.RDHandlingLQ,
-                                               RDHandlingNonHazard = t.RDHandlingNonHazard,
-                                               RefrigeratorStorage = t.RefrigeratorStorage,
-                                               Relabels = t.Relabels,
-                                               RushShipment = t.RushShipment,
-                                               SPA197Applied = t.SPA197Applied,
-                                               SPSPaidOrder = t.SPSPaidOrder,
-                                               UNBox = t.UNBox,
-                                               WarehouseStorage = t.WarehouseStorage,
-                                               WHMISLabels = t.WHMISLabels,
-                                           }).FirstOrDefault();
+                                          where t.ClientID == id
+                                          select new MvcPhoenix.Models.ServiceChargeRates
+                                          {
+                                              RatesID = t.RatesID,
+                                              ClientID = t.ClientID,
+                                              AirHazardOnly = t.AirHazardOnly,
+                                              CertificateOfOrigin = t.CertificateOfOrigin,
+                                              CMCPack = t.CMCPack,
+                                              CoolPack = t.CoolPack,
+                                              CreditCardFee = t.CreditCardFee,
+                                              CreditCardOrder = t.CreditCardOrder,
+                                              DocumentHandling = t.DocumentHandling,
+                                              EmptyPackaging = t.EmptyPackaging,
+                                              ExternalSystem = t.ExternalSystem,
+                                              FollowUpOrder = t.FollowUpOrder,
+                                              FreezerPack = t.FreezerPack,
+                                              GHSLabels = t.GHSLabels,
+                                              InactiveProducts = t.InactiveProducts,
+                                              Isolation = t.Isolation,
+                                              IsolationBox = t.IsolationBox,
+                                              ITFee = t.ITFee,
+                                              LabelMaintainance = t.LabelMaintainance,
+                                              LabelStock = t.LabelStock,
+                                              LabelsPrinted = t.LabelsPrinted,
+                                              LaborRelabel = t.LaborRelabel,
+                                              LiteratureFee = t.LiteratureFee,
+                                              LimitedQuantity = t.LimitedQuantity,
+                                              ManualHandling = t.ManualHandling,
+                                              MSDSPrints = t.MSDSPrints,
+                                              NewLabelSetup = t.NewLabelSetup,
+                                              NewProductSetup = t.NewProductSetup,
+                                              OberkPack = t.OberkPack,
+                                              OrderEntry = t.OrderEntry,
+                                              OverPack = t.OverPack,
+                                              PalletReturn = t.PalletReturn,
+                                              PoisonPack = t.PoisonPack,
+                                              ProductSetupChanges = t.ProductSetupChanges,
+                                              QCStorage = t.QCStorage,
+                                              RDHandlingADR = t.RDHandlingADR,
+                                              RDHandlingIATA = t.RDHandlingIATA,
+                                              RDHandlingLQ = t.RDHandlingLQ,
+                                              RDHandlingNonHazard = t.RDHandlingNonHazard,
+                                              RefrigeratorStorage = t.RefrigeratorStorage,
+                                              Relabels = t.Relabels,
+                                              RushShipment = t.RushShipment,
+                                              SPA197Applied = t.SPA197Applied,
+                                              SPSPaidOrder = t.SPSPaidOrder,
+                                              UNBox = t.UNBox,
+                                              WarehouseStorage = t.WarehouseStorage,
+                                              WHMISLabels = t.WHMISLabels,
+                                          }).FirstOrDefault();
 
                 if (servicechargerates != null)
                 {
@@ -1058,5 +1059,97 @@ namespace MvcPhoenix.Controllers
         }
 
         #endregion Administrative Rates methods
+
+        #region Client Account Representatives
+
+        public ActionResult ListAccountRReps(int clientid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                ViewBag.ClientKey = clientid;
+                var obj = (from t in db.tblClientAccountRep
+                           where t.ClientID == clientid
+                           select new MvcPhoenix.Models.AccountRep
+                           {
+                               AccountRepID = t.AccountRepID,
+                               ClientID = t.ClientID,
+                               AccountRepUserID = t.AccountRepUserID,
+                               AccountRepName = t.AccountRepName,
+                               AccountRepEmail = t.AccountRepEmail
+                           }).ToList();
+
+                if (obj.Count > 0)
+                {
+                    return PartialView("~/Views/Client/_AccountReps.cshtml", obj);
+                }
+
+                return null;
+            }
+        }
+
+        public ActionResult AddAccountRep(string accountrepemail, int clientid)
+        {
+            string repuserid = "";
+            string repuserfullname = "";
+
+            try
+            {
+                using (var auth = new ApplicationDbContext())
+                {
+                    var getUser = (from t in auth.Users
+                                   where t.Email == accountrepemail
+                                   select t).FirstOrDefault();
+
+                    repuserid = getUser.Id;
+                    repuserfullname = getUser.FirstName + " " + getUser.LastName;
+                }
+
+                using (var db = new CMCSQL03Entities())
+                {
+                    // check if user was assigned already
+                    bool isUserExists = db.tblClientAccountRep.Any(c => c.ClientID == clientid
+                                                                    && c.AccountRepUserID == repuserid);
+
+                    if (isUserExists == false)
+                    {
+                        var newrow = new tblClientAccountRep { };
+                        newrow.ClientID = Convert.ToInt32(clientid);
+                        newrow.AccountRepUserID = repuserid;
+                        newrow.AccountRepName = repuserfullname;
+                        newrow.AccountRepEmail = accountrepemail;
+
+                        db.tblClientAccountRep.Add(newrow);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+            return RedirectToAction("ListEndUses", new { clientid = clientid });
+        }
+
+        public ActionResult DeleteAccountRep(string accountrepemail, int clientid)
+        {
+            int accountrepid = 0;
+            using (var db = new CMCSQL03Entities())
+            {
+                int getrepid = (from t in db.tblClientAccountRep
+                                where t.ClientID == clientid
+                                && t.AccountRepEmail == accountrepemail
+                                select t.AccountRepID).FirstOrDefault();
+
+                accountrepid = getrepid;
+
+                string s = @"DELETE FROM tblClientAccountRep WHERE AccountRepID=" + accountrepid.ToString();
+                db.Database.ExecuteSqlCommand(s);
+            }
+
+            return RedirectToAction("ListAccountRReps", new { clientid = clientid });
+        }
+
+        #endregion Client Account Representatives
     }
 }

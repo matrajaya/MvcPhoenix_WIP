@@ -1,0 +1,52 @@
+﻿@model List<MvcPhoenix.Models.AccountRep>
+@using MvcPhoenix.Extensions;
+
+@{
+    ViewBag.Title = "Account Representatives";
+    Layout = null;
+}
+
+<div id="accountRepsList">
+    <ul class="list-unstyled list-3-col">
+        @foreach (var item in Model)
+        {
+            <li>
+                @Ajax.ActionLink(" ", "DeleteAccountRep", new { accountrepemail = item.AccountRepEmail, clientid = item.ClientID }, new AjaxOptions
+                    {
+                        Confirm = "Are you sure you want to delete this account representative?",
+                        HttpMethod = "POST",
+                        UpdateTargetId = "accountRepsList",
+                        OnSuccess = "$.alert('Account Representative Deleted')",
+                        InsertionMode = InsertionMode.Replace
+                    }, new { @class = "fa fa-fw fa-times-circle", @style = "color:red", @title = "Delete Account Representative", @id="hideeditbutton" })
+                @item.AccountRepName - @item.AccountRepEmail
+            </li>
+        }
+    </ul>
+</div>
+
+<script>
+    $("#addaccountrep").click(function () {
+        addAccountRep();
+        updateAccountRepList();
+    });
+
+    function addAccountRep() {
+        var emailSelection = $("#AccountRepEmail").val();
+        var clientId = @ViewBag.ClientKey;
+
+        if (emailSelection.length > 1) {
+            $.ajax({
+                url: "/Client/AddAccountRep",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ accountrepemail: emailSelection, clientid: clientId })
+            });
+        }
+    }
+
+    function updateAccountRepList() {
+        $("#accountRepsList").load('@Url.Action("ListAccountRReps", "Client", new { clientid = @ViewBag.ClientKey })');
+        $("#AccountRepEmail").val("");
+    }
+</script>

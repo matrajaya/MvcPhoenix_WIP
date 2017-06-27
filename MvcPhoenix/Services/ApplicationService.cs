@@ -1,4 +1,5 @@
-﻿using MvcPhoenix.EF;
+﻿using MvcPhoenix.DataLayer;
+using MvcPhoenix.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -136,9 +137,9 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 var divisionid = (from t in db.tblDivision
-                                    where t.ClientID == clientid
-                                    orderby t.DivisionName
-                                    select t);
+                                  where t.ClientID == clientid
+                                  orderby t.DivisionName
+                                  select t);
 
                 var enduses = (from t in db.tblEndUse
                                where t.ClientID == clientid
@@ -1228,7 +1229,27 @@ namespace MvcPhoenix.Models
                 return result;
             }
         }
-        
+
+        public static List<SelectListItem> ddlUsers()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+
+                result = (from t in db.Users
+                          orderby t.FirstName
+                          select new SelectListItem
+                          {
+                              Value = t.Email,
+                              Text = t.FirstName + " " + t.LastName
+                          }).ToList();
+
+                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+
+                return result;
+            }
+        }
+
         #endregion SelectListItem Objects
 
         public static void EmailSmtpSend(string from, string to, string subject, string body)

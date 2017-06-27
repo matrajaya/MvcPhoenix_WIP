@@ -193,4 +193,13 @@ namespace MvcPhoenix.Models
         public decimal? WarehouseStorage { get; set; }
         public decimal? WHMISLabels { get; set; }
     }
+
+    public class AccountRep
+    {
+        public int AccountRepID { get; set; }
+        public int ClientID { get; set; }
+        public string AccountRepUserID { get; set; }
+        public string AccountRepName { get; set; }
+        public string AccountRepEmail { get; set; }
+    }
 }

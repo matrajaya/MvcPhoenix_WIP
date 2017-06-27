@@ -77,5 +77,6 @@ namespace MvcPhoenix.EF
         public virtual DbSet<tblOrderMaster> tblOrderMaster { get; set; }
         public virtual DbSet<tblOrderItem> tblOrderItem { get; set; }
         public virtual DbSet<tblShipTrans> tblShipTrans { get; set; }
+        public virtual DbSet<tblClientAccountRep> tblClientAccountRep { get; set; }
     }
 }

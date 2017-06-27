@@ -332,6 +332,16 @@
           <Property Name="MDB_CS" Type="nvarchar" MaxLength="255" />
           <Property Name="MDB_PACKPROCBE" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="tblClientAccountRep">
+          <Key>
+            <PropertyRef Name="AccountRepID" />
+          </Key>
+          <Property Name="AccountRepID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="AccountRepUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="AccountRepName" Type="nvarchar" MaxLength="256" />
+          <Property Name="AccountRepEmail" Type="nvarchar" MaxLength="256" />
+        </EntityType>
         <EntityType Name="tblClientContact">
           <Key>
             <PropertyRef Name="ClientContactID" />
@@ -385,8 +395,6 @@
           <Property Name="ContactMSDSName" Type="nvarchar" MaxLength="50" />
           <Property Name="ContactMSDSPhone" Type="nvarchar" MaxLength="30" />
           <Property Name="EmergencyNumber" Type="nvarchar" MaxLength="15" />
-          <Property Name="ERProvider" Type="nvarchar" MaxLength="20" />
-          <Property Name="ERRegistrant" Type="nvarchar" MaxLength="20" />
           <Property Name="UPSHazBook" Type="nvarchar" MaxLength="12" />
           <Property Name="ExtMSDS" Type="nvarchar" MaxLength="6" />
           <Property Name="ExtLabel" Type="nvarchar" MaxLength="6" />
@@ -408,6 +416,8 @@
           <Property Name="CompanyLogo2" Type="nvarchar" MaxLength="50" />
           <Property Name="LogoFile" Type="varbinary(max)" />
           <Property Name="IncludeExpDtOnLabel" Type="bit" />
+          <Property Name="ERProvider" Type="nvarchar" MaxLength="20" />
+          <Property Name="ERRegistrant" Type="nvarchar" MaxLength="20" />
           <Property Name="LegacyID" Type="int" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
@@ -971,7 +981,6 @@
           <Property Name="NonCMCDelay" Type="bit" />
           <Property Name="DelayReason" Type="nvarchar" MaxLength="50" />
           <Property Name="BackOrdered" Type="bit" />
-          <Property Name="RDTransfer" Type="bit" />
           <Property Name="Status" Type="nvarchar" MaxLength="1000" />
           <Property Name="AllocateStatus" Type="nvarchar" MaxLength="1" />
           <Property Name="CSAllocate" Type="bit" />
@@ -1002,6 +1011,7 @@
           <Property Name="AlertNotesPackout" Type="nvarchar" MaxLength="1000" />
           <Property Name="AlertNotesOrderEntry" Type="nvarchar" MaxLength="1000" />
           <Property Name="AlertNotesOther" Type="nvarchar" MaxLength="1000" />
+          <Property Name="RDTransfer" Type="bit" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -1887,6 +1897,7 @@
           <EntitySet Name="tblCAS" EntityType="Self.tblCAS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCeaseShipOffSet" EntityType="Self.tblCeaseShipOffSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClient" EntityType="Self.tblClient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblClientAccountRep" EntityType="Self.tblClientAccountRep" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblClientContact" EntityType="Self.tblClientContact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCountry" EntityType="Self.tblCountry" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblDivision" EntityType="Self.tblDivision" Schema="dbo" store:Type="Tables" />
@@ -1988,6 +1999,7 @@
           <EntitySet Name="tblOrderMaster" EntityType="CMCSQL03Model.tblOrderMaster" />
           <EntitySet Name="tblOrderItem" EntityType="CMCSQL03Model.tblOrderItem" />
           <EntitySet Name="tblShipTrans" EntityType="CMCSQL03Model.tblShipTrans" />
+          <EntitySet Name="tblClientAccountRep" EntityType="CMCSQL03Model.tblClientAccountRep" />
         </EntityContainer>
         <EntityType Name="tblBulk">
           <Key>
@@ -3860,6 +3872,16 @@
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblClientAccountRep">
+          <Key>
+            <PropertyRef Name="AccountRepID" />
+          </Key>
+          <Property Name="AccountRepID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="AccountRepUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AccountRepName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="AccountRepEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5788,6 +5810,17 @@
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="SourceID" ColumnName="SourceID" />
                 <ScalarProperty Name="ShipTransID" ColumnName="ShipTransID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblClientAccountRep">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblClientAccountRep">
+              <MappingFragment StoreEntitySet="tblClientAccountRep">
+                <ScalarProperty Name="AccountRepEmail" ColumnName="AccountRepEmail" />
+                <ScalarProperty Name="AccountRepName" ColumnName="AccountRepName" />
+                <ScalarProperty Name="AccountRepUserID" ColumnName="AccountRepUserID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="AccountRepID" ColumnName="AccountRepID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
