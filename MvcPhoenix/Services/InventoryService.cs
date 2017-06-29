@@ -333,6 +333,24 @@ namespace MvcPhoenix.Services
             }
         }
 
+        public static int? GetProductMasterId(int id)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                int? masterid = 0;
+                var getmasterid = (from t in db.tblProductDetail
+                                where t.ProductDetailID == id
+                                select t.ProductMasterID).FirstOrDefault();
+                
+                if (getmasterid != null)
+                {
+                    masterid = getmasterid;
+                }
+
+                return masterid;
+            }
+        }
+
         #region Inventory Product Master Log Notes
 
         public static List<InventoryLogNote> ListInvPMLogNotes(int? masterid)

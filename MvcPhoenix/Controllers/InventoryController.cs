@@ -135,6 +135,12 @@ namespace MvcPhoenix.Controllers
                 {
                     // Verify validity of shelfstockid and pull values
                     var shelfstock = db.tblStock.Find(StockItemId);
+                    
+                    if (shelfstock.QtyAvailable < stockquantity || shelfstock.QtyAvailable < 1 || shelfstock.QtyAvailable == null)
+                    {
+                        return null;
+                    }
+                    
                     shelfstock.QtyAvailable = shelfstock.QtyAvailable - stockquantity;
                     shelfstock.QtyOnHand = shelfstock.QtyOnHand - stockquantity;
                     shelfstock.UpdateDate = DateTime.UtcNow;
@@ -148,6 +154,12 @@ namespace MvcPhoenix.Controllers
 
                     // Verify bulk, calculate weight
                     var bulkstock = db.tblBulk.Find(bulkid);
+                    if (bulkstock.BulkStatus == "Virtual" || bulkstock.BulkStatus == "BF")
+                    {
+                        bulkstock.Bin = shelfstock.Bin;
+                        bulkstock.BulkStatus = shelfstock.ShelfStatus;
+                    }
+
                     decimal? shelfstockweight = stockquantity * unitweight;
                     bulkstock.CurrentWeight = bulkstock.CurrentWeight + shelfstockweight;
                     bulkstock.UpdateDate = DateTime.UtcNow;
@@ -329,23 +341,11 @@ namespace MvcPhoenix.Controllers
         {
             //id comes in as detail key
             //find master id equiv
-            var masterid = GetProductMasterId(id);
+            int? masterid = InventoryService.GetProductMasterId(id);
             var obj = InventoryService.ListInvPMLogNotes(masterid);
             ViewBag.ParentKey = id;
 
             return PartialView("~/Views/Inventory/_InventoryLogNotes.cshtml", obj);
-        }
-
-        private int? GetProductMasterId(int id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var masterid = (from t in db.tblProductDetail
-                                where t.ProductDetailID == id
-                                select t.ProductMasterID).FirstOrDefault();
-
-                return masterid;
-            }
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CreateInventoryLogNote(int id)
         {
-            var masterid = Convert.ToInt32(GetProductMasterId(id));
+            var masterid = Convert.ToInt32(InventoryService.GetProductMasterId(id));
             var obj = InventoryService.fnCreateInventoryLogNote(masterid);
 
             return PartialView("~/Views/Inventory/_InventoryLogNotesModal.cshtml", obj);
