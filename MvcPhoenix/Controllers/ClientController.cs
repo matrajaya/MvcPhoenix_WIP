@@ -1078,12 +1078,7 @@ namespace MvcPhoenix.Controllers
                                AccountRepEmail = t.AccountRepEmail
                            }).ToList();
 
-                if (obj.Count > 0)
-                {
-                    return PartialView("~/Views/Client/_AccountReps.cshtml", obj);
-                }
-
-                return null;
+                return PartialView("~/Views/Client/_AccountReps.cshtml", obj);
             }
         }
 

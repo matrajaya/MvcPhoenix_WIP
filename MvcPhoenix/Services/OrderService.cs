@@ -640,7 +640,7 @@ namespace MvcPhoenix.Services
                 if (isNewItem)
                 {
                     fnGenerateOrderTransactions(vm.ItemID);         // Go do the Order Trans work....
-                }                
+                }
 
                 return vm.ItemID;
             }
@@ -1735,6 +1735,47 @@ namespace MvcPhoenix.Services
         #endregion SPS Billing Methods
 
         #region List Methods
+
+        public static List<OrderMasterFull> OpenOrdersAssignedByClient()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
+                orderslist = OrderService.fnOrdersSearchResults();
+
+                // Get list of order ids for orders not shipped.
+                var unshippedorders = (from i in db.tblOrderItem
+                                       where i.ShipDate == null
+                                       && i.Qty > 0
+                                       select i).ToList();
+
+                unshippedorders = unshippedorders.GroupBy(x => x.OrderID)
+                                                 .Select(g => g.First()).ToList();
+
+                // Get list of open orders.
+                orderslist = (from t in orderslist
+                              join u in unshippedorders on t.orderid equals u.OrderID
+                              join c in db.tblClientAccountRep on t.clientid equals c.ClientID
+                              where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
+                              orderby t.orderdate descending
+                              select t).ToList();
+                
+                // Display all clients in EU if user has no client assignments. 
+                // Since CMCEU does not have specific csr assignments for clients.
+                if (orderslist.Count() == 0)
+                {
+                    orderslist = OrderService.fnOrdersSearchResults();
+                    orderslist = (from t in orderslist
+                                  join u in unshippedorders on t.orderid equals u.OrderID
+                                  join c in db.tblClient on t.clientid equals c.ClientID
+                                  where c.CMCLocation == "EU"
+                                  orderby t.orderdate descending
+                                  select t).ToList();
+                }
+
+                return orderslist;
+            }
+        }
 
         public static List<OrderMasterFull> fnOrdersSearchResults()
         {

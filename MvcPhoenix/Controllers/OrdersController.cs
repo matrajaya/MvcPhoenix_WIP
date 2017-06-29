@@ -15,13 +15,11 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Index()
         {
-            var orderslist = OrderService.fnOrdersSearchResults();
+            // Show open orders.
+            // Show client open orders if user is assigned.
+            var orderslist = OrderService.OpenOrdersAssignedByClient();
 
-            orderslist = (from t in orderslist
-                          orderby t.orderdate descending
-                          select t).Take(20).ToList();  // refine for here
-
-            TempData["SearchResultsMessage"] = "Last 20 Orders";
+            TempData["SearchResultsMessage"] = "Assigned Open Orders";
 
             return View("~/Views/Orders/Index.cshtml", orderslist);
         }
