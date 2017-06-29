@@ -1062,7 +1062,7 @@ namespace MvcPhoenix.Controllers
 
         #region Client Account Representatives
 
-        public ActionResult ListAccountRReps(int clientid)
+        public ActionResult ListAccountReps(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -1123,7 +1123,7 @@ namespace MvcPhoenix.Controllers
                 return null;
             }
 
-            return RedirectToAction("ListEndUses", new { clientid = clientid });
+            return RedirectToAction("ListAccountReps", new { clientid = clientid });
         }
 
         public ActionResult DeleteAccountRep(string accountrepemail, int clientid)
@@ -1142,7 +1142,7 @@ namespace MvcPhoenix.Controllers
                 db.Database.ExecuteSqlCommand(s);
             }
 
-            return RedirectToAction("ListAccountRReps", new { clientid = clientid });
+            return RedirectToAction("ListAccountReps", new { clientid = clientid });
         }
 
         #endregion Client Account Representatives

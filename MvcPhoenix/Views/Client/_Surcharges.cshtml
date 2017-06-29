@@ -17,67 +17,64 @@
     @Html.HiddenFor(m => m.SurchargeID)
     @Html.HiddenFor(m => m.ClientID)
     <div class="row">
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Hazard</label>
             @Html.TextBoxFor(m => m.Haz, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Haz)
         </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Flammable</label>
             @Html.TextBoxFor(m => m.Flam, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Flam)
         </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Clean Room</label>
             @Html.TextBoxFor(m => m.Clean, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Clean)
         </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Heat</label>
             @Html.TextBoxFor(m => m.Heat, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Heat)
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Refrigerate</label>
             @Html.TextBoxFor(m => m.Refrig, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Refrig)
         </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Freezer</label>
             @Html.TextBoxFor(m => m.Freezer, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Freezer)
         </div>
-        <div class="col-md-3 form-group">
+    </div>
+    <div class="row">
+        <div class="col-md-2 form-group">
             <label>Nalgene</label>
             @Html.TextBoxFor(m => m.Nalgene, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Nalgene)
         </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Nitrogen</label>
             @Html.TextBoxFor(m => m.Nitrogen, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Nitrogen)
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Biocide</label>
             @Html.TextBoxFor(m => m.Biocide, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Biocide)
         </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Blend</label>
             @Html.TextBoxFor(m => m.Blend, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Blend)
         </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-2 form-group">
             <label>Kosher</label>
             @Html.TextBoxFor(m => m.Kosher, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Kosher)
         </div>
-        <div id="hideeditbutton" class="col-md-3 pull-right form-group">
+        <div id="hideeditbutton" class="col-md-2 pull-right form-group">
             <label class="invisible">.</label>
             <button type="submit" class="btn btn-block btn-success">
                 Save Changes

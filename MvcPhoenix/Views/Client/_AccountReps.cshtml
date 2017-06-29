@@ -1,5 +1,4 @@
 ﻿@model List<MvcPhoenix.Models.AccountRep>
-@using MvcPhoenix.Extensions;
 
 @{
     ViewBag.Title = "Account Representatives";
@@ -9,16 +8,14 @@
 @if (Model.Count > 0)
 {
     <div id="accountRepsList">
-        <ul class="list-unstyled list-3-col">
+        <ul class="list-unstyled list-2-col">
             @foreach (var item in Model)
             {
                 <li>
                     @Ajax.ActionLink(" ", "DeleteAccountRep", new { accountrepemail = item.AccountRepEmail, clientid = item.ClientID }, new AjaxOptions
                     {
-                        Confirm = "Are you sure you want to delete this account representative?",
                         HttpMethod = "POST",
                         UpdateTargetId = "accountRepsList",
-                        OnSuccess = "$.alert('Account Representative Deleted')",
                         InsertionMode = InsertionMode.Replace
                     }, new { @class = "fa fa-fw fa-times-circle", @style = "color:red", @title = "Delete Account Representative", @id = "hideeditbutton" })
                     @item.AccountRepName - @item.AccountRepEmail
@@ -29,27 +26,24 @@
 }
 
 <script>
-    $("#addaccountrep").click(function () {
-        addAccountRep();
-        updateAccountRepList();
-    });
-
-    function addAccountRep() {
+    function addAccountRep(clientId) {
         var emailSelection = $("#AccountRepEmail").val();
-        var clientId = @ViewBag.ClientKey;
 
         if (emailSelection.length > 1) {
             $.ajax({
-                url: "/Client/AddAccountRep",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ accountrepemail: emailSelection, clientid: clientId })
+                type: 'POST',
+                url: '/Client/AddAccountRep',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ accountrepemail: emailSelection, clientid: clientId }),
+                dataType: 'json'
             });
         }
+        
+        setTimeout(updateAccountRepList(), 500);
     }
 
     function updateAccountRepList() {
-        $("#accountRepsList").load('@Url.Action("ListAccountRReps", "Client", new { clientid = @ViewBag.ClientKey })');
+        $("#accountRepsList").load('@Url.Action("ListAccountReps", "Client", new { clientid = @ViewBag.ClientKey })');
         $("#AccountRepEmail").val("");
     }
 </script>
