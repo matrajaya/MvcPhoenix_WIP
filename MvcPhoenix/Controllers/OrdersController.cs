@@ -322,7 +322,7 @@ namespace MvcPhoenix.Controllers
 
         #endregion Order Item Methods
 
-        #region Import Actions - Pull data from samplecenter db after transform in Access
+        #region Order Import Actions
 
         [HttpGet]
         public ActionResult OrdersImport()

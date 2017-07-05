@@ -328,13 +328,14 @@ namespace MvcPhoenix.Services
 
                     if (vm.country != "0")
                     {
-                        var qCountry2 = (from t in db.tblCountry
-                                         where t.Country == vm.country
-                                         select t).FirstOrDefault(); // need the ID
+                        int countryid = 0;
+                        countryid = (from t in db.tblCountry
+                                     where t.Country.Contains(vm.country)
+                                     select t.CountryID).FirstOrDefault(); // need the ID
 
                         var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet
                                                 where t.ClientID == vm.clientid
-                                                && t.CountryID == qCountry2.CountryID
+                                                && t.CountryID == countryid
                                                 select t).FirstOrDefault();
 
                         if (qCeaseShipOffset != null)
@@ -581,6 +582,12 @@ namespace MvcPhoenix.Services
                 var productmaster = db.tblProductMaster.Find(productdetail.ProductMasterID);
 
                 // handle special request sizes
+                if (orderitem.Size == "1SR")
+                {
+                    orderitem.SRSize = (decimal)(vm.SRSize);
+                    vm.ShelfID = GetShelfIdfor1SR(vm.ProductDetailID, "1SR");
+                }
+
                 if (vm.ShelfID == 0 || vm.SRSize != null)
                 {
                     orderitem.SRSize = vm.SRSize;
@@ -596,6 +603,7 @@ namespace MvcPhoenix.Services
                     // if shelf record is found
                     if (shelfmaster != null)
                     {
+                        orderitem.SRSize = vm.SRSize ?? 0;
                         orderitem.Size = shelfmaster.Size;
                         shelfmaster.UnitWeight = shelfmaster.UnitWeight ?? orderitem.Weight;    // if unit weight is null, set current item weight; -> bulk order item edits
                         orderitem.Weight = shelfmaster.UnitWeight * vm.Qty;
@@ -1759,8 +1767,8 @@ namespace MvcPhoenix.Services
                               where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
                               orderby t.orderdate descending
                               select t).ToList();
-                
-                // Display all clients in EU if user has no client assignments. 
+
+                // Display all clients in EU if user has no client assignments.
                 // Since CMCEU does not have specific csr assignments for clients.
                 if (orderslist.Count() == 0)
                 {
@@ -1849,98 +1857,92 @@ namespace MvcPhoenix.Services
 
         public static void PrepareForImport()
         {
-            // this method tries to put the external record into Phoenix normalized fashion and tag for actual import
             using (var db = new CMCSQL03Entities())
             {
                 db.Database.ExecuteSqlCommand("DELETE FROM tblOrderImport WHERE Status NOT IN('0')");
 
-                var q = (from t in db.tblOrderImport
-                         where t.ImportStatus == null && t.Location_MDB == "EU"
-                         select t).ToList();
+                var orderimports = (from t in db.tblOrderImport
+                                    where t.ImportStatus != "IMPORTED" && t.Location_MDB == "EU"
+                                    select t).ToList();
 
-                foreach (var r in q)
+                foreach (var item in orderimports)
                 {
-                    r.ImportStatus = "FAIL";
+                    item.ImportStatus = "FAIL";
 
-                    var qclt = (from t in db.tblClient
-                                where t.CMCLongCustomer == r.Company_MDB
-                                && t.CMCLocation == r.Location_MDB
-                                select t).FirstOrDefault();
+                    var client = (from t in db.tblClient
+                                  where t.CMCLongCustomer == item.Company_MDB
+                                  && t.CMCLocation == item.Location_MDB
+                                  select t).FirstOrDefault();
 
-                    if (qclt == null)
+                    if (client == null)
                     {
-                        r.ImportError += " [ClientID]";
+                        item.ImportError += " [ClientID]";
                     }
 
-                    if (qclt != null)
+                    if (client != null)
                     {
-                        r.ClientID = qclt.ClientID;
-                        var qdiv = (from t in db.tblDivision
-                                    where t.ClientID == r.ClientID
-                                    && t.DivisionName == r.Division_MDB
-                                    select t).FirstOrDefault();
+                        item.ClientID = client.ClientID;
+                        var division = (from t in db.tblDivision
+                                        where t.ClientID == item.ClientID
+                                        && t.DivisionName == item.Division_MDB
+                                        select t).FirstOrDefault();
 
-                        if (qdiv != null)
+                        if (division != null)
                         {
-                            r.DivisionID = qdiv.DivisionID;
+                            item.DivisionID = division.DivisionID;
                         }
                     }
 
-                    // will this always return one row ?????
-                    var qPD = (from pd in db.tblProductDetail
-                               join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                               where pd.ProductCode == r.ProductCode
-                               && pm.ClientID == r.ClientID
-                               select new { pd, pm }).FirstOrDefault();
+                    // Make sure the product exists
+                    var productdetail = (from pd in db.tblProductDetail
+                                         join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                                         where pd.ProductCode == item.ProductCode
+                                         && pm.ClientID == item.ClientID
+                                         select new { pd, pm }).FirstOrDefault();
 
-                    if (qPD == null)
+                    if (productdetail == null)
                     {
-                        r.ImportError += " [ProductDetailID]";
+                        item.ImportError += " [ProductDetailID]";
                     }
 
-                    if (qPD != null)
+                    if (productdetail != null)
                     {
-                        r.ProductDetailID = qPD.pd.ProductDetailID;
-                        // note - there needs to be a SM record for size 1SR for each productdetailid that can be sampled in SR
-                        var qSM = (from t in db.tblShelfMaster
-                                   where t.ProductDetailID == r.ProductDetailID
-                                   && t.Size == r.Size
-                                   select t).FirstOrDefault();
+                        item.ProductDetailID = productdetail.pd.ProductDetailID;
+                        
+                        int? shelfmaster = (from t in db.tblShelfMaster
+                                           where t.ProductDetailID == item.ProductDetailID
+                                           && t.Size == item.Size
+                                           select t.ShelfID).FirstOrDefault();
 
-                        if (qSM == null)
+                        // Create new shelfmaster entry for special request if not found
+                        if (shelfmaster == null)
                         {
-                            r.ImportError += " [ShelfID]";
-                        }
-
-                        if (qSM != null)
-                        {
-                            r.ShelfID = qSM.ShelfID;
+                            if (item.Size == "1SR")
+                            {
+                                item.ShelfID = GetShelfIdfor1SR(item.ProductDetailID, item.Size);
+                                shelfmaster = item.ShelfID;
+                            }
+                            else
+                            {
+                                item.ImportError += " [ShelfID]";
+                            }
                         }
                         else
                         {
-                            var qSM_SR = (from t in db.tblShelfMaster
-                                          where t.ProductDetailID == r.ProductDetailID
-                                          && t.Size == "1SR"
-                                          select t).FirstOrDefault();
-
-                            if (qSM_SR != null)
-                            {
-                                r.ShelfID = qSM_SR.ShelfID;
-                            }
+                            item.ShelfID = shelfmaster;
                         }
                     }
 
-                    // min requirements are clientid, productdetailid, shelfid
-                    // ******* THIS WILL CAUSE ISSUES WITh PHOENIX ORDER EDIT IF SHELFID=null ********************************************
-                    if (r.ClientID != null && r.ProductDetailID != null && r.ShelfID != null)
+                    // Make sure clientid, productdetailid, shelfid exists for a successful import
+                    if (item.ClientID != null && item.ProductDetailID != null && item.ShelfID != null)
                     {
-                        r.ImportStatus = "PASS";
+                        item.ImportStatus = "PASS";
                     }
 
                     db.SaveChanges();
                 }
 
-                // post adjust - if one item failed, the whole order fails
+                // Cancel order import if a related item fails
                 var qFix = (from t in db.tblOrderImport
                             where t.ImportStatus == "FAIL"
                             select new { guid = t.GUID }).ToList().Distinct();
@@ -1965,163 +1967,164 @@ namespace MvcPhoenix.Services
             {
                 int OrdersImportedCount = 0;
 
-                // if ImportStatus=GOOD we can create VM objects as if it were data entry
-
+                // Get list of unique rows that passed precheck
                 var qGUIDs = (from t in db.tblOrderImport
                               where t.ImportStatus == "PASS"
                               && t.Location_MDB == sLocation
                               select new { t.GUID }).ToList().Distinct();
 
-                foreach (var r in qGUIDs)
+                // Create orders and insert items
+                foreach (var row in qGUIDs)
                 {
-                    // just set a pointer to one of the rows so we can read the data
-                    var qOM = (from t in db.tblOrderImport
-                               where t.GUID == r.GUID
-                               select t).FirstOrDefault();
+                    var orderimport = (from t in db.tblOrderImport
+                                       where t.GUID == row.GUID
+                                       select t).FirstOrDefault();
 
-                    Models.OrderMasterFull NewOrder = new Models.OrderMasterFull();
+                    OrderMasterFull newOrder = new OrderMasterFull();
 
-                    // fill OM fields
-                    NewOrder.CreateUser = "Import";
-                    NewOrder.CreateDate = DateTime.UtcNow;
-                    NewOrder.orderdate = Convert.ToDateTime(qOM.OrderDate);
-                    NewOrder.clientid = qOM.ClientID;
-                    NewOrder.divisionid = qOM.DivisionID;
-                    NewOrder.customer = qOM.Customer;
-                    NewOrder.cmcorder = Convert.ToInt32(qOM.CMCOrder);
-                    NewOrder.weborderid = Convert.ToInt32(qOM.WebOrderID);
-                    NewOrder.cmclegacynumber = qOM.CMCLegacyNum;
-                    NewOrder.custordnum = qOM.CustOrdNum;
-                    NewOrder.custsapnum = qOM.CustSapNum;
-                    NewOrder.custrefnum = qOM.CustRefNum;
-                    if (qOM.OrderType == "w")
+                    newOrder.orderid = -1;
+                    newOrder.CreateUser = "Import";
+                    newOrder.CreateDate = DateTime.UtcNow;
+                    newOrder.orderdate = Convert.ToDateTime(orderimport.OrderDate);
+                    newOrder.clientid = orderimport.ClientID;
+                    newOrder.divisionid = orderimport.DivisionID;
+                    newOrder.billinggroup = orderimport.BillingGroup;
+                    newOrder.IsSDN = orderimport.IsSDN;
+                    newOrder.customer = orderimport.Customer;
+                    newOrder.cmcorder = Convert.ToInt32(orderimport.CMCOrder);
+                    newOrder.weborderid = Convert.ToInt32(orderimport.WebOrderID);
+                    newOrder.cmclegacynumber = orderimport.CMCLegacyNum;
+                    newOrder.custordnum = orderimport.CustOrdNum;
+                    newOrder.custsapnum = orderimport.CustSapNum;
+                    newOrder.custrefnum = orderimport.CustRefNum;
+                    if (orderimport.OrderType == "w")
                     {
-                        NewOrder.ordertype = "S";
+                        newOrder.ordertype = "S";
                     }
                     else
                     {
-                        NewOrder.ordertype = qOM.OrderType;
+                        newOrder.ordertype = orderimport.OrderType;
                     }
-                    NewOrder.company = qOM.Company;
-                    NewOrder.street = qOM.Street;
-                    NewOrder.street2 = qOM.Street2;
-                    NewOrder.street3 = qOM.Street3;
-                    NewOrder.city = qOM.City;
-                    NewOrder.state = qOM.State;
-                    NewOrder.Zip = qOM.Zip;
-                    NewOrder.country = qOM.Country;
-                    NewOrder.attention = qOM.Attention;
-                    NewOrder.email = qOM.Email;
-                    NewOrder.salesrep = qOM.SalesRep;
-                    NewOrder.sales_email = qOM.SalesEmail;
-                    NewOrder.req = qOM.Req;
-                    NewOrder.reqphone = qOM.ReqPhone;
-                    NewOrder.reqfax = qOM.ReqFax;
-                    NewOrder.reqemail = qOM.ReqEmail;
-                    NewOrder.enduse = qOM.EndUse;
-                    NewOrder.shipvia = qOM.ShipVia;
-                    NewOrder.shipacct = qOM.ShipAcct;
-                    NewOrder.phone = qOM.Phone;
-                    if (qOM.Source == null)
+                    if (orderimport.Source == null)
                     {
-                        NewOrder.source = "Web";
+                        newOrder.source = "Web";
                     }
                     else
                     {
-                        NewOrder.source = qOM.Source;
+                        newOrder.source = orderimport.Source;
                     }
-                    NewOrder.fax = qOM.Fax;
-                    NewOrder.tracking = qOM.Tracking;
-                    NewOrder.special = qOM.Special;
-                    NewOrder.specialinternal = qOM.SpecialInternal;
-                    NewOrder.lit = Convert.ToBoolean(qOM.Lit);
-                    NewOrder.region = qOM.Region;
-                    NewOrder.coa = Convert.ToBoolean(qOM.COA);
-                    NewOrder.tds = Convert.ToBoolean(qOM.TDS);
-                    NewOrder.cid = qOM.CID;
-                    NewOrder.custacct = qOM.CustAcct;
-                    NewOrder.acode = qOM.ACode;
-                    NewOrder.importfile = qOM.ImportFile;
-                    NewOrder.importdateline = qOM.ImportDateLine ?? null;
-                    NewOrder.timing = qOM.Timing;
-                    NewOrder.volume = qOM.Volume;
-                    NewOrder.samplerack = Convert.ToBoolean(qOM.SampleRack);
-                    NewOrder.cmcuser = qOM.CMCUser;
-                    NewOrder.customerreference = qOM.CustomerReference;
-                    NewOrder.totalorderweight = qOM.TotalOrderWeight;
-                    NewOrder.custordertype = qOM.CustOrderType;
-                    NewOrder.custrequestdate = qOM.CustRequestDate ?? null;
-                    NewOrder.approvaldate = qOM.ApprovalDate ?? null;
-                    NewOrder.requesteddeliverydate = qOM.RequestedDeliveryDate ?? null;
-                    NewOrder.custtotalitems = Convert.ToInt32(qOM.CustTotalItems);
-                    NewOrder.custrequestedcarrier = qOM.CustRequestedCarrier;
-                    NewOrder.legacyid = Convert.ToInt32(qOM.LegacyID);
-                    NewOrder.salesrepphone = qOM.SalesRepPhone;
-                    NewOrder.salesrepterritory = qOM.SalesRepTerritory;
-                    NewOrder.marketingrep = qOM.MarketingRep;
-                    NewOrder.marketingrepemail = qOM.MarketingRepEmail;
-                    NewOrder.distributor = qOM.Distributor;
-                    NewOrder.preferredcarrier = qOM.PreferredCarrier;
-                    NewOrder.approvalneeded = Convert.ToBoolean(qOM.ApprovalNeeded);
-                    NewOrder.CreateUser = qOM.CreateUser;
-                    NewOrder.CreateDate = qOM.CreateDate;
-                    NewOrder.UpdateUser = qOM.UpdateUser;
-                    NewOrder.UpdateDate = qOM.UpdateDate;
-                    NewOrder.billinggroup = qOM.BillingGroup;
-                    NewOrder.IsSDN = qOM.IsSDN;
+                    newOrder.company = orderimport.Company;
+                    newOrder.street = orderimport.Street;
+                    newOrder.street2 = orderimport.Street2;
+                    newOrder.street3 = orderimport.Street3;
+                    newOrder.city = orderimport.City;
+                    newOrder.state = orderimport.State;
+                    newOrder.Zip = orderimport.Zip;
+                    newOrder.country = orderimport.Country;
+                    newOrder.attention = orderimport.Attention;
+                    newOrder.email = orderimport.Email;
+                    newOrder.salesrep = orderimport.SalesRep;
+                    newOrder.sales_email = orderimport.SalesEmail;
+                    newOrder.req = orderimport.Req;
+                    newOrder.reqphone = orderimport.ReqPhone;
+                    newOrder.reqfax = orderimport.ReqFax;
+                    newOrder.reqemail = orderimport.ReqEmail;
+                    newOrder.enduse = orderimport.EndUse;
+                    newOrder.shipvia = orderimport.ShipVia;
+                    newOrder.shipacct = orderimport.ShipAcct;
+                    newOrder.phone = orderimport.Phone;
+                    newOrder.fax = orderimport.Fax;
+                    newOrder.tracking = orderimport.Tracking;
+                    newOrder.special = orderimport.Special;
+                    newOrder.specialinternal = orderimport.SpecialInternal;
+                    newOrder.lit = Convert.ToBoolean(orderimport.Lit);
+                    newOrder.region = orderimport.Region;
+                    newOrder.coa = Convert.ToBoolean(orderimport.COA);
+                    newOrder.tds = Convert.ToBoolean(orderimport.TDS);
+                    newOrder.cid = orderimport.CID;
+                    newOrder.custacct = orderimport.CustAcct;
+                    newOrder.acode = orderimport.ACode;
+                    newOrder.importfile = orderimport.ImportFile;
+                    newOrder.importdateline = orderimport.ImportDateLine;
+                    newOrder.timing = orderimport.Timing;
+                    newOrder.volume = orderimport.Volume;
+                    newOrder.samplerack = Convert.ToBoolean(orderimport.SampleRack);
+                    newOrder.cmcuser = orderimport.CMCUser;
+                    newOrder.customerreference = orderimport.CustomerReference;
+                    newOrder.totalorderweight = orderimport.TotalOrderWeight;
+                    newOrder.custordertype = orderimport.CustOrderType;
+                    newOrder.custrequestdate = orderimport.CustRequestDate;
+                    newOrder.approvaldate = orderimport.ApprovalDate;
+                    newOrder.requesteddeliverydate = orderimport.RequestedDeliveryDate;
+                    newOrder.custtotalitems = Convert.ToInt32(orderimport.CustTotalItems);
+                    newOrder.custrequestedcarrier = orderimport.CustRequestedCarrier;
+                    newOrder.legacyid = Convert.ToInt32(orderimport.LegacyID);
+                    newOrder.salesrepphone = orderimport.SalesRepPhone;
+                    newOrder.salesrepterritory = orderimport.SalesRepTerritory;
+                    newOrder.marketingrep = orderimport.MarketingRep;
+                    newOrder.marketingrepemail = orderimport.MarketingRepEmail;
+                    newOrder.distributor = orderimport.Distributor;
+                    newOrder.preferredcarrier = orderimport.PreferredCarrier;
+                    newOrder.approvalneeded = Convert.ToBoolean(orderimport.ApprovalNeeded);
+                    newOrder.CreateUser = orderimport.CreateUser;
+                    newOrder.CreateDate = orderimport.CreateDate;
+                    newOrder.UpdateUser = orderimport.UpdateUser;
+                    newOrder.UpdateDate = orderimport.UpdateDate;
 
-                    // save tblOrderMaster to DB
-                    NewOrder.orderid = -1;                                              // needed to do insert
-                    int NewOrderID = Services.OrderService.fnSaveOrder(NewOrder);
+                    // Save order and get id
+                    int newOrderId = Services.OrderService.fnSaveOrder(newOrder);
 
-                    // fill OM fields
-                    var qOI = (from t in db.tblOrderImport
-                               where t.GUID == r.GUID
-                               select t).ToList();
+                    // Create order items
+                    var orderimports = (from t in db.tblOrderImport
+                                        where t.GUID == row.GUID
+                                        select t).ToList();
 
-                    foreach (var i in qOI)
+                    foreach (var item in orderimports)
                     {
-                        Models.OrderItem NewItem = new Models.OrderItem();
-                        NewItem.ItemID = -1;
-                        NewItem.OrderID = NewOrderID;
-                        NewItem.CreateDate = DateTime.UtcNow;
-                        NewItem.CreateUser = "System";
-                        NewItem.UpdateUser = HttpContext.Current.User.Identity.Name;
-                        NewItem.ProductDetailID = i.ProductDetailID;
-                        NewItem.ShelfID = i.ShelfID;
-                        if (i.ShelfID == null)                                          // TODO: If shelf id is null; GetShelfid()
+                        Models.OrderItem newItem = new Models.OrderItem();
+
+                        newItem.ItemID = -1;
+                        newItem.OrderID = newOrderId;
+                        newItem.CreateDate = DateTime.UtcNow;
+                        newItem.CreateUser = "System [Import]";
+                        newItem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                        newItem.ProductDetailID = item.ProductDetailID;
+                        newItem.ShelfID = item.ShelfID;
+                        newItem.Qty = item.Qty;
+                        newItem.LotNumber = item.LotNumber;
+                        newItem.ShipDate = item.ShipDate;
+                        newItem.CSAllocate = item.CSAllocate;
+                        newItem.AllocateStatus = item.AllocateStatus;
+                        newItem.NonCMCDelay = item.NonCMCDelay;
+                        newItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;
+                        newItem.Status = item.Status;
+                        newItem.DelayReason = item.DelayReason;
+                        newItem.ItemNotes = item.ItemNotes;
+
+                        // Check special request size and zero out if not decimal.
+                        if (item.Size == "1SR")
                         {
-                            i.ShelfID = 0;                                              // needed for post save to pull SR
-
-                            decimal srsize;                                             // get rid of this when tblOrderImport.SRSize is changed to decimal
+                            decimal srsize;
                             try
                             {
-                                srsize = decimal.Parse(i.SRSize);
+                                srsize = decimal.Parse(item.SRSize);
                             }
                             catch (Exception)
                             {
                                 srsize = 0.00M;
+                                newItem.ItemNotes += String.Format(" {0} was imported as a special request size but it's not recognized as a decimal.", item.SRSize);
                             }
-
-                            NewItem.SRSize = srsize;
+                            newItem.SRSize = srsize;
                         }
-                        NewItem.Qty = i.Qty;
-                        NewItem.LotNumber = i.LotNumber;
-                        NewItem.ShipDate = i.ShipDate;
-                        NewItem.CSAllocate = i.CSAllocate;
-                        NewItem.AllocateStatus = i.AllocateStatus;
-                        NewItem.NonCMCDelay = i.NonCMCDelay;
-                        NewItem.CarrierInvoiceRcvd = i.CarrierInvoiceRcvd;
-                        NewItem.Status = i.Status;
-                        NewItem.DelayReason = i.DelayReason;
-                        NewItem.ItemNotes = i.ItemNotes;
 
-                        int NewItemID = Services.OrderService.fnSaveItem(NewItem);      // save tblOrderItem to DB
+                        // Save order item and get id
+                        int newItemId = Services.OrderService.fnSaveItem(newItem);
                     }
 
                     OrdersImportedCount = OrdersImportedCount + 1;
-                    string s = String.Format("UPDATE tblOrderImport SET ImportStatus='IMPORTED' WHERE GUID='{0}'", r.GUID);         // at this point we have an order
 
+                    // Update order import status for successful imports
+                    string s = String.Format("UPDATE tblOrderImport SET ImportStatus='IMPORTED', CMCLocation='{0}', OrderID='{1}' WHERE GUID='{2}'", sLocation, newOrderId, row.GUID);
                     db.Database.ExecuteSqlCommand(s);
                 }
 
