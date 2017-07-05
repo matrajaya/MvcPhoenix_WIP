@@ -111,7 +111,7 @@ namespace MvcPhoenix.Controllers
                     //unmarkedbulk = unmarkedbulk.Where(t => t.bulkstatus == bulkstatus & t.bulkstatus != "RETURN").ToList();
                 }
 
-                unmarkedbulk = unmarkedbulk.Where(t => t.markedforreturn == false).ToList();
+                unmarkedbulk = unmarkedbulk.Where(t => t.markedforreturn != true).ToList();
 
                 return Json(unmarkedbulk, JsonRequestBehavior.AllowGet);
             }
@@ -134,7 +134,7 @@ namespace MvcPhoenix.Controllers
                     //unmarkedstock = unmarkedstock.Where(t => t.ShelfStatus == stockstatus & t.ShelfStatus != "RETURN").ToList();
                 }
 
-                unmarkedstock = unmarkedstock.Where(t => t.markedforreturn == false).ToList();
+                unmarkedstock = unmarkedstock.Where(t => t.markedforreturn != true).ToList();
 
                 return Json(unmarkedstock, JsonRequestBehavior.AllowGet);
             }

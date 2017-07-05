@@ -19,7 +19,7 @@ namespace MvcPhoenix.Controllers
             // Show client open orders if user is assigned.
             var orderslist = OrderService.OpenOrdersAssignedByClient();
 
-            TempData["SearchResultsMessage"] = "Assigned Open Orders";
+            TempData["SearchResultsMessage"] = "Open Orders";
 
             return View("~/Views/Orders/Index.cshtml", orderslist);
         }
