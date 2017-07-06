@@ -390,7 +390,7 @@ namespace MvcPhoenix.Services
                                   from productdetail in productdetailleftjoin.DefaultIfEmpty()
                                   where t.OrderID == id
                                   orderby t.ItemID
-                                  select new MvcPhoenix.Models.OrderItem
+                                  select new OrderItem
                                   {
                                       OrderID = t.OrderID,
                                       ItemID = t.ItemID,
@@ -585,14 +585,14 @@ namespace MvcPhoenix.Services
                 if (orderitem.Size == "1SR")
                 {
                     orderitem.SRSize = (decimal)(vm.SRSize);
-                    vm.ShelfID = GetShelfIdfor1SR(vm.ProductDetailID, "1SR");
+                    vm.ShelfID = GetShelfIdProductDetail(vm.ProductDetailID, "1SR");
                 }
 
                 if (vm.ShelfID == 0 || vm.SRSize != null)
                 {
                     orderitem.SRSize = vm.SRSize;
                     orderitem.Size = "1SR";
-                    vm.ShelfID = GetShelfIdfor1SR(vm.ProductDetailID, "1SR");
+                    vm.ShelfID = GetShelfIdProductDetail(vm.ProductDetailID, "1SR");
                 }
                 else
                 {
@@ -681,7 +681,7 @@ namespace MvcPhoenix.Services
         //  use productdetailid and um(size) to check shelfmaster
         //  if true: get shelfid ?: insert new record in shelfmaster using productdetailid and size = um
         /// </summary>
-        public static int GetShelfId(int? productmasterid, string um)
+        public static int GetShelfIdProductMaster(int? productmasterid, string um)
         {
             int getproductdetailid = GetProductDetailId(productmasterid);
 
@@ -723,7 +723,7 @@ namespace MvcPhoenix.Services
             return xshelfid;
         }
 
-        public static int GetShelfIdfor1SR(int? productdetailid, string size)
+        public static int GetShelfIdProductDetail(int? productdetailid, string size)
         {
             int xshelfid = 0;
             try
@@ -1530,7 +1530,7 @@ namespace MvcPhoenix.Services
 
                 newitem.OrderID = orderid;
                 newitem.BulkID = bulkitem.BulkID;
-                newitem.ShelfID = OrderService.GetShelfId(productmaster.ProductMasterID, bulkitem.UM);
+                newitem.ShelfID = OrderService.GetShelfIdProductMaster(productmaster.ProductMasterID, bulkitem.UM);
                 newitem.ProductDetailID = productdetailid;
                 newitem.ProductCode = productmaster.MasterCode;
                 newitem.ProductName = productmaster.MasterName;
@@ -1862,79 +1862,71 @@ namespace MvcPhoenix.Services
                 db.Database.ExecuteSqlCommand("DELETE FROM tblOrderImport WHERE Status NOT IN('0')");
 
                 var orderimports = (from t in db.tblOrderImport
-                                    where t.ImportStatus != "IMPORTED" && t.Location_MDB == "EU"
+                                    where t.ImportStatus != "IMPORTED"
+                                    && t.Location_MDB == "EU"
                                     select t).ToList();
 
                 foreach (var item in orderimports)
                 {
                     item.ImportStatus = "FAIL";
 
-                    var client = (from t in db.tblClient
-                                  where t.CMCLongCustomer == item.Company_MDB
-                                  && t.CMCLocation == item.Location_MDB
-                                  select t).FirstOrDefault();
+                    int? clientid = (from t in db.tblClient
+                                     where t.CMCLongCustomer == item.Company_MDB
+                                     && t.CMCLocation == item.Location_MDB
+                                     select t.ClientID).FirstOrDefault();
 
-                    if (client == null)
+                    if ((clientid ?? 0) == 0)
                     {
                         item.ImportError += " [ClientID]";
                     }
-
-                    if (client != null)
+                    else
                     {
-                        item.ClientID = client.ClientID;
-                        var division = (from t in db.tblDivision
-                                        where t.ClientID == item.ClientID
-                                        && t.DivisionName == item.Division_MDB
-                                        select t).FirstOrDefault();
+                        item.ClientID = clientid;
 
-                        if (division != null)
+                        int? divisionid = (from t in db.tblDivision
+                                           where t.ClientID == item.ClientID
+                                           && t.DivisionName == item.Division_MDB
+                                           select t.DivisionID).FirstOrDefault();
+
+                        if ((divisionid ?? 0) != 0)
                         {
-                            item.DivisionID = division.DivisionID;
+                            item.DivisionID = divisionid;
                         }
                     }
 
                     // Make sure the product exists
-                    var productdetail = (from pd in db.tblProductDetail
-                                         join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                                         where pd.ProductCode == item.ProductCode
-                                         && pm.ClientID == item.ClientID
-                                         select new { pd, pm }).FirstOrDefault();
+                    int? productdetailid = (from pd in db.tblProductDetail
+                                            join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                                            where pd.ProductCode == item.ProductCode
+                                            && pm.ClientID == item.ClientID
+                                            select pd.ProductDetailID).FirstOrDefault();
 
-                    if (productdetail == null)
+                    if ((productdetailid ?? 0) == 0)
                     {
                         item.ImportError += " [ProductDetailID]";
                     }
-
-                    if (productdetail != null)
+                    else
                     {
-                        item.ProductDetailID = productdetail.pd.ProductDetailID;
-                        
-                        int? shelfmaster = (from t in db.tblShelfMaster
-                                           where t.ProductDetailID == item.ProductDetailID
-                                           && t.Size == item.Size
-                                           select t.ShelfID).FirstOrDefault();
+                        item.ProductDetailID = productdetailid;
 
-                        // Create new shelfmaster entry for special request if not found
-                        if (shelfmaster == null)
+                        int? shelfmasterid = (from t in db.tblShelfMaster
+                                              where t.ProductDetailID == item.ProductDetailID
+                                              && t.Size == item.Size
+                                              select t.ShelfID).FirstOrDefault();
+
+                        // Create new shelfmaster if none found
+                        if ((shelfmasterid ?? 0) == 0)
                         {
-                            if (item.Size == "1SR")
-                            {
-                                item.ShelfID = GetShelfIdfor1SR(item.ProductDetailID, item.Size);
-                                shelfmaster = item.ShelfID;
-                            }
-                            else
-                            {
-                                item.ImportError += " [ShelfID]";
-                            }
+                            item.ShelfID = GetShelfIdProductDetail(item.ProductDetailID, item.Size);
                         }
                         else
                         {
-                            item.ShelfID = shelfmaster;
+                            item.ShelfID = shelfmasterid;
                         }
                     }
 
                     // Make sure clientid, productdetailid, shelfid exists for a successful import
-                    if (item.ClientID != null && item.ProductDetailID != null && item.ShelfID != null)
+                    if (((item.ClientID ?? 0) != 0) && ((item.ProductDetailID ?? 0) != 0) && ((item.ShelfID ?? 0) != 0))
                     {
                         item.ImportStatus = "PASS";
                     }
@@ -1983,8 +1975,6 @@ namespace MvcPhoenix.Services
                     OrderMasterFull newOrder = new OrderMasterFull();
 
                     newOrder.orderid = -1;
-                    newOrder.CreateUser = "Import";
-                    newOrder.CreateDate = DateTime.UtcNow;
                     newOrder.orderdate = Convert.ToDateTime(orderimport.OrderDate);
                     newOrder.clientid = orderimport.ClientID;
                     newOrder.divisionid = orderimport.DivisionID;
@@ -2081,7 +2071,7 @@ namespace MvcPhoenix.Services
 
                     foreach (var item in orderimports)
                     {
-                        Models.OrderItem newItem = new Models.OrderItem();
+                        OrderItem newItem = new OrderItem();
 
                         newItem.ItemID = -1;
                         newItem.OrderID = newOrderId;
@@ -2114,6 +2104,7 @@ namespace MvcPhoenix.Services
                                 srsize = 0.00M;
                                 newItem.ItemNotes += String.Format(" {0} was imported as a special request size but it's not recognized as a decimal.", item.SRSize);
                             }
+
                             newItem.SRSize = srsize;
                         }
 

@@ -15,13 +15,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Index()
         {
-            // Show open orders.
-            // Show client open orders if user is assigned.
-            var orderslist = OrderService.OpenOrdersAssignedByClient();
-
-            TempData["SearchResultsMessage"] = "Open Orders";
-
-            return View("~/Views/Orders/Index.cshtml", orderslist);
+            return View("~/Views/Orders/Index.cshtml");
         }
 
         [HttpPost]
@@ -108,7 +102,7 @@ namespace MvcPhoenix.Controllers
                                   && t.AllocateStatus == "A" | (t.RDTransfer != null && t.RDTransfer != false)
                                   && t.ShipDate == null
                                   orderby t.ProductCode
-                                  select new MvcPhoenix.Models.OrderItem
+                                  select new OrderItem
                                   {
                                       OrderID = t.OrderID,
                                       ItemID = t.ItemID,
@@ -161,7 +155,7 @@ namespace MvcPhoenix.Controllers
                                   where t.OrderID == id
                                   && (t.ShipDate != null || t.AllocateStatus != "A")
                                   orderby t.ProductCode
-                                  select new MvcPhoenix.Models.OrderItem
+                                  select new OrderItem
                                   {
                                       OrderID = t.OrderID,
                                       ItemID = t.ItemID,
@@ -451,6 +445,20 @@ namespace MvcPhoenix.Controllers
         #endregion Order Transaction Methods
 
         #region Index Order Search and Filters
+
+        public ActionResult OpenOrders(int page = 0)
+        {
+            TempData["SearchResultsMessage"] = "Open Orders";
+            var orderslist = OrderService.OpenOrdersAssignedByClient();
+
+            const int PageSize = 15;
+            int count = orderslist.Count();
+            var data = orderslist.OrderByDescending(o => o.orderid).Skip(page * PageSize).Take(PageSize).ToList();
+            ViewBag.MaxPage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+            ViewBag.Page = page;
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
 
         [HttpPost]
         public ActionResult LookupOrderID(FormCollection fc)
