@@ -68,3 +68,12 @@ $("#advancedsearch").on('hidden.bs.modal', function () {
 function goBack() {
     window.history.back();
 }
+
+// Loading Spinner On Ajax Calls
+$(document).ajaxStop(function () {
+    $('#loadingspinner').hide();
+});
+
+$(document).ajaxStart(function () {
+    $('#loadingspinner').show();
+});

@@ -46,8 +46,7 @@
                             {
                                 UpdateTargetId = "dvSearchInvoice",
                                 InsertionMode = InsertionMode.Replace,
-                                HttpMethod = "POST",
-                                LoadingElementId = "dvspinner"
+                                HttpMethod = "POST"
                             }))
                     {
                         <div class="">
@@ -87,7 +86,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label class="invisible">Generate</label>
-                                <input type="submit" class="btn btn-success btn-block form-control" value="Generate" onclick="$('#dvspinner').show()" />
+                                <input type="submit" class="btn btn-success btn-block form-control" value="Generate" onclick="$('#loadingspinner').show();" />
                             </div>
                         }
                     </div>
@@ -97,12 +96,6 @@
     </div>
 
     <div id="dvSearchInvoice"></div>
-
-    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-        <div class="ui-widget-overlay">
-            <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
-        </div>
-    </div>
 
     <div class="panel panel-primary">
         <div class="panel-body">

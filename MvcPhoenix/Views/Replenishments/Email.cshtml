@@ -43,15 +43,11 @@
 
         <div class="row">
             <div class="col-md-6">
-                <input id="btnSend" name="btnSend" type="submit" value="Send Email" class="btn btn-success btn-block" onclick="$('#dvspinner').show()" />
+                <input id="btnSend" name="btnSend" type="submit" value="Send Email" class="btn btn-success btn-block" onclick="$('#loadingspinner').show();" />
             </div>
             <div class="col-md-6">
                 <input type="button" class="btn btn-danger btn-block" onclick="location.href = 'javascript:history.back()'; return confirm('Cancel?')" value="Cancel Email" />
             </div>
         </div>
-
-    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
-    </div>
     }
 </div>

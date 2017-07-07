@@ -87,19 +87,13 @@
                 </div>
             </div>
         </div>
-        @*<div class="col-md-6">
-                @Html.Action("OrderImport") For file imports used in New Milford. Passes documents to folder watch by SSIS ETL package.
-            </div>*@
     </div>
-    <!-- End: Search Order -->
-    <!--Start: Display Results-->
+
     <div class="panel panel-primary">
         <div class="panel-body">
             <div id="dvSearchResults">
-                <!-- First time this view loads, pass the default list vm built into the ActionResult Index() -->
                 @Html.Action("OpenOrders")
             </div>
         </div>
     </div>
-    <!--End: Display Results-->
 </div> 

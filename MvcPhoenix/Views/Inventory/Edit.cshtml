@@ -3,6 +3,9 @@
     ViewBag.Title = "Edit Inventory";
 }
 
+@* WCPP-detection meta tag for IE10 *@
+@Html.Raw(Neodynamic.SDK.Web.WebClientPrint.GetWcppDetectionMetaTag())
+
 @*Display alert if client plugin is not detected*@
 @Html.Partial("_ShowDownloadWCPP")
 
@@ -354,3 +357,6 @@
         </div>
     }
 </div>
+
+@* WCPP detection script *@
+@Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateWcppDetectionScript())

@@ -323,14 +323,14 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new CMCSQL03Entities())
             {
-                var vm = (from t in db.tblOrderImport
-                          where t.ImportStatus == "FAIL"
-                          && t.Location_MDB == "EU"
-                          && t.ImportError != null
-                          orderby t.OrderDate, t.GUID
-                          select t).ToList();
+                var failedimports = (from t in db.tblOrderImport
+                                     where t.ImportStatus == "FAIL"
+                                     && t.Location_MDB == "EU"
+                                     && t.ImportError != null
+                                     orderby t.OrderDate, t.GUID
+                                     select t).ToList();
 
-                return View("~/Views/Orders/Import.cshtml", vm);
+                return View("~/Views/Orders/Import.cshtml", failedimports);
             }
         }
 
@@ -338,12 +338,12 @@ namespace MvcPhoenix.Controllers
         public ActionResult OrdersImportProcess()
         {
             int ImportCount = OrderService.ImportOrders();        // Actual import
-            TempData["ImportCount"] = ImportCount;
+            ViewBag.ImportCount = ImportCount;
 
             return RedirectToAction("OrdersImport");
         }
 
-        #endregion Import Actions - Pull data from samplecenter db after transform in Access
+        #endregion Order Import Actions
 
         [HttpGet]
         public ActionResult PullContactDetails(int id)
@@ -448,14 +448,19 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult OpenOrders(int page = 0)
         {
-            TempData["SearchResultsMessage"] = "Open Orders";
-            var orderslist = OrderService.OpenOrdersAssignedByClient();
+            var orderslist = OrderService.OpenOrdersAssigned();
 
-            const int PageSize = 15;
+            const int PageSize = 20;
             int count = orderslist.Count();
             var data = orderslist.OrderByDescending(o => o.orderid).Skip(page * PageSize).Take(PageSize).ToList();
-            ViewBag.MaxPage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
             ViewBag.Page = page;
+            ViewBag.MaxPage = maxpage;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+
+            TempData["SearchResultsMessage"] = "Open Orders";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }

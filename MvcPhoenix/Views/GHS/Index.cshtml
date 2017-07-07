@@ -29,7 +29,6 @@
             @using (Ajax.BeginForm("Save", "GHS", new AjaxOptions
             {
                 HttpMethod = "POST",
-                LoadingElementId = "dvspinner",
                 OnSuccess = "successSaveDialog"
             }))
             {
@@ -86,8 +85,7 @@
                     {
                         UpdateTargetId = "dvSearchPHCodes",
                         InsertionMode = InsertionMode.Replace,
-                        HttpMethod = "POST",
-                        LoadingElementId = "dvspinner"
+                        HttpMethod = "POST"
                     }))
                     {
                         <div class="input-group">
@@ -106,10 +104,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
     </div>
 </div>
 

@@ -41,25 +41,19 @@
 </div>
 
 @*Pagination control*@
-@if (Model.Count > 0)
-{    
+@if (@ViewBag.DisplayActivePage > 0)
+{
     <div class="row">
         <div class="col-md-12 text-center">
-            <label>@ViewBag.Page / @ViewBag.MaxPage</label>
+            <label>@ViewBag.DisplayActivePage / @ViewBag.DisplayLastPage</label>
             <div class="row">
                 @if (ViewBag.Page > 0)
                 {
-                    <a href="@Url.Action("Index", new { page = ViewBag.Page - 1 })"
-                       class="btn btn-primary btn-sm">
-                        &laquo; Prev
-                    </a>
+                    @Ajax.ActionLink("Prev", "OpenOrders", "Orders", new { page = ViewBag.Page - 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Previous", @class = "btn btn-primary btn-sm" })
                 }
                 @if (ViewBag.Page < ViewBag.MaxPage)
                 {
-                    <a href="@Url.Action("Index", new { page = ViewBag.Page + 1 })"
-                       class="btn btn-primary btn-sm">
-                        Next &raquo;
-                    </a>
+                    @Ajax.ActionLink("Next", "OpenOrders", "Orders", new { page = ViewBag.Page + 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Next", @class = "btn btn-primary btn-sm" })
                 }
             </div>
         </div>

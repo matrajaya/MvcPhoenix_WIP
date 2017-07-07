@@ -11,8 +11,8 @@
     <script src="~/Scripts/jquery-calx-2.2.6.min.js"></script>
 </head>
 <body>
-    @* WCPP-detection meta tag for IE10 *@
-    @Html.Raw(Neodynamic.SDK.Web.WebClientPrint.GetWcppDetectionMetaTag())
+    @*WCPP-detection meta tag for IE10
+    @Html.Raw(Neodynamic.SDK.Web.WebClientPrint.GetWcppDetectionMetaTag())*@
 
     <div id="wrapper">
         @* Begin: Top-banner and Navigation *@
@@ -60,12 +60,24 @@
             </div>
         </div>
         @* End: Generate View Content *@
+
+        @*Loading Spinner Overlay*@
+        <div id="page-wrapper">
+            <div id="loadingspinner" class="spinnerwrap" style="display:none;">
+                <div class="spinnerflex">
+                    <div class="text-center">
+                        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i>
+                        <h3>Processing...</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
 
-    @* WCPP detection script *@
-    @Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateWcppDetectionScript())
+    @* WCPP detection script
+    @Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateWcppDetectionScript())*@
 </body>
 </html>

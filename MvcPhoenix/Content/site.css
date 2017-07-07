@@ -38,8 +38,8 @@ body {
 
     .modal-xl {
         width: 90%;
-        max-width:1200px;
-  }
+        max-width: 1200px;
+    }
 }
 
 /* Top Navigation */
@@ -289,4 +289,31 @@ iframe {
 
 .table-responsive > table {
     font-size: .85em;
+}
+
+.container-fluid {
+    min-height: 700px;
+}
+
+/* Loading Spinner Overlay*/
+.spinnerwrap {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    padding: 0;
+    display: flex;
+    font-size: larger;
+    align-items: center;
+    z-index: 2;
+    top: 40%;
+    left: 50%;
+    color: aliceblue;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    /*background-color: transparent;*/
+}
+
+.spinnerflex {
+    display: flex;
+    margin: 0 auto;
 }

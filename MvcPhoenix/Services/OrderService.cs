@@ -1744,7 +1744,7 @@ namespace MvcPhoenix.Services
 
         #region List Methods
 
-        public static List<OrderMasterFull> OpenOrdersAssignedByClient()
+        public static List<OrderMasterFull> OpenOrdersAssigned()
         {
             using (var db = new CMCSQL03Entities())
             {

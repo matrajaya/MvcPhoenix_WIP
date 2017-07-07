@@ -5,13 +5,11 @@
         <div class="modal-content">
             @using (Ajax.BeginForm("SaveItem", "Replenishments", new AjaxOptions
                 {
-                    LoadingElementId = "dvspinneritem",
                     UpdateTargetId = "dvItemSaveResult",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "RefreshItemsGrid"
                 }))
             {
-
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

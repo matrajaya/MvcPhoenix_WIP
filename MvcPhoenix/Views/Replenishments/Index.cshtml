@@ -35,7 +35,6 @@
                         UpdateTargetId = "dvGridPlaceHolder",
                         InsertionMode = InsertionMode.Replace,
                         OnBegin = "$('dvGridPlaceHolder').empty()",
-                        LoadingElementId = "dvspinner",
                         HttpMethod = "POST"
                     }))
                     {
@@ -53,7 +52,6 @@
                                 <input id="btnsubmit" type="submit" value="Search" class="btn btn-success form-control" />
                             </div>
                         </div>
-
                     }
                 </div>
             </div>
@@ -70,7 +68,6 @@
                             @Ajax.ActionLink("Last 10 Orders", "SearchResults", "Replenishments", new { mode = "LastTen" }, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
                                  InsertionMode = InsertionMode.Replace,
                                  OnBegin = "$('#dvGridPlaceHolder').empty()",
                                  HttpMethod = "GET",
@@ -81,7 +78,6 @@
                             @Ajax.ActionLink("Un-Confirmed", "SearchResults", "Replenishments", new { mode = "UnConfirmed" }, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
                                  InsertionMode = InsertionMode.Replace,
                                  OnBegin = "$('#dvGridPlaceHolder').empty()",
                                  HttpMethod = "GET",
@@ -92,7 +88,6 @@
                             @Ajax.ActionLink("Open Items", "SearchResults", "Replenishments", new { mode = "OpenOnly" }, new AjaxOptions
                              {
                                  UpdateTargetId = "dvGridPlaceHolder",
-                                 LoadingElementId = "dvspinner",
                                  InsertionMode = InsertionMode.Replace,
                                  OnBegin = "$('#dvGridPlaceHolder').empty()",
                                  HttpMethod = "GET",
@@ -102,10 +97,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-        <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
     </div>
     <div id="dvGridPlaceHolder">
         @Html.Action("SearchResults", "Replenishments", new { mode = "Initial" })

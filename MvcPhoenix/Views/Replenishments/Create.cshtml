@@ -20,7 +20,6 @@
 
     @using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments", new AjaxOptions
     {
-        LoadingElementId = "dvspinnercreate",
         OnSuccess = "UpdateItemsPartial",
 		OnFailure="$.alert('Creation failed, please try again')",
         OnBegin = "$('#dvGridPlaceHolder').empty();"
@@ -56,9 +55,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-12 text-center" id="dvspinnercreate" style="display:none; font-size:large">
-            <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
         </div>
     }
     <div id="dvGridPlaceHolder"></div>

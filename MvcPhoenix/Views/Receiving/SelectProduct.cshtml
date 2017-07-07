@@ -25,49 +25,42 @@
         UpdateTargetId = "dvPlaceholderOpenOrderItems",
         OnBegin = "$('#dvPlaceholderOpenOrderItems').removeClass('hidden')",
         InsertionMode = InsertionMode.Replace,
-        HttpMethod = "POST",
-        LoadingElementId = "dvspinner",
-        LoadingElementDuration = 4
+        HttpMethod = "POST"
     }))
     {
         <div class="panel panel-primary">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="dvPlaceholderClientID">
-                        <label>Client</label>
-                        @Html.DropDownList("ClientID", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientID()", @class = "form-control" })
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="dvPlaceholderClientID">
+                            <label>Client</label>
+                            @Html.DropDownList("ClientID", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientID()", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <div id="dvPlaceholderMasterCode" class="hidden">
+                            <label>Product Master Code</label>
+                            <select name='productmasterid' id='productmasterid' onchange="OnChangeMasterCode()" class='form-control'>
+                                @* Placeholder for options values *@
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6 form-group">
-                    <div id="dvPlaceholderMasterCode" class="hidden">
-                        <label>Product Master Code</label>
-                        <select name='productmasterid' id='productmasterid' onchange="OnChangeMasterCode()" class='form-control'>
-                            @* Placeholder for options values *@
-                        </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="dvPlaceholderCheckOrdersButton" class="hidden">
+                            <input id="btnsubmit" type="submit" value="Check Open Orders" onclick="OnClickCheckOrders()" class="btn btn-primary btn-block" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <div id="dvPlaceholderNew" class="hidden">
+                            <a id="aNewContainer" class="btn btn-primary btn-block">Enter New Container</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="dvPlaceholderCheckOrdersButton" class="hidden">
-                        <input id="btnsubmit" type="submit" value="Check Open Orders" onclick="OnClickCheckOrders()" class="btn btn-primary btn-block" />
-                    </div>
-                </div>
-                <div class="col-md-6 form-group">
-                    <div id="dvPlaceholderNew" class="hidden">
-                        <a id="aNewContainer" class="btn btn-primary btn-block">Enter New Container</a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 text-center" id="dvspinner" style="display:none; font-size:large">
-                    <i class="fa fa-circle-o-notch fa-5x fa-spin"></i> Processing...
-                </div>
-            </div>
             </div>
         </div>
-        
+
         <div id="dvPlaceholderOpenOrderItems" class="hidden">@* Placeholder for Open Order Items *@</div>
     }
 </div>
