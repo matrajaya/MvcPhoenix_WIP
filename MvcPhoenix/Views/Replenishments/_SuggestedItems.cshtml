@@ -50,8 +50,8 @@
                             <th>Name</th>
                             <th>Supply ID</th>
                             <th>Reorder<br />Weight</th>
-                            <th>Notes</th>
-                            <th><i class="fa fa-fw fa-pencil-square-o"></i></th>
+                            @*<th>Notes</th>*@
+                            @*<th><i class="fa fa-fw fa-pencil-square-o"></i></th>*@
                         </tr>
                     </thead>
                     <tbody>
@@ -72,8 +72,8 @@
                                 <td>@item.mastername</td>
                                 <td>@item.supplyid</td>
                                 <td>@item.reorderweight</td>
-                                <td>@item.reordernotes</td>
-                                <td style="text-align:right">
+                                @*<td>@item.reordernotes</td>*@
+                                @*<td style="text-align:right">
                                     @Ajax.ActionLink(" ", "EditSuggestedItem", "Replenishments", new { id = @item.id },
                                     new AjaxOptions
                                     {
@@ -81,7 +81,7 @@
                                         InsertionMode = InsertionMode.Replace,
                                         OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
                                     }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
-                                </td>
+                                </td>*@
                             </tr>
                         }
                     </tbody>

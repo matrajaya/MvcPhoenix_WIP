@@ -158,16 +158,14 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateFromInventory(int id) // id=productdetailid
+        public ActionResult CreateFromInventory(int productdetailid) // id=productdetailid
         {
             using (var db = new CMCSQL03Entities())
             {
-                var pd = db.tblProductDetail.Find(id);
+                var pd = db.tblProductDetail.Find(productdetailid);
                 var pm = db.tblProductMaster.Find(pd.ProductMasterID);
-                ViewBag.ProductDetailID = id;
-
-                // so CreateBulkOrders Action below can redirect back to Inventory
-                Session["InventoryProductDetailID"] = id;
+                ViewBag.ProductDetailID = productdetailid;
+                Session["InventoryProductDetailID"] = productdetailid;                           // so CreateBulkOrders Action below can redirect back to Inventory
 
                 return View("~/Views/Replenishments/Create.cshtml");
             }
@@ -175,7 +173,6 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BuildDivisionDropDown(int clientid)
         {
-            // id=clientid
             return Content(ApplicationService.ddlBuildDivisionDropDown(clientid));
         }
 
@@ -183,20 +180,19 @@ namespace MvcPhoenix.Controllers
         public ActionResult CreateSuggestedOrder(FormCollection fc)
         {
             // Generate the suggested items, let the view refresh the partial after the ajax POST
-            int myclientid = Convert.ToInt32(fc["clientid"]);
-            int mydivisionid = Convert.ToInt32(fc["divisionid"]);
-            int ItemsCreated = ReplenishmentsService.fnGenerateSuggestedOrder(myclientid, mydivisionid);
-            Session["SuggestedBulkOrderItemClientID"] = myclientid;
+            int clientid = Convert.ToInt32(fc["clientid"]);
+            int divisionid = Convert.ToInt32(fc["divisionid"]);
+            int ItemsCreated = ReplenishmentsService.fnGenerateSuggestedOrder(clientid, divisionid);
+            Session["SuggestedBulkOrderItemClientID"] = clientid;
 
             return null;
         }
 
         public ActionResult SuggestedItemsList()
         {
-            // for the partial
-            List<SuggestedBulkOrderItem> mylist = ReplenishmentsService.fnSuggestedItemsList();
+            List<SuggestedBulkOrderItem> suggesteditems = ReplenishmentsService.fnSuggestedItemsList();
 
-            return PartialView("~/Views/Replenishments/_SuggestedItems.cshtml", mylist);
+            return PartialView("~/Views/Replenishments/_SuggestedItems.cshtml", suggesteditems);
         }
 
         [HttpGet]
@@ -213,26 +209,14 @@ namespace MvcPhoenix.Controllers
             SuggestedBulkOrderItem vm = new SuggestedBulkOrderItem();
             vm = ReplenishmentsService.fnFillSuggestedItemfromDB(id);
 
-            // limit the drop down items so user cannot change mastercode
-            using (var db = new CMCSQL03Entities())
-            {
-                var q = (from t in db.tblSuggestedBulk
-                         where t.id == id
-                         select t).FirstOrDefault();
-
-                vm.ListOfProductMasters = (from t in vm.ListOfProductMasters
-                                           where Convert.ToInt32(t.Value) == q.ProductMasterID
-                                           select t).ToList();
-            }
-
             return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", vm);
         }
 
         [HttpGet]
-        public ActionResult CreateSuggestedItem(int ClientID)
+        public ActionResult CreateSuggestedItem(int clientid)
         {
             SuggestedBulkOrderItem vm = new SuggestedBulkOrderItem();
-            vm = ReplenishmentsService.fnCreateSuggestedBulkOrderItem(ClientID);
+            vm = ReplenishmentsService.fnCreateSuggestedBulkOrderItem(clientid);
 
             return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", vm);
         }
@@ -240,7 +224,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult SaveSuggestedItem(SuggestedBulkOrderItem obj)
         {
             int pk = ReplenishmentsService.fnSaveSuggestedItem(obj);
-
+            
             return Content("Item Saved on " + DateTime.UtcNow.ToString("R"));
         }
 
@@ -259,10 +243,9 @@ namespace MvcPhoenix.Controllers
             int iSession = Convert.ToInt32(Session["InventoryProductDetailID"]);
 
             if (iSession > 0)
-            {
-                // reroute back to Inventory
-                int pdid = Convert.ToInt32(Session["InventoryProductDetailID"]);
-                Session["InventoryProductDetailID"] = null; //reset
+            {                
+                int pdid = Convert.ToInt32(Session["InventoryProductDetailID"]);                // reroute back to Inventory
+                Session["InventoryProductDetailID"] = null;                                     // reset
 
                 return RedirectToAction("Edit", "Inventory", new { id = pdid });
             }

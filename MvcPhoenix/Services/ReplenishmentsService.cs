@@ -454,8 +454,14 @@ namespace MvcPhoenix.Services
                     newrec.ReorderThis = false;
                     newrec.ReorderWeight = 0;
                     newrec.BulkOnOrder = false;
-
-                    newrec.ProductMasterAge = (DateTime.UtcNow.Date - row.ProductSetupDate.Value).Days;
+                    if (!row.ProductSetupDate.HasValue)
+                    {
+                        newrec.ProductMasterAge = 7;
+                    }
+                    else
+                    {
+                        newrec.ProductMasterAge = (DateTime.UtcNow.Date - row.ProductSetupDate.Value).Days;
+                    }
 
                     // get the bulk containers and setup critieria
                     string[] sBulkStatus = { "QC", "TEST", "WASTE" };
@@ -674,37 +680,37 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 string username = HttpContext.Current.User.Identity.Name;
-                var mylist = (from t in db.tblSuggestedBulk
-                              join dv in db.tblDivision on t.DivisionID equals dv.DivisionID into m
-                              from x in m.DefaultIfEmpty()
-                              join c in db.tblClient on t.ClientID equals c.ClientID
-                              join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                              where t.UserName == username
-                              select new SuggestedBulkOrderItem
-                              {
-                                  id = t.id,
-                                  clientid = t.ClientID,
-                                  productmasterid = t.ProductMasterID,
-                                  divisionid = t.DivisionID,
-                                  supplyid = t.SupplyID,
-                                  reorderweight = t.ReorderWeight,
-                                  reordernotes = t.ReorderNotes,
-                                  bulkshippedperday = t.BulkShippedPerDay,
-                                  shelfshippedperday = t.ShelfShippedPerDay,
-                                  usethisdaystilexpiration = t.UseThisDaysTilExpiration,
-                                  averageleadtime = t.AverageLeadTime,
-                                  username = t.UserName,
-                                  clientname = c.ClientName,
-                                  mastercode = pm.MasterCode,
-                                  mastername = pm.MasterName,
-                                  division = x.DivisionName
-                              }).ToList();
+                var suggesteditems = (from t in db.tblSuggestedBulk
+                                      join dv in db.tblDivision on t.DivisionID equals dv.DivisionID into m
+                                      from x in m.DefaultIfEmpty()
+                                      join c in db.tblClient on t.ClientID equals c.ClientID
+                                      join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                                      where t.UserName == username
+                                      select new SuggestedBulkOrderItem
+                                      {
+                                          id = t.id,
+                                          clientid = t.ClientID,
+                                          productmasterid = t.ProductMasterID,
+                                          divisionid = t.DivisionID,
+                                          supplyid = t.SupplyID,
+                                          reorderweight = t.ReorderWeight,
+                                          reordernotes = t.ReorderNotes,
+                                          bulkshippedperday = t.BulkShippedPerDay,
+                                          shelfshippedperday = t.ShelfShippedPerDay,
+                                          usethisdaystilexpiration = t.UseThisDaysTilExpiration,
+                                          averageleadtime = t.AverageLeadTime,
+                                          username = t.UserName,
+                                          clientname = c.ClientName,
+                                          mastercode = pm.MasterCode,
+                                          mastername = pm.MasterName,
+                                          division = x.DivisionName
+                                      }).ToList();
 
-                mylist = (from t in mylist
-                          orderby t.mastercode, t.supplyid
-                          select t).ToList();
+                suggesteditems = (from t in suggesteditems
+                                  orderby t.mastercode, t.supplyid
+                                  select t).ToList();
 
-                return mylist;
+                return suggesteditems;
             }
         }
 
@@ -743,7 +749,7 @@ namespace MvcPhoenix.Services
         {
             // a new suggested item needs the client id to get started
             SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
-            obj.id = -1;    // important
+            obj.id = -1;
             obj.clientid = ClientID;
 
             return obj;
@@ -758,22 +764,19 @@ namespace MvcPhoenix.Services
                     obj.id = fnNewSuggestedOrderItemID();
                 }
 
-                var dbrow = db.tblSuggestedBulk.Find(obj.id);
+                var suggesteditem = db.tblSuggestedBulk.Find(obj.id);
+                var productmaster = db.tblProductMaster.Find(obj.productmasterid);
 
-                if (obj.reorderweight == null)
+                suggesteditem.ClientID = obj.clientid;
+                suggesteditem.ProductMasterID = obj.productmasterid;
+                suggesteditem.ReorderWeight = obj.reorderweight ?? 0;
+                suggesteditem.ReorderNotes = obj.reordernotes;                
+                suggesteditem.UserName = HttpContext.Current.User.Identity.Name;
+                
+                if (productmaster != null)
                 {
-                    obj.reorderweight = 0;
-                }
-
-                dbrow.ClientID = obj.clientid;
-                dbrow.ProductMasterID = obj.productmasterid;
-                dbrow.ReorderWeight = obj.reorderweight;
-                dbrow.ReorderNotes = obj.reordernotes;
-
-                var dbMaster = db.tblProductMaster.Find(obj.productmasterid);
-                dbrow.SupplyID = dbMaster.SUPPLYID;
-
-                dbrow.UserName = HttpContext.Current.User.Identity.Name;
+                    suggesteditem.SupplyID = productmaster.SUPPLYID;
+                }                    
 
                 db.SaveChanges();
 
