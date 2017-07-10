@@ -15,6 +15,10 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Index()
         {
+            // Preload open orders in session data store
+            var ordersopen = OrderService.OpenOrdersAssigned();
+            Session["ordersopen"] = ordersopen;
+
             return View("~/Views/Orders/Index.cshtml");
         }
 
@@ -448,20 +452,25 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult OpenOrders(int page = 0)
         {
-            var orderslist = OrderService.OpenOrdersAssigned();
+            var orderslist = Session["ordersopen"] as List<OrderMasterFull>;
+            TempData["SearchResultsMessage"] = "Open Orders";
 
+            // If session store is empty go fetch new open orders
+            if (orderslist == null)
+            {
+                orderslist = OrderService.OpenOrdersAssigned();
+            }
+            
             const int PageSize = 20;
             int count = orderslist.Count();
-            var data = orderslist.OrderByDescending(o => o.orderid).Skip(page * PageSize).Take(PageSize).ToList();
+            var data = orderslist.Skip(page * PageSize).Take(PageSize).ToList();
             int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
 
             ViewBag.Page = page;
             ViewBag.MaxPage = maxpage;
             ViewBag.DisplayActivePage = page + 1;
             ViewBag.DisplayLastPage = maxpage + 1;
-
-            TempData["SearchResultsMessage"] = "Open Orders";
-
+            
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 

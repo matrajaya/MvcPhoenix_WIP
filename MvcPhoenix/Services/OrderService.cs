@@ -1765,7 +1765,7 @@ namespace MvcPhoenix.Services
                               join u in unshippedorders on t.orderid equals u.OrderID
                               join c in db.tblClientAccountRep on t.clientid equals c.ClientID
                               where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
-                              orderby t.orderdate descending
+                              orderby t.orderid, t.orderdate descending
                               select t).ToList();
 
                 // Display all clients in EU if user has no client assignments.
@@ -1777,7 +1777,7 @@ namespace MvcPhoenix.Services
                                   join u in unshippedorders on t.orderid equals u.OrderID
                                   join c in db.tblClient on t.clientid equals c.ClientID
                                   where c.CMCLocation == "EU"
-                                  orderby t.orderdate descending
+                                  orderby t.orderid, t.orderdate descending
                                   select t).ToList();
                 }
 
