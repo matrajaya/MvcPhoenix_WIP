@@ -1765,7 +1765,7 @@ namespace MvcPhoenix.Services
                               join u in unshippedorders on t.orderid equals u.OrderID
                               join c in db.tblClientAccountRep on t.clientid equals c.ClientID
                               where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
-                              orderby t.orderid, t.orderdate descending
+                              orderby t.orderid descending, t.orderdate descending
                               select t).ToList();
 
                 // Display all clients in EU if user has no client assignments.
@@ -1777,7 +1777,7 @@ namespace MvcPhoenix.Services
                                   join u in unshippedorders on t.orderid equals u.OrderID
                                   join c in db.tblClient on t.clientid equals c.ClientID
                                   where c.CMCLocation == "EU"
-                                  orderby t.orderid, t.orderdate descending
+                                  orderby t.orderid descending, t.orderdate descending
                                   select t).ToList();
                 }
 
@@ -1877,7 +1877,7 @@ namespace MvcPhoenix.Services
 
                     if ((clientid ?? 0) == 0)
                     {
-                        item.ImportError += " [ClientID]";
+                        item.ImportError += " Client does not exist.";
                     }
                     else
                     {
@@ -1903,7 +1903,7 @@ namespace MvcPhoenix.Services
 
                     if ((productdetailid ?? 0) == 0)
                     {
-                        item.ImportError += " [ProductDetailID]";
+                        item.ImportError += " Requested product not found.";
                     }
                     else
                     {
@@ -1918,6 +1918,7 @@ namespace MvcPhoenix.Services
                         if ((shelfmasterid ?? 0) == 0)
                         {
                             item.ShelfID = GetShelfIdProductDetail(item.ProductDetailID, item.Size);
+                            item.ImportError = String.Format(" Missing shelf profile; shelf id: {0} created.", item.ShelfID);
                         }
                         else
                         {
