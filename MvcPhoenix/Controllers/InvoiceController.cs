@@ -143,5 +143,12 @@ namespace MvcPhoenix.Controllers
         {
             return Content(ApplicationService.ddlBuildBillingGroup(id));
         }
+
+        public ActionResult TierRateAdjustment(int? tierclient, int? tierlevel, DateTime tierstartdate, DateTime tierenddate)
+        {
+            InvoiceService.SampleRateTierAdjustment(tierclient, tierlevel, tierstartdate, tierenddate);
+            
+            return null;
+        }        
     }
 }

@@ -56,7 +56,7 @@
                             @Html.ValidationMessageFor(m => m.transqty)
                         </div>
                         <div class="col-md-3 form-group">
-                            <label>Amount</label>
+                            <label>Rate</label>
                             @Html.TextBoxFor(m => m.transrate, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.transrate)
                         </div>
@@ -69,12 +69,24 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <label>Billing Group</label>
                             @Html.DropDownListFor(m => m.divisionid, ApplicationService.ddlDivisionIDs(Model.clientid), new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.divisionid)
                         </div>
                     </div>
+                    @if (Model.BillingTier != null && Model.BillingRate != null && Model.BillingCharge != null)
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="list-unstyled list-3-col">
+                                    <li><b>Billing Tier:</b> @Html.DisplayFor(m => m.BillingTier)</li>
+                                    <li><b>Billing Rate:</b> @Html.DisplayFor(m => m.BillingRate)</li>
+                                    <li><b>Billing Charge:</b> @Html.DisplayFor(m => m.BillingCharge)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
                 </div>
 
                 <div class="modal-footer">

@@ -19,19 +19,15 @@
     <!-- Begin: Generate View Content -->
     <div id="page-wrapper">
         <div class="container-fluid">
-            <div class="container body-content">
-                <div class="row">
-                    <div class="col-lg-12" style="padding-top: 20px;">
-                        @RenderBody()
-                    </div>
-                </div>
-                <hr />
-                <div class="row">
-                    <footer class="col-lg-12">
-                        <p><b>&copy; @DateTime.Now.Year - SiMPLE by CMC,</b> <em>a subsidiary of Odyssey.</em></p>
-                    </footer>
-                </div>
+            <div class="container body-content" style="padding-top: 20px;">
+                @RenderBody()
             </div>
+        </div>
+        <hr />
+        <div class="row">
+            <footer class="col-lg-12">
+                <p><b>&copy; @DateTime.Now.Year - SiMPLE by CMC,</b> <em>a subsidiary of Odyssey.</em></p>
+            </footer>
         </div>
     </div>
     <!-- End: Generate View Content -->

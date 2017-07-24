@@ -30,7 +30,6 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblInvPMLogNote" Width="1.5" PointX="14.75" PointY="10.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderImport" Width="1.5" PointX="14.75" PointY="15.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderSPSBilling" Width="1.5" PointX="18.75" PointY="0.75" />
-        <EntityTypeShape EntityType="CMCSQL03Model.tblOrderTrans" Width="1.5" PointX="18.75" PointY="6.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblPackage" Width="1.5" PointX="18.75" PointY="15.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblPackageType" Width="1.5" PointX="18.75" PointY="18.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblPPPDLogNote" Width="1.5" PointX="2.75" PointY="19.75" />
@@ -58,6 +57,7 @@
         <EntityTypeShape EntityType="CMCSQL03Model.tblOrderItem" Width="1.5" PointX="17.375" PointY="21.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblShipTrans" Width="1.5" PointX="23.375" PointY="27.75" />
         <EntityTypeShape EntityType="CMCSQL03Model.tblClientAccountRep" Width="1.5" PointX="11.375" PointY="17.75" />
+        <EntityTypeShape EntityType="CMCSQL03Model.tblOrderTrans" Width="1.5" PointX="17.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

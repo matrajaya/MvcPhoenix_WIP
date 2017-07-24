@@ -25,6 +25,9 @@ namespace MvcPhoenix.Models
         public decimal? transamount { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime? chargedate { get; set; }
+        public int? BillingTier { get; set; }
+        public decimal? BillingRate { get; set; }
+        public decimal? BillingCharge { get; set; }
         public string comments { get; set; }
         public DateTime? createdate { get; set; }
         public string createuser { get; set; }

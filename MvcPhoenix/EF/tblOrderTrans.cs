@@ -28,6 +28,9 @@ namespace MvcPhoenix.EF
         public Nullable<int> TransQty { get; set; }
         public Nullable<decimal> TransRate { get; set; }
         public Nullable<decimal> TransAmount { get; set; }
+        public Nullable<int> BillingTier { get; set; }
+        public Nullable<decimal> BillingRate { get; set; }
+        public Nullable<decimal> BillingCharge { get; set; }
         public string Comments { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }

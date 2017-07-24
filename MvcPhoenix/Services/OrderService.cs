@@ -1052,6 +1052,9 @@ namespace MvcPhoenix.Services
                 orderitemtransaction.transqty = result.TransQty;
                 orderitemtransaction.transrate = result.TransRate;
                 orderitemtransaction.transamount = result.TransAmount;
+                orderitemtransaction.BillingTier = result.BillingTier;
+                orderitemtransaction.BillingRate = result.BillingRate;
+                orderitemtransaction.BillingCharge = result.BillingCharge;
                 orderitemtransaction.comments = result.Comments;
                 orderitemtransaction.createdate = result.CreateDate;
                 orderitemtransaction.createuser = result.CreateUser;
@@ -1108,6 +1111,9 @@ namespace MvcPhoenix.Services
                     newrec.TransQty = orderitem.Qty;
                     newrec.TransRate = tierSize.Price;
                     newrec.TransAmount = newrec.TransQty * newrec.TransRate;
+                    newrec.BillingTier = 1;
+                    newrec.BillingRate = tierSize.Price;
+                    newrec.BillingCharge = newrec.TransQty * newrec.TransRate;
                     newrec.CreateDate = DateTime.UtcNow;
                     newrec.CreateUser = HttpContext.Current.User.Identity.Name;
                     newrec.UpdateDate = DateTime.UtcNow;
@@ -1138,6 +1144,9 @@ namespace MvcPhoenix.Services
                         newrec.TransQty = orderitem.Qty;
                         newrec.TransRate = tierSpecialRequest.Price;
                         newrec.TransAmount = newrec.TransQty * newrec.TransRate;
+                        newrec.BillingTier = 1;
+                        newrec.BillingRate = tierSize.Price;
+                        newrec.BillingCharge = newrec.TransQty * newrec.TransRate;
                         newrec.Comments = "Special Request";
                         newrec.CreateDate = DateTime.UtcNow;
                         newrec.CreateUser = HttpContext.Current.User.Identity.Name;

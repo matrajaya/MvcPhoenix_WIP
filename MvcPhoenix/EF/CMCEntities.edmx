@@ -1191,6 +1191,9 @@
           <Property Name="TransQty" Type="int" />
           <Property Name="TransRate" Type="decimal" Precision="18" Scale="2" />
           <Property Name="TransAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BillingTier" Type="int" />
+          <Property Name="BillingRate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BillingCharge" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Comments" Type="nvarchar" MaxLength="1000" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
@@ -1732,6 +1735,7 @@
           <Property Name="SourceID" Type="int" />
           <Property Name="ClientID" Type="int" />
           <Property Name="OrderID" Type="int" />
+          <Property Name="MasterCarrierID" Type="int" />
           <Property Name="CarrierID" Type="int" />
           <Property Name="TransDate" Type="datetime" />
           <Property Name="CarrierName" Type="nvarchar" MaxLength="50" />
@@ -1856,7 +1860,7 @@
           <Property Name="Size" Type="nvarchar" MaxLength="10" />
           <Property Name="LoSampAmt" Type="int" />
           <Property Name="HiSampAmt" Type="int" />
-          <Property Name="Price" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="LegacyID" Type="int" />
           <Property Name="Company_MDB" Type="nvarchar" MaxLength="25" />
           <Property Name="Location_MDB" Type="nvarchar" MaxLength="2" />
@@ -1972,7 +1976,6 @@
           <EntitySet Name="tblInvPMLogNote" EntityType="CMCSQL03Model.tblInvPMLogNote" />
           <EntitySet Name="tblOrderImport" EntityType="CMCSQL03Model.tblOrderImport" />
           <EntitySet Name="tblOrderSPSBilling" EntityType="CMCSQL03Model.tblOrderSPSBilling" />
-          <EntitySet Name="tblOrderTrans" EntityType="CMCSQL03Model.tblOrderTrans" />
           <EntitySet Name="tblPackage" EntityType="CMCSQL03Model.tblPackage" />
           <EntitySet Name="tblPackageType" EntityType="CMCSQL03Model.tblPackageType" />
           <EntitySet Name="tblPPPDLogNote" EntityType="CMCSQL03Model.tblPPPDLogNote" />
@@ -2000,6 +2003,7 @@
           <EntitySet Name="tblOrderItem" EntityType="CMCSQL03Model.tblOrderItem" />
           <EntitySet Name="tblShipTrans" EntityType="CMCSQL03Model.tblShipTrans" />
           <EntitySet Name="tblClientAccountRep" EntityType="CMCSQL03Model.tblClientAccountRep" />
+          <EntitySet Name="tblOrderTrans" EntityType="CMCSQL03Model.tblOrderTrans" />
         </EntityContainer>
         <EntityType Name="tblBulk">
           <Key>
@@ -2972,36 +2976,6 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tblOrderTrans">
-          <Key>
-            <PropertyRef Name="OrderTransID" />
-          </Key>
-          <Property Name="OrderTransID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SourceID" Type="Int32" />
-          <Property Name="ClientID" Type="Int32" />
-          <Property Name="OrderID" Type="Int32" />
-          <Property Name="OrderItemID" Type="Int32" />
-          <Property Name="InvoiceID" Type="Int32" />
-          <Property Name="BillingGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TransType" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="TransDate" Type="DateTime" Precision="3" />
-          <Property Name="ChargeDate" Type="DateTime" Precision="3" />
-          <Property Name="TransQty" Type="Int32" />
-          <Property Name="TransRate" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Comments" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="CMCOrder_MDB" Type="Int32" />
-          <Property Name="Division_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="BusinessUnit_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="ChargeSource_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerReference_MDB" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Name="DivisionID" Type="Int32" />
-          <Property Name="TransAmount" Type="Decimal" Precision="18" Scale="2" />
-        </EntityType>
         <EntityType Name="tblPackage">
           <Key>
             <PropertyRef Name="PackageID" />
@@ -3635,7 +3609,7 @@
           <Property Name="Size" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="LoSampAmt" Type="Int32" />
           <Property Name="HiSampAmt" Type="Int32" />
-          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="LegacyID" Type="Int32" />
           <Property Name="Company_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Location_MDB" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
@@ -3872,6 +3846,7 @@
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="MasterCarrierID" Type="Int32" />
         </EntityType>
         <EntityType Name="tblClientAccountRep">
           <Key>
@@ -3882,6 +3857,39 @@
           <Property Name="AccountRepUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="AccountRepName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="AccountRepEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblOrderTrans">
+          <Key>
+            <PropertyRef Name="OrderTransID" />
+          </Key>
+          <Property Name="OrderTransID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SourceID" Type="Int32" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="DivisionID" Type="Int32" />
+          <Property Name="OrderID" Type="Int32" />
+          <Property Name="OrderItemID" Type="Int32" />
+          <Property Name="InvoiceID" Type="Int32" />
+          <Property Name="BillingGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TransType" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="TransDate" Type="DateTime" Precision="3" />
+          <Property Name="ChargeDate" Type="DateTime" Precision="3" />
+          <Property Name="TransQty" Type="Int32" />
+          <Property Name="TransRate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TransAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BillingTier" Type="Int32" />
+          <Property Name="BillingRate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BillingCharge" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Comments" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CMCOrder_MDB" Type="Int32" />
+          <Property Name="Division_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="BusinessUnit_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="ChargeSource_MDB" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Company_MDB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerReference_MDB" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -4885,37 +4893,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tblOrderTrans">
-            <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderTrans">
-              <MappingFragment StoreEntitySet="tblOrderTrans">
-                <ScalarProperty Name="TransAmount" ColumnName="TransAmount" />
-                <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
-                <ScalarProperty Name="CustomerReference_MDB" ColumnName="CustomerReference_MDB" />
-                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
-                <ScalarProperty Name="ChargeSource_MDB" ColumnName="ChargeSource_MDB" />
-                <ScalarProperty Name="BusinessUnit_MDB" ColumnName="BusinessUnit_MDB" />
-                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
-                <ScalarProperty Name="CMCOrder_MDB" ColumnName="CMCOrder_MDB" />
-                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="Comments" ColumnName="Comments" />
-                <ScalarProperty Name="TransRate" ColumnName="TransRate" />
-                <ScalarProperty Name="TransQty" ColumnName="TransQty" />
-                <ScalarProperty Name="ChargeDate" ColumnName="ChargeDate" />
-                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
-                <ScalarProperty Name="TransType" ColumnName="TransType" />
-                <ScalarProperty Name="BillingGroup" ColumnName="BillingGroup" />
-                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
-                <ScalarProperty Name="OrderItemID" ColumnName="OrderItemID" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
-                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
-                <ScalarProperty Name="OrderTransID" ColumnName="OrderTransID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tblPackage">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblPackage">
               <MappingFragment StoreEntitySet="tblPackage">
@@ -5795,6 +5772,7 @@
           <EntitySetMapping Name="tblShipTrans">
             <EntityTypeMapping TypeName="CMCSQL03Model.tblShipTrans">
               <MappingFragment StoreEntitySet="tblShipTrans">
+                <ScalarProperty Name="MasterCarrierID" ColumnName="MasterCarrierID" />
                 <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
@@ -5821,6 +5799,40 @@
                 <ScalarProperty Name="AccountRepUserID" ColumnName="AccountRepUserID" />
                 <ScalarProperty Name="ClientID" ColumnName="ClientID" />
                 <ScalarProperty Name="AccountRepID" ColumnName="AccountRepID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblOrderTrans">
+            <EntityTypeMapping TypeName="CMCSQL03Model.tblOrderTrans">
+              <MappingFragment StoreEntitySet="tblOrderTrans">
+                <ScalarProperty Name="CustomerReference_MDB" ColumnName="CustomerReference_MDB" />
+                <ScalarProperty Name="Company_MDB" ColumnName="Company_MDB" />
+                <ScalarProperty Name="ChargeSource_MDB" ColumnName="ChargeSource_MDB" />
+                <ScalarProperty Name="BusinessUnit_MDB" ColumnName="BusinessUnit_MDB" />
+                <ScalarProperty Name="Division_MDB" ColumnName="Division_MDB" />
+                <ScalarProperty Name="CMCOrder_MDB" ColumnName="CMCOrder_MDB" />
+                <ScalarProperty Name="UpdateUser" ColumnName="UpdateUser" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="BillingCharge" ColumnName="BillingCharge" />
+                <ScalarProperty Name="BillingRate" ColumnName="BillingRate" />
+                <ScalarProperty Name="BillingTier" ColumnName="BillingTier" />
+                <ScalarProperty Name="TransAmount" ColumnName="TransAmount" />
+                <ScalarProperty Name="TransRate" ColumnName="TransRate" />
+                <ScalarProperty Name="TransQty" ColumnName="TransQty" />
+                <ScalarProperty Name="ChargeDate" ColumnName="ChargeDate" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="TransType" ColumnName="TransType" />
+                <ScalarProperty Name="BillingGroup" ColumnName="BillingGroup" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+                <ScalarProperty Name="OrderItemID" ColumnName="OrderItemID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="SourceID" ColumnName="SourceID" />
+                <ScalarProperty Name="OrderTransID" ColumnName="OrderTransID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

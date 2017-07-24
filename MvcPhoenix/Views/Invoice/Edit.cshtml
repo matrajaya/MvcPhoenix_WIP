@@ -202,9 +202,9 @@
                             </div>
                             <div class="col-md-6">
                                 <span class="pull-right">
-                                    <b>Location: </b>@Html.DropDownListFor(m => m.WarehouseLocation, new SelectList(Enum.GetValues(typeof(ApplicationService.CMCLocationChoice)))) |
-                                    <b>Currency: </b>@Html.DropDownListFor(m => m.Currency, new SelectList(Enum.GetValues(typeof(ApplicationService.CurrencyChoice)))) |
-                                    <b>Tier: </b>@Html.DisplayFor(m => m.Tier)
+                                    <b>Location: @Html.DisplayFor(m => m.WarehouseLocation)</b> |
+                                    <b>Currency: @Html.DisplayFor(m => m.Currency)</b> |
+                                    <b>Tier: @Html.DisplayFor(m => m.Tier)</b>
                                 </span>
                             </div>
                         </div>
