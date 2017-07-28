@@ -514,7 +514,7 @@ namespace MvcPhoenix.Models
                               Value = t.DivisionID.ToString(),
                               Text = t.DivisionName + " / " + t.BusinessUnit
                           }).ToList();
-                result.Insert(0, new SelectListItem { Value = "", Text = "" });
+                //result.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return result;
             }

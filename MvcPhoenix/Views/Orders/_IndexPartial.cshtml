@@ -22,16 +22,16 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.clientname</td>
-                    <td>@String.Format("{0:dd MMM yyyy}", @item.orderdate)</td>
-                    <td>@item.company</td>
-                    <td>@item.orderid.ToString()</td>
-                    <td>@item.ordertype</td>
+                    <td>@item.ClientName</td>
+                    <td>@String.Format("{0:dd MMM yyyy}", @item.OrderDate)</td>
+                    <td>@item.Company</td>
+                    <td>@item.OrderID.ToString()</td>
+                    <td>@item.OrderType</td>
                     <td>@item.CreateUser</td>
-                    <td>@item.itemscount</td>
+                    <td>@item.ItemsCount</td>
                     <td>
                         <span class="pull-right">
-                            <a class="btn btn-xs btn-primary" title="Edit Order" href="~/Orders/Edit/@item.orderid"><i class="fa fa-fw fa-pencil"></i></a>
+                            <a class="btn btn-xs btn-primary" title="Edit Order" href="~/Orders/Edit/@item.OrderID"><i class="fa fa-fw fa-pencil"></i></a>
                         </span>
                     </td>
                 </tr>

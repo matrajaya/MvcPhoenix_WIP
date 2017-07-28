@@ -2,19 +2,19 @@
 @{
     ViewBag.Title = "Edit Order";
 
-    if (@Model.orderid == -1) { ViewBag.Title = "Create Order"; }
+    if (@Model.OrderID == -1) { ViewBag.Title = "Create Order"; }
 }
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+            <img src="~/Client/LogoFile?id=@Model.ClientId" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
                 @ViewBag.Title <small>
-                    @if (@Model.orderid != -1)
-                    {@Model.orderid} for @Model.clientname
+                    @if (@Model.OrderID != -1)
+                    {@Model.OrderID} for @Model.ClientName
                 </small>
             </h1>
         </div>
@@ -23,10 +23,10 @@
     <div class="form-group row">
         <div class="col-md-12">
             <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Orders", "Index")
-            <span class="pull-right label label-info">Order ID: @Model.orderid</span>
-            @if (@Model.weborderid > 1)
+            <span class="pull-right label label-info">Order ID: @Model.OrderID</span>
+            @if (@Model.WebOrderId > 1)
             {
-                <span class="pull-right label label-warning" style="padding-right:5px;margin-right:5px;">Web Order ID: @Model.weborderid</span>
+                <span class="pull-right label label-warning" style="padding-right:5px;margin-right:5px;">Web Order ID: @Model.WebOrderId</span>
             }
         </div>
         <div class="col-md-12">
@@ -37,9 +37,9 @@
             <div style="text-align:center;">
                 <span id="dvTopMessage" style="color:green;font-weight:bold;"> @TempData["SaveResult"]</span><!-- show message after save -->
                 <div class="pull-right">
-                    @if (@Model.orderid != -1)
+                    @if (@Model.OrderID != -1)
                     {
-                        <a href="@Url.Action("PrintPickPack", "Orders", new { id = @Model.orderid })" target="_blank" class="btn btn-xs btn-success"><i class="fa fa-file-pdf-o"></i> Print Pick &amp; Pack Docs</a>
+                        <a href="@Url.Action("PrintPickPack", "Orders", new { id = @Model.OrderID })" target="_blank" class="btn btn-xs btn-success"><i class="fa fa-file-pdf-o"></i> Print Pick &amp; Pack Docs</a>
                     }
                 </div>
             </div>
@@ -71,12 +71,11 @@
     @using (Html.BeginForm("Save", "Orders", FormMethod.Post))
     {
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(m => m.orderid)
-        @Html.HiddenFor(m => m.weborderid)
-        @Html.HiddenFor(m => m.clientid)
-        @Html.HiddenFor(m => m.customer)
-        @Html.HiddenFor(m => m.billinggroup)
-        @Html.HiddenFor(m => m.orderdate)
+        @Html.HiddenFor(m => m.OrderID)
+        @Html.HiddenFor(m => m.WebOrderId)
+        @Html.HiddenFor(m => m.ClientId)
+        @Html.HiddenFor(m => m.Customer)
+        @Html.HiddenFor(m => m.OrderDate)
         @Html.HiddenFor(m => m.CreateUser)
         @Html.HiddenFor(m => m.CreateDate)
         @Html.HiddenFor(m => m.UpdateUser)
@@ -90,40 +89,40 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label class="control-label">Name</label>
-                        @Html.TextBoxFor(m => m.clientname, new { @class = "form-control", disabled = "true" })
-                        @Html.ValidationMessageFor(m => m.clientname)
+                        @Html.TextBoxFor(m => m.ClientName, new { @class = "form-control", disabled = "true" })
+                        @Html.ValidationMessageFor(m => m.ClientName)
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Division / Business Unit <i class="fa fa-fw fa-question-circle" title="Division / Business Unit"></i></label>
-                        @Html.DropDownListFor(m => m.divisionid, ApplicationService.ddlDivisionIDs(Model.clientid), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.divisionid)
+                        @Html.DropDownListFor(m => m.DivisionId, ApplicationService.ddlDivisionIDs(Model.ClientId), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DivisionId)
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <label class="control-label">Client Reference</label>
-                        @Html.TextBoxFor(m => m.custrefnum, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.custrefnum)
+                        @Html.TextBoxFor(m => m.ClientRefNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ClientRefNumber)
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Client Order Number</label>
-                        @Html.TextBoxFor(m => m.custordnum, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.custordnum)
+                        @Html.TextBoxFor(m => m.ClientOrderNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ClientOrderNumber)
                     </div>
                     <div class="col-md-2">
                         <label><abbr title="S = Samples&#13;D = Dormant&#13;R = Returns&#13;C = Commercial&#13;X = R&D/Transfer&#13;">Order Type <i class="fa fa-fw fa-question-circle" rel="tooltip"></i></abbr></label>
-                        @Html.DropDownListFor(m => m.ordertype, new SelectList(Enum.GetValues(typeof(ApplicationService.OrderTypeChoice))), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.ordertype)
+                        @Html.DropDownListFor(m => m.OrderType, new SelectList(Enum.GetValues(typeof(ApplicationService.OrderTypeChoice))), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.OrderType)
                     </div>
                     <div class="col-md-2">
                         <label class="control-label">Order Source</label>
-                        @Html.DropDownListFor(m => m.source, new SelectList(Enum.GetValues(typeof(ApplicationService.OrderSourceChoice))), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.source)
+                        @Html.DropDownListFor(m => m.Source, new SelectList(Enum.GetValues(typeof(ApplicationService.OrderSourceChoice))), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Source)
                     </div>
                     <div class="col-md-2">
                         <label class="control-label">Client Source/Type</label>
-                        @Html.TextBoxFor(m => m.custordertype, new { @class = "form-control", @disabled = "disabled" })
-                        @Html.ValidationMessageFor(m => m.custordertype)
+                        @Html.TextBoxFor(m => m.ClientOrderType, new { @class = "form-control", @disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.ClientOrderType)
                     </div>
                 </div>
             </div>
@@ -145,54 +144,54 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Name</label>
-                        @Html.TextBoxFor(m => m.company, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.company)
+                        @Html.TextBoxFor(m => m.Company, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Company)
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">Attention</label>
-                        @Html.TextBoxFor(m => m.attention, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.attention)
+                        @Html.TextBoxFor(m => m.Attention, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Attention)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Email</label>
-                        @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email)
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Phone</label>
-                        @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.phone)
+                        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Phone)
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Fax</label>
-                        @Html.TextBoxFor(m => m.fax, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.fax)
+                        @Html.TextBoxFor(m => m.Fax, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Fax)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Address 1</label>
-                        @Html.TextBoxFor(m => m.street, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.street)
+                        @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Street)
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Address 2</label>
-                        @Html.TextBoxFor(m => m.street2, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.street2)
+                        @Html.TextBoxFor(m => m.Street2, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Street2)
                     </div>
                     <div class="form-group col-md-2">
                         <label class="control-label">Address 3</label>
-                        @Html.TextBoxFor(m => m.street3, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.street3)
+                        @Html.TextBoxFor(m => m.Street3, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Street3)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label class="control-label">City</label>
-                        @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.city)
+                        @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.City)
                     </div>
                     <div class="form-group col-md-2">
                         <label class="control-label">Zip</label>
@@ -201,20 +200,20 @@
                     </div>
                     <div class="col-md-2">
                         <label class="control-label">State</label>
-                        @Html.TextBoxFor(m => m.state, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.state)
+                        @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.State)
                     </div>
                     <div class="col-md-5">
                         <label class="control-label">Country</label>
-                        @Html.DropDownListFor(m => m.country, ApplicationService.ddlCountries(), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.country)
+                        @Html.DropDownListFor(m => m.Country, ApplicationService.ddlCountries(), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Country)
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <label>Customs Reference Number</label>
-                        @Html.TextBoxFor(m => m.CustomsRefNum, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.CustomsRefNum)
+                        @Html.TextBoxFor(m => m.CustomsRefNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CustomsRefNumber)
                     </div>
                 </div>
             </div>
@@ -227,90 +226,90 @@
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label class="control-label">Use Contacts Directory</label>
-                        @Html.DropDownList("reqID", ApplicationService.ddlRequestors(Model.clientid), new { @class = "form-control", @onchange = "PullRequestor($(this).val());" })
+                        @Html.DropDownList("reqID", ApplicationService.ddlRequestors(Model.ClientId), new { @class = "form-control", @onchange = "PullRequestor($(this).val());" })
                     </div>
                     <div class="form-group col-md-8">
                         <label class="control-label">Requestor's Name</label>
-                        @Html.TextBoxFor(m => m.req, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.req)
+                        @Html.TextBoxFor(m => m.RequestorName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RequestorName)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Requestor's Email</label>
-                        @Html.TextBoxFor(m => m.reqemail, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.reqemail)
+                        @Html.TextBoxFor(m => m.RequestorEmail, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RequestorEmail)
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Requestor's Phone</label>
-                        @Html.TextBoxFor(m => m.reqphone, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.reqphone)
+                        @Html.TextBoxFor(m => m.RequestorPhone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RequestorPhone)
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Requestor's Fax</label>
-                        @Html.TextBoxFor(m => m.reqfax, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.reqfax)
+                        @Html.TextBoxFor(m => m.RequestorFax, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RequestorFax)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-4">
                         <label class="control-label">Use Contacts Directory</label>
-                        @Html.DropDownList("salesrepID", ApplicationService.ddlSalesReps(Model.clientid), new { @class = "form-control", @onchange = "PullSalesRep($(this).val());" })
+                        @Html.DropDownList("salesrepID", ApplicationService.ddlSalesReps(Model.ClientId), new { @class = "form-control", @onchange = "PullSalesRep($(this).val());" })
                     </div>
                     <div class="form-group col-md-8">
                         <label class="control-label">Sales Rep's Name</label>
-                        @Html.TextBoxFor(m => m.salesrep, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.salesrep)
+                        @Html.TextBoxFor(m => m.SalesRepName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SalesRepName)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Sales Rep's Email</label>
-                        @Html.TextBoxFor(m => m.sales_email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.sales_email)
+                        @Html.TextBoxFor(m => m.SalesRepEmail, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SalesRepEmail)
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Sales Rep's Phone</label>
-                        @Html.TextBoxFor(m => m.salesrepphone, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.salesrepphone)
+                        @Html.TextBoxFor(m => m.SalesRepPhone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SalesRepPhone)
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Sales Rep's Territory</label>
-                        @Html.TextBoxFor(m => m.salesrepterritory, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.salesrepterritory)
+                        @Html.TextBoxFor(m => m.SalesRepTerritory, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SalesRepTerritory)
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label">Marketing Rep's Name</label>
-                        @Html.TextBoxFor(m => m.marketingrep, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.marketingrep)
+                        @Html.TextBoxFor(m => m.MarketingRep, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MarketingRep)
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">Marketing Rep's Email</label>
-                        @Html.TextBoxFor(m => m.marketingrepemail, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.marketingrepemail)
+                        @Html.TextBoxFor(m => m.MarketingRepEmail, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MarketingRepEmail)
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <label class="control-label">Distributor</label>
-                        @Html.TextBoxFor(m => m.distributor, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.distributor)
+                        @Html.TextBoxFor(m => m.Distributor, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Distributor)
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">End Use</label>
-                        @Html.DropDownListFor(m => m.enduse, ApplicationService.ddlEndUses(Model.clientid), new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.enduse)
+                        @Html.DropDownListFor(m => m.EndUse, ApplicationService.ddlEndUses(Model.ClientId), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.EndUse)
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Approval Needed</label>
-                        @Html.CheckBoxFor(m => m.approvalneeded, new { @class = "checkbox" })
+                        @Html.CheckBoxFor(m => m.ApprovalNeeded, new { @class = "checkbox" })
                     </div>
                     <div class="col-md-3">
                         <label class="control-label">Approval Date</label>
-                        @Html.TextBoxFor(m => m.approvaldate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                        @Html.ValidationMessageFor(m => m.approvaldate)
+                        @Html.TextBoxFor(m => m.ApprovalDate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                        @Html.ValidationMessageFor(m => m.ApprovalDate)
                     </div>
                 </div>
             </div>
@@ -322,15 +321,15 @@
             <div id="prodselectpan" class="panel-body collapse in">
                 <span id="dvAllocateResult" class="pull-right text-success"></span>
                 <div id="dvItems">
-                    @if (Model.orderid == -1)
+                    @if (Model.OrderID == -1)
                     {
                         <h5 class="alert alert-danger">Please save the order once before adding items</h5>
                     }
-                    @if (Model.orderid > 1)
+                    @if (Model.OrderID > 1)
                     {
                         <div class="row">
                             <div class="col-md-4 form-group">
-                                @Ajax.ActionLink("Add Order Item", "CreateItem", "Orders", new { id = Model.orderid }, new AjaxOptions
+                                @Ajax.ActionLink("Add Order Item", "CreateItem", "Orders", new { id = Model.OrderID }, new AjaxOptions
                                 {
                                     UpdateTargetId = "dialogPlaceholder",
                                     InsertionMode = InsertionMode.Replace,
@@ -341,7 +340,7 @@
                         </div>
 
                         <div id="dvOrderItemsList">
-                            @Html.Action("fnOrderItemsList", "Orders", new { id = Model.orderid })
+                            @Html.Action("fnOrderItemsList", "Orders", new { orderid = Model.OrderID })
                         </div>
                     }
                 </div>
@@ -353,15 +352,15 @@
             </div>
             <div id="translogpan" class="panel-body collapse in">
                 <div id="z_pc_dvOrderTrans">
-                    @if (Model.orderid == -1)
+                    @if (Model.OrderID == -1)
                     {
                         <h5 class="alert alert-danger">Please save the order once before adding charges and notes</h5>
                     }
-                    @if (Model.orderid > 1)
+                    @if (Model.OrderID > 1)
                     {
                         <div class="row">
                             <div class="col-md-4 form-group">
-                                @Ajax.ActionLink("Add Order Transaction", "CreateTrans", "Orders", new { id = Model.orderid }, new AjaxOptions
+                                @Ajax.ActionLink("Add Order Transaction", "CreateTrans", "Orders", new { id = Model.OrderID }, new AjaxOptions
                             {
                                 UpdateTargetId = "dialogPlaceholder",
                                 InsertionMode = InsertionMode.Replace,
@@ -374,9 +373,9 @@
                 </div>
                 <div class="clearfix"></div>
                 <div id="dvOrderTransList">
-                    @if (@Model.transcount > 0)
+                    @if (@Model.TransCount > 0)
                     {
-                        @Html.Action("fnOrderTransList", "Orders", new { id = Model.orderid })
+                        @Html.Action("fnOrderTransList", "Orders", new { orderid = Model.OrderID })
                     }
                 </div>
             </div>
@@ -391,24 +390,24 @@
                         <div class="row">
                             <div class="col-md-4 form-group">
                                 <label class="control-label">Carrier/Ship Via</label>
-                                @Html.DropDownListFor(m => m.shipvia, ApplicationService.ddlShipVias(), new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.shipvia)
+                                @Html.DropDownListFor(m => m.ShipVia, ApplicationService.ddlShipVias(), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShipVia)
                             </div>
                             <div class="col-md-8 form-group">
                                 <label class="control-label">Shipping Account</label>
-                                @Html.TextBoxFor(m => m.shipacct, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.shipacct)
+                                @Html.TextBoxFor(m => m.ShipAcct, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShipAcct)
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <label class="control-label">Timing</label>
-                                @Html.TextBoxFor(m => m.timing, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.timing)
+                                @Html.TextBoxFor(m => m.Timing, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Timing)
                             </div>
                             <div class="col-md-8 form-group">
                                 <label class="control-label">&nbsp;</label>
-                                @Ajax.ActionLink("SPS Billing Details", "EditSPSBilling", "Orders", new { id = @Model.orderid }, new AjaxOptions
+                                @Ajax.ActionLink("SPS Billing Details", "EditSPSBilling", "Orders", new { id = @Model.OrderID }, new AjaxOptions
                                 {
                                     UpdateTargetId = "dialogPlaceholder",
                                     InsertionMode = InsertionMode.Replace,
@@ -420,8 +419,8 @@
                     </div>
                     <div class="col-md-6">
                         <label class="control-label">Tracking Number</label>
-                        @Html.TextAreaFor(m => m.tracking, new { @class = "form-control", @rows = 5 })
-                        @Html.ValidationMessageFor(m => m.tracking)
+                        @Html.TextAreaFor(m => m.Tracking, new { @class = "form-control", @rows = 5 })
+                        @Html.ValidationMessageFor(m => m.Tracking)
                     </div>
                 </div>
             </div>
@@ -434,13 +433,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label>Special Instructions - Internal</label>
-                        @Html.TextAreaFor(m => m.specialinternal, new { @class = "form-control", @rows = 5 })
-                        @Html.ValidationMessageFor(m => m.specialinternal)
+                        @Html.TextAreaFor(m => m.SpecialInternal, new { @class = "form-control", @rows = 5 })
+                        @Html.ValidationMessageFor(m => m.SpecialInternal)
                     </div>
                     <div class="col-md-6">
                         <label>Special Instructions - External</label>
-                        @Html.TextAreaFor(m => m.special, new { @class = "form-control", @rows = 5 })
-                        @Html.ValidationMessageFor(m => m.special)
+                        @Html.TextAreaFor(m => m.Special, new { @class = "form-control", @rows = 5 })
+                        @Html.ValidationMessageFor(m => m.Special)
                     </div>
                 </div>
             </div>
@@ -464,10 +463,10 @@
     $('#customer').val($('#clientname').val());
 
     // CopyDivisionToBillingGroup
-    $("#divisionid").change(function () {
-        var selectedText = $('#divisionid option:selected').text();
-        $('#billinggroup').val(selectedText);
-    });
+    //$("#divisionid").change(function () {
+    //    var selectedText = $('#divisionid option:selected').text();
+    //    $('#billinggroup').val(selectedText);
+    //});
 
     function SampleOrderAlert(productdetailid) {
         var alerturl = '@Url.Action("CheckProductForAlert", "Orders")';
@@ -485,10 +484,10 @@
         $.getJSON(contactdetailurl,
             { id: requestorid },
             function (jsonobj) {
-                $("#req").val(jsonobj.FullName);
-                $("#reqemail").val(jsonobj.Email);
-                $("#reqphone").val(jsonobj.Phone);
-                $("#reqfax").val(jsonobj.Fax);
+                $("#RequestorName").val(jsonobj.FullName);
+                $("#RequestorEmail").val(jsonobj.Email);
+                $("#RequestorPhone").val(jsonobj.Phone);
+                $("#RequestorFax").val(jsonobj.Fax);
             });
     }
 
@@ -498,10 +497,10 @@
         $.getJSON(contactdetailurl,
             { id: salesrepid },
             function (jsonobj) {
-                $("#salesrep").val(jsonobj.FullName);
-                $("#sales_email").val(jsonobj.Email);
-                $("#salesrepphone").val(jsonobj.Phone);
-                $("#salesrepterritory").val(jsonobj.Account);
+                $("#SalesRepName").val(jsonobj.FullName);
+                $("#SalesRepEmail").val(jsonobj.Email);
+                $("#SalesRepPhone").val(jsonobj.Phone);
+                $("#SalesRepTerritory").val(jsonobj.Account);
             });
     }
 </script>

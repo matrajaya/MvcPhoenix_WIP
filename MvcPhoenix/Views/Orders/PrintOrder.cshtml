@@ -7,7 +7,7 @@
 <script type="text/javascript">
     window.onload = function () {
         $("#OrderBarcode").barcode(
-            "@Model.orderid ~ @Model.clientid ~ @Model.clientname",
+            "@Model.OrderID ~ @Model.ClientId ~ @Model.ClientName",
             "datamatrix",
             { moduleSize: 2, showHRI: false });
     };
@@ -15,9 +15,9 @@
 
 <div id="OrderBarcode"></div>
 
-<img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+<img src="~/Client/LogoFile?id=@Model.ClientId" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
 <h1 class="page-header">
-    @ViewBag.Title <small> @Model.orderid for @Model.clientname</small>
+    @ViewBag.Title <small> @Model.OrderID for @Model.ClientName</small>
 </h1>
 
 <div class="form-group">
@@ -25,7 +25,7 @@
         <tr>
             <td width="25%">
                 <label>Created On:</label><br />
-                @Html.DisplayFor(m => m.orderdate)
+                @Html.DisplayFor(m => m.OrderDate)
             </td>
             <td width="25%">
                 <label>Created By:</label><br />
@@ -57,29 +57,27 @@
         <tr>
             <td colspan="3">
                 <label class="control-label">Name</label><br />
-                @Html.DisplayFor(m => m.clientname)
+                @Html.DisplayFor(m => m.ClientName)
             </td>
             <td>
-                <label>Billing Group</label><br />
-                @Html.DisplayFor(m => m.billinggroup)
             </td>
         </tr>
         <tr>
             <td>
                 <label>Client Reference</label><br />
-                @Html.DisplayFor(m => m.custrefnum)
+                @Html.DisplayFor(m => m.ClientRefNumber)
             </td>
             <td>
                 <label>Client Order Number</label><br />
-                @Html.DisplayFor(m => m.custordnum)
+                @Html.DisplayFor(m => m.ClientOrderNumber)
             </td>
             <td>
                 <label>Order Type</label><br />
-                @Html.DisplayFor(m => m.ordertype)
+                @Html.DisplayFor(m => m.OrderType)
             </td>
             <td>
                 <label>Order Source</label><br />
-                @Html.DisplayFor(m => m.source)
+                @Html.DisplayFor(m => m.Source)
             </td>
         </tr>
     </table>
@@ -99,45 +97,45 @@
         <tr>
             <td colspan="2">
                 <label>Name</label><br />
-                @Html.DisplayFor(m => m.company)
+                @Html.DisplayFor(m => m.Company)
             </td>
             <td colspan="2">
                 <label>Attention</label><br />
-                @Html.DisplayFor(m => m.attention)
+                @Html.DisplayFor(m => m.Attention)
             </td>
         </tr>
         <tr>
             <td colspan="2">
                 <label>Email</label><br />
-                @Html.DisplayFor(m => m.email)
+                @Html.DisplayFor(m => m.Email)
             </td>
             <td>
                 <label>Phone</label><br />
-                @Html.DisplayFor(m => m.phone)
+                @Html.DisplayFor(m => m.Phone)
             </td>
             <td>
                 <label>Fax</label><br />
-                @Html.DisplayFor(m => m.fax)
+                @Html.DisplayFor(m => m.Fax)
             </td>
         </tr>
         <tr>
             <td colspan="2">
                 <label class="control-label">Address 1</label><br />
-                @Html.DisplayFor(m => m.street)
+                @Html.DisplayFor(m => m.Street)
             </td>
             <td>
                 <label class="control-label">Address 2</label><br />
-                @Html.DisplayFor(m => m.street2)
+                @Html.DisplayFor(m => m.Street2)
             </td>
             <td>
                 <label class="control-label">Address 3</label><br />
-                @Html.DisplayFor(m => m.street3)
+                @Html.DisplayFor(m => m.Street3)
             </td>
         </tr>
         <tr>
             <td>
                 <label>City</label><br />
-                @Html.DisplayFor(m => m.city)
+                @Html.DisplayFor(m => m.City)
             </td>
             <td>
                 <label>Zip</label><br />
@@ -145,17 +143,17 @@
             </td>
             <td>
                 <label>State</label><br />
-                @Html.DisplayFor(m => m.state)
+                @Html.DisplayFor(m => m.State)
             </td>
             <td>
                 <label>Country</label><br />
-                @Html.DisplayFor(m => m.country)
+                @Html.DisplayFor(m => m.Country)
             </td>
         </tr>
         <tr>
             <td colspan="4">
                 <label>Customs Reference Number: </label>
-                @Html.DisplayFor(m => m.CustomsRefNum)
+                @Html.DisplayFor(m => m.CustomsRefNumber)
             </td>
         </tr>
     </table>
@@ -169,65 +167,65 @@
         <tr>
             <td width="25%">
                 <label>Requestor's Name</label><br />
-                @Html.DisplayFor(m => m.req)
+                @Html.DisplayFor(m => m.RequestorName)
             </td>
             <td width="25%">
                 <label>Requestor's Email</label><br />
-                @Html.DisplayFor(m => m.reqemail)
+                @Html.DisplayFor(m => m.RequestorEmail)
             </td>
             <td width="25%">
                 <label>Requestor's Phone</label><br />
-                @Html.DisplayFor(m => m.reqphone)
+                @Html.DisplayFor(m => m.RequestorPhone)
             </td>
             <td width="25%">
                 <label>Requestor's Fax</label><br />
-                @Html.DisplayFor(m => m.reqfax)
+                @Html.DisplayFor(m => m.RequestorFax)
             </td>
         </tr>
         <tr>
             <td>
                 <label>Sales Rep's Name</label><br />
-                @Html.DisplayFor(m => m.salesrep)
+                @Html.DisplayFor(m => m.SalesRepName)
             </td>
             <td>
                 <label>Sales Rep's Email</label><br />
-                @Html.DisplayFor(m => m.sales_email)
+                @Html.DisplayFor(m => m.SalesRepEmail)
             </td>
             <td>
                 <label>Sales Rep's Phone</label><br />
-                @Html.DisplayFor(m => m.salesrepphone)
+                @Html.DisplayFor(m => m.SalesRepPhone)
             </td>
             <td>
                 <label>Sales Rep's Territory</label><br />
-                @Html.DisplayFor(m => m.salesrepterritory)
+                @Html.DisplayFor(m => m.SalesRepTerritory)
             </td>
         </tr>
         <tr>
             <td>
                 <label>Marketing Rep's Name</label><br />
-                @Html.DisplayFor(m => m.marketingrep)
+                @Html.DisplayFor(m => m.MarketingRep)
             </td>
             <td>
                 <label>Marketing Rep's Email</label><br />
-                @Html.DisplayFor(m => m.marketingrepemail)
+                @Html.DisplayFor(m => m.MarketingRepEmail)
             </td>
             <td>
                 <label>Distributor</label><br />
-                @Html.DisplayFor(m => m.distributor)
+                @Html.DisplayFor(m => m.Distributor)
             </td>
             <td>
                 <label>End Use</label><br />
-                @Html.DisplayFor(m => m.enduse)
+                @Html.DisplayFor(m => m.EndUse)
             </td>
         </tr>
         <tr>
             <td>
                 <label>Approval Needed</label><br />
-                @Html.CheckBoxFor(m => m.approvalneeded, new { @class = "checkbox" })
+                @Html.CheckBoxFor(m => m.ApprovalNeeded, new { @class = "checkbox" })
             </td>
             <td>
                 <label>Approval Date</label><br />
-                @Html.TextBoxFor(m => m.approvaldate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.ApprovalDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })
             </td>
         </tr>
     </table>
@@ -238,10 +236,10 @@
 <div class="form-group">
     <h3>Order Items</h3>
     <div id="dvItems">
-        @if (Model.orderid > 1)
+        @if (Model.OrderID > 1)
         {
             <div id="dvOrderItemsList">
-                @Html.Action("fnOrderItemsList", "Orders", new { id = Model.orderid })
+                @Html.Action("fnOrderItemsList", "Orders", new { orderid = Model.OrderID })
             </div>
         }
     </div>
@@ -252,9 +250,9 @@
 <div class="form-group">
     <h3>Transaction Charges &amp; Log Notes</h3>
     <div id="dvOrderTransList">
-        @if (@Model.transcount > 0)
+        @if (@Model.TransCount > 0)
         {
-            @Html.Action("fnOrderTransList", "Orders", new { id = Model.orderid })
+            @Html.Action("fnOrderTransList", "Orders", new { orderid = Model.OrderID })
         }
     </div>
 </div>
@@ -267,29 +265,29 @@
         <tr>
             <td width="33.33%">
                 <label>Ship Via</label><br />
-                @Html.DisplayFor(m => m.shipvia)
+                @Html.DisplayFor(m => m.ShipVia)
             </td>
             <td width="33.33%">
                 <label>Shipping Account</label><br />
-                @Html.DisplayFor(m => m.shipacct)
+                @Html.DisplayFor(m => m.ShipAcct)
             </td>
             <td width="33.33%">
                 <label>Preferred Carrier</label><br />
-                @Html.DisplayFor(m => m.preferredcarrier)
+                @Html.DisplayFor(m => m.PreferredCarrier)
             </td>
         </tr>
         <tr>
             <td>
                 <label>Timing</label><br />
-                @Html.DisplayFor(m => m.timing)
+                @Html.DisplayFor(m => m.Timing)
             </td>
             <td>
-                <label>SPS Freight Cost</label><br />
-                @Html.DisplayFor(m => m.spsfreightcost)
+                @*<label>SPS Freight Cost</label><br />
+                @Html.DisplayFor(m => m.spsfreightcost)*@
             </td>
             <td>
-                <label>SPS Shipped Weight</label><br />
-                @Html.DisplayFor(m => m.spsshippedwt)
+                @*<label>SPS Shipped Weight</label><br />
+                @Html.DisplayFor(m => m.spsshippedwt)*@
             </td>
         </tr>
     </table>
@@ -303,11 +301,11 @@
         <tr>
             <td width="50%">
                 <label>Internal Notes</label><br />
-                @Html.DisplayFor(m => m.specialinternal)
+                @Html.DisplayFor(m => m.SpecialInternal)
             </td>
             <td>
                 <label>External Notes</label><br />
-                @Html.DisplayFor(m => m.special)
+                @Html.DisplayFor(m => m.Special)
             </td>
         </tr>
     </table>

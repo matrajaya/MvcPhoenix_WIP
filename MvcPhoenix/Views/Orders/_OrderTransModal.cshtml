@@ -16,63 +16,63 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">Order Transaction: <em>@Model.ordertransid</em></h4>
+                    <h4 class="modal-title">Order Transaction: <em>@Model.OrderTransID</em></h4>
                 </div>
 
                 <div id="dialogPlaceholderBody" class="modal-body">
-                    @Html.HiddenFor(m => m.ordertransid)
-                    @Html.HiddenFor(m => m.orderid)
-                    @Html.HiddenFor(m => m.clientid)
-                    @Html.HiddenFor(m => m.createdate)
-                    @Html.HiddenFor(m => m.createuser)
+                    @Html.HiddenFor(m => m.OrderTransID)
+                    @Html.HiddenFor(m => m.OrderId)
+                    @Html.HiddenFor(m => m.ClientId)
+                    @Html.HiddenFor(m => m.CreateDate)
+                    @Html.HiddenFor(m => m.CreateUser)
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Transaction Type</label>
-                            @if (Model.transtype == null)
+                            @if (Model.TransType == null)
                             {
-                                @Html.DropDownListFor(m => m.transtype, ApplicationService.ddlOrderTransactionTypes(), new { @class = "form-control"})
+                                @Html.DropDownListFor(m => m.TransType, ApplicationService.ddlOrderTransactionTypes(), new { @class = "form-control"})
                             }
                             else
                             {
-                                @Html.TextBoxFor(m => m.transtype, new { @class = "form-control", @readonly = "readonly" })
+                                @Html.TextBoxFor(m => m.TransType, new { @class = "form-control", @readonly = "readonly" })
                             }
-                            @Html.ValidationMessageFor(m => m.transtype)
+                            @Html.ValidationMessageFor(m => m.TransType)
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Date</label>
-                            @Html.TextBoxFor(m => m.transdate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
-                            @Html.ValidationMessageFor(m => m.transdate)
+                            @Html.TextBoxFor(m => m.TransDate, "{0:dd-MMM-yyyy}", new { @class = "date-picker form-control" })
+                            @Html.ValidationMessageFor(m => m.TransDate)
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Order Item</label>
-                            @Html.DropDownListFor(m => m.orderitemid, ApplicationService.ddlOrderItemIDs(Model.orderid), new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.orderitemid)
+                            @Html.DropDownListFor(m => m.OrderItemId, ApplicationService.ddlOrderItemIDs(Model.OrderId), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.OrderItemId)
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Quantity</label>
-                            @Html.TextBoxFor(m => m.transqty, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.transqty)
+                            @Html.TextBoxFor(m => m.TransQty, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.TransQty)
                         </div>
                         <div class="col-md-3 form-group">
                             <label>Rate</label>
-                            @Html.TextBoxFor(m => m.transrate, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.transrate)
+                            @Html.TextBoxFor(m => m.TransRate, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.TransRate)
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Comments</label>
-                            @Html.TextAreaFor(m => m.comments, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.comments)
+                            @Html.TextAreaFor(m => m.Comments, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Comments)
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Billing Group</label>
-                            @Html.DropDownListFor(m => m.divisionid, ApplicationService.ddlDivisionIDs(Model.clientid), new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.divisionid)
+                            @Html.DropDownListFor(m => m.DivisionId, ApplicationService.ddlDivisionIDs(Model.ClientId), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.DivisionId)
                         </div>
                     </div>
                     @if (Model.BillingTier != null && Model.BillingRate != null && Model.BillingCharge != null)
@@ -91,7 +91,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    @Ajax.ActionLink("Delete", "DeleteTrans", "Orders", new { id = Model.ordertransid }, new AjaxOptions
+                    @Ajax.ActionLink("Delete", "DeleteTrans", "Orders", new { id = Model.OrderTransID }, new AjaxOptions
                                        {
                                            HttpMethod = "GET",
                                            UpdateTargetId = "dialogResult",
@@ -108,12 +108,12 @@
 
 <script type="text/javascript">
     function UpdateAndClose() {
-        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.orderid })');
+        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { orderid = @Model.OrderId })');
         $('#dialogPlaceholderModal').modal('hide')
     }
 
     function UpdateTransList() {
-        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.orderid })');
+        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { orderid = @Model.OrderId })');
     }
 
     $(function () {

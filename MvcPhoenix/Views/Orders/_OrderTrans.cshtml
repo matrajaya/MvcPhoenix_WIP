@@ -24,17 +24,17 @@
             {
                 <tr>
                     <td>@(Model.IndexOf(item) + 1)</td>
-                    <td>@item.productcode</td>
-                    <td>@item.transtype</td>
-                    <td style="text-align:center;">@item.transqty</td>
-                    <td style="text-align:right;">@item.transrate</td>
-                    <td style="text-align:center;">@item.transamount</td>
-                    <td>@String.Format("{0:dd MMM yyyy}", item.transdate)</td>
-                    <td width="30%">@item.comments</td>
-                    <td title="Created By: @item.createuser">@item.updateuser</td>
-                    <td title="Created On: @String.Format("{0:dd MMM yyyy}", item.createdate)">@String.Format("{0:dd MMM yyyy}", item.updatedate)</td>
+                    <td>@item.ProductCode</td>
+                    <td>@item.TransType</td>
+                    <td style="text-align:center;">@item.TransQty</td>
+                    <td style="text-align:right;">@item.TransRate</td>
+                    <td style="text-align:center;">@item.TransAmount</td>
+                    <td>@String.Format("{0:dd MMM yyyy}", item.TransDate)</td>
+                    <td width="30%">@item.Comments</td>
+                    <td title="Created By: @item.CreateUser">@item.UpdateUser</td>
+                    <td title="Created On: @String.Format("{0:dd MMM yyyy}", item.CreateDate)">@String.Format("{0:dd MMM yyyy}", item.UpdateDate)</td>
                     <td id="noprint" class="text-right">
-                        @Ajax.ActionLink(" ", "EditTrans", "Orders", new { id = @item.ordertransid }, new AjaxOptions
+                        @Ajax.ActionLink(" ", "EditTrans", "Orders", new { id = @item.OrderTransID }, new AjaxOptions
                              {
                                  UpdateTargetId = "dialogPlaceholder",
                                  InsertionMode = InsertionMode.Replace,

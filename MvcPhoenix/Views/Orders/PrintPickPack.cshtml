@@ -12,7 +12,7 @@
                 <td width="50%">
                     <label>Sent From:</label>
                     <p>
-                        <label>@Html.DisplayFor(m => m.clientname)</label><br />
+                        <label>@Html.DisplayFor(m => m.ClientName)</label><br />
                         Chemical Marketing Concepts Europe<br />
                         Industrieweg 73<br />
                         5145 PD Waalwijk The Netherlands<br />
@@ -22,7 +22,7 @@
                 </td>
                 <td>
                     <div style="padding-bottom:20px;">
-                        <img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.clientname logo">
+                        <img src="~/Client/LogoFile?id=@Model.ClientId" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.ClientName logo">
                     </div>
                     <table style="border:solid 1px;">
                         <tr>
@@ -38,21 +38,21 @@
                         <tr>
                             <td>
                                 <p>
-                                    <label>@Html.DisplayFor(m => m.company)</label><br />
-                                    @Html.DisplayFor(m => m.street)<br />
-                                    @Html.DisplayFor(m => m.street2), @Html.DisplayFor(m => m.street3)<br />
-                                    @Html.DisplayFor(m => m.city), @Html.DisplayFor(m => m.state) - @Html.DisplayFor(m => m.Zip)<br />
-                                    @Html.DisplayFor(m => m.country)<br />
+                                    <label>@Html.DisplayFor(m => m.Company)</label><br />
+                                    @Html.DisplayFor(m => m.Street)<br />
+                                    @Html.DisplayFor(m => m.Street2), @Html.DisplayFor(m => m.Street3)<br />
+                                    @Html.DisplayFor(m => m.City), @Html.DisplayFor(m => m.State) - @Html.DisplayFor(m => m.Zip)<br />
+                                    @Html.DisplayFor(m => m.Country)<br />
                                 </p>
                                 <p>
-                                    <label>ATTN: </label>@Html.DisplayFor(m => m.attention)<br />
-                                    <label>Email: </label>@Html.DisplayFor(m => m.email)<br />
-                                    <label>Phone: </label>@Html.DisplayFor(m => m.phone)<br />
+                                    <label>ATTN: </label>@Html.DisplayFor(m => m.Attention)<br />
+                                    <label>Email: </label>@Html.DisplayFor(m => m.Email)<br />
+                                    <label>Phone: </label>@Html.DisplayFor(m => m.Phone)<br />
                                 </p>
-                                @if (Model.CustomsRefNum != null)
+                                @if (Model.CustomsRefNumber != null)
                                 {
                                     <p>
-                                        <label>Customs Ref #: </label>@Html.DisplayFor(m => m.CustomsRefNum)
+                                        <label>Customs Ref #: </label>@Html.DisplayFor(m => m.CustomsRefNumber)
                                     </p>
                                 }
                             </td>
@@ -63,27 +63,27 @@
                     <table>
                         <tr>
                             <td style="text-align:right;"><label>CMC #: </label></td>
-                            <td>@Html.DisplayFor(m => m.cmcorder) / @Html.DisplayFor(m => m.orderid)</td>
+                            <td>@Html.DisplayFor(m => m.CMCOrder) / @Html.DisplayFor(m => m.OrderID)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Customer #: </label></td>
-                            <td>@Html.DisplayFor(m => m.custordnum)</td>
+                            <td>@Html.DisplayFor(m => m.ClientOrderNumber)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Customer Ref #: </label></td>
-                            <td>@Html.DisplayFor(m => m.custrefnum)</td>
+                            <td>@Html.DisplayFor(m => m.ClientRefNumber)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Web Order ID: </label></td>
-                            <td>@Html.DisplayFor(m => m.weborderid)</td>
+                            <td>@Html.DisplayFor(m => m.WebOrderId)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Order Date: </label></td>
-                            <td>@Html.TextBoxFor(m => m.orderdate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.OrderDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Ship Via: </label></td>
-                            <td>@Html.DisplayFor(m => m.shipvia)</td>
+                            <td>@Html.DisplayFor(m => m.ShipVia)</td>
                         </tr>
                     </table>
                 </td>
@@ -93,31 +93,31 @@
         <table>
             <tr>
                 <td>
-                    <label>Requestor: </label>@Html.DisplayFor(m => m.req)<br />
-                    <label>Requestor's Email: </label>@Html.DisplayFor(m => m.reqemail)<br />
-                    <label>Requestor's Phone: </label>@Html.DisplayFor(m => m.reqphone)
+                    <label>Requestor's Name: </label>@Html.DisplayFor(m => m.RequestorName)<br />
+                    <label>Requestor's Email: </label>@Html.DisplayFor(m => m.RequestorEmail)<br />
+                    <label>Requestor's Phone: </label>@Html.DisplayFor(m => m.RequestorPhone)
                 </td>
                 <td>
-                    @Html.CheckBoxFor(m => m.coa) Include COA <br />
-                    @Html.CheckBoxFor(m => m.tds) Include TDS
+                    @Html.CheckBoxFor(m => m.COA) Include COA <br />
+                    @Html.CheckBoxFor(m => m.TDS) Include TDS
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label>Sales: </label>@Html.DisplayFor(m => m.salesrep)<br />
-                    <label>Sales Email: </label>@Html.DisplayFor(m => m.sales_email)<br />
-                    <label>Sales Phone: </label>@Html.DisplayFor(m => m.salesrepphone)<br />
+                    <label>Sales Rep Name: </label>@Html.DisplayFor(m => m.SalesRepName)<br />
+                    <label>Sales Rep Email: </label>@Html.DisplayFor(m => m.SalesRepEmail)<br />
+                    <label>Sales Rep Phone: </label>@Html.DisplayFor(m => m.SalesRepPhone)<br />
                 </td>
                 <td>
-                    <label>Shipping Ref. #: </label> @Html.DisplayFor(m => m.clientcode)@Html.DisplayFor(m => m.orderid)<br />
-                    <div style="zoom:30%; float:left">@Html.GenerateLinearCode(Convert.ToString(@Html.DisplayFor(m => m.clientcode) + "" + @Model.orderid))</div>
+                    <label>Shipping Ref. #: </label> @Html.DisplayFor(m => m.ClientCode)@Html.DisplayFor(m => m.OrderID)<br />
+                    <div style="zoom:30%; float:left">@Html.GenerateLinearCode(Convert.ToString(@Html.DisplayFor(m => m.ClientCode) + "" + @Model.OrderID))</div>
                 </td>
             </tr>
-            @if (Model.special != null)
+            @if (Model.Special != null)
             {
                 <tr>
                     <td colspan="2">
-                        <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.special)</em>
+                        <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.Special)</em>
                     </td>
                 </tr>
             }
@@ -125,16 +125,16 @@
     </div>
 
     <div class="form-group">
-        @if (Model.orderid > 1)
+        @if (Model.OrderID > 1)
         {
-            @Html.Action("PrintPickOrderItems", "Orders", new { id = Model.orderid })
+            @Html.Action("PrintPickOrderItems", "Orders", new { orderid = Model.OrderID })
         }
     </div>
 
     <div class="form-group">
-        @if (Model.orderid > 1)
+        @if (Model.OrderID > 1)
         {
-            @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
+            @Html.Action("PrintRemainingItems", "Orders", new { orderid = Model.OrderID })
         }
     </div>
 </div>
@@ -148,7 +148,7 @@
                 <td width="50%">
                     <label>Sent From:</label>
                     <p>
-                        @Html.DisplayFor(m => m.clientname)<br />
+                        @Html.DisplayFor(m => m.ClientName)<br />
                         Chemical Marketing Concepts Europe<br />
                         Industrieweg 73<br />
                         5145 PD Waalwijk The Netherlands<br />
@@ -158,7 +158,7 @@
                 </td>
                 <td>
                     <div style="padding-bottom:20px;">
-                        <img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.clientname logo">
+                        <img src="~/Client/LogoFile?id=@Model.ClientId" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.ClientName logo">
                     </div>
                     <table style="border:solid 1px;">
                         <tr>
@@ -174,17 +174,17 @@
                         <tr>
                             <td>
                                 <p>
-                                    @Html.DisplayFor(m => m.company)<br />
-                                    @Html.DisplayFor(m => m.street)<br />
-                                    @Html.DisplayFor(m => m.street2)<br />
-                                    @Html.DisplayFor(m => m.street3)<br />
-                                    @Html.DisplayFor(m => m.city), @Html.DisplayFor(m => m.state) - @Html.DisplayFor(m => m.Zip)<br />
-                                    @Html.DisplayFor(m => m.country)<br />
+                                    @Html.DisplayFor(m => m.Company)<br />
+                                    @Html.DisplayFor(m => m.Street)<br />
+                                    @Html.DisplayFor(m => m.Street2)<br />
+                                    @Html.DisplayFor(m => m.Street3)<br />
+                                    @Html.DisplayFor(m => m.City), @Html.DisplayFor(m => m.State) - @Html.DisplayFor(m => m.Zip)<br />
+                                    @Html.DisplayFor(m => m.Country)<br />
                                 </p>
                                 <p>
-                                    <label>ATTN: </label>@Html.DisplayFor(m => m.attention)<br />
-                                    <label>Email: </label>@Html.DisplayFor(m => m.email)<br />
-                                    <label>Phone: </label>@Html.DisplayFor(m => m.phone)
+                                    <label>ATTN: </label>@Html.DisplayFor(m => m.Attention)<br />
+                                    <label>Email: </label>@Html.DisplayFor(m => m.Email)<br />
+                                    <label>Phone: </label>@Html.DisplayFor(m => m.Phone)
                                 </p>
                             </td>
                         </tr>
@@ -194,31 +194,31 @@
                     <table>
                         <tr>
                             <td style="text-align:right;"><label>CMC #: </label></td>
-                            <td>@Html.DisplayFor(m => m.cmcorder) / @Html.DisplayFor(m => m.orderid)</td>
+                            <td>@Html.DisplayFor(m => m.CMCOrder) / @Html.DisplayFor(m => m.OrderID)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Customer #: </label></td>
-                            <td>@Html.DisplayFor(m => m.custordnum)</td>
+                            <td>@Html.DisplayFor(m => m.ClientOrderNumber)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Customer Ref #: </label></td>
-                            <td>@Html.DisplayFor(m => m.custrefnum)</td>
+                            <td>@Html.DisplayFor(m => m.ClientRefNumber)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Web Order ID: </label></td>
-                            <td>@Html.DisplayFor(m => m.weborderid)</td>
+                            <td>@Html.DisplayFor(m => m.WebOrderId)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Order Date: </label></td>
-                            <td>@Html.TextBoxFor(m => m.orderdate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.OrderDate, "{0:dd-MMM-yyyy}", new { @class = "form-control" })</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Ship Via: </label></td>
-                            <td>@Html.DisplayFor(m => m.shipvia)</td>
+                            <td>@Html.DisplayFor(m => m.ShipVia)</td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><label>Customs Ref #: </label></td>
-                            <td>@Html.DisplayFor(m => m.CustomsRefNum)</td>
+                            <td>@Html.DisplayFor(m => m.CustomsRefNumber)</td>
                         </tr>
                     </table>
                 </td>
@@ -228,31 +228,31 @@
         <table>
             <tr>
                 <td>
-                    <label>Requestor: </label>@Html.DisplayFor(m => m.req)<br />
-                    <label>Requestor's Email: </label>@Html.DisplayFor(m => m.reqemail)<br />
-                    <label>Requestor's Phone: </label>@Html.DisplayFor(m => m.reqphone)
+                    <label>Requestor's Name: </label>@Html.DisplayFor(m => m.RequestorName)<br />
+                    <label>Requestor's Email: </label>@Html.DisplayFor(m => m.RequestorEmail)<br />
+                    <label>Requestor's Phone: </label>@Html.DisplayFor(m => m.RequestorPhone)
                 </td>
                 <td>
-                    @Html.CheckBoxFor(m => m.coa) Include COA <br />
-                    @Html.CheckBoxFor(m => m.tds) Include TDS
+                    @Html.CheckBoxFor(m => m.COA) Include COA <br />
+                    @Html.CheckBoxFor(m => m.TDS) Include TDS
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label>Sales: </label>@Html.DisplayFor(m => m.salesrep)<br />
-                    <label>Sales Email: </label>@Html.DisplayFor(m => m.sales_email)<br />
-                    <label>Sales Phone: </label>@Html.DisplayFor(m => m.salesrepphone)<br />
+                    <label>Sales Rep Name: </label>@Html.DisplayFor(m => m.SalesRepName)<br />
+                    <label>Sales Rep Email: </label>@Html.DisplayFor(m => m.SalesRepEmail)<br />
+                    <label>Sales Rep Phone: </label>@Html.DisplayFor(m => m.SalesRepPhone)<br />
                 </td>
                 <td>
-                    <label>Shipping Ref. #: </label> @Html.DisplayFor(m => m.clientcode)@Html.DisplayFor(m => m.orderid)<br />
-                    <div style="zoom:30%; float:left">@Html.GenerateLinearCode(Convert.ToString(@Html.DisplayFor(m => m.clientcode) + "" + @Model.orderid))</div>
+                    <label>Shipping Ref. #: </label> @Html.DisplayFor(m => m.ClientCode)@Html.DisplayFor(m => m.OrderID)<br />
+                    <div style="zoom:30%; float:left">@Html.GenerateLinearCode(Convert.ToString(@Html.DisplayFor(m => m.ClientCode) + "" + @Model.OrderID))</div>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    @if (Model.special != null)
+                    @if (Model.Special != null)
                     {
-                        <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.special)</em>
+                        <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.Special)</em>
                     }                    
                 </td>
             </tr>
@@ -260,16 +260,16 @@
     </div>
 
     <div class="form-group">
-        @if (Model.orderid > 1)
+        @if (Model.OrderID > 1)
         {
-            @Html.Action("PrintPackOrderItems", "Orders", new { id = Model.orderid })
+            @Html.Action("PrintPackOrderItems", "Orders", new { orderid = Model.OrderID })
         }
     </div>
 
     <div class="form-group">
-        @if (Model.orderid > 1)
+        @if (Model.OrderID > 1)
         {
-            @Html.Action("PrintRemainingItems", "Orders", new { id = Model.orderid })
+            @Html.Action("PrintRemainingItems", "Orders", new { orderid = Model.OrderID })
         }
     </div>
 </div>
@@ -281,11 +281,11 @@
         <table style="margin:5px;">
             <tr>
                 <td>
-                    <h3>@Model.clientcode: @Model.cmcorder / @Model.orderid</h3>
+                    <h3>@Model.ClientCode: @Model.CMCOrder / @Model.OrderID</h3>
                 </td>
                 <td>
                     <div style="padding-bottom:20px;">
-                        <img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.clientname logo">
+                        <img src="~/Client/LogoFile?id=@Model.ClientId" style="width: auto; height: 73px; float: right;padding-bottom:20px;" alt="@Model.ClientName logo">
                     </div>
                     <table style="border:solid 1px;">
                         <tr>
@@ -372,7 +372,7 @@
             <td style="border:solid 1px;">
                 @try
                 {
-                    @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.country })
+                    @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.Country })
                 }
                 catch (Exception)
                 {

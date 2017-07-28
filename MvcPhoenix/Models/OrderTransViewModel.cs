@@ -7,31 +7,31 @@ namespace MvcPhoenix.Models
 {
     public class OrderTrans
     {
-        public int ordertransid { get; set; }
-        public string pagemode { get; set; }
-        public int? clientid { get; set; }
-        public int? divisionid { get; set; }
-        public int? orderid { get; set; }
-        public int? orderitemid { get; set; }
-        public string productcode { get; set; }
+        public int OrderTransID { get; set; }
+        public string PageMode { get; set; }
+        public int? ClientId { get; set; }
+        public int? DivisionId { get; set; }
+        public int? OrderId { get; set; }
+        public int? OrderItemId { get; set; }
+        public string ProductCode { get; set; }
         [Required(ErrorMessage = "Select Transaction Type")]
-        public string transtype { get; set; }
+        public string TransType { get; set; }
         [DataType(DataType.DateTime)]
-        public DateTime? transdate { get; set; }
-        public int? transqty { get; set; }
+        public DateTime? TransDate { get; set; }
+        public int? TransQty { get; set; }
         [DataType(DataType.Currency)]
-        public decimal? transrate { get; set; }
+        public decimal? TransRate { get; set; }
         [DataType(DataType.Currency)]
-        public decimal? transamount { get; set; }
+        public decimal? TransAmount { get; set; }
         [DataType(DataType.DateTime)]
-        public DateTime? chargedate { get; set; }
+        public DateTime? ChargeDate { get; set; }
         public int? BillingTier { get; set; }
         public decimal? BillingRate { get; set; }
         public decimal? BillingCharge { get; set; }
-        public string comments { get; set; }
-        public DateTime? createdate { get; set; }
-        public string createuser { get; set; }
-        public DateTime? updatedate { get; set; }
-        public string updateuser { get; set; }
+        public string Comments { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public string CreateUser { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string UpdateUser { get; set; }
     }
 }

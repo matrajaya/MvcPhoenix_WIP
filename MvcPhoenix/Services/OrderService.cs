@@ -12,150 +12,148 @@ namespace MvcPhoenix.Services
     {
         #region Order Master Methods
 
-        public static OrderMasterFull fnCreateOrder(int id)
+        public static OrderMasterFull fnCreateOrder(int clientid)
         {
-            // id=clientid
             using (var db = new CMCSQL03Entities())
             {
-                OrderMasterFull vm = new OrderMasterFull();
+                OrderMasterFull ordermodel = new OrderMasterFull();
+                var client = db.tblClient.Find(clientid);
 
-                vm.orderid = -1;
-                vm.clientid = id;
-                var cl = db.tblClient.Find(vm.clientid);
-                vm.clientname = cl.ClientName;
-                vm.orderstatus = "z";
-                vm.IsSDN = false;
-                vm.orderdate = DateTime.UtcNow;
-                vm.CreateUser = HttpContext.Current.User.Identity.Name;
-                vm.CreateDate = DateTime.UtcNow;
+                ordermodel.OrderID = -1;
+                ordermodel.ClientId = client.ClientID;
+                ordermodel.ClientName = client.ClientName;
+                ordermodel.OrderStatus = "New";
+                ordermodel.IsSDN = false;
+                ordermodel.OrderDate = DateTime.UtcNow;
+                ordermodel.CreateUser = HttpContext.Current.User.Identity.Name;
+                ordermodel.CreateDate = DateTime.UtcNow;
 
-                return vm;
+                return ordermodel;
             }
         }
 
-        public static OrderMasterFull fnFillOrder(int id)
+        public static OrderMasterFull fnFillOrder(int orderid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                OrderMasterFull o = new OrderMasterFull();
-                var q = (from t in db.tblOrderMaster
-                         where t.OrderID == id
-                         select t).FirstOrDefault();
+                OrderMasterFull ordermodel = new OrderMasterFull();
+                var getorder = (from t in db.tblOrderMaster
+                                where t.OrderID == orderid
+                                select t).FirstOrDefault();
 
-                o.itemscount = (from t in db.tblOrderItem
-                                where t.OrderID == id
-                                select t).Count();
+                ordermodel.ItemsCount = (from t in db.tblOrderItem
+                                         where t.OrderID == orderid
+                                         select t).Count();
 
-                o.transcount = (from t in db.tblOrderTrans
-                                where t.OrderID == id
-                                select t).Count();
+                ordermodel.TransCount = (from t in db.tblOrderTrans
+                                         where t.OrderID == orderid
+                                         select t).Count();
 
-                var cl = db.tblClient.Find(q.ClientID);
+                var client = db.tblClient.Find(getorder.ClientID);
 
-                o.clientname = cl.ClientName;
-                o.clientcode = cl.ClientCode;
-                o.orderid = q.OrderID;
-                o.clientid = q.ClientID;
-                o.divisionid = q.DivisionID;
-                o.billinggroup = q.BillingGroup;
-                o.orderstatus = q.OrderStatus;
-                o.customer = q.Customer;
-                o.cmcorder = Convert.ToInt32(q.CMCOrder);
-                o.weborderid = Convert.ToInt32(q.WebOrderID);
-                o.cmclegacynumber = q.CMCLegacyNum;
-                o.custordnum = q.CustOrdNum;
-                o.custsapnum = q.CustSapNum;
-                o.custrefnum = q.CustRefNum;
-                o.ordertype = q.OrderType;
-                o.orderdate = q.OrderDate;
-                o.company = q.Company;
-                o.street = q.Street;
-                o.street2 = q.Street2;
-                o.street3 = q.Street3;
-                o.city = q.City;
-                o.state = q.State;
-                o.Zip = q.Zip;
-                o.country = q.Country;
-                o.CustomsRefNum = q.CustomsRefNum;
-                o.attention = q.Attention;
-                o.email = q.Email;
-                o.salesrep = q.SalesRep;
-                o.sales_email = q.SalesEmail;
-                o.req = q.Req;
-                o.reqphone = q.ReqPhone;
-                o.reqfax = q.ReqFax;
-                o.reqemail = q.ReqEmail;
-                o.enduse = q.EndUse;
-                o.shipvia = q.ShipVia;
-                o.shipacct = q.ShipAcct;
-                o.phone = q.Phone;
-                o.source = q.Source;
-                o.fax = q.Fax;
-                o.tracking = q.Tracking;
-                o.special = q.Special;
-                o.specialinternal = q.SpecialInternal;
-                o.lit = Convert.ToBoolean(q.Lit);
-                o.region = q.Region;
-                o.coa = Convert.ToBoolean(q.COA);
-                o.tds = Convert.ToBoolean(q.TDS);
-                o.cid = q.CID;
-                o.custacct = q.CustAcct;
-                o.acode = q.ACode;
-                o.importfile = q.ImportFile;
+                ordermodel.ClientName = client.ClientName;
+                ordermodel.ClientCode = client.ClientCode;
+                ordermodel.OrderID = getorder.OrderID;
+                ordermodel.ClientId = getorder.ClientID;
+                ordermodel.DivisionId = getorder.DivisionID;
+                ordermodel.OrderStatus = getorder.OrderStatus;
+                ordermodel.Customer = getorder.Customer;
+                ordermodel.CMCOrder = Convert.ToInt32(getorder.CMCOrder);
+                ordermodel.WebOrderId = Convert.ToInt32(getorder.WebOrderID);
+                ordermodel.CMCLegacyNumber = getorder.CMCLegacyNum;
+                ordermodel.ClientOrderNumber = getorder.CustOrdNum;
+                ordermodel.ClientSAPNumber = getorder.CustSapNum;
+                ordermodel.ClientRefNumber = getorder.CustRefNum;
+                ordermodel.OrderType = getorder.OrderType;
+                ordermodel.OrderDate = getorder.OrderDate;
+                ordermodel.Company = getorder.Company;
+                ordermodel.Street = getorder.Street;
+                ordermodel.Street2 = getorder.Street2;
+                ordermodel.Street3 = getorder.Street3;
+                ordermodel.City = getorder.City;
+                ordermodel.State = getorder.State;
+                ordermodel.Zip = getorder.Zip;
+                ordermodel.Country = getorder.Country;
+                ordermodel.CustomsRefNumber = getorder.CustomsRefNum;
+                ordermodel.Attention = getorder.Attention;
+                ordermodel.Email = getorder.Email;
+                ordermodel.SalesRepName = getorder.SalesRep;
+                ordermodel.SalesRepEmail = getorder.SalesEmail;
+                ordermodel.RequestorName = getorder.Req;
+                ordermodel.RequestorPhone = getorder.ReqPhone;
+                ordermodel.RequestorFax = getorder.ReqFax;
+                ordermodel.RequestorEmail = getorder.ReqEmail;
+                ordermodel.EndUse = getorder.EndUse;
+                ordermodel.ShipVia = getorder.ShipVia;
+                ordermodel.ShipAcct = getorder.ShipAcct;
+                ordermodel.Phone = getorder.Phone;
+                ordermodel.Source = getorder.Source;
+                ordermodel.Fax = getorder.Fax;
+                ordermodel.Tracking = getorder.Tracking;
+                ordermodel.Special = getorder.Special;
+                ordermodel.SpecialInternal = getorder.SpecialInternal;
+                ordermodel.IsLiterature = Convert.ToBoolean(getorder.Lit);
+                ordermodel.Region = getorder.Region;
+                ordermodel.COA = Convert.ToBoolean(getorder.COA);
+                ordermodel.TDS = Convert.ToBoolean(getorder.TDS);
+                ordermodel.CID = getorder.CID;
+                ordermodel.ClientAcct = getorder.CustAcct;
+                ordermodel.ACode = getorder.ACode;
+                ordermodel.ImportFile = getorder.ImportFile;
 
-                if (q.ImportDateLine.HasValue)
+                if (getorder.ImportDateLine.HasValue)
                 {
-                    o.importdateline = Convert.ToDateTime(q.ImportDateLine);
+                    ordermodel.ImportDateLine = Convert.ToDateTime(getorder.ImportDateLine);
                 }
                 else
                 {
-                    o.importdateline = null;
+                    ordermodel.ImportDateLine = null;
                 }
 
-                o.timing = q.Timing;
-                o.volume = q.Volume;
-                o.samplerack = Convert.ToBoolean(q.SampleRack);
-                o.cmcuser = q.CMCUser;
-                o.customerreference = q.CustomerReference;
-                o.totalorderweight = q.TotalOrderWeight;
-                o.custordertype = q.CustOrderType;
+                ordermodel.Timing = getorder.Timing;
+                ordermodel.Volume = getorder.Volume;
+                ordermodel.SampleRack = Convert.ToBoolean(getorder.SampleRack);
+                ordermodel.CMCUser = getorder.CMCUser;
+                ordermodel.ClientReference = getorder.CustomerReference;
+                ordermodel.TotalOrderWeight = getorder.TotalOrderWeight;
+                ordermodel.ClientOrderType = getorder.CustOrderType;
 
-                o.custrequestdate = null;
-                if (q.CustRequestDate.HasValue)
+                ordermodel.ClientRequestDate = null;
+                if (getorder.CustRequestDate.HasValue)
                 {
-                    o.custrequestdate = q.CustRequestDate;
+                    ordermodel.ClientRequestDate = getorder.CustRequestDate;
                 }
 
-                o.approvaldate = null;
-                if (q.ApprovalDate.HasValue)
+                ordermodel.ApprovalDate = null;
+                if (getorder.ApprovalDate.HasValue)
                 {
-                    o.approvaldate = q.ApprovalDate;
+                    ordermodel.ApprovalDate = getorder.ApprovalDate;
                 }
 
-                o.requesteddeliverydate = null;
-                if (q.RequestedDeliveryDate.HasValue)
+                ordermodel.RequestedDeliveryDate = null;
+                if (getorder.RequestedDeliveryDate.HasValue)
                 {
-                    o.requesteddeliverydate = q.RequestedDeliveryDate;
+                    ordermodel.RequestedDeliveryDate = getorder.RequestedDeliveryDate;
                 }
 
-                o.custtotalitems = Convert.ToInt32(q.CustTotalItems);
-                o.custrequestedcarrier = q.CustRequestedCarrier;
-                o.legacyid = Convert.ToInt32(q.LegacyID);
-                o.salesrepphone = q.SalesRepPhone;
-                o.salesrepterritory = q.SalesRepTerritory;
-                o.marketingrep = q.MarketingRep;
-                o.marketingrepemail = q.MarketingRepEmail;
-                o.distributor = q.Distributor;
-                o.preferredcarrier = q.PreferredCarrier;
-                o.approvalneeded = Convert.ToBoolean(q.ApprovalNeeded);
-                o.CreateUser = q.CreateUser;
-                o.CreateDate = q.CreateDate;
-                o.UpdateUser = q.UpdateUser;
-                o.UpdateDate = q.UpdateDate;
-                o.IsSDN = q.IsSDN;
-                o.IsSDNOverride = q.IsSDNOverride;
+                ordermodel.ClientTotalItems = Convert.ToInt32(getorder.CustTotalItems);
+                ordermodel.ClientRequestedCarrier = getorder.CustRequestedCarrier;
+                ordermodel.LegacyId = Convert.ToInt32(getorder.LegacyID);
+                ordermodel.SalesRepPhone = getorder.SalesRepPhone;
+                ordermodel.SalesRepTerritory = getorder.SalesRepTerritory;
+                ordermodel.MarketingRep = getorder.MarketingRep;
+                ordermodel.MarketingRepEmail = getorder.MarketingRepEmail;
+                ordermodel.Distributor = getorder.Distributor;
+                ordermodel.PreferredCarrier = getorder.PreferredCarrier;
+                ordermodel.ApprovalNeeded = Convert.ToBoolean(getorder.ApprovalNeeded);
+                ordermodel.CreateUser = getorder.CreateUser;
+                ordermodel.CreateDate = getorder.CreateDate;
+                ordermodel.UpdateUser = getorder.UpdateUser;
+                ordermodel.UpdateDate = getorder.UpdateDate;
+                ordermodel.IsSDN = getorder.IsSDN;
+                ordermodel.IsSDNOverride = getorder.IsSDNOverride;
 
-                return o;
+                return ordermodel;
             }
         }
 
@@ -176,9 +174,9 @@ namespace MvcPhoenix.Services
             // Take a ViewModel and Insert/Update DB / Return the PK
             using (var db = new CMCSQL03Entities())
             {
-                if (vm.orderid == -1)
+                if (vm.OrderID == -1)
                 {
-                    vm.orderid = fnNewOrderID();
+                    vm.OrderID = fnNewOrderID();
                 }
 
                 // update time stamps
@@ -186,77 +184,76 @@ namespace MvcPhoenix.Services
                 vm.UpdateDate = DateTime.UtcNow;
 
                 var q = (from t in db.tblOrderMaster
-                         where t.OrderID == vm.orderid
+                         where t.OrderID == vm.OrderID
                          select t).FirstOrDefault();
 
-                q.OrderDate = vm.orderdate;
-                q.ClientID = vm.clientid;
-                q.DivisionID = vm.divisionid;
-                q.BillingGroup = vm.billinggroup;               // divisionname + businessunit. Rethink changing to divisionid since it is more unique now.
-                q.Customer = vm.customer;
-                q.CMCOrder = vm.cmcorder;
-                q.WebOrderID = vm.weborderid;
-                q.CMCLegacyNum = vm.cmclegacynumber;
-                q.CustOrdNum = vm.custordnum;
-                q.CustSapNum = vm.custsapnum;
-                q.CustRefNum = vm.custrefnum;
-                q.OrderType = vm.ordertype;
-                q.OrderDate = vm.orderdate;
-                q.Company = vm.company;
-                q.Street = vm.street;
-                q.Street2 = vm.street2;
-                q.Street3 = vm.street3;
-                q.City = vm.city;
-                q.State = vm.state;
+                q.OrderDate = vm.OrderDate;
+                q.ClientID = vm.ClientId;
+                q.DivisionID = vm.DivisionId;
+                q.Customer = vm.Customer;
+                q.CMCOrder = vm.CMCOrder;
+                q.WebOrderID = vm.WebOrderId;
+                q.CMCLegacyNum = vm.CMCLegacyNumber;
+                q.CustOrdNum = vm.ClientOrderNumber;
+                q.CustSapNum = vm.ClientSAPNumber;
+                q.CustRefNum = vm.ClientRefNumber;
+                q.OrderType = vm.OrderType;
+                q.OrderDate = vm.OrderDate;
+                q.Company = vm.Company;
+                q.Street = vm.Street;
+                q.Street2 = vm.Street2;
+                q.Street3 = vm.Street3;
+                q.City = vm.City;
+                q.State = vm.State;
                 q.Zip = vm.Zip;
-                q.Country = vm.country;
-                q.Attention = vm.attention;
-                q.CustomsRefNum = vm.CustomsRefNum;
-                q.Email = vm.email;
-                q.SalesRep = vm.salesrep;
-                q.SalesEmail = vm.sales_email;
-                q.Req = vm.req;
-                q.ReqPhone = vm.reqphone;
-                q.ReqFax = vm.reqfax;
-                q.ReqEmail = vm.reqemail;
-                q.EndUse = vm.enduse;
-                q.ShipVia = vm.shipvia;
-                q.ShipAcct = vm.shipacct;
-                q.Phone = vm.phone;
-                q.Source = vm.source;
-                q.Fax = vm.fax;
-                q.Tracking = vm.tracking;
-                q.Special = vm.special;
-                q.SpecialInternal = vm.specialinternal;
-                q.Lit = Convert.ToBoolean(vm.lit);
-                q.Region = vm.region;
-                q.COA = vm.coa;
-                q.TDS = vm.tds;
-                q.CID = vm.cid;
-                q.CustAcct = vm.custacct;
-                q.ACode = vm.acode;
-                q.ImportFile = vm.importfile;
-                q.ImportDateLine = vm.importdateline;
-                q.Timing = vm.timing;
-                q.Volume = vm.volume;
-                q.SampleRack = Convert.ToBoolean(vm.samplerack);
-                q.CMCUser = vm.cmcuser;
-                q.CustomerReference = vm.customerreference;
-                q.TotalOrderWeight = (vm.totalorderweight);
-                q.CustOrderType = vm.custordertype;
-                q.CustRequestDate = vm.custrequestdate;
-                q.ApprovalDate = vm.approvaldate;
-                q.RequestedDeliveryDate = vm.requesteddeliverydate;
-                q.CustTotalItems = vm.custtotalitems;
-                q.CustRequestedCarrier = vm.custrequestedcarrier;
-                q.LegacyID = (vm.legacyid);
-                q.SalesRepPhone = vm.salesrepphone;
-                q.SalesRepTerritory = vm.salesrepterritory;
-                q.MarketingRep = vm.marketingrep;
-                q.MarketingRepEmail = vm.marketingrepemail;
-                q.Distributor = vm.distributor;
-                q.PreferredCarrier = vm.preferredcarrier;
-                q.ApprovalNeeded = vm.approvalneeded;
+                q.Country = vm.Country;
+                q.Attention = vm.Attention;
+                q.CustomsRefNum = vm.CustomsRefNumber;
+                q.Email = vm.Email;
+                q.SalesRep = vm.SalesRepName;
+                q.SalesEmail = vm.SalesRepEmail;
+                q.Req = vm.RequestorName;
+                q.ReqPhone = vm.RequestorPhone;
+                q.ReqFax = vm.RequestorFax;
+                q.ReqEmail = vm.RequestorEmail;
+                q.EndUse = vm.EndUse;
+                q.ShipVia = vm.ShipVia;
+                q.ShipAcct = vm.ShipAcct;
+                q.Phone = vm.Phone;
+                q.Source = vm.Source;
+                q.Fax = vm.Fax;
+                q.Tracking = vm.Tracking;
+                q.Special = vm.Special;
+                q.SpecialInternal = vm.SpecialInternal;
+                q.Lit = Convert.ToBoolean(vm.IsLiterature);
+                q.Region = vm.Region;
+                q.COA = vm.COA;
+                q.TDS = vm.TDS;
+                q.CID = vm.CID;
+                q.CustAcct = vm.ClientAcct;
+                q.ACode = vm.ACode;
+                q.ImportFile = vm.ImportFile;
+                q.ImportDateLine = vm.ImportDateLine;
+                q.Timing = vm.Timing;
+                q.Volume = vm.Volume;
+                q.SampleRack = Convert.ToBoolean(vm.SampleRack);
+                q.CMCUser = vm.CMCUser;
+                q.CustomerReference = vm.ClientReference;
+                q.TotalOrderWeight = (vm.TotalOrderWeight);
+                q.CustOrderType = vm.ClientOrderType;
+                q.CustRequestDate = vm.ClientRequestDate;
+                q.ApprovalDate = vm.ApprovalDate;
+                q.RequestedDeliveryDate = vm.RequestedDeliveryDate;
+                q.CustTotalItems = vm.ClientTotalItems;
+                q.CustRequestedCarrier = vm.ClientRequestedCarrier;
+                q.LegacyID = (vm.LegacyId);
+                q.SalesRepPhone = vm.SalesRepPhone;
+                q.SalesRepTerritory = vm.SalesRepTerritory;
+                q.MarketingRep = vm.MarketingRep;
+                q.MarketingRepEmail = vm.MarketingRepEmail;
+                q.Distributor = vm.Distributor;
+                q.PreferredCarrier = vm.PreferredCarrier;
+                q.ApprovalNeeded = vm.ApprovalNeeded;
                 q.UpdateUser = vm.UpdateUser;
                 q.UpdateDate = vm.UpdateDate;
                 q.CreateUser = vm.CreateUser;
@@ -268,7 +265,7 @@ namespace MvcPhoenix.Services
 
                 fnSaveOrderPostUpdate(vm);
 
-                return vm.orderid;
+                return vm.OrderID;
             }
         }
 
@@ -282,11 +279,11 @@ namespace MvcPhoenix.Services
                     bool ShowAlert = false;
 
                     var q = (from t in db.tblOrderMaster
-                             where t.OrderID == vm.orderid
+                             where t.OrderID == vm.OrderID
                              select t).FirstOrDefault();
 
                     var qCountry = (from t in db.tblCountry
-                                    where t.Country == vm.country
+                                    where t.Country == vm.Country
                                     && t.DoNotShip == true
                                     select t).FirstOrDefault();
 
@@ -295,7 +292,7 @@ namespace MvcPhoenix.Services
                         // flag the order record and the item records that are yet to be allocated
                         q.IsSDN = true;
                         var orderitems = (from t in db.tblOrderItem
-                                          where t.OrderID == vm.orderid
+                                          where t.OrderID == vm.OrderID
                                           && t.AllocateStatus == null
                                           select t).ToList();
 
@@ -313,7 +310,7 @@ namespace MvcPhoenix.Services
                         // flag the order record and the item records that are yet to be allocated (again maybe)
                         q.IsSDN = true;
                         var orderitems = (from t in db.tblOrderItem
-                                          where t.OrderID == vm.orderid
+                                          where t.OrderID == vm.OrderID
                                           && t.AllocateStatus == null
                                           select t).ToList();
 
@@ -326,15 +323,15 @@ namespace MvcPhoenix.Services
                         ShowAlert = true;
                     }
 
-                    if (vm.country != "0")
+                    if (vm.Country != "0")
                     {
                         int countryid = 0;
                         countryid = (from t in db.tblCountry
-                                     where t.Country.Contains(vm.country)
+                                     where t.Country.Contains(vm.Country)
                                      select t.CountryID).FirstOrDefault(); // need the ID
 
                         var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet
-                                                where t.ClientID == vm.clientid
+                                                where t.ClientID == vm.ClientId
                                                 && t.CountryID == countryid
                                                 select t).FirstOrDefault();
 
@@ -359,17 +356,17 @@ namespace MvcPhoenix.Services
         {
             var filecontent = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/sdnlist.txt"));
 
-            if (filecontent.Contains(vm.company))
+            if (filecontent.Contains(vm.Company))
             {
                 return true;
             }
 
-            if (!String.IsNullOrEmpty(vm.street) && filecontent.Contains(vm.street))
+            if (!String.IsNullOrEmpty(vm.Street) && filecontent.Contains(vm.Street))
             {
                 return true;
             }
 
-            if (!String.IsNullOrEmpty(vm.attention) && filecontent.Contains(vm.attention))
+            if (!String.IsNullOrEmpty(vm.Attention) && filecontent.Contains(vm.Attention))
             {
                 return true;
             }
@@ -431,18 +428,17 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static OrderItem fnCreateItem(int id)
+        public static OrderItem fnCreateItem(int orderid)
         {
-            // id=OrderID
             using (var db = new CMCSQL03Entities())
             {
-                var dbOrder = db.tblOrderMaster.Find(id);
+                var dbOrder = db.tblOrderMaster.Find(orderid);
 
                 OrderItem vm = new OrderItem();
 
                 vm.CrudMode = "RW";
                 vm.ItemID = -1;
-                vm.OrderID = id;
+                vm.OrderID = orderid;
                 vm.ClientID = dbOrder.ClientID;
                 vm.CreateDate = DateTime.UtcNow;
                 vm.CreateUser = HttpContext.Current.User.Identity.Name;
@@ -462,10 +458,10 @@ namespace MvcPhoenix.Services
                 vm.CarrierInvoiceRcvd = false;
                 vm.DelayReason = null;
                 vm.StatusID = -1;
-                vm.AlertNotesShipping = "<< AlertNotesShipping >>";
-                vm.AlertNotesPackOut = "<< AlertNotesPackOut >>";
-                vm.AlertNotesOrderEntry = "<< AlertNotesOrderEntry >>";
-                vm.AlertNotesOther = "<< AlertNotesOther >>";
+                vm.AlertNotesShipping = null;
+                vm.AlertNotesPackOut = null;
+                vm.AlertNotesOrderEntry = null;
+                vm.AlertNotesOther = null;
 
                 return vm;
             }
@@ -497,58 +493,53 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static OrderItem fnFillOrderItem(int id)
+        public static OrderItem fnFillOrderItem(int orderitemid)
         {
-            // id=itemid
-            // Fill all the fields from the tblOrderItem record
             using (var db = new CMCSQL03Entities())
             {
                 OrderItem vm = new OrderItem();
-                var q = (from t in db.tblOrderItem
-                         where t.ItemID == id
+                var orderitem = (from t in db.tblOrderItem
+                         where t.ItemID == orderitemid
                          select t).FirstOrDefault();
 
-                var cl = db.tblOrderMaster.Find(q.OrderID);
+                var client = db.tblOrderMaster.Find(orderitem.OrderID);
 
-                vm.CrudMode = "RW";                                         // default value
-
-                // Hidden fields to persist for postback
-                vm.ItemID = q.ItemID;
-                vm.OrderID = q.OrderID;
-                vm.ClientID = Convert.ToInt32(cl.ClientID);
-                vm.CreateDate = q.CreateDate;
-                vm.CreateUser = q.CreateUser;
-                vm.UpdateDate = q.UpdateDate;
-                vm.UpdateUser = q.UpdateUser;
-                vm.ProductDetailID = q.ProductDetailID;
-                vm.ProductCode = q.ProductCode;
-                vm.ProductName = q.ProductName;
-                vm.ShelfID = q.ShelfID;
-                vm.Size = q.Size;
-                vm.SRSize = q.SRSize;
-                vm.Qty = q.Qty;
-                vm.LotNumber = q.LotNumber;
-                vm.ItemShipVia = q.Via;
-                vm.ShipDate = q.ShipDate;
-                vm.CSAllocate = q.CSAllocate;
-                vm.AllocateStatus = q.AllocateStatus;
-                vm.NonCMCDelay = q.NonCMCDelay;
-                vm.RDTransfer = q.RDTransfer;
-                vm.BackOrdered = q.BackOrdered;
-                vm.CarrierInvoiceRcvd = q.CarrierInvoiceRcvd;
-                vm.DelayReason = q.DelayReason;
-                vm.SPSCharge = q.SPSCharge;
-                vm.Status = q.Status;
+                vm.CrudMode = "RW";
+                vm.ItemID = orderitem.ItemID;
+                vm.OrderID = orderitem.OrderID;
+                vm.ClientID = Convert.ToInt32(client.ClientID);
+                vm.CreateDate = orderitem.CreateDate;
+                vm.CreateUser = orderitem.CreateUser;
+                vm.UpdateDate = orderitem.UpdateDate;
+                vm.UpdateUser = orderitem.UpdateUser;
+                vm.ProductDetailID = orderitem.ProductDetailID;
+                vm.ProductCode = orderitem.ProductCode;
+                vm.ProductName = orderitem.ProductName;
+                vm.ShelfID = orderitem.ShelfID;
+                vm.Size = orderitem.Size;
+                vm.SRSize = orderitem.SRSize;
+                vm.Qty = orderitem.Qty;
+                vm.LotNumber = orderitem.LotNumber;
+                vm.ItemShipVia = orderitem.Via;
+                vm.ShipDate = orderitem.ShipDate;
+                vm.CSAllocate = orderitem.CSAllocate;
+                vm.AllocateStatus = orderitem.AllocateStatus;
+                vm.NonCMCDelay = orderitem.NonCMCDelay;
+                vm.RDTransfer = orderitem.RDTransfer;
+                vm.BackOrdered = orderitem.BackOrdered;
+                vm.CarrierInvoiceRcvd = orderitem.CarrierInvoiceRcvd;
+                vm.DelayReason = orderitem.DelayReason;
+                vm.SPSCharge = orderitem.SPSCharge;
+                vm.Status = orderitem.Status;
                 vm.StatusID = null;
-                vm.ItemNotes = q.ItemNotes;
-                vm.WasteOrderTotalWeight = q.WasteOrderTotalWeight;
-                vm.AlertNotesShipping = q.AlertNotesShipping;
-                vm.AlertNotesPackOut = q.AlertNotesPackout;
-                vm.AlertNotesOrderEntry = q.AlertNotesOrderEntry;
-                vm.AlertNotesOther = q.AlertNotesOther;
+                vm.ItemNotes = orderitem.ItemNotes;
+                vm.WasteOrderTotalWeight = orderitem.WasteOrderTotalWeight;
+                vm.AlertNotesShipping = orderitem.AlertNotesShipping;
+                vm.AlertNotesPackOut = orderitem.AlertNotesPackout;
+                vm.AlertNotesOrderEntry = orderitem.AlertNotesOrderEntry;
+                vm.AlertNotesOther = orderitem.AlertNotesOther;
 
-                // Look for a reason to set the item R/O
-                if (q.ShipDate != null || q.AllocateStatus == "A")
+                if (orderitem.ShipDate != null || orderitem.AllocateStatus == "A")
                 {
                     vm.CrudMode = "RO";
                 }
@@ -562,6 +553,7 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 bool isNewItem = false;
+
                 // get new order item id if submission is a new entry
                 if (vm.ItemID == -1)
                 {
@@ -570,6 +562,8 @@ namespace MvcPhoenix.Services
                     vm.CreateUser = HttpContext.Current.User.Identity.Name;
                     isNewItem = true;
                 }
+
+                var ordermaster = db.tblOrderMaster.Find(vm.OrderID);
 
                 var orderitem = (from t in db.tblOrderItem
                                  where t.ItemID == vm.ItemID
@@ -600,7 +594,6 @@ namespace MvcPhoenix.Services
                                        where t.ShelfID == vm.ShelfID
                                        select t).FirstOrDefault();
 
-                    // if shelf record is found
                     if (shelfmaster != null)
                     {
                         orderitem.SRSize = vm.SRSize ?? 0;
@@ -638,6 +631,11 @@ namespace MvcPhoenix.Services
                 orderitem.AlertNotesOrderEntry = productdetail.AlertNotesOrderEntry;
                 orderitem.AlertNotesPackout = productmaster.AlertNotesPackout;
 
+                // Update ordermaster using new divisionid from product profile
+                ordermaster.DivisionID = productdetail.DivisionID;
+                ordermaster.UpdateDate = DateTime.UtcNow;
+                ordermaster.UpdateUser = HttpContext.Current.User.Identity.Name;
+
                 if (productdetail.AIRUNNUMBER == "UN3082" | productdetail.AIRUNNUMBER == "UN3077" | productdetail.GRNUNNUMBER == "UN3082" | productdetail.GRNUNNUMBER == "UN3077")
                 {
                     orderitem.AlertNotesOther = "Products with UN3082 and UN3077 may be shipped as non hazardous if under 5 kg";
@@ -647,7 +645,7 @@ namespace MvcPhoenix.Services
 
                 if (isNewItem)
                 {
-                    fnGenerateOrderTransactions(vm.ItemID);         // Go do the Order Trans work....
+                    fnGenerateOrderTransactions(vm.ItemID);
                 }
 
                 return vm.ItemID;
@@ -678,7 +676,6 @@ namespace MvcPhoenix.Services
 
         /// <summary>
         /// find original productdetailid, ignore equivalent products
-        //  use productdetailid and um(size) to check shelfmaster
         //  if true: get shelfid ?: insert new record in shelfmaster using productdetailid and size = um
         /// </summary>
         public static int GetShelfIdProductMaster(int? productmasterid, string um)
@@ -765,69 +762,68 @@ namespace MvcPhoenix.Services
 
         #region Order Transaction Methods
 
-        public static OrderTrans fnCreateTrans(int id)
+        public static OrderTrans fnCreateTrans(int orderid)
         {
-            // id=orderid
             using (var db = new CMCSQL03Entities())
             {
-                var vm = new OrderTrans();
+                OrderTrans ordertrans = new OrderTrans();
                 var order = (from t in db.tblOrderMaster
-                             where t.OrderID == id
+                             where t.OrderID == orderid
                              select t).FirstOrDefault();
 
-                vm.ordertransid = -1;
-                vm.orderid = id;
-                vm.transtype = null;
-                vm.createdate = DateTime.UtcNow;
-                vm.transdate = DateTime.UtcNow.Date;
-                vm.createuser = HttpContext.Current.User.Identity.Name;
-                vm.clientid = order.ClientID;
-                vm.divisionid = order.DivisionID;
+                ordertrans.OrderTransID = -1;
+                ordertrans.OrderId = orderid;
+                ordertrans.TransType = null;
+                ordertrans.CreateDate = DateTime.UtcNow;
+                ordertrans.TransDate = DateTime.UtcNow.Date;
+                ordertrans.CreateUser = HttpContext.Current.User.Identity.Name;
+                ordertrans.ClientId = order.ClientID;
+                ordertrans.DivisionId = order.DivisionID;
 
-                return vm;
+                return ordertrans;
             }
         }
 
-        public static int fnSaveTrans(OrderTrans vm)
+        public static int fnSaveTrans(OrderTrans model)
         {
             using (var db = new CMCSQL03Entities())
             {
-                if (vm.ordertransid == -1)
+                if (model.OrderTransID == -1)
                 {
                     tblOrderTrans newrec = new tblOrderTrans();
                     db.tblOrderTrans.Add(newrec);
-                    vm.createdate = DateTime.UtcNow;
-                    vm.createuser = HttpContext.Current.User.Identity.Name;
+                    model.CreateDate = DateTime.UtcNow;
+                    model.CreateUser = HttpContext.Current.User.Identity.Name;
 
                     db.SaveChanges();
-                    vm.ordertransid = newrec.OrderTransID;
+                    model.OrderTransID = newrec.OrderTransID;
                 }
 
-                vm.updatedate = DateTime.UtcNow;
-                vm.updateuser = HttpContext.Current.User.Identity.Name;
+                model.UpdateDate = DateTime.UtcNow;
+                model.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                var d = (from t in db.tblOrderTrans
-                         where t.OrderTransID == vm.ordertransid
-                         select t).FirstOrDefault();
+                var ordertrans = (from t in db.tblOrderTrans
+                                  where t.OrderTransID == model.OrderTransID
+                                  select t).FirstOrDefault();
 
-                d.OrderID = vm.orderid;
-                d.OrderItemID = vm.orderitemid;
-                d.ClientID = vm.clientid;
-                d.DivisionID = vm.divisionid;
-                d.TransDate = vm.transdate;
-                d.TransType = vm.transtype;
-                d.TransQty = vm.transqty ?? 1;
-                d.TransRate = GetTransactionRate(vm.clientid, vm.transtype, vm.transrate);
-                d.TransAmount = d.TransQty * d.TransRate;
-                d.Comments = vm.comments;
-                d.CreateDate = vm.createdate;
-                d.CreateUser = vm.createuser;
-                d.UpdateDate = vm.updatedate;
-                d.UpdateUser = vm.updateuser;
+                ordertrans.OrderID = model.OrderId;
+                ordertrans.OrderItemID = model.OrderItemId;
+                ordertrans.ClientID = model.ClientId;
+                ordertrans.DivisionID = model.DivisionId;
+                ordertrans.TransDate = model.TransDate;
+                ordertrans.TransType = model.TransType;
+                ordertrans.TransQty = model.TransQty ?? 1;
+                ordertrans.TransRate = GetTransactionRate(model.ClientId, model.TransType, model.TransRate);
+                ordertrans.TransAmount = ordertrans.TransQty * ordertrans.TransRate;
+                ordertrans.Comments = model.Comments;
+                ordertrans.CreateDate = model.CreateDate;
+                ordertrans.CreateUser = model.CreateUser;
+                ordertrans.UpdateDate = model.UpdateDate;
+                ordertrans.UpdateUser = model.UpdateUser;
 
                 db.SaveChanges();
 
-                return vm.ordertransid;
+                return model.OrderTransID;
             }
         }
 
@@ -1042,24 +1038,24 @@ namespace MvcPhoenix.Services
                               where t.OrderTransID == id
                               select t).FirstOrDefault();
 
-                orderitemtransaction.ordertransid = result.OrderTransID;
-                orderitemtransaction.orderid = result.OrderID;
-                orderitemtransaction.orderitemid = result.OrderItemID;
-                orderitemtransaction.clientid = result.ClientID;
-                orderitemtransaction.divisionid = result.DivisionID;
-                orderitemtransaction.transdate = result.TransDate;
-                orderitemtransaction.transtype = result.TransType;
-                orderitemtransaction.transqty = result.TransQty;
-                orderitemtransaction.transrate = result.TransRate;
-                orderitemtransaction.transamount = result.TransAmount;
+                orderitemtransaction.OrderTransID = result.OrderTransID;
+                orderitemtransaction.OrderId = result.OrderID;
+                orderitemtransaction.OrderItemId = result.OrderItemID;
+                orderitemtransaction.ClientId = result.ClientID;
+                orderitemtransaction.DivisionId = result.DivisionID;
+                orderitemtransaction.TransDate = result.TransDate;
+                orderitemtransaction.TransType = result.TransType;
+                orderitemtransaction.TransQty = result.TransQty;
+                orderitemtransaction.TransRate = result.TransRate;
+                orderitemtransaction.TransAmount = result.TransAmount;
                 orderitemtransaction.BillingTier = result.BillingTier;
                 orderitemtransaction.BillingRate = result.BillingRate;
                 orderitemtransaction.BillingCharge = result.BillingCharge;
-                orderitemtransaction.comments = result.Comments;
-                orderitemtransaction.createdate = result.CreateDate;
-                orderitemtransaction.createuser = result.CreateUser;
-                orderitemtransaction.updatedate = result.UpdateDate;
-                orderitemtransaction.updateuser = result.UpdateUser;
+                orderitemtransaction.Comments = result.Comments;
+                orderitemtransaction.CreateDate = result.CreateDate;
+                orderitemtransaction.CreateUser = result.CreateUser;
+                orderitemtransaction.UpdateDate = result.UpdateDate;
+                orderitemtransaction.UpdateUser = result.UpdateUser;
 
                 return orderitemtransaction;
             }
@@ -1086,10 +1082,8 @@ namespace MvcPhoenix.Services
                              where t.OrderID == orderitem.OrderID
                              select t).FirstOrDefault();
 
-                string sqlquery = "";
-
                 // Tier 1 sample charge
-                sqlquery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderitem.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
+                string sqlquery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderitem.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
                 db.Database.ExecuteSqlCommand(sqlquery);
 
                 var tierSize = (from t in db.tblTier
@@ -1106,7 +1100,6 @@ namespace MvcPhoenix.Services
                     newrec.OrderID = orderitem.OrderID;
                     newrec.ClientID = order.ClientID;
                     newrec.DivisionID = order.DivisionID;
-                    newrec.BillingGroup = order.BillingGroup;
                     newrec.TransType = "SAMP";
                     newrec.TransQty = orderitem.Qty;
                     newrec.TransRate = tierSize.Price;
@@ -1124,7 +1117,6 @@ namespace MvcPhoenix.Services
                 }
                 else
                 {
-                    // Assume this is a SR size? - pc
                     var tierSpecialRequest = (from t in db.tblTier
                                               where t.ClientID == order.ClientID
                                               && t.Size == "1SR"
@@ -1139,7 +1131,6 @@ namespace MvcPhoenix.Services
                         newrec.OrderID = orderitem.OrderID;
                         newrec.ClientID = order.ClientID;
                         newrec.DivisionID = order.DivisionID;
-                        newrec.BillingGroup = order.BillingGroup;
                         newrec.TransType = "SAMP";
                         newrec.TransQty = orderitem.Qty;
                         newrec.TransRate = tierSpecialRequest.Price;
@@ -1159,9 +1150,6 @@ namespace MvcPhoenix.Services
                 }
 
                 // Other charges from shelfmaster
-
-                // pc 10/27/16 Need to know if we are trying to price a Bulk or Stock item
-                // assume a shelfmaster, then change to bulk if necessary
                 var shelf = (from t in db.tblShelfMaster
                              where t.ShelfID == orderitem.ShelfID
                              select t).FirstOrDefault();
@@ -1189,10 +1177,8 @@ namespace MvcPhoenix.Services
 
                     if (shelf == null)
                     {
-                        // go no further
                         return;
                     }
-                    // this should rest me on a shelfmaster that is really the bulk size sample
                 }
 
                 var surcharge = (from t in db.tblSurcharge
@@ -1291,7 +1277,6 @@ namespace MvcPhoenix.Services
                 newrec.OrderID = orderitem.OrderID;
                 newrec.ClientID = order.ClientID;
                 newrec.DivisionID = order.DivisionID;
-                newrec.BillingGroup = order.BillingGroup;
                 newrec.TransDate = DateTime.UtcNow;
                 newrec.TransType = TransType;
                 newrec.TransQty = orderitem.Qty;
@@ -1305,6 +1290,11 @@ namespace MvcPhoenix.Services
                 db.tblOrderTrans.Add(newrec);
                 db.SaveChanges();
             }
+        }
+
+        public int? GetDivisionId()
+        {
+            return 1;
         }
 
         #endregion Order Transaction Methods
@@ -1771,10 +1761,10 @@ namespace MvcPhoenix.Services
 
                 // Get list of open orders.
                 orderslist = (from t in orderslist
-                              join u in unshippedorders on t.orderid equals u.OrderID
-                              join c in db.tblClientAccountRep on t.clientid equals c.ClientID
+                              join u in unshippedorders on t.OrderID equals u.OrderID
+                              join c in db.tblClientAccountRep on t.ClientId equals c.ClientID
                               where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
-                              orderby t.orderid descending, t.orderdate descending
+                              orderby t.OrderID descending, t.OrderDate descending
                               select t).ToList();
 
                 // Display all clients in EU if user has no client assignments.
@@ -1783,10 +1773,10 @@ namespace MvcPhoenix.Services
                 {
                     orderslist = OrderService.fnOrdersSearchResults();
                     orderslist = (from t in orderslist
-                                  join u in unshippedorders on t.orderid equals u.OrderID
-                                  join c in db.tblClient on t.clientid equals c.ClientID
+                                  join u in unshippedorders on t.OrderID equals u.OrderID
+                                  join c in db.tblClient on t.ClientId equals c.ClientID
                                   where c.CMCLocation == "EU"
-                                  orderby t.orderid descending, t.orderdate descending
+                                  orderby t.OrderID descending, t.OrderDate descending
                                   select t).ToList();
                 }
 
@@ -1819,18 +1809,18 @@ namespace MvcPhoenix.Services
 
                               select new OrderMasterFull
                               {
-                                  clientid = t.ClientID,
-                                  orderid = t.OrderID,
-                                  customer = t.Customer,
-                                  clientname = clt.ClientName,
-                                  ordertype = t.OrderType,
-                                  orderdate = t.OrderDate,
-                                  company = t.Company,
+                                  ClientId = t.ClientID,
+                                  OrderID = t.OrderID,
+                                  Customer = t.Customer,
+                                  ClientName = clt.ClientName,
+                                  OrderType = t.OrderType,
+                                  OrderDate = t.OrderDate,
+                                  Company = t.Company,
                                   CreateUser = t.CreateUser,
-                                  itemscount = count,
+                                  ItemsCount = count,
                                   Zip = t.Zip,
-                                  salesrep = t.SalesRep,
-                                  needallocationcount = allocationcount
+                                  SalesRepName = t.SalesRep,
+                                  NeedAllocationCount = allocationcount
                               }).ToList();
 
                 db.Configuration.AutoDetectChangesEnabled = true;
@@ -1970,13 +1960,13 @@ namespace MvcPhoenix.Services
                 int OrdersImportedCount = 0;
 
                 // Get list of unique rows that passed precheck
-                var qGUIDs = (from t in db.tblOrderImport
-                              where t.ImportStatus == "PASS"
-                              && t.Location_MDB == sLocation
-                              select new { t.GUID }).ToList().Distinct();
+                var OrderImportGUIDs = (from t in db.tblOrderImport
+                                        where t.ImportStatus == "PASS"
+                                        && t.Location_MDB == sLocation
+                                        select new { t.GUID }).ToList().Distinct();
 
                 // Create orders and insert items
-                foreach (var row in qGUIDs)
+                foreach (var row in OrderImportGUIDs)
                 {
                     var orderimport = (from t in db.tblOrderImport
                                        where t.GUID == row.GUID
@@ -1984,88 +1974,87 @@ namespace MvcPhoenix.Services
 
                     OrderMasterFull newOrder = new OrderMasterFull();
 
-                    newOrder.orderid = -1;
-                    newOrder.orderdate = Convert.ToDateTime(orderimport.OrderDate);
-                    newOrder.clientid = orderimport.ClientID;
-                    newOrder.divisionid = orderimport.DivisionID;
-                    newOrder.billinggroup = orderimport.BillingGroup;
+                    newOrder.OrderID = -1;
+                    newOrder.OrderDate = Convert.ToDateTime(orderimport.OrderDate);
+                    newOrder.ClientId = orderimport.ClientID;
+                    newOrder.DivisionId = orderimport.DivisionID;
                     newOrder.IsSDN = orderimport.IsSDN;
-                    newOrder.customer = orderimport.Customer;
-                    newOrder.cmcorder = Convert.ToInt32(orderimport.CMCOrder);
-                    newOrder.weborderid = Convert.ToInt32(orderimport.WebOrderID);
-                    newOrder.cmclegacynumber = orderimport.CMCLegacyNum;
-                    newOrder.custordnum = orderimport.CustOrdNum;
-                    newOrder.custsapnum = orderimport.CustSapNum;
-                    newOrder.custrefnum = orderimport.CustRefNum;
+                    newOrder.Customer = orderimport.Customer;
+                    newOrder.CMCOrder = Convert.ToInt32(orderimport.CMCOrder);
+                    newOrder.WebOrderId = Convert.ToInt32(orderimport.WebOrderID);
+                    newOrder.CMCLegacyNumber = orderimport.CMCLegacyNum;
+                    newOrder.ClientOrderNumber = orderimport.CustOrdNum;
+                    newOrder.ClientSAPNumber = orderimport.CustSapNum;
+                    newOrder.ClientRefNumber = orderimport.CustRefNum;
                     if (orderimport.OrderType == "w")
                     {
-                        newOrder.ordertype = "S";
+                        newOrder.OrderType = "S";
                     }
                     else
                     {
-                        newOrder.ordertype = orderimport.OrderType;
+                        newOrder.OrderType = orderimport.OrderType;
                     }
                     if (orderimport.Source == null)
                     {
-                        newOrder.source = "Web";
+                        newOrder.Source = "Web";
                     }
                     else
                     {
-                        newOrder.source = orderimport.Source;
+                        newOrder.Source = orderimport.Source;
                     }
-                    newOrder.company = orderimport.Company;
-                    newOrder.street = orderimport.Street;
-                    newOrder.street2 = orderimport.Street2;
-                    newOrder.street3 = orderimport.Street3;
-                    newOrder.city = orderimport.City;
-                    newOrder.state = orderimport.State;
+                    newOrder.Company = orderimport.Company;
+                    newOrder.Street = orderimport.Street;
+                    newOrder.Street2 = orderimport.Street2;
+                    newOrder.Street3 = orderimport.Street3;
+                    newOrder.City = orderimport.City;
+                    newOrder.State = orderimport.State;
                     newOrder.Zip = orderimport.Zip;
-                    newOrder.country = orderimport.Country;
-                    newOrder.attention = orderimport.Attention;
-                    newOrder.email = orderimport.Email;
-                    newOrder.salesrep = orderimport.SalesRep;
-                    newOrder.sales_email = orderimport.SalesEmail;
-                    newOrder.req = orderimport.Req;
-                    newOrder.reqphone = orderimport.ReqPhone;
-                    newOrder.reqfax = orderimport.ReqFax;
-                    newOrder.reqemail = orderimport.ReqEmail;
-                    newOrder.enduse = orderimport.EndUse;
-                    newOrder.shipvia = orderimport.ShipVia;
-                    newOrder.shipacct = orderimport.ShipAcct;
-                    newOrder.phone = orderimport.Phone;
-                    newOrder.fax = orderimport.Fax;
-                    newOrder.tracking = orderimport.Tracking;
-                    newOrder.special = orderimport.Special;
-                    newOrder.specialinternal = orderimport.SpecialInternal;
-                    newOrder.lit = Convert.ToBoolean(orderimport.Lit);
-                    newOrder.region = orderimport.Region;
-                    newOrder.coa = Convert.ToBoolean(orderimport.COA);
-                    newOrder.tds = Convert.ToBoolean(orderimport.TDS);
-                    newOrder.cid = orderimport.CID;
-                    newOrder.custacct = orderimport.CustAcct;
-                    newOrder.acode = orderimport.ACode;
-                    newOrder.importfile = orderimport.ImportFile;
-                    newOrder.importdateline = orderimport.ImportDateLine;
-                    newOrder.timing = orderimport.Timing;
-                    newOrder.volume = orderimport.Volume;
-                    newOrder.samplerack = Convert.ToBoolean(orderimport.SampleRack);
-                    newOrder.cmcuser = orderimport.CMCUser;
-                    newOrder.customerreference = orderimport.CustomerReference;
-                    newOrder.totalorderweight = orderimport.TotalOrderWeight;
-                    newOrder.custordertype = orderimport.CustOrderType;
-                    newOrder.custrequestdate = orderimport.CustRequestDate;
-                    newOrder.approvaldate = orderimport.ApprovalDate;
-                    newOrder.requesteddeliverydate = orderimport.RequestedDeliveryDate;
-                    newOrder.custtotalitems = Convert.ToInt32(orderimport.CustTotalItems);
-                    newOrder.custrequestedcarrier = orderimport.CustRequestedCarrier;
-                    newOrder.legacyid = Convert.ToInt32(orderimport.LegacyID);
-                    newOrder.salesrepphone = orderimport.SalesRepPhone;
-                    newOrder.salesrepterritory = orderimport.SalesRepTerritory;
-                    newOrder.marketingrep = orderimport.MarketingRep;
-                    newOrder.marketingrepemail = orderimport.MarketingRepEmail;
-                    newOrder.distributor = orderimport.Distributor;
-                    newOrder.preferredcarrier = orderimport.PreferredCarrier;
-                    newOrder.approvalneeded = Convert.ToBoolean(orderimport.ApprovalNeeded);
+                    newOrder.Country = orderimport.Country;
+                    newOrder.Attention = orderimport.Attention;
+                    newOrder.Email = orderimport.Email;
+                    newOrder.SalesRepName = orderimport.SalesRep;
+                    newOrder.SalesRepEmail = orderimport.SalesEmail;
+                    newOrder.RequestorName = orderimport.Req;
+                    newOrder.RequestorPhone = orderimport.ReqPhone;
+                    newOrder.RequestorFax = orderimport.ReqFax;
+                    newOrder.RequestorEmail = orderimport.ReqEmail;
+                    newOrder.EndUse = orderimport.EndUse;
+                    newOrder.ShipVia = orderimport.ShipVia;
+                    newOrder.ShipAcct = orderimport.ShipAcct;
+                    newOrder.Phone = orderimport.Phone;
+                    newOrder.Fax = orderimport.Fax;
+                    newOrder.Tracking = orderimport.Tracking;
+                    newOrder.Special = orderimport.Special;
+                    newOrder.SpecialInternal = orderimport.SpecialInternal;
+                    newOrder.IsLiterature = Convert.ToBoolean(orderimport.Lit);
+                    newOrder.Region = orderimport.Region;
+                    newOrder.COA = Convert.ToBoolean(orderimport.COA);
+                    newOrder.TDS = Convert.ToBoolean(orderimport.TDS);
+                    newOrder.CID = orderimport.CID;
+                    newOrder.ClientAcct = orderimport.CustAcct;
+                    newOrder.ACode = orderimport.ACode;
+                    newOrder.ImportFile = orderimport.ImportFile;
+                    newOrder.ImportDateLine = orderimport.ImportDateLine;
+                    newOrder.Timing = orderimport.Timing;
+                    newOrder.Volume = orderimport.Volume;
+                    newOrder.SampleRack = Convert.ToBoolean(orderimport.SampleRack);
+                    newOrder.CMCUser = orderimport.CMCUser;
+                    newOrder.ClientReference = orderimport.CustomerReference;
+                    newOrder.TotalOrderWeight = orderimport.TotalOrderWeight;
+                    newOrder.ClientOrderType = orderimport.CustOrderType;
+                    newOrder.ClientRequestDate = orderimport.CustRequestDate;
+                    newOrder.ApprovalDate = orderimport.ApprovalDate;
+                    newOrder.RequestedDeliveryDate = orderimport.RequestedDeliveryDate;
+                    newOrder.ClientTotalItems = Convert.ToInt32(orderimport.CustTotalItems);
+                    newOrder.ClientRequestedCarrier = orderimport.CustRequestedCarrier;
+                    newOrder.LegacyId = Convert.ToInt32(orderimport.LegacyID);
+                    newOrder.SalesRepPhone = orderimport.SalesRepPhone;
+                    newOrder.SalesRepTerritory = orderimport.SalesRepTerritory;
+                    newOrder.MarketingRep = orderimport.MarketingRep;
+                    newOrder.MarketingRepEmail = orderimport.MarketingRepEmail;
+                    newOrder.Distributor = orderimport.Distributor;
+                    newOrder.PreferredCarrier = orderimport.PreferredCarrier;
+                    newOrder.ApprovalNeeded = Convert.ToBoolean(orderimport.ApprovalNeeded);
                     newOrder.CreateUser = orderimport.CreateUser;
                     newOrder.CreateDate = orderimport.CreateDate;
                     newOrder.UpdateUser = orderimport.UpdateUser;
@@ -2139,31 +2128,21 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                tblInvLog newrec = new tblInvLog();
+                tblInvLog InventoryLog = new tblInvLog();
 
-                newrec.LogType = vLogType;
-                newrec.LogDate = vLogDate;
-                newrec.StockID = vStockID;
-                newrec.BulkID = vBulkID;
-                newrec.LogQty = vLogQty;
-                newrec.LogAmount = vLogAmount;
-                newrec.CreateDate = vCreateDate;
-                newrec.CreateUser = vCreateUser;
-                newrec.UpdateDate = vUpdateDate;
-                newrec.UpdateUser = vUpdateUser;
+                InventoryLog.LogType = vLogType;
+                InventoryLog.LogDate = vLogDate;
+                InventoryLog.StockID = vStockID;
+                InventoryLog.BulkID = vBulkID;
+                InventoryLog.LogQty = vLogQty;
+                InventoryLog.LogAmount = vLogAmount;
+                InventoryLog.CreateDate = vCreateDate;
+                InventoryLog.CreateUser = vCreateUser;
+                InventoryLog.UpdateDate = vUpdateDate;
+                InventoryLog.UpdateUser = vUpdateUser;
 
-                db.tblInvLog.Add(newrec);
-
+                db.tblInvLog.Add(InventoryLog);
                 db.SaveChanges();
-            }
-        }
-
-        public static int ExecuteADOSQL(string sql)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                db.Database.ExecuteSqlCommand(sql);
-                return 1;
             }
         }
     }

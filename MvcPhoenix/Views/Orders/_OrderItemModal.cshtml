@@ -364,9 +364,9 @@
 
     function CloseForm() {
         // Update the items partial
-        $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { id = @Model.OrderID })');
+        $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { orderid = @Model.OrderID })');
         // Update the trans partial
-        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { id = @Model.OrderID })');
+        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { orderid = @Model.OrderID })');
         // Hide the modal
         $('#dialogPlaceholderModal').modal('hide');
         // Show sample alert note

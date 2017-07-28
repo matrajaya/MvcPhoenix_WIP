@@ -72,9 +72,9 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult PrintPickOrderItems(int id)
+        public ActionResult PrintPickOrderItems(int orderid)
         {
-            var orderitems = PrintListOrderItems(id);
+            var orderitems = PrintListOrderItems(orderid);
 
             if (orderitems.Count > 0)
             {
@@ -85,9 +85,9 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult PrintPackOrderItems(int id)
+        public ActionResult PrintPackOrderItems(int orderid)
         {
-            var orderitems = PrintListOrderItems(id);
+            var orderitems = PrintListOrderItems(orderid);
 
             if (orderitems.Count > 0)
             {
@@ -151,12 +151,12 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult PrintRemainingItems(int id)
+        public ActionResult PrintRemainingItems(int orderid)
         {
             using (var db = new CMCSQL03Entities())
             {
                 var orderitems = (from t in db.tblOrderItem
-                                  where t.OrderID == id
+                                  where t.OrderID == orderid
                                   && (t.ShipDate != null || t.AllocateStatus != "A")
                                   orderby t.ProductCode
                                   select new OrderItem
@@ -249,9 +249,9 @@ namespace MvcPhoenix.Controllers
         #region Order Item Methods
 
         [HttpGet]
-        public ActionResult fnOrderItemsList(int id)
+        public ActionResult fnOrderItemsList(int orderid)
         {
-            var orderitems = OrderService.ListOrderItems(id);
+            var orderitems = OrderService.ListOrderItems(orderid);
 
             if (orderitems.Count > 0)
             {
@@ -379,33 +379,32 @@ namespace MvcPhoenix.Controllers
         #region Order Transaction Methods
 
         [HttpGet]
-        public ActionResult fnOrderTransList(int id)
+        public ActionResult fnOrderTransList(int orderid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                // id=orderid
                 var orderitemtransactions = (from t in db.tblOrderTrans
                                              join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
                                              from p in a.DefaultIfEmpty()
-                                             where t.OrderID == id
+                                             where t.OrderID == orderid
                                              orderby t.OrderItemID
                                              select new OrderTrans
                                              {
-                                                 ordertransid = t.OrderTransID,
-                                                 orderid = t.OrderID,
-                                                 orderitemid = t.OrderItemID,
-                                                 productcode = p.ProductCode,
-                                                 clientid = t.ClientID,
-                                                 transdate = t.TransDate,
-                                                 transtype = t.TransType,
-                                                 transqty = t.TransQty,
-                                                 transrate = t.TransRate,
-                                                 transamount = t.TransAmount,
-                                                 comments = t.Comments,
-                                                 createdate = t.CreateDate,
-                                                 createuser = t.CreateUser,
-                                                 updatedate = t.UpdateDate,
-                                                 updateuser = t.UpdateUser
+                                                 OrderTransID = t.OrderTransID,
+                                                 OrderId = t.OrderID,
+                                                 OrderItemId = t.OrderItemID,
+                                                 ProductCode = p.ProductCode,
+                                                 ClientId = t.ClientID,
+                                                 TransDate = t.TransDate,
+                                                 TransType = t.TransType,
+                                                 TransQty = t.TransQty,
+                                                 TransRate = t.TransRate,
+                                                 TransAmount = t.TransAmount,
+                                                 Comments = t.Comments,
+                                                 CreateDate = t.CreateDate,
+                                                 CreateUser = t.CreateUser,
+                                                 UpdateDate = t.UpdateDate,
+                                                 UpdateUser = t.UpdateUser
                                              }).ToList();
 
                 return PartialView("~/Views/Orders/_OrderTrans.cshtml", orderitemtransactions);
@@ -416,7 +415,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult CreateTrans(int id)
         {
             var vm = OrderService.fnCreateTrans(id);
-            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(vm.orderid);
+            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(vm.OrderId);
 
             return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
         }
@@ -425,7 +424,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditTrans(int id)
         {
             var vm = OrderService.fnFillTrans(id);
-            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(vm.orderid);
+            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(vm.OrderId);
 
             return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
         }
@@ -484,14 +483,14 @@ namespace MvcPhoenix.Controllers
                     return RedirectToAction("Index");
                 }
 
-                int id = Convert.ToInt32(fc["orderid"]);
+                int inputorderid = Convert.ToInt32(fc["orderid"]);
                 var result = (from t in db.tblOrderMaster
-                              where t.OrderID == id
+                              where t.OrderID == inputorderid
                               select t).FirstOrDefault();
 
                 if (result != null)
                 {
-                    return RedirectToAction("Edit", new { id = id });
+                    return RedirectToAction("Edit", new { id = inputorderid });
                 }
 
                 return RedirectToAction("Index");
@@ -502,30 +501,28 @@ namespace MvcPhoenix.Controllers
         public ActionResult OrdersNeedAllocation()
         {
             var orderslist = OrderService.fnOrdersSearchResults();
-
-            orderslist = (from t in orderslist
-                          where t.needallocationcount > 0
-                          orderby t.orderid ascending
-                          select t).ToList();
-
             TempData["SearchResultsMessage"] = "Orders Needing Allocation";
 
+            orderslist = (from t in orderslist
+                          where t.NeedAllocationCount > 0
+                          orderby t.OrderID ascending
+                          select t).ToList();
+            
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
         [HttpGet]
         public ActionResult OrdersToday()
         {
-            DateTime datToday = DateTime.Today.AddDays(0);
+            DateTime dateToday = DateTime.Today.AddDays(0);
             var orderslist = OrderService.fnOrdersSearchResults();
-
-            orderslist = (from t in orderslist
-                          orderby t.orderid descending
-                          where t.orderdate.Value.Date == datToday.Date
-                          select t).ToList();
-
             TempData["SearchResultsMessage"] = "Orders Created Today";
 
+            orderslist = (from t in orderslist
+                          orderby t.OrderID descending
+                          where t.OrderDate.Value.Date == dateToday.Date
+                          select t).ToList();
+            
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
@@ -534,14 +531,13 @@ namespace MvcPhoenix.Controllers
         {
             DateTime dateToday = DateTime.Today.AddDays(-1);
             var orderslist = OrderService.fnOrdersSearchResults();
-
-            orderslist = (from t in orderslist
-                          orderby t.orderid descending
-                          where t.orderdate.Value.Date == dateToday.Date
-                          select t).ToList();
-
             TempData["SearchResultsMessage"] = "Orders Created Yesterday";
 
+            orderslist = (from t in orderslist
+                          orderby t.OrderID descending
+                          where t.OrderDate.Value.Date == dateToday.Date
+                          select t).ToList();
+            
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
@@ -549,13 +545,12 @@ namespace MvcPhoenix.Controllers
         public ActionResult OrdersLastTen()
         {
             var orderslist = OrderService.fnOrdersSearchResults();
-
-            orderslist = (from t in orderslist
-                          orderby t.orderid descending
-                          select t).Take(10).ToList();
-
             TempData["SearchResultsMessage"] = "Last 10 Orders";
 
+            orderslist = (from t in orderslist
+                          orderby t.OrderID descending
+                          select t).Take(10).ToList();
+            
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
@@ -563,14 +558,13 @@ namespace MvcPhoenix.Controllers
         public ActionResult OrdersMineLastTen()
         {
             var orderslist = OrderService.fnOrdersSearchResults();
+            TempData["SearchResultsMessage"] = "My Last 10 Orders";
 
             orderslist = (from t in orderslist
                           where t.CreateUser == User.Identity.Name
-                          orderby t.orderid descending
+                          orderby t.OrderID descending
                           select t).Take(10).ToList();
-
-            TempData["SearchResultsMessage"] = "My Last 10 Orders";
-
+            
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
         }
 
@@ -583,18 +577,18 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult LookupClientID(FormCollection fc)
         {
+            int inputclientid = Convert.ToInt32(fc["ClientID"]);
             var orderslist = OrderService.fnOrdersSearchResults();
-            int pk = Convert.ToInt32(fc["ClientID"]);
+            TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
-                          where t.clientid == pk
-                          orderby t.orderid descending
-                          select t).Take(20).ToList();
+                          where t.ClientId == inputclientid
+                          orderby t.OrderID descending
+                          select t).Take(100).ToList();
 
-            TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Last 20 Orders - " + orderslist[0].clientname;
+                TempData["SearchResultsMessage"] = "Last 100 Orders - " + orderslist[0].ClientName;
             }
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
@@ -603,18 +597,18 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult LookupOrderDate(FormCollection fc)
         {
-            DateTime mydate = Convert.ToDateTime(fc["searchorderdate"]);
+            DateTime inputdate = Convert.ToDateTime(fc["searchorderdate"]);
             var orderslist = OrderService.fnOrdersSearchResults();
+            TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
-                          where t.orderdate.Value.Date == mydate.Date
-                          orderby t.orderid descending
+                          where t.OrderDate.Value.Date == inputdate.Date
+                          orderby t.OrderID descending
                           select t).ToList();
 
-            TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Orders For " + mydate.ToShortDateString();
+                TempData["SearchResultsMessage"] = "Orders For " + inputdate.ToShortDateString();
             }
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
@@ -623,18 +617,18 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult LookupCompany(FormCollection fc)
         {
-            var mycompany = fc["searchcompany"];
+            var inputcompany = fc["searchcompany"];
             var orderslist = OrderService.fnOrdersSearchResults();
+            TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
-                          where t.company != null
-                          && t.company.ToLower().Contains(mycompany.ToLower())
+                          where t.Company != null
+                          && t.Company.ToLower().Contains(inputcompany.ToLower())
                           select t).ToList();
 
-            TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Orders For Ship To " + mycompany;
+                TempData["SearchResultsMessage"] = "Orders For Ship To " + inputcompany;
             }
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
@@ -643,18 +637,18 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult LookupZipCode(FormCollection fc)
         {
-            var myzipcode = fc["searchzipcode"];
+            var inputzipcode = fc["searchzipcode"];
             var orderslist = OrderService.fnOrdersSearchResults();
+            TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
                           where t.Zip != null
-                          && t.Zip.Contains(myzipcode)
+                          && t.Zip.Contains(inputzipcode)
                           select t).ToList();
 
-            TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Orders For Zip Code " + myzipcode;
+                TempData["SearchResultsMessage"] = "Orders For Zip Code " + inputzipcode;
             }
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
@@ -663,18 +657,18 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult LookupSalesRep(FormCollection fc)
         {
-            var mysalesrep = fc["searchsalesrep"];
+            var inputsalesrep = fc["searchsalesrep"];
             var orderslist = OrderService.fnOrdersSearchResults();
+            TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
-                          where t.salesrep != null
-                          && t.salesrep.Contains(mysalesrep)
+                          where t.SalesRepName != null
+                          && t.SalesRepName.ToLower().Contains(inputsalesrep.ToLower())
                           select t).ToList();
 
-            TempData["SearchResultsMessage"] = "No Results Found";
             if (orderslist.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Orders For sales Rep " + mysalesrep;
+                TempData["SearchResultsMessage"] = "Orders For sales Rep " + inputsalesrep;
             }
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
