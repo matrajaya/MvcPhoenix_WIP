@@ -9,177 +9,160 @@ namespace MvcPhoenix.Services
 {
     public class BulkService
     {
-        public static string fnBuildProductMasterDropDown(int clientid)
+        public static BulkContainerViewModel FillBulkContainer(int bulkId)
         {
-            // This returns ONLY the <option> portion of the <select> tag, thus allowing the <select> tag to
-            // be propering decorated with onchange= etc..
             using (var db = new CMCSQL03Entities())
             {
-                var products = (from t in db.tblProductMaster
-                                where t.ClientID == clientid
-                                orderby t.MasterCode, t.MasterName
-                                select t);
+                var bulkRecord = (from bulk in db.tblBulk
+                                  where bulk.BulkID == bulkId
+                                  select new BulkContainerViewModel
+                                  {
+                                      isknownmaterial = true,
+                                      bulkid = bulk.BulkID,
+                                      productmasterid = bulk.ProductMasterID,
+                                      warehouse = bulk.Warehouse,
+                                      receivedate = bulk.ReceiveDate,
+                                      carrier = bulk.Carrier,
+                                      receivedby = bulk.ReceivedBy,
+                                      enteredby = bulk.EnteredBy,
+                                      receiveweight = bulk.ReceiveWeight,
+                                      lotnumber = bulk.LotNumber,
+                                      mfgdate = bulk.MfgDate,
+                                      expirationdate = bulk.ExpirationDate,
+                                      ceaseshipdate = bulk.CeaseShipDate,
+                                      bulkstatus = bulk.BulkStatus,
+                                      qty = "1",
+                                      um = bulk.UM,
+                                      containercolor = bulk.ContainerColor,
+                                      bin = bulk.Bin,
+                                      containertype = bulk.ContainerType,
+                                      coaincluded = bulk.COAIncluded,
+                                      msdsincluded = bulk.MSDSIncluded,
+                                      currentweight = bulk.CurrentWeight,
+                                      qcdate = bulk.QCDate,
+                                      noticedate = bulk.NoticeDate,
+                                      bulklabelnote = bulk.BulkLabelNote,
+                                      receivedascode = bulk.ReceivedAsCode,
+                                      receivedasname = bulk.ReceivedAsName,
+                                      containernotes = bulk.ContainerNotes,
+                                      CreateUser = bulk.CreateUser,
+                                      CreateDate = bulk.CreateDate,
+                                      UpdateUser = bulk.UpdateUser,
+                                      UpdateDate = bulk.UpdateDate
+                                  }).FirstOrDefault();
 
-                string s = "<option value='0' selected=true>Select Master Code</option>";
-                if (products.Count() > 0)
-                {
-                    foreach (var item in products)
-                    { s = s + "<option value=" + item.ProductMasterID.ToString() + ">" + item.MasterCode + " - " + item.MasterName + "</option>"; }
-                }
-                else
-                { s = s + "<option value=0>No Products Found</option>"; }
-                s = s + "</select>";
-                return s;
+                var productMaster = (from t in db.tblProductMaster
+                                     where t.ProductMasterID == bulkRecord.productmasterid
+                                     select t).FirstOrDefault();
+
+                var client = (from t in db.tblClient
+                              where t.ClientID == productMaster.ClientID
+                              select t).FirstOrDefault();
+
+                bulkRecord.clientid = productMaster.ClientID;
+                bulkRecord.clientname = client.ClientName;
+                bulkRecord.MasterCode = productMaster.MasterCode;
+                bulkRecord.MasterName = productMaster.MasterName;
+                bulkRecord.pm_ceaseshipdifferential = productMaster.CeaseShipDifferential;
+
+                return bulkRecord;
             }
         }
 
-        public static BulkContainerViewModel fnFillBulkContainerFromDB(int id)
+        public static bool SaveBulkContainer(BulkContainerViewModel model)
         {
-            // id=bulkid
-            using (var db = new CMCSQL03Entities())
-            {
-                var obj = (from t in db.tblBulk
-                           where t.BulkID == id
-                           select new BulkContainerViewModel
-                           {
-                               isknownmaterial = true,
-                               bulkid = t.BulkID,
-                               productmasterid = t.ProductMasterID,
-                               warehouse = t.Warehouse,
-                               receivedate = t.ReceiveDate,
-                               carrier = t.Carrier,
-                               receivedby = t.ReceivedBy,
-                               enteredby = t.EnteredBy,
-                               receiveweight = t.ReceiveWeight,
-                               lotnumber = t.LotNumber,
-                               mfgdate = t.MfgDate,
-                               expirationdate = t.ExpirationDate,
-                               ceaseshipdate = t.CeaseShipDate,
-                               bulkstatus = t.BulkStatus,
-                               qty = "1",
-                               um = t.UM,
-                               containercolor = t.ContainerColor,
-                               bin = t.Bin,
-                               containertype = t.ContainerType,
-                               coaincluded = t.COAIncluded,
-                               msdsincluded = t.MSDSIncluded,
-                               currentweight = t.CurrentWeight,
-                               qcdate = t.QCDate,
-                               noticedate = t.NoticeDate,
-                               bulklabelnote = t.BulkLabelNote,
-                               receivedascode = t.ReceivedAsCode,
-                               receivedasname = t.ReceivedAsName,
-                               containernotes = t.ContainerNotes,
-                               CreateUser = t.CreateUser,
-                               CreateDate = t.CreateDate,
-                               UpdateUser = t.UpdateUser,
-                               UpdateDate = t.UpdateDate
-                           }).FirstOrDefault();
-
-                var qPM = (from t in db.tblProductMaster
-                           where t.ProductMasterID == obj.productmasterid
-                           select t).FirstOrDefault();
-
-                var qCL = (from t in db.tblClient
-                           where t.ClientID == qPM.ClientID
-                           select t).FirstOrDefault();
-
-                obj.clientid = qPM.ClientID;
-                obj.clientname = qCL.ClientName;
-                obj.MasterCode = qPM.MasterCode;
-                obj.MasterName = qPM.MasterName;
-                obj.pm_ceaseshipdifferential = qPM.CeaseShipDifferential;
-
-                return obj;
-            }
-        }
-
-        public static bool fnSaveBulk(BulkContainerViewModel incoming)
-        {
-            bool retval = true;
+            bool isConfirmSaved = false;
             try
             {
                 using (var db = new CMCSQL03Entities())
                 {
-                    int pk = incoming.bulkid;
-                    if (incoming.bulkid == -1)
+                    int pk = model.bulkid;
+                    if (model.bulkid == -1)
                     {
-                        var newrec = new tblBulk { ProductMasterID = incoming.productmasterid };
-                        db.tblBulk.Add(newrec);
-                        newrec.CreateDate = DateTime.UtcNow;
-                        newrec.CreateUser = HttpContext.Current.User.Identity.Name;
-                        newrec.UpdateDate = DateTime.UtcNow;
-                        newrec.UpdateUser = HttpContext.Current.User.Identity.Name;
+                        var newRecord = new tblBulk { ProductMasterID = model.productmasterid };
+
+                        db.tblBulk.Add(newRecord);
+
+                        newRecord.CreateDate = DateTime.UtcNow;
+                        newRecord.CreateUser = HttpContext.Current.User.Identity.Name;
+                        newRecord.UpdateDate = DateTime.UtcNow;
+                        newRecord.UpdateUser = HttpContext.Current.User.Identity.Name;
+
                         db.SaveChanges();
-                        pk = newrec.BulkID;
+
+                        pk = newRecord.BulkID;
                     }
 
-                    var bulk = (from t in db.tblBulk
-                                where t.BulkID == pk
-                                select t).FirstOrDefault();
+                    var bulkRecord = (from t in db.tblBulk
+                                      where t.BulkID == pk
+                                      select t).FirstOrDefault();
 
-                    bulk.Warehouse = incoming.warehouse;
-                    bulk.ReceiveDate = incoming.receivedate;
-                    bulk.Carrier = incoming.carrier;
-                    bulk.ReceivedBy = incoming.receivedby;
-                    bulk.EnteredBy = incoming.enteredby;
-                    bulk.ProductMasterID = incoming.productmasterid;
-                    bulk.ReceiveWeight = incoming.receiveweight;
-                    bulk.LotNumber = incoming.lotnumber;
-                    bulk.MfgDate = incoming.mfgdate;
-                    bulk.ExpirationDate = incoming.expirationdate;
-                    bulk.CeaseShipDate = incoming.ceaseshipdate;
-                    bulk.BulkStatus = incoming.bulkstatus;
-                    bulk.UM = incoming.um;
-                    bulk.ContainerColor = incoming.containercolor;
-                    bulk.Bin = incoming.bin;
-                    bulk.ContainerType = incoming.containertype;
-                    bulk.COAIncluded = incoming.coaincluded;
-                    bulk.MSDSIncluded = incoming.msdsincluded;
-                    bulk.ContainerNotes = incoming.containernotes;
-                    bulk.CurrentWeight = incoming.currentweight;
-                    bulk.QCDate = incoming.qcdate;
-                    bulk.NoticeDate = incoming.noticedate;
-                    bulk.BulkLabelNote = incoming.bulklabelnote;
-                    bulk.ReceivedAsCode = incoming.receivedascode;
-                    bulk.ReceivedAsName = incoming.receivedasname;
-                    bulk.UpdateDate = DateTime.UtcNow;
-                    bulk.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    bulkRecord.Warehouse = model.warehouse;
+                    bulkRecord.ReceiveDate = model.receivedate;
+                    bulkRecord.Carrier = model.carrier;
+                    bulkRecord.ReceivedBy = model.receivedby;
+                    bulkRecord.EnteredBy = model.enteredby;
+                    bulkRecord.ProductMasterID = model.productmasterid;
+                    bulkRecord.ReceiveWeight = model.receiveweight;
+                    bulkRecord.LotNumber = model.lotnumber;
+                    bulkRecord.MfgDate = model.mfgdate;
+                    bulkRecord.ExpirationDate = model.expirationdate;
+                    bulkRecord.CeaseShipDate = model.ceaseshipdate;
+                    bulkRecord.BulkStatus = model.bulkstatus;
+                    bulkRecord.UM = model.um;
+                    bulkRecord.ContainerColor = model.containercolor;
+                    bulkRecord.Bin = model.bin;
+                    bulkRecord.ContainerType = model.containertype;
+                    bulkRecord.COAIncluded = model.coaincluded;
+                    bulkRecord.MSDSIncluded = model.msdsincluded;
+                    bulkRecord.ContainerNotes = model.containernotes;
+                    bulkRecord.CurrentWeight = model.currentweight;
+                    bulkRecord.QCDate = model.qcdate;
+                    bulkRecord.NoticeDate = model.noticedate;
+                    bulkRecord.BulkLabelNote = model.bulklabelnote;
+                    bulkRecord.ReceivedAsCode = model.receivedascode;
+                    bulkRecord.ReceivedAsName = model.receivedasname;
+                    bulkRecord.UpdateDate = DateTime.UtcNow;
+                    bulkRecord.UpdateUser = HttpContext.Current.User.Identity.Name;
+
                     db.SaveChanges();
-                    retval = true;
+
+                    isConfirmSaved = true;
                 }
             }
             catch
             {
-                retval = false;
-                throw new Exception("Error occurred saving Bulk Container");
+                isConfirmSaved = false;
+                throw new Exception("Error occurred while saving bulk container changes to database.");
             }
-            return retval;
+
+            return isConfirmSaved;
         }
 
         #region SupportMethods
 
-        public static List<BulkContainerViewModel> fnBulkContainerList()
+        public static List<BulkContainerViewModel> BulkContainers()
         {
             using (var db = new CMCSQL03Entities())
             {
-                var mylist = (from t in db.tblBulk
-                              join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                              join cl in db.tblClient on pm.ClientID equals cl.ClientID
-                              orderby cl.ClientName, pm.MasterCode
-                              select new BulkContainerViewModel
-                              {
-                                  bulkid = t.BulkID,
-                                  warehouse = t.Warehouse,
-                                  bin = t.Bin,
-                                  clientname = cl.ClientName,
-                                  MasterCode = pm.MasterCode,
-                                  MasterName = pm.MasterName,
-                                  bulkstatus = t.BulkStatus,
-                                  productmasterid = t.ProductMasterID,
-                                  clientid = cl.ClientID
-                              }).ToList();
-                return mylist;
+                var bulkRecords = (from bulk in db.tblBulk
+                                   join productMaster in db.tblProductMaster on bulk.ProductMasterID equals productMaster.ProductMasterID
+                                   join client in db.tblClient on productMaster.ClientID equals client.ClientID
+                                   orderby client.ClientName, productMaster.MasterCode
+                                   select new BulkContainerViewModel
+                                   {
+                                       bulkid = bulk.BulkID,
+                                       warehouse = bulk.Warehouse,
+                                       bin = bulk.Bin,
+                                       clientname = client.ClientName,
+                                       MasterCode = productMaster.MasterCode,
+                                       MasterName = productMaster.MasterName,
+                                       bulkstatus = bulk.BulkStatus,
+                                       productmasterid = bulk.ProductMasterID,
+                                       clientid = client.ClientID
+                                   }).ToList();
+
+                return bulkRecords;
             }
         }
 

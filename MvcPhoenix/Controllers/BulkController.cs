@@ -14,10 +14,10 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Bulk/Index.cshtml");
         }
 
-        public ActionResult BuildProductMasterDropDown(int id)
+        public ActionResult BuildProductMasterDropDown(int clientId)
         {
             // id=clientid .. return the <option> values for the <select> tag
-            return Content(BulkService.fnBuildProductMasterDropDown(id));
+            return Content(ApplicationService.ddlBuildProductMasterDropDown(clientId));
         }
 
         [HttpPost]
@@ -32,7 +32,7 @@ namespace MvcPhoenix.Controllers
             }
             else
             {
-                List<BulkContainerViewModel> result = BulkService.fnBulkContainerList();
+                List<BulkContainerViewModel> result = BulkService.BulkContainers();
                 result = (from t in result
                           where t.clientid == ClientID
                           && t.productmasterid == ProductMasterID
@@ -47,7 +47,7 @@ namespace MvcPhoenix.Controllers
         {
             string BulkStatus = Request.Form["BulkStatus"];
             string Warehouse = Request.Form["Warehouse"];
-            List<BulkContainerViewModel> result = BulkService.fnBulkContainerList();
+            List<BulkContainerViewModel> result = BulkService.BulkContainers();
 
             if (String.IsNullOrEmpty(BulkStatus) && String.IsNullOrEmpty(Warehouse))
             {
@@ -75,19 +75,26 @@ namespace MvcPhoenix.Controllers
         public ActionResult Edit(int id)
         {
             BulkContainerViewModel obj = new BulkContainerViewModel();
-            obj = BulkService.fnFillBulkContainerFromDB(id);
+            obj = BulkService.FillBulkContainer(id);
 
             return View("~/Views/Bulk/Edit.cshtml", obj);
         }
 
         [HttpPost]
-        public ActionResult Save(BulkContainerViewModel obj)
+        public ActionResult Save(BulkContainerViewModel model)
         {
-            // WIP
-            bool bUpdate = BulkService.fnSaveBulk(obj);
-            TempData["SaveResult"] = "Bulk Container Saved on " + DateTime.UtcNow.ToString();
+            bool isSaved = BulkService.SaveBulkContainer(model);
 
-            return RedirectToAction("Edit", new { id = obj.bulkid });
+            if (isSaved == true)
+            {
+                TempData["SaveResult"] = "Bulk container saved on " + DateTime.UtcNow.ToString();
+            }
+            else
+            {
+                TempData["SaveResult"] = "Something went wrong. Bulk container was not saved.";
+            }
+            
+            return RedirectToAction("Edit", new { id = model.bulkid });
         }
     }
 }

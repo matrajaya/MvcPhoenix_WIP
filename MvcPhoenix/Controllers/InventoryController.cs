@@ -43,7 +43,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult EditBulk(int id)   // redirect to bulk edit
         {
-            var vm = BulkService.fnFillBulkContainerFromDB(id);
+            var vm = BulkService.FillBulkContainer(id);
 
             return View("~/Views/Bulk/Edit.cshtml", vm);
         }
@@ -66,7 +66,7 @@ namespace MvcPhoenix.Controllers
 
                 foreach (var row in q)
                 {
-                    vm.Add(BulkService.fnFillBulkContainerFromDB(row.BulkID));
+                    vm.Add(BulkService.FillBulkContainer(row.BulkID));
                 }
 
                 // pc 12/27 added for use by CreateNewPackout so can return to Inv Edit

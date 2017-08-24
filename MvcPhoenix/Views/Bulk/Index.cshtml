@@ -89,6 +89,6 @@
         // call action that returns DD of Mastercodes
         var url = '@Url.Action("BuildProductMasterDropDown", "Bulk")';
         var data = $('#ClientID').val()
-        $("#productmasterid").load(url, { id: data });
+        $("#productmasterid").load(url, { clientId: data });
     }
 </script>

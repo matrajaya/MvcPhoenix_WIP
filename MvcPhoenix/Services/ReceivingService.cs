@@ -180,9 +180,7 @@ namespace MvcPhoenix.Services
                 obj.receivedate = DateTime.UtcNow;
                 obj.bulkstatus = "RECD";
                 obj.enteredby = HttpContext.Current.User.Identity.Name;
-
-                //obj.ListOfProductMasters = ApplicationService.ddlProductMasterIDs(obj.clientid, productmasterid);
-
+                
                 return obj;
             }
         }

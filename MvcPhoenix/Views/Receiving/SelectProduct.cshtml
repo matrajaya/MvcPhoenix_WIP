@@ -75,7 +75,7 @@
         // call action that returns DD of Mastercodes
         var url = '@Url.Action("BuildProductMasterDropDown", "Receiving")';
         var data = $('#ClientID').val()
-        $("#productmasterid").load(url, { id: data });
+        $("#productmasterid").load(url, { clientId: data });
     }
 
     function OnChangeMasterCode() {

@@ -109,10 +109,10 @@ namespace MvcPhoenix.Controllers
             return View("~/Views/Receiving/Edit.cshtml", obj);
         }
 
-        public ActionResult BuildProductMasterDropDown(int id)
+        public ActionResult BuildProductMasterDropDown(int clientId)
         {
             // id=clientid .. return the <option> values for the <select> tag
-            return Content(ApplicationService.ddlBuildProductMasterDropDown(id));
+            return Content(ApplicationService.ddlBuildProductMasterDropDown(clientId));
         }
 
         // TODO: Move to inventory - Iffy

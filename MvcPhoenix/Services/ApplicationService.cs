@@ -132,17 +132,17 @@ namespace MvcPhoenix.Models
 
         #region DropDown Lists Construction
 
-        public static string ddlBuildBillingGroup(int clientid)
+        public static string ddlBuildBillingGroup(int clientId)
         {
             using (var db = new CMCSQL03Entities())
             {
                 var divisionid = (from t in db.tblDivision
-                                  where t.ClientID == clientid
+                                  where t.ClientID == clientId
                                   orderby t.DivisionName
                                   select t);
 
                 var enduses = (from t in db.tblEndUse
-                               where t.ClientID == clientid
+                               where t.ClientID == clientId
                                orderby t.EndUse
                                select t);
 
@@ -203,13 +203,13 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static string ddlBuildProductCodeDropDown(int clientid)
+        public static string ddlBuildProductCodeDropDown(int clientId)
         {
             using (var db = new CMCSQL03Entities())
             {
                 var products = (from t in db.tblProductDetail
                                 join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                                where pm.ClientID == clientid
+                                where pm.ClientID == clientId
                                 orderby t.ProductCode
                                 select t);
 
@@ -231,13 +231,13 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static string ddlBuildProductEquivalentDropdown(int? clientid)
+        public static string ddlBuildProductEquivalentDropdown(int? clientId)
         {
             using (var db = new CMCSQL03Entities())
             {
                 var products = (from t in db.tblProductDetail
                                 join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                                where pm.ClientID == clientid
+                                where pm.ClientID == clientId
                                 && t.ProductCode != pm.MasterCode
                                 orderby t.ProductCode
                                 select new { t.ProductDetailID, t.ProductCode, t.ProductName }).ToList();
@@ -260,21 +260,23 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static string ddlBuildProductMasterDropDown(int clientid)
+        public static string ddlBuildProductMasterDropDown(int clientId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var products = (from t in db.tblProductMaster
-                                where t.ClientID == clientid
+                var products = from t in db.tblProductMaster
+                                where t.ClientID == clientId
                                 orderby t.MasterCode, t.MasterName
-                                select t);
+                                select t;
 
                 string s = "<option value='' selected=true></option>";
 
                 if (products.Count() > 0)
                 {
                     foreach (var item in products)
-                    { s = s + "<option value=" + item.ProductMasterID.ToString() + ">" + item.MasterCode + " - " + item.MasterName + "</option>"; }
+                    { 
+                        s = s + "<option value=" + item.ProductMasterID.ToString() + ">" + item.MasterCode + " - " + item.MasterName + "</option>"; 
+                    }
                 }
                 else
                 {
@@ -289,18 +291,19 @@ namespace MvcPhoenix.Models
 
         public static string ddlBuildShelfMasterPackagesDropDown()
         {
-            // This returns ONLY the <option> portion of the <select> tag
             using (var db = new CMCSQL03Entities())
             {
-                var packages = (from t in db.tblPackage
+                var packages = from t in db.tblPackage
                                 orderby t.Size
-                                select t);
+                                select t;
 
                 string s = "<option value='0' selected=true>Select Package</option>";
                 if (packages.Count() > 0)
                 {
                     foreach (var item in packages)
-                    { s = s + "<option value=" + item.PackageID.ToString() + ">" + item.PartNumber + " - " + item.Description + "</option>"; }
+                    { 
+                        s = s + "<option value=" + item.PackageID.ToString() + ">" + item.PartNumber + " - " + item.Description + "</option>"; 
+                    }
                 }
                 else
                 { s = s + "<option value=0>No Packages Found</option>"; }
@@ -313,7 +316,7 @@ namespace MvcPhoenix.Models
         {
             using (var db = new CMCSQL03Entities())
             {
-                bool isSRcheck = false;                                             // flag to avoid duplicate listing of 1SR
+                bool isSpecialRequest = false;
                 var shelfsizes = (from t in db.tblShelfMaster
                                   where t.ProductDetailID == productdetailid
                                   && t.InactiveSize != true
@@ -328,15 +331,15 @@ namespace MvcPhoenix.Models
                     {
                         if (item.Size == "1SR")
                         {
-                            isSRcheck = true;
+                            isSpecialRequest = true;
                         }
                         s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - " + item.UnitWeight + "</option>";
                     }
                 }
 
-                if (!isSRcheck)
+                if (!isSpecialRequest)
                 {
-                    s = s + "<option value='0'>1SR</option>";                       // TBD: change value to '1SR' and update checks in other services - iffy
+                    s = s + "<option value='0'>1SR</option>";
                 }
 
                 return s;
@@ -514,8 +517,7 @@ namespace MvcPhoenix.Models
                               Value = t.DivisionID.ToString(),
                               Text = t.DivisionName + " / " + t.BusinessUnit
                           }).ToList();
-                //result.Insert(0, new SelectListItem { Value = "", Text = "" });
-
+                
                 return result;
             }
         }
@@ -650,104 +652,104 @@ namespace MvcPhoenix.Models
 
         public static List<SelectListItem> ddlOrderTransactionTypes()
         {
-            var FixedCharges = new SelectListGroup() { Name = "Fixed Charges" };
-            var VariableCharges = new SelectListGroup() { Name = "Variable Charges" };
+            var fixedCharges = new SelectListGroup() { Name = "Fixed Charges" };
+            var variableCharges = new SelectListGroup() { Name = "Variable Charges" };
 
-            List<SelectListItem> transactiontypes = new List<SelectListItem>();
+            List<SelectListItem> transactionTypes = new List<SelectListItem>();
 
-            transactiontypes.Add(new SelectListItem { Value = "MEMO", Text = "Memo", Selected = true });
+            transactionTypes.Add(new SelectListItem { Value = "MEMO", Text = "Memo", Selected = true });
 
             // Fixed Charges
-            transactiontypes.Add(new SelectListItem { Value = "Air Hazard Only", Text = "Air Hazard Only", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Certificate Of Origin", Text = "Certificate Of Origin", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "CMC Pack", Text = "CMC Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Cool Pack", Text = "Cool Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Credit Card Fee", Text = "Credit Card Fee", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Credit Card Order", Text = "Credit Card Order", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Document Handling", Text = "Document Handling", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Empty Packaging", Text = "Empty Packaging", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "External System", Text = "External System", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Follow Up Order", Text = "Follow Up Order", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Freezer Pack", Text = "Freezer Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "GHS Labels", Text = "GHS Labels", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Inactive Products", Text = "Inactive Products", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Isolation", Text = "Isolation", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Isolation Box", Text = "Isolation Box", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "IT Fee", Text = "IT Fee", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Label Maintainance", Text = "Label Maintainance", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Label Stock", Text = "Label Stock", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Labels Printed", Text = "Labels Printed", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Labor Relabel", Text = "Labor Relabel", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Literature Fee", Text = "Literature Fee", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Limited Quantity", Text = "Limited Quantity", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Manual Handling", Text = "Manual Handling", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "MSDS Prints", Text = "MSDS Prints", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "New Label Setup", Text = "New Label Setup", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "New Product Setup", Text = "New Product Setup", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Oberk Pack", Text = "Oberk Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Order Entry", Text = "Order Entry", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Over Pack", Text = "Over Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Pallet Return", Text = "Pallet Return", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Poison Pack", Text = "Poison Pack", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Product Setup Changes", Text = "Product Setup Changes", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "QC Storage", Text = "QC Storage", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RD Handling ADR", Text = "R&D Handling ADR", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RD Handling IATA", Text = "R&D Handling IATA", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RD Handling LQ", Text = "R&D Handling LQ", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "RD Handling Non Hazard", Text = "R&D Handling Non Hazard", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Refrigerator Storage", Text = "Refrigerator Storage", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Relabels", Text = "Relabels", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Rush Shipment", Text = "Rush Shipment", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "SPA 197 Applied", Text = "SPA 197 Applied", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "SPS Paid Order", Text = "SPS Paid Order", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "UN Box", Text = "UN Box", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Warehouse Storage", Text = "Warehouse Storage", Group = FixedCharges });
-            transactiontypes.Add(new SelectListItem { Value = "WHMIS Labels", Text = "WHMIS Labels", Group = FixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Air Hazard Only", Text = "Air Hazard Only", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Certificate Of Origin", Text = "Certificate Of Origin", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "CMC Pack", Text = "CMC Pack", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Cool Pack", Text = "Cool Pack", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Credit Card Fee", Text = "Credit Card Fee", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Credit Card Order", Text = "Credit Card Order", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Document Handling", Text = "Document Handling", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Empty Packaging", Text = "Empty Packaging", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "External System", Text = "External System", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Follow Up Order", Text = "Follow Up Order", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Freezer Pack", Text = "Freezer Pack", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "GHS Labels", Text = "GHS Labels", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Inactive Products", Text = "Inactive Products", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Isolation", Text = "Isolation", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Isolation Box", Text = "Isolation Box", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "IT Fee", Text = "IT Fee", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Label Maintainance", Text = "Label Maintainance", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Label Stock", Text = "Label Stock", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Labels Printed", Text = "Labels Printed", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Labor Relabel", Text = "Labor Relabel", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Literature Fee", Text = "Literature Fee", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Limited Quantity", Text = "Limited Quantity", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Manual Handling", Text = "Manual Handling", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "MSDS Prints", Text = "MSDS Prints", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "New Label Setup", Text = "New Label Setup", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "New Product Setup", Text = "New Product Setup", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Oberk Pack", Text = "Oberk Pack", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Order Entry", Text = "Order Entry", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Over Pack", Text = "Over Pack", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Pallet Return", Text = "Pallet Return", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Poison Pack", Text = "Poison Pack", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Product Setup Changes", Text = "Product Setup Changes", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "QC Storage", Text = "QC Storage", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "RD Handling ADR", Text = "R&D Handling ADR", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "RD Handling IATA", Text = "R&D Handling IATA", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "RD Handling LQ", Text = "R&D Handling LQ", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "RD Handling Non Hazard", Text = "R&D Handling Non Hazard", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Refrigerator Storage", Text = "Refrigerator Storage", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Relabels", Text = "Relabels", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Rush Shipment", Text = "Rush Shipment", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "SPA 197 Applied", Text = "SPA 197 Applied", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "SPS Paid Order", Text = "SPS Paid Order", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "UN Box", Text = "UN Box", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Warehouse Storage", Text = "Warehouse Storage", Group = fixedCharges });
+            transactionTypes.Add(new SelectListItem { Value = "WHMIS Labels", Text = "WHMIS Labels", Group = fixedCharges });
 
             // Variable Charges
-            transactiontypes.Add(new SelectListItem { Value = "Administrative Waste Fee", Text = "Administrative Waste Fee", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Credit", Text = "Credit", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Customs Documents", Text = "Customs Documents", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Delivery Duties Taxes", Text = "Delivery Duties Taxes", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Documents", Text = "Documents", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Handling", Text = "Handling", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "MautFuel", Text = "Maut Fuel", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Miscellaneous Labor", Text = "Miscellaneous Labor", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Other", Text = "Other", Group = VariableCharges });
-            transactiontypes.Add(new SelectListItem { Value = "Waste Processing", Text = "Waste Processing", Group = VariableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Administrative Waste Fee", Text = "Administrative Waste Fee", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Credit", Text = "Credit", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Customs Documents", Text = "Customs Documents", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Delivery Duties Taxes", Text = "Delivery Duties Taxes", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Documents", Text = "Documents", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Handling", Text = "Handling", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "MautFuel", Text = "Maut Fuel", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Miscellaneous Labor", Text = "Miscellaneous Labor", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Other", Text = "Other", Group = variableCharges });
+            transactionTypes.Add(new SelectListItem { Value = "Waste Processing", Text = "Waste Processing", Group = variableCharges });
 
-            return transactiontypes;
+            return transactionTypes;
         }
 
         public static List<SelectListItem> ddlOtherProductStorage()
         {
-            List<SelectListItem> otherstoragelist = new List<SelectListItem>();
+            List<SelectListItem> otherStorageList = new List<SelectListItem>();
 
-            otherstoragelist.Add(new SelectListItem { Value = "", Text = "" });
-            otherstoragelist.Add(new SelectListItem { Value = "Toxic Storage", Text = "Toxic Storage" });
-            otherstoragelist.Add(new SelectListItem { Value = "Spontaneously Combustible", Text = "Spontaneously Combustible" });
-            otherstoragelist.Add(new SelectListItem { Value = "Oxidizer", Text = "Oxidizer" });
-            otherstoragelist.Add(new SelectListItem { Value = "Base", Text = "Base" });
-            otherstoragelist.Add(new SelectListItem { Value = "Acid", Text = "Acid" });
-            otherstoragelist.Add(new SelectListItem { Value = "Clean Storage", Text = "Clean Storage" });
-            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Corrosive", Text = "Flammable/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Toxic/Corrosive", Text = "Toxic/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide", Text = "Biocide" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Toxic", Text = "Biocide/Toxic" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Toxic/Corrosive", Text = "Biocide/Toxic/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive", Text = "Biocide/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Oxidizer", Text = "Biocide/Oxidizer" });
-            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Pueblo", Text = "Flammable/Pueblo" });
-            otherstoragelist.Add(new SelectListItem { Value = "Corrosive/Flammable", Text = "Corrosive/Flammable" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive/Toxic", Text = "Biocide/Corrosive/Toxic" });
-            otherstoragelist.Add(new SelectListItem { Value = "Corrosive/Toxic", Text = "Corrosive/Toxic" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive", Text = "Biocide/Flammable/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Flammable/Toxic/Corrosive", Text = "Flammable/Toxic/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Corrosive/Flammable", Text = "Biocide/Corrosive/Flammable" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Toxic/Corrosive", Text = "Biocide/Flammable/Toxic/Corrosive" });
-            otherstoragelist.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive/Toxic", Text = "Biocide/Flammable/Corrosive/Toxic" });
+            otherStorageList.Add(new SelectListItem { Value = "", Text = "" });
+            otherStorageList.Add(new SelectListItem { Value = "Toxic Storage", Text = "Toxic Storage" });
+            otherStorageList.Add(new SelectListItem { Value = "Spontaneously Combustible", Text = "Spontaneously Combustible" });
+            otherStorageList.Add(new SelectListItem { Value = "Oxidizer", Text = "Oxidizer" });
+            otherStorageList.Add(new SelectListItem { Value = "Base", Text = "Base" });
+            otherStorageList.Add(new SelectListItem { Value = "Acid", Text = "Acid" });
+            otherStorageList.Add(new SelectListItem { Value = "Clean Storage", Text = "Clean Storage" });
+            otherStorageList.Add(new SelectListItem { Value = "Flammable/Corrosive", Text = "Flammable/Corrosive" });
+            otherStorageList.Add(new SelectListItem { Value = "Toxic/Corrosive", Text = "Toxic/Corrosive" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide", Text = "Biocide" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Toxic", Text = "Biocide/Toxic" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Toxic/Corrosive", Text = "Biocide/Toxic/Corrosive" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Corrosive", Text = "Biocide/Corrosive" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Oxidizer", Text = "Biocide/Oxidizer" });
+            otherStorageList.Add(new SelectListItem { Value = "Flammable/Pueblo", Text = "Flammable/Pueblo" });
+            otherStorageList.Add(new SelectListItem { Value = "Corrosive/Flammable", Text = "Corrosive/Flammable" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Corrosive/Toxic", Text = "Biocide/Corrosive/Toxic" });
+            otherStorageList.Add(new SelectListItem { Value = "Corrosive/Toxic", Text = "Corrosive/Toxic" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive", Text = "Biocide/Flammable/Corrosive" });
+            otherStorageList.Add(new SelectListItem { Value = "Flammable/Toxic/Corrosive", Text = "Flammable/Toxic/Corrosive" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Corrosive/Flammable", Text = "Biocide/Corrosive/Flammable" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Flammable/Toxic/Corrosive", Text = "Biocide/Flammable/Toxic/Corrosive" });
+            otherStorageList.Add(new SelectListItem { Value = "Biocide/Flammable/Corrosive/Toxic", Text = "Biocide/Flammable/Corrosive/Toxic" });
 
-            return otherstoragelist;
+            return otherStorageList;
         }
 
         public static List<SelectListItem> ddlPackageIDs(string size)
@@ -903,7 +905,7 @@ namespace MvcPhoenix.Models
 
         public static List<SelectListItem> ddlProductMasterIDs(int? clientid)
         {
-            using (var db = new CMCSQL03Entities())                                                             // 06/13/2016 This now is a list of PD-PN records
+            using (var db = new CMCSQL03Entities())
             {
                 List<SelectListItem> result = new List<SelectListItem>();
 
@@ -1243,7 +1245,6 @@ namespace MvcPhoenix.Models
                               Value = t.Email,
                               Text = t.FirstName + " " + t.LastName
                           }).ToList();
-
                 result.Insert(0, new SelectListItem { Value = "", Text = "" });
 
                 return result;

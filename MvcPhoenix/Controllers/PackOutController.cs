@@ -13,7 +13,7 @@ namespace MvcPhoenix.Controllers
             using (var db = new CMCSQL03Entities())
             {
                 TempData["productdetailid"] = productdetailid;    // to stash calling parameter into form for read on postback cause PDid not part of Bulk vm
-                var vm = BulkService.fnFillBulkContainerFromDB(id);
+                var vm = BulkService.FillBulkContainer(id);
 
                 return View("~/Views/PackOut/Index.cshtml", vm);
             }
