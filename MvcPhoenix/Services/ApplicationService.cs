@@ -265,17 +265,17 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 var products = from t in db.tblProductMaster
-                                where t.ClientID == clientId
-                                orderby t.MasterCode, t.MasterName
-                                select t;
+                               where t.ClientID == clientId
+                               orderby t.MasterCode, t.MasterName
+                               select t;
 
                 string s = "<option value='' selected=true></option>";
 
                 if (products.Count() > 0)
                 {
                     foreach (var item in products)
-                    { 
-                        s = s + "<option value=" + item.ProductMasterID.ToString() + ">" + item.MasterCode + " - " + item.MasterName + "</option>"; 
+                    {
+                        s = s + "<option value=" + item.ProductMasterID.ToString() + ">" + item.MasterCode + " - " + item.MasterName + "</option>";
                     }
                 }
                 else
@@ -294,15 +294,15 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 var packages = from t in db.tblPackage
-                                orderby t.Size
-                                select t;
+                               orderby t.Size
+                               select t;
 
                 string s = "<option value='0' selected=true>Select Package</option>";
                 if (packages.Count() > 0)
                 {
                     foreach (var item in packages)
-                    { 
-                        s = s + "<option value=" + item.PackageID.ToString() + ">" + item.PartNumber + " - " + item.Description + "</option>"; 
+                    {
+                        s = s + "<option value=" + item.PackageID.ToString() + ">" + item.PartNumber + " - " + item.Description + "</option>";
                     }
                 }
                 else
@@ -517,7 +517,7 @@ namespace MvcPhoenix.Models
                               Value = t.DivisionID.ToString(),
                               Text = t.DivisionName + " / " + t.BusinessUnit
                           }).ToList();
-                
+
                 return result;
             }
         }
@@ -1252,7 +1252,10 @@ namespace MvcPhoenix.Models
         }
 
         #endregion SelectListItem Objects
+    }
 
+    public class EmailServices
+    {
         public static void EmailSmtpSend(string from, string to, string subject, string body)
         {
             string hostName = ConfigurationManager.AppSettings["rackspace.hostname"];

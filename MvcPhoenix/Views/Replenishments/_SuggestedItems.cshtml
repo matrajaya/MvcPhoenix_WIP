@@ -11,7 +11,7 @@
         {
             <div class="row">
                 <div class="col-md-8">
-                    <label class="lead">No Order Recommendations found at @DateTime.Now.ToString()</label>
+                    <label class="lead">No order recommendations found at @DateTime.Now.ToString()</label>
                 </div>
                 <div class="col-md-4">
                     @Ajax.ActionLink("Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
@@ -50,8 +50,6 @@
                             <th>Name</th>
                             <th>Supply ID</th>
                             <th>Reorder<br />Weight</th>
-                            @*<th>Notes</th>*@
-                            @*<th><i class="fa fa-fw fa-pencil-square-o"></i></th>*@
                         </tr>
                     </thead>
                     <tbody>
@@ -72,16 +70,6 @@
                                 <td>@item.mastername</td>
                                 <td>@item.supplyid</td>
                                 <td>@item.reorderweight</td>
-                                @*<td>@item.reordernotes</td>*@
-                                @*<td style="text-align:right">
-                                    @Ajax.ActionLink(" ", "EditSuggestedItem", "Replenishments", new { id = @item.id },
-                                    new AjaxOptions
-                                    {
-                                        UpdateTargetId = "dialogPlaceholder",
-                                        InsertionMode = InsertionMode.Replace,
-                                        OnSuccess = "$('#dialogPlaceholderModal').modal('show')"
-                                    }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
-                                </td>*@
                             </tr>
                         }
                     </tbody>
