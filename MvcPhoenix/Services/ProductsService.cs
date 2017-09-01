@@ -5,47 +5,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-// ************** ProductsService.cs ********************
-// This class contains Product Profile service methods
-// ******************************************************
-
 namespace MvcPhoenix.Models
 {
     public class ProductsService
     {
-        public static string fnProductCodesDropDown(int id, string divid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var products = (from t in db.tblProductDetail
-                           join t2 in db.tblProductMaster on t.ProductMasterID equals t2.ProductMasterID
-                           where t2.ClientID == id
-                           orderby t.ProductCode
-                           select new
-                           {
-                               t.ProductDetailID,
-                               t.ProductCode,
-                               t.ProductName,
-                               t2.MasterCode
-                           });
-
-                string sb = "";
-
-                sb = sb + string.Format("<select name='{0}' id='{1}' class='{2}' onchange='getid(this)' >", divid, divid, "form-control");
-
-                sb = sb + string.Format("<option value='{0}' selected=true >{1}</option>", "0", "Product Code");
-
-                foreach (var item in products)
-                {
-                    sb = sb + string.Format("<option value={0}> {1} - {2} - {3} </option>", item.ProductDetailID.ToString(), item.ProductCode, item.MasterCode, item.ProductName);
-                }
-
-                sb = sb + "</select>";
-
-                return sb;
-            }
-        }
-
         public static ProductProfile fnFillOtherPMProps(ProductProfile PP)
         {
             using (var db = new CMCSQL03Entities())

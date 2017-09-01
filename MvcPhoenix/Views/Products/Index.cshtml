@@ -1,9 +1,6 @@
 ﻿@model MvcPhoenix.Models.ProductProfileLanding
 @{
     ViewBag.Title = "Product Profile Management";
-
-    if (Model == null)
-    { }
 }
 
 <div class="container-fluid">
@@ -33,9 +30,9 @@
                         @using (Html.BeginForm("Create", "Products"))
                         {
                             <div class="input-group">
-                                @Html.DropDownList("clientid2", ApplicationService.ddlClientIDs(), new { @class = "form-control" })
+                                @Html.DropDownList("clientid", ApplicationService.ddlClientIDs(), new { @class = "form-control", @required = "required" })
                                 <span class="input-group-btn">
-                                    <input type="submit" id="btnNew" value="Create" class="btn btn-success" />
+                                    <input type="submit" value="Create" class="btn btn-success" />
                                 </span>
                             </div>
                         }
@@ -48,12 +45,12 @@
                         @using (Html.BeginForm("Equivalent", "Products"))
                         {
                             <div class="form-group">
-                                @Html.DropDownList("clientid3", ApplicationService.ddlClientIDs(), new { onchange = "BuildProductCodesDropDown('Equiv')", @class = "form-control" })
+                                @Html.DropDownList("clientidEquivalent", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientIdEquivalent()", @class = "form-control" })
                             </div>
                             <div class="input-group">
                                 <div id="dvProductMasterIDs3">
-                                    <select name="productdetailid3" id='productdetailid3' class='form-control'>
-                                        <option value=""></option>
+                                    <select name="productdetailid" id='productdetailid' class='form-control' required>        
+                                        @* Placeholder for option values *@                               
                                     </select>
                                 </div>
                                 <span class="input-group-btn">
@@ -89,7 +86,9 @@
                                 <div class="form-group">
                                     @Html.TextBox("searchString", null, new { @class = "form-control", @placeholder = "Enter Keywords...", @required = "required" })
                                 </div>
-                                <button type="submit" class="btn btn-primary form-control"><i class="fa fa-search"></i> Search</button>
+                                <button type="submit" class="btn btn-primary form-control">
+                                    <i class="fa fa-search"></i> Search
+                                </button>
                             }
                         </div>
                     </div>
@@ -101,20 +100,19 @@
                             @using (Html.BeginForm("Edit", "Products"))
                             {
                                 <div class="form-group">
-                                    @Html.DropDownList("clientid1", ApplicationService.ddlClientIDs(), new { onchange = "BuildProductCodesDropDown('Edit')", @class = "form-control" })
+                                    @Html.DropDownList("clientidEdit", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientIdEdit()", @class = "form-control" })
                                 </div>
                                 <div class="input-group">
-                                    <div id="dvProductMasterIDs1">
-                                        <select name="productdetailid1" id='productdetailid1' class='form-control' onchange="getid(this)">
-                                            <option value="0"></option>
+                                    <div id="dvPlaceholderProductDetail">
+                                        <select name="productdetailidedit" id='productdetailidedit' class='form-control' required onchange="OnChangeEditProduct(this);">
+                                            @* Placeholder for option values *@
                                         </select>
-                                    </div>
+                                        <input type="hidden" id="productid" name="productid"/>
+                                    </div>                                    
                                     <span class="input-group-btn">
-                                        @Html.ActionLink("Edit Product", "Edit", "Products", new { id = "submitEdit", @class = "btn btn-success" })
+                                        <input type="button" id="editProduct" value="Edit Product" class="btn btn-success" />
                                     </span>
                                 </div>
-                                @* Do not remove this div. JS gives Uncaught TypeError: Cannot read property 'value' of undefined on the getid() function*@
-                                <div id="selectedproductid" hidden>0</div>
                             }
                         </div>
                     </div>
@@ -129,6 +127,7 @@
                 <div class="panel-body">
                     @Html.ActionLink("Convert Equivalent to Product Master", "DetailToMaster", "ProductConversion", null, new { @class = "btn btn-block btn-primary", @target = "_blank" })
                     @Html.ActionLink("Set Client Product Cross-Reference", "XRefList", "Products", null, new { @class = "btn btn-block btn-primary", @target = "_blank" })
+                    <button class="btn btn-block btn-primary">&nbsp;</button>
                 </div>
             </div>
         </div>
@@ -137,25 +136,30 @@
     <div id="dvSearchProduct"></div>
 </div>
 
-<!-- Local javascript -->
 <script type="text/javascript">
-    function BuildProductCodesDropDown(vParam) {
-        var myurl = '@Url.Action("ProductCodesDropDown", "Products")';
-
-        if (vParam == "Edit") {
-            $.get(myurl, { id: $('#clientid1').val(), divid: "productdetailid1" }, function (fromserver) { $('#dvProductMasterIDs1').html(fromserver); });
-        }
-
-        if (vParam == "Equiv") {
-            $.get(myurl, { id: $('#clientid3').val(), divid: "productdetailid3" }, function (fromserver) { $('#dvProductMasterIDs3').html(fromserver); });
-        }
+    function OnChangeClientIdEdit() {
+        var url = '@Url.Action("ProductCodesDropDown", "Products")';
+        var data = $('#clientidEdit').val();
+        $("#productdetailidedit").load(url, { clientid: data });
     }
 
-    function getid(sel) {
-        var prodid = sel.value;
-        // do not remove. js typeerrors come up. See note above by hidden div
-        document.getElementById("selectedproductid").innerHTML = prodid;
-        var editpath = '@Url.Content("~/Products/Edit")' + '/' + prodid;
-        document.getElementById("submitEdit").setAttribute("href", editpath);
+    function OnChangeClientIdEquivalent() {
+        var url = '@Url.Action("ProductCodesDropDown", "Products")';
+        var data = $('#clientidEquivalent').val();
+        $("#productdetailid").load(url, { clientid: data });
     }
+
+    function OnChangeEditProduct(selectedProduct) {
+        $("#productid").val(selectedProduct.value);
+    }
+
+    $('#editProduct').click(function () {
+        var productid = $('#productid').val();
+
+        if (productid > 1) {
+            window.location = "/Products/Edit/" + productid;
+        } else {
+            $.alert("Please select a valid product from the drop down list.");
+        }        
+    });
 </script>

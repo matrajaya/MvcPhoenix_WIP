@@ -211,14 +211,16 @@ namespace MvcPhoenix.Models
                                 join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
                                 where pm.ClientID == clientId
                                 orderby t.ProductCode
-                                select t);
+                                select new { t, pm });
 
                 string s = "<option value='' selected=true></option>";
 
                 if (products.Count() > 0)
                 {
                     foreach (var item in products)
-                    { s = s + "<option value=" + item.ProductDetailID.ToString() + ">" + item.ProductCode + " - " + item.ProductName + "</option>"; }
+                    {
+                        s = s + "<option value=" + item.t.ProductDetailID.ToString() + ">" + item.t.ProductCode + " - (" + item.pm.MasterCode + ") - " + item.t.ProductName + "</option>"; 
+                    }
                 }
                 else
                 {
@@ -230,7 +232,7 @@ namespace MvcPhoenix.Models
                 return s;
             }
         }
-
+        
         public static string ddlBuildProductEquivalentDropdown(int? clientId)
         {
             using (var db = new CMCSQL03Entities())
@@ -240,9 +242,15 @@ namespace MvcPhoenix.Models
                                 where pm.ClientID == clientId
                                 && t.ProductCode != pm.MasterCode
                                 orderby t.ProductCode
-                                select new { t.ProductDetailID, t.ProductCode, t.ProductName }).ToList();
+                                select new 
+                                { 
+                                    t.ProductDetailID, 
+                                    t.ProductCode, 
+                                    t.ProductName 
+                                }).ToList();
 
                 string s = "<option value='0'></option>";
+
                 if (products.Count() > 0)
                 {
                     foreach (var item in products)
@@ -254,6 +262,7 @@ namespace MvcPhoenix.Models
                 {
                     s = s + "<option value=0>No Products Found</option>";
                 }
+
                 s = s + "</select>";
 
                 return s;
@@ -298,6 +307,7 @@ namespace MvcPhoenix.Models
                                select t;
 
                 string s = "<option value='0' selected=true>Select Package</option>";
+
                 if (packages.Count() > 0)
                 {
                     foreach (var item in packages)
@@ -306,8 +316,12 @@ namespace MvcPhoenix.Models
                     }
                 }
                 else
-                { s = s + "<option value=0>No Packages Found</option>"; }
+                { 
+                    s = s + "<option value=0>No Packages Found</option>"; 
+                }
+
                 s = s + "</select>";
+
                 return s;
             }
         }
@@ -333,6 +347,7 @@ namespace MvcPhoenix.Models
                         {
                             isSpecialRequest = true;
                         }
+
                         s = s + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - " + item.UnitWeight + "</option>";
                     }
                 }
@@ -474,31 +489,31 @@ namespace MvcPhoenix.Models
         {
             List<SelectListItem> result = new List<SelectListItem>();
 
-            result.Insert(0, new SelectListItem { Value = "", Text = "" });
-            result.Insert(1, new SelectListItem { Value = "Backorder", Text = "Backorder" });
-            result.Insert(2, new SelectListItem { Value = "Oven Product", Text = "Oven Product" });
-            result.Insert(3, new SelectListItem { Value = "Humidity", Text = "Humidity" });
-            result.Insert(4, new SelectListItem { Value = "Very Large Order", Text = "Very Large Order" });
-            result.Insert(5, new SelectListItem { Value = "Questions/Info Needed", Text = "Questions/Info Needed" });
-            result.Insert(6, new SelectListItem { Value = "Special Doc Required", Text = "Special Doc Required" });
-            result.Insert(7, new SelectListItem { Value = "Special Request Size", Text = "Special Request Size" });
-            result.Insert(8, new SelectListItem { Value = "Return Order", Text = "Return Order" });
-            result.Insert(9, new SelectListItem { Value = "Waste", Text = "Waste" });
-            result.Insert(10, new SelectListItem { Value = "No partial delivery", Text = "No partial delivery" });
-            result.Insert(11, new SelectListItem { Value = "Special delivery date", Text = "Special delivery date" });
-            result.Insert(12, new SelectListItem { Value = "Public holiday", Text = "Public holiday" });
-            result.Insert(13, new SelectListItem { Value = "Freezable Procedure", Text = "Freezable Procedure" });
-            result.Insert(14, new SelectListItem { Value = "CMC delay, customer informed", Text = "CMC delay, customer informed" });
-            result.Insert(15, new SelectListItem { Value = "R&D flow", Text = "R&D flow" });
-            result.Insert(16, new SelectListItem { Value = "Special procedure", Text = "Special procedure" });
-            result.Insert(17, new SelectListItem { Value = "Misc. Charges", Text = "Misc. Charges" });
-            result.Insert(18, new SelectListItem { Value = "Transfer order", Text = "Transfer order" });
-            result.Insert(19, new SelectListItem { Value = "Consolidated Order", Text = "Consolidated Order" });
-            result.Insert(20, new SelectListItem { Value = "Approval Required", Text = "Approval Required" });
-            result.Insert(21, new SelectListItem { Value = "Conditioned packaging", Text = "Conditioned packaging" });
-            result.Insert(22, new SelectListItem { Value = "Product Not Setup", Text = "Product Not Setup" });
-            result.Insert(23, new SelectListItem { Value = "Frt Fwd-Pending Arrangement", Text = "Frt Fwd-Pending Arrangement" });
-            result.Insert(24, new SelectListItem { Value = "Labels, SDS", Text = "Labels, SDS" });
+            result.Add(new SelectListItem { Value = "", Text = "" });
+            result.Add(new SelectListItem { Value = "Backorder", Text = "Backorder" });
+            result.Add(new SelectListItem { Value = "Oven Product", Text = "Oven Product" });
+            result.Add(new SelectListItem { Value = "Humidity", Text = "Humidity" });
+            result.Add(new SelectListItem { Value = "Very Large Order", Text = "Very Large Order" });
+            result.Add(new SelectListItem { Value = "Questions/Info Needed", Text = "Questions/Info Needed" });
+            result.Add(new SelectListItem { Value = "Special Doc Required", Text = "Special Doc Required" });
+            result.Add(new SelectListItem { Value = "Special Request Size", Text = "Special Request Size" });
+            result.Add(new SelectListItem { Value = "Return Order", Text = "Return Order" });
+            result.Add(new SelectListItem { Value = "Waste", Text = "Waste" });
+            result.Add(new SelectListItem { Value = "No partial delivery", Text = "No partial delivery" });
+            result.Add(new SelectListItem { Value = "Special delivery date", Text = "Special delivery date" });
+            result.Add(new SelectListItem { Value = "Public holiday", Text = "Public holiday" });
+            result.Add(new SelectListItem { Value = "Freezable Procedure", Text = "Freezable Procedure" });
+            result.Add(new SelectListItem { Value = "CMC delay, customer informed", Text = "CMC delay, customer informed" });
+            result.Add(new SelectListItem { Value = "R&D flow", Text = "R&D flow" });
+            result.Add(new SelectListItem { Value = "Special procedure", Text = "Special procedure" });
+            result.Add(new SelectListItem { Value = "Misc. Charges", Text = "Misc. Charges" });
+            result.Add(new SelectListItem { Value = "Transfer order", Text = "Transfer order" });
+            result.Add(new SelectListItem { Value = "Consolidated Order", Text = "Consolidated Order" });
+            result.Add(new SelectListItem { Value = "Approval Required", Text = "Approval Required" });
+            result.Add(new SelectListItem { Value = "Conditioned packaging", Text = "Conditioned packaging" });
+            result.Add(new SelectListItem { Value = "Product Not Setup", Text = "Product Not Setup" });
+            result.Add(new SelectListItem { Value = "Frt Fwd-Pending Arrangement", Text = "Frt Fwd-Pending Arrangement" });
+            result.Add(new SelectListItem { Value = "Labels, SDS", Text = "Labels, SDS" });
 
             return result;
         }
@@ -642,10 +657,10 @@ namespace MvcPhoenix.Models
         {
             List<SelectListItem> result = new List<SelectListItem>();
 
-            result.Insert(0, new SelectListItem { Value = "", Text = "" });
-            result.Insert(1, new SelectListItem { Value = "CL", Text = "Closed" });
-            result.Insert(2, new SelectListItem { Value = "OP", Text = "Open" });
-            result.Insert(3, new SelectListItem { Value = "CN", Text = "Cancelled" });
+            result.Add(new SelectListItem { Value = "", Text = "" });
+            result.Add(new SelectListItem { Value = "CL", Text = "Closed" });
+            result.Add(new SelectListItem { Value = "OP", Text = "Open" });
+            result.Add(new SelectListItem { Value = "CN", Text = "Cancelled" });
 
             return result;
         }
@@ -1267,7 +1282,7 @@ namespace MvcPhoenix.Models
 
             msg.From = new MailAddress(from);
             msg.To.Add(new MailAddress(to));
-            msg.Bcc.Add(new MailAddress(from));                                                             //send email copy to self
+            msg.Bcc.Add(new MailAddress(from));
             msg.Subject = subject;
             msg.Body = body;
             msg.IsBodyHtml = true;

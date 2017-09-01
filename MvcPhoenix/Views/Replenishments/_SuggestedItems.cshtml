@@ -1,6 +1,5 @@
 ﻿@model List<MvcPhoenix.Models.SuggestedBulkOrderItem>
 @{
-    // if the list has no members, then there is no clientid ??
     int ParentID = (int)(Session["SuggestedBulkOrderItemClientID"]);
 }
 
@@ -14,7 +13,7 @@
                     <label class="lead">No order recommendations found at @DateTime.Now.ToString()</label>
                 </div>
                 <div class="col-md-4">
-                    @Ajax.ActionLink("Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
+                    @Ajax.ActionLink("Add Item", "AddBulkItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
                        {
                            InsertionMode = InsertionMode.Replace,
                            HttpMethod = "GET",
@@ -30,7 +29,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <label>Suggested Items | </label>
-                    @Ajax.ActionLink("+ Add Item", "CreateSuggestedItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
+                    @Ajax.ActionLink("+ Add Item", "AddBulkItem", "Replenishments", new { ClientID = @ParentID }, new AjaxOptions
                        {
                            InsertionMode = InsertionMode.Replace,
                            HttpMethod = "GET",

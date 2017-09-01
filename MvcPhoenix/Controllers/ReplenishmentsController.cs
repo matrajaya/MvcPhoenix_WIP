@@ -20,118 +20,104 @@ namespace MvcPhoenix.Controllers
         public ActionResult BulkItemsList(int id)
         {
             // Build list of BulkOrderItems for use in partial
-            List<BulkOrderItem> mylist = ReplenishmentsService.fnItemsList(id);
+            List<BulkOrderItem> bulkOrderItems = ReplenishmentsService.BulkOrderItems(id);
             ViewBag.ParentKey = id;
 
-            return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", mylist);
+            return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", bulkOrderItems);
         }
 
-        #region SearchActions ------------------------------------------------------
-
         [HttpPost]
-        public ActionResult SearchResultsUserCriteria(FormCollection fc, string mode)
+        public ActionResult SearchResultsUserCriteria(FormCollection form, string mode)
         {
-            var mylist = ReplenishmentsService.fnSearchResults(fc, "User");
+            var bulkOrders = ReplenishmentsService.SearchBulkOrders(form, "User");
 
-            return PartialView("~/Views/Replenishments/_SearchResults.cshtml", mylist);
+            return PartialView("~/Views/Replenishments/_SearchResults.cshtml", bulkOrders);
         }
 
         [HttpGet]
-        public ActionResult SearchResults(FormCollection fc, string mode)
+        public ActionResult SearchResults(FormCollection form, string mode)
         {
-            var mylist = ReplenishmentsService.fnSearchResults(fc, mode);
+            var bulkOrders = ReplenishmentsService.SearchBulkOrders(form, mode);
 
-            return PartialView("~/Views/Replenishments/_SearchResults.cshtml", mylist);
+            return PartialView("~/Views/Replenishments/_SearchResults.cshtml", bulkOrders);
         }
 
-        #endregion SearchActions ------------------------------------------------------
-
-        #region OrderEdit ---------------------------------------------------------
-
+        
         public ActionResult Edit(int id)
         {
-            BulkOrder vm = new BulkOrder();
-            vm = ReplenishmentsService.fnFillBulkOrderFromDB(id);
+            BulkOrder bulkOrder = new BulkOrder();
+            bulkOrder = ReplenishmentsService.GetBulkOrder(id);
 
-            return View("~/Views/Replenishments/Edit.cshtml", vm);
+            return View("~/Views/Replenishments/Edit.cshtml", bulkOrder);
         }
 
         [HttpPost]
-        public ActionResult Save(BulkOrder obj)
+        public ActionResult Save(BulkOrder bulkOrder)
         {
             // Always save the Bulk Order then maybe re-direct to SendEmail
             string btn = Request.Form["btnSave"];
-            int pk = ReplenishmentsService.fnSaveBulkOrder(obj);
+            int bulkOrderId = ReplenishmentsService.SaveBulkOrder(bulkOrder);
 
             if (btn == "Send Email")
             {
-                return RedirectToAction("Email", obj);
+                return RedirectToAction("Email", bulkOrder);
             }
 
             TempData["SaveResult"] = "Order Saved on " + DateTime.UtcNow.ToString("R");
 
-            return RedirectToAction("Edit", new { id = pk });
+            return RedirectToAction("Edit", new { id = bulkOrderId });
         }
 
         public ActionResult GetSupplyIDEmail(int clientid, string supplyid)
         {
             // called from view to insert value into view
-            return Content(ReplenishmentsService.fnGetSupplyIDEmail(clientid, supplyid));
+            return Content(ReplenishmentsService.GetSupplierEmail(clientid, supplyid));
         }
 
-        #endregion OrderEdit ---------------------------------------------------------
-
-        #region Email
-
-        public ActionResult Email(BulkOrder obj)
+        public ActionResult Email(BulkOrder bulkOrder)
         {
-            var EmailModel = ReplenishmentsService.fnCreateEmail(obj);
+            var email = ReplenishmentsService.BuildBulkOrderEmail(bulkOrder);
 
-            return View("Email", EmailModel);
+            return View("Email", email);
         }
 
         [HttpPost]
-        public ActionResult Email(BulkOrderEmailViewModel obj)
+        public ActionResult Email(BulkOrderEmailViewModel bulkOrderEmail)
         {
-            ReplenishmentsService.fnSendEmail(obj);
+            ReplenishmentsService.BuildSendEmail(bulkOrderEmail);
 
             return RedirectToAction("Index");
         }
-
-        #endregion Email
-
-        #region Replenishment Order Items
-
+                
         [HttpGet]
         public ActionResult CreateItem(int id)
         {
-            // id = bulkorderid ..create a new line item to an existing bulkorderid
-            BulkOrderItem obj = new BulkOrderItem();
-            obj = ReplenishmentsService.fnCreateItem(id);
+            BulkOrderItem bulkOrderItem = new BulkOrderItem();
+            bulkOrderItem = ReplenishmentsService.CreateBulkOrderItem(id);
 
-            return PartialView("~/Views/Replenishments/_BulkOrderItemModal.cshtml", obj);
+            return PartialView("~/Views/Replenishments/_BulkOrderItemModal.cshtml", bulkOrderItem);
         }
 
         [HttpGet]
         public ActionResult EditItem(int id)
         {
-            BulkOrderItem obj = new BulkOrderItem();
-            obj = ReplenishmentsService.fnFillItemFromDB(id);
+            BulkOrderItem bulkOrderItem = new BulkOrderItem();
+            bulkOrderItem = ReplenishmentsService.GetBulkOrderItem(id);
 
-            return PartialView("~/Views/Replenishments/_BulkOrderItemModal.cshtml", obj);
+            return PartialView("~/Views/Replenishments/_BulkOrderItemModal.cshtml", bulkOrderItem);
         }
 
         [HttpPost]
-        public ActionResult SaveItem(BulkOrderItem obj)
+        public ActionResult SaveItem(BulkOrderItem bulkOrderItem)
         {
             // Catch form if no master code is selected
-            if (obj.productmasterid == 0)
+            if (bulkOrderItem.productmasterid == 0)
             {
                 return Content("Please Select Master Code");
             }
             else
             {
-                int pk = ReplenishmentsService.fnSaveItem(obj);
+                int pk = ReplenishmentsService.SaveBulkOrderItem(bulkOrderItem);
 
                 return Content("Item Saved on " + DateTime.UtcNow.ToString("R"));
             }
@@ -140,14 +126,10 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult DeleteItem(int id)
         {
-            int pk = ReplenishmentsService.fnDeleteItem(id);
+            int bulkItemId = ReplenishmentsService.DeleteBulkOrderItem(id);
 
             return Content("Deleted");
         }
-
-        #endregion Replenishment Order Items
-
-        #region SuggestedBulkOrder
 
         [HttpGet]
         public ActionResult Create()
@@ -158,14 +140,14 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult CreateFromInventory(int productdetailid) // id=productdetailid
+        public ActionResult CreateFromInventory(int productDetailId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var pd = db.tblProductDetail.Find(productdetailid);
-                var pm = db.tblProductMaster.Find(pd.ProductMasterID);
-                ViewBag.ProductDetailID = productdetailid;
-                Session["InventoryProductDetailID"] = productdetailid;                           // so CreateBulkOrders Action below can redirect back to Inventory
+                var productDetail = db.tblProductDetail.Find(productDetailId);
+                var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
+                ViewBag.ProductDetailID = productDetailId;
+                Session["InventoryProductDetailID"] = productDetailId;
 
                 return View("~/Views/Replenishments/Create.cshtml");
             }
@@ -177,28 +159,28 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateSuggestedOrder(FormCollection fc)
+        public ActionResult CreateSuggestedOrder(FormCollection form)
         {
             // Generate the suggested items, let the view refresh the partial after the ajax POST
-            int clientid = Convert.ToInt32(fc["clientid"]);
-            int divisionid = Convert.ToInt32(fc["divisionid"]);
-            int ItemsCreated = ReplenishmentsService.fnGenerateSuggestedOrder(clientid, divisionid);
-            Session["SuggestedBulkOrderItemClientID"] = clientid;
+            int clientId = Convert.ToInt32(form["clientid"]);
+            int divisionId = Convert.ToInt32(form["divisionid"]);
+            int itemsCreated = ReplenishmentsService.GenerateSuggestedBulkOrder(clientId, divisionId);
+            Session["SuggestedBulkOrderItemClientID"] = clientId;
 
             return null;
         }
 
         public ActionResult SuggestedItemsList()
         {
-            List<SuggestedBulkOrderItem> suggesteditems = ReplenishmentsService.fnSuggestedItemsList();
+            List<SuggestedBulkOrderItem> suggestedItems = ReplenishmentsService.SuggestedItems();
 
-            return PartialView("~/Views/Replenishments/_SuggestedItems.cshtml", suggesteditems);
+            return PartialView("~/Views/Replenishments/_SuggestedItems.cshtml", suggestedItems);
         }
 
         [HttpGet]
         public ActionResult DeleteSuggestedItem(int id)
         {
-            ReplenishmentsService.fnDeleteSuggestedItem(id);
+            ReplenishmentsService.DeleteSuggestedBulkItem(id);
 
             return null;
         }
@@ -206,24 +188,25 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult EditSuggestedItem(int id)
         {
-            SuggestedBulkOrderItem vm = new SuggestedBulkOrderItem();
-            vm = ReplenishmentsService.fnFillSuggestedItemfromDB(id);
+            SuggestedBulkOrderItem bulkOrderItem = new SuggestedBulkOrderItem();
+            bulkOrderItem = ReplenishmentsService.GetSuggestedBulkItem(id);
 
-            return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", vm);
+            return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", bulkOrderItem);
         }
 
         [HttpGet]
-        public ActionResult CreateSuggestedItem(int clientid)
+        public ActionResult AddBulkItem(int clientid)
         {
-            SuggestedBulkOrderItem vm = new SuggestedBulkOrderItem();
-            vm = ReplenishmentsService.fnCreateSuggestedBulkOrderItem(clientid);
+            SuggestedBulkOrderItem bulkOrderItem = new SuggestedBulkOrderItem();
+            bulkOrderItem.id = -1;
+            bulkOrderItem.clientid = clientid;
 
-            return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", vm);
+            return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", bulkOrderItem);
         }
 
-        public ActionResult SaveSuggestedItem(SuggestedBulkOrderItem obj)
+        public ActionResult SaveSuggestedItem(SuggestedBulkOrderItem bulkOrderItem)
         {
-            int pk = ReplenishmentsService.fnSaveSuggestedItem(obj);
+            int bulkItemId = ReplenishmentsService.SaveSuggestedBulkItem(bulkOrderItem);
             
             return Content("Item Saved on " + DateTime.UtcNow.ToString("R"));
         }
@@ -231,28 +214,25 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult PrintSuggested()
         {
-            List<SuggestedBulkOrderItem> vm = ReplenishmentsService.fnSuggestedItemsList();
+            List<SuggestedBulkOrderItem> bulkOrderItems = ReplenishmentsService.SuggestedItems();
 
-            return View("~/Views/Replenishments/PrintSuggested.cshtml", vm);
+            return View("~/Views/Replenishments/PrintSuggested.cshtml", bulkOrderItems);
         }
 
         [HttpGet]
         public ActionResult CreateBulkOrders()
         {
-            int OrderCount = ReplenishmentsService.fnCreateBulkOrders();
-            int iSession = Convert.ToInt32(Session["InventoryProductDetailID"]);
+            int orderItemCount = ReplenishmentsService.CreateSuggestedBulkOrder();
+            int productDetailId = Convert.ToInt32(Session["InventoryProductDetailID"]);
 
-            if (iSession > 0)
-            {                
-                int pdid = Convert.ToInt32(Session["InventoryProductDetailID"]);                // reroute back to Inventory
-                Session["InventoryProductDetailID"] = null;                                     // reset
+            if (productDetailId > 0)
+            {   
+                Session["InventoryProductDetailID"] = null;
 
-                return RedirectToAction("Edit", "Inventory", new { id = pdid });
+                return RedirectToAction("Edit", "Inventory", new { id = productDetailId });
             }
 
             return RedirectToAction("Index");
         }
-
-        #endregion SuggestedBulkOrder
     }
 }

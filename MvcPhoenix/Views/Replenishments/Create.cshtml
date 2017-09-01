@@ -1,76 +1,76 @@
 ﻿@{
-    ViewBag.Title = "Create Replenishment Order";
+	ViewBag.Title = "Create Replenishment Order";
 }
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
-            <img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
-        </div>
-        <div class="col-lg-12">
-            <h1 class="page-header">@ViewBag.Title</h1>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-lg-12">
+			<img src="~/Content/images/logos/oltlogo.jpg" style="width: auto; height: 73px; float: right" alt="acme logo">
+		</div>
+		<div class="col-lg-12">
+			<h1 class="page-header">@ViewBag.Title</h1>
+		</div>
+	</div>
 
-    <div class="row">
-        <div class="col-md-12 form-group">
-            <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Replenishments Main", "Index")
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-md-12 form-group">
+			<i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Replenishments Main", "Index")
+		</div>
+	</div>
 
-    @using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments", new AjaxOptions
-    {
-        OnSuccess = "UpdateItemsPartial",
+	@using (Ajax.BeginForm("CreateSuggestedOrder", "Replenishments", new AjaxOptions
+	{
+		OnSuccess = "UpdateItemsPartial",
 		OnFailure="$.alert('Creation failed, please try again')",
-        OnBegin = "$('#dvGridPlaceHolder').empty();"
-    }))
-    {
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Generate Suggested Replenishment Order</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label>Client</label>
-                                @Html.DropDownList("clientid", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientID()", @class = "form-control", @required = "required" })
-                            </div>
-                            <div class="col-md-6">
-                                <label>Division / Business Unit</label>
-                                <div id="dvPlaceholderDivision">
-                                    <select name="divisionid" id='divisionid' class='form-control'>
-                                        @* Placeholder for option values *@
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <label class="invisible">.</label>
-                                <span id="dvPlaceholderContinue">
-                                    <input id="btnsubmit" type="submit" value="Create" class="btn btn-success btn-block form-control" />
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-    <div id="dvGridPlaceHolder"></div>
+		OnBegin = "$('#dvGridPlaceHolder').empty();"
+	}))
+	{
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i>Generate Suggested Replenishment Order</h3>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-4">
+								<label>Client</label>
+								@Html.DropDownList("clientid", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientID()", @class = "form-control", @required = "required" })
+							</div>
+							<div class="col-md-6">
+								<label>Division / Business Unit</label>
+								<div id="dvPlaceholderDivision">
+									<select name="divisionid" id='divisionid' class='form-control'>
+										@* Placeholder for option values *@
+									</select>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<label class="invisible">.</label>
+								<span id="dvPlaceholderContinue">
+									<input id="btnsubmit" type="submit" value="Create" class="btn btn-success btn-block form-control" />
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	<div id="dvGridPlaceHolder"></div>
 </div>
 
 <!-- Local javascript -->
 <script type="text/javascript">
-    function OnChangeClientID() {
-        var url = '@Url.Action("BuildDivisionDropDown", "Replenishments")';
-        var data = $('#clientid').val();
-        $("#divisionid").load(url, { clientid: data });
-    }
+	function OnChangeClientID() {
+		var url = '@Url.Action("BuildDivisionDropDown", "Replenishments")';
+		var data = $('#clientid').val();
+		$("#divisionid").load(url, { clientid: data });
+	}
 
-    function UpdateItemsPartial() {
-        // load/update the partial
-        var url = '@Url.Action("SuggestedItemsList", "Replenishments")';
-        $("#dvGridPlaceHolder").load(url);
-    }
+	function UpdateItemsPartial() {
+		// load/update the partial
+		var url = '@Url.Action("SuggestedItemsList", "Replenishments")';
+		$("#dvGridPlaceHolder").load(url);
+	}
 </script>

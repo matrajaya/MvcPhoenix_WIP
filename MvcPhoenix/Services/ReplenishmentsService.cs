@@ -12,49 +12,55 @@ namespace MvcPhoenix.Services
 {
     public class ReplenishmentsService
     {
-        public static List<BulkOrder> fnSearchResults(FormCollection form, string mode)
+        /// <summary>
+        /// Search funtionality for bulk orders.
+        /// </summary>
+        /// <param name="form"></param>
+        /// <param name="mode"></param>
+        /// <returns>bulkOrders</returns>
+        public static List<BulkOrder> SearchBulkOrders(FormCollection form, string mode)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var mylist = (from t in db.tblBulkOrder
-                              join t2 in db.tblClient on t.ClientID equals t2.ClientID
-                              let itemscount = (from items in db.tblBulkOrderItem
-                                                where (items.BulkOrderID == t.BulkOrderID)
-                                                select items).Count()
-                              let opencount = (from items in db.tblBulkOrderItem
-                                               where (items.BulkOrderID == t.BulkOrderID)
-                                               && (items.Status == "OP")
-                                               select items).Count()
-                              orderby t.BulkOrderID descending
-                              select new MvcPhoenix.Models.BulkOrder
-                              {
-                                  bulkorderid = t.BulkOrderID,
-                                  clientid = t.ClientID,
-                                  supplyid = t.SupplyID,
-                                  orderdate = t.OrderDate,
-                                  ordercomment = t.Comment,
-                                  emailsent = t.EmailSent,
-                                  clientname = t2.ClientName,
-                                  itemcount = itemscount,
-                                  opencount = opencount
-                              }).ToList();
+                var bulkOrders = (from bulkorder in db.tblBulkOrder
+                                  join client in db.tblClient on bulkorder.ClientID equals client.ClientID
+                                  let itemscount = (from items in db.tblBulkOrderItem
+                                                    where (items.BulkOrderID == bulkorder.BulkOrderID)
+                                                    select items).Count()
+                                  let opencount = (from items in db.tblBulkOrderItem
+                                                   where (items.BulkOrderID == bulkorder.BulkOrderID)
+                                                   && (items.Status == "OP")
+                                                   select items).Count()
+                                  orderby bulkorder.BulkOrderID descending
+                                  select new MvcPhoenix.Models.BulkOrder
+                                  {
+                                      bulkorderid = bulkorder.BulkOrderID,
+                                      clientid = bulkorder.ClientID,
+                                      supplyid = bulkorder.SupplyID,
+                                      orderdate = bulkorder.OrderDate,
+                                      ordercomment = bulkorder.Comment,
+                                      emailsent = bulkorder.EmailSent,
+                                      clientname = client.ClientName,
+                                      itemcount = itemscount,
+                                      opencount = opencount
+                                  }).ToList();
 
                 if (mode == "User")
                 {
-                    int myordercount = Convert.ToInt32(form["ordercount"]);
-                    int myclientid = Convert.ToInt32(form["clientid"]);
+                    int orderCount = Convert.ToInt32(form["ordercount"]);
+                    int clientId = Convert.ToInt32(form["clientid"]);
 
-                    if (!String.IsNullOrEmpty(form["ordercount"]))
+                    if (orderCount > 0)
                     {
-                        mylist = (from t in mylist
-                                  where t.clientid == myclientid
-                                  select t).ToList();
+                        bulkOrders = (from t in bulkOrders
+                                      where t.clientid == clientId
+                                      select t).ToList();
                     }
 
-                    if (!String.IsNullOrEmpty(form["clientid"]))
+                    if (clientId > 0)
                     {
-                        mylist = (from t in mylist
-                                  select t).Take(myordercount).ToList();
+                        bulkOrders = (from t in bulkOrders
+                                      select t).Take(orderCount).ToList();
                     }
                 }
 
@@ -63,27 +69,27 @@ namespace MvcPhoenix.Services
                 switch (mode)
                 {
                     case "Initial":
-                        mylist = mylist.Take(10).ToList();
+                        bulkOrders = bulkOrders.Take(10).ToList();
                         message = "Initial";
                         break;
 
                     case "LastTen":
-                        mylist = mylist.Take(10).ToList();
+                        bulkOrders = bulkOrders.Take(10).ToList();
                         message = "Last Ten";
                         break;
 
                     case "UnConfirmed":
-                        mylist = (from t in mylist
-                                  where t.emailsent == null
-                                  select t).ToList();
+                        bulkOrders = (from t in bulkOrders
+                                      where t.emailsent == null
+                                      select t).ToList();
 
                         message = "Un-confirmed";
                         break;
 
                     case "OpenOnly":
-                        mylist = (from t in mylist
-                                  where t.opencount > 0
-                                  select t).ToList();
+                        bulkOrders = (from t in bulkOrders
+                                      where t.opencount > 0
+                                      select t).ToList();
 
                         message = "Open Items";
                         break;
@@ -92,141 +98,173 @@ namespace MvcPhoenix.Services
                         break;
                 }
 
-                foreach (var item in mylist)
+                foreach (var item in bulkOrders)
                 {
                     item.ResultsMessage = message;
                 }
 
-                return mylist;
+                return bulkOrders;
             }
         }
 
-        public static string fnGetSupplyIDEmail(int clientid, string supplyid)
+        /// <summary>
+        /// Fetch supplier email
+        /// </summary>
+        /// <param name="clientid"></param>
+        /// <param name="supplyid"></param>
+        /// <returns>email</returns>
+        public static string GetSupplierEmail(int? clientid, string supplyid)
         {
+            string email = "no email on file";
+            
             using (var db = new CMCSQL03Entities())
             {
-                string retval = "no email on file";
-                var q = (from t in db.tblBulkSupplier
-                         where t.ClientID == clientid
-                         && t.SupplyID == supplyid
-                         select t).FirstOrDefault();
+                var supplier = (from t in db.tblBulkSupplier
+                                where t.ClientID == clientid
+                                && t.SupplyID == supplyid
+                                select t).FirstOrDefault();
 
-                if (q != null)
+                if (supplier != null)
                 {
-                    retval = q.Email;
+                    email = supplier.Email;
                 }
-
-                return retval;
             }
+            
+            return email;
         }
 
-        public static List<BulkOrderItem> fnItemsList(int id)
+        /// <summary>
+        /// Fetch a list of bulk order items.
+        /// </summary>
+        /// <param name="bulkOrderId"></param>
+        /// <returns>bulkOrderItems</returns>
+        public static List<BulkOrderItem> BulkOrderItems(int bulkOrderId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var mylist = (from t in db.tblBulkOrderItem
-                              join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                              where t.BulkOrderID == id
-                              select new BulkOrderItem
-                              {
-                                  mastercode = pm.MasterCode,
-                                  mastername = pm.MasterName,
-                                  bulkorderitemid = t.BulkOrderItemID,
-                                  bulkorderid = t.BulkOrderID,
-                                  productmasterid = t.ProductMasterID,
-                                  weight = t.Weight,
-                                  itemstatus = t.Status,
-                                  eta = t.ETA,
-                                  datereceived = t.DateReceived,
-                                  itemnotes = t.ItemNotes
-                              }).ToList();
+                var bulkOrderItems = (from t in db.tblBulkOrderItem
+                                      join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
+                                      where t.BulkOrderID == bulkOrderId
+                                      select new BulkOrderItem
+                                      {
+                                          mastercode = pm.MasterCode,
+                                          mastername = pm.MasterName,
+                                          bulkorderitemid = t.BulkOrderItemID,
+                                          bulkorderid = t.BulkOrderID,
+                                          productmasterid = t.ProductMasterID,
+                                          weight = t.Weight,
+                                          itemstatus = t.Status,
+                                          eta = t.ETA,
+                                          datereceived = t.DateReceived,
+                                          itemnotes = t.ItemNotes
+                                      }).ToList();
 
-                return mylist;
+                return bulkOrderItems;
             }
         }
 
-        public static BulkOrder fnFillBulkOrderFromDB(int id)
+        /// <summary>
+        /// Fetch details for bulk order and items in it.
+        /// </summary>
+        /// <param name="bulkOrderId"></param>
+        /// <returns>bulkOrder</returns>
+        public static BulkOrder GetBulkOrder(int bulkOrderId)
         {
+            BulkOrder bulkOrder = new BulkOrder();
+
             using (var db = new CMCSQL03Entities())
             {
-                BulkOrder obj = new BulkOrder();
-                obj = (from t in db.tblBulkOrder
-                       join c in db.tblClient on t.ClientID equals c.ClientID
-                       where t.BulkOrderID == id
-                       select new BulkOrder
-                       {
-                           bulkorderid = t.BulkOrderID,
-                           clientid = t.ClientID,
-                           clientname = c.ClientName,
-                           orderdate = t.OrderDate,
-                           ordercomment = t.Comment,
-                           supplyid = t.SupplyID,
-                           bulksupplieremail = t.BulkSupplierEmail,
-                           emailsent = t.EmailSent,
-                       }).FirstOrDefault();
+                bulkOrder = (from t in db.tblBulkOrder
+                             join c in db.tblClient on t.ClientID equals c.ClientID
+                             where t.BulkOrderID == bulkOrderId
+                             select new BulkOrder
+                             {
+                                 bulkorderid = t.BulkOrderID,
+                                 clientid = t.ClientID,
+                                 clientname = c.ClientName,
+                                 orderdate = t.OrderDate,
+                                 ordercomment = t.Comment,
+                                 supplyid = t.SupplyID,
+                                 bulksupplieremail = t.BulkSupplierEmail,
+                                 emailsent = t.EmailSent,
+                             }).FirstOrDefault();
 
-                obj.ListOfBulkOrderItem = (from oi in db.tblBulkOrderItem
-                                           join pm in db.tblProductMaster on oi.ProductMasterID equals pm.ProductMasterID
-                                           where oi.BulkOrderID == id
-                                           select new BulkOrderItem
-                                           {
-                                               bulkorderitemid = oi.BulkOrderItemID,
-                                               bulkorderid = oi.BulkOrderID,
-                                               productmasterid = oi.ProductMasterID,
-                                               mastercode = pm.MasterCode,
-                                               mastername = pm.MasterName,
-                                               weight = oi.Weight,
-                                               itemstatus = oi.Status,
-                                               eta = oi.ETA,
-                                               datereceived = oi.DateReceived,
-                                               itemnotes = oi.ItemNotes,
-                                               PrepackedBulk = pm.PrePacked
-                                           }).ToList();
+                bulkOrder.ListOfBulkOrderItem = (from oi in db.tblBulkOrderItem
+                                                 join pm in db.tblProductMaster on oi.ProductMasterID equals pm.ProductMasterID
+                                                 where oi.BulkOrderID == bulkOrderId
+                                                 select new BulkOrderItem
+                                                 {
+                                                     bulkorderitemid = oi.BulkOrderItemID,
+                                                     bulkorderid = oi.BulkOrderID,
+                                                     productmasterid = oi.ProductMasterID,
+                                                     mastercode = pm.MasterCode,
+                                                     mastername = pm.MasterName,
+                                                     weight = oi.Weight,
+                                                     itemstatus = oi.Status,
+                                                     eta = oi.ETA,
+                                                     datereceived = oi.DateReceived,
+                                                     itemnotes = oi.ItemNotes,
+                                                     PrepackedBulk = pm.PrePacked
+                                                 }).ToList();
 
-                return obj;
+                return bulkOrder;
             }
         }
 
-        public static int fnSaveBulkOrder(BulkOrder obj)
+        /// <summary>
+        /// Create/Edit bulk order data
+        /// </summary>
+        /// <param name="bulkOrderData"></param>
+        /// <returns></returns>
+        public static int SaveBulkOrder(BulkOrder bulkOrderData)
         {
             System.Threading.Thread.Sleep(1500);
-
+            
             using (var db = new CMCSQL03Entities())
             {
-                if (obj.bulkorderid == -1)
+                if (bulkOrderData.bulkorderid == -1)
                 {
-                    obj.bulkorderid = fnNewBulkOrderID();
+                    var newBulkOrder = new tblBulkOrder();
+                    db.tblBulkOrder.Add(newBulkOrder);
+                    db.SaveChanges();
+
+                    bulkOrderData.bulkorderid = newBulkOrder.BulkOrderID;
                 }
 
-                var bulkOrder = db.tblBulkOrder.Find(obj.bulkorderid);
+                var bulkOrder = db.tblBulkOrder.Find(bulkOrderData.bulkorderid);
 
-                bulkOrder.ClientID = obj.clientid;
-                bulkOrder.OrderDate = obj.orderdate;
-                bulkOrder.Comment = obj.ordercomment;
-                bulkOrder.SupplyID = obj.supplyid;
-                bulkOrder.BulkSupplierEmail = obj.bulksupplieremail;
-                bulkOrder.EmailSent = obj.emailsent;
+                bulkOrder.ClientID = bulkOrderData.clientid;
+                bulkOrder.OrderDate = bulkOrderData.orderdate;
+                bulkOrder.Comment = bulkOrderData.ordercomment;
+                bulkOrder.SupplyID = bulkOrderData.supplyid;
+                bulkOrder.BulkSupplierEmail = bulkOrderData.bulksupplieremail;
+                bulkOrder.EmailSent = bulkOrderData.emailsent;
 
                 db.SaveChanges();
 
-                return obj.bulkorderid;
+                return bulkOrderData.bulkorderid;
             }
         }
-
-        public static BulkOrderEmailViewModel fnCreateEmail(BulkOrder vm)
+        
+        /// <summary>
+        /// Build template for bulk order email
+        /// </summary>
+        /// <param name="bulkOrder"></param>
+        /// <returns>message</returns>
+        public static BulkOrderEmailViewModel BuildBulkOrderEmail(BulkOrder bulkOrder)
         {
-            var bulkOrder = fnFillBulkOrderFromDB(vm.bulkorderid);
+            var getBulkOrder = GetBulkOrder(bulkOrder.bulkorderid);
 
             BulkOrderEmailViewModel message = new BulkOrderEmailViewModel();
-            message.bulkorderid = vm.bulkorderid;
-            message.clientname = vm.clientname;
-            message.ToAddress = vm.bulksupplieremail;
+            message.bulkorderid = bulkOrder.bulkorderid;
+            message.clientname = bulkOrder.clientname;
+            message.ToAddress = bulkOrder.bulksupplieremail;
             message.FromAddress = HttpContext.Current.User.Identity.Name;
-            message.Subject = "CMC Replenishment Order: " + vm.bulkorderid;
+            message.Subject = "CMC Replenishment Order: " + bulkOrder.bulkorderid;
 
             StringBuilder builder = new StringBuilder();
             builder.Append("<div>");
-            builder.Append("<p><b>Order Note: </b>" + vm.ordercomment + "</p>");
+            builder.Append("<p><b>Order Note: </b>" + bulkOrder.ordercomment + "</p>");
             builder.Append("</div>");
 
             builder.Append("<div class='table-responsive'>");
@@ -242,7 +280,7 @@ namespace MvcPhoenix.Services
             builder.Append("</tr>");
             builder.Append("</thead>");
 
-            foreach (var item in bulkOrder.ListOfBulkOrderItem)
+            foreach (var item in getBulkOrder.ListOfBulkOrderItem)
             {
                 builder.Append("<tr>");
                 builder.Append("<td>item.mastercode</td>");
@@ -261,10 +299,15 @@ namespace MvcPhoenix.Services
             return message;
         }
 
-        public static void fnSendEmail(BulkOrderEmailViewModel obj)
+        /// <summary>
+        /// Build email template for replenishment order.
+        /// Send email to supplier or provided email address.
+        /// </summary>
+        /// <param name="bulkOrderEmail"></param>
+        public static void BuildSendEmail(BulkOrderEmailViewModel bulkOrderEmail)
         {
             // build table and send email
-            var bulkOrder = fnFillBulkOrderFromDB(obj.bulkorderid);
+            var bulkOrder = GetBulkOrder(bulkOrderEmail.bulkorderid);
             var shipTo = @"Chemical Marketing Concepts Europe<br/>
                            Industrieweg 73<br/>
                            5145 PD Waalwijk<br/>
@@ -272,7 +315,7 @@ namespace MvcPhoenix.Services
                            +31 (0)416-651977";
 
             StringBuilder builder = new StringBuilder();
-            builder.Append("<p><em>The following message is sent on behalf of " + obj.FromAddress + "</em></p>");
+            builder.Append("<p><em>The following message is sent on behalf of " + bulkOrderEmail.FromAddress + "</em></p>");
 
             builder.Append("<p>Hello,</p>");
             builder.Append("<p>Please find below our new replenishment order.</p>");
@@ -280,7 +323,7 @@ namespace MvcPhoenix.Services
             builder.Append("<p>Kind regards,<br/>Inventory Team<br/>Chemical Marketing Concepts</p>");
             builder.Append("<hr style='border: 1px solid black'/>");
 
-            builder.Append("<p><b>Order Number: </b>" + obj.bulkorderid + "<br/>");
+            builder.Append("<p><b>Order Number: </b>" + bulkOrderEmail.bulkorderid + "<br/>");
             builder.Append("<b>Order Date: </b>" + DateTime.UtcNow.ToShortDateString() + "<br/></p>");
             builder.Append("<p><b>Ship To:</b><br/>" + shipTo + "</p>");
 
@@ -311,114 +354,127 @@ namespace MvcPhoenix.Services
             builder.Append("<br/>");
             builder.Append("<hr style='border: 1px solid black'/>");
 
-            obj.MessageBody = builder.ToString();
+            bulkOrderEmail.MessageBody = builder.ToString();
 
             Thread.Sleep(500);
-            EmailServices.EmailSmtpSend(obj.FromAddress, obj.ToAddress, obj.Subject, obj.MessageBody);
+            EmailServices.EmailSmtpSend(bulkOrderEmail.FromAddress, bulkOrderEmail.ToAddress, bulkOrderEmail.Subject, bulkOrderEmail.MessageBody);
 
-            // update db with email timestamp
             using (var db = new CMCSQL03Entities())
             {
-                var dbBulkOrder = db.tblBulkOrder.Find(obj.bulkorderid);
-                dbBulkOrder.EmailSent = DateTime.UtcNow.ToString("R");
+                var updateBulkOrder = db.tblBulkOrder.Find(bulkOrderEmail.bulkorderid);
+                updateBulkOrder.EmailSent = DateTime.UtcNow.ToString("R");
+
                 db.SaveChanges();
             }
         }
 
-        private static int fnNewBulkOrderID()
+        /// <summary>
+        /// Get empty model for new bulk order item entry.
+        /// </summary>
+        /// <param name="bulkOrderId"></param>
+        /// <returns>bulkOrderItem</returns>
+        public static BulkOrderItem CreateBulkOrderItem(int bulkOrderId)
         {
+            BulkOrderItem bulkOrderItem = new BulkOrderItem();
+
             using (var db = new CMCSQL03Entities())
             {
-                var newrec = new tblBulkOrder();
-                db.tblBulkOrder.Add(newrec);
-                db.SaveChanges();
-
-                return newrec.BulkOrderID;
-            }
-        }
-
-        public static BulkOrderItem fnCreateItem(int id)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                BulkOrderItem bulkOrderItem = new BulkOrderItem();
-
-                var dbBulkOrder = db.tblBulkOrder.Find(id);
-
+                var bulkOrder = db.tblBulkOrder.Find(bulkOrderId);
                 bulkOrderItem.bulkorderitemid = -1;
-                bulkOrderItem.bulkorderid = id;
+                bulkOrderItem.bulkorderid = bulkOrderId;
                 bulkOrderItem.productmasterid = null;
-                bulkOrderItem.weight = null;
+                bulkOrderItem.weight = 0;
                 bulkOrderItem.itemstatus = "OP";
                 bulkOrderItem.eta = null;
                 bulkOrderItem.datereceived = null;
-                bulkOrderItem.itemnotes = null;
-                bulkOrderItem.ListOfProductMasters = ApplicationService.ddlProductMasterIDs(Convert.ToInt32(dbBulkOrder.ClientID));
+                bulkOrderItem.itemnotes = "";
+                bulkOrderItem.ListOfProductMasters = ApplicationService.ddlProductMasterIDs(Convert.ToInt32(bulkOrder.ClientID));
 
                 return bulkOrderItem;
             }
         }
 
-        public static BulkOrderItem fnFillItemFromDB(int id)
+        /// <summary>
+        /// Fetch details for bulk order item.
+        /// </summary>
+        /// <param name="bulkOrderItemId"></param>
+        /// <returns>bulkOrderItem</returns>
+        public static BulkOrderItem GetBulkOrderItem(int bulkOrderItemId)
         {
-            // build object and return
+            BulkOrderItem bulkOrderItem = new BulkOrderItem();
+
             using (var db = new CMCSQL03Entities())
             {
-                BulkOrderItem bulkItem = new BulkOrderItem();
-                bulkItem = (from t in db.tblBulkOrderItem
-                            where t.BulkOrderItemID == id
-                            select new BulkOrderItem
-                            {
-                                bulkorderitemid = t.BulkOrderItemID,
-                                bulkorderid = t.BulkOrderID,
-                                productmasterid = t.ProductMasterID,
-                                weight = t.Weight,
-                                itemstatus = t.Status,
-                                eta = t.ETA,
-                                datereceived = t.DateReceived,
-                                itemnotes = t.ItemNotes,
-                            }).FirstOrDefault();
+                bulkOrderItem = (from t in db.tblBulkOrderItem
+                                 where t.BulkOrderItemID == bulkOrderItemId
+                                 select new BulkOrderItem
+                                 {
+                                     bulkorderitemid = t.BulkOrderItemID,
+                                     bulkorderid = t.BulkOrderID,
+                                     productmasterid = t.ProductMasterID,
+                                     weight = t.Weight,
+                                     itemstatus = t.Status,
+                                     eta = t.ETA,
+                                     datereceived = t.DateReceived,
+                                     itemnotes = t.ItemNotes,
+                                 }).FirstOrDefault();
 
-                var dbBulkOrder = db.tblBulkOrder.Find(bulkItem.bulkorderid);
-                bulkItem.ListOfProductMasters = ApplicationService.ddlProductMasterIDs(Convert.ToInt32(dbBulkOrder.ClientID));
+                var bulkOrder = db.tblBulkOrder.Find(bulkOrderItem.bulkorderid);
+                bulkOrderItem.ListOfProductMasters = ApplicationService.ddlProductMasterIDs(Convert.ToInt32(bulkOrder.ClientID));
 
-                return bulkItem;
+                return bulkOrderItem;
             }
         }
-
-        public static int fnSaveItem(BulkOrderItem obj)
+        
+        /// <summary>
+        /// Create/Edit bulk order item data.
+        /// </summary>
+        /// <param name="bulkIOrderItemData"></param>
+        /// <returns>bulkIOrderItemData.bulkorderitemid</returns>
+        public static int SaveBulkOrderItem(BulkOrderItem bulkIOrderItemData)
         {
-            System.Threading.Thread.Sleep(1500);
+            System.Threading.Thread.Sleep(500);
+            
             using (var db = new CMCSQL03Entities())
             {
-                if (obj.bulkorderitemid == -1)
+                if (bulkIOrderItemData.bulkorderitemid == -1)
                 {
-                    obj.bulkorderitemid = fnNewBulkOrderItemID();
+                    var bulkItem = new tblBulkOrderItem();
+                    db.tblBulkOrderItem.Add(bulkItem);
+                    db.SaveChanges();
+                    
+                    bulkIOrderItemData.bulkorderitemid = bulkItem.BulkOrderItemID;
                 }
 
-                var dbrow = (from t in db.tblBulkOrderItem
-                             where t.BulkOrderItemID == obj.bulkorderitemid
-                             select t).FirstOrDefault();
+                var bulkOrderItem = (from t in db.tblBulkOrderItem
+                                     where t.BulkOrderItemID == bulkIOrderItemData.bulkorderitemid
+                                     select t).FirstOrDefault();
 
-                dbrow.BulkOrderID = obj.bulkorderid;
-                dbrow.ProductMasterID = obj.productmasterid;
-                dbrow.Weight = obj.weight;
-                dbrow.Status = obj.itemstatus;
-                dbrow.ETA = obj.eta;
-                dbrow.DateReceived = obj.datereceived;
-                dbrow.ItemNotes = obj.itemnotes;
+                bulkOrderItem.BulkOrderID = bulkIOrderItemData.bulkorderid;
+                bulkOrderItem.ProductMasterID = bulkIOrderItemData.productmasterid;
+                bulkOrderItem.Weight = bulkIOrderItemData.weight;
+                bulkOrderItem.Status = bulkIOrderItemData.itemstatus;
+                bulkOrderItem.ETA = bulkIOrderItemData.eta;
+                bulkOrderItem.DateReceived = bulkIOrderItemData.datereceived;
+                bulkOrderItem.ItemNotes = bulkIOrderItemData.itemnotes;
+
                 db.SaveChanges();
 
-                return obj.bulkorderitemid;
+                return bulkIOrderItemData.bulkorderitemid;
             }
         }
 
-        public static int fnDeleteItem(int bulkOrderItemId)
+        /// <summary>
+        /// Delete bulk product item from replenishment order.
+        /// </summary>
+        /// <param name="bulkOrderItemId"></param>
+        /// <returns>bulkOrderId</returns>
+        public static int DeleteBulkOrderItem(int bulkOrderItemId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var dbBulkOrder = db.tblBulkOrderItem.Find(bulkOrderItemId);
-                int bulkOrderId = Convert.ToInt32(dbBulkOrder.BulkOrderID);
+                var bulkOrderItem = db.tblBulkOrderItem.Find(bulkOrderItemId);
+                int bulkOrderId = Convert.ToInt32(bulkOrderItem.BulkOrderID);
 
                 string deleteQuery = "DELETE FROM tblBulkOrderItem WHERE BulkOrderItemID=" + bulkOrderItemId;
                 db.Database.ExecuteSqlCommand(deleteQuery);
@@ -427,37 +483,28 @@ namespace MvcPhoenix.Services
             }
         }
 
-        private static int fnNewBulkOrderItemID()
+        /// <summary>
+        /// Scan bulk and shelf products using business rules.
+        /// Copy products that match to temporary working table.
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="divisionId"></param>
+        /// <returns>itemsCount</returns>
+        public static int GenerateSuggestedBulkOrder(int clientId, int divisionId)
         {
-            using (var db = new CMCSQL03Entities())
-            {
-                var bulkItem = new tblBulkOrderItem();
-                db.tblBulkOrderItem.Add(bulkItem);
-                db.SaveChanges();
-
-                return bulkItem.BulkOrderItemID;
-            }
-        }
-
-        #region SuggestedBulkOrder ---------------------------------------------------------------------------------
-
-        public static int fnGenerateSuggestedOrder(int clientid, int divisionid)
-        {
-            // return the number of items created
             int itemsCount = 0;
-            string tempTable = "tblSuggestedBulk";
             string userName = HttpContext.Current.User.Identity.Name;
-            string deleteQuery = "DELETE FROM " + tempTable + " WHERE UserName=" + userName;
+            string deleteQuery = "DELETE FROM tblSuggestedBulk WHERE UserName='" + userName + "'";
 
             using (var db = new CMCSQL03Entities())
             {
-                // Clear the work table of my records
+                // Clear the table for current user rows
                 db.Database.ExecuteSqlCommand(deleteQuery);
 
                 // Build a list of ProductMasters to analyze
                 var products = (from pd in db.tblProductDetail
                                 join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                                where pm.ClientID == clientid
+                                where pm.ClientID == clientId
                                 select new
                                 {
                                     pm.ClientID,
@@ -469,10 +516,10 @@ namespace MvcPhoenix.Services
                                 }).ToList();
 
                 // Restrict list to a PD.DivisionID if user requested
-                if (divisionid > 0)
+                if (divisionId > 0)
                 {
                     products = (from t in products
-                                where t.DivisionID == divisionid
+                                where t.DivisionID == divisionId
                                 select t).ToList();
                 }
 
@@ -509,7 +556,8 @@ namespace MvcPhoenix.Services
                     }
 
                     // get the bulk containers and setup critieria
-                    string[] bulkStatus = { "QC", "TEST", "WASTE" };
+                    // TODO: Flip logic to check only avail instead of exceptions in string array
+                    string[] bulkStatus = { "QC", "TEST", "WASTE", "RETURN" };
 
                     var bulks = (from t in db.tblBulk
                                  where t.ProductMasterID == item.ProductMasterID
@@ -519,19 +567,19 @@ namespace MvcPhoenix.Services
                                                           where !bulkStatus.Contains(t.BulkStatus)
                                                           select ((t.Qty == null ? 1 : t.Qty) * t.CurrentWeight)).Sum();
 
-                    string[] stockStatus = { "QC", "TEST", "WASTE" };
+                    string[] stockStatus = { "QC", "TEST", "WASTE", "RETURN" };
 
                     var stock = (from t in db.tblStock
-                                  join sm in db.tblShelfMaster on t.ShelfID equals sm.ShelfID
-                                  join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
-                                  join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                                  where pm.ProductMasterID == item.ProductMasterID
-                                  select new
-                                  {
-                                      t.ShelfStatus,
-                                      t.QtyOnHand,
-                                      sm.UnitWeight
-                                  }).ToList();
+                                 join sm in db.tblShelfMaster on t.ShelfID equals sm.ShelfID
+                                 join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
+                                 join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                                 where pm.ProductMasterID == item.ProductMasterID
+                                 select new
+                                 {
+                                     t.ShelfStatus,
+                                     t.QtyOnHand,
+                                     sm.UnitWeight
+                                 }).ToList();
 
                     suggestedBulk.ShelfCurrentAvailable = (from t in stock
                                                            where !stockStatus.Contains(t.ShelfStatus)
@@ -539,29 +587,29 @@ namespace MvcPhoenix.Services
 
                     suggestedBulk.CurrentAvailable = suggestedBulk.BulkCurrentAvailable + suggestedBulk.ShelfCurrentAvailable;
 
-                    var qBulkLog = (from t in db.tblInvLog
-                                    join bl in db.tblBulk on t.BulkID equals bl.BulkID
-                                    where (bl.ProductMasterID == item.ProductMasterID)
-                                    && (t.LogType == "BS-SHP")
-                                    select new
-                                    {
-                                        t.LogType,
-                                        t.LogDate,
-                                        t.LogQty,
-                                        t.LogAmount,
-                                        bl.BulkID,
-                                        bl.BulkStatus
-                                    }).ToList();
+                    var inventoryBulkLog = (from t in db.tblInvLog
+                                            join bl in db.tblBulk on t.BulkID equals bl.BulkID
+                                            where (bl.ProductMasterID == item.ProductMasterID)
+                                            && (t.LogType == "BS-SHP")
+                                            select new
+                                            {
+                                                t.LogType,
+                                                t.LogDate,
+                                                t.LogQty,
+                                                t.LogAmount,
+                                                bl.BulkID,
+                                                bl.BulkStatus
+                                            }).ToList();
 
-                    qBulkLog = (from t in qBulkLog
-                                where !bulkStatus.Contains(t.BulkStatus)
-                                select t).ToList();
+                    inventoryBulkLog = (from t in inventoryBulkLog
+                                        where !bulkStatus.Contains(t.BulkStatus)
+                                        select t).ToList();
 
-                    qBulkLog = (from t in qBulkLog
-                                where t.LogDate > DateTime.UtcNow.AddDays(-365)
-                                select t).ToList();
+                    inventoryBulkLog = (from t in inventoryBulkLog
+                                        where t.LogDate > DateTime.UtcNow.AddDays(-365)
+                                        select t).ToList();
 
-                    suggestedBulk.BulkShippedPastYear = (from t in qBulkLog
+                    suggestedBulk.BulkShippedPastYear = (from t in inventoryBulkLog
                                                          select (t.LogQty * t.LogAmount)).Sum();
 
                     if (suggestedBulk.BulkShippedPastYear > 0 && suggestedBulk.ProductMasterAge > 365)
@@ -574,30 +622,30 @@ namespace MvcPhoenix.Services
                         suggestedBulk.BulkShippedPerDay = suggestedBulk.BulkShippedPastYear / suggestedBulk.ProductMasterAge;
                     }
 
-                    var qShelfLog = (from t in db.tblInvLog
-                                     join st in db.tblStock on t.StockID equals st.StockID
-                                     join sm in db.tblShelfMaster on st.ShelfID equals sm.ShelfID
-                                     join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
-                                     where (pd.ProductMasterID == item.ProductMasterID)
-                                     && (t.LogType == "SS-SHP")
-                                     select new
-                                     {
-                                         t.LogType,
-                                         t.LogDate,
-                                         t.LogQty,
-                                         t.LogAmount,
-                                         t.Status
-                                     }).ToList();
+                    var inventoryShelfLog = (from t in db.tblInvLog
+                                             join st in db.tblStock on t.StockID equals st.StockID
+                                             join sm in db.tblShelfMaster on st.ShelfID equals sm.ShelfID
+                                             join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
+                                             where (pd.ProductMasterID == item.ProductMasterID)
+                                             && (t.LogType == "SS-SHP")
+                                             select new
+                                             {
+                                                 t.LogType,
+                                                 t.LogDate,
+                                                 t.LogQty,
+                                                 t.LogAmount,
+                                                 t.Status
+                                             }).ToList();
 
-                    qShelfLog = (from t in qShelfLog
-                                 where !stockStatus.Contains(t.Status)
-                                 select t).ToList();
+                    inventoryShelfLog = (from t in inventoryShelfLog
+                                         where !stockStatus.Contains(t.Status)
+                                         select t).ToList();
 
-                    qShelfLog = (from t in qShelfLog
-                                 where t.LogDate > DateTime.UtcNow.AddDays(-365)
-                                 select t).ToList();
+                    inventoryShelfLog = (from t in inventoryShelfLog
+                                         where t.LogDate > DateTime.UtcNow.AddDays(-365)
+                                         select t).ToList();
 
-                    suggestedBulk.ShelfShippedPastYear = (from t in qShelfLog
+                    suggestedBulk.ShelfShippedPastYear = (from t in inventoryShelfLog
                                                           select (t.LogQty * t.LogAmount)).Sum();
 
                     if (suggestedBulk.ShelfShippedPastYear > 0 && suggestedBulk.ProductMasterAge > 365)
@@ -610,17 +658,17 @@ namespace MvcPhoenix.Services
                         suggestedBulk.ShelfShippedPerDay = suggestedBulk.ProductMasterAge / 365;
                     }
 
-                    var qBulkExpiration = (from t in db.tblBulk
-                                           where t.ProductMasterID == item.ProductMasterID
-                                           orderby t.CeaseShipDate descending
-                                           select t).Take(1).FirstOrDefault();
+                    var bulkProduct = (from t in db.tblBulk
+                                       where t.ProductMasterID == item.ProductMasterID
+                                       orderby t.CeaseShipDate descending
+                                       select t).Take(1).FirstOrDefault();
 
                     // set initial value to null, then try to update it, if cannot update set to a future date (below)
-                    if (qBulkExpiration != null && qBulkExpiration.CeaseShipDate != null)
+                    if (bulkProduct != null && bulkProduct.CeaseShipDate != null)
                     {
-                        suggestedBulk.BulkLatestExpirationDate = qBulkExpiration.CeaseShipDate;
+                        suggestedBulk.BulkLatestExpirationDate = bulkProduct.CeaseShipDate;
                         suggestedBulk.BulkDaysTilExpiration = (suggestedBulk.BulkLatestExpirationDate.Value - DateTime.UtcNow.Date).Days;
-                        suggestedBulk.ShelfLatestExpirationDate = qBulkExpiration.CeaseShipDate;
+                        suggestedBulk.ShelfLatestExpirationDate = bulkProduct.CeaseShipDate;
                         suggestedBulk.ShelfDaysTilExpiration = (suggestedBulk.ShelfLatestExpirationDate.Value - DateTime.UtcNow.Date).Days;
                         suggestedBulk.UseThisExpirationDate = suggestedBulk.BulkLatestExpirationDate;
                     }
@@ -647,12 +695,12 @@ namespace MvcPhoenix.Services
                         suggestedBulk.DaysSupplyLeft = 0;
                     }
 
-                    var qBulkOrders = (from t in db.tblBulkOrderItem
-                                       where t.ProductMasterID == item.ProductMasterID
-                                       && (t.Status == "OP" || t.Status == "OPEN")
-                                       select t.BulkOrderItemID).ToList();
+                    var bulkOrderItems = (from t in db.tblBulkOrderItem
+                                          where t.ProductMasterID == item.ProductMasterID
+                                          && (t.Status == "OP" || t.Status == "OPEN")
+                                          select t.BulkOrderItemID).ToList();
 
-                    if (qBulkOrders.Count() > 0)
+                    if (bulkOrderItems.Count() > 0)
                     {
                         suggestedBulk.BulkOnOrder = true;
                     }
@@ -711,14 +759,19 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static List<SuggestedBulkOrderItem> fnSuggestedItemsList()
+        /// <summary>
+        /// Fetch a list of bulk items generated by user.
+        /// </summary>
+        /// <returns>suggestedItems</returns>
+        public static List<SuggestedBulkOrderItem> SuggestedItems()
         {
+            string userName = HttpContext.Current.User.Identity.Name;
+
             using (var db = new CMCSQL03Entities())
-            {
-                string userName = HttpContext.Current.User.Identity.Name;
+            {                
                 var suggestedItems = (from t in db.tblSuggestedBulk
-                                      join division in db.tblDivision on t.DivisionID equals division.DivisionID into m
-                                      from x in m.DefaultIfEmpty()
+                                      join division in db.tblDivision on t.DivisionID equals division.DivisionID into divisionBulk
+                                      from x in divisionBulk.DefaultIfEmpty()
                                       join client in db.tblClient on t.ClientID equals client.ClientID
                                       join product in db.tblProductMaster on t.ProductMasterID equals product.ProductMasterID
                                       where t.UserName == userName
@@ -746,158 +799,173 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static void fnDeleteSuggestedItem(int suggestedBulkId)
+        /// <summary>
+        /// Detail bulk item from temporary table.
+        /// </summary>
+        /// <param name="bulkItemId"></param>
+        public static void DeleteSuggestedBulkItem(int bulkItemId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                string deleteQuery = "DELETE FROM tblSuggestedBulk WHERE ID=" + suggestedBulkId;
+                string deleteQuery = "DELETE FROM tblSuggestedBulk WHERE ID=" + bulkItemId;
                 db.Database.ExecuteSqlCommand(deleteQuery);
             }
         }
 
-        public static SuggestedBulkOrderItem fnFillSuggestedItemfromDB(int suggestBulkId)
+        /// <summary>
+        /// Fetch details for bulk item from temporary table.
+        /// </summary>
+        /// <param name="bulkItemId"></param>
+        /// <returns>suggestedBulkItem</returns>
+        public static SuggestedBulkOrderItem GetSuggestedBulkItem(int bulkItemId)
         {
+            SuggestedBulkOrderItem suggestedBulkItem = new SuggestedBulkOrderItem();
+
             using (var db = new CMCSQL03Entities())
             {
-                SuggestedBulkOrderItem suggestedBulk = new SuggestedBulkOrderItem();
+                suggestedBulkItem = (from t in db.tblSuggestedBulk
+                                     where t.id == bulkItemId
+                                     orderby t.ProductMasterID
+                                     select new SuggestedBulkOrderItem
+                                     {
+                                         id = t.id,
+                                         clientid = t.ClientID,
+                                         productmasterid = t.ProductMasterID,
+                                         supplyid = t.SupplyID,
+                                         reorderweight = t.ReorderWeight,
+                                         reordernotes = t.ReorderNotes
+                                     }).FirstOrDefault();
 
-                suggestedBulk = (from t in db.tblSuggestedBulk
-                       where t.id == suggestBulkId
-                       orderby t.ProductMasterID
-                       select new SuggestedBulkOrderItem
-                       {
-                           id = t.id,
-                           clientid = t.ClientID,
-                           productmasterid = t.ProductMasterID,
-                           supplyid = t.SupplyID,
-                           reorderweight = t.ReorderWeight,
-                           reordernotes = t.ReorderNotes
-                       }).FirstOrDefault();
-
-                return suggestedBulk;
+                return suggestedBulkItem;
             }
         }
 
-        public static SuggestedBulkOrderItem fnCreateSuggestedBulkOrderItem(int clientId)
-        {
-            // a new suggested item needs the client id to get started
-            SuggestedBulkOrderItem obj = new SuggestedBulkOrderItem();
-            obj.id = -1;
-            obj.clientid = clientId;
-
-            return obj;
-        }
-
-        public static int fnSaveSuggestedItem(SuggestedBulkOrderItem obj)
+        /// <summary>
+        /// Create/Edit a suggested bulk order item.
+        /// Write to the temp table tblSuggestedBulk.
+        /// </summary>
+        /// <param name="bulkOrderItem"></param>
+        /// <returns>bulkOrderItem.id</returns>
+        public static int SaveSuggestedBulkItem(SuggestedBulkOrderItem bulkOrderItem)
         {
             using (var db = new CMCSQL03Entities())
             {
-                if (obj.id == -1)
+                if (bulkOrderItem.id == -1)
                 {
-                    obj.id = fnNewSuggestedOrderItemID();
+                    var newSuggestedItem = new tblSuggestedBulk();
+                    db.tblSuggestedBulk.Add(newSuggestedItem);
+                    db.SaveChanges();
+
+                    bulkOrderItem.id = newSuggestedItem.id;
                 }
 
-                var suggesteditem = db.tblSuggestedBulk.Find(obj.id);
-                var productmaster = db.tblProductMaster.Find(obj.productmasterid);
+                var suggestedItem = db.tblSuggestedBulk.Find(bulkOrderItem.id);
+                var productMaster = db.tblProductMaster.Find(bulkOrderItem.productmasterid);
 
-                suggesteditem.ClientID = obj.clientid;
-                suggesteditem.ProductMasterID = obj.productmasterid;
-                suggesteditem.ReorderWeight = obj.reorderweight ?? 0;
-                suggesteditem.ReorderNotes = obj.reordernotes;
-                suggesteditem.UserName = HttpContext.Current.User.Identity.Name;
+                suggestedItem.ClientID = bulkOrderItem.clientid;
+                suggestedItem.ProductMasterID = bulkOrderItem.productmasterid;
+                suggestedItem.ReorderWeight = bulkOrderItem.reorderweight ?? 0;
+                suggestedItem.ReorderNotes = bulkOrderItem.reordernotes;
+                suggestedItem.UserName = HttpContext.Current.User.Identity.Name;
 
-                if (productmaster != null)
+                if (productMaster != null)
                 {
-                    suggesteditem.SupplyID = productmaster.SUPPLYID;
+                    suggestedItem.SupplyID = productMaster.SUPPLYID;
                 }
 
                 db.SaveChanges();
 
-                return obj.id;
+                return bulkOrderItem.id;
             }
         }
 
-        private static int fnNewSuggestedOrderItemID()
+        /// <summary>
+        /// Gather list of bulk items generated by current user.
+        /// Create bulk order and item details with list.
+        /// </summary>
+        /// <returns>bulkItemsCount</returns>
+        public static int CreateSuggestedBulkOrder()
         {
+            string userName = HttpContext.Current.User.Identity.Name;
+            string batchNumber = DateTime.UtcNow.ToString();
+            DateTime clockWatch = DateTime.UtcNow;
+            int bulkItemsCount;
+            int supplyIdCount;
+            int? clientId = 0;
+            string supplyId;
+
             using (var db = new CMCSQL03Entities())
             {
-                var suggestedItem = new tblSuggestedBulk();
-                db.tblSuggestedBulk.Add(suggestedItem);
-                db.SaveChanges();
-
-                return suggestedItem.id;
-            }
-        }
-
-        public static int fnCreateBulkOrders()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                string userName = HttpContext.Current.User.Identity.Name;
-                string fnTempTable = "tblSuggestedBulk";
-
-                string updateQuery = String.Format(@"UPDATE {0} SET SupplyID='N/A'
-                                                     WHERE Supplyid IS NULL
-                                                     AND UserName='{1}'", fnTempTable, userName);
-
-                db.Database.ExecuteSqlCommand(updateQuery);
-
+                // Get all suggested items held by current user
                 var suggestedBulkItems = (from t in db.tblSuggestedBulk
                                           where t.UserName == userName
-                                          select new
-                                          {
-                                              t.ClientID,
-                                              t.SupplyID
-                                          }).Distinct();
+                                          select t).ToList();
 
-                int SupplyIDCount = suggestedBulkItems.Count();
-                string BatchNumber = DateTime.UtcNow.ToString();
+                // Filter for unique products
+                var uniqueBulkItems = (from x in suggestedBulkItems
+                                       group x by new { x.ProductMasterID }
+                                           into uniqueProducts
+                                           select uniqueProducts.FirstOrDefault()).ToList();
 
-                foreach (var item in suggestedBulkItems)
+                bulkItemsCount = suggestedBulkItems.Count();
+                bulkItemsCount = uniqueBulkItems.Count();
+
+                clientId = suggestedBulkItems.Select(x => x.ClientID).FirstOrDefault();
+                supplyId = suggestedBulkItems.Select(x => x.SupplyID).FirstOrDefault();
+
+                // Get bulk supplier email
+                //var bulkSupplierEmail = (from t in db.tblBulkSupplier
+                //                         where t.ClientID == clientId
+                //                         && t.SupplyID.Contains(supplyId)
+                //                         select t.Email).FirstOrDefault();
+
+                // Create bulk order
+                tblBulkOrder bulkOrder = new tblBulkOrder
                 {
-                    using (var db1 = new CMCSQL03Entities())
+                    ClientID = clientId,
+                    OrderDate = clockWatch,
+                    Status = "OP",
+                    SupplyID = supplyId,
+                    BulkSupplierEmail = GetSupplierEmail(clientId, supplyId),
+                    CreateDate = clockWatch,
+                    CreateUser = userName,
+                    UpdateDate = clockWatch,
+                    UpdateUser = userName
+                };
+
+                db.tblBulkOrder.Add(bulkOrder);
+                db.SaveChanges();
+
+                // Create bulk items for the order
+                foreach (var item in uniqueBulkItems)
+                {
+                    var productCheck = (from t in db.tblProductMaster
+                                        where t.ProductMasterID == item.ProductMasterID
+                                        select t).FirstOrDefault();
+
+                    tblBulkOrderItem bulkOrderItem = new tblBulkOrderItem
                     {
-                        tblBulkOrder bulkOrder = new tblBulkOrder
-                        {
-                            ClientID = item.ClientID,
-                            OrderDate = DateTime.UtcNow,
-                            Status = "OP",
-                            SupplyID = item.SupplyID
-                        };
+                        BulkOrderID = bulkOrder.BulkOrderID,
+                        ProductMasterID = item.ProductMasterID,
+                        ProductCode = productCheck.MasterCode,
+                        ProductName = productCheck.MasterName,
+                        Qty = 1,
+                        Weight = item.ReorderWeight,
+                        Status = "OP",
+                        SupplyID = item.SupplyID,
+                        ItemNotes = item.ReorderNotes,
+                        ShelfLife = item.ShelfLife
+                    };
 
-                        var bulkSupplier = (from t in db.tblBulkSupplier
-                                            where t.ClientID == item.ClientID
-                                            && t.SupplyID == item.SupplyID
-                                            select t).FirstOrDefault();
-
-                        if (bulkSupplier != null)
-                        {
-                            bulkOrder.BulkSupplierEmail = bulkSupplier.Email;
-                        }
-
-                        db1.tblBulkOrder.Add(bulkOrder);
-                        db1.SaveChanges();
-
-                        int bulkOrderId = bulkOrder.BulkOrderID;
-
-                        string insertQuery = String.Format(@"INSERT INTO tblBulkOrderItem
-                                                             (BulkOrderID,ProductMasterID,Qty,Weight,Status,SupplyID,ItemNotes)
-                                                             Select {0},ProductMasterID,1,ReorderWeight,'OP',SupplyID,ReorderNotes
-                                                             FROM {1} WHERE SupplyID='{2}'", bulkOrderId, fnTempTable, item.SupplyID);
-
-                        db1.Database.ExecuteSqlCommand(insertQuery);
-                    }
+                    db.tblBulkOrderItem.Add(bulkOrderItem);
+                    db.SaveChanges();
                 }
 
-                int OrdersCount = suggestedBulkItems.Count();
-
-                string deleteQuery = "DELETE FROM " + fnTempTable + " WHERE UserName=" + userName;
+                string deleteQuery = "DELETE FROM tblSuggestedBulk WHERE ClientID=" + clientId + " AND UserName='" + userName + "'";
                 db.Database.ExecuteSqlCommand(deleteQuery);
 
-                return OrdersCount;
+                return bulkItemsCount;
             }
         }
-
-        #endregion SuggestedBulkOrder ---------------------------------------------------------------------------------
     }
 }

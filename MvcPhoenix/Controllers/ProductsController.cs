@@ -67,11 +67,9 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult ProductCodesDropDown(int id, string divid)
+        public ActionResult ProductCodesDropDown(int clientid)
         {
-            // AJAX call to return a <select> tag string into a <div>
-            return Content(ProductsService.fnProductCodesDropDown(id, divid));
+            return Content(ApplicationService.ddlBuildProductCodeDropDown(clientid));
         }
 
         [HttpGet]
@@ -104,10 +102,10 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(int clientid2)
+        public ActionResult Create(int clientid)
         {
             ProductProfile PP = new ProductProfile();
-            PP.clientid = clientid2;
+            PP.clientid = clientid;
             PP.productmasterid = -1;
             PP.productdetailid = -1;
             PP = ProductsService.fnFillOtherPMProps(PP);
@@ -116,11 +114,13 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpPost]
-        public ActionResult Equivalent(int productdetailid3)
+        public ActionResult Equivalent()
         {
+            int productDetailId = Convert.ToInt32(Request.Form["productdetailid"].ToString());
+
             // fill model to be replicated
             ProductProfile PP = new ProductProfile();
-            PP.productdetailid = productdetailid3;
+            PP.productdetailid = productDetailId;
             PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
             PP = ProductsService.fnFillOtherPMProps(PP);
@@ -142,7 +142,7 @@ namespace MvcPhoenix.Controllers
             {
                 // Shelf
                 var shelf = (from s in db.tblShelfMaster
-                             where s.ProductDetailID == productdetailid3
+                             where s.ProductDetailID == productDetailId
                              select s).ToList();
 
                 for (int i = 0; i < shelf.Count; i++)
@@ -156,7 +156,7 @@ namespace MvcPhoenix.Controllers
 
                 // GHS
                 var ghs = (from g in db.tblGHS
-                           where g.ProductDetailID == productdetailid3
+                           where g.ProductDetailID == productDetailId
                            select g).ToList();
 
                 for (int i = 0; i < ghs.Count; i++)
@@ -170,7 +170,7 @@ namespace MvcPhoenix.Controllers
 
                 // PH Detail
                 var ph = (from p in db.tblGHSPHDetail
-                          where p.ProductDetailID == productdetailid3
+                          where p.ProductDetailID == productDetailId
                           select p).ToList();
 
                 for (int i = 0; i < ph.Count; i++)
@@ -184,7 +184,7 @@ namespace MvcPhoenix.Controllers
 
                 // CAS
                 var cas = (from c in db.tblCAS
-                           where c.ProductDetailID == productdetailid3
+                           where c.ProductDetailID == productDetailId
                            select c).ToList();
 
                 for (int i = 0; i < cas.Count; i++)
@@ -201,7 +201,7 @@ namespace MvcPhoenix.Controllers
 
                 pdln.ProductDetailID = PP.productdetailid;
                 pdln.NoteDate = DateTime.UtcNow;
-                pdln.Notes = "Equivalent created from product id: " + productdetailid3;
+                pdln.Notes = "Equivalent created from product id: " + productDetailId;
                 pdln.ReasonCode = "New";
                 pdln.CreateDate = DateTime.UtcNow;
                 pdln.CreateUser = HttpContext.User.Identity.Name;

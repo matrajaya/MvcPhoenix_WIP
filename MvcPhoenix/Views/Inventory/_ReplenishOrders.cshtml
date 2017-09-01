@@ -4,7 +4,7 @@
 {
     <label class="lead">No Open Replenishment Orders Found.</label>
     <span class="col-md-3 pull-right row">
-        @Html.ActionLink("Create New Order", "CreateFromInventory", "Replenishments", new { productdetailid = @ViewBag.ProductDetailID }, new { @class = "btn btn-primary btn-block", @target = "_blank" })
+        @Html.ActionLink("Create New Order", "CreateFromInventory", "Replenishments", new { productDetailId = @ViewBag.ProductDetailID }, new { @class = "btn btn-primary btn-block", @target = "_blank" })
     </span>
 }
 
@@ -12,7 +12,7 @@
 {
     <div class="row form-group">
         <div class="col-md-3 pull-right">
-            @Html.ActionLink("Create New Order", "CreateFromInventory", "Replenishments", new { productdetailid = @ViewBag.ProductDetailID }, new { @class = "btn btn-primary btn-block", @target = "_blank" })
+            @Html.ActionLink("Create New Order", "CreateFromInventory", "Replenishments", new { productDetailId = @ViewBag.ProductDetailID }, new { @class = "btn btn-primary btn-block", @target = "_blank" })
         </div>
     </div>
     <div class="table-responsive form-group">
@@ -42,7 +42,11 @@
                         <td>@row.itemstatus</td>
                         <td>@row.eta</td>
                         <td>@row.itemnotes</td>
-                        <td><span class="pull-right">@Html.ActionLink(" ", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, new { @target = "_blank", @class = "btn btn-primary fa fa-pencil", @title = "Edit Replenishment Order" })</span></td>
+                        <td>
+                            <span class="pull-right">
+                                @Html.ActionLink(" ", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, new { @target = "_blank", @class = "btn btn-primary fa fa-pencil", @title = "Edit Replenishment Order" })
+                            </span>
+                        </td>
                     </tr>
                 }
             </tbody>
