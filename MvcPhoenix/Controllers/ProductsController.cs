@@ -79,7 +79,7 @@ namespace MvcPhoenix.Controllers
             PP.productdetailid = id;
             PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
-            PP = ProductsService.fnFillOtherPMProps(PP);
+            PP = ProductsService.FillOtherPMProps(PP);
 
             return View(PP);
         }
@@ -96,7 +96,7 @@ namespace MvcPhoenix.Controllers
             PP.productdetailid = id;
             PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
-            PP = ProductsService.fnFillOtherPMProps(PP);
+            PP = ProductsService.FillOtherPMProps(PP);
 
             return new ViewAsPdf(PP) { CustomSwitches = footer };
         }
@@ -108,7 +108,7 @@ namespace MvcPhoenix.Controllers
             PP.clientid = clientid;
             PP.productmasterid = -1;
             PP.productdetailid = -1;
-            PP = ProductsService.fnFillOtherPMProps(PP);
+            PP = ProductsService.FillOtherPMProps(PP);
 
             return View("~/Views/Products/Edit.cshtml", PP);
         }
@@ -123,10 +123,10 @@ namespace MvcPhoenix.Controllers
             PP.productdetailid = productDetailId;
             PP = ProductsService.FillFromPD(PP);
             PP = ProductsService.FillFromPM(PP);
-            PP = ProductsService.fnFillOtherPMProps(PP);
+            PP = ProductsService.FillOtherPMProps(PP);
 
             // create new record and clear select values for manual entry
-            PP.productdetailid = ProductsService.fnNewProductDetailID();
+            PP.productdetailid = ProductsService.NewProductDetailID();
             PP.productcode = PP.productcode + " Clone";
             PP.productname = PP.productname + " Clone";
             PP.sgrevisiondate = DateTime.UtcNow;
@@ -134,7 +134,7 @@ namespace MvcPhoenix.Controllers
             PP.UpdateDateDetail = DateTime.UtcNow;
 
             // save model held in memory to db
-            int pk = ProductsService.fnSaveProductProfile(PP);
+            int pk = ProductsService.SaveProductProfile(PP);
 
             // find entries for shelfsize info, ghs, cas where id = productdetailid3
             // clone these entries where id = PP.productdetailid
@@ -225,7 +225,7 @@ namespace MvcPhoenix.Controllers
                 return View("Edit", PPVM);
             }
 
-            int pk = ProductsService.fnSaveProductProfile(PPVM);
+            int pk = ProductsService.SaveProductProfile(PPVM);
             TempData["SaveResult"] = "Product Profile updated on " + DateTime.UtcNow.ToString("R");
 
             return RedirectToAction("Edit", new { id = pk });
@@ -234,7 +234,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult DeActivateProductMaster(int id)
         {
-            ProductsService.fnDeActivateProductMaster(id);
+            ProductsService.DeActivateProductMaster(id);
             // The returned string can be pushed into a message <div>
             return Content("Product De-Activated");
         }
@@ -245,7 +245,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupUNGround(string id)
         {
             UN obj = new UN();
-            obj = ProductsService.fnGetUN(id);
+            obj = ProductsService.GetUN(id);
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
@@ -254,7 +254,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupUNAir(string id)
         {
             UN obj = new UN();
-            obj = ProductsService.fnGetUN(id);
+            obj = ProductsService.GetUN(id);
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
@@ -263,7 +263,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupUNSea(string id)
         {
             UN obj = new UN();
-            obj = ProductsService.fnGetUN(id);
+            obj = ProductsService.GetUN(id);
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
@@ -272,7 +272,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupUNRCRA(string id)
         {
             UN obj = new UN();
-            obj = ProductsService.fnGetUN(id);
+            obj = ProductsService.GetUN(id);
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
@@ -311,7 +311,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult CreateProductNote(int id)
         {
             // id=ProductDetailID as the FK
-            var PN = ProductsService.fnCreateProductNote(id);
+            var PN = ProductsService.CreateProductNote(id);
 
             return PartialView("~/Views/Products/_LogNotesModal.cshtml", PN);
         }
@@ -320,7 +320,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditProductNote(int id)
         {
             // id=ProductNoteID as the PK
-            var PN = ProductsService.fnGetProductNote(id);
+            var PN = ProductsService.GetProductNote(id);
 
             return PartialView("~/Views/Products/_LogNotesModal.cshtml", PN);
         }
@@ -328,7 +328,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveProductNote(ProductNote PN)
         {
-            int pk = ProductsService.fnSaveProductNoteToDB(PN);
+            int pk = ProductsService.SaveProductNote(PN);
 
             return Content("Data Updated on " + DateTime.UtcNow.ToString("R"));
         }
@@ -336,7 +336,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult DeleteProductNote(int id, int ParentID)
         {
-            int pk = ProductsService.fnDeleteProductNote(id);
+            int pk = ProductsService.DeleteProductNote(id);
 
             return null;
         }
@@ -377,7 +377,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult CreateCAS(int id)
         {
             // id = ProductDetailID
-            var CS = ProductsService.fnCreateCAS(id);
+            var CS = ProductsService.CreateCAS(id);
 
             return PartialView("~/Views/Products/_CasModal.cshtml", CS);
         }
@@ -386,7 +386,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditCAS(int id)
         {
             // id= CASID
-            var CS = ProductsService.fnGetCAS(id);
+            var CS = ProductsService.GetCAS(id);
 
             return PartialView("~/Views/Products/_CasModal.cshtml", CS);
         }
@@ -394,14 +394,14 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveCAS(Cas CS)
         {
-            int pk = ProductsService.fnSaveCASToDB(CS);
+            int pk = ProductsService.SaveCAS(CS);
 
             return Content("Data Updated on " + DateTime.UtcNow.ToString("R"));
         }
 
         public ActionResult DeleteCAS(int id)
         {
-            int pk = ProductsService.fnDeleteCAS(id);
+            int pk = ProductsService.DeleteCAS(id);
 
             return null;
         }
@@ -489,7 +489,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditXRef(int id)
         {
             // id = ProductXRefID
-            var CXRef = ProductsService.fnGetXRef(id);
+            var CXRef = ProductsService.GetClientProductCrossReference(id);
 
             return PartialView("~/Views/Products/_ClientXRefModal.cshtml", CXRef);
         }
@@ -497,14 +497,14 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveXRef(ClientProductXRef CXRef)
         {
-            int pk = ProductsService.fnSaveXRefToDB(CXRef);
+            int pk = ProductsService.SaveClientProductCrossReference(CXRef);
 
             return null;
         }
 
         public ActionResult DeleteXRef(int id)
         {
-            int pk = ProductsService.fnDeleteXRef(id);
+            int pk = ProductsService.DeleteProductCrossReference(id);
 
             return null;
         }

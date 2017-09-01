@@ -20,7 +20,7 @@ namespace MvcPhoenix.Services
                 PP.productdetailid = id;
                 vm.PP = ProductsService.FillFromPD(PP);
                 PP = ProductsService.FillFromPM(PP);
-                PP = ProductsService.fnFillOtherPMProps(PP);
+                PP = ProductsService.FillOtherPMProps(PP);
 
                 //vm.vmMasterNotesAlert = PP.masternotesalert;
                 // cannot get View to properly handle this when buried in PP

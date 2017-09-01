@@ -21,7 +21,7 @@ namespace MvcPhoenix.Controllers
                 vm.productdetailid = productdetailid;
                 vm = ProductsService.FillFromPD(vm);
                 vm = ProductsService.FillFromPM(vm);
-                vm = ProductsService.fnFillOtherPMProps(vm);
+                vm = ProductsService.FillOtherPMProps(vm);
                 var vb = db.tblDivision.Find(vm.divisionid);
                 ViewBag.Division = vb.DivisionName;                                             // not in PP
 
