@@ -90,7 +90,7 @@ namespace MvcPhoenix.Controllers
         {
             ClientProfile CP = new ClientProfile();
             CP.ClientID = id;
-            CP = ClientService.FillFromDB(CP);
+            CP = ClientService.FillClientProfile(CP);
 
             return View(CP);
         }
@@ -101,7 +101,7 @@ namespace MvcPhoenix.Controllers
         {
             ClientProfile obj = new ClientProfile();
             obj.ClientID = id;
-            obj = ClientService.FillFromDB(obj);
+            obj = ClientService.FillClientProfile(obj);
 
             return View(obj);
         }
@@ -122,7 +122,7 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new CMCSQL03Entities())
             {
-                int pk = ClientService.fnSaveClientProfile(CPVM);
+                int pk = ClientService.SaveClientProfile(CPVM);
 
                 if (logoupload != null && logoupload.ContentLength > 0)
                 {

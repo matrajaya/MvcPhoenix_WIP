@@ -69,17 +69,17 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static bool SaveBulkContainer(BulkContainerViewModel model)
+        public static bool SaveBulkContainer(BulkContainerViewModel bulk)
         {
             bool isConfirmSaved = false;
             try
             {
                 using (var db = new CMCSQL03Entities())
                 {
-                    int pk = model.bulkid;
-                    if (model.bulkid == -1)
+                    int pk = bulk.bulkid;
+                    if (bulk.bulkid == -1)
                     {
-                        var newRecord = new tblBulk { ProductMasterID = model.productmasterid };
+                        var newRecord = new tblBulk { ProductMasterID = bulk.productmasterid };
 
                         db.tblBulk.Add(newRecord);
 
@@ -97,31 +97,31 @@ namespace MvcPhoenix.Services
                                       where t.BulkID == pk
                                       select t).FirstOrDefault();
 
-                    bulkRecord.Warehouse = model.warehouse;
-                    bulkRecord.ReceiveDate = model.receivedate;
-                    bulkRecord.Carrier = model.carrier;
-                    bulkRecord.ReceivedBy = model.receivedby;
-                    bulkRecord.EnteredBy = model.enteredby;
-                    bulkRecord.ProductMasterID = model.productmasterid;
-                    bulkRecord.ReceiveWeight = model.receiveweight;
-                    bulkRecord.LotNumber = model.lotnumber;
-                    bulkRecord.MfgDate = model.mfgdate;
-                    bulkRecord.ExpirationDate = model.expirationdate;
-                    bulkRecord.CeaseShipDate = model.ceaseshipdate;
-                    bulkRecord.BulkStatus = model.bulkstatus;
-                    bulkRecord.UM = model.um;
-                    bulkRecord.ContainerColor = model.containercolor;
-                    bulkRecord.Bin = model.bin;
-                    bulkRecord.ContainerType = model.containertype;
-                    bulkRecord.COAIncluded = model.coaincluded;
-                    bulkRecord.MSDSIncluded = model.msdsincluded;
-                    bulkRecord.ContainerNotes = model.containernotes;
-                    bulkRecord.CurrentWeight = model.currentweight;
-                    bulkRecord.QCDate = model.qcdate;
-                    bulkRecord.NoticeDate = model.noticedate;
-                    bulkRecord.BulkLabelNote = model.bulklabelnote;
-                    bulkRecord.ReceivedAsCode = model.receivedascode;
-                    bulkRecord.ReceivedAsName = model.receivedasname;
+                    bulkRecord.Warehouse = bulk.warehouse;
+                    bulkRecord.ReceiveDate = bulk.receivedate;
+                    bulkRecord.Carrier = bulk.carrier;
+                    bulkRecord.ReceivedBy = bulk.receivedby;
+                    bulkRecord.EnteredBy = bulk.enteredby;
+                    bulkRecord.ProductMasterID = bulk.productmasterid;
+                    bulkRecord.ReceiveWeight = bulk.receiveweight;
+                    bulkRecord.LotNumber = bulk.lotnumber;
+                    bulkRecord.MfgDate = bulk.mfgdate;
+                    bulkRecord.ExpirationDate = bulk.expirationdate;
+                    bulkRecord.CeaseShipDate = bulk.ceaseshipdate;
+                    bulkRecord.BulkStatus = bulk.bulkstatus;
+                    bulkRecord.UM = bulk.um;
+                    bulkRecord.ContainerColor = bulk.containercolor;
+                    bulkRecord.Bin = bulk.bin;
+                    bulkRecord.ContainerType = bulk.containertype;
+                    bulkRecord.COAIncluded = bulk.coaincluded;
+                    bulkRecord.MSDSIncluded = bulk.msdsincluded;
+                    bulkRecord.ContainerNotes = bulk.containernotes;
+                    bulkRecord.CurrentWeight = bulk.currentweight;
+                    bulkRecord.QCDate = bulk.qcdate;
+                    bulkRecord.NoticeDate = bulk.noticedate;
+                    bulkRecord.BulkLabelNote = bulk.bulklabelnote;
+                    bulkRecord.ReceivedAsCode = bulk.receivedascode;
+                    bulkRecord.ReceivedAsName = bulk.receivedasname;
                     bulkRecord.UpdateDate = DateTime.UtcNow;
                     bulkRecord.UpdateUser = HttpContext.Current.User.Identity.Name;
 
@@ -138,9 +138,7 @@ namespace MvcPhoenix.Services
 
             return isConfirmSaved;
         }
-
-        #region SupportMethods
-
+        
         public static List<BulkContainerViewModel> BulkContainers()
         {
             using (var db = new CMCSQL03Entities())
@@ -165,7 +163,5 @@ namespace MvcPhoenix.Services
                 return bulkRecords;
             }
         }
-
-        #endregion SupportMethods
     }
 }

@@ -13,92 +13,92 @@ namespace MvcPhoenix.Services
     {
         #region Client Information Services
 
-        public static ClientProfile FillFromDB(ClientProfile CP)
+        public static ClientProfile FillClientProfile(ClientProfile clientProfile)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var q = (from t in db.tblClient
-                         where t.ClientID == CP.ClientID
-                         select t).FirstOrDefault();
+                var client = (from t in db.tblClient
+                              where t.ClientID == clientProfile.ClientID
+                              select t).FirstOrDefault();
 
-                CP.ClientID = q.ClientID;
-                CP.LegacyID = q.LegacyID;
-                CP.GlobalClientID = q.GlobalClientID;
-                CP.ClientCode = q.ClientCode;
-                CP.ClientName = q.ClientName;
-                CP.CMCLocation = q.CMCLocation;
-                CP.ClientReference = q.ClientReference;
-                CP.ClientEntityName = q.ClientEntityName;
-                CP.ClientCurrency = q.ClientCurrency;
-                CP.ClientUM = q.ClientUM;
-                CP.ClientNetTerm = String.IsNullOrEmpty(q.ClientNetTerm) ? "Net 30 Days" : q.ClientNetTerm;
-                CP.InvoiceAddress = q.InvoiceAddress;
-                CP.InvoiceEmailTo = q.InvoiceEmailTo;
-                CP.KeyContactDir = q.KeyContactDir;
-                CP.ActiveProfile = q.ActiveProfile;
-                CP.ActiveDate = q.ActiveDate;
-                CP.LogoFile = q.LogoFile;
+                clientProfile.ClientID = client.ClientID;
+                clientProfile.LegacyID = client.LegacyID;
+                clientProfile.GlobalClientID = client.GlobalClientID;
+                clientProfile.ClientCode = client.ClientCode;
+                clientProfile.ClientName = client.ClientName;
+                clientProfile.CMCLocation = client.CMCLocation;
+                clientProfile.ClientReference = client.ClientReference;
+                clientProfile.ClientEntityName = client.ClientEntityName;
+                clientProfile.ClientCurrency = client.ClientCurrency;
+                clientProfile.ClientUM = client.ClientUM;
+                clientProfile.ClientNetTerm = String.IsNullOrEmpty(client.ClientNetTerm) ? "Net 30 Days" : client.ClientNetTerm;
+                clientProfile.InvoiceAddress = client.InvoiceAddress;
+                clientProfile.InvoiceEmailTo = client.InvoiceEmailTo;
+                clientProfile.KeyContactDir = client.KeyContactDir;
+                clientProfile.ActiveProfile = client.ActiveProfile;
+                clientProfile.ActiveDate = client.ActiveDate;
+                clientProfile.LogoFile = client.LogoFile;
 
-                return CP;
+                return clientProfile;
             }
         }
 
-        public static int fnSaveClientProfile(ClientProfile obj)
+        public static int SaveClientProfile(ClientProfile clientProfile)
         {
-            int clientid = Convert.ToInt32(obj.ClientID);
+            int clientid = Convert.ToInt32(clientProfile.ClientID);
 
             if (clientid == -1)
             {
-                obj.ClientID = NewClientId();
+                clientProfile.ClientID = NewClientId();
             }
 
-            ClientService.SaveClient(obj);
+            ClientService.SaveClient(clientProfile);
 
-            return obj.ClientID;
+            return clientProfile.ClientID;
         }
 
         public static int NewClientId()
         {
             using (var db = new CMCSQL03Entities())
             {
-                var newrow = new tblClient { };
+                var newClient = new tblClient { };
 
-                db.tblClient.Add(newrow);
+                db.tblClient.Add(newClient);
                 db.SaveChanges();
 
-                int clientkey = newrow.ClientID;
+                int clientId = newClient.ClientID;
 
-                return clientkey;
+                return clientId;
             }
         }
 
-        public static void CreateClient(int clientid, string clientname, string clientcode, string whlocation)
+        public static void CreateClient(int clientId, string clientName, string clientCode, string whLocation)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var q = db.tblClient.Find(clientid);
-                q.ClientName = clientname;
-                q.ClientCode = clientcode;
-                q.CMCLocation = whlocation;
+                var client = db.tblClient.Find(clientId);
+                client.ClientName = clientName;
+                client.ClientCode = clientCode;
+                client.CMCLocation = whLocation;
 
-                q.ClientReference = clientcode;
-                q.ClientEntityName = clientname;
+                client.ClientReference = clientCode;
+                client.ClientEntityName = clientName;
 
-                switch (whlocation)
+                switch (whLocation)
                 {
                     case "AP":
-                        q.ClientCurrency = "CNY";
-                        q.ClientUM = "KG";
+                        client.ClientCurrency = "CNY";
+                        client.ClientUM = "KG";
                         break;
 
                     case "EU":
-                        q.ClientCurrency = "EUR";
-                        q.ClientUM = "KG";
+                        client.ClientCurrency = "EUR";
+                        client.ClientUM = "KG";
                         break;
 
                     default:
-                        q.ClientCurrency = "USD";
-                        q.ClientUM = "LB";
+                        client.ClientCurrency = "USD";
+                        client.ClientUM = "LB";
                         break;
                 }
 
@@ -106,25 +106,26 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static void SaveClient(ClientProfile CP)
+        public static void SaveClient(ClientProfile clientProfile)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var q = db.tblClient.Find(CP.ClientID);
-                q.ClientID = CP.ClientID;
-                q.LegacyID = CP.LegacyID;
-                q.GlobalClientID = CP.GlobalClientID;
-                q.ClientCode = CP.ClientCode;
-                q.ClientName = CP.ClientName;
-                q.CMCLocation = CP.CMCLocation;
-                q.ClientCurrency = CP.ClientCurrency;
-                q.ClientUM = CP.ClientUM;
-                q.ClientNetTerm = CP.ClientNetTerm;
-                q.InvoiceAddress = CP.InvoiceAddress;
-                q.InvoiceEmailTo = CP.InvoiceEmailTo;
-                q.KeyContactDir = CP.KeyContactDir;
-                q.ActiveDate = CP.ActiveDate;
-                q.ActiveProfile = CP.ActiveProfile;
+                var client = db.tblClient.Find(clientProfile.ClientID);
+
+                client.ClientID = clientProfile.ClientID;
+                client.LegacyID = clientProfile.LegacyID;
+                client.GlobalClientID = clientProfile.GlobalClientID;
+                client.ClientCode = clientProfile.ClientCode;
+                client.ClientName = clientProfile.ClientName;
+                client.CMCLocation = clientProfile.CMCLocation;
+                client.ClientCurrency = clientProfile.ClientCurrency;
+                client.ClientUM = clientProfile.ClientUM;
+                client.ClientNetTerm = clientProfile.ClientNetTerm;
+                client.InvoiceAddress = clientProfile.InvoiceAddress;
+                client.InvoiceEmailTo = clientProfile.InvoiceEmailTo;
+                client.KeyContactDir = clientProfile.KeyContactDir;
+                client.ActiveDate = clientProfile.ActiveDate;
+                client.ActiveProfile = clientProfile.ActiveProfile;
 
                 db.SaveChanges();
             }
@@ -134,14 +135,14 @@ namespace MvcPhoenix.Services
 
         #region Division Services
 
-        public static Division FillDivisionDetails(int id)
+        public static Division FillDivisionDetails(int divisionId)
         {
             using (var db = new CMCSQL03Entities())
             {
                 Division division = new Division();
 
                 var result = (from t in db.tblDivision
-                              where t.DivisionID == id
+                              where t.DivisionID == divisionId
                               select t).FirstOrDefault();
 
                 division.DivisionID = result.DivisionID;
@@ -186,14 +187,14 @@ namespace MvcPhoenix.Services
 
         #region Supplier Services
 
-        public static Supplier FillSupplierDetails(int id)
+        public static Supplier FillSupplierDetails(int bulkSupplierId)
         {
             using (var db = new CMCSQL03Entities())
             {
                 Supplier supplier = new Supplier();
 
                 var result = (from t in db.tblBulkSupplier
-                              where t.BulkSupplierID == id
+                              where t.BulkSupplierID == bulkSupplierId
                               select t).FirstOrDefault();
 
                 supplier.BulkSupplierID = result.BulkSupplierID;
@@ -221,14 +222,14 @@ namespace MvcPhoenix.Services
 
         #region Client Contact Services
 
-        public static Contact FillContactDetails(int id)
+        public static Contact FillContactDetails(int clientContactId)
         {
             using (var db = new CMCSQL03Entities())
             {
                 Contact contact = new Contact();
 
                 var result = (from t in db.tblClientContact
-                              where t.ClientContactID == id
+                              where t.ClientContactID == clientContactId
                               select t).FirstOrDefault();
 
                 contact.ClientContactID = result.ClientContactID;
@@ -256,14 +257,14 @@ namespace MvcPhoenix.Services
 
         #region Tier Services
 
-        public static Tier FillTierDetails(int id)
+        public static Tier FillTierDetails(int tierId)
         {
             using (var db = new CMCSQL03Entities())
             {
                 Tier tier = new Tier();
 
                 var result = (from t in db.tblTier
-                              where t.TierID == id
+                              where t.TierID == tierId
                               select t).FirstOrDefault();
 
                 tier.TierID = result.TierID;
