@@ -76,7 +76,7 @@
                             InsertionMode = InsertionMode.Replace,
                             HttpMethod = "GET",
                             OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                        }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit" })
+                        }, new { @class = "btn btn-primary btn-sm fa fa-pencil", @title = "Edit" })
                     </td>
                 </tr>
             }
@@ -112,7 +112,7 @@
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateItemsList",
                                  OnFailure = "$.alert('Error - Could not allocate order')",
-                             }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From QC Shelf Stock" })
+                             }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From QC Shelf Stock. \nQC stock is considered any status not 'AVAIL' or 'HOLD' \nUse 'Returns' utility instead unless needed. " })
                     </div>
                 </div>
             </div>

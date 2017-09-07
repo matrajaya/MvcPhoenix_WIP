@@ -1363,11 +1363,11 @@ namespace MvcPhoenix.Services
                         stock = stock.Where(s => s.LotNumber == item.LotNumber).ToList();
                     }
 
-                    // check for qcstock if requested,
-                    // available and qc stock are exclusive to themselves as discussed with Chris - Iffy
+                    // qc stock is considered to be any status other than hold or available
                     if (IncludeQCStock == true)
                     {
-                        stock = stock.Where(s => s.ShelfStatus == "QC").ToList();
+                        stock = stock.Where(s => s.ShelfStatus != "AVAIL").ToList();
+                        stock = stock.Where(s => s.ShelfStatus != "HOLD").ToList();
                     }
                     else
                     {
@@ -1457,14 +1457,15 @@ namespace MvcPhoenix.Services
 
                     updatestock.QtyAvailable = updatestock.QtyAvailable + orderitem.Qty;
                     updatestock.QtyAllocated -= orderitem.Qty;
-                    if (updatestock.ShelfStatus == "RETURN")
-                    {
-                        updatestock.ShelfStatus = "AVAIL";
-                        updatestock.MarkedForReturn = false;
-                    }
+                    //if (updatestock.ShelfStatus == "RETURN")
+                    //{
+                    //    updatestock.ShelfStatus = "AVAIL";
+                    //    updatestock.MarkedForReturn = false;
+                    //}
+                    // zero out QtyAllocated if negative
                     if (updatestock.QtyAllocated < 0)
                     {
-                        updatestock.QtyAllocated = 0;                                           // zero out QtyAllocated if negative
+                        updatestock.QtyAllocated = 0;                                           
                     }
                     updatestock.UpdateDate = DateTime.UtcNow;
                     updatestock.UpdateUser = HttpContext.Current.User.Identity.Name;
@@ -1473,17 +1474,16 @@ namespace MvcPhoenix.Services
                 }
 
                 // Make sure there is something to reverse before wiping out fields
+                // Clear allocation related fields for order item
                 if (success == true)
                 {
                     try
                     {
-                        // Clear allocation related fields for order item
                         orderitem.AllocatedStockID = null;
                         orderitem.AllocatedBulkID = null;
                         orderitem.BulkID = null;
                         orderitem.AllocateStatus = null;
                         orderitem.AllocatedDate = null;
-                        orderitem.CSAllocate = null;
                         orderitem.Bin = null;
                         orderitem.LotNumber = null;
                         orderitem.Warehouse = null;
