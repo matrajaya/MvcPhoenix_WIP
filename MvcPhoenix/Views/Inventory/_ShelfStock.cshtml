@@ -5,7 +5,7 @@
 {
     <label class="lead">No Shelf Stock Found.</label>
     <span class="col-md-3 pull-right row">
-        @Html.ActionLink("Create New Stock", "CreatePrePackStock", "Inventory", new { id = @ViewBag.ParentID }, new { @class = "btn btn-primary btn-block form-control" })
+        @Html.ActionLink("Create New Stock", "CreatePrePackStock", "Inventory", new { productDetailId = @ViewBag.ParentID }, new { @class = "btn btn-primary btn-block form-control" })
     </span>
 }
 
@@ -17,14 +17,14 @@
             Shelf Life: @ViewBag.ShelfLife
         </div>
         <div class="col-md-3 pull-right">
-            @Html.ActionLink("Create New Stock", "CreatePrePackStock", "Inventory", new { id = @ViewBag.ParentID }, new { @class = "btn btn-primary btn-block form-control" })
+            @Html.ActionLink("Create New Stock", "CreatePrePackStock", "Inventory", new { productDetailId = @ViewBag.ParentID }, new { @class = "btn btn-primary btn-block form-control" })
         </div>
     </div>
     <div class="table-responsive">
         <table class="table table-hover table-striped">
             <thead>
                 <tr>
-                    <th id="noprint" width="100px"></th>
+                    <th id="noprint" class="noprint-th-2btns"></th>
                     <th>Shelf ID</th>
                     <th>Stock ID</th>
                     <th>Bulk ID</th>
@@ -39,7 +39,7 @@
                     <th>Expiry Date</th>
                     <th>Cease Ship Date</th>
                     <th>Status</th>
-                    <th id="noprint" class="text-center"></th>
+                    <th id="noprint" class="text-center noprint-th-2btns"></th>
                 </tr>
             </thead>
             <tbody>
@@ -48,8 +48,8 @@
                     <tr>
                         <td id="noprint">
                             <span class="pull-left">
-                                <a href="#" class="btn btn-info fa fa-print" onclick="printLabel(@row.StockID, @row.QtyOnHand)" title="Print label to shared printer"></a> |
-                                @Html.ActionLink(" ", "ShelfStockLabel", "Inventory", new { id = @row.StockID }, new { @class = "btn btn-success fa fa-file-pdf-o", @title = "Preview label in browser", @target = "_blank" })
+                                <a href="#" class="btn btn-info btn-sm fa fa-print" onclick="printLabel(@row.StockID, @row.QtyOnHand)" title="Print label to shared printer"></a> |
+                                @Html.ActionLink(" ", "ShelfStockLabel", "Inventory", new { shelfstockid = @row.StockID }, new { @class = "btn btn-success btn-sm fa fa-file-pdf-o", @title = "Preview label in browser", @target = "_blank" })
                             </span>
                         </td>
                         <td>@row.ShelfID</td>
@@ -76,7 +76,7 @@
                                         InsertionMode = InsertionMode.Replace,
                                         HttpMethod = "GET",
                                         OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                                    }, new { @class = "btn btn-primary fa fa-cog", @title = "Convert To Bulk Stock" })
+                                    }, new { @class = "btn btn-primary btn-sm fa fa-cog", @title = "Convert To Bulk Stock" })
                                 }
                                 else
                                 {
@@ -85,13 +85,13 @@
 
                                 @if (@row.QtyOnHand > 0)
                                 {
-                                    @Ajax.ActionLink(" ", "EditStock", "Inventory", new { id = @row.StockID }, new AjaxOptions
+                                    @Ajax.ActionLink(" ", "EditStock", "Inventory", new { shelfstockid = @row.StockID }, new AjaxOptions
                                      {
                                          UpdateTargetId = "dialogPlaceholder",
                                          InsertionMode = InsertionMode.Replace,
                                          HttpMethod = "GET",
                                          OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                                     }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Shelf Stock" })
+                                     }, new { @class = "btn btn-primary btn-sm fa fa-pencil", @title = "Edit Shelf Stock" })
                                 }
                                 else
                                 {
@@ -110,10 +110,10 @@
     @Html.Raw(Neodynamic.SDK.Web.WebClientPrint.CreateScript(Url.Action("ShelfStockPrint", "Inventory", null, Request.Url.Scheme)))
 
     <script type="text/javascript">
-        function printLabel(arg1, arg2) {
-            this.shelfstockid = arg1;
-            this.pagecopies = arg2;
+        function printLabel(stockId, qty) {
+            this.shelfStockId = stockId;
+            this.pageCopies = qty;
 
-            jsWebClientPrint.print('Shelfstockid=' + this.shelfstockid + '&pagecopies=' + this.pagecopies);
+            jsWebClientPrint.print('shelfStockId=' + this.shelfStockId + '&pageCopies=' + this.pageCopies);
         }
     </script>

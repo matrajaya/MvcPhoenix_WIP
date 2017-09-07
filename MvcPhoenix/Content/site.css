@@ -317,3 +317,7 @@ iframe {
     display: flex;
     margin: 0 auto;
 }
+
+.noprint-th-2btns {
+    width: 100px;
+}

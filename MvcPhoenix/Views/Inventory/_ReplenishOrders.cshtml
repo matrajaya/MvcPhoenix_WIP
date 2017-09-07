@@ -27,7 +27,7 @@
                     <th>Item<br />Status</th>
                     <th>ETA</th>
                     <th>Notes</th>
-                    <th></th>
+                    <th id="noprint"></th>
                 </tr>
             </thead>
             <tbody>
@@ -42,9 +42,9 @@
                         <td>@row.itemstatus</td>
                         <td>@row.eta</td>
                         <td>@row.itemnotes</td>
-                        <td>
+                        <td id="noprint">
                             <span class="pull-right">
-                                @Html.ActionLink(" ", "EditBulkOrder", "Inventory", new { id = row.bulkorderid }, new { @target = "_blank", @class = "btn btn-primary fa fa-pencil", @title = "Edit Replenishment Order" })
+                                @Html.ActionLink(" ", "EditBulkOrder", "Inventory", new { bulkorderid = row.bulkorderid }, new { @target = "_blank", @class = "btn btn-primary btn-sm fa fa-pencil", @title = "Edit Replenishment Order" })
                             </span>
                         </td>
                     </tr>

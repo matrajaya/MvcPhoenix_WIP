@@ -58,6 +58,6 @@ footer {
     page-break-after: always;
 }
 
-.noprint, #noprint, a, div.alert, header, .group-media, .btn, .footer, form, #comments, .nav, ul.links.list-inline, ul.action-links {
+.noprint, #noprint, #noprint-th-2btns, a, div.alert, header, .group-media, .btn, .footer, form, #comments, .nav, ul.links.list-inline, ul.action-links {
     display: none !important;
 }

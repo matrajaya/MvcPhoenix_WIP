@@ -2,7 +2,6 @@
 @using MvcPhoenix.Models
 
 @{
-    // controller will send this value, needed if user chooses to do a packout so can return to Inventory/Edit/productdetailid
     string PDid = TempData["productdetailid"].ToString();
 }
 
@@ -23,7 +22,7 @@
                 <th>Notice Date</th>
                 <th>Waste Start Date</th>
                 <th>Status</th>
-                <th width="100px"></th>
+                <th id="noprint" class="noprint-th-2btns"></th>
             </tr>
         </thead>
         <tbody>
@@ -43,17 +42,17 @@
                     <td>@String.Format("{0:dd MMM yyyy}", @row.noticedate)</td>
                     <td>@String.Format("{0:dd MMM yyyy}", @row.wasteaccumstartdate)</td>
                     <td>@row.bulkstatus</td>
-                    <td>
+                    <td id="noprint">
                         <span class="pull-right">
                             @if (row.bulkstatus == "AVAIL")
                             {
-                                @Html.ActionLink(" ", "Index", "Packout", new { id = row.bulkid, productdetailid = PDid }, new { @class = "btn btn-primary fa fa-gears", @title = "Packout Request", @target = "_blank" })
+                                @Html.ActionLink(" ", "Index", "Packout", new { id = row.bulkid, productdetailid = PDid }, new { @class = "btn btn-primary btn-sm fa fa-cog", @title = "Packout Request", @target = "_blank" })
                             }
                             else
                             {
-                                <a class = "btn btn-danger fa fa-ban text-danger" title = "Packout Request Not Allowed"></a>
+                                <a class="btn btn-danger btn-sm fa fa-ban text-danger" title="Packout Request Not Allowed"></a>
                             } |
-                            @Html.ActionLink(" ", "EditBulk", "Inventory", new { id = row.bulkid }, new { @class = "btn btn-primary fa fa-pencil", @title = "Edit Bulk Stock", @target = "_blank" })
+                            @Html.ActionLink(" ", "EditBulk", "Inventory", new { id = row.bulkid }, new { @class = "btn btn-primary btn-sm fa fa-pencil", @title = "Edit Bulk Stock", @target = "_blank" })
                         </span>
                     </td>
                 </tr>

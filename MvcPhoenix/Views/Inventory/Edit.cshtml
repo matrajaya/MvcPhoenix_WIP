@@ -260,7 +260,7 @@
                 <h3 class="panel-title" data-toggle="collapse" data-target="#replenishorderpan"><i class="fa fa-file-text-o fa-fw"></i> Open Replenishment Orders</h3>
             </div>
             <div id="replenishorderpan" class="panel-body collapse in">
-                @{Html.RenderAction("BulkOrdersList", "Inventory", new { id = @Model.PP.productdetailid });}
+                @{Html.RenderAction("BulkOrdersList", "Inventory", new { productDetailId = @Model.PP.productdetailid });}
             </div>
         </div>
 
@@ -270,7 +270,7 @@
             </div>
             <div id="bulkstockpan" class="panel-body collapse in">
                 <div id="">
-                    @{Html.RenderAction("BulkStockList", "Inventory", new { id = @Model.PP.productmasterid, productdetailid = @Model.PP.productdetailid });}
+                    @{Html.RenderAction("BulkStockList", "Inventory", new { productmasterid = @Model.PP.productmasterid, productdetailid = @Model.PP.productdetailid });}
                 </div>
             </div>
         </div>
@@ -281,7 +281,7 @@
             </div>
             <div id="shelfstockpan" class="panel-body collapse in">
                 <div id="">
-                    @{Html.RenderAction("ShelfStockList", "Inventory", new { @Model.PP.productdetailid });}
+                    @{Html.RenderAction("ShelfStockList", "Inventory", new { productdetailid = @Model.PP.productdetailid });}
                 </div>
             </div>
         </div>
@@ -336,7 +336,7 @@
                 <h3 class="panel-title" data-toggle="collapse" data-target="#inventorylogpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Log <i class="fa fa-fw fa-star" style="color:gold"></i></h3>
             </div>
             <div id="inventorylogpan" class="panel-body collapse in">
-                @{Html.RenderAction("InventoryLogList", "Inventory", new { id = @Model.PP.productdetailid });}
+                @{Html.RenderAction("InventoryLogList", "Inventory", new { productDetailId = @Model.PP.productdetailid });}
             </div>
         </div>
 
