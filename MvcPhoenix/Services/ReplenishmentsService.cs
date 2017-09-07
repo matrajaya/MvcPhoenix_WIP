@@ -557,17 +557,18 @@ namespace MvcPhoenix.Services
 
                     // get the bulk containers and setup critieria
                     // TODO: Flip logic to check only avail instead of exceptions in string array
-                    string[] bulkStatus = { "QC", "TEST", "WASTE", "RETURN" };
+                    //string[] bulkStatus = { "QC", "TEST", "WASTE", "RETURN" };
 
                     var bulks = (from t in db.tblBulk
                                  where t.ProductMasterID == item.ProductMasterID
                                  select t).ToList();
 
                     suggestedBulk.BulkCurrentAvailable = (from t in bulks
-                                                          where !bulkStatus.Contains(t.BulkStatus)
+                                                          //where !bulkStatus.Contains(t.BulkStatus)
+                                                          where t.BulkStatus == "AVAIL"
                                                           select ((t.Qty == null ? 1 : t.Qty) * t.CurrentWeight)).Sum();
 
-                    string[] stockStatus = { "QC", "TEST", "WASTE", "RETURN" };
+                    //string[] stockStatus = { "QC", "TEST", "WASTE", "RETURN" };
 
                     var stock = (from t in db.tblStock
                                  join sm in db.tblShelfMaster on t.ShelfID equals sm.ShelfID
@@ -582,7 +583,8 @@ namespace MvcPhoenix.Services
                                  }).ToList();
 
                     suggestedBulk.ShelfCurrentAvailable = (from t in stock
-                                                           where !stockStatus.Contains(t.ShelfStatus)
+                                                           //where !stockStatus.Contains(t.ShelfStatus)
+                                                           where t.ShelfStatus == "AVAIL"
                                                            select (t.QtyOnHand * t.UnitWeight)).Sum();
 
                     suggestedBulk.CurrentAvailable = suggestedBulk.BulkCurrentAvailable + suggestedBulk.ShelfCurrentAvailable;
@@ -602,7 +604,8 @@ namespace MvcPhoenix.Services
                                             }).ToList();
 
                     inventoryBulkLog = (from t in inventoryBulkLog
-                                        where !bulkStatus.Contains(t.BulkStatus)
+                                        //where !bulkStatus.Contains(t.BulkStatus)
+                                        where t.BulkStatus == "AVAIL"
                                         select t).ToList();
 
                     inventoryBulkLog = (from t in inventoryBulkLog
@@ -638,7 +641,8 @@ namespace MvcPhoenix.Services
                                              }).ToList();
 
                     inventoryShelfLog = (from t in inventoryShelfLog
-                                         where !stockStatus.Contains(t.Status)
+                                         //where !stockStatus.Contains(t.Status)
+                                         where t.Status == "AVAIL"
                                          select t).ToList();
 
                     inventoryShelfLog = (from t in inventoryShelfLog
