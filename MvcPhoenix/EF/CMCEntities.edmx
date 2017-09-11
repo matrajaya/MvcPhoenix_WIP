@@ -520,7 +520,7 @@
           <Property Name="CurrentWeightAvailable" Type="numeric" Precision="18" Scale="4" />
           <Property Name="ExpirationDate" Type="datetime" />
           <Property Name="CeaseShipDate" Type="datetime" />
-          <Property Name="OrderNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="OrderNumber" Type="int" />
           <Property Name="DateReceived" Type="datetime" />
           <Property Name="QCDate" Type="datetime" />
           <Property Name="PackOutID" Type="int" />
@@ -2510,7 +2510,7 @@
           <Property Name="CurrentWeightAvailable" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="ExpirationDate" Type="DateTime" Precision="3" />
           <Property Name="CeaseShipDate" Type="DateTime" Precision="3" />
-          <Property Name="OrderNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNumber" Type="Int32" />
           <Property Name="DateReceived" Type="DateTime" Precision="3" />
           <Property Name="QCDate" Type="DateTime" Precision="3" />
           <Property Name="PackOutID" Type="Int32" />

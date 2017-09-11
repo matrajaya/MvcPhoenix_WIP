@@ -12,361 +12,345 @@ namespace MvcPhoenix.Services
     {
         #region Order Master Methods
 
-        public static OrderMasterFull fnCreateOrder(int clientid)
+        public static OrderMasterFull CreateOrder(int clientid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                OrderMasterFull ordermodel = new OrderMasterFull();
+                OrderMasterFull order = new OrderMasterFull();
                 var client = db.tblClient.Find(clientid);
 
-                ordermodel.OrderID = -1;
-                ordermodel.ClientId = client.ClientID;
-                ordermodel.ClientName = client.ClientName;
-                ordermodel.OrderStatus = "New";
-                ordermodel.IsSDN = false;
-                ordermodel.OrderDate = DateTime.UtcNow;
-                ordermodel.CreateUser = HttpContext.Current.User.Identity.Name;
-                ordermodel.CreateDate = DateTime.UtcNow;
+                order.OrderID = -1;
+                order.ClientId = client.ClientID;
+                order.ClientName = client.ClientName;
+                order.OrderStatus = "New";
+                order.IsSDN = false;
+                order.OrderDate = DateTime.UtcNow;
+                order.CreateUser = HttpContext.Current.User.Identity.Name;
+                order.CreateDate = DateTime.UtcNow;
 
-                return ordermodel;
+                return order;
             }
         }
 
-        public static OrderMasterFull fnFillOrder(int orderid)
+        public static OrderMasterFull FillOrder(int orderid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                OrderMasterFull ordermodel = new OrderMasterFull();
-                var getorder = (from t in db.tblOrderMaster
-                                where t.OrderID == orderid
-                                select t).FirstOrDefault();
+                OrderMasterFull order = new OrderMasterFull();
+                var orderDetails = (from t in db.tblOrderMaster
+                                    where t.OrderID == orderid
+                                    select t).FirstOrDefault();
 
-                ordermodel.ItemsCount = (from t in db.tblOrderItem
-                                         where t.OrderID == orderid
-                                         select t).Count();
+                var client = db.tblClient.Find(orderDetails.ClientID);
 
-                ordermodel.TransCount = (from t in db.tblOrderTrans
-                                         where t.OrderID == orderid
-                                         select t).Count();
+                order.ItemsCount = (from t in db.tblOrderItem
+                                    where t.OrderID == orderid
+                                    select t).Count();
 
-                var client = db.tblClient.Find(getorder.ClientID);
+                order.TransCount = (from t in db.tblOrderTrans
+                                    where t.OrderID == orderid
+                                    select t).Count();
 
-                ordermodel.ClientName = client.ClientName;
-                ordermodel.ClientCode = client.ClientCode;
-                ordermodel.OrderID = getorder.OrderID;
-                ordermodel.ClientId = getorder.ClientID;
-                ordermodel.DivisionId = getorder.DivisionID;
-                ordermodel.OrderStatus = getorder.OrderStatus;
-                ordermodel.Customer = getorder.Customer;
-                ordermodel.CMCOrder = Convert.ToInt32(getorder.CMCOrder);
-                ordermodel.WebOrderId = Convert.ToInt32(getorder.WebOrderID);
-                ordermodel.CMCLegacyNumber = getorder.CMCLegacyNum;
-                ordermodel.ClientOrderNumber = getorder.CustOrdNum;
-                ordermodel.ClientSAPNumber = getorder.CustSapNum;
-                ordermodel.ClientRefNumber = getorder.CustRefNum;
-                ordermodel.OrderType = getorder.OrderType;
-                ordermodel.OrderDate = getorder.OrderDate;
-                ordermodel.Company = getorder.Company;
-                ordermodel.Street = getorder.Street;
-                ordermodel.Street2 = getorder.Street2;
-                ordermodel.Street3 = getorder.Street3;
-                ordermodel.City = getorder.City;
-                ordermodel.State = getorder.State;
-                ordermodel.Zip = getorder.Zip;
-                ordermodel.Country = getorder.Country;
-                ordermodel.CustomsRefNumber = getorder.CustomsRefNum;
-                ordermodel.Attention = getorder.Attention;
-                ordermodel.Email = getorder.Email;
-                ordermodel.SalesRepName = getorder.SalesRep;
-                ordermodel.SalesRepEmail = getorder.SalesEmail;
-                ordermodel.RequestorName = getorder.Req;
-                ordermodel.RequestorPhone = getorder.ReqPhone;
-                ordermodel.RequestorFax = getorder.ReqFax;
-                ordermodel.RequestorEmail = getorder.ReqEmail;
-                ordermodel.EndUse = getorder.EndUse;
-                ordermodel.ShipVia = getorder.ShipVia;
-                ordermodel.ShipAcct = getorder.ShipAcct;
-                ordermodel.Phone = getorder.Phone;
-                ordermodel.Source = getorder.Source;
-                ordermodel.Fax = getorder.Fax;
-                ordermodel.Tracking = getorder.Tracking;
-                ordermodel.Special = getorder.Special;
-                ordermodel.SpecialInternal = getorder.SpecialInternal;
-                ordermodel.IsLiterature = Convert.ToBoolean(getorder.Lit);
-                ordermodel.Region = getorder.Region;
-                ordermodel.COA = Convert.ToBoolean(getorder.COA);
-                ordermodel.TDS = Convert.ToBoolean(getorder.TDS);
-                ordermodel.CID = getorder.CID;
-                ordermodel.ClientAcct = getorder.CustAcct;
-                ordermodel.ACode = getorder.ACode;
-                ordermodel.ImportFile = getorder.ImportFile;
+                order.ClientName = client.ClientName;
+                order.ClientCode = client.ClientCode;
+                order.OrderID = orderDetails.OrderID;
+                order.ClientId = orderDetails.ClientID;
+                order.DivisionId = orderDetails.DivisionID;
+                order.OrderStatus = orderDetails.OrderStatus;
+                order.Customer = orderDetails.Customer;
+                order.CMCOrder = Convert.ToInt32(orderDetails.CMCOrder);
+                order.WebOrderId = Convert.ToInt32(orderDetails.WebOrderID);
+                order.CMCLegacyNumber = orderDetails.CMCLegacyNum;
+                order.ClientOrderNumber = orderDetails.CustOrdNum;
+                order.ClientSAPNumber = orderDetails.CustSapNum;
+                order.ClientRefNumber = orderDetails.CustRefNum;
+                order.OrderType = orderDetails.OrderType;
+                order.OrderDate = orderDetails.OrderDate;
+                order.Company = orderDetails.Company;
+                order.Street = orderDetails.Street;
+                order.Street2 = orderDetails.Street2;
+                order.Street3 = orderDetails.Street3;
+                order.City = orderDetails.City;
+                order.State = orderDetails.State;
+                order.Zip = orderDetails.Zip;
+                order.Country = orderDetails.Country;
+                order.CustomsRefNumber = orderDetails.CustomsRefNum;
+                order.Attention = orderDetails.Attention;
+                order.Email = orderDetails.Email;
+                order.SalesRepName = orderDetails.SalesRep;
+                order.SalesRepEmail = orderDetails.SalesEmail;
+                order.RequestorName = orderDetails.Req;
+                order.RequestorPhone = orderDetails.ReqPhone;
+                order.RequestorFax = orderDetails.ReqFax;
+                order.RequestorEmail = orderDetails.ReqEmail;
+                order.EndUse = orderDetails.EndUse;
+                order.ShipVia = orderDetails.ShipVia;
+                order.ShipAcct = orderDetails.ShipAcct;
+                order.Phone = orderDetails.Phone;
+                order.Source = orderDetails.Source;
+                order.Fax = orderDetails.Fax;
+                order.Tracking = orderDetails.Tracking;
+                order.Special = orderDetails.Special;
+                order.SpecialInternal = orderDetails.SpecialInternal;
+                order.IsLiterature = Convert.ToBoolean(orderDetails.Lit);
+                order.Region = orderDetails.Region;
+                order.COA = Convert.ToBoolean(orderDetails.COA);
+                order.TDS = Convert.ToBoolean(orderDetails.TDS);
+                order.CID = orderDetails.CID;
+                order.ClientAcct = orderDetails.CustAcct;
+                order.ACode = orderDetails.ACode;
+                order.ImportFile = orderDetails.ImportFile;
 
-                if (getorder.ImportDateLine.HasValue)
+                if (orderDetails.ImportDateLine.HasValue)
                 {
-                    ordermodel.ImportDateLine = Convert.ToDateTime(getorder.ImportDateLine);
+                    order.ImportDateLine = Convert.ToDateTime(orderDetails.ImportDateLine);
                 }
                 else
                 {
-                    ordermodel.ImportDateLine = null;
+                    order.ImportDateLine = null;
                 }
 
-                ordermodel.Timing = getorder.Timing;
-                ordermodel.Volume = getorder.Volume;
-                ordermodel.SampleRack = Convert.ToBoolean(getorder.SampleRack);
-                ordermodel.CMCUser = getorder.CMCUser;
-                ordermodel.ClientReference = getorder.CustomerReference;
-                ordermodel.TotalOrderWeight = getorder.TotalOrderWeight;
-                ordermodel.ClientOrderType = getorder.CustOrderType;
+                order.Timing = orderDetails.Timing;
+                order.Volume = orderDetails.Volume;
+                order.SampleRack = Convert.ToBoolean(orderDetails.SampleRack);
+                order.CMCUser = orderDetails.CMCUser;
+                order.ClientReference = orderDetails.CustomerReference;
+                order.TotalOrderWeight = orderDetails.TotalOrderWeight;
+                order.ClientOrderType = orderDetails.CustOrderType;
 
-                ordermodel.ClientRequestDate = null;
-                if (getorder.CustRequestDate.HasValue)
+                order.ClientRequestDate = null;
+                if (orderDetails.CustRequestDate.HasValue)
                 {
-                    ordermodel.ClientRequestDate = getorder.CustRequestDate;
+                    order.ClientRequestDate = orderDetails.CustRequestDate;
                 }
 
-                ordermodel.ApprovalDate = null;
-                if (getorder.ApprovalDate.HasValue)
+                order.ApprovalDate = null;
+                if (orderDetails.ApprovalDate.HasValue)
                 {
-                    ordermodel.ApprovalDate = getorder.ApprovalDate;
+                    order.ApprovalDate = orderDetails.ApprovalDate;
                 }
 
-                ordermodel.RequestedDeliveryDate = null;
-                if (getorder.RequestedDeliveryDate.HasValue)
+                order.RequestedDeliveryDate = null;
+                if (orderDetails.RequestedDeliveryDate.HasValue)
                 {
-                    ordermodel.RequestedDeliveryDate = getorder.RequestedDeliveryDate;
+                    order.RequestedDeliveryDate = orderDetails.RequestedDeliveryDate;
                 }
 
-                ordermodel.ClientTotalItems = Convert.ToInt32(getorder.CustTotalItems);
-                ordermodel.ClientRequestedCarrier = getorder.CustRequestedCarrier;
-                ordermodel.LegacyId = Convert.ToInt32(getorder.LegacyID);
-                ordermodel.SalesRepPhone = getorder.SalesRepPhone;
-                ordermodel.SalesRepTerritory = getorder.SalesRepTerritory;
-                ordermodel.MarketingRep = getorder.MarketingRep;
-                ordermodel.MarketingRepEmail = getorder.MarketingRepEmail;
-                ordermodel.Distributor = getorder.Distributor;
-                ordermodel.PreferredCarrier = getorder.PreferredCarrier;
-                ordermodel.ApprovalNeeded = Convert.ToBoolean(getorder.ApprovalNeeded);
-                ordermodel.CreateUser = getorder.CreateUser;
-                ordermodel.CreateDate = getorder.CreateDate;
-                ordermodel.UpdateUser = getorder.UpdateUser;
-                ordermodel.UpdateDate = getorder.UpdateDate;
-                ordermodel.IsSDN = getorder.IsSDN;
-                ordermodel.IsSDNOverride = getorder.IsSDNOverride;
+                order.ClientTotalItems = Convert.ToInt32(orderDetails.CustTotalItems);
+                order.ClientRequestedCarrier = orderDetails.CustRequestedCarrier;
+                order.LegacyId = Convert.ToInt32(orderDetails.LegacyID);
+                order.SalesRepPhone = orderDetails.SalesRepPhone;
+                order.SalesRepTerritory = orderDetails.SalesRepTerritory;
+                order.MarketingRep = orderDetails.MarketingRep;
+                order.MarketingRepEmail = orderDetails.MarketingRepEmail;
+                order.Distributor = orderDetails.Distributor;
+                order.PreferredCarrier = orderDetails.PreferredCarrier;
+                order.ApprovalNeeded = Convert.ToBoolean(orderDetails.ApprovalNeeded);
+                order.CreateUser = orderDetails.CreateUser;
+                order.CreateDate = orderDetails.CreateDate;
+                order.UpdateUser = orderDetails.UpdateUser;
+                order.UpdateDate = orderDetails.UpdateDate;
+                order.IsSDN = orderDetails.IsSDN;
+                order.IsSDNOverride = orderDetails.IsSDNOverride;
 
-                return ordermodel;
+                return order;
             }
         }
 
-        public static int fnNewOrderID()
+        public static int NewOrderId()
         {
             using (var db = new CMCSQL03Entities())
             {
-                tblOrderMaster newrec = new tblOrderMaster();
-                db.tblOrderMaster.Add(newrec);
+                tblOrderMaster newOrder = new tblOrderMaster();
+                db.tblOrderMaster.Add(newOrder);
                 db.SaveChanges();
 
-                return newrec.OrderID;
+                return newOrder.OrderID;
             }
         }
 
-        public static int fnSaveOrder(OrderMasterFull vm)
+        public static int SaveOrder(OrderMasterFull order)
         {
             // Take a ViewModel and Insert/Update DB / Return the PK
             using (var db = new CMCSQL03Entities())
             {
-                if (vm.OrderID == -1)
+                if (order.OrderID == -1)
                 {
-                    vm.OrderID = fnNewOrderID();
+                    order.OrderID = NewOrderId();
                 }
 
                 // update time stamps
-                vm.UpdateUser = HttpContext.Current.User.Identity.Name;
-                vm.UpdateDate = DateTime.UtcNow;
+                order.UpdateUser = HttpContext.Current.User.Identity.Name;
+                order.UpdateDate = DateTime.UtcNow;
 
-                var q = (from t in db.tblOrderMaster
-                         where t.OrderID == vm.OrderID
+                var orderMaster = (from t in db.tblOrderMaster
+                         where t.OrderID == order.OrderID
                          select t).FirstOrDefault();
 
-                q.OrderDate = vm.OrderDate;
-                q.ClientID = vm.ClientId;
-                q.DivisionID = vm.DivisionId;
-                q.Customer = vm.Customer;
-                q.CMCOrder = vm.CMCOrder;
-                q.WebOrderID = vm.WebOrderId;
-                q.CMCLegacyNum = vm.CMCLegacyNumber;
-                q.CustOrdNum = vm.ClientOrderNumber;
-                q.CustSapNum = vm.ClientSAPNumber;
-                q.CustRefNum = vm.ClientRefNumber;
-                q.OrderType = vm.OrderType;
-                q.OrderDate = vm.OrderDate;
-                q.Company = vm.Company;
-                q.Street = vm.Street;
-                q.Street2 = vm.Street2;
-                q.Street3 = vm.Street3;
-                q.City = vm.City;
-                q.State = vm.State;
-                q.Zip = vm.Zip;
-                q.Country = vm.Country;
-                q.Attention = vm.Attention;
-                q.CustomsRefNum = vm.CustomsRefNumber;
-                q.Email = vm.Email;
-                q.SalesRep = vm.SalesRepName;
-                q.SalesEmail = vm.SalesRepEmail;
-                q.Req = vm.RequestorName;
-                q.ReqPhone = vm.RequestorPhone;
-                q.ReqFax = vm.RequestorFax;
-                q.ReqEmail = vm.RequestorEmail;
-                q.EndUse = vm.EndUse;
-                q.ShipVia = vm.ShipVia;
-                q.ShipAcct = vm.ShipAcct;
-                q.Phone = vm.Phone;
-                q.Source = vm.Source;
-                q.Fax = vm.Fax;
-                q.Tracking = vm.Tracking;
-                q.Special = vm.Special;
-                q.SpecialInternal = vm.SpecialInternal;
-                q.Lit = Convert.ToBoolean(vm.IsLiterature);
-                q.Region = vm.Region;
-                q.COA = vm.COA;
-                q.TDS = vm.TDS;
-                q.CID = vm.CID;
-                q.CustAcct = vm.ClientAcct;
-                q.ACode = vm.ACode;
-                q.ImportFile = vm.ImportFile;
-                q.ImportDateLine = vm.ImportDateLine;
-                q.Timing = vm.Timing;
-                q.Volume = vm.Volume;
-                q.SampleRack = Convert.ToBoolean(vm.SampleRack);
-                q.CMCUser = vm.CMCUser;
-                q.CustomerReference = vm.ClientReference;
-                q.TotalOrderWeight = (vm.TotalOrderWeight);
-                q.CustOrderType = vm.ClientOrderType;
-                q.CustRequestDate = vm.ClientRequestDate;
-                q.ApprovalDate = vm.ApprovalDate;
-                q.RequestedDeliveryDate = vm.RequestedDeliveryDate;
-                q.CustTotalItems = vm.ClientTotalItems;
-                q.CustRequestedCarrier = vm.ClientRequestedCarrier;
-                q.LegacyID = (vm.LegacyId);
-                q.SalesRepPhone = vm.SalesRepPhone;
-                q.SalesRepTerritory = vm.SalesRepTerritory;
-                q.MarketingRep = vm.MarketingRep;
-                q.MarketingRepEmail = vm.MarketingRepEmail;
-                q.Distributor = vm.Distributor;
-                q.PreferredCarrier = vm.PreferredCarrier;
-                q.ApprovalNeeded = vm.ApprovalNeeded;
-                q.UpdateUser = vm.UpdateUser;
-                q.UpdateDate = vm.UpdateDate;
-                q.CreateUser = vm.CreateUser;
-                q.CreateDate = vm.CreateDate;
-                q.IsSDNOverride = vm.IsSDNOverride;
-                q.IsSDN = false;
+                orderMaster.OrderDate = order.OrderDate;
+                orderMaster.ClientID = order.ClientId;
+                orderMaster.DivisionID = order.DivisionId;
+                orderMaster.Customer = order.Customer;
+                orderMaster.CMCOrder = order.CMCOrder;
+                orderMaster.WebOrderID = order.WebOrderId;
+                orderMaster.CMCLegacyNum = order.CMCLegacyNumber;
+                orderMaster.CustOrdNum = order.ClientOrderNumber;
+                orderMaster.CustSapNum = order.ClientSAPNumber;
+                orderMaster.CustRefNum = order.ClientRefNumber;
+                orderMaster.OrderType = order.OrderType;
+                orderMaster.OrderDate = order.OrderDate;
+                orderMaster.Company = order.Company;
+                orderMaster.Street = order.Street;
+                orderMaster.Street2 = order.Street2;
+                orderMaster.Street3 = order.Street3;
+                orderMaster.City = order.City;
+                orderMaster.State = order.State;
+                orderMaster.Zip = order.Zip;
+                orderMaster.Country = order.Country;
+                orderMaster.Attention = order.Attention;
+                orderMaster.CustomsRefNum = order.CustomsRefNumber;
+                orderMaster.Email = order.Email;
+                orderMaster.SalesRep = order.SalesRepName;
+                orderMaster.SalesEmail = order.SalesRepEmail;
+                orderMaster.Req = order.RequestorName;
+                orderMaster.ReqPhone = order.RequestorPhone;
+                orderMaster.ReqFax = order.RequestorFax;
+                orderMaster.ReqEmail = order.RequestorEmail;
+                orderMaster.EndUse = order.EndUse;
+                orderMaster.ShipVia = order.ShipVia;
+                orderMaster.ShipAcct = order.ShipAcct;
+                orderMaster.Phone = order.Phone;
+                orderMaster.Source = order.Source;
+                orderMaster.Fax = order.Fax;
+                orderMaster.Tracking = order.Tracking;
+                orderMaster.Special = order.Special;
+                orderMaster.SpecialInternal = order.SpecialInternal;
+                orderMaster.Lit = Convert.ToBoolean(order.IsLiterature);
+                orderMaster.Region = order.Region;
+                orderMaster.COA = order.COA;
+                orderMaster.TDS = order.TDS;
+                orderMaster.CID = order.CID;
+                orderMaster.CustAcct = order.ClientAcct;
+                orderMaster.ACode = order.ACode;
+                orderMaster.ImportFile = order.ImportFile;
+                orderMaster.ImportDateLine = order.ImportDateLine;
+                orderMaster.Timing = order.Timing;
+                orderMaster.Volume = order.Volume;
+                orderMaster.SampleRack = Convert.ToBoolean(order.SampleRack);
+                orderMaster.CMCUser = order.CMCUser;
+                orderMaster.CustomerReference = order.ClientReference;
+                orderMaster.TotalOrderWeight = (order.TotalOrderWeight);
+                orderMaster.CustOrderType = order.ClientOrderType;
+                orderMaster.CustRequestDate = order.ClientRequestDate;
+                orderMaster.ApprovalDate = order.ApprovalDate;
+                orderMaster.RequestedDeliveryDate = order.RequestedDeliveryDate;
+                orderMaster.CustTotalItems = order.ClientTotalItems;
+                orderMaster.CustRequestedCarrier = order.ClientRequestedCarrier;
+                orderMaster.LegacyID = (order.LegacyId);
+                orderMaster.SalesRepPhone = order.SalesRepPhone;
+                orderMaster.SalesRepTerritory = order.SalesRepTerritory;
+                orderMaster.MarketingRep = order.MarketingRep;
+                orderMaster.MarketingRepEmail = order.MarketingRepEmail;
+                orderMaster.Distributor = order.Distributor;
+                orderMaster.PreferredCarrier = order.PreferredCarrier;
+                orderMaster.ApprovalNeeded = order.ApprovalNeeded;
+                orderMaster.UpdateUser = order.UpdateUser;
+                orderMaster.UpdateDate = order.UpdateDate;
+                orderMaster.CreateUser = order.CreateUser;
+                orderMaster.CreateDate = order.CreateDate;
+                orderMaster.IsSDNOverride = order.IsSDNOverride;
+                orderMaster.IsSDN = false;
 
                 db.SaveChanges();
 
-                fnSaveOrderPostUpdate(vm);
+                SaveOrderPostUpdate(order);
 
-                return vm.OrderID;
+                return order.OrderID;
             }
         }
 
-        public static void fnSaveOrderPostUpdate(OrderMasterFull vm)
+        public static void SaveOrderPostUpdate(OrderMasterFull order)
         {
-            if (vm.IsSDNOverride != true)
+            if (order.IsSDNOverride != true)
             {
                 // changes to order record after it is saved
                 using (var db = new CMCSQL03Entities())
                 {
-                    bool ShowAlert = false;
-
-                    var q = (from t in db.tblOrderMaster
-                             where t.OrderID == vm.OrderID
-                             select t).FirstOrDefault();
-
-                    var qCountry = (from t in db.tblCountry
-                                    where t.Country == vm.Country
-                                    && t.DoNotShip == true
+                    var getOrder = (from t in db.tblOrderMaster
+                                    where t.OrderID == order.OrderID
                                     select t).FirstOrDefault();
 
-                    if (qCountry != null)
-                    {
-                        // flag the order record and the item records that are yet to be allocated
-                        q.IsSDN = true;
-                        var orderitems = (from t in db.tblOrderItem
-                                          where t.OrderID == vm.OrderID
-                                          && t.AllocateStatus == null
-                                          select t).ToList();
+                    var country = (from t in db.tblCountry
+                                   where t.Country == order.Country
+                                   && t.DoNotShip == true
+                                   select t).FirstOrDefault();
 
-                        foreach (var item in orderitems)
+                    var orderItems = (from t in db.tblOrderItem
+                                      where t.OrderID == order.OrderID
+                                      && t.AllocateStatus == null
+                                      select t).ToList();
+
+                    if (country != null)
+                    {
+                        getOrder.IsSDN = true;
+
+                        foreach (var item in orderItems)
                         {
                             item.CSAllocate = false;
                             db.SaveChanges();
                         }
-
-                        ShowAlert = true;
                     }
 
-                    if (fnIsSDN(vm) == true)
+                    if (IsSDN(order) == true)
                     {
-                        // flag the order record and the item records that are yet to be allocated (again maybe)
-                        q.IsSDN = true;
-                        var orderitems = (from t in db.tblOrderItem
-                                          where t.OrderID == vm.OrderID
-                                          && t.AllocateStatus == null
-                                          select t).ToList();
+                        getOrder.IsSDN = true;
 
-                        foreach (var item in orderitems)
+                        foreach (var item in orderItems)
                         {
                             item.CSAllocate = false;
                             db.SaveChanges();
                         }
-
-                        ShowAlert = true;
                     }
 
-                    if (vm.Country != "0")
+                    if (order.Country != "0")
                     {
-                        int countryid = 0;
-                        countryid = (from t in db.tblCountry
-                                     where t.Country.Contains(vm.Country)
-                                     select t.CountryID).FirstOrDefault(); // need the ID
+                        int countryId = 0;
+                        countryId = (from t in db.tblCountry
+                                     where t.Country.Contains(order.Country)
+                                     select t.CountryID).FirstOrDefault();
 
-                        var qCeaseShipOffset = (from t in db.tblCeaseShipOffSet
-                                                where t.ClientID == vm.ClientId
-                                                && t.CountryID == countryid
-                                                select t).FirstOrDefault();
+                        var ceaseShipOffset = (from t in db.tblCeaseShipOffSet
+                                               where t.ClientID == order.ClientId
+                                               && t.CountryID == countryId
+                                               select t).FirstOrDefault();
 
-                        if (qCeaseShipOffset != null)
+                        if (ceaseShipOffset != null)
                         {
-                            q.CeaseShipOffset = qCeaseShipOffset.OffsetDays;
+                            getOrder.CeaseShipOffset = ceaseShipOffset.OffsetDays;
                         }
                     }
 
                     db.SaveChanges();
-
-                    if (ShowAlert == true)
-                    {
-                        // do something , return js alert ???
-                    }
                 }
             }
         }
 
         // Search through SDN List and return true if a name match occurs
-        public static bool fnIsSDN(OrderMasterFull vm)
+        public static bool IsSDN(OrderMasterFull order)
         {
-            var filecontent = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/sdnlist.txt"));
+            var file = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/sdnlist.txt"));
 
-            if (filecontent.Contains(vm.Company))
+            if (file.Contains(order.Company))
             {
                 return true;
             }
 
-            if (!String.IsNullOrEmpty(vm.Street) && filecontent.Contains(vm.Street))
+            if (!String.IsNullOrEmpty(order.Street) && file.Contains(order.Street))
             {
                 return true;
             }
 
-            if (!String.IsNullOrEmpty(vm.Attention) && filecontent.Contains(vm.Attention))
+            if (!String.IsNullOrEmpty(order.Attention) && file.Contains(order.Attention))
             {
                 return true;
             }
@@ -378,14 +362,14 @@ namespace MvcPhoenix.Services
 
         #region Order Item Methods
 
-        public static List<OrderItem> ListOrderItems(int id)
+        public static List<OrderItem> OrderItems(int orderid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var orderitems = (from t in db.tblOrderItem
-                                  join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID into productdetailleftjoin
-                                  from productdetail in productdetailleftjoin.DefaultIfEmpty()
-                                  where t.OrderID == id
+                var orderItems = (from t in db.tblOrderItem
+                                  join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID into productDetailOrderItem
+                                  from productdetail in productDetailOrderItem.DefaultIfEmpty()
+                                  where t.OrderID == orderid
                                   orderby t.ItemID
                                   select new OrderItem
                                   {
@@ -424,58 +408,58 @@ namespace MvcPhoenix.Services
                                       UpdateUser = t.UpdateUser
                                   }).ToList();
 
-                return orderitems;
+                return orderItems;
             }
         }
 
-        public static OrderItem fnCreateItem(int orderid)
+        public static OrderItem CreateOrderItem(int orderid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var dbOrder = db.tblOrderMaster.Find(orderid);
+                var order = db.tblOrderMaster.Find(orderid);
 
-                OrderItem vm = new OrderItem();
+                OrderItem orderItem = new OrderItem();
 
-                vm.CrudMode = "RW";
-                vm.ItemID = -1;
-                vm.OrderID = orderid;
-                vm.ClientID = dbOrder.ClientID;
-                vm.CreateDate = DateTime.UtcNow;
-                vm.CreateUser = HttpContext.Current.User.Identity.Name;
-                vm.ProductDetailID = -1;
-                vm.ProductCode = null;
-                vm.ProductName = null;
-                vm.Size = null;
-                vm.SRSize = null;
-                vm.Qty = 1;
-                vm.LotNumber = null;
-                vm.ShipDate = null;
-                vm.ItemShipVia = "";
-                vm.CSAllocate = true;
-                vm.AllocateStatus = null;
-                vm.NonCMCDelay = false;
-                vm.RDTransfer = false;
-                vm.CarrierInvoiceRcvd = false;
-                vm.DelayReason = null;
-                vm.StatusID = -1;
-                vm.AlertNotesShipping = null;
-                vm.AlertNotesPackOut = null;
-                vm.AlertNotesOrderEntry = null;
-                vm.AlertNotesOther = null;
+                orderItem.CrudMode = "RW";
+                orderItem.ItemID = -1;
+                orderItem.OrderID = order.OrderID;
+                orderItem.ClientID = order.ClientID;
+                orderItem.CreateDate = DateTime.UtcNow;
+                orderItem.CreateUser = HttpContext.Current.User.Identity.Name;
+                orderItem.ProductDetailID = -1;
+                orderItem.ProductCode = null;
+                orderItem.ProductName = null;
+                orderItem.Size = null;
+                orderItem.SRSize = null;
+                orderItem.Qty = 1;
+                orderItem.LotNumber = null;
+                orderItem.ShipDate = null;
+                orderItem.ItemShipVia = "";
+                orderItem.CSAllocate = true;
+                orderItem.AllocateStatus = null;
+                orderItem.NonCMCDelay = false;
+                orderItem.RDTransfer = false;
+                orderItem.CarrierInvoiceRcvd = false;
+                orderItem.DelayReason = null;
+                orderItem.StatusID = -1;
+                orderItem.AlertNotesShipping = null;
+                orderItem.AlertNotesPackOut = null;
+                orderItem.AlertNotesOrderEntry = null;
+                orderItem.AlertNotesOther = null;
 
-                return vm;
+                return orderItem;
             }
         }
 
-        public static int fnNewItemID()
+        public static int NewOrderItemId()
         {
             using (var db = new CMCSQL03Entities())
             {
-                tblOrderItem newrec = new tblOrderItem();
-                db.tblOrderItem.Add(newrec);
+                tblOrderItem newOrderItem = new tblOrderItem();
+                db.tblOrderItem.Add(newOrderItem);
                 db.SaveChanges();
 
-                return newrec.ItemID;
+                return newOrderItem.ItemID;
             }
         }
 
@@ -483,193 +467,193 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                int getproductdetailid = (from pd in db.tblProductDetail
-                                          join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                                          where pm.ProductMasterID == productmasterid
-                                          && pd.ProductCode == pm.MasterCode
-                                          select pd.ProductDetailID).FirstOrDefault();
+                int productDetailId = (from pd in db.tblProductDetail
+                                       join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                                       where pm.ProductMasterID == productmasterid
+                                       && pd.ProductCode == pm.MasterCode
+                                       select pd.ProductDetailID).FirstOrDefault();
 
-                return getproductdetailid;
+                return productDetailId;
             }
         }
 
-        public static OrderItem fnFillOrderItem(int orderitemid)
+        public static OrderItem FillOrderItemDetails(int orderitemid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                OrderItem vm = new OrderItem();
-                var orderitem = (from t in db.tblOrderItem
-                         where t.ItemID == orderitemid
-                         select t).FirstOrDefault();
+                OrderItem orderItem = new OrderItem();
+                var getOrderItem = (from t in db.tblOrderItem
+                                    where t.ItemID == orderitemid
+                                    select t).FirstOrDefault();
 
-                var client = db.tblOrderMaster.Find(orderitem.OrderID);
+                var client = db.tblOrderMaster.Find(getOrderItem.OrderID);
 
-                vm.CrudMode = "RW";
-                vm.ItemID = orderitem.ItemID;
-                vm.OrderID = orderitem.OrderID;
-                vm.ClientID = Convert.ToInt32(client.ClientID);
-                vm.CreateDate = orderitem.CreateDate;
-                vm.CreateUser = orderitem.CreateUser;
-                vm.UpdateDate = orderitem.UpdateDate;
-                vm.UpdateUser = orderitem.UpdateUser;
-                vm.ProductDetailID = orderitem.ProductDetailID;
-                vm.ProductCode = orderitem.ProductCode;
-                vm.ProductName = orderitem.ProductName;
-                vm.ShelfID = orderitem.ShelfID;
-                vm.Size = orderitem.Size;
-                vm.SRSize = orderitem.SRSize;
-                vm.Qty = orderitem.Qty;
-                vm.LotNumber = orderitem.LotNumber;
-                vm.ItemShipVia = orderitem.Via;
-                vm.ShipDate = orderitem.ShipDate;
-                vm.CSAllocate = orderitem.CSAllocate;
-                vm.AllocateStatus = orderitem.AllocateStatus;
-                vm.NonCMCDelay = orderitem.NonCMCDelay;
-                vm.RDTransfer = orderitem.RDTransfer;
-                vm.BackOrdered = orderitem.BackOrdered;
-                vm.CarrierInvoiceRcvd = orderitem.CarrierInvoiceRcvd;
-                vm.DelayReason = orderitem.DelayReason;
-                vm.SPSCharge = orderitem.SPSCharge;
-                vm.Status = orderitem.Status;
-                vm.StatusID = null;
-                vm.ItemNotes = orderitem.ItemNotes;
-                vm.WasteOrderTotalWeight = orderitem.WasteOrderTotalWeight;
-                vm.AlertNotesShipping = orderitem.AlertNotesShipping;
-                vm.AlertNotesPackOut = orderitem.AlertNotesPackout;
-                vm.AlertNotesOrderEntry = orderitem.AlertNotesOrderEntry;
-                vm.AlertNotesOther = orderitem.AlertNotesOther;
+                orderItem.CrudMode = "RW";
+                orderItem.ItemID = getOrderItem.ItemID;
+                orderItem.OrderID = getOrderItem.OrderID;
+                orderItem.ClientID = Convert.ToInt32(client.ClientID);
+                orderItem.CreateDate = getOrderItem.CreateDate;
+                orderItem.CreateUser = getOrderItem.CreateUser;
+                orderItem.UpdateDate = getOrderItem.UpdateDate;
+                orderItem.UpdateUser = getOrderItem.UpdateUser;
+                orderItem.ProductDetailID = getOrderItem.ProductDetailID;
+                orderItem.ProductCode = getOrderItem.ProductCode;
+                orderItem.ProductName = getOrderItem.ProductName;
+                orderItem.ShelfID = getOrderItem.ShelfID;
+                orderItem.Size = getOrderItem.Size;
+                orderItem.SRSize = getOrderItem.SRSize;
+                orderItem.Qty = getOrderItem.Qty;
+                orderItem.LotNumber = getOrderItem.LotNumber;
+                orderItem.ItemShipVia = getOrderItem.Via;
+                orderItem.ShipDate = getOrderItem.ShipDate;
+                orderItem.CSAllocate = getOrderItem.CSAllocate;
+                orderItem.AllocateStatus = getOrderItem.AllocateStatus;
+                orderItem.NonCMCDelay = getOrderItem.NonCMCDelay;
+                orderItem.RDTransfer = getOrderItem.RDTransfer;
+                orderItem.BackOrdered = getOrderItem.BackOrdered;
+                orderItem.CarrierInvoiceRcvd = getOrderItem.CarrierInvoiceRcvd;
+                orderItem.DelayReason = getOrderItem.DelayReason;
+                orderItem.SPSCharge = getOrderItem.SPSCharge;
+                orderItem.Status = getOrderItem.Status;
+                orderItem.StatusID = null;
+                orderItem.ItemNotes = getOrderItem.ItemNotes;
+                orderItem.WasteOrderTotalWeight = getOrderItem.WasteOrderTotalWeight;
+                orderItem.AlertNotesShipping = getOrderItem.AlertNotesShipping;
+                orderItem.AlertNotesPackOut = getOrderItem.AlertNotesPackout;
+                orderItem.AlertNotesOrderEntry = getOrderItem.AlertNotesOrderEntry;
+                orderItem.AlertNotesOther = getOrderItem.AlertNotesOther;
 
-                if (orderitem.ShipDate != null || orderitem.AllocateStatus == "A")
+                if (getOrderItem.ShipDate != null || getOrderItem.AllocateStatus == "A")
                 {
-                    vm.CrudMode = "RO";
+                    orderItem.CrudMode = "RO";
                 }
 
-                return vm;
+                return orderItem;
             }
         }
 
-        public static int fnSaveItem(OrderItem vm)
+        public static int SaveOrderItem(OrderItem orderitem)
         {
             using (var db = new CMCSQL03Entities())
             {
                 bool isNewItem = false;
 
                 // get new order item id if submission is a new entry
-                if (vm.ItemID == -1)
+                if (orderitem.ItemID == -1)
                 {
-                    vm.ItemID = fnNewItemID();
-                    vm.CreateDate = DateTime.UtcNow;
-                    vm.CreateUser = HttpContext.Current.User.Identity.Name;
+                    orderitem.ItemID = NewOrderItemId();
+                    orderitem.CreateDate = DateTime.UtcNow;
+                    orderitem.CreateUser = HttpContext.Current.User.Identity.Name;
                     isNewItem = true;
                 }
 
-                var ordermaster = db.tblOrderMaster.Find(vm.OrderID);
+                var orderMaster = db.tblOrderMaster.Find(orderitem.OrderID);
 
-                var orderitem = (from t in db.tblOrderItem
-                                 where t.ItemID == vm.ItemID
+                var orderItem = (from t in db.tblOrderItem
+                                 where t.ItemID == orderitem.ItemID
                                  select t).FirstOrDefault();
 
-                var productdetail = (from t in db.tblProductDetail
-                                     where t.ProductDetailID == vm.ProductDetailID
+                var productDetail = (from t in db.tblProductDetail
+                                     where t.ProductDetailID == orderitem.ProductDetailID
                                      select t).FirstOrDefault();
 
-                var productmaster = db.tblProductMaster.Find(productdetail.ProductMasterID);
+                var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
 
                 // handle special request sizes
-                if (orderitem.Size == "1SR")
+                if (orderItem.Size == "1SR")
                 {
-                    orderitem.SRSize = (decimal)(vm.SRSize);
-                    vm.ShelfID = GetShelfIdProductDetail(vm.ProductDetailID, "1SR");
+                    orderItem.SRSize = (decimal)(orderitem.SRSize);
+                    orderitem.ShelfID = GetShelfIdProductDetail(orderitem.ProductDetailID, "1SR");
                 }
 
-                if (vm.ShelfID == 0 || vm.SRSize != null)
+                if (orderitem.ShelfID == 0 || orderitem.SRSize != null)
                 {
-                    orderitem.SRSize = vm.SRSize;
-                    orderitem.Size = "1SR";
-                    vm.ShelfID = GetShelfIdProductDetail(vm.ProductDetailID, "1SR");
+                    orderItem.SRSize = orderitem.SRSize;
+                    orderItem.Size = "1SR";
+                    orderitem.ShelfID = GetShelfIdProductDetail(orderitem.ProductDetailID, "1SR");
                 }
                 else
                 {
-                    var shelfmaster = (from t in db.tblShelfMaster
-                                       where t.ShelfID == vm.ShelfID
+                    var shelfMaster = (from t in db.tblShelfMaster
+                                       where t.ShelfID == orderitem.ShelfID
                                        select t).FirstOrDefault();
 
-                    if (shelfmaster != null)
+                    if (shelfMaster != null)
                     {
-                        orderitem.SRSize = vm.SRSize ?? 0;
-                        orderitem.Size = shelfmaster.Size;
-                        shelfmaster.UnitWeight = shelfmaster.UnitWeight ?? orderitem.Weight;    // if unit weight is null, set current item weight; -> bulk order item edits
-                        orderitem.Weight = shelfmaster.UnitWeight * vm.Qty;
+                        orderItem.SRSize = orderitem.SRSize ?? 0;
+                        orderItem.Size = shelfMaster.Size;
+                        shelfMaster.UnitWeight = shelfMaster.UnitWeight ?? orderItem.Weight;    // if unit weight is null, set current item weight; -> bulk order item edits
+                        orderItem.Weight = shelfMaster.UnitWeight * orderitem.Qty;
                     }
                 }
 
-                orderitem.OrderID = vm.OrderID;
-                orderitem.CreateDate = vm.CreateDate;
-                orderitem.CreateUser = vm.CreateUser;
-                orderitem.UpdateDate = DateTime.UtcNow;
-                orderitem.UpdateUser = HttpContext.Current.User.Identity.Name;
-                orderitem.ProductDetailID = vm.ProductDetailID;
-                orderitem.ProductCode = productdetail.ProductCode;
-                orderitem.ProductName = productdetail.ProductName;
-                orderitem.ShelfID = vm.ShelfID;
-                orderitem.Qty = vm.Qty;
-                orderitem.LotNumber = vm.LotNumber;
-                orderitem.Via = vm.ItemShipVia;
-                orderitem.ShipDate = vm.ShipDate;
-                orderitem.CSAllocate = vm.CSAllocate;
-                orderitem.AllocateStatus = vm.AllocateStatus;
-                orderitem.NonCMCDelay = vm.NonCMCDelay;
-                orderitem.RDTransfer = vm.RDTransfer;
-                orderitem.BackOrdered = vm.BackOrdered;
-                orderitem.CarrierInvoiceRcvd = vm.CarrierInvoiceRcvd;
-                orderitem.Status = vm.Status;
-                orderitem.DelayReason = vm.DelayReason;
-                orderitem.SPSCharge = vm.SPSCharge;
-                orderitem.ItemNotes = vm.ItemNotes;
-                orderitem.WasteOrderTotalWeight = vm.WasteOrderTotalWeight;
-                orderitem.AlertNotesShipping = productdetail.AlertNotesShipping;
-                orderitem.AlertNotesOrderEntry = productdetail.AlertNotesOrderEntry;
-                orderitem.AlertNotesPackout = productmaster.AlertNotesPackout;
+                orderItem.OrderID = orderitem.OrderID;
+                orderItem.CreateDate = orderitem.CreateDate;
+                orderItem.CreateUser = orderitem.CreateUser;
+                orderItem.UpdateDate = DateTime.UtcNow;
+                orderItem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                orderItem.ProductDetailID = orderitem.ProductDetailID;
+                orderItem.ProductCode = productDetail.ProductCode;
+                orderItem.ProductName = productDetail.ProductName;
+                orderItem.ShelfID = orderitem.ShelfID;
+                orderItem.Qty = orderitem.Qty;
+                orderItem.LotNumber = orderitem.LotNumber;
+                orderItem.Via = orderitem.ItemShipVia;
+                orderItem.ShipDate = orderitem.ShipDate;
+                orderItem.CSAllocate = orderitem.CSAllocate;
+                orderItem.AllocateStatus = orderitem.AllocateStatus;
+                orderItem.NonCMCDelay = orderitem.NonCMCDelay;
+                orderItem.RDTransfer = orderitem.RDTransfer;
+                orderItem.BackOrdered = orderitem.BackOrdered;
+                orderItem.CarrierInvoiceRcvd = orderitem.CarrierInvoiceRcvd;
+                orderItem.Status = orderitem.Status;
+                orderItem.DelayReason = orderitem.DelayReason;
+                orderItem.SPSCharge = orderitem.SPSCharge;
+                orderItem.ItemNotes = orderitem.ItemNotes;
+                orderItem.WasteOrderTotalWeight = orderitem.WasteOrderTotalWeight;
+                orderItem.AlertNotesShipping = productDetail.AlertNotesShipping;
+                orderItem.AlertNotesOrderEntry = productDetail.AlertNotesOrderEntry;
+                orderItem.AlertNotesPackout = productMaster.AlertNotesPackout;
 
                 // Update ordermaster using new divisionid from product profile
-                ordermaster.DivisionID = productdetail.DivisionID;
-                ordermaster.UpdateDate = DateTime.UtcNow;
-                ordermaster.UpdateUser = HttpContext.Current.User.Identity.Name;
+                orderMaster.DivisionID = productDetail.DivisionID;
+                orderMaster.UpdateDate = DateTime.UtcNow;
+                orderMaster.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                if (productdetail.AIRUNNUMBER == "UN3082" | productdetail.AIRUNNUMBER == "UN3077" | productdetail.GRNUNNUMBER == "UN3082" | productdetail.GRNUNNUMBER == "UN3077")
+                if (productDetail.AIRUNNUMBER == "UN3082" | productDetail.AIRUNNUMBER == "UN3077" | productDetail.GRNUNNUMBER == "UN3082" | productDetail.GRNUNNUMBER == "UN3077")
                 {
-                    orderitem.AlertNotesOther = "Products with UN3082 and UN3077 may be shipped as non hazardous if under 5 kg";
+                    orderItem.AlertNotesOther = "Products with UN3082 and UN3077 may be shipped as non hazardous if under 5 kg";
                 }
 
                 db.SaveChanges();
 
                 if (isNewItem)
                 {
-                    fnGenerateOrderTransactions(vm.ItemID);
+                    GenerateOrderTransaction(orderitem.ItemID);
                 }
 
-                return vm.ItemID;
+                return orderitem.ItemID;
             }
         }
 
-        public static void fnDeleteOrderItem(int id)
+        public static void DeleteOrderItem(int orderitemid)
         {
             System.Threading.Thread.Sleep(1000);
             using (var db = new CMCSQL03Entities())
             {
-                var result = (from t in db.tblOrderItem
-                              where t.ItemID == id
-                              select t).FirstOrDefault();
+                var orderItem = (from t in db.tblOrderItem
+                                 where t.ItemID == orderitemid
+                                 select t).FirstOrDefault();
 
-                if (result != null)
+                if (orderItem != null)
                 {
-                    // Delete orderitem
-                    string s = @"DELETE FROM tblOrderItem WHERE ItemID=" + id.ToString();
-                    db.Database.ExecuteSqlCommand(s);
+                    // Delete orderitem row
+                    string deleteQuery = @"DELETE FROM tblOrderItem WHERE ItemID=" + orderitemid.ToString();
+                    db.Database.ExecuteSqlCommand(deleteQuery);
 
-                    // DElete transactions associated with the related order items
-                    s = @"DELETE FROM tblOrderTrans WHERE OrderItemID=" + id.ToString();
-                    db.Database.ExecuteSqlCommand(s);
+                    // Delete transactions associated with the related order items
+                    deleteQuery = @"DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderitemid.ToString();
+                    db.Database.ExecuteSqlCommand(deleteQuery);
                 }
             }
         }
@@ -682,71 +666,71 @@ namespace MvcPhoenix.Services
         {
             int getproductdetailid = GetProductDetailId(productmasterid);
 
-            int xshelfid = 0;
+            int shelfId = 0;
             try
             {
                 using (var db = new CMCSQL03Entities())
                 {
                     // check table to see if the size has been set up on the shelf already
-                    int qshelfid = (from t in db.tblShelfMaster
-                                    where t.ProductDetailID == getproductdetailid
-                                    && t.Size == um
-                                    select t.ShelfID).FirstOrDefault();
+                    int getShelfId = (from t in db.tblShelfMaster
+                                      where t.ProductDetailID == getproductdetailid
+                                      && t.Size == um
+                                      select t.ShelfID).FirstOrDefault();
 
                     // if it exists then assign the shelfid to xshelfid
-                    if (qshelfid != 0)
+                    if (getShelfId != 0)
                     {
-                        xshelfid = qshelfid;
+                        shelfId = getShelfId;
                     }
                     else
                     {
-                        var newrecord = new tblShelfMaster
+                        var newShelfMaster = new tblShelfMaster
                         {
                             ProductDetailID = getproductdetailid,
                             Size = um
                         };
-                        db.tblShelfMaster.Add(newrecord);
+                        db.tblShelfMaster.Add(newShelfMaster);
                         db.SaveChanges();
 
-                        xshelfid = newrecord.ShelfID;
+                        shelfId = newShelfMaster.ShelfID;
                     }
                 }
             }
             catch (Exception)
             {
-                xshelfid = 0;
+                shelfId = 0;
             }
 
-            return xshelfid;
+            return shelfId;
         }
 
         public static int GetShelfIdProductDetail(int? productdetailid, string size)
         {
-            int xshelfid = 0;
+            int shelfId = 0;
             try
             {
                 using (var db = new CMCSQL03Entities())
                 {
-                    int qshelfid = (from t in db.tblShelfMaster
-                                    where t.ProductDetailID == productdetailid
-                                    && t.Size == size
-                                    select t.ShelfID).FirstOrDefault();
+                    int getShelfId = (from t in db.tblShelfMaster
+                                      where t.ProductDetailID == productdetailid
+                                      && t.Size == size
+                                      select t.ShelfID).FirstOrDefault();
 
-                    if (qshelfid != 0)
+                    if (getShelfId != 0)
                     {
-                        xshelfid = qshelfid;
+                        shelfId = getShelfId;
                     }
                     else
                     {
-                        var newrecord = new tblShelfMaster
+                        var newShelfMaster = new tblShelfMaster
                         {
                             ProductDetailID = productdetailid,
                             Size = size
                         };
-                        db.tblShelfMaster.Add(newrecord);
+                        db.tblShelfMaster.Add(newShelfMaster);
                         db.SaveChanges();
 
-                        xshelfid = newrecord.ShelfID;
+                        shelfId = newShelfMaster.ShelfID;
                     }
                 }
             }
@@ -755,75 +739,75 @@ namespace MvcPhoenix.Services
                 throw ex;
             }
 
-            return xshelfid;
+            return shelfId;
         }
 
         #endregion Order Item Methods
 
         #region Order Transaction Methods
 
-        public static OrderTrans fnCreateTrans(int orderid)
+        public static OrderTrans CreateOrderTransaction(int orderid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                OrderTrans ordertrans = new OrderTrans();
+                OrderTrans orderTransaction = new OrderTrans();
                 var order = (from t in db.tblOrderMaster
                              where t.OrderID == orderid
                              select t).FirstOrDefault();
 
-                ordertrans.OrderTransID = -1;
-                ordertrans.OrderId = orderid;
-                ordertrans.TransType = null;
-                ordertrans.CreateDate = DateTime.UtcNow;
-                ordertrans.TransDate = DateTime.UtcNow.Date;
-                ordertrans.CreateUser = HttpContext.Current.User.Identity.Name;
-                ordertrans.ClientId = order.ClientID;
-                ordertrans.DivisionId = order.DivisionID;
+                orderTransaction.OrderTransID = -1;
+                orderTransaction.OrderId = orderid;
+                orderTransaction.TransType = null;
+                orderTransaction.CreateDate = DateTime.UtcNow;
+                orderTransaction.TransDate = DateTime.UtcNow.Date;
+                orderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
+                orderTransaction.ClientId = order.ClientID;
+                orderTransaction.DivisionId = order.DivisionID;
 
-                return ordertrans;
+                return orderTransaction;
             }
         }
 
-        public static int fnSaveTrans(OrderTrans model)
+        public static int SaveOrderTransaction(OrderTrans ordertransaction)
         {
             using (var db = new CMCSQL03Entities())
             {
-                if (model.OrderTransID == -1)
+                if (ordertransaction.OrderTransID == -1)
                 {
                     tblOrderTrans newrec = new tblOrderTrans();
                     db.tblOrderTrans.Add(newrec);
-                    model.CreateDate = DateTime.UtcNow;
-                    model.CreateUser = HttpContext.Current.User.Identity.Name;
+                    ordertransaction.CreateDate = DateTime.UtcNow;
+                    ordertransaction.CreateUser = HttpContext.Current.User.Identity.Name;
 
                     db.SaveChanges();
-                    model.OrderTransID = newrec.OrderTransID;
+                    ordertransaction.OrderTransID = newrec.OrderTransID;
                 }
 
-                model.UpdateDate = DateTime.UtcNow;
-                model.UpdateUser = HttpContext.Current.User.Identity.Name;
+                ordertransaction.UpdateDate = DateTime.UtcNow;
+                ordertransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                var ordertrans = (from t in db.tblOrderTrans
-                                  where t.OrderTransID == model.OrderTransID
-                                  select t).FirstOrDefault();
+                var orderTransaction = (from t in db.tblOrderTrans
+                                        where t.OrderTransID == ordertransaction.OrderTransID
+                                        select t).FirstOrDefault();
 
-                ordertrans.OrderID = model.OrderId;
-                ordertrans.OrderItemID = model.OrderItemId;
-                ordertrans.ClientID = model.ClientId;
-                ordertrans.DivisionID = model.DivisionId;
-                ordertrans.TransDate = model.TransDate;
-                ordertrans.TransType = model.TransType;
-                ordertrans.TransQty = model.TransQty ?? 1;
-                ordertrans.TransRate = GetTransactionRate(model.ClientId, model.TransType, model.TransRate);
-                ordertrans.TransAmount = ordertrans.TransQty * ordertrans.TransRate;
-                ordertrans.Comments = model.Comments;
-                ordertrans.CreateDate = model.CreateDate;
-                ordertrans.CreateUser = model.CreateUser;
-                ordertrans.UpdateDate = model.UpdateDate;
-                ordertrans.UpdateUser = model.UpdateUser;
+                orderTransaction.OrderID = ordertransaction.OrderId;
+                orderTransaction.OrderItemID = ordertransaction.OrderItemId;
+                orderTransaction.ClientID = ordertransaction.ClientId;
+                orderTransaction.DivisionID = ordertransaction.DivisionId;
+                orderTransaction.TransDate = ordertransaction.TransDate;
+                orderTransaction.TransType = ordertransaction.TransType;
+                orderTransaction.TransQty = ordertransaction.TransQty ?? 1;
+                orderTransaction.TransRate = GetTransactionRate(ordertransaction.ClientId, ordertransaction.TransType, ordertransaction.TransRate);
+                orderTransaction.TransAmount = orderTransaction.TransQty * orderTransaction.TransRate;
+                orderTransaction.Comments = ordertransaction.Comments;
+                orderTransaction.CreateDate = ordertransaction.CreateDate;
+                orderTransaction.CreateUser = ordertransaction.CreateUser;
+                orderTransaction.UpdateDate = ordertransaction.UpdateDate;
+                orderTransaction.UpdateUser = ordertransaction.UpdateUser;
 
                 db.SaveChanges();
 
-                return model.OrderTransID;
+                return ordertransaction.OrderTransID;
             }
         }
 
@@ -1028,91 +1012,92 @@ namespace MvcPhoenix.Services
             return rate;
         }
 
-        public static OrderTrans fnFillTrans(int id)
+        public static OrderTrans FillOrderTransaction(int ordertransid)
         {
-            OrderTrans orderitemtransaction = new OrderTrans();
+            OrderTrans orderTransaction = new OrderTrans();
 
             using (var db = new CMCSQL03Entities())
             {
-                var result = (from t in db.tblOrderTrans
-                              where t.OrderTransID == id
-                              select t).FirstOrDefault();
+                var getOrderTransaction = (from t in db.tblOrderTrans
+                                           where t.OrderTransID == ordertransid
+                                           select t).FirstOrDefault();
 
-                orderitemtransaction.OrderTransID = result.OrderTransID;
-                orderitemtransaction.OrderId = result.OrderID;
-                orderitemtransaction.OrderItemId = result.OrderItemID;
-                orderitemtransaction.ClientId = result.ClientID;
-                orderitemtransaction.DivisionId = result.DivisionID;
-                orderitemtransaction.TransDate = result.TransDate;
-                orderitemtransaction.TransType = result.TransType;
-                orderitemtransaction.TransQty = result.TransQty;
-                orderitemtransaction.TransRate = result.TransRate;
-                orderitemtransaction.TransAmount = result.TransAmount;
-                orderitemtransaction.BillingTier = result.BillingTier;
-                orderitemtransaction.BillingRate = result.BillingRate;
-                orderitemtransaction.BillingCharge = result.BillingCharge;
-                orderitemtransaction.Comments = result.Comments;
-                orderitemtransaction.CreateDate = result.CreateDate;
-                orderitemtransaction.CreateUser = result.CreateUser;
-                orderitemtransaction.UpdateDate = result.UpdateDate;
-                orderitemtransaction.UpdateUser = result.UpdateUser;
+                orderTransaction.OrderTransID = getOrderTransaction.OrderTransID;
+                orderTransaction.OrderId = getOrderTransaction.OrderID;
+                orderTransaction.OrderItemId = getOrderTransaction.OrderItemID;
+                orderTransaction.ClientId = getOrderTransaction.ClientID;
+                orderTransaction.DivisionId = getOrderTransaction.DivisionID;
+                orderTransaction.TransDate = getOrderTransaction.TransDate;
+                orderTransaction.TransType = getOrderTransaction.TransType;
+                orderTransaction.TransQty = getOrderTransaction.TransQty;
+                orderTransaction.TransRate = getOrderTransaction.TransRate;
+                orderTransaction.TransAmount = getOrderTransaction.TransAmount;
+                orderTransaction.BillingTier = getOrderTransaction.BillingTier;
+                orderTransaction.BillingRate = getOrderTransaction.BillingRate;
+                orderTransaction.BillingCharge = getOrderTransaction.BillingCharge;
+                orderTransaction.Comments = getOrderTransaction.Comments;
+                orderTransaction.CreateDate = getOrderTransaction.CreateDate;
+                orderTransaction.CreateUser = getOrderTransaction.CreateUser;
+                orderTransaction.UpdateDate = getOrderTransaction.UpdateDate;
+                orderTransaction.UpdateUser = getOrderTransaction.UpdateUser;
 
-                return orderitemtransaction;
+                return orderTransaction;
             }
         }
 
-        public static void fnDeleteTrans(int id)
+        public static void DeleteTransaction(int ordertransid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                string s = @"DELETE FROM tblOrderTrans WHERE OrderTransID=" + id.ToString();
-                db.Database.ExecuteSqlCommand(s);
+                string deleteQuery = @"DELETE FROM tblOrderTrans WHERE OrderTransID=" + ordertransid.ToString();
+                db.Database.ExecuteSqlCommand(deleteQuery);
             }
         }
 
-        public static void fnGenerateOrderTransactions(int id)
+        public static void GenerateOrderTransaction(int orderitemid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var orderitem = (from t in db.tblOrderItem
-                                 where t.ItemID == id
+                var orderItem = (from t in db.tblOrderItem
+                                 where t.ItemID == orderitemid
                                  select t).FirstOrDefault();
 
                 var order = (from t in db.tblOrderMaster
-                             where t.OrderID == orderitem.OrderID
+                             where t.OrderID == orderItem.OrderID
                              select t).FirstOrDefault();
 
                 // Tier 1 sample charge
-                string sqlquery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderitem.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
-                db.Database.ExecuteSqlCommand(sqlquery);
+                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderItem.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
+                db.Database.ExecuteSqlCommand(deleteQuery);
 
                 var tierSize = (from t in db.tblTier
                                 where t.ClientID == order.ClientID
-                                && t.Size == orderitem.Size
+                                && t.Size == orderItem.Size
                                 && t.TierLevel == 1
                                 select t).FirstOrDefault();
 
                 if (tierSize != null)
                 {
-                    tblOrderTrans newrec = new tblOrderTrans();
-                    newrec.TransDate = DateTime.UtcNow;
-                    newrec.OrderItemID = orderitem.ItemID;
-                    newrec.OrderID = orderitem.OrderID;
-                    newrec.ClientID = order.ClientID;
-                    newrec.DivisionID = order.DivisionID;
-                    newrec.TransType = "SAMP";
-                    newrec.TransQty = orderitem.Qty;
-                    newrec.TransRate = tierSize.Price;
-                    newrec.TransAmount = newrec.TransQty * newrec.TransRate;
-                    newrec.BillingTier = 1;
-                    newrec.BillingRate = tierSize.Price;
-                    newrec.BillingCharge = newrec.TransQty * newrec.TransRate;
-                    newrec.CreateDate = DateTime.UtcNow;
-                    newrec.CreateUser = HttpContext.Current.User.Identity.Name;
-                    newrec.UpdateDate = DateTime.UtcNow;
-                    newrec.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    tblOrderTrans newOrderTransaction = new tblOrderTrans();
 
-                    db.tblOrderTrans.Add(newrec);
+                    newOrderTransaction.TransDate = DateTime.UtcNow;
+                    newOrderTransaction.OrderItemID = orderItem.ItemID;
+                    newOrderTransaction.OrderID = orderItem.OrderID;
+                    newOrderTransaction.ClientID = order.ClientID;
+                    newOrderTransaction.DivisionID = order.DivisionID;
+                    newOrderTransaction.TransType = "SAMP";
+                    newOrderTransaction.TransQty = orderItem.Qty;
+                    newOrderTransaction.TransRate = tierSize.Price;
+                    newOrderTransaction.TransAmount = newOrderTransaction.TransQty * newOrderTransaction.TransRate;
+                    newOrderTransaction.BillingTier = 1;
+                    newOrderTransaction.BillingRate = tierSize.Price;
+                    newOrderTransaction.BillingCharge = newOrderTransaction.TransQty * newOrderTransaction.TransRate;
+                    newOrderTransaction.CreateDate = DateTime.UtcNow;
+                    newOrderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
+                    newOrderTransaction.UpdateDate = DateTime.UtcNow;
+                    newOrderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    db.tblOrderTrans.Add(newOrderTransaction);
                     db.SaveChanges();
                 }
                 else
@@ -1125,54 +1110,55 @@ namespace MvcPhoenix.Services
 
                     if (tierSpecialRequest != null)
                     {
-                        tblOrderTrans newrec = new tblOrderTrans();
-                        newrec.TransDate = DateTime.UtcNow;
-                        newrec.OrderItemID = orderitem.ItemID;
-                        newrec.OrderID = orderitem.OrderID;
-                        newrec.ClientID = order.ClientID;
-                        newrec.DivisionID = order.DivisionID;
-                        newrec.TransType = "SAMP";
-                        newrec.TransQty = orderitem.Qty;
-                        newrec.TransRate = tierSpecialRequest.Price;
-                        newrec.TransAmount = newrec.TransQty * newrec.TransRate;
-                        newrec.BillingTier = 1;
-                        newrec.BillingRate = tierSize.Price;
-                        newrec.BillingCharge = newrec.TransQty * newrec.TransRate;
-                        newrec.Comments = "Special Request";
-                        newrec.CreateDate = DateTime.UtcNow;
-                        newrec.CreateUser = HttpContext.Current.User.Identity.Name;
-                        newrec.UpdateDate = DateTime.UtcNow;
-                        newrec.UpdateUser = HttpContext.Current.User.Identity.Name;
+                        tblOrderTrans newOrderTransaction = new tblOrderTrans();
 
-                        db.tblOrderTrans.Add(newrec);
+                        newOrderTransaction.TransDate = DateTime.UtcNow;
+                        newOrderTransaction.OrderItemID = orderItem.ItemID;
+                        newOrderTransaction.OrderID = orderItem.OrderID;
+                        newOrderTransaction.ClientID = order.ClientID;
+                        newOrderTransaction.DivisionID = order.DivisionID;
+                        newOrderTransaction.TransType = "SAMP";
+                        newOrderTransaction.TransQty = orderItem.Qty;
+                        newOrderTransaction.TransRate = tierSpecialRequest.Price;
+                        newOrderTransaction.TransAmount = newOrderTransaction.TransQty * newOrderTransaction.TransRate;
+                        newOrderTransaction.BillingTier = 1;
+                        newOrderTransaction.BillingRate = tierSize.Price;
+                        newOrderTransaction.BillingCharge = newOrderTransaction.TransQty * newOrderTransaction.TransRate;
+                        newOrderTransaction.Comments = "Special Request";
+                        newOrderTransaction.CreateDate = DateTime.UtcNow;
+                        newOrderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
+                        newOrderTransaction.UpdateDate = DateTime.UtcNow;
+                        newOrderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                        db.tblOrderTrans.Add(newOrderTransaction);
                         db.SaveChanges();
                     }
                 }
 
                 // Other charges from shelfmaster
                 var shelf = (from t in db.tblShelfMaster
-                             where t.ShelfID == orderitem.ShelfID
+                             where t.ShelfID == orderItem.ShelfID
                              select t).FirstOrDefault();
 
-                if (orderitem.BulkID != null)
+                if (orderItem.BulkID != null)
                 {
                     // find a SM record to use to surcharge this order item
                     var bulk = (from t in db.tblBulk
-                                where t.BulkID == orderitem.BulkID
+                                where t.BulkID == orderItem.BulkID
                                 select t).FirstOrDefault();
 
-                    var productmaster = (from t in db.tblProductMaster
+                    var productMaster = (from t in db.tblProductMaster
                                          where t.ProductMasterID == bulk.ProductMasterID
                                          select t).FirstOrDefault();
 
-                    var productdetail = (from t in db.tblProductDetail
+                    var productDetail = (from t in db.tblProductDetail
                                          where t.ProductMasterID == bulk.ProductMasterID
-                                         && t.ProductCode == productmaster.MasterCode
+                                         && t.ProductCode == productMaster.MasterCode
                                          select t).FirstOrDefault();
 
                     shelf = (from t in db.tblShelfMaster
-                             where t.ProductDetailID == productdetail.ProductDetailID
-                             && t.Size == orderitem.Size
+                             where t.ProductDetailID == productDetail.ProductDetailID
+                             && t.Size == orderItem.Size
                              select t).FirstOrDefault();
 
                     if (shelf == null)
@@ -1189,178 +1175,175 @@ namespace MvcPhoenix.Services
                 {
                     if (shelf.HazardSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "HAZD", surcharge.Haz);
+                        InsertOrderTransaction(orderItem.ItemID, "HAZD", surcharge.Haz);
                     }
 
                     if (shelf.FlammableSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "FLAM", surcharge.Flam);
+                        InsertOrderTransaction(orderItem.ItemID, "FLAM", surcharge.Flam);
                     }
 
                     if (shelf.HeatSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "HEAT", surcharge.Heat);
+                        InsertOrderTransaction(orderItem.ItemID, "HEAT", surcharge.Heat);
                     }
 
                     if (shelf.RefrigSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "REFR", surcharge.Refrig);
+                        InsertOrderTransaction(orderItem.ItemID, "REFR", surcharge.Refrig);
                     }
 
                     if (shelf.FreezerSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "FREZ", surcharge.Freezer);
+                        InsertOrderTransaction(orderItem.ItemID, "FREZ", surcharge.Freezer);
                     }
 
                     if (shelf.CleanSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "CLEN", surcharge.Clean);
+                        InsertOrderTransaction(orderItem.ItemID, "CLEN", surcharge.Clean);
                     }
 
                     if (shelf.BlendSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "BLND", 0);
+                        InsertOrderTransaction(orderItem.ItemID, "BLND", 0);
                     }
 
                     if (shelf.NalgeneSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "NALG", surcharge.Nalgene);
+                        InsertOrderTransaction(orderItem.ItemID, "NALG", surcharge.Nalgene);
                     }
 
                     if (shelf.NitrogenSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "NITR", 0);
+                        InsertOrderTransaction(orderItem.ItemID, "NITR", 0);
                     }
 
                     if (shelf.BiocideSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "BIOC", 0);
+                        InsertOrderTransaction(orderItem.ItemID, "BIOC", 0);
                     }
 
                     if (shelf.KosherSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "KOSH", 0);
+                        InsertOrderTransaction(orderItem.ItemID, "KOSH", 0);
                     }
 
                     if (shelf.LabelSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "LABL", surcharge.LabelFee);
+                        InsertOrderTransaction(orderItem.ItemID, "LABL", surcharge.LabelFee);
                     }
 
                     if (shelf.OtherSurcharge == true)
                     {
-                        fnInsertOrderTrans(orderitem.ItemID, "OTHR", shelf.OtherSurchargeAmt);
+                        InsertOrderTransaction(orderItem.ItemID, "OTHR", shelf.OtherSurchargeAmt);
                     }
                 }
             }
         }
 
-        public static void fnInsertOrderTrans(int? ItemID, string TransType, decimal? TransRate)
+        public static void InsertOrderTransaction(int? ItemID, string TransType, decimal? TransRate)
         {
             using (var db = new CMCSQL03Entities())
             {
-                string s = String.Format("DELETE FROM tblOrderTrans WHERE OrderItemID={0} AND Transtype = '{1}' AND CreateUser='System'", ItemID, TransType);
+                string deleteQuery = String.Format("DELETE FROM tblOrderTrans WHERE OrderItemID={0} AND Transtype = '{1}' AND CreateUser='System'", ItemID, TransType);
 
-                db.Database.ExecuteSqlCommand(s);
+                db.Database.ExecuteSqlCommand(deleteQuery);
 
-                var orderitem = (from t in db.tblOrderItem
+                var orderItem = (from t in db.tblOrderItem
                                  where t.ItemID == ItemID
                                  select t).FirstOrDefault();
 
                 var order = (from t in db.tblOrderMaster
-                             where t.OrderID == orderitem.OrderID
+                             where t.OrderID == orderItem.OrderID
                              select t).FirstOrDefault();
 
-                tblOrderTrans newrec = new tblOrderTrans();
-                newrec.TransDate = DateTime.UtcNow;
-                newrec.OrderItemID = ItemID;
-                newrec.OrderID = orderitem.OrderID;
-                newrec.ClientID = order.ClientID;
-                newrec.DivisionID = order.DivisionID;
-                newrec.TransDate = DateTime.UtcNow;
-                newrec.TransType = TransType;
-                newrec.TransQty = orderitem.Qty;
-                newrec.TransRate = TransRate;
-                newrec.TransAmount = newrec.TransQty * newrec.TransRate;
-                newrec.CreateDate = DateTime.UtcNow;
-                newrec.CreateUser = HttpContext.Current.User.Identity.Name;
-                newrec.UpdateDate = DateTime.UtcNow;
-                newrec.UpdateUser = HttpContext.Current.User.Identity.Name;
+                tblOrderTrans newOrderTransaction = new tblOrderTrans();
 
-                db.tblOrderTrans.Add(newrec);
+                newOrderTransaction.TransDate = DateTime.UtcNow;
+                newOrderTransaction.OrderItemID = ItemID;
+                newOrderTransaction.OrderID = orderItem.OrderID;
+                newOrderTransaction.ClientID = order.ClientID;
+                newOrderTransaction.DivisionID = order.DivisionID;
+                newOrderTransaction.TransDate = DateTime.UtcNow;
+                newOrderTransaction.TransType = TransType;
+                newOrderTransaction.TransQty = orderItem.Qty;
+                newOrderTransaction.TransRate = TransRate;
+                newOrderTransaction.TransAmount = newOrderTransaction.TransQty * newOrderTransaction.TransRate;
+                newOrderTransaction.CreateDate = DateTime.UtcNow;
+                newOrderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
+                newOrderTransaction.UpdateDate = DateTime.UtcNow;
+                newOrderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                db.tblOrderTrans.Add(newOrderTransaction);
                 db.SaveChanges();
             }
-        }
-
-        public int? GetDivisionId()
-        {
-            return 1;
         }
 
         #endregion Order Transaction Methods
 
         #region Allocate Methods
 
-        public static int fnAllocateShelf(int OrderID, bool IncludeQCStock)
+        public static int AllocateShelf(int OrderID, bool IncludeQCStock)
         {
             using (var db = new CMCSQL03Entities())
             {
                 int AllocationCount = 0;
 
                 // check order for items
-                var orderitems = (from t in db.tblOrderItem
-                                  join om in db.tblOrderMaster on t.OrderID equals om.OrderID
-                                  where t.OrderID == OrderID
-                                  && t.ShipDate == null
-                                  && t.AllocateStatus == null
-                                  && t.CSAllocate == true
-                                  select t).ToList();
+                var orderItems = (from orderitem in db.tblOrderItem
+                                  join ordermaster in db.tblOrderMaster on orderitem.OrderID equals ordermaster.OrderID
+                                  where orderitem.OrderID == OrderID
+                                  && orderitem.ShipDate == null
+                                  && orderitem.AllocateStatus == null
+                                  && orderitem.CSAllocate == true
+                                  select new { orderitem, ordermaster }).ToList();
 
                 // escape if nothing matches the criteria for allocation
-                if (orderitems == null)
+                if (orderItems == null)
                 {
                     return AllocationCount;
                 }
 
                 // check stock for each item in order
-                foreach (var item in orderitems)
+                foreach (var item in orderItems)
                 {
-                    var stock = (from t in db.tblStock
-                                 join b in db.tblBulk on t.BulkID equals b.BulkID
-                                 orderby b.CeaseShipDate
-                                 where t.ShelfID == item.ShelfID
+                    var stock = (from itemstock in db.tblStock
+                                 join itembulk in db.tblBulk on itemstock.BulkID equals itembulk.BulkID
+                                 orderby itembulk.CeaseShipDate
+                                 where itemstock.ShelfID == item.orderitem.ShelfID
                                  select new
                                  {
-                                     StockID = t.StockID,
-                                     Warehouse = t.Warehouse,
-                                     QtyOnHand = t.QtyOnHand,
-                                     QtyAllocated = t.QtyAllocated ?? 0,
-                                     Bin = t.Bin,
-                                     ShelfStatus = t.ShelfStatus,
-                                     ExpirationDate = b.ExpirationDate,
-                                     CeaseShipDate = b.CeaseShipDate,
-                                     LotNumber = b.LotNumber
+                                     StockID = itemstock.StockID,
+                                     ProductMasterId = itembulk.ProductMasterID,
+                                     Warehouse = itemstock.Warehouse,
+                                     QtyOnHand = itemstock.QtyOnHand,
+                                     QtyAllocated = itemstock.QtyAllocated ?? 0,
+                                     ShelfBin = itemstock.Bin,
+                                     BulkBin = itembulk.Bin,
+                                     ShelfStatus = itemstock.ShelfStatus,
+                                     ExpirationDate = itembulk.ExpirationDate,
+                                     CeaseShipDate = itembulk.CeaseShipDate,
+                                     LotNumber = itembulk.LotNumber
                                  }).ToList();
 
                     // get ceaseshipdateoffset to consider if eligible for allocation on an order.
                     // consider ignoring this when handling returns, even though returns sidesteps this - Iffy
-                    var qOffset = db.tblOrderMaster.Find(orderitems[0].OrderID);
-                    int iOffset = Convert.ToInt32(qOffset.CeaseShipOffset);
+                    int ceaseShipOffSet = Convert.ToInt32(item.ordermaster.CeaseShipOffset);
 
                     // change to take negative numbers
-                    if (iOffset != 0)
+                    if (ceaseShipOffSet != 0)
                     {
                         // if there's an offset on the order record, add that to today to build in extra time
-                        DateTime dCease = DateTime.UtcNow.AddDays(iOffset);
+                        DateTime ceaseShipBufferDate = DateTime.UtcNow.AddDays(ceaseShipOffSet);
                         stock = (from t in stock
-                                 where t.CeaseShipDate > dCease
+                                 where t.CeaseShipDate > ceaseShipBufferDate
                                  select t).ToList();
                     }
 
                     // specific lot number requested
-                    if (item.LotNumber != null)
+                    if (item.orderitem.LotNumber != null)
                     {
-                        stock = stock.Where(s => s.LotNumber == item.LotNumber).ToList();
+                        stock = stock.Where(s => s.LotNumber == item.orderitem.LotNumber).ToList();
                     }
 
                     // qc stock is considered to be any status other than hold or available
@@ -1380,34 +1363,61 @@ namespace MvcPhoenix.Services
                     // Page thru tblstock rows looking for the first record that has enough qty then bailout
                     foreach (var row in stock)
                     {
-                        if (row.QtyOnHand - row.QtyAllocated >= item.Qty)
+                        var log = new OrderInventoryLog();
+
+                        if (row.QtyOnHand - row.QtyAllocated >= item.orderitem.Qty)
                         {
                             AllocationCount = AllocationCount + 1;
 
                             // update tblstock record (need to use separate qry)
-                            var q = db.tblStock.Find(row.StockID);
+                            var updateStock = db.tblStock.Find(row.StockID);
 
-                            q.QtyAllocated = (q.QtyAllocated ?? 0) + item.Qty;
-                            q.QtyAvailable = q.QtyOnHand - item.Qty;
+                            updateStock.QtyAllocated = (updateStock.QtyAllocated ?? 0) + item.orderitem.Qty;
+                            log.CurrentQtyAvailable = updateStock.QtyAvailable = updateStock.QtyOnHand - item.orderitem.Qty;
 
                             // update tblorderitem record
-                            item.AllocatedStockID = row.StockID;
-                            item.BulkID = q.BulkID;
-                            item.Warehouse = row.Warehouse;
-                            item.LotNumber = row.LotNumber;
-                            item.AllocateStatus = "A";
-                            item.Bin = row.Bin;
-                            item.ExpirationDate = row.ExpirationDate;
-                            item.CeaseShipDate = row.CeaseShipDate;
-                            item.AllocatedDate = DateTime.UtcNow;
-                            item.UpdateDate = DateTime.UtcNow;
-                            item.UpdateUser = HttpContext.Current.User.Identity.Name;
+                            log.StockId = item.orderitem.AllocatedStockID = row.StockID;
+                            log.BulkId = item.orderitem.BulkID = updateStock.BulkID;
+                            log.Warehouse = item.orderitem.Warehouse = row.Warehouse;
+                            log.LotNumber = item.orderitem.LotNumber = row.LotNumber;
+                            log.ShelfBin = item.orderitem.Bin = row.ShelfBin;
+                            log.ExpirationDate = item.orderitem.ExpirationDate = row.ExpirationDate;
+                            log.CeaseShipDate = item.orderitem.CeaseShipDate = row.CeaseShipDate;
+                            item.orderitem.AllocateStatus = "A";
+                            item.orderitem.AllocatedDate = DateTime.UtcNow;
+                            item.orderitem.UpdateDate = DateTime.UtcNow;
+                            item.orderitem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                             db.SaveChanges();
 
-                            break;
+                            // Insert log record
+                            decimal? unitWeight = db.tblShelfMaster
+                                                    .Where(x => x.ShelfID == item.orderitem.ShelfID)
+                                                    .Select(x => x.UnitWeight).FirstOrDefault() ?? 0;
+                            
+                            var productMaster = db.tblProductMaster
+                                                    .Where(x => x.ProductMasterID == row.ProductMasterId)
+                                                    .Select(x => new { x.MasterCode, x.MasterName }).FirstOrDefault();
+                            
+                            log.LogType = "SS-ALC";
+                            log.OrderNumber = item.orderitem.OrderID;
+                            log.LogQty = item.orderitem.Qty;
+                            log.ClientId = item.ordermaster.ClientID;
+                            log.ProductMasterId = row.ProductMasterId;
+                            log.ProductDetailId = item.orderitem.ProductDetailID;
+                            log.MasterCode = productMaster.MasterCode;
+                            log.MasterName = productMaster.MasterName;
+                            log.ProductCode = item.orderitem.ProductCode;
+                            log.ProductName = item.orderitem.ProductName;
+                            log.LogAmount = unitWeight * item.orderitem.Qty;
+                            log.CurrentWeightAvailable = log.CurrentQtyAvailable * unitWeight;
+                            log.Status = row.ShelfStatus;
+                            log.BulkBin = row.BulkBin;
+                            log.Size = item.orderitem.Size;
+                            log.CeaseShipDate = row.CeaseShipDate;
+                            log.LogNotes = "Shelf stock allocated";
 
-                            fnInsertLogRecord("SS-ALC", DateTime.UtcNow, row.StockID, null, item.Qty, null, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+                            OrderInventoryLog(log);
                         }
                     }
                 }
@@ -1416,59 +1426,61 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static void fnReverseAllocatedItem(int orderitemid)
+        public static void ReverseAllocatedItem(int orderitemid)
         {
             using (var db = new CMCSQL03Entities())
             {
                 var success = false;
 
                 // Check if order item meets criteria for reversal
-                var orderitem = (from t in db.tblOrderItem
+                var orderItem = (from t in db.tblOrderItem
                                  where t.ItemID == orderitemid
                                  && t.AllocateStatus == "A"
                                  && t.ShipDate == null
                                  select t).FirstOrDefault();
 
                 // Check if bulk allocated order item and update bulk record
-                if (orderitem.AllocatedStockID == null && orderitem.AllocatedBulkID != null)
+                if (orderItem.AllocatedStockID == null && orderItem.AllocatedBulkID != null)
                 {
-                    var updatebulk = (from t in db.tblBulk
-                                      where t.BulkID == orderitem.AllocatedBulkID
+                    var updateBulk = (from t in db.tblBulk
+                                      where t.BulkID == orderItem.AllocatedBulkID
                                       select t).FirstOrDefault();
 
                     // Note: User will need to delete order item to re-activate bulk status via Returns again
                     // unless we create bulk allocate method - Iffy
-                    updatebulk.CurrentWeight = orderitem.Weight;
-                    updatebulk.BulkStatus = "AVAIL";
-                    updatebulk.MarkedForReturn = false;
-                    updatebulk.UpdateDate = DateTime.UtcNow;
-                    updatebulk.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    updateBulk.CurrentWeight = orderItem.Weight;
+                    updateBulk.BulkStatus = "AVAIL";
+                    updateBulk.MarkedForReturn = false;
+                    updateBulk.UpdateDate = DateTime.UtcNow;
+                    updateBulk.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                     success = true;
                 }
 
                 // Check if stock allocated order item and update stock record
-                if (orderitem.AllocatedStockID != null)
+                if (orderItem.AllocatedStockID != null)
                 {
-                    var updatestock = (from t in db.tblStock
-                                       where t.ShelfID == orderitem.ShelfID
-                                       && t.Bin == orderitem.Bin
+                    var updateStock = (from t in db.tblStock
+                                       where t.ShelfID == orderItem.ShelfID
+                                       && t.Bin == orderItem.Bin
                                        select t).FirstOrDefault();
 
-                    updatestock.QtyAvailable = updatestock.QtyAvailable + orderitem.Qty;
-                    updatestock.QtyAllocated -= orderitem.Qty;
+                    updateStock.QtyAvailable = updateStock.QtyAvailable + orderItem.Qty;
+                    updateStock.QtyAllocated -= orderItem.Qty;
+
                     //if (updatestock.ShelfStatus == "RETURN")
                     //{
                     //    updatestock.ShelfStatus = "AVAIL";
                     //    updatestock.MarkedForReturn = false;
                     //}
+
                     // zero out QtyAllocated if negative
-                    if (updatestock.QtyAllocated < 0)
+                    if (updateStock.QtyAllocated < 0)
                     {
-                        updatestock.QtyAllocated = 0;                                           
+                        updateStock.QtyAllocated = 0;
                     }
-                    updatestock.UpdateDate = DateTime.UtcNow;
-                    updatestock.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    updateStock.UpdateDate = DateTime.UtcNow;
+                    updateStock.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                     success = true;
                 }
@@ -1479,18 +1491,18 @@ namespace MvcPhoenix.Services
                 {
                     try
                     {
-                        orderitem.AllocatedStockID = null;
-                        orderitem.AllocatedBulkID = null;
-                        orderitem.BulkID = null;
-                        orderitem.AllocateStatus = null;
-                        orderitem.AllocatedDate = null;
-                        orderitem.Bin = null;
-                        orderitem.LotNumber = null;
-                        orderitem.Warehouse = null;
-                        orderitem.ExpirationDate = null;
-                        orderitem.CeaseShipDate = null;
-                        orderitem.UpdateDate = DateTime.UtcNow;
-                        orderitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                        orderItem.AllocatedStockID = null;
+                        orderItem.AllocatedBulkID = null;
+                        orderItem.BulkID = null;
+                        orderItem.AllocateStatus = null;
+                        orderItem.AllocatedDate = null;
+                        orderItem.Bin = null;
+                        orderItem.LotNumber = null;
+                        orderItem.Warehouse = null;
+                        orderItem.ExpirationDate = null;
+                        orderItem.CeaseShipDate = null;
+                        orderItem.UpdateDate = DateTime.UtcNow;
+                        orderItem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                         db.SaveChanges();
                     }
@@ -1509,65 +1521,72 @@ namespace MvcPhoenix.Services
         // Add bulk item to return order
         public static async Task<int> AddBulkItemToReturnOrder(int orderid, int bulkid)
         {
+            var log = new OrderInventoryLog();
+
             using (var db = new CMCSQL03Entities())
             {
-                var bulkitem = (from t in db.tblBulk
+                var bulkItem = (from t in db.tblBulk
                                 where t.BulkID == bulkid
                                 select t).FirstOrDefault();
 
-                var productmaster = (from t in db.tblProductMaster
-                                     where t.ProductMasterID == bulkitem.ProductMasterID
+                var productMaster = (from t in db.tblProductMaster
+                                     where t.ProductMasterID == bulkItem.ProductMasterID
                                      select t).FirstOrDefault();
 
-                var productdetailid = OrderService.GetProductDetailId(productmaster.ProductMasterID);
-                var productdetail = db.tblProductDetail.Find(productdetailid);
+                var productDetailId = OrderService.GetProductDetailId(productMaster.ProductMasterID);
+                var productDetail = db.tblProductDetail.Find(productDetailId);
 
-                int newitemid = OrderService.fnNewItemID();
-                var newitem = (from t in db.tblOrderItem
-                               where t.ItemID == newitemid
+                int newItemId = OrderService.NewOrderItemId();
+                var newItem = (from t in db.tblOrderItem
+                               where t.ItemID == newItemId
                                select t).FirstOrDefault();
 
-                newitem.OrderID = orderid;
-                newitem.BulkID = bulkitem.BulkID;
-                newitem.ShelfID = OrderService.GetShelfIdProductMaster(productmaster.ProductMasterID, bulkitem.UM);
-                newitem.ProductDetailID = productdetailid;
-                newitem.ProductCode = productmaster.MasterCode;
-                newitem.ProductName = productmaster.MasterName;
-                newitem.LotNumber = bulkitem.LotNumber;
-                newitem.Qty = 1;
-                newitem.Size = bulkitem.UM;
-                newitem.Weight = bulkitem.CurrentWeight;
-                newitem.Bin = bulkitem.Bin;
-                newitem.CSAllocate = true;
-                newitem.AllocatedBulkID = bulkitem.BulkID;
-                newitem.AllocateStatus = "A";
-                newitem.AllocatedDate = DateTime.UtcNow;
-                newitem.Warehouse = bulkitem.Warehouse;
-                newitem.GrnUnNumber = productdetail.GRNUNNUMBER;
-                newitem.GrnPkGroup = productdetail.GRNPKGRP;
-                newitem.AirUnNumber = productdetail.AIRUNNUMBER;
-                newitem.AirPkGroup = productdetail.AIRPKGRP;
-                newitem.AlertNotesOrderEntry = productdetail.AlertNotesOrderEntry;
-                newitem.AlertNotesShipping = productdetail.AlertNotesShipping;
-                newitem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + bulkitem.UM + " with a current weight of " + bulkitem.CurrentWeight;
-                newitem.CreateDate = DateTime.UtcNow;
-                newitem.CreateUser = HttpContext.Current.User.Identity.Name;
-                newitem.UpdateDate = DateTime.UtcNow;
-                newitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                log.OrderNumber = newItem.OrderID = orderid;
+                log.BulkId = newItem.AllocatedBulkID = newItem.BulkID = bulkItem.BulkID;
+                newItem.ShelfID = OrderService.GetShelfIdProductMaster(productMaster.ProductMasterID, bulkItem.UM);
+                log.ProductDetailId = newItem.ProductDetailID = productDetailId;
+                log.ProductCode = newItem.ProductCode = productMaster.MasterCode;
+                log.ProductName = newItem.ProductName = productMaster.MasterName;
+                log.LotNumber = newItem.LotNumber = bulkItem.LotNumber;
+                log.LogQty = newItem.Qty = 1;
+                log.Size = newItem.Size = bulkItem.UM;
+                log.LogAmount = newItem.Weight = bulkItem.CurrentWeight;
+                log.BulkBin = newItem.Bin = bulkItem.Bin;
+                newItem.CSAllocate = true;
+                newItem.AllocateStatus = "A";
+                newItem.AllocatedDate = DateTime.UtcNow;
+                log.Warehouse = newItem.Warehouse = bulkItem.Warehouse;
+                newItem.GrnUnNumber = productDetail.GRNUNNUMBER;
+                newItem.GrnPkGroup = productDetail.GRNPKGRP;
+                newItem.AirUnNumber = productDetail.AIRUNNUMBER;
+                newItem.AirPkGroup = productDetail.AIRPKGRP;
+                newItem.AlertNotesOrderEntry = productDetail.AlertNotesOrderEntry;
+                newItem.AlertNotesShipping = productDetail.AlertNotesShipping;
+                log.LogNotes = newItem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + bulkItem.UM + " with a current weight of " + bulkItem.CurrentWeight;
+                newItem.CreateDate = DateTime.UtcNow;
+                newItem.CreateUser = HttpContext.Current.User.Identity.Name;
+                newItem.UpdateDate = DateTime.UtcNow;
+                newItem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 // Insert log record
-                OrderService.fnInsertLogRecord("BS-RTN", DateTime.UtcNow, null, bulkitem.BulkID, 1, bulkitem.CurrentWeight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+                log.LogType = "BS-RTN";
+                log.ClientId = productMaster.ClientID;
+                log.ProductMasterId = productMaster.ProductMasterID;
+                log.MasterCode = productMaster.MasterCode;
+                log.MasterName = productMaster.MasterName;
+
+                OrderInventoryLog(log);
 
                 //update bulk record
-                bulkitem.CurrentWeight = 0;
-                bulkitem.BulkStatus = "RETURN";
-                bulkitem.MarkedForReturn = true;
-                bulkitem.UpdateDate = DateTime.UtcNow;
-                bulkitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                bulkItem.CurrentWeight = 0;
+                bulkItem.BulkStatus = "RETURN";
+                bulkItem.MarkedForReturn = true;
+                bulkItem.UpdateDate = DateTime.UtcNow;
+                bulkItem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.SaveChanges();
 
-                OrderService.fnGenerateOrderTransactions(newitemid);
+                OrderService.GenerateOrderTransaction(newItemId);
             }
 
             return orderid;
@@ -1576,64 +1595,71 @@ namespace MvcPhoenix.Services
         // Add stock item to new return order
         public static async Task<int> AddStockItemToReturnOrder(int orderid, int stockid)
         {
+            var log = new OrderInventoryLog();
+
             using (var db = new CMCSQL03Entities())
             {
-                var stockitem = (from t in db.tblStock
+                var stockItem = (from t in db.tblStock
                                  where t.StockID == stockid
                                  select t).FirstOrDefault();
 
-                var bl = db.tblBulk.Find(stockitem.BulkID);
-                var sm = db.tblShelfMaster.Find(stockitem.ShelfID);
-                var pd = db.tblProductDetail.Find(sm.ProductDetailID);
-                var pm = db.tblProductMaster.Find(bl.ProductMasterID);
+                var bulk = db.tblBulk.Find(stockItem.BulkID);
+                var shelf = db.tblShelfMaster.Find(stockItem.ShelfID);
+                var productDetail = db.tblProductDetail.Find(shelf.ProductDetailID);
+                var productMaster = db.tblProductMaster.Find(bulk.ProductMasterID);
 
-                int newitemid = OrderService.fnNewItemID();
-                var newitem = (from t in db.tblOrderItem
-                               where t.ItemID == newitemid
-                               select t).FirstOrDefault();
+                int newOrderItemId = OrderService.NewOrderItemId();
+                var newOrderItem = (from t in db.tblOrderItem
+                                    where t.ItemID == newOrderItemId
+                                    select t).FirstOrDefault();
 
-                newitem.OrderID = orderid;
-                newitem.ShelfID = sm.ShelfID;
-                newitem.ProductDetailID = pd.ProductDetailID;
-                newitem.ProductCode = pd.ProductCode;
-                newitem.ProductName = pd.ProductName;
-                newitem.LotNumber = bl.LotNumber;
-                newitem.Qty = stockitem.QtyOnHand;
-                newitem.Size = sm.Size;
-                newitem.Weight = Convert.ToDecimal(sm.UnitWeight * stockitem.QtyOnHand);
-                newitem.Bin = stockitem.Bin;
-                newitem.CSAllocate = true;
-                newitem.AllocatedBulkID = stockitem.BulkID;
-                newitem.AllocatedStockID = stockitem.StockID;
-                newitem.AllocateStatus = "A";
-                newitem.AllocatedDate = DateTime.UtcNow;
-                newitem.Warehouse = stockitem.Warehouse;
-                newitem.GrnUnNumber = pd.GRNUNNUMBER;
-                newitem.GrnPkGroup = pd.GRNPKGRP;
-                newitem.AirUnNumber = pd.AIRUNNUMBER;
-                newitem.AirPkGroup = pd.AIRPKGRP;
-                newitem.AlertNotesOrderEntry = pd.AlertNotesOrderEntry;
-                newitem.AlertNotesShipping = pd.AlertNotesShipping;
-                newitem.ItemNotes = "Return Shelf Order Item";
-                newitem.CreateDate = DateTime.UtcNow;
-                newitem.CreateUser = HttpContext.Current.User.Identity.Name;
-                newitem.UpdateDate = DateTime.UtcNow;
-                newitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                log.OrderNumber = newOrderItem.OrderID = orderid;
+                newOrderItem.ShelfID = shelf.ShelfID;
+                log.ProductDetailId = newOrderItem.ProductDetailID = productDetail.ProductDetailID;
+                log.ProductCode = newOrderItem.ProductCode = productDetail.ProductCode;
+                log.ProductName = newOrderItem.ProductName = productDetail.ProductName;
+                log.LotNumber = newOrderItem.LotNumber = bulk.LotNumber;
+                log.LogQty = newOrderItem.Qty = stockItem.QtyOnHand;
+                log.Size = newOrderItem.Size = shelf.Size;
+                log.LogAmount = newOrderItem.Weight = Convert.ToDecimal(shelf.UnitWeight * stockItem.QtyOnHand);
+                log.ShelfBin = newOrderItem.Bin = stockItem.Bin;
+                newOrderItem.CSAllocate = true;
+                log.BulkId = newOrderItem.AllocatedBulkID = stockItem.BulkID;
+                log.StockId = newOrderItem.AllocatedStockID = stockItem.StockID;
+                newOrderItem.AllocateStatus = "A";
+                newOrderItem.AllocatedDate = DateTime.UtcNow;
+                log.Warehouse = newOrderItem.Warehouse = stockItem.Warehouse;
+                newOrderItem.GrnUnNumber = productDetail.GRNUNNUMBER;
+                newOrderItem.GrnPkGroup = productDetail.GRNPKGRP;
+                newOrderItem.AirUnNumber = productDetail.AIRUNNUMBER;
+                newOrderItem.AirPkGroup = productDetail.AIRPKGRP;
+                newOrderItem.AlertNotesOrderEntry = productDetail.AlertNotesOrderEntry;
+                newOrderItem.AlertNotesShipping = productDetail.AlertNotesShipping;
+                log.LogNotes = newOrderItem.ItemNotes = "Return Shelf Order Item";
+                newOrderItem.CreateDate = DateTime.UtcNow;
+                newOrderItem.CreateUser = HttpContext.Current.User.Identity.Name;
+                newOrderItem.UpdateDate = DateTime.UtcNow;
+                newOrderItem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 // Insert log record
-                OrderService.fnInsertLogRecord("SS-RTN", DateTime.UtcNow, stockitem.StockID, null, 1, sm.UnitWeight, DateTime.UtcNow, HttpContext.Current.User.Identity.Name, null, null);
+                log.LogType = "SS-RTN";
+                log.ProductMasterId = productMaster.ProductMasterID;
+                log.MasterCode = productMaster.MasterCode;
+                log.MasterName = productMaster.MasterName;
+
+                OrderInventoryLog(log);
 
                 //update tblstock record
-                stockitem.QtyAllocated = stockitem.QtyAvailable;
-                stockitem.QtyAvailable = 0;                                               // Clear out available stock
-                stockitem.ShelfStatus = "RETURN";
-                stockitem.MarkedForReturn = true;
-                stockitem.UpdateDate = DateTime.UtcNow;
-                stockitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                stockItem.QtyAllocated = stockItem.QtyAvailable;
+                stockItem.QtyAvailable = 0;
+                stockItem.ShelfStatus = "RETURN";
+                stockItem.MarkedForReturn = true;
+                stockItem.UpdateDate = DateTime.UtcNow;
+                stockItem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.SaveChanges();
 
-                OrderService.fnGenerateOrderTransactions(newitemid);
+                OrderService.GenerateOrderTransaction(newOrderItemId);
             }
 
             return orderid;
@@ -1643,97 +1669,96 @@ namespace MvcPhoenix.Services
 
         #region SPS Billing Methods
 
-        public static OrderSPSBilling fnSPSBilling(int id)
+        public static OrderSPSBilling SPSBilling(int orderid)
         {
-            // id=OrderID
             using (var db = new CMCSQL03Entities())
             {
-                OrderSPSBilling vm = new OrderSPSBilling();
-                var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == id);
+                OrderSPSBilling orderSPSBilling = new OrderSPSBilling();
+                var getSPSBilling = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == orderid);
 
-                if (q == null)
+                if (getSPSBilling == null)
                 {
-                    vm.SPSBillingID = -1;
-                    vm.OrderId = id;
-                    vm.PriceCost = CalcSPSSumCharge(id);
-                    return vm;
+                    orderSPSBilling.SPSBillingID = -1;
+                    orderSPSBilling.OrderId = orderid;
+                    orderSPSBilling.PriceCost = CalculateSPSSumCharge(orderid);
+                    return orderSPSBilling;
                 }
 
-                vm.SPSBillingID = q.SPSBillingID;
-                vm.OrderId = q.OrderID;
-                vm.Type = q.Type;
-                vm.TaxId = q.TaxID;
-                vm.Currency = q.Currency;
-                vm.PriceCost = CalcSPSSumCharge(id);
-                vm.FreightCost = q.FreightCost;
-                vm.ShippedWeight = q.ShippedWeight;
-                vm.InvoiceTitle = q.InvoiceTitle;
-                vm.InvoiceFirstName = q.InvoiceFirstName;
-                vm.InvoiceLastName = q.InvoiceLastName;
-                vm.InvoiceCompany = q.InvoiceCompany;
-                vm.InvoiceAddress1 = q.InvoiceAddress1;
-                vm.InvoiceAddress2 = q.InvoiceAddress2;
-                vm.InvoiceAddress3 = q.InvoiceAddress3;
-                vm.InvoiceCity = q.InvoiceCity;
-                vm.InvoiceState = q.InvoiceState;
-                vm.InvoicePostalCode = q.InvoicePostalCode;
-                vm.InvoiceCountry = q.InvoiceCountry;
-                vm.InvoicePhone = q.InvoicePhone;
-                vm.InvoiceEmail = q.InvoiceEmail;
-                vm.UpdateDate = DateTime.UtcNow;
-                vm.UpdateUser = HttpContext.Current.User.Identity.Name;
+                orderSPSBilling.SPSBillingID = getSPSBilling.SPSBillingID;
+                orderSPSBilling.OrderId = getSPSBilling.OrderID;
+                orderSPSBilling.Type = getSPSBilling.Type;
+                orderSPSBilling.TaxId = getSPSBilling.TaxID;
+                orderSPSBilling.Currency = getSPSBilling.Currency;
+                orderSPSBilling.PriceCost = CalculateSPSSumCharge(orderid);
+                orderSPSBilling.FreightCost = getSPSBilling.FreightCost;
+                orderSPSBilling.ShippedWeight = getSPSBilling.ShippedWeight;
+                orderSPSBilling.InvoiceTitle = getSPSBilling.InvoiceTitle;
+                orderSPSBilling.InvoiceFirstName = getSPSBilling.InvoiceFirstName;
+                orderSPSBilling.InvoiceLastName = getSPSBilling.InvoiceLastName;
+                orderSPSBilling.InvoiceCompany = getSPSBilling.InvoiceCompany;
+                orderSPSBilling.InvoiceAddress1 = getSPSBilling.InvoiceAddress1;
+                orderSPSBilling.InvoiceAddress2 = getSPSBilling.InvoiceAddress2;
+                orderSPSBilling.InvoiceAddress3 = getSPSBilling.InvoiceAddress3;
+                orderSPSBilling.InvoiceCity = getSPSBilling.InvoiceCity;
+                orderSPSBilling.InvoiceState = getSPSBilling.InvoiceState;
+                orderSPSBilling.InvoicePostalCode = getSPSBilling.InvoicePostalCode;
+                orderSPSBilling.InvoiceCountry = getSPSBilling.InvoiceCountry;
+                orderSPSBilling.InvoicePhone = getSPSBilling.InvoicePhone;
+                orderSPSBilling.InvoiceEmail = getSPSBilling.InvoiceEmail;
+                orderSPSBilling.UpdateDate = DateTime.UtcNow;
+                orderSPSBilling.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                return vm;
+                return orderSPSBilling;
             }
         }
 
-        private static decimal? CalcSPSSumCharge(int OrderId)
+        private static decimal? CalculateSPSSumCharge(int OrderId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var SumSPSCharge = db.tblOrderItem
+                var sumSPSCharge = db.tblOrderItem
                     .Where(t => t.OrderID == OrderId)
                     .Sum(t => t.SPSCharge);
 
-                return SumSPSCharge;
+                return sumSPSCharge;
             }
         }
 
-        public static void fnSaveSPSBillingDetails(OrderSPSBilling vm)
+        public static void SaveSPSBillingDetails(OrderSPSBilling orderspsbilling)
         {
             using (var db = new CMCSQL03Entities())
             {
-                if (vm.SPSBillingID == -1)
+                if (orderspsbilling.SPSBillingID == -1)
                 {
-                    tblOrderSPSBilling newrec = new tblOrderSPSBilling();
-                    newrec.OrderID = vm.OrderId;
-                    db.tblOrderSPSBilling.Add(newrec);
+                    tblOrderSPSBilling newOrderSPSBilling = new tblOrderSPSBilling();
+                    newOrderSPSBilling.OrderID = orderspsbilling.OrderId;
+                    db.tblOrderSPSBilling.Add(newOrderSPSBilling);
                     db.SaveChanges();
                 }
 
-                var q = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == vm.OrderId);
+                var orderSPSBilling = db.tblOrderSPSBilling.SingleOrDefault(i => i.OrderID == orderspsbilling.OrderId);
 
-                q.Type = "Invoice";
-                q.TaxID = vm.TaxId;
-                q.Currency = "EUR";
-                q.PriceCost = CalcSPSSumCharge(vm.OrderId);
-                q.FreightCost = vm.FreightCost;
-                q.ShippedWeight = vm.ShippedWeight;
-                q.InvoiceTitle = vm.InvoiceTitle;
-                q.InvoiceFirstName = vm.InvoiceFirstName;
-                q.InvoiceLastName = vm.InvoiceLastName;
-                q.InvoiceCompany = vm.InvoiceCompany;
-                q.InvoiceAddress1 = vm.InvoiceAddress1;
-                q.InvoiceAddress2 = vm.InvoiceAddress2;
-                q.InvoiceAddress3 = vm.InvoiceAddress3;
-                q.InvoiceCity = vm.InvoiceCity;
-                q.InvoiceState = vm.InvoiceState;
-                q.InvoicePostalCode = vm.InvoicePostalCode;
-                q.InvoiceCountry = vm.InvoiceCountry;
-                q.InvoicePhone = vm.InvoicePhone;
-                q.InvoiceEmail = vm.InvoiceEmail;
-                q.UpdateDate = DateTime.UtcNow;
-                q.UpdateUser = HttpContext.Current.User.Identity.Name;
+                orderSPSBilling.Type = "Invoice";
+                orderSPSBilling.TaxID = orderspsbilling.TaxId;
+                orderSPSBilling.Currency = "EUR";
+                orderSPSBilling.PriceCost = CalculateSPSSumCharge(orderspsbilling.OrderId);
+                orderSPSBilling.FreightCost = orderspsbilling.FreightCost;
+                orderSPSBilling.ShippedWeight = orderspsbilling.ShippedWeight;
+                orderSPSBilling.InvoiceTitle = orderspsbilling.InvoiceTitle;
+                orderSPSBilling.InvoiceFirstName = orderspsbilling.InvoiceFirstName;
+                orderSPSBilling.InvoiceLastName = orderspsbilling.InvoiceLastName;
+                orderSPSBilling.InvoiceCompany = orderspsbilling.InvoiceCompany;
+                orderSPSBilling.InvoiceAddress1 = orderspsbilling.InvoiceAddress1;
+                orderSPSBilling.InvoiceAddress2 = orderspsbilling.InvoiceAddress2;
+                orderSPSBilling.InvoiceAddress3 = orderspsbilling.InvoiceAddress3;
+                orderSPSBilling.InvoiceCity = orderspsbilling.InvoiceCity;
+                orderSPSBilling.InvoiceState = orderspsbilling.InvoiceState;
+                orderSPSBilling.InvoicePostalCode = orderspsbilling.InvoicePostalCode;
+                orderSPSBilling.InvoiceCountry = orderspsbilling.InvoiceCountry;
+                orderSPSBilling.InvoicePhone = orderspsbilling.InvoicePhone;
+                orderSPSBilling.InvoiceEmail = orderspsbilling.InvoiceEmail;
+                orderSPSBilling.UpdateDate = DateTime.UtcNow;
+                orderSPSBilling.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.SaveChanges();
             }
@@ -1747,106 +1772,99 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
-                orderslist = OrderService.fnOrdersSearchResults();
+                List<OrderMasterFull> orders = new List<OrderMasterFull>();
+                orders = OrderService.SearchOrders();
 
                 // Get list of order ids for orders not shipped.
-                var unshippedorders = (from i in db.tblOrderItem
+                var unshippedOrders = (from i in db.tblOrderItem
                                        where i.ShipDate == null
                                        && i.Qty > 0
                                        select i).ToList();
 
-                unshippedorders = unshippedorders.GroupBy(x => x.OrderID)
+                unshippedOrders = unshippedOrders.GroupBy(x => x.OrderID)
                                                  .Select(g => g.First()).ToList();
 
                 // Get list of open orders.
-                orderslist = (from t in orderslist
-                              join u in unshippedorders on t.OrderID equals u.OrderID
-                              join c in db.tblClientAccountRep on t.ClientId equals c.ClientID
-                              where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
-                              orderby t.OrderID descending, t.OrderDate descending
-                              select t).ToList();
+                orders = (from t in orders
+                          join u in unshippedOrders on t.OrderID equals u.OrderID
+                          join c in db.tblClientAccountRep on t.ClientId equals c.ClientID
+                          where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
+                          orderby t.OrderID descending, t.OrderDate descending
+                          select t).ToList();
 
                 // Display all clients in EU if user has no client assignments.
                 // Since CMCEU does not have specific csr assignments for clients.
-                if (orderslist.Count() == 0)
+                if (orders.Count() == 0)
                 {
-                    orderslist = OrderService.fnOrdersSearchResults();
-                    orderslist = (from t in orderslist
-                                  join u in unshippedorders on t.OrderID equals u.OrderID
-                                  join c in db.tblClient on t.ClientId equals c.ClientID
-                                  where c.CMCLocation == "EU"
-                                  orderby t.OrderID descending, t.OrderDate descending
-                                  select t).ToList();
+                    orders = OrderService.SearchOrders();
+                    orders = (from t in orders
+                              join u in unshippedOrders on t.OrderID equals u.OrderID
+                              join c in db.tblClient on t.ClientId equals c.ClientID
+                              where c.CMCLocation == "EU"
+                              orderby t.OrderID descending, t.OrderDate descending
+                              select t).ToList();
                 }
 
-                return orderslist;
+                return orders;
             }
         }
 
-        public static List<OrderMasterFull> fnOrdersSearchResults()
+        public static List<OrderMasterFull> SearchOrders()
         {
-            // default query join for the index_partial ORDERS search results,
-            // also used by all the search requests as the starting point
             using (var db = new CMCSQL03Entities())
             {
-                db.Configuration.AutoDetectChangesEnabled = false;
-                List<OrderMasterFull> orderslist = new List<OrderMasterFull>();
-                orderslist = (from t in db.tblOrderMaster
-                              join clt in db.tblClient on t.ClientID equals clt.ClientID
-                              let count = (from items in db.tblOrderItem
-                                           where items.OrderID == t.OrderID
-                                           select items).Count()
+                List<OrderMasterFull> orders = new List<OrderMasterFull>();
 
-                              let allocationcount = (from i in db.tblOrderItem
-                                                     where i.OrderID == t.OrderID
-                                                     && i.ShipDate == null
-                                                     && i.Qty > 0
-                                                     && String.IsNullOrEmpty(i.AllocateStatus)
-                                                     && i.ProductDetailID != null
-                                                     && i.ShelfID == null
-                                                     select i).Count()
+                orders = (from t in db.tblOrderMaster
+                          join clt in db.tblClient on t.ClientID equals clt.ClientID
+                          let count = (from items in db.tblOrderItem
+                                       where items.OrderID == t.OrderID
+                                       select items).Count()
+                          let allocationcount = (from i in db.tblOrderItem
+                                                 where i.OrderID == t.OrderID
+                                                 && i.ShipDate == null
+                                                 && i.Qty > 0
+                                                 && String.IsNullOrEmpty(i.AllocateStatus)
+                                                 && i.ProductDetailID != null
+                                                 && i.ShelfID == null
+                                                 select i).Count()
+                          select new OrderMasterFull
+                          {
+                              ClientId = t.ClientID,
+                              OrderID = t.OrderID,
+                              Customer = t.Customer,
+                              ClientName = clt.ClientName,
+                              OrderType = t.OrderType,
+                              OrderDate = t.OrderDate,
+                              Company = t.Company,
+                              CreateUser = t.CreateUser,
+                              ItemsCount = count,
+                              Zip = t.Zip,
+                              SalesRepName = t.SalesRep,
+                              NeedAllocationCount = allocationcount
+                          }).ToList();
 
-                              select new OrderMasterFull
-                              {
-                                  ClientId = t.ClientID,
-                                  OrderID = t.OrderID,
-                                  Customer = t.Customer,
-                                  ClientName = clt.ClientName,
-                                  OrderType = t.OrderType,
-                                  OrderDate = t.OrderDate,
-                                  Company = t.Company,
-                                  CreateUser = t.CreateUser,
-                                  ItemsCount = count,
-                                  Zip = t.Zip,
-                                  SalesRepName = t.SalesRep,
-                                  NeedAllocationCount = allocationcount
-                              }).ToList();
-
-                db.Configuration.AutoDetectChangesEnabled = true;
-
-                return orderslist;
+                return orders;
             }
         }
 
-        public static Contact fnGetClientContacts(int id)
+        public static Contact GetClientContacts(int clientcontactid)
         {
-            // fill a json object for View use
             using (var db = new CMCSQL03Entities())
             {
-                Contact obj = new Contact();
+                Contact contact = new Contact();
 
                 var q = (from t in db.tblClientContact
-                         where t.ClientContactID == id
+                         where t.ClientContactID == clientcontactid
                          select t).FirstOrDefault();
 
-                obj.FullName = q.FullName;
-                obj.Email = q.Email;
-                obj.Phone = q.Phone;
-                obj.Phone = q.Fax;
-                obj.Account = q.Account;
+                contact.FullName = q.FullName;
+                contact.Email = q.Email;
+                contact.Phone = q.Phone;
+                contact.Phone = q.Fax;
+                contact.Account = q.Account;
 
-                return obj;
+                return contact;
             }
         }
 
@@ -1860,68 +1878,68 @@ namespace MvcPhoenix.Services
             {
                 db.Database.ExecuteSqlCommand("DELETE FROM tblOrderImport WHERE Status NOT IN('0')");
 
-                var orderimports = (from t in db.tblOrderImport
+                var orderImports = (from t in db.tblOrderImport
                                     where t.ImportStatus != "IMPORTED"
                                     && t.Location_MDB == "EU"
                                     select t).ToList();
 
-                foreach (var item in orderimports)
+                foreach (var item in orderImports)
                 {
                     item.ImportStatus = "FAIL";
 
-                    int? clientid = (from t in db.tblClient
+                    int? clientId = (from t in db.tblClient
                                      where t.CMCLongCustomer == item.Company_MDB
                                      && t.CMCLocation == item.Location_MDB
                                      select t.ClientID).FirstOrDefault();
 
-                    if ((clientid ?? 0) == 0)
+                    if ((clientId ?? 0) == 0)
                     {
                         item.ImportError += " Client does not exist.";
                     }
                     else
                     {
-                        item.ClientID = clientid;
+                        item.ClientID = clientId;
 
-                        int? divisionid = (from t in db.tblDivision
+                        int? divisionId = (from t in db.tblDivision
                                            where t.ClientID == item.ClientID
                                            && t.DivisionName == item.Division_MDB
                                            select t.DivisionID).FirstOrDefault();
 
-                        if ((divisionid ?? 0) != 0)
+                        if ((divisionId ?? 0) != 0)
                         {
-                            item.DivisionID = divisionid;
+                            item.DivisionID = divisionId;
                         }
                     }
 
                     // Make sure the product exists
-                    int? productdetailid = (from pd in db.tblProductDetail
+                    int? productDetailId = (from pd in db.tblProductDetail
                                             join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
                                             where pd.ProductCode == item.ProductCode
                                             && pm.ClientID == item.ClientID
                                             select pd.ProductDetailID).FirstOrDefault();
 
-                    if ((productdetailid ?? 0) == 0)
+                    if ((productDetailId ?? 0) == 0)
                     {
                         item.ImportError += " Requested product not found.";
                     }
                     else
                     {
-                        item.ProductDetailID = productdetailid;
+                        item.ProductDetailID = productDetailId;
 
-                        int? shelfmasterid = (from t in db.tblShelfMaster
+                        int? shelfMasterId = (from t in db.tblShelfMaster
                                               where t.ProductDetailID == item.ProductDetailID
                                               && t.Size == item.Size
                                               select t.ShelfID).FirstOrDefault();
 
                         // Create new shelfmaster if none found
-                        if ((shelfmasterid ?? 0) == 0)
+                        if ((shelfMasterId ?? 0) == 0)
                         {
                             item.ShelfID = GetShelfIdProductDetail(item.ProductDetailID, item.Size);
                             item.ImportError = String.Format(" Missing shelf profile; shelf id: {0} created.", item.ShelfID);
                         }
                         else
                         {
-                            item.ShelfID = shelfmasterid;
+                            item.ShelfID = shelfMasterId;
                         }
                     }
 
@@ -1935,14 +1953,14 @@ namespace MvcPhoenix.Services
                 }
 
                 // Cancel order import if a related item fails
-                var qFix = (from t in db.tblOrderImport
-                            where t.ImportStatus == "FAIL"
-                            select new { guid = t.GUID }).ToList().Distinct();
+                var failedOrderImport = (from t in db.tblOrderImport
+                                         where t.ImportStatus == "FAIL"
+                                         select new { guid = t.GUID }).ToList().Distinct();
 
-                foreach (var r in qFix)
+                foreach (var r in failedOrderImport)
                 {
-                    string s = String.Format("UPDATE tblOrderImport SET ImportStatus='FAIL' WHERE GUID='{0}'", r.guid);
-                    db.Database.ExecuteSqlCommand(s);
+                    string updateQuery = String.Format("UPDATE tblOrderImport SET ImportStatus='FAIL' WHERE GUID='{0}'", r.guid);
+                    db.Database.ExecuteSqlCommand(updateQuery);
                 }
 
                 return;
@@ -1960,135 +1978,135 @@ namespace MvcPhoenix.Services
                 int OrdersImportedCount = 0;
 
                 // Get list of unique rows that passed precheck
-                var OrderImportGUIDs = (from t in db.tblOrderImport
+                var orderImportGUIDs = (from t in db.tblOrderImport
                                         where t.ImportStatus == "PASS"
                                         && t.Location_MDB == sLocation
                                         select new { t.GUID }).ToList().Distinct();
 
                 // Create orders and insert items
-                foreach (var row in OrderImportGUIDs)
+                foreach (var row in orderImportGUIDs)
                 {
-                    var orderimport = (from t in db.tblOrderImport
+                    var importOrder = (from t in db.tblOrderImport
                                        where t.GUID == row.GUID
                                        select t).FirstOrDefault();
 
                     OrderMasterFull newOrder = new OrderMasterFull();
 
                     newOrder.OrderID = -1;
-                    newOrder.OrderDate = Convert.ToDateTime(orderimport.OrderDate);
-                    newOrder.ClientId = orderimport.ClientID;
-                    newOrder.DivisionId = orderimport.DivisionID;
-                    newOrder.IsSDN = orderimport.IsSDN;
-                    newOrder.Customer = orderimport.Customer;
-                    newOrder.CMCOrder = Convert.ToInt32(orderimport.CMCOrder);
-                    newOrder.WebOrderId = Convert.ToInt32(orderimport.WebOrderID);
-                    newOrder.CMCLegacyNumber = orderimport.CMCLegacyNum;
-                    newOrder.ClientOrderNumber = orderimport.CustOrdNum;
-                    newOrder.ClientSAPNumber = orderimport.CustSapNum;
-                    newOrder.ClientRefNumber = orderimport.CustRefNum;
-                    if (orderimport.OrderType == "w")
+                    newOrder.OrderDate = Convert.ToDateTime(importOrder.OrderDate);
+                    newOrder.ClientId = importOrder.ClientID;
+                    newOrder.DivisionId = importOrder.DivisionID;
+                    newOrder.IsSDN = importOrder.IsSDN;
+                    newOrder.Customer = importOrder.Customer;
+                    newOrder.CMCOrder = Convert.ToInt32(importOrder.CMCOrder);
+                    newOrder.WebOrderId = Convert.ToInt32(importOrder.WebOrderID);
+                    newOrder.CMCLegacyNumber = importOrder.CMCLegacyNum;
+                    newOrder.ClientOrderNumber = importOrder.CustOrdNum;
+                    newOrder.ClientSAPNumber = importOrder.CustSapNum;
+                    newOrder.ClientRefNumber = importOrder.CustRefNum;
+                    if (importOrder.OrderType == "w")
                     {
                         newOrder.OrderType = "S";
                     }
                     else
                     {
-                        newOrder.OrderType = orderimport.OrderType;
+                        newOrder.OrderType = importOrder.OrderType;
                     }
-                    if (orderimport.Source == null)
+                    if (importOrder.Source == null)
                     {
                         newOrder.Source = "Web";
                     }
                     else
                     {
-                        newOrder.Source = orderimport.Source;
+                        newOrder.Source = importOrder.Source;
                     }
-                    newOrder.Company = orderimport.Company;
-                    newOrder.Street = orderimport.Street;
-                    newOrder.Street2 = orderimport.Street2;
-                    newOrder.Street3 = orderimport.Street3;
-                    newOrder.City = orderimport.City;
-                    newOrder.State = orderimport.State;
-                    newOrder.Zip = orderimport.Zip;
-                    newOrder.Country = orderimport.Country;
-                    newOrder.Attention = orderimport.Attention;
-                    newOrder.Email = orderimport.Email;
-                    newOrder.SalesRepName = orderimport.SalesRep;
-                    newOrder.SalesRepEmail = orderimport.SalesEmail;
-                    newOrder.RequestorName = orderimport.Req;
-                    newOrder.RequestorPhone = orderimport.ReqPhone;
-                    newOrder.RequestorFax = orderimport.ReqFax;
-                    newOrder.RequestorEmail = orderimport.ReqEmail;
-                    newOrder.EndUse = orderimport.EndUse;
-                    newOrder.ShipVia = orderimport.ShipVia;
-                    newOrder.ShipAcct = orderimport.ShipAcct;
-                    newOrder.Phone = orderimport.Phone;
-                    newOrder.Fax = orderimport.Fax;
-                    newOrder.Tracking = orderimport.Tracking;
-                    newOrder.Special = orderimport.Special;
-                    newOrder.SpecialInternal = orderimport.SpecialInternal;
-                    newOrder.IsLiterature = Convert.ToBoolean(orderimport.Lit);
-                    newOrder.Region = orderimport.Region;
-                    newOrder.COA = Convert.ToBoolean(orderimport.COA);
-                    newOrder.TDS = Convert.ToBoolean(orderimport.TDS);
-                    newOrder.CID = orderimport.CID;
-                    newOrder.ClientAcct = orderimport.CustAcct;
-                    newOrder.ACode = orderimport.ACode;
-                    newOrder.ImportFile = orderimport.ImportFile;
-                    newOrder.ImportDateLine = orderimport.ImportDateLine;
-                    newOrder.Timing = orderimport.Timing;
-                    newOrder.Volume = orderimport.Volume;
-                    newOrder.SampleRack = Convert.ToBoolean(orderimport.SampleRack);
-                    newOrder.CMCUser = orderimport.CMCUser;
-                    newOrder.ClientReference = orderimport.CustomerReference;
-                    newOrder.TotalOrderWeight = orderimport.TotalOrderWeight;
-                    newOrder.ClientOrderType = orderimport.CustOrderType;
-                    newOrder.ClientRequestDate = orderimport.CustRequestDate;
-                    newOrder.ApprovalDate = orderimport.ApprovalDate;
-                    newOrder.RequestedDeliveryDate = orderimport.RequestedDeliveryDate;
-                    newOrder.ClientTotalItems = Convert.ToInt32(orderimport.CustTotalItems);
-                    newOrder.ClientRequestedCarrier = orderimport.CustRequestedCarrier;
-                    newOrder.LegacyId = Convert.ToInt32(orderimport.LegacyID);
-                    newOrder.SalesRepPhone = orderimport.SalesRepPhone;
-                    newOrder.SalesRepTerritory = orderimport.SalesRepTerritory;
-                    newOrder.MarketingRep = orderimport.MarketingRep;
-                    newOrder.MarketingRepEmail = orderimport.MarketingRepEmail;
-                    newOrder.Distributor = orderimport.Distributor;
-                    newOrder.PreferredCarrier = orderimport.PreferredCarrier;
-                    newOrder.ApprovalNeeded = Convert.ToBoolean(orderimport.ApprovalNeeded);
-                    newOrder.CreateUser = orderimport.CreateUser;
-                    newOrder.CreateDate = orderimport.CreateDate;
-                    newOrder.UpdateUser = orderimport.UpdateUser;
-                    newOrder.UpdateDate = orderimport.UpdateDate;
+                    newOrder.Company = importOrder.Company;
+                    newOrder.Street = importOrder.Street;
+                    newOrder.Street2 = importOrder.Street2;
+                    newOrder.Street3 = importOrder.Street3;
+                    newOrder.City = importOrder.City;
+                    newOrder.State = importOrder.State;
+                    newOrder.Zip = importOrder.Zip;
+                    newOrder.Country = importOrder.Country;
+                    newOrder.Attention = importOrder.Attention;
+                    newOrder.Email = importOrder.Email;
+                    newOrder.SalesRepName = importOrder.SalesRep;
+                    newOrder.SalesRepEmail = importOrder.SalesEmail;
+                    newOrder.RequestorName = importOrder.Req;
+                    newOrder.RequestorPhone = importOrder.ReqPhone;
+                    newOrder.RequestorFax = importOrder.ReqFax;
+                    newOrder.RequestorEmail = importOrder.ReqEmail;
+                    newOrder.EndUse = importOrder.EndUse;
+                    newOrder.ShipVia = importOrder.ShipVia;
+                    newOrder.ShipAcct = importOrder.ShipAcct;
+                    newOrder.Phone = importOrder.Phone;
+                    newOrder.Fax = importOrder.Fax;
+                    newOrder.Tracking = importOrder.Tracking;
+                    newOrder.Special = importOrder.Special;
+                    newOrder.SpecialInternal = importOrder.SpecialInternal;
+                    newOrder.IsLiterature = Convert.ToBoolean(importOrder.Lit);
+                    newOrder.Region = importOrder.Region;
+                    newOrder.COA = Convert.ToBoolean(importOrder.COA);
+                    newOrder.TDS = Convert.ToBoolean(importOrder.TDS);
+                    newOrder.CID = importOrder.CID;
+                    newOrder.ClientAcct = importOrder.CustAcct;
+                    newOrder.ACode = importOrder.ACode;
+                    newOrder.ImportFile = importOrder.ImportFile;
+                    newOrder.ImportDateLine = importOrder.ImportDateLine;
+                    newOrder.Timing = importOrder.Timing;
+                    newOrder.Volume = importOrder.Volume;
+                    newOrder.SampleRack = Convert.ToBoolean(importOrder.SampleRack);
+                    newOrder.CMCUser = importOrder.CMCUser;
+                    newOrder.ClientReference = importOrder.CustomerReference;
+                    newOrder.TotalOrderWeight = importOrder.TotalOrderWeight;
+                    newOrder.ClientOrderType = importOrder.CustOrderType;
+                    newOrder.ClientRequestDate = importOrder.CustRequestDate;
+                    newOrder.ApprovalDate = importOrder.ApprovalDate;
+                    newOrder.RequestedDeliveryDate = importOrder.RequestedDeliveryDate;
+                    newOrder.ClientTotalItems = Convert.ToInt32(importOrder.CustTotalItems);
+                    newOrder.ClientRequestedCarrier = importOrder.CustRequestedCarrier;
+                    newOrder.LegacyId = Convert.ToInt32(importOrder.LegacyID);
+                    newOrder.SalesRepPhone = importOrder.SalesRepPhone;
+                    newOrder.SalesRepTerritory = importOrder.SalesRepTerritory;
+                    newOrder.MarketingRep = importOrder.MarketingRep;
+                    newOrder.MarketingRepEmail = importOrder.MarketingRepEmail;
+                    newOrder.Distributor = importOrder.Distributor;
+                    newOrder.PreferredCarrier = importOrder.PreferredCarrier;
+                    newOrder.ApprovalNeeded = Convert.ToBoolean(importOrder.ApprovalNeeded);
+                    newOrder.CreateUser = importOrder.CreateUser;
+                    newOrder.CreateDate = importOrder.CreateDate;
+                    newOrder.UpdateUser = importOrder.UpdateUser;
+                    newOrder.UpdateDate = importOrder.UpdateDate;
 
                     // Save order and get id
-                    int newOrderId = Services.OrderService.fnSaveOrder(newOrder);
+                    int newOrderId = Services.OrderService.SaveOrder(newOrder);
 
                     // Create order items
-                    var orderimports = (from t in db.tblOrderImport
-                                        where t.GUID == row.GUID
-                                        select t).ToList();
+                    var importOrderItems = (from t in db.tblOrderImport
+                                            where t.GUID == row.GUID
+                                            select t).ToList();
 
-                    foreach (var item in orderimports)
+                    foreach (var item in importOrderItems)
                     {
-                        OrderItem newItem = new OrderItem();
+                        OrderItem newOrderItem = new OrderItem();
 
-                        newItem.ItemID = -1;
-                        newItem.OrderID = newOrderId;
-                        newItem.CreateDate = DateTime.UtcNow;
-                        newItem.CreateUser = "System [Import]";
-                        newItem.UpdateUser = HttpContext.Current.User.Identity.Name;
-                        newItem.ProductDetailID = item.ProductDetailID;
-                        newItem.ShelfID = item.ShelfID;
-                        newItem.Qty = item.Qty;
-                        newItem.LotNumber = item.LotNumber;
-                        newItem.ShipDate = item.ShipDate;
-                        newItem.CSAllocate = item.CSAllocate;
-                        newItem.AllocateStatus = item.AllocateStatus;
-                        newItem.NonCMCDelay = item.NonCMCDelay;
-                        newItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;
-                        newItem.Status = item.Status;
-                        newItem.DelayReason = item.DelayReason;
-                        newItem.ItemNotes = item.ItemNotes;
+                        newOrderItem.ItemID = -1;
+                        newOrderItem.OrderID = newOrderId;
+                        newOrderItem.CreateDate = DateTime.UtcNow;
+                        newOrderItem.CreateUser = "System [Import]";
+                        newOrderItem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                        newOrderItem.ProductDetailID = item.ProductDetailID;
+                        newOrderItem.ShelfID = item.ShelfID;
+                        newOrderItem.Qty = item.Qty;
+                        newOrderItem.LotNumber = item.LotNumber;
+                        newOrderItem.ShipDate = item.ShipDate;
+                        newOrderItem.CSAllocate = item.CSAllocate;
+                        newOrderItem.AllocateStatus = item.AllocateStatus;
+                        newOrderItem.NonCMCDelay = item.NonCMCDelay;
+                        newOrderItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;
+                        newOrderItem.Status = item.Status;
+                        newOrderItem.DelayReason = item.DelayReason;
+                        newOrderItem.ItemNotes = item.ItemNotes;
 
                         // Check special request size and zero out if not decimal.
                         if (item.Size == "1SR")
@@ -2101,21 +2119,21 @@ namespace MvcPhoenix.Services
                             catch (Exception)
                             {
                                 srsize = 0.00M;
-                                newItem.ItemNotes += String.Format(" {0} was imported as a special request size but it's not recognized as a decimal.", item.SRSize);
+                                newOrderItem.ItemNotes += String.Format(" {0} was imported as a special request size but it's not recognized as a decimal.", item.SRSize);
                             }
 
-                            newItem.SRSize = srsize;
+                            newOrderItem.SRSize = srsize;
                         }
 
                         // Save order item and get id
-                        int newItemId = Services.OrderService.fnSaveItem(newItem);
+                        int newOrderItemId = OrderService.SaveOrderItem(newOrderItem);
                     }
 
                     OrdersImportedCount = OrdersImportedCount + 1;
 
                     // Update order import status for successful imports
-                    string s = String.Format("UPDATE tblOrderImport SET ImportStatus='IMPORTED', CMCLocation='{0}', OrderID='{1}' WHERE GUID='{2}'", sLocation, newOrderId, row.GUID);
-                    db.Database.ExecuteSqlCommand(s);
+                    string updateQuery = String.Format("UPDATE tblOrderImport SET ImportStatus='IMPORTED', CMCLocation='{0}', OrderID='{1}' WHERE GUID='{2}'", sLocation, newOrderId, row.GUID);
+                    db.Database.ExecuteSqlCommand(updateQuery);
                 }
 
                 return OrdersImportedCount;
@@ -2124,22 +2142,48 @@ namespace MvcPhoenix.Services
 
         #endregion Order Import Methods
 
-        public static void fnInsertLogRecord(string vLogType, DateTime? vLogDate, int? vStockID, int? vBulkID, int? vLogQty, decimal? vLogAmount, DateTime? vCreateDate, string vCreateUser, DateTime? vUpdateDate, string vUpdateUser)
+        public static void OrderInventoryLog(OrderInventoryLog log)
         {
             using (var db = new CMCSQL03Entities())
             {
                 tblInvLog InventoryLog = new tblInvLog();
+                var client = db.tblClient.Find(log.ClientId);
 
-                InventoryLog.LogType = vLogType;
-                InventoryLog.LogDate = vLogDate;
-                InventoryLog.StockID = vStockID;
-                InventoryLog.BulkID = vBulkID;
-                InventoryLog.LogQty = vLogQty;
-                InventoryLog.LogAmount = vLogAmount;
-                InventoryLog.CreateDate = vCreateDate;
-                InventoryLog.CreateUser = vCreateUser;
-                InventoryLog.UpdateDate = vUpdateDate;
-                InventoryLog.UpdateUser = vUpdateUser;
+                InventoryLog.LogType = log.LogType;
+                InventoryLog.LogDate = DateTime.UtcNow;
+                InventoryLog.BulkID = log.BulkId;
+                InventoryLog.StockID = log.StockId;
+                InventoryLog.ProductMasterID = log.ProductMasterId;
+                InventoryLog.ProductDetailID = log.ProductDetailId;
+                InventoryLog.ProductCode = log.ProductCode;
+                InventoryLog.ProductName = log.ProductName;
+                InventoryLog.MasterCode = log.MasterCode;
+                InventoryLog.MasterName = log.MasterName;
+                InventoryLog.Size = log.Size;
+                InventoryLog.LogQty = log.LogQty;
+                InventoryLog.LogAmount = log.LogAmount;
+                InventoryLog.ClientID = log.ClientId;
+                InventoryLog.ClientName = client.ClientName;
+                InventoryLog.UM = client.ClientUM;
+                InventoryLog.LogNotes = log.LogNotes;
+                InventoryLog.Status = log.Status;
+                InventoryLog.Warehouse = log.Warehouse;
+                InventoryLog.Lotnumber = log.LotNumber;
+                InventoryLog.BulkBin = log.BulkBin;
+                InventoryLog.ShelfBin = log.ShelfBin;
+                InventoryLog.ShipDate = log.ShipDate;
+                InventoryLog.OrderNumber = log.OrderNumber;
+                InventoryLog.CurrentQtyAvailable = log.CurrentQtyAvailable;
+                InventoryLog.CurrentWeightAvailable = log.CurrentWeightAvailable;
+                InventoryLog.ExpirationDate = log.ExpirationDate;
+                InventoryLog.CeaseShipDate = log.CeaseShipDate;
+                InventoryLog.DateReceived = log.DateReceived;
+                InventoryLog.QCDate = log.QCDate;
+                InventoryLog.PackOutID = log.PackOutId;
+                InventoryLog.CreateDate = DateTime.UtcNow;
+                InventoryLog.CreateUser = HttpContext.Current.User.Identity.Name;
+                InventoryLog.UpdateDate = DateTime.UtcNow;
+                InventoryLog.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.tblInvLog.Add(InventoryLog);
                 db.SaveChanges();

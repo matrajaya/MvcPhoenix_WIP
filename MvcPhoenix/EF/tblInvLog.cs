@@ -42,7 +42,7 @@ namespace MvcPhoenix.EF
         public Nullable<decimal> CurrentWeightAvailable { get; set; }
         public Nullable<System.DateTime> ExpirationDate { get; set; }
         public Nullable<System.DateTime> CeaseShipDate { get; set; }
-        public string OrderNumber { get; set; }
+        public Nullable<int> OrderNumber { get; set; }
         public Nullable<System.DateTime> DateReceived { get; set; }
         public Nullable<System.DateTime> QCDate { get; set; }
         public Nullable<int> PackOutID { get; set; }

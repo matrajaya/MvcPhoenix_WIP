@@ -26,7 +26,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult Create(FormCollection fc)
         {
             int ClientID = Convert.ToInt32(fc["NewClientID"]);
-            var vm = OrderService.fnCreateOrder(ClientID);
+            var vm = OrderService.CreateOrder(ClientID);
 
             return View("~/Views/Orders/Edit.cshtml", vm);
         }
@@ -34,7 +34,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var vm = OrderService.fnFillOrder(id);
+            var vm = OrderService.FillOrder(id);
 
             return View("~/Views/Orders/Edit.cshtml", vm);
         }
@@ -42,7 +42,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult Save(OrderMasterFull vm)
         {
-            int pk = OrderService.fnSaveOrder(vm);
+            int pk = OrderService.SaveOrder(vm);
             TempData["SaveResult"] = "Order Information updated on " + DateTime.UtcNow.ToString("R");
 
             return RedirectToAction("Edit", new { id = pk });
@@ -66,7 +66,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult PrintPickPack(int id)
         {
             string footer = DocumentFooter();
-            var vm = OrderService.fnFillOrder(id);
+            var vm = OrderService.FillOrder(id);
 
             return new ViewAsPdf(vm) { CustomSwitches = footer };
         }
@@ -231,7 +231,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditSPSBilling(int id)
         {
             int orderid = id;
-            var vm = OrderService.fnSPSBilling(orderid);
+            var vm = OrderService.SPSBilling(orderid);
 
             return PartialView("~/Views/Orders/_SPSBillingModal.cshtml", vm);
         }
@@ -239,7 +239,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveSPSBilling(OrderSPSBilling vm)
         {
-            OrderService.fnSaveSPSBillingDetails(vm);
+            OrderService.SaveSPSBillingDetails(vm);
 
             return null;
         }
@@ -251,7 +251,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult fnOrderItemsList(int orderid)
         {
-            var orderitems = OrderService.ListOrderItems(orderid);
+            var orderitems = OrderService.OrderItems(orderid);
 
             if (orderitems.Count > 0)
             {
@@ -264,7 +264,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CreateItem(int id)
         {
-            var vm = OrderService.fnCreateItem(id);                             // id=orderid
+            var vm = OrderService.CreateOrderItem(id);                             // id=orderid
 
             return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
         }
@@ -273,7 +273,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditItem(int id)
         {
             OrderItem vm = new OrderItem();
-            vm = OrderService.fnFillOrderItem(id);
+            vm = OrderService.FillOrderItemDetails(id);
 
             return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
         }
@@ -285,7 +285,7 @@ namespace MvcPhoenix.Controllers
             {
                 if (incoming.ShelfID != null)
                 {
-                    int pk = OrderService.fnSaveItem(incoming);
+                    int pk = OrderService.SaveOrderItem(incoming);
 
                     return null;
                 }
@@ -296,7 +296,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult DeleteItem(int id)
         {
-            OrderService.fnDeleteOrderItem(id);
+            OrderService.DeleteOrderItem(id);
 
             return Content("Item Deleted");
         }
@@ -353,7 +353,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult PullContactDetails(int id)
         {
             Contact obj = new Contact();
-            obj = OrderService.fnGetClientContacts(id);
+            obj = OrderService.GetClientContacts(id);
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
@@ -362,14 +362,14 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult AllocateFromShelf(int id, bool IncludeQCStock)
         {
-            int AllocationCount = OrderService.fnAllocateShelf(id, IncludeQCStock);
+            int AllocationCount = OrderService.AllocateShelf(id, IncludeQCStock);
 
             return Content(AllocationCount.ToString() + " item(s) allocated");
         }
 
         public ActionResult ReverseAllocatedItem(int orderitemid)
         {
-            OrderService.fnReverseAllocatedItem(orderitemid);
+            OrderService.ReverseAllocatedItem(orderitemid);
 
             return Content("Item allocation reversed");
         }
@@ -414,7 +414,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CreateTrans(int id)
         {
-            var vm = OrderService.fnCreateTrans(id);
+            var vm = OrderService.CreateOrderTransaction(id);
             ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(vm.OrderId);
 
             return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
@@ -423,7 +423,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult EditTrans(int id)
         {
-            var vm = OrderService.fnFillTrans(id);
+            var vm = OrderService.FillOrderTransaction(id);
             ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(vm.OrderId);
 
             return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
@@ -432,7 +432,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SaveTrans(OrderTrans vm)
         {
-            int pk = OrderService.fnSaveTrans(vm);
+            int pk = OrderService.SaveOrderTransaction(vm);
 
             return Content("Transaction Saved on " + DateTime.UtcNow.ToString("R"));
         }
@@ -440,7 +440,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult DeleteTrans(int id)
         {
-            OrderService.fnDeleteTrans(id);
+            OrderService.DeleteTransaction(id);
 
             return Content("Transaction Deleted on " + DateTime.UtcNow.ToString("R"));
         }
@@ -500,7 +500,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult OrdersNeedAllocation()
         {
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "Orders Needing Allocation";
 
             orderslist = (from t in orderslist
@@ -515,7 +515,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult OrdersToday()
         {
             DateTime dateToday = DateTime.Today.AddDays(0);
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "Orders Created Today";
 
             orderslist = (from t in orderslist
@@ -530,7 +530,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult OrdersYesterday()
         {
             DateTime dateToday = DateTime.Today.AddDays(-1);
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "Orders Created Yesterday";
 
             orderslist = (from t in orderslist
@@ -544,7 +544,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult OrdersLastTen()
         {
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "Last 10 Orders";
 
             orderslist = (from t in orderslist
@@ -557,7 +557,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult OrdersMineLastTen()
         {
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "My Last 10 Orders";
 
             orderslist = (from t in orderslist
@@ -578,7 +578,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupClientID(FormCollection fc)
         {
             int inputclientid = Convert.ToInt32(fc["ClientID"]);
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
@@ -598,7 +598,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupOrderDate(FormCollection fc)
         {
             DateTime inputdate = Convert.ToDateTime(fc["searchorderdate"]);
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
@@ -618,7 +618,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupCompany(FormCollection fc)
         {
             var inputcompany = fc["searchcompany"];
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
@@ -638,7 +638,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupZipCode(FormCollection fc)
         {
             var inputzipcode = fc["searchzipcode"];
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist
@@ -658,7 +658,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupSalesRep(FormCollection fc)
         {
             var inputsalesrep = fc["searchsalesrep"];
-            var orderslist = OrderService.fnOrdersSearchResults();
+            var orderslist = OrderService.SearchOrders();
             TempData["SearchResultsMessage"] = "No Results Found";
 
             orderslist = (from t in orderslist

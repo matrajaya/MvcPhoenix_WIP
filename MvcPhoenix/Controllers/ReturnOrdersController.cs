@@ -153,7 +153,7 @@ namespace MvcPhoenix.Controllers
             int divisionid = Convert.ToInt32(inputdivisionid);
 
             // Create new order
-            orderid = OrderService.fnNewOrderID();
+            orderid = OrderService.NewOrderId();
 
             using (var db = new CMCSQL03Entities())
             {
