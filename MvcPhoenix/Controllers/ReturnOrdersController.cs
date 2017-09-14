@@ -198,7 +198,7 @@ namespace MvcPhoenix.Controllers
                 for (int i = 0; i < stockids.Length; i++)
                 {
                     int stockid = Convert.ToInt32(stockids[i]);
-                    int x = await OrderService.AddStockItemToReturnOrder(orderid, stockid);
+                    int x = await OrderService.AddStockItemToReturnOrder(orderid, stockid, clientid);
                 }
             }
 

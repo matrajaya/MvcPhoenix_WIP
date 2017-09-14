@@ -1,4 +1,4 @@
-﻿using MvcPhoenix.EF;
+using MvcPhoenix.EF;
 using MvcPhoenix.Models;
 using System;
 using System.Collections.Generic;
@@ -184,8 +184,8 @@ namespace MvcPhoenix.Services
                 order.UpdateDate = DateTime.UtcNow;
 
                 var orderMaster = (from t in db.tblOrderMaster
-                         where t.OrderID == order.OrderID
-                         select t).FirstOrDefault();
+                                   where t.OrderID == order.OrderID
+                                   select t).FirstOrDefault();
 
                 orderMaster.OrderDate = order.OrderDate;
                 orderMaster.ClientID = order.ClientId;
@@ -1287,9 +1287,9 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                int AllocationCount = 0;
+                int allocatedItemCount = 0;
+                bool isAllocated = false;
 
-                // check order for items
                 var orderItems = (from orderitem in db.tblOrderItem
                                   join ordermaster in db.tblOrderMaster on orderitem.OrderID equals ordermaster.OrderID
                                   where orderitem.OrderID == OrderID
@@ -1298,13 +1298,12 @@ namespace MvcPhoenix.Services
                                   && orderitem.CSAllocate == true
                                   select new { orderitem, ordermaster }).ToList();
 
-                // escape if nothing matches the criteria for allocation
                 if (orderItems == null)
                 {
-                    return AllocationCount;
+                    return allocatedItemCount;
                 }
 
-                // check stock for each item in order
+                // Assign stock to order items
                 foreach (var item in orderItems)
                 {
                     var stock = (from itemstock in db.tblStock
@@ -1326,27 +1325,25 @@ namespace MvcPhoenix.Services
                                      LotNumber = itembulk.LotNumber
                                  }).ToList();
 
-                    // get ceaseshipdateoffset to consider if eligible for allocation on an order.
-                    // consider ignoring this when handling returns, even though returns sidesteps this - Iffy
                     int ceaseShipOffSet = Convert.ToInt32(item.ordermaster.CeaseShipOffset);
 
-                    // change to take negative numbers
+                    // Filter list to shippable stock
                     if (ceaseShipOffSet != 0)
                     {
-                        // if there's an offset on the order record, add that to today to build in extra time
-                        DateTime ceaseShipBufferDate = DateTime.UtcNow.AddDays(ceaseShipOffSet);
+                        var ceaseShipBufferDate = DateTime.UtcNow.AddDays(ceaseShipOffSet);
+
                         stock = (from t in stock
                                  where t.CeaseShipDate > ceaseShipBufferDate
                                  select t).ToList();
                     }
 
-                    // specific lot number requested
+                    // Filter list to requested lot
                     if (item.orderitem.LotNumber != null)
                     {
                         stock = stock.Where(s => s.LotNumber == item.orderitem.LotNumber).ToList();
                     }
 
-                    // qc stock is considered to be any status other than hold or available
+                    // Filter list to status
                     if (IncludeQCStock == true)
                     {
                         stock = stock.Where(s => s.ShelfStatus != "AVAIL").ToList();
@@ -1357,72 +1354,79 @@ namespace MvcPhoenix.Services
                         stock = stock.Where(s => s.ShelfStatus == "AVAIL").ToList();
                     }
 
-                    // Distilled stock list
+                    // Order filtered list
                     stock = stock.OrderBy(s => s.CeaseShipDate).ToList();
 
-                    // Page thru tblstock rows looking for the first record that has enough qty then bailout
+                    // Fill order item with stock that satisfies quantity
                     foreach (var row in stock)
                     {
                         var log = new OrderInventoryLog();
 
-                        if (row.QtyOnHand - row.QtyAllocated >= item.orderitem.Qty)
+                        if (isAllocated == false)
                         {
-                            AllocationCount = AllocationCount + 1;
+                            if (row.QtyOnHand - row.QtyAllocated >= item.orderitem.Qty)
+                            {
+                                allocatedItemCount = allocatedItemCount + 1;
 
-                            // update tblstock record (need to use separate qry)
-                            var updateStock = db.tblStock.Find(row.StockID);
+                                var updateStock = db.tblStock.Find(row.StockID);
 
-                            updateStock.QtyAllocated = (updateStock.QtyAllocated ?? 0) + item.orderitem.Qty;
-                            log.CurrentQtyAvailable = updateStock.QtyAvailable = updateStock.QtyOnHand - item.orderitem.Qty;
+                                updateStock.QtyAllocated = (updateStock.QtyAllocated ?? 0) + item.orderitem.Qty;
+                                updateStock.QtyAvailable = updateStock.QtyOnHand - item.orderitem.Qty;
+                                log.StockId = item.orderitem.AllocatedStockID = row.StockID;
+                                log.BulkId = item.orderitem.BulkID = updateStock.BulkID;
+                                log.Warehouse = item.orderitem.Warehouse = row.Warehouse;
+                                log.LotNumber = item.orderitem.LotNumber = row.LotNumber;
+                                log.ShelfBin = item.orderitem.Bin = row.ShelfBin;
+                                log.ExpirationDate = item.orderitem.ExpirationDate = row.ExpirationDate;
+                                log.CeaseShipDate = item.orderitem.CeaseShipDate = row.CeaseShipDate;
+                                item.orderitem.AllocateStatus = "A";
+                                item.orderitem.AllocatedDate = DateTime.UtcNow;
+                                item.orderitem.UpdateDate = DateTime.UtcNow;
+                                item.orderitem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                            // update tblorderitem record
-                            log.StockId = item.orderitem.AllocatedStockID = row.StockID;
-                            log.BulkId = item.orderitem.BulkID = updateStock.BulkID;
-                            log.Warehouse = item.orderitem.Warehouse = row.Warehouse;
-                            log.LotNumber = item.orderitem.LotNumber = row.LotNumber;
-                            log.ShelfBin = item.orderitem.Bin = row.ShelfBin;
-                            log.ExpirationDate = item.orderitem.ExpirationDate = row.ExpirationDate;
-                            log.CeaseShipDate = item.orderitem.CeaseShipDate = row.CeaseShipDate;
-                            item.orderitem.AllocateStatus = "A";
-                            item.orderitem.AllocatedDate = DateTime.UtcNow;
-                            item.orderitem.UpdateDate = DateTime.UtcNow;
-                            item.orderitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                                db.SaveChanges();
 
-                            db.SaveChanges();
+                                isAllocated = true;
 
-                            // Insert log record
-                            decimal? unitWeight = db.tblShelfMaster
-                                                    .Where(x => x.ShelfID == item.orderitem.ShelfID)
-                                                    .Select(x => x.UnitWeight).FirstOrDefault() ?? 0;
-                            
-                            var productMaster = db.tblProductMaster
-                                                    .Where(x => x.ProductMasterID == row.ProductMasterId)
-                                                    .Select(x => new { x.MasterCode, x.MasterName }).FirstOrDefault();
-                            
-                            log.LogType = "SS-ALC";
-                            log.OrderNumber = item.orderitem.OrderID;
-                            log.LogQty = item.orderitem.Qty;
-                            log.ClientId = item.ordermaster.ClientID;
-                            log.ProductMasterId = row.ProductMasterId;
-                            log.ProductDetailId = item.orderitem.ProductDetailID;
-                            log.MasterCode = productMaster.MasterCode;
-                            log.MasterName = productMaster.MasterName;
-                            log.ProductCode = item.orderitem.ProductCode;
-                            log.ProductName = item.orderitem.ProductName;
-                            log.LogAmount = unitWeight * item.orderitem.Qty;
-                            log.CurrentWeightAvailable = log.CurrentQtyAvailable * unitWeight;
-                            log.Status = row.ShelfStatus;
-                            log.BulkBin = row.BulkBin;
-                            log.Size = item.orderitem.Size;
-                            log.CeaseShipDate = row.CeaseShipDate;
-                            log.LogNotes = "Shelf stock allocated";
+                                // Insert inventory log record
+                                decimal? unitWeight = db.tblShelfMaster
+                                                        .Where(x => x.ShelfID == item.orderitem.ShelfID)
+                                                        .Select(x => x.UnitWeight)
+                                                        .FirstOrDefault() ?? 0;
 
-                            OrderInventoryLog(log);
+                                var productMaster = db.tblProductMaster
+                                                      .Where(x => x.ProductMasterID == row.ProductMasterId)
+                                                      .Select(x => new { x.MasterCode, x.MasterName })
+                                                      .FirstOrDefault();
+
+                                log.LogType = "SS-ALC";
+                                log.OrderNumber = item.orderitem.OrderID;
+                                log.LogQty = item.orderitem.Qty;
+                                log.ClientId = item.ordermaster.ClientID;
+                                log.ProductMasterId = row.ProductMasterId;
+                                log.ProductDetailId = item.orderitem.ProductDetailID;
+                                log.MasterCode = productMaster.MasterCode;
+                                log.MasterName = productMaster.MasterName;
+                                log.ProductCode = item.orderitem.ProductCode;
+                                log.ProductName = item.orderitem.ProductName;
+                                log.LogAmount = unitWeight * item.orderitem.Qty;
+                                log.CurrentQtyAvailable = updateStock.QtyAvailable;
+                                log.CurrentWeightAvailable = updateStock.QtyAvailable * unitWeight;
+                                log.Status = row.ShelfStatus;
+                                log.BulkBin = row.BulkBin;
+                                log.Size = item.orderitem.Size;
+                                log.CeaseShipDate = row.CeaseShipDate;
+                                log.LogNotes = "Shelf stock allocated";
+
+                                InventoryLog(log);
+                            }
                         }
                     }
+
+                    isAllocated = false;
                 }
 
-                return AllocationCount;
+                return allocatedItemCount;
             }
         }
 
@@ -1430,86 +1434,102 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                var success = false;
+                var isReversed = false;
+                var log = new OrderInventoryLog();
 
-                // Check if order item meets criteria for reversal
                 var orderItem = (from t in db.tblOrderItem
                                  where t.ItemID == orderitemid
                                  && t.AllocateStatus == "A"
                                  && t.ShipDate == null
                                  select t).FirstOrDefault();
 
-                // Check if bulk allocated order item and update bulk record
+                decimal? unitWeight = db.tblShelfMaster
+                                        .Where(x => x.ShelfID == orderItem.ShelfID)
+                                        .Select(x => x.UnitWeight)
+                                        .FirstOrDefault() ?? 0;
+
+                var order = db.tblOrderMaster.Find(orderItem.OrderID);
+
+                log.LogType = "RVS-ALC";
+                log.ClientId = order.ClientID;
+                log.OrderNumber = order.OrderID;
+                log.ProductCode = orderItem.ProductCode;
+                log.ProductName = orderItem.ProductName;
+                log.ProductDetailId = orderItem.ProductDetailID;
+                log.Warehouse = orderItem.Warehouse;
+                log.Size = orderItem.Size;
+                log.LogQty = orderItem.Qty;
+                log.LogAmount = orderItem.Qty * unitWeight;
+
+                // Bulk item
                 if (orderItem.AllocatedStockID == null && orderItem.AllocatedBulkID != null)
                 {
-                    var updateBulk = (from t in db.tblBulk
-                                      where t.BulkID == orderItem.AllocatedBulkID
-                                      select t).FirstOrDefault();
+                    var bulk = (from t in db.tblBulk
+                                where t.BulkID == orderItem.AllocatedBulkID
+                                select t).FirstOrDefault();
 
-                    // Note: User will need to delete order item to re-activate bulk status via Returns again
-                    // unless we create bulk allocate method - Iffy
-                    updateBulk.CurrentWeight = orderItem.Weight;
-                    updateBulk.BulkStatus = "AVAIL";
-                    updateBulk.MarkedForReturn = false;
-                    updateBulk.UpdateDate = DateTime.UtcNow;
-                    updateBulk.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    bulk.CurrentWeight += orderItem.Weight;
+                    bulk.BulkStatus = "AVAIL";
+                    bulk.MarkedForReturn = false;
+                    bulk.UpdateDate = DateTime.UtcNow;
+                    bulk.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                    success = true;
+                    log.ProductMasterId = bulk.ProductMasterID;
+                    log.BulkId = bulk.BulkID;
+                    log.BulkBin = bulk.Bin;
+                    log.CurrentQtyAvailable = bulk.Qty;
+                    log.CurrentWeightAvailable = bulk.CurrentWeight;
+                    log.Status = bulk.BulkStatus;
+                    log.LogNotes = "Reverse bulk allocation.";
+
+                    isReversed = true;
                 }
 
-                // Check if stock allocated order item and update stock record
+                // Shelf stock item
                 if (orderItem.AllocatedStockID != null)
                 {
-                    var updateStock = (from t in db.tblStock
-                                       where t.ShelfID == orderItem.ShelfID
-                                       && t.Bin == orderItem.Bin
-                                       select t).FirstOrDefault();
+                    var stock = (from t in db.tblStock
+                                 where t.StockID == orderItem.AllocatedStockID
+                                 || (t.ShelfID == orderItem.ShelfID
+                                 && t.Bin == orderItem.Bin)
+                                 select t).FirstOrDefault();
 
-                    updateStock.QtyAvailable = updateStock.QtyAvailable + orderItem.Qty;
-                    updateStock.QtyAllocated -= orderItem.Qty;
+                    stock.QtyAvailable += orderItem.Qty;
+                    stock.QtyAllocated -= orderItem.Qty;
+                    stock.MarkedForReturn = false;
+                    stock.QtyAllocated = (stock.QtyAllocated < 0) ? 0 : stock.QtyAllocated;
+                    stock.ShelfStatus = (stock.ShelfStatus == "RETURN") ? "AVAIL" : stock.ShelfStatus;
+                    stock.UpdateDate = DateTime.UtcNow;
+                    stock.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                    //if (updatestock.ShelfStatus == "RETURN")
-                    //{
-                    //    updatestock.ShelfStatus = "AVAIL";
-                    //    updatestock.MarkedForReturn = false;
-                    //}
+                    log.StockId = stock.StockID;
+                    log.CurrentQtyAvailable = stock.QtyAvailable;
+                    log.CurrentWeightAvailable = stock.QtyAvailable * unitWeight;
+                    log.Status = stock.ShelfStatus;
+                    log.LogNotes = "Reverse shelf stock allocation.";
 
-                    // zero out QtyAllocated if negative
-                    if (updateStock.QtyAllocated < 0)
-                    {
-                        updateStock.QtyAllocated = 0;
-                    }
-                    updateStock.UpdateDate = DateTime.UtcNow;
-                    updateStock.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                    success = true;
+                    isReversed = true;
                 }
 
-                // Make sure there is something to reverse before wiping out fields
-                // Clear allocation related fields for order item
-                if (success == true)
+                // Clear order item allocation fields
+                if (isReversed == true)
                 {
-                    try
-                    {
-                        orderItem.AllocatedStockID = null;
-                        orderItem.AllocatedBulkID = null;
-                        orderItem.BulkID = null;
-                        orderItem.AllocateStatus = null;
-                        orderItem.AllocatedDate = null;
-                        orderItem.Bin = null;
-                        orderItem.LotNumber = null;
-                        orderItem.Warehouse = null;
-                        orderItem.ExpirationDate = null;
-                        orderItem.CeaseShipDate = null;
-                        orderItem.UpdateDate = DateTime.UtcNow;
-                        orderItem.UpdateUser = HttpContext.Current.User.Identity.Name;
+                    orderItem.AllocatedStockID = null;
+                    orderItem.AllocatedBulkID = null;
+                    orderItem.BulkID = null;
+                    orderItem.AllocateStatus = null;
+                    orderItem.AllocatedDate = null;
+                    orderItem.Bin = null;
+                    orderItem.LotNumber = null;
+                    orderItem.Warehouse = null;
+                    orderItem.ExpirationDate = null;
+                    orderItem.CeaseShipDate = null;
+                    orderItem.UpdateDate = DateTime.UtcNow;
+                    orderItem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
-                        db.SaveChanges();
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
+                    db.SaveChanges();
+
+                    InventoryLog(log);
                 }
             }
         }
@@ -1548,21 +1568,21 @@ namespace MvcPhoenix.Services
                 log.ProductCode = newItem.ProductCode = productMaster.MasterCode;
                 log.ProductName = newItem.ProductName = productMaster.MasterName;
                 log.LotNumber = newItem.LotNumber = bulkItem.LotNumber;
-                log.LogQty = newItem.Qty = 1;
                 log.Size = newItem.Size = bulkItem.UM;
+                log.LogQty = newItem.Qty = 1;
                 log.LogAmount = newItem.Weight = bulkItem.CurrentWeight;
                 log.BulkBin = newItem.Bin = bulkItem.Bin;
+                log.Warehouse = newItem.Warehouse = bulkItem.Warehouse;
                 newItem.CSAllocate = true;
                 newItem.AllocateStatus = "A";
                 newItem.AllocatedDate = DateTime.UtcNow;
-                log.Warehouse = newItem.Warehouse = bulkItem.Warehouse;
                 newItem.GrnUnNumber = productDetail.GRNUNNUMBER;
                 newItem.GrnPkGroup = productDetail.GRNPKGRP;
                 newItem.AirUnNumber = productDetail.AIRUNNUMBER;
                 newItem.AirPkGroup = productDetail.AIRPKGRP;
                 newItem.AlertNotesOrderEntry = productDetail.AlertNotesOrderEntry;
                 newItem.AlertNotesShipping = productDetail.AlertNotesShipping;
-                log.LogNotes = newItem.ItemNotes = "Return Bulk Order Item \nBulk container for return is " + bulkItem.UM + " with a current weight of " + bulkItem.CurrentWeight;
+                log.LogNotes = newItem.ItemNotes = "Return bulk order item: bulk container for return is " + bulkItem.UM + " with a current weight of " + bulkItem.CurrentWeight;
                 newItem.CreateDate = DateTime.UtcNow;
                 newItem.CreateUser = HttpContext.Current.User.Identity.Name;
                 newItem.UpdateDate = DateTime.UtcNow;
@@ -1575,7 +1595,7 @@ namespace MvcPhoenix.Services
                 log.MasterCode = productMaster.MasterCode;
                 log.MasterName = productMaster.MasterName;
 
-                OrderInventoryLog(log);
+                InventoryLog(log);
 
                 //update bulk record
                 bulkItem.CurrentWeight = 0;
@@ -1593,7 +1613,7 @@ namespace MvcPhoenix.Services
         }
 
         // Add stock item to new return order
-        public static async Task<int> AddStockItemToReturnOrder(int orderid, int stockid)
+        public static async Task<int> AddStockItemToReturnOrder(int orderid, int stockid, int clientid)
         {
             var log = new OrderInventoryLog();
 
@@ -1643,11 +1663,12 @@ namespace MvcPhoenix.Services
 
                 // Insert log record
                 log.LogType = "SS-RTN";
+                log.ClientId = clientid;
                 log.ProductMasterId = productMaster.ProductMasterID;
                 log.MasterCode = productMaster.MasterCode;
                 log.MasterName = productMaster.MasterName;
 
-                OrderInventoryLog(log);
+                InventoryLog(log);
 
                 //update tblstock record
                 stockItem.QtyAllocated = stockItem.QtyAvailable;
@@ -1782,7 +1803,8 @@ namespace MvcPhoenix.Services
                                        select i).ToList();
 
                 unshippedOrders = unshippedOrders.GroupBy(x => x.OrderID)
-                                                 .Select(g => g.First()).ToList();
+                                                 .Select(g => g.First())
+                                                 .ToList();
 
                 // Get list of open orders.
                 orders = (from t in orders
@@ -2142,12 +2164,16 @@ namespace MvcPhoenix.Services
 
         #endregion Order Import Methods
 
-        public static void OrderInventoryLog(OrderInventoryLog log)
+        public static void InventoryLog(OrderInventoryLog log)
         {
             using (var db = new CMCSQL03Entities())
             {
-                tblInvLog InventoryLog = new tblInvLog();
-                var client = db.tblClient.Find(log.ClientId);
+                var client = db.tblClient
+                               .Where(x => x.ClientID == log.ClientId)
+                               .Select(x => new { x.ClientName, x.ClientUM })
+                               .FirstOrDefault();
+
+                var InventoryLog = new tblInvLog();
 
                 InventoryLog.LogType = log.LogType;
                 InventoryLog.LogDate = DateTime.UtcNow;
