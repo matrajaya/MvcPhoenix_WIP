@@ -1,6 +1,7 @@
 ﻿using MvcPhoenix.EF;
 using MvcPhoenix.Extensions;
 using MvcPhoenix.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -121,6 +122,58 @@ namespace MvcPhoenix.Services
 
                 return newpk;
             }
+        }
+
+
+        /// <summary>
+        /// find original productdetailid, ignore equivalent products
+        //  if true: get shelfid ?: insert new record in shelfmaster using productdetailid and size = um
+        /// </summary>
+        public static int GetShelfIdProductMaster(int? productmasterid, string um)
+        {
+            int productDetailId = ProductsService.GetProductDetailId(productmasterid);
+            int shelfId = GetShelfIdProductDetail(productDetailId, um);
+            
+            return shelfId;
+        }
+
+        public static int GetShelfIdProductDetail(int? productdetailid, string size)
+        {
+            int shelfId = 0;
+            try
+            {
+                using (var db = new CMCSQL03Entities())
+                {
+                    int getShelfId = (from t in db.tblShelfMaster
+                                      where t.ProductDetailID == productdetailid
+                                      && t.Size == size
+                                      select t.ShelfID).FirstOrDefault();
+
+                    if (getShelfId != 0)
+                    {
+                        shelfId = getShelfId;
+                    }
+                    else
+                    {
+                        var newShelfMaster = new tblShelfMaster
+                        {
+                            ProductDetailID = productdetailid,
+                            Size = size
+                        };
+
+                        db.tblShelfMaster.Add(newShelfMaster);
+                        db.SaveChanges();
+
+                        shelfId = newShelfMaster.ShelfID;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                shelfId = 0;
+            }
+
+            return shelfId;
         }
 
         public static ShelfMasterViewModel fnFillShelfMasterFromDB(int id)

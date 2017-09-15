@@ -337,8 +337,8 @@ namespace MvcPhoenix.Controllers
         /// </summary>
         public ActionResult InventoryLogList(int productDetailId)
         {
-            int? masterId = InventoryService.GetProductMasterId(productDetailId);
-            var inventoryLogNotes = InventoryService.ListInvPMLogNotes(masterId);
+            int? productMasterId = ProductsService.GetProductMasterId(productDetailId);
+            var inventoryLogNotes = InventoryService.ListInvPMLogNotes(productMasterId);
             ViewBag.ParentKey = productDetailId;
 
             return PartialView("~/Views/Inventory/_InventoryLogNotes.cshtml", inventoryLogNotes);
@@ -351,8 +351,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CreateInventoryLogNote(int productDetailId)
         {
-            var masterId = Convert.ToInt32(InventoryService.GetProductMasterId(productDetailId));
-            var inventoryLogNote = InventoryService.CreateInventoryLogNote(masterId);
+            int? productMasterId = ProductsService.GetProductMasterId(productDetailId);
+            var inventoryLogNote = InventoryService.CreateInventoryLogNote(productMasterId);
 
             return PartialView("~/Views/Inventory/_InventoryLogNotesModal.cshtml", inventoryLogNote);
         }

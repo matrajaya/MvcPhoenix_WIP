@@ -353,7 +353,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult PullContactDetails(int id)
         {
             Contact obj = new Contact();
-            obj = OrderService.GetClientContacts(id);
+            obj = OrderService.GetClientContact(id);
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }

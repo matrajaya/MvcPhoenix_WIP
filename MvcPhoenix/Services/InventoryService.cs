@@ -346,24 +346,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static int? GetProductMasterId(int productDetailId)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                int? masterId = 0;
-                var getMasterId = (from t in db.tblProductDetail
-                                   where t.ProductDetailID == productDetailId
-                                   select t.ProductMasterID).FirstOrDefault();
-
-                if (getMasterId != null)
-                {
-                    masterId = getMasterId;
-                }
-
-                return masterId;
-            }
-        }
-
         public static List<InventoryLogNote> ListInvPMLogNotes(int? masterId)
         {
             using (var db = new CMCSQL03Entities())
@@ -412,7 +394,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static InventoryLogNote CreateInventoryLogNote(int productMasterId)
+        public static InventoryLogNote CreateInventoryLogNote(int? productMasterId)
         {
             InventoryLogNote inventoryLogNote = new InventoryLogNote();
 

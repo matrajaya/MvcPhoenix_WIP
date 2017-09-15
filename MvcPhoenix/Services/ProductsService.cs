@@ -308,15 +308,29 @@ namespace MvcPhoenix.Models
             return productProfile;
         }
 
-        public static int? GetProductMasterID(int productDetailId)
+        public static int? GetProductMasterId(int productDetailId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var productMasterId = (from t in db.tblProductDetail
-                                       where t.ProductDetailID == productDetailId
-                                       select t.ProductMasterID).FirstOrDefault();
-
+                int? productMasterId = db.tblProductDetail
+                                         .Where(x => x.ProductDetailID == productDetailId)                
+                                         .Select(x => x.ProductMasterID).FirstOrDefault();
+                
                 return productMasterId;
+            }
+        }
+
+        public static int GetProductDetailId(int? productmasterid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                int productDetailId = (from pd in db.tblProductDetail
+                                       join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
+                                       where pm.ProductMasterID == productmasterid
+                                       && pd.ProductCode == pm.MasterCode
+                                       select pd.ProductDetailID).FirstOrDefault();
+
+                return productDetailId;
             }
         }
 
