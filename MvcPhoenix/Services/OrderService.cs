@@ -16,9 +16,8 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                var client = db.tblClient.Find(clientid);
-
                 var order = new OrderMasterFull();
+                var client = db.tblClient.Find(clientid);
 
                 order.OrderID = -1;
                 order.ClientId = client.ClientID;
@@ -166,13 +165,13 @@ namespace MvcPhoenix.Services
 
         public static int SaveOrder(OrderMasterFull order)
         {
+            if (order.OrderID == -1)
+            {
+                order.OrderID = NewOrderId();
+            }
+
             using (var db = new CMCSQL03Entities())
             {
-                if (order.OrderID == -1)
-                {
-                    order.OrderID = NewOrderId();
-                }
-
                 var orderMaster = db.tblOrderMaster.Find(order.OrderID);
 
                 orderMaster.OrderDate = order.OrderDate;
@@ -250,9 +249,9 @@ namespace MvcPhoenix.Services
                 db.SaveChanges();
 
                 SaveOrderPostUpdate(order);
-
-                return order.OrderID;
             }
+
+            return order.OrderID;
         }
 
         public static void SaveOrderPostUpdate(OrderMasterFull order)
@@ -399,7 +398,6 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var order = db.tblOrderMaster.Find(orderid);
-
                 var orderItem = new OrderItem();
 
                 orderItem.CrudMode = "RW";
@@ -437,7 +435,7 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                tblOrderItem newOrderItem = new tblOrderItem();
+                var newOrderItem = new tblOrderItem();
                 db.tblOrderItem.Add(newOrderItem);
                 db.SaveChanges();
 
@@ -454,7 +452,7 @@ namespace MvcPhoenix.Services
                                  .Where(x => x.OrderID == getOrderItem.OrderID)
                                  .Select(x => x.ClientID).FirstOrDefault();
 
-                OrderItem orderItem = new OrderItem();
+                var orderItem = new OrderItem();
 
                 orderItem.CrudMode = "RW";
                 orderItem.ClientID = clientId;
@@ -508,7 +506,7 @@ namespace MvcPhoenix.Services
 
                 if (orderitem.ItemID == -1)
                 {
-                    orderitem.ItemID = NewOrderItemId();
+                    orderitem.ItemID = OrderService.NewOrderItemId();
                     orderitem.CreateDate = DateTime.UtcNow;
                     orderitem.CreateUser = HttpContext.Current.User.Identity.Name;
                     isNewItem = true;
@@ -624,7 +622,7 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var order = db.tblOrderMaster.Find(orderid);
-                OrderTrans orderTransaction = new OrderTrans();
+                var orderTransaction = new OrderTrans();
 
                 orderTransaction.OrderTransID = -1;
                 orderTransaction.OrderId = orderid;
@@ -879,7 +877,7 @@ namespace MvcPhoenix.Services
 
         public static OrderTrans FillOrderTransaction(int ordertransid)
         {
-            OrderTrans orderTransaction = new OrderTrans();
+            var orderTransaction = new OrderTrans();
 
             using (var db = new CMCSQL03Entities())
             {
@@ -936,7 +934,7 @@ namespace MvcPhoenix.Services
 
                 if (tierSize != null)
                 {
-                    tblOrderTrans orderTransaction = new tblOrderTrans();
+                    var orderTransaction = new tblOrderTrans();
 
                     orderTransaction.TransDate = DateTime.UtcNow;
                     orderTransaction.OrderItemID = orderItem.ItemID;
@@ -968,7 +966,7 @@ namespace MvcPhoenix.Services
 
                     if (tierSpecialRequest != null)
                     {
-                        tblOrderTrans orderTransaction = new tblOrderTrans();
+                        var orderTransaction = new tblOrderTrans();
 
                         orderTransaction.TransDate = DateTime.UtcNow;
                         orderTransaction.OrderItemID = orderItem.ItemID;
@@ -1078,7 +1076,7 @@ namespace MvcPhoenix.Services
                 var orderItem = db.tblOrderItem.Find(ItemID);
                 var order = db.tblOrderMaster.Find(orderItem.OrderID);
 
-                tblOrderTrans newOrderTransaction = new tblOrderTrans();
+                var newOrderTransaction = new tblOrderTrans();
 
                 newOrderTransaction.TransDate = DateTime.UtcNow;
                 newOrderTransaction.OrderItemID = ItemID;
@@ -1603,7 +1601,6 @@ namespace MvcPhoenix.Services
                 if (orderspsbilling.SPSBillingID == -1)
                 {
                     var newOrderSPSBilling = new tblOrderSPSBilling();
-
                     newOrderSPSBilling.OrderID = orderspsbilling.OrderId;
                     db.tblOrderSPSBilling.Add(newOrderSPSBilling);
 

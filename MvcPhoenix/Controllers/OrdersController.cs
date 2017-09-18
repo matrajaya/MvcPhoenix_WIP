@@ -284,9 +284,10 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveItem(OrderItem orderItem, string productdetailid)
+        public ActionResult SaveItem(OrderItem orderItem, int productdetailid)
         {
-            if (productdetailid != "0" && productdetailid != "")
+            int productDetailId = productdetailid;
+            if (productDetailId != 0)
             {
                 if (orderItem.ShelfID != null)
                 {
