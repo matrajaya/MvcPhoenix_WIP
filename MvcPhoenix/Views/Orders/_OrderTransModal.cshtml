@@ -108,12 +108,12 @@
 
 <script type="text/javascript">
     function UpdateAndClose() {
-        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { orderid = @Model.OrderId })');
+        $("#dvOrderTransList").load('@Url.Action("OrderTransList", "Orders", new { orderid = @Model.OrderId })');
         $('#dialogPlaceholderModal').modal('hide')
     }
 
     function UpdateTransList() {
-        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { orderid = @Model.OrderId })');
+        $("#dvOrderTransList").load('@Url.Action("OrderTransList", "Orders", new { orderid = @Model.OrderId })');
     }
 
     $(function () {

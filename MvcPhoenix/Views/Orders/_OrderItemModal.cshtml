@@ -16,13 +16,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             @using (Ajax.BeginForm("SaveItem", "Orders", new AjaxOptions
-                {
-                    HttpMethod = "POST",
-                    UpdateTargetId = "dialogResult",
-                    InsertionMode = InsertionMode.Replace,
-                    OnSuccess = "CloseForm",
-                    OnFailure = "SaveFailure"
-                }, new { @id = "SaveItem" }))
+            {
+                HttpMethod = "POST",
+                UpdateTargetId = "dialogResult",
+                InsertionMode = InsertionMode.Replace,
+                OnSuccess = "CloseForm",
+                OnFailure = "SaveFailure"
+            }, new { @id = "SaveItem" }))
             {
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -95,7 +95,7 @@
                             else
                             {
                                 <div id="dvPlaceholderSize">
-                                    <select name="ShelfID" id="ShelfID" class="form-control hidden"><!-- Placeholder for option values --></select>
+                                    <select name="ShelfID" id="ShelfID" class="form-control hidden"></select>
                                 </div>
                             }
                         </div>
@@ -147,7 +147,8 @@
                                     <label><abbr title="Carrier Invoice Received">Carrier Inv Rcv</abbr></label>
                                     @Html.CheckBox("CarrierInvoiceRcvd", Model.CarrierInvoiceRcvd != null && (bool)Model.CarrierInvoiceRcvd)
                                 </li>
-                            </ul></div>
+                            </ul>
+                        </div>
                         <div class="col-md-6">
                             <ul class="list-unstyled list-2-col">
                                 <li>
@@ -224,6 +225,7 @@
 </div>
 
 <script type="text/javascript">
+
     // Prevent form submission when enter key is pressed in modal
     $(document).ready(function () {
         $(window).keydown(function (event) {
@@ -330,23 +332,25 @@
         $("#ProductDetailID").combobox();
     });
 
+    // Watch product selection to call linked ddl for shelf
     $(function () {
         $(document).on("change", "#xProductDetailID", function () {
-            fnGetSizes($('#ProductDetailID').val());
+            GetShelfSizes($('#ProductDetailID').val());
         });
     });
 
-    function fnGetSizes(id) {
-        var data = id;
+    // Initial ddl build for shelf id and sizes
+    function GetShelfSizes(productdetailid) {
+        var data = productdetailid;
         var myurl = '@Url.Action("BuildSizeDropDown", "Orders")';
 
-        $('#FirstShelfID').empty();                                         // empty the dd then rebuild it
+        $('#FirstShelfID').empty();
         $('#ShelfID').removeClass('hidden');
-        $("#ShelfID").load(myurl, { id: data });
+        $("#ShelfID").load(myurl, { productdetailid: data });
     }
 
+    // Add status notes selected to list
     function AddStatusIDToStatus() {
-        // read the DD, read the Notes, append the status DD .text to the StatusNOtes
         var currentstatus = $('#Status').val();
         var addstatus = $('#StatusID').val();
 
@@ -359,20 +363,22 @@
     }
 
     function SaveFailure() {
-        $('#dialogResult').html("Update failed - Please contact Support");
+        $.alert("Update failed - Please contact Support");
     }
 
     function CloseForm() {
-        // Update the items partial
-        $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { orderid = @Model.OrderID })');
-        // Update the trans partial
-        $("#dvOrderTransList").load('@Url.Action("fnOrderTransList", "Orders", new { orderid = @Model.OrderID })');
+        // Refresh the lists in partial views
+        $("#dvOrderItemsList").load('@Url.Action("OrderItemsList", "Orders", new { orderid = @Model.OrderID })');        
+        $("#dvOrderTransList").load('@Url.Action("OrderTransList", "Orders", new { orderid = @Model.OrderID })');
+
         // Hide the modal
         $('#dialogPlaceholderModal').modal('hide');
-        // Show sample alert note
+
+        // Show sample alert note (if available)
         SampleOrderAlert($('#ProductDetailID').val());
     }
 
+    // Needed for datepicker in modal
     $(function () {
         $(".date-picker").datepicker({ dateFormat: 'dd-M-yy' });
     });

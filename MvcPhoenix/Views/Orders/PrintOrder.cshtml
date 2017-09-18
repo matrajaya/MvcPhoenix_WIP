@@ -239,7 +239,7 @@
         @if (Model.OrderID > 1)
         {
             <div id="dvOrderItemsList">
-                @Html.Action("fnOrderItemsList", "Orders", new { orderid = Model.OrderID })
+                @Html.Action("OrderItemsList", "Orders", new { orderid = Model.OrderID })
             </div>
         }
     </div>
@@ -252,7 +252,7 @@
     <div id="dvOrderTransList">
         @if (@Model.TransCount > 0)
         {
-            @Html.Action("fnOrderTransList", "Orders", new { orderid = Model.OrderID })
+            @Html.Action("OrderTransList", "Orders", new { orderid = Model.OrderID })
         }
     </div>
 </div>

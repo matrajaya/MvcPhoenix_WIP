@@ -16,36 +16,37 @@ namespace MvcPhoenix.Controllers
         public ActionResult Index()
         {
             // Preload open orders in session data store
-            var ordersopen = OrderService.OpenOrdersAssigned();
-            Session["ordersopen"] = ordersopen;
+            var openOrders = OrderService.OpenOrdersAssigned();
+            Session["openOrders"] = openOrders;
 
             return View("~/Views/Orders/Index.cshtml");
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection fc)
+        public ActionResult Create(FormCollection form)
         {
-            int ClientID = Convert.ToInt32(fc["NewClientID"]);
-            var vm = OrderService.CreateOrder(ClientID);
+            int clientId = Convert.ToInt32(form["NewClientID"]);
+            var order = OrderService.CreateOrder(clientId);
 
-            return View("~/Views/Orders/Edit.cshtml", vm);
+            return View("~/Views/Orders/Edit.cshtml", order);
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            var vm = OrderService.FillOrder(id);
+            int orderId = id;
+            var order = OrderService.FillOrder(orderId);
 
-            return View("~/Views/Orders/Edit.cshtml", vm);
+            return View("~/Views/Orders/Edit.cshtml", order);
         }
 
         [HttpPost]
-        public ActionResult Save(OrderMasterFull vm)
+        public ActionResult Save(OrderMasterFull order)
         {
-            int pk = OrderService.SaveOrder(vm);
+            int orderId = OrderService.SaveOrder(order);
             TempData["SaveResult"] = "Order Information updated on " + DateTime.UtcNow.ToString("R");
 
-            return RedirectToAction("Edit", new { id = pk });
+            return RedirectToAction("Edit", new { id = orderId });
         }
 
         #endregion Order Master Methods
@@ -65,20 +66,21 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult PrintPickPack(int id)
         {
-            string footer = DocumentFooter();
-            var vm = OrderService.FillOrder(id);
+            int orderId = id;
+            var order = OrderService.FillOrder(orderId);
+            var footer = DocumentFooter();
 
-            return new ViewAsPdf(vm) { CustomSwitches = footer };
+            return new ViewAsPdf(order) { CustomSwitches = footer };
         }
 
         [HttpGet]
         public ActionResult PrintPickOrderItems(int orderid)
         {
-            var orderitems = PrintListOrderItems(orderid);
+            var orderItems = PrintListOrderItems(orderid);
 
-            if (orderitems.Count > 0)
+            if (orderItems.Count > 0)
             {
-                return PartialView("~/Views/Orders/_PrintPickOrderItems.cshtml", orderitems);
+                return PartialView("~/Views/Orders/_PrintPickOrderItems.cshtml", orderItems);
             }
 
             return null;
@@ -87,11 +89,11 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult PrintPackOrderItems(int orderid)
         {
-            var orderitems = PrintListOrderItems(orderid);
+            var orderItems = PrintListOrderItems(orderid);
 
-            if (orderitems.Count > 0)
+            if (orderItems.Count > 0)
             {
-                return PartialView("~/Views/Orders/_PrintPackOrderItems.cshtml", orderitems);
+                return PartialView("~/Views/Orders/_PrintPackOrderItems.cshtml", orderItems);
             }
 
             return null;
@@ -99,10 +101,12 @@ namespace MvcPhoenix.Controllers
 
         public List<OrderItem> PrintListOrderItems(int id)
         {
+            int orderId = id;
+
             using (var db = new CMCSQL03Entities())
             {
-                var orderitems = (from t in db.tblOrderItem
-                                  where t.OrderID == id
+                var orderItems = (from t in db.tblOrderItem
+                                  where t.OrderID == orderId
                                   && t.AllocateStatus == "A" | (t.RDTransfer != null && t.RDTransfer != false)
                                   && t.ShipDate == null
                                   orderby t.ProductCode
@@ -121,7 +125,7 @@ namespace MvcPhoenix.Controllers
                                       Bin = t.Bin,
                                       AirUnNumber = t.AirUnNumber,
                                       GrnUnNumber = t.GrnUnNumber,
-                                      SeaUnNumber = t.GrnUnNumber,                         //Note: Add SeaUnNumber field to tblOrderItem
+                                      SeaUnNumber = t.GrnUnNumber,
                                       BackOrdered = t.BackOrdered,
                                       AllocateStatus = t.AllocateStatus,
                                       NonCMCDelay = t.NonCMCDelay,
@@ -146,7 +150,7 @@ namespace MvcPhoenix.Controllers
                                                             select q.AlertNotesShipping).FirstOrDefault()
                                   }).ToList();
 
-                return orderitems;
+                return orderItems;
             }
         }
 
@@ -155,7 +159,7 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new CMCSQL03Entities())
             {
-                var orderitems = (from t in db.tblOrderItem
+                var orderItems = (from t in db.tblOrderItem
                                   where t.OrderID == orderid
                                   && (t.ShipDate != null || t.AllocateStatus != "A")
                                   orderby t.ProductCode
@@ -180,9 +184,9 @@ namespace MvcPhoenix.Controllers
                                                             select q.AlertNotesShipping).FirstOrDefault()
                                   }).ToList();
 
-                if (orderitems.Count > 0)
+                if (orderItems.Count > 0)
                 {
-                    return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", orderitems);
+                    return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", orderItems);
                 }
 
                 return null;
@@ -193,34 +197,34 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new CMCSQL03Entities())
             {
-                PreferredCarrierViewModel preferredcarrier = new PreferredCarrierViewModel();
-                var result = (from t in db.tblPreferredCarrierList
-                              where t.CountryName.Contains(Country)
-                              select t).FirstOrDefault();
+                var preferredCarrier = new PreferredCarrierViewModel();
+                var suggestedCarrier = db.tblPreferredCarrierList
+                                         .Where(x => x.CountryName.Contains(Country))
+                                         .FirstOrDefault();
 
-                preferredcarrier.CountryCode = result.CountryCode;
-                preferredcarrier.CountryName = result.CountryName;
-                preferredcarrier.CommInvoiceReq = result.CommInvoiceReq;
-                preferredcarrier.NonHazSm = result.NonHaz_Sm;
-                preferredcarrier.NonHazLg = result.NonHaz_Lg;
-                preferredcarrier.NonHazIncoTerms = result.NonHaz_IncoTerms;
-                preferredcarrier.HazIATASm = result.HazIATA_Sm;
-                preferredcarrier.HazIATALg = result.HazIATA_Lg;
-                preferredcarrier.HazGroundLQ = result.HazGround_LQ;
-                preferredcarrier.HazGround = result.HazGround;
-                preferredcarrier.HazIncoterms = result.Haz_Incoterms;
-                preferredcarrier.IncotermsAlt = result.Incoterms_Alt;
-                preferredcarrier.NotesGeneral = result.Notes_General;
-                preferredcarrier.NotesIATAADR = result.Notes_IATA_ADR;
-                preferredcarrier.NonHazIncotermsAlt = result.NonHazIncoterms_Alt;
-                preferredcarrier.HazIncotermsAlt = result.HazIncoterms_Alt;
+                preferredCarrier.CountryCode = suggestedCarrier.CountryCode;
+                preferredCarrier.CountryName = suggestedCarrier.CountryName;
+                preferredCarrier.CommInvoiceReq = suggestedCarrier.CommInvoiceReq;
+                preferredCarrier.NonHazSm = suggestedCarrier.NonHaz_Sm;
+                preferredCarrier.NonHazLg = suggestedCarrier.NonHaz_Lg;
+                preferredCarrier.NonHazIncoTerms = suggestedCarrier.NonHaz_IncoTerms;
+                preferredCarrier.HazIATASm = suggestedCarrier.HazIATA_Sm;
+                preferredCarrier.HazIATALg = suggestedCarrier.HazIATA_Lg;
+                preferredCarrier.HazGroundLQ = suggestedCarrier.HazGround_LQ;
+                preferredCarrier.HazGround = suggestedCarrier.HazGround;
+                preferredCarrier.HazIncoterms = suggestedCarrier.Haz_Incoterms;
+                preferredCarrier.IncotermsAlt = suggestedCarrier.Incoterms_Alt;
+                preferredCarrier.NotesGeneral = suggestedCarrier.Notes_General;
+                preferredCarrier.NotesIATAADR = suggestedCarrier.Notes_IATA_ADR;
+                preferredCarrier.NonHazIncotermsAlt = suggestedCarrier.NonHazIncoterms_Alt;
+                preferredCarrier.HazIncotermsAlt = suggestedCarrier.HazIncoterms_Alt;
 
-                if (result == null)
+                if (suggestedCarrier == null)
                 {
                     return null;
                 }
 
-                return PartialView("~/Views/Orders/_PrintPreferredCarrierMatrix.cshtml", preferredcarrier);
+                return PartialView("~/Views/Orders/_PrintPreferredCarrierMatrix.cshtml", preferredCarrier);
             }
         }
 
@@ -230,16 +234,16 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult EditSPSBilling(int id)
         {
-            int orderid = id;
-            var vm = OrderService.SPSBilling(orderid);
+            int orderId = id;
+            var orderSPSBilling = OrderService.SPSBilling(orderId);
 
-            return PartialView("~/Views/Orders/_SPSBillingModal.cshtml", vm);
+            return PartialView("~/Views/Orders/_SPSBillingModal.cshtml", orderSPSBilling);
         }
 
         [HttpPost]
-        public ActionResult SaveSPSBilling(OrderSPSBilling vm)
+        public ActionResult SaveSPSBilling(OrderSPSBilling orderSPSBilling)
         {
-            OrderService.SaveSPSBillingDetails(vm);
+            OrderService.SaveSPSBillingDetails(orderSPSBilling);
 
             return null;
         }
@@ -249,13 +253,13 @@ namespace MvcPhoenix.Controllers
         #region Order Item Methods
 
         [HttpGet]
-        public ActionResult fnOrderItemsList(int orderid)
+        public ActionResult OrderItemsList(int orderid)
         {
-            var orderitems = OrderService.OrderItems(orderid);
+            var orderItems = OrderService.OrderItems(orderid);
 
-            if (orderitems.Count > 0)
+            if (orderItems.Count > 0)
             {
-                return PartialView("~/Views/Orders/_OrderItems.cshtml", orderitems);
+                return PartialView("~/Views/Orders/_OrderItems.cshtml", orderItems);
             }
 
             return null;
@@ -264,28 +268,29 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CreateItem(int id)
         {
-            var vm = OrderService.CreateOrderItem(id);                             // id=orderid
+            int orderItemId = id;
+            var orderItem = OrderService.CreateOrderItem(orderItemId);
 
-            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
+            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", orderItem);
         }
 
         [HttpGet]
         public ActionResult EditItem(int id)
         {
-            OrderItem vm = new OrderItem();
-            vm = OrderService.FillOrderItemDetails(id);
+            int orderItemId = id;
+            var orderItem = OrderService.FillOrderItemDetails(orderItemId);
 
-            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", vm);
+            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", orderItem);
         }
 
         [HttpPost]
-        public ActionResult SaveItem(OrderItem incoming, string productdetailid)
+        public ActionResult SaveItem(OrderItem orderItem, string productdetailid)
         {
             if (productdetailid != "0" && productdetailid != "")
             {
-                if (incoming.ShelfID != null)
+                if (orderItem.ShelfID != null)
                 {
-                    int pk = OrderService.SaveOrderItem(incoming);
+                    int orderItemId = OrderService.SaveOrderItem(orderItem);
 
                     return null;
                 }
@@ -296,25 +301,30 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult DeleteItem(int id)
         {
-            OrderService.DeleteOrderItem(id);
+            int orderItemId = id;
+            OrderService.DeleteOrderItem(orderItemId);
 
             return Content("Item Deleted");
         }
 
-        public ActionResult BuildSizeDropDown(int id)
+        public ActionResult BuildSizeDropDown(int productdetailid)
         {
-            return Content(ApplicationService.ddlBuildSizeDropDown(id));                 // id=clientid / return a <select> for <div>
+            var productShelfSizes = ApplicationService.ddlBuildSizeDropDown(productdetailid);
+
+            return Content(productShelfSizes);
         }
 
         public ActionResult CheckProductForAlert(int? id)
         {
+            int? productDetailId = id;
             using (var db = new CMCSQL03Entities())
             {
-                var productorderalert = (from t in db.tblProductDetail
-                                         where t.ProductDetailID == id
-                                         select t.AlertNotesOrderEntry).FirstOrDefault();
+                var productAlert = db.tblProductDetail
+                                     .Where(t => t.ProductDetailID == productDetailId)
+                                     .Select(t => t.AlertNotesOrderEntry)
+                                     .FirstOrDefault();
 
-                return Json(productorderalert, JsonRequestBehavior.AllowGet);
+                return Json(productAlert, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -349,22 +359,14 @@ namespace MvcPhoenix.Controllers
 
         #endregion Order Import Actions
 
-        [HttpGet]
-        public ActionResult PullContactDetails(int id)
-        {
-            Contact obj = new Contact();
-            obj = OrderService.GetClientContact(id);
-
-            return Json(obj, JsonRequestBehavior.AllowGet);
-        }
-
         #region Allocate Methods
 
         public ActionResult AllocateFromShelf(int id, bool IncludeQCStock)
         {
-            int AllocationCount = OrderService.AllocateShelf(id, IncludeQCStock);
+            int orderId = id;
+            int allocationCount = OrderService.AllocateShelf(orderId, IncludeQCStock);
 
-            return Content(AllocationCount.ToString() + " item(s) allocated");
+            return Content(allocationCount.ToString() + " item(s) allocated");
         }
 
         public ActionResult ReverseAllocatedItem(int orderitemid)
@@ -379,11 +381,11 @@ namespace MvcPhoenix.Controllers
         #region Order Transaction Methods
 
         [HttpGet]
-        public ActionResult fnOrderTransList(int orderid)
+        public ActionResult OrderTransList(int orderid)
         {
             using (var db = new CMCSQL03Entities())
             {
-                var orderitemtransactions = (from t in db.tblOrderTrans
+                var orderItemTransactions = (from t in db.tblOrderTrans
                                              join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
                                              from p in a.DefaultIfEmpty()
                                              where t.OrderID == orderid
@@ -407,32 +409,34 @@ namespace MvcPhoenix.Controllers
                                                  UpdateUser = t.UpdateUser
                                              }).ToList();
 
-                return PartialView("~/Views/Orders/_OrderTrans.cshtml", orderitemtransactions);
+                return PartialView("~/Views/Orders/_OrderTrans.cshtml", orderItemTransactions);
             }
         }
 
         [HttpGet]
         public ActionResult CreateTrans(int id)
         {
-            var vm = OrderService.CreateOrderTransaction(id);
-            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(vm.OrderId);
+            int orderTransactionId = id;
+            var orderTransaction = OrderService.CreateOrderTransaction(orderTransactionId);
+            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(orderTransaction.OrderId);
 
-            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
+            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", orderTransaction);
         }
 
         [HttpGet]
         public ActionResult EditTrans(int id)
         {
-            var vm = OrderService.FillOrderTransaction(id);
-            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(vm.OrderId);
+            int orderTransactionId = id;
+            var orderTransaction = OrderService.FillOrderTransaction(orderTransactionId);
+            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(orderTransaction.OrderId);
 
-            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", vm);
+            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", orderTransaction);
         }
 
         [HttpPost]
-        public ActionResult SaveTrans(OrderTrans vm)
+        public ActionResult SaveTrans(OrderTrans orderTransaction)
         {
-            int pk = OrderService.SaveOrderTransaction(vm);
+            int orderTransactionId = OrderService.SaveOrderTransaction(orderTransaction);
 
             return Content("Transaction Saved on " + DateTime.UtcNow.ToString("R"));
         }
@@ -440,7 +444,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult DeleteTrans(int id)
         {
-            OrderService.DeleteTransaction(id);
+            int orderTransactionId = id;
+            OrderService.DeleteTransaction(orderTransactionId);
 
             return Content("Transaction Deleted on " + DateTime.UtcNow.ToString("R"));
         }
@@ -451,121 +456,125 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult OpenOrders(int page = 0)
         {
-            var orderslist = Session["ordersopen"] as List<OrderMasterFull>;
+            var orders = Session["openOrders"] as List<OrderMasterFull>;
             TempData["SearchResultsMessage"] = "Open Orders";
 
             // If session store is empty go fetch new open orders
-            if (orderslist == null)
+            if (orders == null)
             {
-                orderslist = OrderService.OpenOrdersAssigned();
+                orders = OrderService.OpenOrdersAssigned();
             }
-            
+
             const int PageSize = 20;
-            int count = orderslist.Count();
-            var data = orderslist.Skip(page * PageSize).Take(PageSize).ToList();
+            int count = orders.Count();
+            var data = orders.Skip(page * PageSize).Take(PageSize).ToList();
             int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
 
             ViewBag.Page = page;
             ViewBag.MaxPage = maxpage;
             ViewBag.DisplayActivePage = page + 1;
             ViewBag.DisplayLastPage = maxpage + 1;
-            
+
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
         [HttpPost]
-        public ActionResult LookupOrderID(FormCollection fc)
+        public ActionResult LookupOrderID(FormCollection form)
         {
-            using (var db = new CMCSQL03Entities())
+            int orderId = Convert.ToInt32(form["orderid"]);
+
+            if (orderId == 0)
             {
-                if (String.IsNullOrEmpty(fc["orderid"]))
-                {
-                    return RedirectToAction("Index");
-                }
-
-                int inputorderid = Convert.ToInt32(fc["orderid"]);
-                var result = (from t in db.tblOrderMaster
-                              where t.OrderID == inputorderid
-                              select t).FirstOrDefault();
-
-                if (result != null)
-                {
-                    return RedirectToAction("Edit", new { id = inputorderid });
-                }
-
                 return RedirectToAction("Index");
             }
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var order = db.tblOrderMaster.Find(orderId);
+
+                if (order != null)
+                {
+                    return RedirectToAction("Edit", new { id = orderId });
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public ActionResult OrdersNeedAllocation()
         {
-            var orderslist = OrderService.SearchOrders();
+            var orders = OrderService.SearchOrders();
+
+            orders = (from t in orders
+                      where t.NeedAllocationCount > 0
+                      orderby t.OrderID descending
+                      select t).ToList();
+
             TempData["SearchResultsMessage"] = "Orders Needing Allocation";
 
-            orderslist = (from t in orderslist
-                          where t.NeedAllocationCount > 0
-                          orderby t.OrderID ascending
-                          select t).ToList();
-            
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpGet]
         public ActionResult OrdersToday()
         {
-            DateTime dateToday = DateTime.Today.AddDays(0);
-            var orderslist = OrderService.SearchOrders();
+            DateTime today = DateTime.Today.AddDays(0);
+            var orders = OrderService.SearchOrders();
+
+            orders = (from t in orders
+                      orderby t.OrderID descending
+                      where t.OrderDate.Value.Date == today.Date
+                      select t).ToList();
+
             TempData["SearchResultsMessage"] = "Orders Created Today";
 
-            orderslist = (from t in orderslist
-                          orderby t.OrderID descending
-                          where t.OrderDate.Value.Date == dateToday.Date
-                          select t).ToList();
-            
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpGet]
         public ActionResult OrdersYesterday()
         {
-            DateTime dateToday = DateTime.Today.AddDays(-1);
-            var orderslist = OrderService.SearchOrders();
+            DateTime yesterday = DateTime.Today.AddDays(-1);
+            var orders = OrderService.SearchOrders();
+
+            orders = (from t in orders
+                      orderby t.OrderID descending
+                      where t.OrderDate.Value.Date == yesterday.Date
+                      select t).ToList();
+
             TempData["SearchResultsMessage"] = "Orders Created Yesterday";
 
-            orderslist = (from t in orderslist
-                          orderby t.OrderID descending
-                          where t.OrderDate.Value.Date == dateToday.Date
-                          select t).ToList();
-            
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpGet]
         public ActionResult OrdersLastTen()
         {
-            var orderslist = OrderService.SearchOrders();
+            var orders = OrderService.SearchOrders();
+
+            orders = (from t in orders
+                      orderby t.OrderID descending
+                      select t).Take(10).ToList();
+
             TempData["SearchResultsMessage"] = "Last 10 Orders";
 
-            orderslist = (from t in orderslist
-                          orderby t.OrderID descending
-                          select t).Take(10).ToList();
-            
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpGet]
         public ActionResult OrdersMineLastTen()
         {
-            var orderslist = OrderService.SearchOrders();
+            var orders = OrderService.SearchOrders();
+
+            orders = (from t in orders
+                      where t.CreateUser == User.Identity.Name
+                      orderby t.OrderID descending
+                      select t).Take(10).ToList();
+
             TempData["SearchResultsMessage"] = "My Last 10 Orders";
 
-            orderslist = (from t in orderslist
-                          where t.CreateUser == User.Identity.Name
-                          orderby t.OrderID descending
-                          select t).Take(10).ToList();
-            
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpGet]
@@ -575,103 +584,127 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpPost]
-        public ActionResult LookupClientID(FormCollection fc)
+        public ActionResult LookupClientID(FormCollection form)
         {
-            int inputclientid = Convert.ToInt32(fc["ClientID"]);
-            var orderslist = OrderService.SearchOrders();
-            TempData["SearchResultsMessage"] = "No Results Found";
+            int clientId = Convert.ToInt32(form["ClientID"]);
+            var orders = OrderService.SearchOrders();
 
-            orderslist = (from t in orderslist
-                          where t.ClientId == inputclientid
-                          orderby t.OrderID descending
-                          select t).Take(100).ToList();
+            orders = (from t in orders
+                      where t.ClientId == clientId
+                      orderby t.OrderID descending
+                      select t).Take(100).ToList();
 
-            if (orderslist.Count() > 0)
+            if (orders.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Last 100 Orders - " + orderslist[0].ClientName;
+                TempData["SearchResultsMessage"] = "Last 100 Orders - " + orders[0].ClientName;
+            }
+            else
+            {
+                TempData["SearchResultsMessage"] = "No Results Found";
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpPost]
-        public ActionResult LookupOrderDate(FormCollection fc)
+        public ActionResult LookupOrderDate(FormCollection form)
         {
-            DateTime inputdate = Convert.ToDateTime(fc["searchorderdate"]);
-            var orderslist = OrderService.SearchOrders();
-            TempData["SearchResultsMessage"] = "No Results Found";
+            DateTime orderDate = Convert.ToDateTime(form["searchorderdate"]);
+            var orders = OrderService.SearchOrders();
 
-            orderslist = (from t in orderslist
-                          where t.OrderDate.Value.Date == inputdate.Date
-                          orderby t.OrderID descending
-                          select t).ToList();
+            orders = (from t in orders
+                      where t.OrderDate.Value.Date == orderDate.Date
+                      orderby t.OrderID descending
+                      select t).ToList();
 
-            if (orderslist.Count() > 0)
+            if (orders.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Orders For " + inputdate.ToShortDateString();
+                TempData["SearchResultsMessage"] = "Orders For " + orderDate.ToShortDateString();
+            }
+            else
+            {
+                TempData["SearchResultsMessage"] = "No Results Found";
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpPost]
-        public ActionResult LookupCompany(FormCollection fc)
+        public ActionResult LookupCompany(FormCollection form)
         {
-            var inputcompany = fc["searchcompany"];
-            var orderslist = OrderService.SearchOrders();
-            TempData["SearchResultsMessage"] = "No Results Found";
+            var company = form["searchcompany"];
+            var orders = OrderService.SearchOrders();
 
-            orderslist = (from t in orderslist
-                          where t.Company != null
-                          && t.Company.ToLower().Contains(inputcompany.ToLower())
-                          select t).ToList();
+            orders = (from t in orders
+                      where t.Company != null
+                      && t.Company.ToLower().Contains(company.ToLower())
+                      select t).ToList();
 
-            if (orderslist.Count() > 0)
+            if (orders.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Orders For Ship To " + inputcompany;
+                TempData["SearchResultsMessage"] = "Orders For Ship To " + company;
+            }
+            else
+            {
+                TempData["SearchResultsMessage"] = "No Results Found";
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpPost]
-        public ActionResult LookupZipCode(FormCollection fc)
+        public ActionResult LookupZipCode(FormCollection form)
         {
-            var inputzipcode = fc["searchzipcode"];
-            var orderslist = OrderService.SearchOrders();
-            TempData["SearchResultsMessage"] = "No Results Found";
+            var zipCode = form["searchzipcode"];
+            var orders = OrderService.SearchOrders();
 
-            orderslist = (from t in orderslist
-                          where t.Zip != null
-                          && t.Zip.Contains(inputzipcode)
-                          select t).ToList();
+            orders = (from t in orders
+                      where t.Zip != null
+                      && t.Zip.Contains(zipCode)
+                      select t).ToList();
 
-            if (orderslist.Count() > 0)
+            if (orders.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Orders For Zip Code " + inputzipcode;
+                TempData["SearchResultsMessage"] = "Orders For Zip Code " + zipCode;
+            }
+            else
+            {
+                TempData["SearchResultsMessage"] = "No Results Found";
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpPost]
-        public ActionResult LookupSalesRep(FormCollection fc)
+        public ActionResult LookupSalesRep(FormCollection form)
         {
-            var inputsalesrep = fc["searchsalesrep"];
-            var orderslist = OrderService.SearchOrders();
-            TempData["SearchResultsMessage"] = "No Results Found";
+            var salesRep = form["searchsalesrep"];
+            var orders = OrderService.SearchOrders();
 
-            orderslist = (from t in orderslist
-                          where t.SalesRepName != null
-                          && t.SalesRepName.ToLower().Contains(inputsalesrep.ToLower())
-                          select t).ToList();
+            orders = (from t in orders
+                      where t.SalesRepName != null
+                      && t.SalesRepName.ToLower().Contains(salesRep.ToLower())
+                      select t).ToList();
 
-            if (orderslist.Count() > 0)
+            if (orders.Count() > 0)
             {
-                TempData["SearchResultsMessage"] = "Orders For sales Rep " + inputsalesrep;
+                TempData["SearchResultsMessage"] = "Orders For sales Rep " + salesRep;
+            }
+            else
+            {
+                TempData["SearchResultsMessage"] = "No Results Found";
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orderslist);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
+        }
+
+        [HttpGet]
+        public ActionResult PullContactDetails(int id)
+        {
+            int clientContactId = id;
+            var contact = OrderService.GetClientContact(clientContactId);
+
+            return Json(contact, JsonRequestBehavior.AllowGet);
         }
 
         #endregion Index Order Search and Filters

@@ -134,6 +134,6 @@
 
 <script type="text/javascript">
     function UpdateItemsList() {
-        $("#dvOrderItemsList").load('@Url.Action("fnOrderItemsList", "Orders", new { orderid = @Model[0].OrderID })');
+        $("#dvOrderItemsList").load('@Url.Action("OrderItemsList", "Orders", new { orderid = @Model[0].OrderID })');
     }
 </script>
