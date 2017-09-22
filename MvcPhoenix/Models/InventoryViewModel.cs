@@ -207,4 +207,38 @@ namespace MvcPhoenix.Models
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
     }
+
+    public class InventoryLog
+    {
+        public string LogType { get; set; }
+        public int? BulkId { get; set; }
+        public int? StockId { get; set; }
+        public int? ProductMasterId { get; set; }
+        public int? ProductDetailId { get; set; }
+        public int? LogQty { get; set; }
+        public decimal? LogAmount { get; set; }
+        public string UM { get; set; }
+        public string LogNotes { get; set; }
+        public int? ClientId { get; set; }
+        public string ClientName { get; set; }
+        public string Status { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+        public string MasterCode { get; set; }
+        public string MasterName { get; set; }
+        public string Warehouse { get; set; }
+        public string Size { get; set; }
+        public string BulkBin { get; set; }
+        public string ShelfBin { get; set; }
+        public string LotNumber { get; set; }
+        public DateTime? ShipDate { get; set; }
+        public int? OrderNumber { get; set; }
+        public int? CurrentQtyAvailable { get; set; }
+        public decimal? CurrentWeightAvailable { get; set; }
+        public DateTime? ExpirationDate { get; set; }
+        public DateTime? CeaseShipDate { get; set; }
+        public DateTime? DateReceived { get; set; }
+        public DateTime? QCDate { get; set; }
+        public int? PackOutId { get; set; }
+    }
 }

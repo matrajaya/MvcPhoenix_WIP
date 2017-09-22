@@ -1070,7 +1070,7 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                string deleteQuery = String.Format("DELETE FROM tblOrderTrans WHERE OrderItemID={0} AND Transtype = '{1}' AND CreateUser='System'", ItemID, TransType);
+                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + ItemID + " AND Transtype = '" + TransType + "' AND CreateUser='System'";
                 db.Database.ExecuteSqlCommand(deleteQuery);
 
                 var orderItem = db.tblOrderItem.Find(ItemID);
@@ -1179,7 +1179,7 @@ namespace MvcPhoenix.Services
                     // Fill order item with stock that satisfies quantity
                     foreach (var row in stock)
                     {
-                        var log = new OrderInventoryLog();
+                        var log = new InventoryLog();
 
                         if (isAllocated == false)
                         {
@@ -1237,7 +1237,7 @@ namespace MvcPhoenix.Services
                                 log.CeaseShipDate = row.CeaseShipDate;
                                 log.LogNotes = "Shelf stock allocated";
 
-                                InventoryLog(log);
+                                InventoryService.LogInventoryUpdates(log);
                             }
                         }
                     }
@@ -1254,7 +1254,7 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var isReversed = false;
-                var log = new OrderInventoryLog();
+                var log = new InventoryLog();
 
                 var orderItem = (from t in db.tblOrderItem
                                  where t.ItemID == orderitemid
@@ -1355,7 +1355,7 @@ namespace MvcPhoenix.Services
 
                     db.SaveChanges();
 
-                    InventoryLog(log);
+                    InventoryService.LogInventoryUpdates(log);
                 }
             }
         }
@@ -1366,7 +1366,7 @@ namespace MvcPhoenix.Services
 
         public static async Task<int> AddBulkItemToReturnOrder(int orderid, int bulkid)
         {
-            var log = new OrderInventoryLog();
+            var log = new InventoryLog();
 
             using (var db = new CMCSQL03Entities())
             {
@@ -1437,7 +1437,7 @@ namespace MvcPhoenix.Services
                 log.Warehouse = newItem.Warehouse;
                 log.LogNotes = newItem.ItemNotes;
 
-                InventoryLog(log);
+                InventoryService.LogInventoryUpdates(log);
 
                 OrderService.GenerateOrderTransaction(newItemId);
             }
@@ -1447,7 +1447,7 @@ namespace MvcPhoenix.Services
 
         public static async Task<int> AddStockItemToReturnOrder(int orderid, int stockid, int clientid)
         {
-            var log = new OrderInventoryLog();
+            var log = new InventoryLog();
 
             using (var db = new CMCSQL03Entities())
             {
@@ -1526,7 +1526,7 @@ namespace MvcPhoenix.Services
                 log.Warehouse = newOrderItem.Warehouse;
                 log.LogNotes = newOrderItem.ItemNotes;
 
-                InventoryLog(log);
+                InventoryService.LogInventoryUpdates(log);
 
                 OrderService.GenerateOrderTransaction(newOrderItemId);
             }
@@ -2007,57 +2007,5 @@ namespace MvcPhoenix.Services
         }
 
         #endregion Order Import Methods
-
-        public static void InventoryLog(OrderInventoryLog log)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var client = db.tblClient
-                               .Where(x => x.ClientID == log.ClientId)
-                               .Select(x => new { x.ClientName, x.ClientUM })
-                               .FirstOrDefault();
-
-                tblInvLog InventoryLog = new tblInvLog();
-
-                InventoryLog.LogType = log.LogType;
-                InventoryLog.LogDate = DateTime.UtcNow;
-                InventoryLog.BulkID = log.BulkId;
-                InventoryLog.StockID = log.StockId;
-                InventoryLog.ProductMasterID = log.ProductMasterId;
-                InventoryLog.ProductDetailID = log.ProductDetailId;
-                InventoryLog.ProductCode = log.ProductCode;
-                InventoryLog.ProductName = log.ProductName;
-                InventoryLog.MasterCode = log.MasterCode;
-                InventoryLog.MasterName = log.MasterName;
-                InventoryLog.Size = log.Size;
-                InventoryLog.LogQty = log.LogQty;
-                InventoryLog.LogAmount = log.LogAmount;
-                InventoryLog.ClientID = log.ClientId;
-                InventoryLog.ClientName = client.ClientName;
-                InventoryLog.UM = client.ClientUM;
-                InventoryLog.LogNotes = log.LogNotes;
-                InventoryLog.Status = log.Status;
-                InventoryLog.Warehouse = log.Warehouse;
-                InventoryLog.Lotnumber = log.LotNumber;
-                InventoryLog.BulkBin = log.BulkBin;
-                InventoryLog.ShelfBin = log.ShelfBin;
-                InventoryLog.ShipDate = log.ShipDate;
-                InventoryLog.OrderNumber = log.OrderNumber;
-                InventoryLog.CurrentQtyAvailable = log.CurrentQtyAvailable;
-                InventoryLog.CurrentWeightAvailable = log.CurrentWeightAvailable;
-                InventoryLog.ExpirationDate = log.ExpirationDate;
-                InventoryLog.CeaseShipDate = log.CeaseShipDate;
-                InventoryLog.DateReceived = log.DateReceived;
-                InventoryLog.QCDate = log.QCDate;
-                InventoryLog.PackOutID = log.PackOutId;
-                InventoryLog.CreateDate = DateTime.UtcNow;
-                InventoryLog.CreateUser = HttpContext.Current.User.Identity.Name;
-                InventoryLog.UpdateDate = DateTime.UtcNow;
-                InventoryLog.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                db.tblInvLog.Add(InventoryLog);
-                db.SaveChanges();
-            }
-        }
     }
 }

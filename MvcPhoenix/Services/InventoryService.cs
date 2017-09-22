@@ -14,8 +14,8 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                Inventory inventory = new Inventory();
-                ProductProfile productProfile = new ProductProfile();
+                var inventory = new Inventory();
+                var productProfile = new ProductProfile();
 
                 productProfile.productdetailid = productDetailId;
                 inventory.PP = ProductsService.FillFromPD(productProfile);
@@ -283,7 +283,6 @@ namespace MvcPhoenix.Services
 
             using (var db = new CMCSQL03Entities())
             {
-
                 var bulk = db.tblBulk.Find(prePackStock.BulkContainer.bulkid);
                 var productDetail = db.tblProductDetail.Find(prePackStock.ProductDetailID);
 
@@ -374,11 +373,9 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                InventoryLogNote inventoryLogNote = new InventoryLogNote();
+                var inventoryLogNote = new InventoryLogNote();
 
-                var productLogNote = (from t in db.tblInvPMLogNote
-                                      where t.InvPMLogNoteIDID == inventoryLogNoteId
-                                      select t).FirstOrDefault();
+                var productLogNote = db.tblInvPMLogNote.Find(inventoryLogNoteId);
 
                 inventoryLogNote.productnoteid = productLogNote.InvPMLogNoteIDID;
                 inventoryLogNote.productmasterid = productLogNote.ProductMasterID;
@@ -396,20 +393,17 @@ namespace MvcPhoenix.Services
 
         public static InventoryLogNote CreateInventoryLogNote(int? productMasterId)
         {
-            InventoryLogNote inventoryLogNote = new InventoryLogNote();
+            var inventoryLogNote = new InventoryLogNote();
 
-            using (var db = new CMCSQL03Entities())
-            {
-                inventoryLogNote.productnoteid = -1;
-                inventoryLogNote.productmasterid = productMasterId;
-                inventoryLogNote.reasoncode = null;
-                inventoryLogNote.notedate = DateTime.UtcNow;
-                inventoryLogNote.notes = null;
-                inventoryLogNote.UpdateDate = DateTime.UtcNow;
-                inventoryLogNote.UpdateUser = HttpContext.Current.User.Identity.Name;
-                inventoryLogNote.CreateDate = DateTime.UtcNow;
-                inventoryLogNote.CreateUser = HttpContext.Current.User.Identity.Name;
-            }
+            inventoryLogNote.productnoteid = -1;
+            inventoryLogNote.productmasterid = productMasterId;
+            inventoryLogNote.reasoncode = null;
+            inventoryLogNote.notedate = DateTime.UtcNow;
+            inventoryLogNote.notes = null;
+            inventoryLogNote.UpdateDate = DateTime.UtcNow;
+            inventoryLogNote.UpdateUser = HttpContext.Current.User.Identity.Name;
+            inventoryLogNote.CreateDate = DateTime.UtcNow;
+            inventoryLogNote.CreateUser = HttpContext.Current.User.Identity.Name;
 
             return inventoryLogNote;
         }
@@ -424,14 +418,13 @@ namespace MvcPhoenix.Services
                     newLogNote.CreateDate = DateTime.UtcNow;
                     newLogNote.CreateUser = HttpContext.Current.User.Identity.Name;
                     db.tblInvPMLogNote.Add(newLogNote);
+
                     db.SaveChanges();
 
                     inventoryLogNote.productnoteid = newLogNote.InvPMLogNoteIDID;
                 }
 
-                var logNote = (from t in db.tblInvPMLogNote
-                               where t.InvPMLogNoteIDID == inventoryLogNote.productnoteid
-                               select t).FirstOrDefault();
+                var logNote = db.tblInvPMLogNote.Find(inventoryLogNote.productnoteid);
 
                 logNote.ProductMasterID = inventoryLogNote.productmasterid;
                 logNote.NoteDate = DateTime.UtcNow;
@@ -448,7 +441,96 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                db.Database.ExecuteSqlCommand("Delete from tblInvPMLogNote Where InvPMLogNoteIDID=" + inventoryProductLogNoteId);
+                string deleteQuery = "Delete from tblInvPMLogNote Where InvPMLogNoteIDID=" + inventoryProductLogNoteId;
+                db.Database.ExecuteSqlCommand(deleteQuery);
+            }
+        }
+
+        /// <summary>
+        /// Deduct item shipped from inventory (bulk/shelf).
+        /// Reduce qty on hand and qty allocated.
+        /// Possible that SR  items are deducted once production clears. Ignore SR for now.
+        /// Log inventory changes
+        /// </summary>
+        public static void UpdateInventoryShipped(int orderitemid)
+        {
+            int orderItemId = orderitemid;
+            var log = new InventoryLog();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var orderItem = db.tblOrderItem.Find(orderItemId);
+                var stock = db.tblStock.Find(orderItem.AllocatedStockID);
+
+                if (true)
+                {
+                    stock.QtyAllocated = stock.QtyAllocated - orderItem.Qty;
+                    db.SaveChanges();
+                    
+                    log.LogType = "SS-SHP";
+                    InventoryService.LogInventoryUpdates(log);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update inventory when product is received.
+        /// Log inventory changes.
+        /// </summary>
+        public static void UpdateInventoryReceived()
+        {
+
+        }
+
+        public static void LogInventoryUpdates(InventoryLog log)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var client = db.tblClient
+                               .Where(x => x.ClientID == log.ClientId)
+                               .Select(x => new { x.ClientName, x.ClientUM })
+                               .FirstOrDefault();
+
+                var InventoryLog = new tblInvLog();
+
+                InventoryLog.LogType = log.LogType;
+                InventoryLog.LogDate = DateTime.UtcNow;
+                InventoryLog.BulkID = log.BulkId;
+                InventoryLog.StockID = log.StockId;
+                InventoryLog.ProductMasterID = log.ProductMasterId;
+                InventoryLog.ProductDetailID = log.ProductDetailId;
+                InventoryLog.ProductCode = log.ProductCode;
+                InventoryLog.ProductName = log.ProductName;
+                InventoryLog.MasterCode = log.MasterCode;
+                InventoryLog.MasterName = log.MasterName;
+                InventoryLog.Size = log.Size;
+                InventoryLog.LogQty = log.LogQty;
+                InventoryLog.LogAmount = log.LogAmount;
+                InventoryLog.ClientID = log.ClientId;
+                InventoryLog.ClientName = client.ClientName;
+                InventoryLog.UM = client.ClientUM;
+                InventoryLog.LogNotes = log.LogNotes;
+                InventoryLog.Status = log.Status;
+                InventoryLog.Warehouse = log.Warehouse;
+                InventoryLog.Lotnumber = log.LotNumber;
+                InventoryLog.BulkBin = log.BulkBin;
+                InventoryLog.ShelfBin = log.ShelfBin;
+                InventoryLog.ShipDate = log.ShipDate;
+                InventoryLog.OrderNumber = log.OrderNumber;
+                InventoryLog.CurrentQtyAvailable = log.CurrentQtyAvailable;
+                InventoryLog.CurrentWeightAvailable = log.CurrentWeightAvailable;
+                InventoryLog.ExpirationDate = log.ExpirationDate;
+                InventoryLog.CeaseShipDate = log.CeaseShipDate;
+                InventoryLog.DateReceived = log.DateReceived;
+                InventoryLog.QCDate = log.QCDate;
+                InventoryLog.PackOutID = log.PackOutId;
+                InventoryLog.CreateDate = DateTime.UtcNow;
+                InventoryLog.CreateUser = HttpContext.Current.User.Identity.Name;
+                InventoryLog.UpdateDate = DateTime.UtcNow;
+                InventoryLog.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                db.tblInvLog.Add(InventoryLog);
+                db.SaveChanges();
             }
         }
     }
