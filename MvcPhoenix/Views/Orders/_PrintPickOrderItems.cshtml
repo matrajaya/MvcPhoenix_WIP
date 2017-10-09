@@ -46,10 +46,10 @@
                                     @if (item.FreezableList == true)
                                     {<strong><u>Freezable</u></strong>}
                                 </td>
-                                <td>AIR: @item.AirUnNumber</td>
-                                <td>GROUND: @item.GrnUnNumber</td>
-                                <td>SEA: @item.SeaUnNumber</td>
-                                <td>Harm. Code: @item.HarmonizedCode</td>
+                                <td>AIR: @item.AirUnNumber, @item.AirPkGroup, @item.AirHzdClass</td>
+                                <td>GROUND: @item.GrnUnNumber, @item.GrnPkGroup, @item.GrnHzdClass</td>
+                                <td>SEA: @item.SeaUnNumber, @item.SeaPkGroup, @item.SeaHzdClass</td>
+                                <td>Harmonized Code: @item.HarmonizedCode</td>
                                 <td>
                                     @if (item.RDTransfer == true)
                                     {<strong>R&D / Transfer Item</strong>}

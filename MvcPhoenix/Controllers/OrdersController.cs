@@ -592,6 +592,9 @@ namespace MvcPhoenix.Controllers
                                   where t.OrderID == orderId
                                   && t.AllocateStatus == "A" | (t.RDTransfer != null && t.RDTransfer != false)
                                   && t.ShipDate == null
+                                  let productdetail = (from q in db.tblProductDetail
+                                                    where (q.ProductDetailID == t.ProductDetailID)
+                                                    select q).FirstOrDefault()
                                   orderby t.ProductCode
                                   select new OrderItem
                                   {
@@ -606,9 +609,6 @@ namespace MvcPhoenix.Controllers
                                       CeaseShipDate = t.CeaseShipDate,
                                       LotNumber = t.LotNumber,
                                       Bin = t.Bin,
-                                      AirUnNumber = t.AirUnNumber,
-                                      GrnUnNumber = t.GrnUnNumber,
-                                      SeaUnNumber = t.GrnUnNumber,
                                       BackOrdered = t.BackOrdered,
                                       AllocateStatus = t.AllocateStatus,
                                       NonCMCDelay = t.NonCMCDelay,
@@ -617,20 +617,23 @@ namespace MvcPhoenix.Controllers
                                       FreezableList = (from q in db.tblProductMaster
                                                        where (q.MasterCode == t.ProductCode)
                                                        select q.FreezableList).FirstOrDefault(),
-                                      HarmonizedCode = (from q in db.tblProductDetail
-                                                        where (q.ProductDetailID == t.ProductDetailID)
-                                                        select q.HarmonizedCode).FirstOrDefault(),
+                                      AirUnNumber = productdetail.AIRUNNUMBER,
+                                      GrnUnNumber = productdetail.GRNUNNUMBER,
+                                      SeaUnNumber = productdetail.SEAUNNUM,
+                                      AirPkGroup = productdetail.AIRPKGRP,
+                                      GrnPkGroup = productdetail.GRNPKGRP,
+                                      SeaPkGroup = productdetail.SEAPKGRP,
+                                      AirHzdClass = productdetail.AIRHAZCL,
+                                      GrnHzdClass = productdetail.GRNHAZCL,
+                                      SeaHzdClass = productdetail.SEAHAZCL,
+                                      HarmonizedCode = productdetail.HarmonizedCode,
+                                      AlertNotesOrderEntry = productdetail.AlertNotesOrderEntry,
+                                      AlertNotesShipping = productdetail.AlertNotesShipping,
                                       QtyAvailable = (from q in db.tblStock
                                                       where q.ShelfID == t.ShelfID
                                                       && (q.QtyOnHand - q.QtyAllocated >= t.Qty)
                                                       && q.ShelfStatus == "AVAIL"
-                                                      select q).Count(),
-                                      AlertNotesOrderEntry = (from q in db.tblProductDetail
-                                                              where q.ProductDetailID == t.ProductDetailID
-                                                              select q.AlertNotesOrderEntry).FirstOrDefault(),
-                                      AlertNotesShipping = (from q in db.tblProductDetail
-                                                            where q.ProductDetailID == t.ProductDetailID
-                                                            select q.AlertNotesShipping).FirstOrDefault()
+                                                      select q).Count()
                                   }).ToList();
 
                 return orderItems;

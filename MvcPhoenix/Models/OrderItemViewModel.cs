@@ -62,14 +62,18 @@ namespace MvcPhoenix.Models
         public string GrnUnNumber { get; set; }
         [Display(Name = "Grn PckGrp")]
         public string GrnPkGroup { get; set; }
+        public string GrnHzdClass { get; set; }
         [Display(Name = "Air UN")]
         public string AirUnNumber { get; set; }
         [Display(Name = "Air PckGrp")]
         public string AirPkGroup { get; set; }
+        public string AirHzdClass { get; set; }
         [Display(Name = "Sea UN")]
         public string SeaUnNumber { get; set; }
         [Display(Name = "Sea PckGrp")]
         public string SeaPkGroup { get; set; }
+        public string SeaHzdClass { get; set; }
+
 
         public string HarmonizedCode { get; set; }
         public string Via { get; set; } // Carrier

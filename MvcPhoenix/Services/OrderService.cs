@@ -583,8 +583,6 @@ namespace MvcPhoenix.Services
 
         public static int SaveOrderItem(OrderItem orderitem)
         {
-            bool isNewItem = false;
-
             using (var db = new CMCSQL03Entities())
             {
                 if (orderitem.ItemID < 1)
@@ -592,7 +590,6 @@ namespace MvcPhoenix.Services
                     orderitem.ItemID = OrderService.NewOrderItemId();
                     orderitem.CreateDate = DateTime.UtcNow;
                     orderitem.CreateUser = HttpContext.Current.User.Identity.Name;
-                    isNewItem = true;
                 }
 
                 var orderMaster = db.tblOrderMaster.Find(orderitem.OrderID);
@@ -665,11 +662,9 @@ namespace MvcPhoenix.Services
                 db.SaveChanges();
             }
 
-            if (isNewItem)
-            {
-                GenerateOrderTransaction(orderitem.ItemID);
-            }
-
+            // Update transaction charges
+            GenerateOrderTransaction(orderitem.ItemID);
+            
             return orderitem.ItemID;
         }
 
@@ -755,14 +750,14 @@ namespace MvcPhoenix.Services
                 var order = db.tblOrderMaster.Find(orderItem.OrderID);
 
                 // Tier 1 sample charge
-                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderItem.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
+                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderItem.ItemID;
                 db.Database.ExecuteSqlCommand(deleteQuery);
 
-                var tierSize = (from t in db.tblTier
-                                where t.ClientID == order.ClientID
-                                && t.Size == orderItem.Size
-                                && t.TierLevel == 1
-                                select t).FirstOrDefault();
+                var tierSize = db.tblTier
+                                 .Where(t=> t.ClientID == order.ClientID
+                                         && t.Size == orderItem.Size
+                                         && t.TierLevel == 1)
+                                 .FirstOrDefault();
 
                 if (tierSize != null)
                 {
@@ -790,11 +785,11 @@ namespace MvcPhoenix.Services
                 }
                 else
                 {
-                    var tierSpecialRequest = (from t in db.tblTier
-                                              where t.ClientID == order.ClientID
-                                              && t.Size == "1SR"
-                                              && t.TierLevel == 1
-                                              select t).FirstOrDefault();
+                    var tierSpecialRequest = db.tblTier
+                                               .Where(t=> t.ClientID == order.ClientID
+                                                       && t.Size == "1SR"
+                                                       && t.TierLevel == 1)
+                                               .FirstOrDefault();
 
                     if (tierSpecialRequest != null)
                     {
@@ -901,7 +896,7 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + ItemID + " AND Transtype = '" + TransType + "' AND CreateUser='System'";
+                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + ItemID + " AND Transtype = '" + TransType + "'";
                 db.Database.ExecuteSqlCommand(deleteQuery);
 
                 var orderItem = db.tblOrderItem.Find(ItemID);
