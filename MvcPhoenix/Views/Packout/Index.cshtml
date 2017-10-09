@@ -17,82 +17,68 @@
     </div>
 </div>
 
-@using (Html.BeginForm("CreateNewPackout", "PackOut", FormMethod.Post))
-{
-    @Html.HiddenFor(m => m.bulkid)
-    <input type="hidden" id="productdetailid" name="productdetailid" value="@TempData["productdetailid"]" />
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Packout Parameters</h3>
-                </div>
-                <div class="panel-body">
+<div class="row form-group">
+    <div class="col-md-9">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Packout from @Model.bin</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("CreateNewPackout", "PackOut", FormMethod.Post))
+                {
+                    @Html.HiddenFor(m => m.bulkid)
+                    <input type="hidden" id="productdetailid" name="productdetailid" value="@TempData["productdetailid"]" />
                     <div class="row">
-                        <div class="form-group col-md-3">
-                            <label>Bulk ID</label>
-                        </div>
-                        <div class="form-group col-md-3">
-                            @Html.TextBoxFor(m => m.bulkid, null, new { @class = "form-control", disabled = "disabled" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-3">
-                            <label>Bulk Status</label>
-                        </div>
-                        <div class="form-group col-md-3">
-                            @Html.TextBoxFor(m => m.bulkstatus, null, new { @class = "form-control", disabled = "disabled" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-3">
-                            <label>Master Code</label>
-                        </div>
-                        <div class="form-group col-md-3">
-                            @Html.TextBoxFor(m => m.MasterCode, null, new { @class = "form-control", disabled = "disabled" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-3">
-                            <label>Master Name</label>
-                        </div>
-                        <div class="form-group col-md-9">
-                            @Html.TextBoxFor(m => m.MasterName, null, new { @class = "form-control", disabled = "disabled" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-offset-3 col-md-9">
-                            <ul class="list-unstyled">
-                                <li>@Html.RadioButton("priority", 1) <span><label style="color:red;">Priority Red</label></span></li>
-                                <li>@Html.RadioButton("priority", 8) <label>Packout to Stock</label></li>
-                                <li>@Html.RadioButton("priority", 0) <label>Today's Color</label></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class=" col-md-offset-3 col-md-9">
-                            @if (Model.bulkstatus == "AVAIL")
-                            {
-                                <input type="submit" value="Create PackOut Order" class="btn btn-primary" />
-                            }
-                            else
-                            {
-                                <label class="label label-danger"><strong>Current bulk status does not allow creation of a Pack Out Order</strong></label>
-                            }
-                        </div>
-                    </div>
-
-                    @if (@TempData["ResultMessage"] != null)
-                    {
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="text-danger"><strong>@TempData["ResultMessage"]</strong></label>
+                        <div class="row col-md-9">
+                            <div class="form-group col-md-4">
+                                <label>Bulk ID</label>
+                                @Html.TextBoxFor(m => m.bulkid, null, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Bulk Status</label>
+                                @Html.TextBoxFor(m => m.bulkstatus, null, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Master Code</label>
+                                @Html.TextBoxFor(m => m.MasterCode, null, new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Master Name</label>
+                                @Html.TextBoxFor(m => m.MasterName, null, new { @class = "form-control", disabled = "disabled" })
                             </div>
                         </div>
+                        <div class="form-group col-md-3">
+                            <ul class="list-unstyled form-group">
+                                <li>@Html.RadioButton("priority", 0, isChecked: true) <label>Today's Color</label></li>
+                                <li>@Html.RadioButton("priority", 1) <label style="color:red;">Priority Red</label></li>
+                                <li>@Html.RadioButton("priority", 8) <label>Packout to Stock</label></li>
+                            </ul>
+                            @if (Model.bulkstatus == "AVAIL")
+                            {
+                                <div class="row col-md-12">
+                                    <input type="submit" value="Create PackOut Order" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    if (Model.bulkstatus != "AVAIL")
+                    {
+                        <div class="row col-md-12">
+                            <label class="text-danger"><strong>Current bulk status does not allow creation of a Pack Out Order</strong></label>
+                        </div>
                     }
-                </div>
+
+                    if (@TempData["ResultMessage"] != null)
+                    {
+                        <div class="row col-md-12">
+                            <label class="text-danger"><strong>@TempData["ResultMessage"]</strong></label>
+                        </div>
+                    }
+
+                }
             </div>
         </div>
     </div>
-}
+    
+</div>

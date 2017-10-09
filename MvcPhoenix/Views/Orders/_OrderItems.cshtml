@@ -11,9 +11,9 @@
             <tr>
                 <th></th>
                 <th>#</th>
-                <th>PK</th>
-                <th>Sh-ID</th>
-                <th>Bl-ID</th>
+                <th>Item Id</th>
+                <th>Shelf</th>
+                <th>Bulk</th>
                 <th>Code</th>
                 <th>Name</th>
                 <th>Size</th>
@@ -112,7 +112,7 @@
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateItemsList",
                                  OnFailure = "$.alert('Error - Could not allocate order')"
-                             }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From Available Shelf Stock" })
+                             }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate from available shelf stock" })
                     </div>
                     <div class="col-md-6">
                         @Ajax.ActionLink("QC Stock Only", "AllocateFromShelf", "Orders", new { id = Model[0].OrderID, IncludeQCStock = true },
@@ -123,7 +123,7 @@
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateItemsList",
                                  OnFailure = "$.alert('Error - Could not allocate order')",
-                             }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate From QC Shelf Stock. \nQC stock is considered any status not 'AVAIL' or 'HOLD' \nUse 'Returns' utility instead unless needed. " })
+                             }, new { @class = "btn btn-sm btn-primary btn-block", @title = "Allocate from QC shelf stock. \nQC stock is considered any status not 'AVAIL' or 'HOLD' \nUse 'Returns' utility instead unless needed. " })
                     </div>
                 </div>
             </div>

@@ -37,7 +37,6 @@
                     @Html.HiddenFor(m => m.ClientID)
                     @Html.HiddenFor(m => m.BulkID)
                     @Html.HiddenFor(m => m.AllocateStatus)
-                    @Html.HiddenFor(m => m.LotNumber)
                     @Html.HiddenFor(m => m.CreateDate)
                     @Html.HiddenFor(m => m.CreateUser)
                     @Html.HiddenFor(m => m.UpdateDate)
@@ -76,6 +75,7 @@
                             }
                             else
                             {
+                                @Html.HiddenFor(m => m.LotNumber)
                                 @Html.TextBoxFor(m => m.LotNumber, new { @class = "form-control", disabled = "disabled" })
                             }
                         </div>
@@ -368,12 +368,12 @@
 
     function CloseForm() {
         // Refresh the lists in partial views
-        $("#dvOrderItemsList").load('@Url.Action("OrderItemsList", "Orders", new { orderid = @Model.OrderID })');        
+        $("#dvOrderItemsList").load('@Url.Action("OrderItemsList", "Orders", new { orderid = @Model.OrderID })');
         $("#dvOrderTransList").load('@Url.Action("OrderTransList", "Orders", new { orderid = @Model.OrderID })');
 
         // Hide the modal
         $('#dialogPlaceholderModal').modal('hide');
-        
+
         // Show sample alert note (if available)
         SampleOrderAlert($('#ProductDetailID').val());
     }

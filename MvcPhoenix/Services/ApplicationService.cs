@@ -332,18 +332,8 @@ namespace MvcPhoenix.Models
                 {
                     foreach (var item in shelfSizes)
                     {
-                        if (item.Size == "1SR")
-                        {
-                            isSpecialRequest = true;
-                        }
-
                         htmlString = htmlString + "<option value=" + item.ShelfID.ToString() + ">" + item.Size + " - " + item.UnitWeight + "</option>";
                     }
-                }
-
-                if (!isSpecialRequest)
-                {
-                    htmlString = htmlString + "<option value='0'>1SR</option>";
                 }
 
                 return htmlString;

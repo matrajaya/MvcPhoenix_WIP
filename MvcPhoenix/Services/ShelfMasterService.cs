@@ -261,38 +261,32 @@ namespace MvcPhoenix.Services
         /// <returns>shelfId</returns>
         public static int GetShelfIdProductDetail(int? productdetailid, string size)
         {
-            int shelfId = 0;
-            try
+            int shelfId;
+
+            using (var db = new CMCSQL03Entities())
             {
-                using (var db = new CMCSQL03Entities())
+                int getShelfId = (from t in db.tblShelfMaster
+                                  where t.ProductDetailID == productdetailid
+                                  && t.Size == size
+                                  select t.ShelfID).FirstOrDefault();
+
+                if (getShelfId != 0)
                 {
-                    int getShelfId = (from t in db.tblShelfMaster
-                                      where t.ProductDetailID == productdetailid
-                                      && t.Size == size
-                                      select t.ShelfID).FirstOrDefault();
-
-                    if (getShelfId != 0)
-                    {
-                        shelfId = getShelfId;
-                    }
-                    else
-                    {
-                        var newShelfMaster = new tblShelfMaster
-                        {
-                            ProductDetailID = productdetailid,
-                            Size = size
-                        };
-
-                        db.tblShelfMaster.Add(newShelfMaster);
-                        db.SaveChanges();
-
-                        shelfId = newShelfMaster.ShelfID;
-                    }
+                    shelfId = getShelfId;
                 }
-            }
-            catch (Exception)
-            {
-                shelfId = 0;
+                else
+                {
+                    var newShelfMaster = new tblShelfMaster
+                    {
+                        ProductDetailID = productdetailid,
+                        Size = size
+                    };
+
+                    db.tblShelfMaster.Add(newShelfMaster);
+                    db.SaveChanges();
+
+                    shelfId = newShelfMaster.ShelfID;
+                }
             }
 
             return shelfId;

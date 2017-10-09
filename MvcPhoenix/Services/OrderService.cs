@@ -10,7 +10,89 @@ namespace MvcPhoenix.Services
 {
     public class OrderService
     {
-        #region Order Master Methods
+        #region Order
+
+        public static List<OrderMasterFull> GetOrders()
+        {
+            var orders = new List<OrderMasterFull>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                orders = (from t in db.tblOrderMaster
+                          join client in db.tblClient on t.ClientID equals client.ClientID
+                          let count = (from items in db.tblOrderItem
+                                       where items.OrderID == t.OrderID
+                                       select items).Count()
+                          let allocationcount = (from i in db.tblOrderItem
+                                                 where i.OrderID == t.OrderID
+                                                 && i.ShipDate == null
+                                                 && i.Qty > 0
+                                                 && String.IsNullOrEmpty(i.AllocateStatus)
+                                                 && i.ProductDetailID != null
+                                                 && i.ShelfID == null
+                                                 select i).Count()
+                          select new OrderMasterFull
+                          {
+                              ClientId = t.ClientID,
+                              OrderID = t.OrderID,
+                              Customer = t.Customer,
+                              ClientName = client.ClientName,
+                              OrderType = t.OrderType,
+                              OrderDate = t.OrderDate,
+                              Company = t.Company,
+                              CreateUser = t.CreateUser,
+                              ItemsCount = count,
+                              Zip = t.Zip,
+                              SalesRepName = t.SalesRep,
+                              NeedAllocationCount = allocationcount
+                          }).ToList();
+            }
+
+            return orders;
+        }
+
+        public static List<OrderMasterFull> GetAssignedOpenOrders()
+        {
+            var orders = new List<OrderMasterFull>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                orders = OrderService.GetOrders();
+
+                // Get list of order ids for orders not shipped.
+                var unshippedOrders = (from i in db.tblOrderItem
+                                       where i.ShipDate == null
+                                       && i.Qty > 0
+                                       select i).ToList();
+
+                unshippedOrders = unshippedOrders.GroupBy(x => x.OrderID)
+                                                 .Select(g => g.First())
+                                                 .ToList();
+
+                // Get list of open orders.
+                orders = (from t in orders
+                          join u in unshippedOrders on t.OrderID equals u.OrderID
+                          join c in db.tblClientAccountRep on t.ClientId equals c.ClientID
+                          where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
+                          orderby t.OrderID descending, t.OrderDate descending
+                          select t).ToList();
+
+                // Display all clients in EU if user has no client assignments.
+                // Since CMCEU does not have specific csr assignments for clients.
+                if (orders.Count() < 1)
+                {
+                    orders = OrderService.GetOrders();
+                    orders = (from t in orders
+                              join u in unshippedOrders on t.OrderID equals u.OrderID
+                              join c in db.tblClient on t.ClientId equals c.ClientID
+                              where c.CMCLocation == "EU"
+                              orderby t.OrderID descending, t.OrderDate descending
+                              select t).ToList();
+                }
+            }
+
+            return orders;
+        }
 
         public static OrderMasterFull CreateOrder(int clientid)
         {
@@ -342,9 +424,9 @@ namespace MvcPhoenix.Services
             return false;
         }
 
-        #endregion Order Master Methods
+        #endregion Order
 
-        #region Order Item Methods
+        #region Order Item
 
         public static List<OrderItem> OrderItems(int orderid)
         {
@@ -396,57 +478,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static OrderItem CreateOrderItem(int orderid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var order = db.tblOrderMaster.Find(orderid);
-                var orderItem = new OrderItem();
-
-                orderItem.CrudMode = "RW";
-                orderItem.ItemID = -1;
-                orderItem.OrderID = order.OrderID;
-                orderItem.ClientID = order.ClientID;
-                orderItem.CreateDate = DateTime.UtcNow;
-                orderItem.CreateUser = HttpContext.Current.User.Identity.Name;
-                orderItem.ProductDetailID = -1;
-                orderItem.ProductCode = null;
-                orderItem.ProductName = null;
-                orderItem.Size = null;
-                orderItem.SRSize = null;
-                orderItem.Qty = 1;
-                orderItem.LotNumber = null;
-                orderItem.ShipDate = null;
-                orderItem.ItemShipVia = "";
-                orderItem.CSAllocate = true;
-                orderItem.AllocateStatus = null;
-                orderItem.NonCMCDelay = false;
-                orderItem.RDTransfer = false;
-                orderItem.CarrierInvoiceRcvd = false;
-                orderItem.DelayReason = null;
-                orderItem.StatusID = -1;
-                orderItem.AlertNotesShipping = null;
-                orderItem.AlertNotesPackOut = null;
-                orderItem.AlertNotesOrderEntry = null;
-                orderItem.AlertNotesOther = null;
-
-                return orderItem;
-            }
-        }
-
-        public static int NewOrderItemId()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var newOrderItem = new tblOrderItem();
-                db.tblOrderItem.Add(newOrderItem);
-                db.SaveChanges();
-
-                return newOrderItem.ItemID;
-            }
-        }
-
-        public static OrderItem GetOrderItemDetails(int orderitemid)
+        public static OrderItem GetOrderItems(int orderitemid)
         {
             var orderItem = new OrderItem();
 
@@ -499,6 +531,56 @@ namespace MvcPhoenix.Services
             return orderItem;
         }
 
+        public static OrderItem CreateOrderItem(int orderid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var order = db.tblOrderMaster.Find(orderid);
+                var orderItem = new OrderItem();
+
+                orderItem.CrudMode = "RW";
+                orderItem.ItemID = -1;
+                orderItem.OrderID = order.OrderID;
+                orderItem.ClientID = order.ClientID;
+                orderItem.CreateDate = DateTime.UtcNow;
+                orderItem.CreateUser = HttpContext.Current.User.Identity.Name;
+                orderItem.ProductDetailID = -1;
+                orderItem.ProductCode = null;
+                orderItem.ProductName = null;
+                orderItem.Size = null;
+                orderItem.SRSize = null;
+                orderItem.Qty = 1;
+                orderItem.LotNumber = null;
+                orderItem.ShipDate = null;
+                orderItem.ItemShipVia = "";
+                orderItem.CSAllocate = true;
+                orderItem.AllocateStatus = null;
+                orderItem.NonCMCDelay = false;
+                orderItem.RDTransfer = false;
+                orderItem.CarrierInvoiceRcvd = false;
+                orderItem.DelayReason = null;
+                orderItem.StatusID = -1;
+                orderItem.AlertNotesShipping = null;
+                orderItem.AlertNotesPackOut = null;
+                orderItem.AlertNotesOrderEntry = null;
+                orderItem.AlertNotesOther = null;
+
+                return orderItem;
+            }
+        }
+
+        public static int NewOrderItemId()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var newOrderItem = new tblOrderItem();
+                db.tblOrderItem.Add(newOrderItem);
+                db.SaveChanges();
+
+                return newOrderItem.ItemID;
+            }
+        }
+
         public static int SaveOrderItem(OrderItem orderitem)
         {
             bool isNewItem = false;
@@ -517,31 +599,24 @@ namespace MvcPhoenix.Services
                 var orderItem = db.tblOrderItem.Find(orderitem.ItemID);
                 var productDetail = db.tblProductDetail.Find(orderitem.ProductDetailID);
                 var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
+                var shelfMaster = db.tblShelfMaster.Find(orderitem.ShelfID);
 
-                // Handle special request size
-                if (orderItem.Size == "1SR")
-                {
-                    orderItem.SRSize = (decimal)(orderitem.SRSize);
-                    orderitem.ShelfID = ShelfMasterService.GetShelfIdProductDetail(orderitem.ProductDetailID, "1SR");
-                }
-
-                if (orderitem.ShelfID < 1 || orderitem.SRSize != null)
+                // Set shelf details for special request
+                orderItem.SRSize = 0;
+                if (orderitem.SRSize > 0 && shelfMaster.Size == "1SR")
                 {
                     orderItem.SRSize = orderitem.SRSize;
                     orderItem.Size = "1SR";
                     orderitem.ShelfID = ShelfMasterService.GetShelfIdProductDetail(orderitem.ProductDetailID, "1SR");
+                    orderitem.CSAllocate = false;
                 }
-                else
-                {
-                    var shelfMaster = db.tblShelfMaster.Find(orderitem.ShelfID);
 
-                    if (shelfMaster != null)
-                    {
-                        orderItem.SRSize = orderitem.SRSize ?? 0;
-                        orderItem.Size = shelfMaster.Size;
-                        shelfMaster.UnitWeight = shelfMaster.UnitWeight ?? orderItem.Weight;
-                        orderItem.Weight = shelfMaster.UnitWeight * orderitem.Qty;
-                    }
+                // Get item size details from shelf
+                if (shelfMaster != null)
+                {
+                    orderItem.Size = shelfMaster.Size;
+                    shelfMaster.UnitWeight = shelfMaster.UnitWeight ?? orderItem.Weight;
+                    orderItem.Weight = shelfMaster.UnitWeight * orderitem.Qty;
                 }
 
                 orderItem.OrderID = orderitem.OrderID;
@@ -572,6 +647,7 @@ namespace MvcPhoenix.Services
                 orderItem.AlertNotesOrderEntry = productDetail.AlertNotesOrderEntry;
                 orderItem.AlertNotesPackout = productMaster.AlertNotesPackout;
 
+                // Specific alert for order item
                 if (productDetail.AIRUNNUMBER == "UN3082"
                     || productDetail.AIRUNNUMBER == "UN3077"
                     || productDetail.GRNUNNUMBER == "UN3082"
@@ -615,9 +691,40 @@ namespace MvcPhoenix.Services
             }
         }
 
-        #endregion Order Item Methods
+        #endregion Order Item
 
-        #region Order Transaction Methods
+        #region Order Transaction
+
+        public static OrderTrans GetOrderTransaction(int ordertransid)
+        {
+            var orderTransaction = new OrderTrans();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var getOrderTransaction = db.tblOrderTrans.Find(ordertransid);
+
+                orderTransaction.OrderTransID = getOrderTransaction.OrderTransID;
+                orderTransaction.OrderId = getOrderTransaction.OrderID;
+                orderTransaction.OrderItemId = getOrderTransaction.OrderItemID;
+                orderTransaction.ClientId = getOrderTransaction.ClientID;
+                orderTransaction.DivisionId = getOrderTransaction.DivisionID;
+                orderTransaction.TransDate = getOrderTransaction.TransDate;
+                orderTransaction.TransType = getOrderTransaction.TransType;
+                orderTransaction.TransQty = getOrderTransaction.TransQty;
+                orderTransaction.TransRate = getOrderTransaction.TransRate;
+                orderTransaction.TransAmount = getOrderTransaction.TransAmount;
+                orderTransaction.BillingTier = getOrderTransaction.BillingTier;
+                orderTransaction.BillingRate = getOrderTransaction.BillingRate;
+                orderTransaction.BillingCharge = getOrderTransaction.BillingCharge;
+                orderTransaction.Comments = getOrderTransaction.Comments;
+                orderTransaction.CreateDate = getOrderTransaction.CreateDate;
+                orderTransaction.CreateUser = getOrderTransaction.CreateUser;
+                orderTransaction.UpdateDate = getOrderTransaction.UpdateDate;
+                orderTransaction.UpdateUser = getOrderTransaction.UpdateUser;
+            }
+
+            return orderTransaction;
+        }
 
         public static OrderTrans CreateOrderTransaction(int orderid)
         {
@@ -638,6 +745,188 @@ namespace MvcPhoenix.Services
             }
 
             return orderTransaction;
+        }
+
+        public static void GenerateOrderTransaction(int orderitemid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var orderItem = db.tblOrderItem.Find(orderitemid);
+                var order = db.tblOrderMaster.Find(orderItem.OrderID);
+
+                // Tier 1 sample charge
+                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderItem.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
+                db.Database.ExecuteSqlCommand(deleteQuery);
+
+                var tierSize = (from t in db.tblTier
+                                where t.ClientID == order.ClientID
+                                && t.Size == orderItem.Size
+                                && t.TierLevel == 1
+                                select t).FirstOrDefault();
+
+                if (tierSize != null)
+                {
+                    var orderTransaction = new tblOrderTrans();
+
+                    orderTransaction.TransDate = DateTime.UtcNow;
+                    orderTransaction.OrderItemID = orderItem.ItemID;
+                    orderTransaction.OrderID = orderItem.OrderID;
+                    orderTransaction.ClientID = order.ClientID;
+                    orderTransaction.DivisionID = order.DivisionID;
+                    orderTransaction.TransType = "SAMP";
+                    orderTransaction.TransQty = orderItem.Qty;
+                    orderTransaction.TransRate = tierSize.Price;
+                    orderTransaction.TransAmount = orderTransaction.TransQty * orderTransaction.TransRate;
+                    orderTransaction.BillingTier = 1;
+                    orderTransaction.BillingRate = tierSize.Price;
+                    orderTransaction.BillingCharge = orderTransaction.TransQty * orderTransaction.TransRate;
+                    orderTransaction.CreateDate = DateTime.UtcNow;
+                    orderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
+                    orderTransaction.UpdateDate = DateTime.UtcNow;
+                    orderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    db.tblOrderTrans.Add(orderTransaction);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var tierSpecialRequest = (from t in db.tblTier
+                                              where t.ClientID == order.ClientID
+                                              && t.Size == "1SR"
+                                              && t.TierLevel == 1
+                                              select t).FirstOrDefault();
+
+                    if (tierSpecialRequest != null)
+                    {
+                        var orderTransaction = new tblOrderTrans();
+
+                        orderTransaction.TransDate = DateTime.UtcNow;
+                        orderTransaction.OrderItemID = orderItem.ItemID;
+                        orderTransaction.OrderID = orderItem.OrderID;
+                        orderTransaction.ClientID = order.ClientID;
+                        orderTransaction.DivisionID = order.DivisionID;
+                        orderTransaction.TransType = "SAMP";
+                        orderTransaction.TransQty = orderItem.Qty;
+                        orderTransaction.TransRate = tierSpecialRequest.Price;
+                        orderTransaction.TransAmount = orderTransaction.TransQty * orderTransaction.TransRate;
+                        orderTransaction.BillingTier = 1;
+                        orderTransaction.BillingRate = tierSize.Price;
+                        orderTransaction.BillingCharge = orderTransaction.TransQty * orderTransaction.TransRate;
+                        orderTransaction.Comments = "Special Request";
+                        orderTransaction.CreateDate = DateTime.UtcNow;
+                        orderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
+                        orderTransaction.UpdateDate = DateTime.UtcNow;
+                        orderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                        db.tblOrderTrans.Add(orderTransaction);
+                        db.SaveChanges();
+                    }
+                }
+
+                // Other charges from shelfmaster
+                var shelf = db.tblShelfMaster.Find(orderItem.ShelfID);
+                var surcharge = db.tblSurcharge.FirstOrDefault(t => t.ClientID == order.ClientID);
+
+                if (surcharge != null)
+                {
+                    if (shelf.HazardSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "HAZD", surcharge.Haz);
+                    }
+
+                    if (shelf.FlammableSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "FLAM", surcharge.Flam);
+                    }
+
+                    if (shelf.HeatSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "HEAT", surcharge.Heat);
+                    }
+
+                    if (shelf.RefrigSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "REFR", surcharge.Refrig);
+                    }
+
+                    if (shelf.FreezerSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "FREZ", surcharge.Freezer);
+                    }
+
+                    if (shelf.CleanSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "CLEN", surcharge.Clean);
+                    }
+
+                    if (shelf.BlendSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "BLND", 0);
+                    }
+
+                    if (shelf.NalgeneSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "NALG", surcharge.Nalgene);
+                    }
+
+                    if (shelf.NitrogenSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "NITR", 0);
+                    }
+
+                    if (shelf.BiocideSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "BIOC", 0);
+                    }
+
+                    if (shelf.KosherSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "KOSH", 0);
+                    }
+
+                    if (shelf.LabelSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "LABL", surcharge.LabelFee);
+                    }
+
+                    if (shelf.OtherSurcharge == true)
+                    {
+                        InsertOrderTransaction(orderItem.ItemID, "OTHR", shelf.OtherSurchargeAmt);
+                    }
+                }
+            }
+        }
+
+        public static void InsertOrderTransaction(int? ItemID, string TransType, decimal? TransRate)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + ItemID + " AND Transtype = '" + TransType + "' AND CreateUser='System'";
+                db.Database.ExecuteSqlCommand(deleteQuery);
+
+                var orderItem = db.tblOrderItem.Find(ItemID);
+                var order = db.tblOrderMaster.Find(orderItem.OrderID);
+
+                var newOrderTransaction = new tblOrderTrans();
+
+                newOrderTransaction.TransDate = DateTime.UtcNow;
+                newOrderTransaction.OrderItemID = ItemID;
+                newOrderTransaction.OrderID = orderItem.OrderID;
+                newOrderTransaction.ClientID = order.ClientID;
+                newOrderTransaction.DivisionID = order.DivisionID;
+                newOrderTransaction.TransDate = DateTime.UtcNow;
+                newOrderTransaction.TransType = TransType;
+                newOrderTransaction.TransQty = orderItem.Qty;
+                newOrderTransaction.TransRate = TransRate;
+                newOrderTransaction.TransAmount = newOrderTransaction.TransQty * newOrderTransaction.TransRate;
+                newOrderTransaction.CreateDate = DateTime.UtcNow;
+                newOrderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
+                newOrderTransaction.UpdateDate = DateTime.UtcNow;
+                newOrderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                db.tblOrderTrans.Add(newOrderTransaction);
+                db.SaveChanges();
+            }
         }
 
         public static int SaveOrderTransaction(OrderTrans ordertransaction)
@@ -878,37 +1167,6 @@ namespace MvcPhoenix.Services
             return rate;
         }
 
-        public static OrderTrans FillOrderTransaction(int ordertransid)
-        {
-            var orderTransaction = new OrderTrans();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                var getOrderTransaction = db.tblOrderTrans.Find(ordertransid);
-
-                orderTransaction.OrderTransID = getOrderTransaction.OrderTransID;
-                orderTransaction.OrderId = getOrderTransaction.OrderID;
-                orderTransaction.OrderItemId = getOrderTransaction.OrderItemID;
-                orderTransaction.ClientId = getOrderTransaction.ClientID;
-                orderTransaction.DivisionId = getOrderTransaction.DivisionID;
-                orderTransaction.TransDate = getOrderTransaction.TransDate;
-                orderTransaction.TransType = getOrderTransaction.TransType;
-                orderTransaction.TransQty = getOrderTransaction.TransQty;
-                orderTransaction.TransRate = getOrderTransaction.TransRate;
-                orderTransaction.TransAmount = getOrderTransaction.TransAmount;
-                orderTransaction.BillingTier = getOrderTransaction.BillingTier;
-                orderTransaction.BillingRate = getOrderTransaction.BillingRate;
-                orderTransaction.BillingCharge = getOrderTransaction.BillingCharge;
-                orderTransaction.Comments = getOrderTransaction.Comments;
-                orderTransaction.CreateDate = getOrderTransaction.CreateDate;
-                orderTransaction.CreateUser = getOrderTransaction.CreateUser;
-                orderTransaction.UpdateDate = getOrderTransaction.UpdateDate;
-                orderTransaction.UpdateUser = getOrderTransaction.UpdateUser;
-            }
-
-            return orderTransaction;
-        }
-
         public static void DeleteTransaction(int ordertransid)
         {
             using (var db = new CMCSQL03Entities())
@@ -918,191 +1176,9 @@ namespace MvcPhoenix.Services
             }
         }
 
-        public static void GenerateOrderTransaction(int orderitemid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var orderItem = db.tblOrderItem.Find(orderitemid);
-                var order = db.tblOrderMaster.Find(orderItem.OrderID);
+        #endregion Order Transaction
 
-                // Tier 1 sample charge
-                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + orderItem.ItemID + " AND Transtype = 'SAMP' AND CreateUser='System'";
-                db.Database.ExecuteSqlCommand(deleteQuery);
-
-                var tierSize = (from t in db.tblTier
-                                where t.ClientID == order.ClientID
-                                && t.Size == orderItem.Size
-                                && t.TierLevel == 1
-                                select t).FirstOrDefault();
-
-                if (tierSize != null)
-                {
-                    var orderTransaction = new tblOrderTrans();
-
-                    orderTransaction.TransDate = DateTime.UtcNow;
-                    orderTransaction.OrderItemID = orderItem.ItemID;
-                    orderTransaction.OrderID = orderItem.OrderID;
-                    orderTransaction.ClientID = order.ClientID;
-                    orderTransaction.DivisionID = order.DivisionID;
-                    orderTransaction.TransType = "SAMP";
-                    orderTransaction.TransQty = orderItem.Qty;
-                    orderTransaction.TransRate = tierSize.Price;
-                    orderTransaction.TransAmount = orderTransaction.TransQty * orderTransaction.TransRate;
-                    orderTransaction.BillingTier = 1;
-                    orderTransaction.BillingRate = tierSize.Price;
-                    orderTransaction.BillingCharge = orderTransaction.TransQty * orderTransaction.TransRate;
-                    orderTransaction.CreateDate = DateTime.UtcNow;
-                    orderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
-                    orderTransaction.UpdateDate = DateTime.UtcNow;
-                    orderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                    db.tblOrderTrans.Add(orderTransaction);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    var tierSpecialRequest = (from t in db.tblTier
-                                              where t.ClientID == order.ClientID
-                                              && t.Size == "1SR"
-                                              && t.TierLevel == 1
-                                              select t).FirstOrDefault();
-
-                    if (tierSpecialRequest != null)
-                    {
-                        var orderTransaction = new tblOrderTrans();
-
-                        orderTransaction.TransDate = DateTime.UtcNow;
-                        orderTransaction.OrderItemID = orderItem.ItemID;
-                        orderTransaction.OrderID = orderItem.OrderID;
-                        orderTransaction.ClientID = order.ClientID;
-                        orderTransaction.DivisionID = order.DivisionID;
-                        orderTransaction.TransType = "SAMP";
-                        orderTransaction.TransQty = orderItem.Qty;
-                        orderTransaction.TransRate = tierSpecialRequest.Price;
-                        orderTransaction.TransAmount = orderTransaction.TransQty * orderTransaction.TransRate;
-                        orderTransaction.BillingTier = 1;
-                        orderTransaction.BillingRate = tierSize.Price;
-                        orderTransaction.BillingCharge = orderTransaction.TransQty * orderTransaction.TransRate;
-                        orderTransaction.Comments = "Special Request";
-                        orderTransaction.CreateDate = DateTime.UtcNow;
-                        orderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
-                        orderTransaction.UpdateDate = DateTime.UtcNow;
-                        orderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                        db.tblOrderTrans.Add(orderTransaction);
-                        db.SaveChanges();
-                    }
-                }
-
-                // Other charges from shelfmaster
-                var shelf = db.tblShelfMaster.Find(orderItem.ShelfID);
-                var surcharge = db.tblSurcharge.FirstOrDefault(t => t.ClientID == order.ClientID);
-
-                if (surcharge != null)
-                {
-                    if (shelf.HazardSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "HAZD", surcharge.Haz);
-                    }
-
-                    if (shelf.FlammableSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "FLAM", surcharge.Flam);
-                    }
-
-                    if (shelf.HeatSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "HEAT", surcharge.Heat);
-                    }
-
-                    if (shelf.RefrigSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "REFR", surcharge.Refrig);
-                    }
-
-                    if (shelf.FreezerSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "FREZ", surcharge.Freezer);
-                    }
-
-                    if (shelf.CleanSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "CLEN", surcharge.Clean);
-                    }
-
-                    if (shelf.BlendSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "BLND", 0);
-                    }
-
-                    if (shelf.NalgeneSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "NALG", surcharge.Nalgene);
-                    }
-
-                    if (shelf.NitrogenSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "NITR", 0);
-                    }
-
-                    if (shelf.BiocideSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "BIOC", 0);
-                    }
-
-                    if (shelf.KosherSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "KOSH", 0);
-                    }
-
-                    if (shelf.LabelSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "LABL", surcharge.LabelFee);
-                    }
-
-                    if (shelf.OtherSurcharge == true)
-                    {
-                        InsertOrderTransaction(orderItem.ItemID, "OTHR", shelf.OtherSurchargeAmt);
-                    }
-                }
-            }
-        }
-
-        public static void InsertOrderTransaction(int? ItemID, string TransType, decimal? TransRate)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                string deleteQuery = "DELETE FROM tblOrderTrans WHERE OrderItemID=" + ItemID + " AND Transtype = '" + TransType + "' AND CreateUser='System'";
-                db.Database.ExecuteSqlCommand(deleteQuery);
-
-                var orderItem = db.tblOrderItem.Find(ItemID);
-                var order = db.tblOrderMaster.Find(orderItem.OrderID);
-
-                var newOrderTransaction = new tblOrderTrans();
-
-                newOrderTransaction.TransDate = DateTime.UtcNow;
-                newOrderTransaction.OrderItemID = ItemID;
-                newOrderTransaction.OrderID = orderItem.OrderID;
-                newOrderTransaction.ClientID = order.ClientID;
-                newOrderTransaction.DivisionID = order.DivisionID;
-                newOrderTransaction.TransDate = DateTime.UtcNow;
-                newOrderTransaction.TransType = TransType;
-                newOrderTransaction.TransQty = orderItem.Qty;
-                newOrderTransaction.TransRate = TransRate;
-                newOrderTransaction.TransAmount = newOrderTransaction.TransQty * newOrderTransaction.TransRate;
-                newOrderTransaction.CreateDate = DateTime.UtcNow;
-                newOrderTransaction.CreateUser = HttpContext.Current.User.Identity.Name;
-                newOrderTransaction.UpdateDate = DateTime.UtcNow;
-                newOrderTransaction.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                db.tblOrderTrans.Add(newOrderTransaction);
-                db.SaveChanges();
-            }
-        }
-
-        #endregion Order Transaction Methods
-
-        #region Allocate Methods
+        #region Allocate Order Item
 
         public static int AllocateShelf(int OrderID, bool IncludeQCStock)
         {
@@ -1357,9 +1433,9 @@ namespace MvcPhoenix.Services
             }
         }
 
-        #endregion Allocate Methods
+        #endregion Allocate Order Item
 
-        #region Return Order Methods
+        #region Return Order
 
         public static async Task<int> AddBulkItemToReturnOrder(int orderid, int bulkid)
         {
@@ -1551,9 +1627,9 @@ namespace MvcPhoenix.Services
             return orderid;
         }
 
-        #endregion Return Order Methods
+        #endregion Return Order
 
-        #region SPS Billing Methods
+        #region SPS Billing
 
         public static OrderSPSBilling SPSBilling(int orderid)
         {
@@ -1656,93 +1732,7 @@ namespace MvcPhoenix.Services
             }
         }
 
-        #endregion SPS Billing Methods
-
-        #region List Methods
-
-        public static List<OrderMasterFull> OpenOrdersAssigned()
-        {
-            var orders = new List<OrderMasterFull>();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                orders = OrderService.GetOrders();
-
-                // Get list of order ids for orders not shipped.
-                var unshippedOrders = (from i in db.tblOrderItem
-                                       where i.ShipDate == null
-                                       && i.Qty > 0
-                                       select i).ToList();
-
-                unshippedOrders = unshippedOrders.GroupBy(x => x.OrderID)
-                                                 .Select(g => g.First())
-                                                 .ToList();
-
-                // Get list of open orders.
-                orders = (from t in orders
-                          join u in unshippedOrders on t.OrderID equals u.OrderID
-                          join c in db.tblClientAccountRep on t.ClientId equals c.ClientID
-                          where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
-                          orderby t.OrderID descending, t.OrderDate descending
-                          select t).ToList();
-
-                // Display all clients in EU if user has no client assignments.
-                // Since CMCEU does not have specific csr assignments for clients.
-                if (orders.Count() < 1)
-                {
-                    orders = OrderService.GetOrders();
-                    orders = (from t in orders
-                              join u in unshippedOrders on t.OrderID equals u.OrderID
-                              join c in db.tblClient on t.ClientId equals c.ClientID
-                              where c.CMCLocation == "EU"
-                              orderby t.OrderID descending, t.OrderDate descending
-                              select t).ToList();
-                }
-            }
-
-            return orders;
-        }
-
-        public static List<OrderMasterFull> GetOrders()
-        {
-            var orders = new List<OrderMasterFull>();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                orders = (from t in db.tblOrderMaster
-                          join client in db.tblClient on t.ClientID equals client.ClientID
-                          let count = (from items in db.tblOrderItem
-                                       where items.OrderID == t.OrderID
-                                       select items).Count()
-                          let allocationcount = (from i in db.tblOrderItem
-                                                 where i.OrderID == t.OrderID
-                                                 && i.ShipDate == null
-                                                 && i.Qty > 0
-                                                 && String.IsNullOrEmpty(i.AllocateStatus)
-                                                 && i.ProductDetailID != null
-                                                 && i.ShelfID == null
-                                                 select i).Count()
-                          select new OrderMasterFull
-                          {
-                              ClientId = t.ClientID,
-                              OrderID = t.OrderID,
-                              Customer = t.Customer,
-                              ClientName = client.ClientName,
-                              OrderType = t.OrderType,
-                              OrderDate = t.OrderDate,
-                              Company = t.Company,
-                              CreateUser = t.CreateUser,
-                              ItemsCount = count,
-                              Zip = t.Zip,
-                              SalesRepName = t.SalesRep,
-                              NeedAllocationCount = allocationcount
-                          }).ToList();
-            }
-
-            return orders;
-        }
-
-        #endregion List Methods
+        #endregion SPS Billing
 
         #region Order Import Methods
 

@@ -11,12 +11,12 @@ namespace MvcPhoenix.Controllers
 {
     public class OrdersController : Controller
     {
-        #region Order Master Methods
+        #region Order
 
         public ActionResult Index()
         {
             // Preload open orders in session data store
-            var openOrders = OrderService.OpenOrdersAssigned();
+            var openOrders = OrderService.GetAssignedOpenOrders();
             Session["openOrders"] = openOrders;
 
             return View("~/Views/Orders/Index.cshtml");
@@ -53,411 +53,9 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("Edit", new { id = orderId });
         }
 
-        #endregion Order Master Methods
+        #endregion Order
 
-        #region Printing Actions
-
-        private static string DocumentFooter()
-        {
-            string footer = "--footer-left \"Printed on: " +
-                DateTime.UtcNow.ToString("R") +
-                "                                                                                                                                    " +
-                " Page: [page]/[toPage]\"" +
-                " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
-
-            return footer;
-        }
-
-        public ActionResult PrintPickPack(int id)
-        {
-            int orderId = id;
-            var order = OrderService.FillOrder(orderId);
-            var footer = DocumentFooter();
-
-            return new ViewAsPdf(order) { CustomSwitches = footer };
-        }
-
-        [HttpGet]
-        public ActionResult PrintPickOrderItems(int orderid)
-        {
-            var orderItems = PrintListOrderItems(orderid);
-
-            if (orderItems.Count > 0)
-            {
-                return PartialView("~/Views/Orders/_PrintPickOrderItems.cshtml", orderItems);
-            }
-
-            return null;
-        }
-
-        [HttpGet]
-        public ActionResult PrintPackOrderItems(int orderid)
-        {
-            var orderItems = PrintListOrderItems(orderid);
-
-            if (orderItems.Count > 0)
-            {
-                return PartialView("~/Views/Orders/_PrintPackOrderItems.cshtml", orderItems);
-            }
-
-            return null;
-        }
-
-        public List<OrderItem> PrintListOrderItems(int id)
-        {
-            int orderId = id;
-
-            using (var db = new CMCSQL03Entities())
-            {
-                var orderItems = (from t in db.tblOrderItem
-                                  where t.OrderID == orderId
-                                  && t.AllocateStatus == "A" | (t.RDTransfer != null && t.RDTransfer != false)
-                                  && t.ShipDate == null
-                                  orderby t.ProductCode
-                                  select new OrderItem
-                                  {
-                                      OrderID = t.OrderID,
-                                      ItemID = t.ItemID,
-                                      ProductDetailID = t.ProductDetailID,
-                                      ProductCode = t.ProductCode,
-                                      ProductName = t.ProductName,
-                                      Qty = t.Qty,
-                                      Size = t.Size,
-                                      ShipDate = t.ShipDate,
-                                      CeaseShipDate = t.CeaseShipDate,
-                                      LotNumber = t.LotNumber,
-                                      Bin = t.Bin,
-                                      AirUnNumber = t.AirUnNumber,
-                                      GrnUnNumber = t.GrnUnNumber,
-                                      SeaUnNumber = t.GrnUnNumber,
-                                      BackOrdered = t.BackOrdered,
-                                      AllocateStatus = t.AllocateStatus,
-                                      NonCMCDelay = t.NonCMCDelay,
-                                      RDTransfer = t.RDTransfer,
-                                      DelayReason = t.DelayReason,
-                                      FreezableList = (from q in db.tblProductMaster
-                                                       where (q.MasterCode == t.ProductCode)
-                                                       select q.FreezableList).FirstOrDefault(),
-                                      HarmonizedCode = (from q in db.tblProductDetail
-                                                        where (q.ProductDetailID == t.ProductDetailID)
-                                                        select q.HarmonizedCode).FirstOrDefault(),
-                                      QtyAvailable = (from q in db.tblStock
-                                                      where q.ShelfID == t.ShelfID
-                                                      && (q.QtyOnHand - q.QtyAllocated >= t.Qty)
-                                                      && q.ShelfStatus == "AVAIL"
-                                                      select q).Count(),
-                                      AlertNotesOrderEntry = (from q in db.tblProductDetail
-                                                              where q.ProductDetailID == t.ProductDetailID
-                                                              select q.AlertNotesOrderEntry).FirstOrDefault(),
-                                      AlertNotesShipping = (from q in db.tblProductDetail
-                                                            where q.ProductDetailID == t.ProductDetailID
-                                                            select q.AlertNotesShipping).FirstOrDefault()
-                                  }).ToList();
-
-                return orderItems;
-            }
-        }
-
-        [HttpGet]
-        public ActionResult PrintRemainingItems(int orderid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var orderItems = (from t in db.tblOrderItem
-                                  where t.OrderID == orderid
-                                  && (t.ShipDate != null || t.AllocateStatus != "A")
-                                  orderby t.ProductCode
-                                  select new OrderItem
-                                  {
-                                      OrderID = t.OrderID,
-                                      ItemID = t.ItemID,
-                                      ProductDetailID = t.ProductDetailID,
-                                      ProductCode = t.ProductCode,
-                                      ProductName = t.ProductName,
-                                      Qty = t.Qty,
-                                      Size = t.Size,
-                                      LotNumber = t.LotNumber,
-                                      ShipDate = t.ShipDate,
-                                      BackOrdered = t.BackOrdered,
-                                      AllocateStatus = t.AllocateStatus,
-                                      AlertNotesOrderEntry = (from q in db.tblProductDetail
-                                                              where q.ProductDetailID == t.ProductDetailID
-                                                              select q.AlertNotesOrderEntry).FirstOrDefault(),
-                                      AlertNotesShipping = (from q in db.tblProductDetail
-                                                            where q.ProductDetailID == t.ProductDetailID
-                                                            select q.AlertNotesShipping).FirstOrDefault()
-                                  }).ToList();
-
-                if (orderItems.Count > 0)
-                {
-                    return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", orderItems);
-                }
-
-                return null;
-            }
-        }
-
-        public ActionResult PrintPreferredCarrierMatrix(string Country)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var preferredCarrier = new PreferredCarrierViewModel();
-                var suggestedCarrier = db.tblPreferredCarrierList
-                                         .Where(x => x.CountryName.Contains(Country))
-                                         .FirstOrDefault();
-
-                preferredCarrier.CountryCode = suggestedCarrier.CountryCode;
-                preferredCarrier.CountryName = suggestedCarrier.CountryName;
-                preferredCarrier.CommInvoiceReq = suggestedCarrier.CommInvoiceReq;
-                preferredCarrier.NonHazSm = suggestedCarrier.NonHaz_Sm;
-                preferredCarrier.NonHazLg = suggestedCarrier.NonHaz_Lg;
-                preferredCarrier.NonHazIncoTerms = suggestedCarrier.NonHaz_IncoTerms;
-                preferredCarrier.HazIATASm = suggestedCarrier.HazIATA_Sm;
-                preferredCarrier.HazIATALg = suggestedCarrier.HazIATA_Lg;
-                preferredCarrier.HazGroundLQ = suggestedCarrier.HazGround_LQ;
-                preferredCarrier.HazGround = suggestedCarrier.HazGround;
-                preferredCarrier.HazIncoterms = suggestedCarrier.Haz_Incoterms;
-                preferredCarrier.IncotermsAlt = suggestedCarrier.Incoterms_Alt;
-                preferredCarrier.NotesGeneral = suggestedCarrier.Notes_General;
-                preferredCarrier.NotesIATAADR = suggestedCarrier.Notes_IATA_ADR;
-                preferredCarrier.NonHazIncotermsAlt = suggestedCarrier.NonHazIncoterms_Alt;
-                preferredCarrier.HazIncotermsAlt = suggestedCarrier.HazIncoterms_Alt;
-
-                if (suggestedCarrier == null)
-                {
-                    return null;
-                }
-
-                return PartialView("~/Views/Orders/_PrintPreferredCarrierMatrix.cshtml", preferredCarrier);
-            }
-        }
-
-        #endregion Printing Actions
-
-        #region Order SPS Billing Details
-
-        public ActionResult EditSPSBilling(int id)
-        {
-            int orderId = id;
-            var orderSPSBilling = OrderService.SPSBilling(orderId);
-
-            return PartialView("~/Views/Orders/_SPSBillingModal.cshtml", orderSPSBilling);
-        }
-
-        [HttpPost]
-        public ActionResult SaveSPSBilling(OrderSPSBilling orderSPSBilling)
-        {
-            OrderService.SaveSPSBillingDetails(orderSPSBilling);
-
-            return null;
-        }
-
-        #endregion Order SPS Billing Details
-
-        #region Order Item Methods
-
-        [HttpGet]
-        public ActionResult OrderItemsList(int orderid)
-        {
-            var orderItems = OrderService.OrderItems(orderid);
-
-            if (orderItems.Count > 0)
-            {
-                return PartialView("~/Views/Orders/_OrderItems.cshtml", orderItems);
-            }
-
-            return null;
-        }
-
-        [HttpGet]
-        public ActionResult CreateItem(int id)
-        {
-            int orderItemId = id;
-            var orderItem = OrderService.CreateOrderItem(orderItemId);
-
-            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", orderItem);
-        }
-
-        [HttpGet]
-        public ActionResult EditItem(int id)
-        {
-            int orderItemId = id;
-            var orderItem = OrderService.GetOrderItemDetails(orderItemId);
-
-            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", orderItem);
-        }
-
-        [HttpPost]
-        public ActionResult SaveItem(OrderItem orderItem, int productdetailid)
-        {
-            int productDetailId = productdetailid;
-            if (productDetailId != 0)
-            {
-                if (orderItem.ShelfID != null)
-                {
-                    int orderItemId = OrderService.SaveOrderItem(orderItem);
-
-                    return null;
-                }
-            }
-
-            return null;
-        }
-
-        public ActionResult DeleteItem(int id)
-        {
-            int orderItemId = id;
-            OrderService.DeleteOrderItem(orderItemId);
-
-            return Content("Item Deleted");
-        }
-
-        public ActionResult BuildSizeDropDown(int productdetailid)
-        {
-            var productShelfSizes = ApplicationService.ddlBuildSize(productdetailid);
-
-            return Content(productShelfSizes);
-        }
-
-        public ActionResult CheckProductForAlert(int? id)
-        {
-            int? productDetailId = id;
-            using (var db = new CMCSQL03Entities())
-            {
-                var productAlert = db.tblProductDetail
-                                     .Where(t => t.ProductDetailID == productDetailId)
-                                     .Select(t => t.AlertNotesOrderEntry)
-                                     .FirstOrDefault();
-
-                return Json(productAlert, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        #endregion Order Item Methods
-
-        #region Order Import Actions
-
-        [HttpGet]
-        public ActionResult OrdersImport()
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var failedimports = (from t in db.tblOrderImport
-                                     where t.ImportStatus == "FAIL"
-                                     && t.Location_MDB == "EU"
-                                     && t.ImportError != null
-                                     orderby t.OrderDate, t.GUID
-                                     select t).ToList();
-
-                return View("~/Views/Orders/Import.cshtml", failedimports);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult OrdersImportProcess()
-        {
-            int ImportCount = OrderService.ImportOrders();        // Actual import
-            ViewBag.ImportCount = ImportCount;
-
-            return RedirectToAction("OrdersImport");
-        }
-
-        #endregion Order Import Actions
-
-        #region Allocate Methods
-
-        public ActionResult AllocateFromShelf(int id, bool IncludeQCStock)
-        {
-            int orderId = id;
-            int allocationCount = OrderService.AllocateShelf(orderId, IncludeQCStock);
-
-            return Content(allocationCount.ToString() + " item(s) allocated");
-        }
-
-        public ActionResult ReverseAllocatedItem(int orderitemid)
-        {
-            OrderService.ReverseAllocatedItem(orderitemid);
-
-            return Content("Item allocation reversed");
-        }
-
-        #endregion Allocate Methods
-
-        #region Order Transaction Methods
-
-        [HttpGet]
-        public ActionResult OrderTransList(int orderid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var orderItemTransactions = (from t in db.tblOrderTrans
-                                             join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
-                                             from p in a.DefaultIfEmpty()
-                                             where t.OrderID == orderid
-                                             orderby t.OrderItemID
-                                             select new OrderTrans
-                                             {
-                                                 OrderTransID = t.OrderTransID,
-                                                 OrderId = t.OrderID,
-                                                 OrderItemId = t.OrderItemID,
-                                                 ProductCode = p.ProductCode,
-                                                 ClientId = t.ClientID,
-                                                 TransDate = t.TransDate,
-                                                 TransType = t.TransType,
-                                                 TransQty = t.TransQty,
-                                                 TransRate = t.TransRate,
-                                                 TransAmount = t.TransAmount,
-                                                 Comments = t.Comments,
-                                                 CreateDate = t.CreateDate,
-                                                 CreateUser = t.CreateUser,
-                                                 UpdateDate = t.UpdateDate,
-                                                 UpdateUser = t.UpdateUser
-                                             }).ToList();
-
-                return PartialView("~/Views/Orders/_OrderTrans.cshtml", orderItemTransactions);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult CreateTrans(int id)
-        {
-            int orderTransactionId = id;
-            var orderTransaction = OrderService.CreateOrderTransaction(orderTransactionId);
-            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(Convert.ToInt32(orderTransaction.OrderId));
-
-            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", orderTransaction);
-        }
-
-        [HttpGet]
-        public ActionResult EditTrans(int id)
-        {
-            int orderTransactionId = id;
-            var orderTransaction = OrderService.FillOrderTransaction(orderTransactionId);
-            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(Convert.ToInt32(orderTransaction.OrderId));
-
-            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", orderTransaction);
-        }
-
-        [HttpPost]
-        public ActionResult SaveTrans(OrderTrans orderTransaction)
-        {
-            int orderTransactionId = OrderService.SaveOrderTransaction(orderTransaction);
-
-            return Content("Transaction Saved on " + DateTime.UtcNow.ToString("R"));
-        }
-
-        [HttpGet]
-        public ActionResult DeleteTrans(int id)
-        {
-            int orderTransactionId = id;
-            OrderService.DeleteTransaction(orderTransactionId);
-
-            return Content("Transaction Deleted on " + DateTime.UtcNow.ToString("R"));
-        }
-
-        #endregion Order Transaction Methods
-
-        #region Index Order Search and Filters
+        #region Order Search
 
         public ActionResult OpenOrders(int page = 0)
         {
@@ -467,7 +65,7 @@ namespace MvcPhoenix.Controllers
             // If session store is empty go fetch new open orders
             if (orders == null)
             {
-                orders = OrderService.OpenOrdersAssigned();
+                orders = OrderService.GetAssignedOpenOrders();
             }
 
             const int PageSize = 20;
@@ -711,6 +309,408 @@ namespace MvcPhoenix.Controllers
             return Json(contact, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion Index Order Search and Filters
+        #endregion Order Search
+
+        #region Order Item
+
+        [HttpGet]
+        public ActionResult OrderItemsList(int orderid)
+        {
+            var orderItems = OrderService.OrderItems(orderid);
+
+            if (orderItems.Count > 0)
+            {
+                return PartialView("~/Views/Orders/_OrderItems.cshtml", orderItems);
+            }
+
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult CreateItem(int id)
+        {
+            int orderItemId = id;
+            var orderItem = OrderService.CreateOrderItem(orderItemId);
+
+            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", orderItem);
+        }
+
+        [HttpGet]
+        public ActionResult EditItem(int id)
+        {
+            int orderItemId = id;
+            var orderItem = OrderService.GetOrderItems(orderItemId);
+
+            return PartialView("~/Views/Orders/_OrderItemModal.cshtml", orderItem);
+        }
+
+        [HttpPost]
+        public ActionResult SaveItem(OrderItem orderItem, int productdetailid)
+        {
+            int productDetailId = productdetailid;
+            if (productDetailId != 0)
+            {
+                if (orderItem.ShelfID != null)
+                {
+                    int orderItemId = OrderService.SaveOrderItem(orderItem);
+
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        public ActionResult DeleteItem(int id)
+        {
+            int orderItemId = id;
+            OrderService.DeleteOrderItem(orderItemId);
+
+            return Content("Item Deleted");
+        }
+
+        public ActionResult BuildSizeDropDown(int productdetailid)
+        {
+            var productShelfSizes = ApplicationService.ddlBuildSize(productdetailid);
+
+            return Content(productShelfSizes);
+        }
+
+        public ActionResult CheckProductForAlert(int? id)
+        {
+            int? productDetailId = id;
+            using (var db = new CMCSQL03Entities())
+            {
+                var productAlert = db.tblProductDetail
+                                     .Where(t => t.ProductDetailID == productDetailId)
+                                     .Select(t => t.AlertNotesOrderEntry)
+                                     .FirstOrDefault();
+
+                return Json(productAlert, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion Order Item
+
+        #region Order Transaction
+
+        [HttpGet]
+        public ActionResult OrderTransList(int orderid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var orderItemTransactions = (from t in db.tblOrderTrans
+                                             join items in db.tblOrderItem on t.OrderItemID equals items.ItemID into a
+                                             from p in a.DefaultIfEmpty()
+                                             where t.OrderID == orderid
+                                             orderby t.OrderItemID
+                                             select new OrderTrans
+                                             {
+                                                 OrderTransID = t.OrderTransID,
+                                                 OrderId = t.OrderID,
+                                                 OrderItemId = t.OrderItemID,
+                                                 ProductCode = p.ProductCode,
+                                                 ClientId = t.ClientID,
+                                                 TransDate = t.TransDate,
+                                                 TransType = t.TransType,
+                                                 TransQty = t.TransQty,
+                                                 TransRate = t.TransRate,
+                                                 TransAmount = t.TransAmount,
+                                                 Comments = t.Comments,
+                                                 CreateDate = t.CreateDate,
+                                                 CreateUser = t.CreateUser,
+                                                 UpdateDate = t.UpdateDate,
+                                                 UpdateUser = t.UpdateUser
+                                             }).ToList();
+
+                return PartialView("~/Views/Orders/_OrderTrans.cshtml", orderItemTransactions);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CreateTrans(int id)
+        {
+            int orderTransactionId = id;
+            var orderTransaction = OrderService.CreateOrderTransaction(orderTransactionId);
+            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(Convert.ToInt32(orderTransaction.OrderId));
+
+            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", orderTransaction);
+        }
+
+        [HttpGet]
+        public ActionResult EditTrans(int id)
+        {
+            int orderTransactionId = id;
+            var orderTransaction = OrderService.GetOrderTransaction(orderTransactionId);
+            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(Convert.ToInt32(orderTransaction.OrderId));
+
+            return PartialView("~/Views/Orders/_OrderTransModal.cshtml", orderTransaction);
+        }
+
+        [HttpPost]
+        public ActionResult SaveTrans(OrderTrans orderTransaction)
+        {
+            int orderTransactionId = OrderService.SaveOrderTransaction(orderTransaction);
+
+            return Content("Transaction Saved on " + DateTime.UtcNow.ToString("R"));
+        }
+
+        [HttpGet]
+        public ActionResult DeleteTrans(int id)
+        {
+            int orderTransactionId = id;
+            OrderService.DeleteTransaction(orderTransactionId);
+
+            return Content("Transaction Deleted on " + DateTime.UtcNow.ToString("R"));
+        }
+
+        #endregion Order Transaction
+
+        #region Allocate Order Item
+
+        public ActionResult AllocateFromShelf(int id, bool IncludeQCStock)
+        {
+            int orderId = id;
+            int allocationCount = OrderService.AllocateShelf(orderId, IncludeQCStock);
+
+            return Content(allocationCount.ToString() + " item(s) allocated");
+        }
+
+        public ActionResult ReverseAllocatedItem(int orderitemid)
+        {
+            OrderService.ReverseAllocatedItem(orderitemid);
+
+            return Content("Item allocation reversed");
+        }
+
+        #endregion Allocate Order Item
+
+        #region SPS Billing
+
+        public ActionResult EditSPSBilling(int id)
+        {
+            int orderId = id;
+            var orderSPSBilling = OrderService.SPSBilling(orderId);
+
+            return PartialView("~/Views/Orders/_SPSBillingModal.cshtml", orderSPSBilling);
+        }
+
+        [HttpPost]
+        public ActionResult SaveSPSBilling(OrderSPSBilling orderSPSBilling)
+        {
+            OrderService.SaveSPSBillingDetails(orderSPSBilling);
+
+            return null;
+        }
+
+        #endregion SPS Billing
+
+        #region Order Import
+
+        [HttpGet]
+        public ActionResult OrdersImport()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var failedimports = (from t in db.tblOrderImport
+                                     where t.ImportStatus == "FAIL"
+                                     && t.Location_MDB == "EU"
+                                     && t.ImportError != null
+                                     orderby t.OrderDate, t.GUID
+                                     select t).ToList();
+
+                return View("~/Views/Orders/Import.cshtml", failedimports);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult OrdersImportProcess()
+        {
+            int ImportCount = OrderService.ImportOrders();        // Actual import
+            ViewBag.ImportCount = ImportCount;
+
+            return RedirectToAction("OrdersImport");
+        }
+
+        #endregion Order Import
+
+        #region Print
+
+        private static string DocumentFooter()
+        {
+            string footer = "--footer-left \"Printed on: " +
+                DateTime.UtcNow.ToString("R") +
+                "                                                                                                                                    " +
+                " Page: [page]/[toPage]\"" +
+                " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+
+            return footer;
+        }
+
+        public ActionResult PrintPickPack(int id)
+        {
+            int orderId = id;
+            var order = OrderService.FillOrder(orderId);
+            var footer = DocumentFooter();
+
+            return new ViewAsPdf(order) { CustomSwitches = footer };
+        }
+
+        [HttpGet]
+        public ActionResult PrintPickOrderItems(int orderid)
+        {
+            var orderItems = PrintListOrderItems(orderid);
+
+            if (orderItems.Count > 0)
+            {
+                return PartialView("~/Views/Orders/_PrintPickOrderItems.cshtml", orderItems);
+            }
+
+            return null;
+        }
+
+        [HttpGet]
+        public ActionResult PrintPackOrderItems(int orderid)
+        {
+            var orderItems = PrintListOrderItems(orderid);
+
+            if (orderItems.Count > 0)
+            {
+                return PartialView("~/Views/Orders/_PrintPackOrderItems.cshtml", orderItems);
+            }
+
+            return null;
+        }
+
+        public List<OrderItem> PrintListOrderItems(int id)
+        {
+            int orderId = id;
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var orderItems = (from t in db.tblOrderItem
+                                  where t.OrderID == orderId
+                                  && t.AllocateStatus == "A" | (t.RDTransfer != null && t.RDTransfer != false)
+                                  && t.ShipDate == null
+                                  orderby t.ProductCode
+                                  select new OrderItem
+                                  {
+                                      OrderID = t.OrderID,
+                                      ItemID = t.ItemID,
+                                      ProductDetailID = t.ProductDetailID,
+                                      ProductCode = t.ProductCode,
+                                      ProductName = t.ProductName,
+                                      Qty = t.Qty,
+                                      Size = t.Size,
+                                      ShipDate = t.ShipDate,
+                                      CeaseShipDate = t.CeaseShipDate,
+                                      LotNumber = t.LotNumber,
+                                      Bin = t.Bin,
+                                      AirUnNumber = t.AirUnNumber,
+                                      GrnUnNumber = t.GrnUnNumber,
+                                      SeaUnNumber = t.GrnUnNumber,
+                                      BackOrdered = t.BackOrdered,
+                                      AllocateStatus = t.AllocateStatus,
+                                      NonCMCDelay = t.NonCMCDelay,
+                                      RDTransfer = t.RDTransfer,
+                                      DelayReason = t.DelayReason,
+                                      FreezableList = (from q in db.tblProductMaster
+                                                       where (q.MasterCode == t.ProductCode)
+                                                       select q.FreezableList).FirstOrDefault(),
+                                      HarmonizedCode = (from q in db.tblProductDetail
+                                                        where (q.ProductDetailID == t.ProductDetailID)
+                                                        select q.HarmonizedCode).FirstOrDefault(),
+                                      QtyAvailable = (from q in db.tblStock
+                                                      where q.ShelfID == t.ShelfID
+                                                      && (q.QtyOnHand - q.QtyAllocated >= t.Qty)
+                                                      && q.ShelfStatus == "AVAIL"
+                                                      select q).Count(),
+                                      AlertNotesOrderEntry = (from q in db.tblProductDetail
+                                                              where q.ProductDetailID == t.ProductDetailID
+                                                              select q.AlertNotesOrderEntry).FirstOrDefault(),
+                                      AlertNotesShipping = (from q in db.tblProductDetail
+                                                            where q.ProductDetailID == t.ProductDetailID
+                                                            select q.AlertNotesShipping).FirstOrDefault()
+                                  }).ToList();
+
+                return orderItems;
+            }
+        }
+
+        [HttpGet]
+        public ActionResult PrintRemainingItems(int orderid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var orderItems = (from t in db.tblOrderItem
+                                  where t.OrderID == orderid
+                                  && (t.ShipDate != null || t.AllocateStatus != "A")
+                                  orderby t.ProductCode
+                                  select new OrderItem
+                                  {
+                                      OrderID = t.OrderID,
+                                      ItemID = t.ItemID,
+                                      ProductDetailID = t.ProductDetailID,
+                                      ProductCode = t.ProductCode,
+                                      ProductName = t.ProductName,
+                                      Qty = t.Qty,
+                                      Size = t.Size,
+                                      LotNumber = t.LotNumber,
+                                      ShipDate = t.ShipDate,
+                                      BackOrdered = t.BackOrdered,
+                                      AllocateStatus = t.AllocateStatus,
+                                      AlertNotesOrderEntry = (from q in db.tblProductDetail
+                                                              where q.ProductDetailID == t.ProductDetailID
+                                                              select q.AlertNotesOrderEntry).FirstOrDefault(),
+                                      AlertNotesShipping = (from q in db.tblProductDetail
+                                                            where q.ProductDetailID == t.ProductDetailID
+                                                            select q.AlertNotesShipping).FirstOrDefault()
+                                  }).ToList();
+
+                if (orderItems.Count > 0)
+                {
+                    return PartialView("~/Views/Orders/_PrintRemainingItems.cshtml", orderItems);
+                }
+
+                return null;
+            }
+        }
+
+        public ActionResult PrintPreferredCarrierMatrix(string Country)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var preferredCarrier = new PreferredCarrierViewModel();
+                var suggestedCarrier = db.tblPreferredCarrierList
+                                         .Where(x => x.CountryName.Contains(Country))
+                                         .FirstOrDefault();
+
+                preferredCarrier.CountryCode = suggestedCarrier.CountryCode;
+                preferredCarrier.CountryName = suggestedCarrier.CountryName;
+                preferredCarrier.CommInvoiceReq = suggestedCarrier.CommInvoiceReq;
+                preferredCarrier.NonHazSm = suggestedCarrier.NonHaz_Sm;
+                preferredCarrier.NonHazLg = suggestedCarrier.NonHaz_Lg;
+                preferredCarrier.NonHazIncoTerms = suggestedCarrier.NonHaz_IncoTerms;
+                preferredCarrier.HazIATASm = suggestedCarrier.HazIATA_Sm;
+                preferredCarrier.HazIATALg = suggestedCarrier.HazIATA_Lg;
+                preferredCarrier.HazGroundLQ = suggestedCarrier.HazGround_LQ;
+                preferredCarrier.HazGround = suggestedCarrier.HazGround;
+                preferredCarrier.HazIncoterms = suggestedCarrier.Haz_Incoterms;
+                preferredCarrier.IncotermsAlt = suggestedCarrier.Incoterms_Alt;
+                preferredCarrier.NotesGeneral = suggestedCarrier.Notes_General;
+                preferredCarrier.NotesIATAADR = suggestedCarrier.Notes_IATA_ADR;
+                preferredCarrier.NonHazIncotermsAlt = suggestedCarrier.NonHazIncoterms_Alt;
+                preferredCarrier.HazIncotermsAlt = suggestedCarrier.HazIncoterms_Alt;
+
+                if (suggestedCarrier == null)
+                {
+                    return null;
+                }
+
+                return PartialView("~/Views/Orders/_PrintPreferredCarrierMatrix.cshtml", preferredCarrier);
+            }
+        }
+
+        #endregion Print
     }
 }
