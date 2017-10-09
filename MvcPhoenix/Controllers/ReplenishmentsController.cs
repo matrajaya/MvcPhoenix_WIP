@@ -19,9 +19,10 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BulkItemsList(int id)
         {
-            // Build list of BulkOrderItems for use in partial
-            List<BulkOrderItem> bulkOrderItems = ReplenishmentsService.BulkOrderItems(id);
-            ViewBag.ParentKey = id;
+            int bulkOrderId = id;
+            ViewBag.ParentKey = bulkOrderId;
+
+            var bulkOrderItems = ReplenishmentsService.BulkOrderItems(bulkOrderId);
 
             return PartialView("~/Views/Replenishments/_BulkOrderItems.cshtml", bulkOrderItems);
         }
@@ -29,7 +30,7 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult SearchResultsUserCriteria(FormCollection form, string mode)
         {
-            var bulkOrders = ReplenishmentsService.SearchBulkOrders(form, "User");
+            var bulkOrders = ReplenishmentsService.GetBulkOrders(form, "User");
 
             return PartialView("~/Views/Replenishments/_SearchResults.cshtml", bulkOrders);
         }
@@ -37,7 +38,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult SearchResults(FormCollection form, string mode)
         {
-            var bulkOrders = ReplenishmentsService.SearchBulkOrders(form, mode);
+            var bulkOrders = ReplenishmentsService.GetBulkOrders(form, mode);
 
             return PartialView("~/Views/Replenishments/_SearchResults.cshtml", bulkOrders);
         }
@@ -45,8 +46,8 @@ namespace MvcPhoenix.Controllers
         
         public ActionResult Edit(int id)
         {
-            BulkOrder bulkOrder = new BulkOrder();
-            bulkOrder = ReplenishmentsService.GetBulkOrder(id);
+            int bulkOrderId = id;
+            var bulkOrder = ReplenishmentsService.GetBulkOrder(bulkOrderId);
 
             return View("~/Views/Replenishments/Edit.cshtml", bulkOrder);
         }
@@ -92,8 +93,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CreateItem(int id)
         {
-            BulkOrderItem bulkOrderItem = new BulkOrderItem();
-            bulkOrderItem = ReplenishmentsService.CreateBulkOrderItem(id);
+            int bulkOrderId = id;
+            var bulkOrderItem = ReplenishmentsService.CreateBulkOrderItem(bulkOrderId);
 
             return PartialView("~/Views/Replenishments/_BulkOrderItemModal.cshtml", bulkOrderItem);
         }
@@ -101,8 +102,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult EditItem(int id)
         {
-            BulkOrderItem bulkOrderItem = new BulkOrderItem();
-            bulkOrderItem = ReplenishmentsService.GetBulkOrderItem(id);
+            int bulkOrderItemId = id;
+            var bulkOrderItem = ReplenishmentsService.GetBulkOrderItem(bulkOrderItemId);
 
             return PartialView("~/Views/Replenishments/_BulkOrderItemModal.cshtml", bulkOrderItem);
         }
@@ -117,7 +118,7 @@ namespace MvcPhoenix.Controllers
             }
             else
             {
-                int pk = ReplenishmentsService.SaveBulkOrderItem(bulkOrderItem);
+                int bulkOrderItemId = ReplenishmentsService.SaveBulkOrderItem(bulkOrderItem);
 
                 return Content("Item Saved on " + DateTime.UtcNow.ToString("R"));
             }
@@ -126,7 +127,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult DeleteItem(int id)
         {
-            int bulkItemId = ReplenishmentsService.DeleteBulkOrderItem(id);
+            int bulkOrderItemId = id;
+            int bulkItemId = ReplenishmentsService.DeleteBulkOrderItem(bulkOrderItemId);
 
             return Content("Deleted");
         }
@@ -148,14 +150,14 @@ namespace MvcPhoenix.Controllers
                 var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
                 ViewBag.ProductDetailID = productDetailId;
                 Session["InventoryProductDetailID"] = productDetailId;
-
-                return View("~/Views/Replenishments/Create.cshtml");
             }
+            
+            return View("~/Views/Replenishments/Create.cshtml");
         }
 
         public ActionResult BuildDivisionDropDown(int clientid)
         {
-            return Content(ApplicationService.ddlBuildDivisionDropDown(clientid));
+            return Content(ApplicationService.ddlBuildDivision(clientid));
         }
 
         [HttpPost]
@@ -172,7 +174,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult SuggestedItemsList()
         {
-            List<SuggestedBulkOrderItem> suggestedItems = ReplenishmentsService.SuggestedItems();
+            var suggestedItems = ReplenishmentsService.GetSuggestedBulkItems();
 
             return PartialView("~/Views/Replenishments/_SuggestedItems.cshtml", suggestedItems);
         }
@@ -180,7 +182,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult DeleteSuggestedItem(int id)
         {
-            ReplenishmentsService.DeleteSuggestedBulkItem(id);
+            int bulkItemId = id;
+            ReplenishmentsService.DeleteSuggestedBulkItem(bulkItemId);
 
             return null;
         }
@@ -188,8 +191,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult EditSuggestedItem(int id)
         {
-            SuggestedBulkOrderItem bulkOrderItem = new SuggestedBulkOrderItem();
-            bulkOrderItem = ReplenishmentsService.GetSuggestedBulkItem(id);
+            int bulkItemId = id;
+            var bulkOrderItem = ReplenishmentsService.GetSuggestedBulkItem(bulkItemId);
 
             return PartialView("~/Views/Replenishments/_SuggestedItemModal.cshtml", bulkOrderItem);
         }
@@ -197,7 +200,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult AddBulkItem(int clientid)
         {
-            SuggestedBulkOrderItem bulkOrderItem = new SuggestedBulkOrderItem();
+            var bulkOrderItem = new SuggestedBulkOrderItem();
             bulkOrderItem.id = -1;
             bulkOrderItem.clientid = clientid;
 
@@ -214,7 +217,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult PrintSuggested()
         {
-            List<SuggestedBulkOrderItem> bulkOrderItems = ReplenishmentsService.SuggestedItems();
+            var bulkOrderItems = ReplenishmentsService.GetSuggestedBulkItems();
 
             return View("~/Views/Replenishments/PrintSuggested.cshtml", bulkOrderItems);
         }

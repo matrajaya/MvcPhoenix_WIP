@@ -26,6 +26,10 @@ namespace MvcPhoenix.Controllers
         public ActionResult Create(FormCollection form)
         {
             int clientId = Convert.ToInt32(form["NewClientID"]);
+            if (clientId < 1)
+            {
+                return RedirectToAction("Index");
+            }
             var order = OrderService.CreateOrder(clientId);
 
             return View("~/Views/Orders/Edit.cshtml", order);
@@ -44,7 +48,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult Save(OrderMasterFull order)
         {
             int orderId = OrderService.SaveOrder(order);
-            TempData["SaveResult"] = "Order Information updated on " + DateTime.UtcNow.ToString("R");
+            TempData["SaveResult"] = "Order updated on " + DateTime.UtcNow.ToString("R");
 
             return RedirectToAction("Edit", new { id = orderId });
         }
@@ -278,7 +282,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditItem(int id)
         {
             int orderItemId = id;
-            var orderItem = OrderService.FillOrderItemDetails(orderItemId);
+            var orderItem = OrderService.GetOrderItemDetails(orderItemId);
 
             return PartialView("~/Views/Orders/_OrderItemModal.cshtml", orderItem);
         }
@@ -310,7 +314,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BuildSizeDropDown(int productdetailid)
         {
-            var productShelfSizes = ApplicationService.ddlBuildSizeDropDown(productdetailid);
+            var productShelfSizes = ApplicationService.ddlBuildSize(productdetailid);
 
             return Content(productShelfSizes);
         }
@@ -419,7 +423,7 @@ namespace MvcPhoenix.Controllers
         {
             int orderTransactionId = id;
             var orderTransaction = OrderService.CreateOrderTransaction(orderTransactionId);
-            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(orderTransaction.OrderId);
+            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(Convert.ToInt32(orderTransaction.OrderId));
 
             return PartialView("~/Views/Orders/_OrderTransModal.cshtml", orderTransaction);
         }
@@ -429,7 +433,7 @@ namespace MvcPhoenix.Controllers
         {
             int orderTransactionId = id;
             var orderTransaction = OrderService.FillOrderTransaction(orderTransactionId);
-            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(orderTransaction.OrderId);
+            ViewBag.ListOrderItemIDs = ApplicationService.ddlOrderItemIDs(Convert.ToInt32(orderTransaction.OrderId));
 
             return PartialView("~/Views/Orders/_OrderTransModal.cshtml", orderTransaction);
         }
@@ -505,7 +509,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult OrdersNeedAllocation()
         {
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       where t.NeedAllocationCount > 0
@@ -521,7 +525,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult OrdersToday()
         {
             DateTime today = DateTime.Today.AddDays(0);
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       orderby t.OrderID descending
@@ -536,8 +540,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult OrdersYesterday()
         {
-            DateTime yesterday = DateTime.Today.AddDays(-1);
-            var orders = OrderService.SearchOrders();
+            DateTime yesterday = DateTime.UtcNow.Date.AddDays(-1);
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       orderby t.OrderID descending
@@ -550,30 +554,29 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult OrdersLastTen()
+        public ActionResult OrdersRecentAll()
         {
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
-            orders = (from t in orders
-                      orderby t.OrderID descending
-                      select t).Take(10).ToList();
+            orders = orders.OrderByDescending(x => x.OrderID).Take(100).ToList();
 
-            TempData["SearchResultsMessage"] = "Last 10 Orders";
+            TempData["SearchResultsMessage"] = "All Recent Orders";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
         [HttpGet]
-        public ActionResult OrdersMineLastTen()
+        public ActionResult OrdersRecentUser()
         {
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       where t.CreateUser == User.Identity.Name
+                      || t.UpdateUser == User.Identity.Name
                       orderby t.OrderID descending
-                      select t).Take(10).ToList();
+                      select t).Take(20).ToList();
 
-            TempData["SearchResultsMessage"] = "My Last 10 Orders";
+            TempData["SearchResultsMessage"] = "My Recent Orders";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
@@ -588,7 +591,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupClientID(FormCollection form)
         {
             int clientId = Convert.ToInt32(form["ClientID"]);
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       where t.ClientId == clientId
@@ -611,7 +614,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupOrderDate(FormCollection form)
         {
             DateTime orderDate = Convert.ToDateTime(form["searchorderdate"]);
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       where t.OrderDate.Value.Date == orderDate.Date
@@ -634,7 +637,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupCompany(FormCollection form)
         {
             var company = form["searchcompany"];
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       where t.Company != null
@@ -657,7 +660,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupZipCode(FormCollection form)
         {
             var zipCode = form["searchzipcode"];
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       where t.Zip != null
@@ -680,7 +683,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult LookupSalesRep(FormCollection form)
         {
             var salesRep = form["searchsalesrep"];
-            var orders = OrderService.SearchOrders();
+            var orders = OrderService.GetOrders();
 
             orders = (from t in orders
                       where t.SalesRepName != null
@@ -703,7 +706,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult PullContactDetails(int id)
         {
             int clientContactId = id;
-            var contact = OrderService.GetClientContact(clientContactId);
+            var contact = ClientService.GetClientContact(clientContactId);
 
             return Json(contact, JsonRequestBehavior.AllowGet);
         }

@@ -275,7 +275,6 @@
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MiscController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\PackOutController.cs" />
     <Compile Include="Controllers\ProductConversionController.cs" />
@@ -462,6 +461,7 @@
     <Compile Include="EF\tblWasteCode.cs">
       <DependentUpon>CMCEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\DBEntityExtensions.cs" />
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -533,6 +533,7 @@
     <Compile Include="Services\ApplicationService.cs" />
     <Compile Include="Services\BulkService.cs" />
     <Compile Include="Services\ClientService.cs" />
+    <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\GHSService.cs" />
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\InvoiceService.cs" />

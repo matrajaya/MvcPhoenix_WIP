@@ -3,7 +3,6 @@ using MvcPhoenix.Models;
 using MvcPhoenix.Services;
 using PagedList;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -14,8 +13,9 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            List<BulkContainerViewModel> mylist = ReceivingService.fnIndexList();
-            return View("~/Views/Receiving/Index.cshtml", mylist);
+            var bulkContainers = ReceivingService.GetBulkContainers();
+
+            return View("~/Views/Receiving/Index.cshtml", bulkContainers);
         }
 
         [HttpGet]
@@ -23,20 +23,22 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new CMCSQL03Entities())
             {
-                var obj = (from t in db.tblBulkUnKnown
-                           orderby t.BulkID descending
-                           select t).ToList();
+                var UnknownBulkItems = db.tblBulkUnKnown
+                                         .OrderByDescending(x => x.BulkID)
+                                         .ToList();
 
-                return PartialView("~/Views/Receiving/_UnknownBulkList.cshtml", obj);
+                return PartialView("~/Views/Receiving/_UnknownBulkList.cshtml", UnknownBulkItems);
             }
         }
 
         public ActionResult DeleteUnknownBulk(int id)
         {
+            int bulkId = id;
+
             using (var db = new CMCSQL03Entities())
             {
-                string s = @"DELETE FROM tblBulkUnKnown WHERE BulkID=" + id.ToString();
-                db.Database.ExecuteSqlCommand(s);
+                string deleteQuery = @"DELETE FROM tblBulkUnKnown WHERE BulkID=" + bulkId;
+                db.Database.ExecuteSqlCommand(deleteQuery);
             }
 
             return null;
@@ -52,33 +54,36 @@ namespace MvcPhoenix.Controllers
                 {
                     page = 1;
                 }
-                else { searchString = currentFilter; }
+                else 
+                { 
+                    searchString = currentFilter; 
+                }
 
                 ViewBag.CurrentFilter = searchString;
 
-                var productCodes = (from pd in db.tblProductDetail
-                                    join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                                    join c in db.tblClient on pm.ClientID equals c.ClientID
+                var productCodes = (from productdetail in db.tblProductDetail
+                                    join productmaster in db.tblProductMaster on productdetail.ProductMasterID equals productmaster.ProductMasterID
+                                    join client in db.tblClient on productmaster.ClientID equals client.ClientID
                                     select new ProductProfile
                                     {
-                                        clientid = c.ClientID,
-                                        clientname = c.ClientName,
-                                        productmasterid = pm.ProductMasterID,
-                                        mastercode = pm.MasterCode,
-                                        mastername = pm.MasterName,
-                                        productdetailid = pd.ProductDetailID,
-                                        productcode = pd.ProductCode,
-                                        productname = pd.ProductName
+                                        clientid = client.ClientID,
+                                        clientname = client.ClientName,
+                                        productmasterid = productmaster.ProductMasterID,
+                                        mastercode = productmaster.MasterCode,
+                                        mastername = productmaster.MasterName,
+                                        productdetailid = productdetail.ProductDetailID,
+                                        productcode = productdetail.ProductCode,
+                                        productname = productdetail.ProductName
                                     });
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     productCodes = productCodes.Where(
                         p => p.mastercode.Contains(searchString)
-                            || p.mastername.Contains(searchString)
-                            || p.productcode.Contains(searchString)
-                            || p.productname.Contains(searchString))
-                            .OrderBy(p => p.mastercode);
+                          || p.mastername.Contains(searchString)
+                          || p.productcode.Contains(searchString)
+                          || p.productname.Contains(searchString))
+                              .OrderBy(p => p.mastercode);
                 }
 
                 int pageSize = 20;
@@ -88,43 +93,27 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        // TODO: Repurpose for open orders check - Iffy
-        //public ActionResult SetUpReceiveKnown()
-        //{
-        //    return View("~/Views/Receiving/SelectProduct.cshtml");
-        //}
-
-        // TODO: Repurpose for open orders check - Iffy
-        //public ActionResult SetUpReceivePrePack()
-        //{
-        //    return View("~/Views/Receiving/SelectPrePack.cshtml");
-        //}
-
         [HttpGet]
         public ActionResult SetupReceiveUnKnown()
         {
-            // Load view to receive unknown bulk material
-            BulkContainerViewModel obj = new BulkContainerViewModel();
-            obj = ReceivingService.fnNewBulkContainerUnKnown();
-            return View("~/Views/Receiving/Edit.cshtml", obj);
+            var bulkContainerUnknown = ReceivingService.NewBulkContainerUnKnown();
+
+            return View("~/Views/Receiving/Edit.cshtml", bulkContainerUnknown);
         }
 
         public ActionResult BuildProductMasterDropDown(int clientId)
         {
-            // id=clientid .. return the <option> values for the <select> tag
-            return Content(ApplicationService.ddlBuildProductMasterDropDown(clientId));
+            return Content(ApplicationService.ddlBuildProductMaster(clientId));
         }
 
-        // TODO: Move to inventory - Iffy
-        // parse productmasterid to method instead of formcollection
-        public ActionResult CheckForOpenOrderItems(FormCollection fc)
+        public ActionResult CheckForOpenOrderItems(FormCollection form)
         {
-            // Build list of open order items and return a partial
-            int pk = Convert.ToInt32(fc["productmasterid"]);
-            List<OpenBulkOrderItems> result = ReceivingService.fnOpenBulkOrderItems(pk);
-            if (result.Count() > 0)
+            int productMasterId = Convert.ToInt32(form["productmasterid"]);
+            var bulkOrderItems = BulkService.GetOpenBulkOrderItems(productMasterId);
+
+            if (bulkOrderItems.Count() > 0)
             {
-                return PartialView("~/Views/Receiving/_OpenOrderItems.cshtml", result);
+                return PartialView("~/Views/Receiving/_OpenOrderItems.cshtml", bulkOrderItems);
             }
             else
             {
@@ -134,61 +123,59 @@ namespace MvcPhoenix.Controllers
 
         public void TagItemToBeClosed(int id, bool ischecked)
         {
-            // Called from the onchange event of the checkbox on the view
-            // Tag an open order item to be closed later on Save
-            ReceivingService.fnTagItemToBeClosed(id, ischecked);
+            int bulkOrderItemId = id;
+
+            BulkService.CloseBulkOrderItem(bulkOrderItemId, ischecked);
         }
 
         public ActionResult BuildProductCodeDropDown(int clientid)
         {
-            return Content(ApplicationService.ddlBuildProductCodeDropDown(clientid));
+            return Content(ApplicationService.ddlBuildProductCode(clientid));
         }
 
         public ActionResult EnterPrePack(int clientid, int productdetailid)
         {
-            PrePackViewModel obj = new PrePackViewModel();
-            obj = ReceivingService.fnNewBulkContainerForPrePack(clientid, productdetailid);
-            return View("~/Views/Receiving/EnterPrePack.cshtml", obj);
+            var prePack = ReceivingService.NewBulkContainerPrePack(clientid, productdetailid);
+
+            return View("~/Views/Receiving/EnterPrePack.cshtml", prePack);
         }
 
         [HttpPost]
-        public ActionResult SavePrePack(PrePackViewModel vm, FormCollection fc)
+        public ActionResult SavePrePack(PrePackViewModel prepack, FormCollection form)
         {
-            bool bSave = ReceivingService.fnSavePrePack(vm, fc);
+            ReceivingService.SavePrePack(prepack, form);
+
             return Content("Items Added to Shelf Stock on " + DateTime.UtcNow.ToString("R"));
         }
 
         [HttpGet]
         public ActionResult CreateContainerReceipt(int productmasterid, int? productdetailid)
         {
-            // id = productmasterid .. Build a new viewmodel of a bulk container and load the edit view
-            BulkContainerViewModel obj = new BulkContainerViewModel();
-            obj = ReceivingService.fnNewBulkContainer(productmasterid, productdetailid);
-            return View("~/Views/Receiving/Edit.cshtml", obj);
+            var bulkContainer = ReceivingService.NewBulkContainer(productmasterid, productdetailid);
+
+            return View("~/Views/Receiving/Edit.cshtml", bulkContainer);
         }
 
         [HttpGet]
         public ActionResult EditContainerReceipt(int id)
         {
-            // id = bulkid .. Lookup row in DB and load the edit view
-            BulkContainerViewModel obj = new BulkContainerViewModel();
-            obj = ReceivingService.fnFillBulkContainerFromDB(id);
-            return View("~/Views/Receiving/Edit.cshtml", obj);
+            int bulkId = id;
+            var bulkContainer = ReceivingService.GetBulkContainer(bulkId);
+
+            return View("~/Views/Receiving/Edit.cshtml", bulkContainer);
         }
-        
+
         [HttpPost]
-        public ActionResult SaveContainer(BulkContainerViewModel bc)
+        public ActionResult SaveContainer(BulkContainerViewModel bulkContainer)
         {
-            // Update a tblBulk record from a BulkContainerViewModel
-            bool bUpdate;
-            switch (bc.isknownmaterial)
+            switch (bulkContainer.isknownmaterial)
             {
                 case true:
-                    bUpdate = ReceivingService.fnSaveBulkContainerKnown(bc);
+                    ReceivingService.SaveBulkContainerKnown(bulkContainer);
                     break;
 
                 case false:
-                    bUpdate = ReceivingService.fnSaveBulkContainerUnKnown(bc);
+                    ReceivingService.SaveBulkContainerUnKnown(bulkContainer);
                     break;
 
                 default:

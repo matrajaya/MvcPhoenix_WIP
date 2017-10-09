@@ -1,5 +1,8 @@
 ﻿using MvcPhoenix.EF;
+using MvcPhoenix.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 
@@ -7,20 +10,126 @@ namespace MvcPhoenix.Models
 {
     public class ProductsService
     {
-        public static ProductProfile FillFromPM(ProductProfile productProfile)
+        public static ProductProfile GetProductDetail(int productdetailid)
         {
+            var productProfile = new ProductProfile();
+            productProfile.productdetailid = productdetailid;
+
+            productProfile = ProductsService.GetProductDetail(productProfile);
+
+            return productProfile;
+        }
+
+        public static ProductProfile GetProductDetail(ProductProfile productProfile)
+        {
+            int? productDetailId = productProfile.productdetailid;
+
             using (var db = new CMCSQL03Entities())
             {
-                var productMaster = (from t in db.tblProductMaster
-                                     where t.ProductMasterID == productProfile.productmasterid
-                                     select t).FirstOrDefault();
+                var productDetail = db.tblProductDetail.Find(productDetailId);
 
-                var client = (from t in db.tblClient
-                              where t.ClientID == productMaster.ClientID
-                              select t).FirstOrDefault();
+                productProfile.productdetailid = productDetail.ProductDetailID;
+                productProfile.productmasterid = productDetail.ProductMasterID;
+                productProfile.divisionid = productDetail.DivisionID;
+                productProfile.productcode = productDetail.ProductCode;
+                productProfile.productname = productDetail.ProductName;
+                productProfile.custcode = productDetail.CustCode;
+                productProfile.multilotreq = productDetail.MultiLotReq;
+                productProfile.extendableexpdt = productDetail.ExtendableExpDt;
+                productProfile.harmonizedcode = productDetail.HarmonizedCode;
+                productProfile.enduse = productDetail.EndUse;
+                productProfile.sgrevisiondate = productDetail.SGRevisionDate;
+                productProfile.msdsrevisiondate = productDetail.MSDSRevisionDate;
+                productProfile.msdsrevisionnumber = productDetail.MSDSRevisionNumber;
+                productProfile.labelrevisiondate = productDetail.LabelRevisionDate;
+                productProfile.labelnumber = productDetail.LabelNumber;
+                productProfile.productchecked = productDetail.ProductChecked;
+                productProfile.checkedby = productDetail.CheckedBy;
+                productProfile.checkedwhen = productDetail.CheckedWhen;
+                productProfile.epabiocide = productDetail.EPABiocide;
+                productProfile.labelinfo = productDetail.LabelInfo;
+                productProfile.ghsready = productDetail.GHSReady;
+                productProfile.customsvalue = productDetail.CustomsValue;
+                productProfile.customsvalueunit = productDetail.CustomsValueUnit;
+                productProfile.globalproduct = productDetail.GlobalProduct;
+                productProfile.polymerizationhazard = productDetail.PolymerizationHazard;
+                productProfile.sdscontactname = productDetail.SDSContactName;
+                productProfile.sdscontactphone = productDetail.SDSContactPhone;
+                productProfile.chinacertificationdate = productDetail.ChinaCertificationDate;
+                productProfile.labelcontactname = productDetail.LabelContactName;
+                productProfile.labelcontactphone = productDetail.LabelContactPhone;
+                productProfile.technicalsheet = productDetail.TechnicalSheet;
+                productProfile.technicalsheetrevisondate = productDetail.TechnicalSheetRevisionDate;
+                productProfile.emergencycontactnumber = productDetail.EmergencyContactNumber;
+                productProfile.epahazardouswaste = productDetail.EPAHazardousWaste;
+                productProfile.nonrcrawaste = productDetail.NonRCRAWaste;
+                productProfile.wasteprofilenumber = productDetail.WasteProfileNumber;
+                productProfile.shippingchemicalname = productDetail.ShippingChemicalName;
+                productProfile.labelnotesepa = productDetail.LabelNotesEPA;
+                productProfile.grnunnumber = productDetail.GRNUNNUMBER;
+                productProfile.grnpkgrp = productDetail.GRNPKGRP;
+                productProfile.grnhazsubcl = productDetail.GRNHAZSUBCL;
+                productProfile.grnlabel = productDetail.GRNLABEL;
+                productProfile.grnsublabel = productDetail.GRNSUBLABEL;
+                productProfile.grnhazcl = productDetail.GRNHAZCL;
+                productProfile.grnshipname = productDetail.GRNSHIPNAME;
+                productProfile.grnosname = productDetail.GRNOSNAME;
+                productProfile.grnshipnamed = productDetail.GRNSHIPNAMED;
+                productProfile.grntremacard = productDetail.GRNTREMACARD;
+                productProfile.airunnumber = productDetail.AIRUNNUMBER;
+                productProfile.airpkgrp = productDetail.AIRPKGRP;
+                productProfile.airhazsubcl = productDetail.AIRHAZSUBCL;
+                productProfile.airlabel = productDetail.AIRLABEL;
+                productProfile.airsublabel = productDetail.AIRSUBLABEL;
+                productProfile.airhazcl = productDetail.AIRHAZCL;
+                productProfile.airshipname = productDetail.AIRSHIPNAME;
+                productProfile.airnosname = productDetail.AIRNOSNAME;
+                productProfile.seaunnum = productDetail.SEAUNNUM;
+                productProfile.seapkgrp = productDetail.SEAPKGRP;
+                productProfile.seahazsubcl = productDetail.SEAHAZSUBCL;
+                productProfile.sealabel = productDetail.SEALABEL;
+                productProfile.seasublabel = productDetail.SEASUBLABEL;
+                productProfile.seahazcl = productDetail.SEAHAZCL;
+                productProfile.seashipname = productDetail.SEASHIPNAME;
+                productProfile.seanosname = productDetail.SEANOSNAME;
+                productProfile.seashipnamed = productDetail.SEASHIPNAMED;
+                productProfile.seahazmat = productDetail.SEAHAZMAT;
+                productProfile.seaemsno = productDetail.SEAEMSNO;
+                productProfile.seamfagno = productDetail.SEAMFAGNO;
+                productProfile.rcraunnumber = productDetail.RCRAUNNumber;
+                productProfile.rcrapkgrp = productDetail.RCRAPKGRP;
+                productProfile.rcrahazsubcl = productDetail.RCRAHAZSUBCL;
+                productProfile.rcralabel = productDetail.RCRALABEL;
+                productProfile.rcrasublabel = productDetail.RCRASUBLABEL;
+                productProfile.rcrahazcl = productDetail.RCRAHAZCL;
+                productProfile.rcrashipname = productDetail.RCRASHIPNAME;
+                productProfile.rcranosname = productDetail.RCRANOSNAME;
+                productProfile.alertnotesshipping = productDetail.AlertNotesShipping;
+                productProfile.alertnotesorderentry = productDetail.AlertNotesOrderEntry;
+                productProfile.accuracyverified = productDetail.AccuracyVerified;
+                productProfile.accuracyverifiedby = productDetail.AccuracyVerifiedBy;
+                productProfile.active = productDetail.Active;
+                productProfile.activedate = productDetail.ActiveDate;
+                productProfile.CreateDateDetail = productDetail.CreateDate;
+                productProfile.CreateUserDetail = productDetail.CreateUser;
+                productProfile.UpdateDateDetail = productDetail.UpdateDate;
+                productProfile.UpdateUserDetail = productDetail.UpdateUser;
+            }
+
+            return productProfile;
+        }
+
+        public static ProductProfile GetProductMaster(ProductProfile productProfile)
+        {
+            int? productMasterId = productProfile.productmasterid;
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var productMaster = db.tblProductMaster.Find(productMasterId);
+                var client = db.tblClient.Find(productMaster.ClientID);
 
                 productProfile.productmasterid = productMaster.ProductMasterID;
-                productProfile.clientid = productMaster.ClientID;
+                productProfile.clientid = Convert.ToInt32(productMaster.ClientID);
                 productProfile.clientname = client.ClientName;
                 productProfile.mastercode = productMaster.MasterCode;
                 productProfile.mastername = productMaster.MasterName;
@@ -150,162 +259,95 @@ namespace MvcPhoenix.Models
             return productProfile;
         }
 
-        public static ProductProfile FillFromPD(ProductProfile productProfile)
+        public static ProductProfile GetProductExtendedProps(ProductProfile productProfile)
         {
-            using (var db = new CMCSQL03Entities())
-            {
-                var productDetail = (from t in db.tblProductDetail
-                                     where t.ProductDetailID == productProfile.productdetailid
-                                     select t).FirstOrDefault();
+            int? productDetailId = productProfile.productdetailid;
 
-                productProfile.productdetailid = productDetail.ProductDetailID;
-                productProfile.productmasterid = productDetail.ProductMasterID;
-                productProfile.divisionid = productDetail.DivisionID;
-                productProfile.productcode = productDetail.ProductCode;
-                productProfile.productname = productDetail.ProductName;
-                productProfile.custcode = productDetail.CustCode;
-                productProfile.multilotreq = productDetail.MultiLotReq;
-                productProfile.extendableexpdt = productDetail.ExtendableExpDt;
-                productProfile.harmonizedcode = productDetail.HarmonizedCode;
-                productProfile.enduse = productDetail.EndUse;
-                productProfile.sgrevisiondate = productDetail.SGRevisionDate;
-                productProfile.msdsrevisiondate = productDetail.MSDSRevisionDate;
-                productProfile.msdsrevisionnumber = productDetail.MSDSRevisionNumber;
-                productProfile.labelrevisiondate = productDetail.LabelRevisionDate;
-                productProfile.labelnumber = productDetail.LabelNumber;
-                productProfile.productchecked = productDetail.ProductChecked;
-                productProfile.checkedby = productDetail.CheckedBy;
-                productProfile.checkedwhen = productDetail.CheckedWhen;
-                productProfile.epabiocide = productDetail.EPABiocide;
-                productProfile.labelinfo = productDetail.LabelInfo;
-                productProfile.ghsready = productDetail.GHSReady;
-                productProfile.customsvalue = productDetail.CustomsValue;
-                productProfile.customsvalueunit = productDetail.CustomsValueUnit;
-                productProfile.globalproduct = productDetail.GlobalProduct;
-                productProfile.polymerizationhazard = productDetail.PolymerizationHazard;
-                productProfile.sdscontactname = productDetail.SDSContactName;
-                productProfile.sdscontactphone = productDetail.SDSContactPhone;
-                productProfile.chinacertificationdate = productDetail.ChinaCertificationDate;
-                productProfile.labelcontactname = productDetail.LabelContactName;
-                productProfile.labelcontactphone = productDetail.LabelContactPhone;
-                productProfile.technicalsheet = productDetail.TechnicalSheet;
-                productProfile.technicalsheetrevisondate = productDetail.TechnicalSheetRevisionDate;
-                productProfile.emergencycontactnumber = productDetail.EmergencyContactNumber;
-                productProfile.epahazardouswaste = productDetail.EPAHazardousWaste;
-                productProfile.nonrcrawaste = productDetail.NonRCRAWaste;
-                productProfile.wasteprofilenumber = productDetail.WasteProfileNumber;
-                productProfile.shippingchemicalname = productDetail.ShippingChemicalName;
-                productProfile.labelnotesepa = productDetail.LabelNotesEPA;
-                productProfile.grnunnumber = productDetail.GRNUNNUMBER;
-                productProfile.grnpkgrp = productDetail.GRNPKGRP;
-                productProfile.grnhazsubcl = productDetail.GRNHAZSUBCL;
-                productProfile.grnlabel = productDetail.GRNLABEL;
-                productProfile.grnsublabel = productDetail.GRNSUBLABEL;
-                productProfile.grnhazcl = productDetail.GRNHAZCL;
-                productProfile.grnshipname = productDetail.GRNSHIPNAME;
-                productProfile.grnosname = productDetail.GRNOSNAME;
-                productProfile.grnshipnamed = productDetail.GRNSHIPNAMED;
-                productProfile.grntremacard = productDetail.GRNTREMACARD;
-                productProfile.airunnumber = productDetail.AIRUNNUMBER;
-                productProfile.airpkgrp = productDetail.AIRPKGRP;
-                productProfile.airhazsubcl = productDetail.AIRHAZSUBCL;
-                productProfile.airlabel = productDetail.AIRLABEL;
-                productProfile.airsublabel = productDetail.AIRSUBLABEL;
-                productProfile.airhazcl = productDetail.AIRHAZCL;
-                productProfile.airshipname = productDetail.AIRSHIPNAME;
-                productProfile.airnosname = productDetail.AIRNOSNAME;
-                productProfile.seaunnum = productDetail.SEAUNNUM;
-                productProfile.seapkgrp = productDetail.SEAPKGRP;
-                productProfile.seahazsubcl = productDetail.SEAHAZSUBCL;
-                productProfile.sealabel = productDetail.SEALABEL;
-                productProfile.seasublabel = productDetail.SEASUBLABEL;
-                productProfile.seahazcl = productDetail.SEAHAZCL;
-                productProfile.seashipname = productDetail.SEASHIPNAME;
-                productProfile.seanosname = productDetail.SEANOSNAME;
-                productProfile.seashipnamed = productDetail.SEASHIPNAMED;
-                productProfile.seahazmat = productDetail.SEAHAZMAT;
-                productProfile.seaemsno = productDetail.SEAEMSNO;
-                productProfile.seamfagno = productDetail.SEAMFAGNO;
-                productProfile.rcraunnumber = productDetail.RCRAUNNumber;
-                productProfile.rcrapkgrp = productDetail.RCRAPKGRP;
-                productProfile.rcrahazsubcl = productDetail.RCRAHAZSUBCL;
-                productProfile.rcralabel = productDetail.RCRALABEL;
-                productProfile.rcrasublabel = productDetail.RCRASUBLABEL;
-                productProfile.rcrahazcl = productDetail.RCRAHAZCL;
-                productProfile.rcrashipname = productDetail.RCRASHIPNAME;
-                productProfile.rcranosname = productDetail.RCRANOSNAME;
-                productProfile.alertnotesshipping = productDetail.AlertNotesShipping;
-                productProfile.alertnotesorderentry = productDetail.AlertNotesOrderEntry;
-                productProfile.accuracyverified = productDetail.AccuracyVerified;
-                productProfile.accuracyverifiedby = productDetail.AccuracyVerifiedBy;
-                productProfile.active = productDetail.Active;
-                productProfile.activedate = productDetail.ActiveDate;
-                productProfile.CreateDateDetail = productDetail.CreateDate;
-                productProfile.CreateUserDetail = productDetail.CreateUser;
-                productProfile.UpdateDateDetail = productDetail.UpdateDate;
-                productProfile.UpdateUserDetail = productDetail.UpdateUser;
-            }
+            productProfile.ListOfProductNotes = ProductsService.GetLogNotes(productDetailId);
+
+            productProfile.ListOfCasNumbers = ProductsService.GetCASItems(productDetailId);
+
+            productProfile.ListOfShelfItems = ProductsService.GetShelfItems(productDetailId);
 
             return productProfile;
         }
 
-        public static ProductProfile FillOtherPMProps(ProductProfile productProfile)
+        public static List<ShelfMasterViewModel> GetShelfItems(int? productDetailId)
         {
+            var shelfItems = new List<ShelfMasterViewModel>();
+
             using (var db = new CMCSQL03Entities())
             {
-                productProfile.ListOfProductNotes = (from t in db.tblPPPDLogNote
-                                                     where t.ProductDetailID == productProfile.productdetailid
-                                                     select new ProductNote
-                                                     {
-                                                         productnoteid = t.PPPDLogNoteID,
-                                                         productdetailid = t.ProductDetailID,
-                                                         notedate = t.NoteDate,
-                                                         notes = t.Notes,
-                                                         reasoncode = t.ReasonCode,
-                                                         UpdateDate = t.UpdateDate,
-                                                         UpdateUser = t.UpdateUser,
-                                                         CreateDate = t.CreateDate,
-                                                         CreateUser = t.CreateUser
-                                                     }).ToList();
-
-                productProfile.ListOfCasNumbers = (from t in db.tblCAS
-                                                   where t.ProductDetailID == productProfile.productdetailid
-                                                   select new Cas
-                                                   {
-                                                       casid = t.CASID,
-                                                       productdetailid = t.ProductDetailID,
-                                                       casnumber = t.CasNumber,
-                                                       chemicalname = t.ChemicalName,
-                                                       percentage = t.Percentage,
-                                                       restrictedqty = t.RestrictedQty,
-                                                       restrictedamount = t.RestrictedAmount,
-                                                       reportableqty = t.ReportableQty,
-                                                       reportableamount = t.ReportableAmount,
-                                                       lessthan = t.LessThan,
-                                                       excludefromlabel = t.ExcludeFromLabel
-                                                   }).ToList();
-
-                // example of a left outer join with concept of Flattening the join (convert to use a SQL View later)
-                var shelfItems = (from t in db.tblShelfMaster
-                                  join p in db.tblPackage on t.PackageID equals p.PackageID into temp
-                                  from m in temp.DefaultIfEmpty()
-                                  where t.ProductDetailID == productProfile.productdetailid
-                                  select new ShelfMasterViewModel
-                                  {
-                                      shelfid = t.ShelfID,
-                                      size = t.Size,
-                                      bin = t.Bin,
-                                      packageid = t.PackageID,
-                                      notes = t.Notes,
-                                      reordermin = t.ReorderMin,
-                                      reordermax = t.ReorderMax,
-                                      reorderqty = t.ReorderQty
-                                  }).ToList();
-
-                productProfile.ListOfShelfItems = shelfItems;
+                shelfItems = (from t in db.tblShelfMaster
+                              join p in db.tblPackage on t.PackageID equals p.PackageID into temp
+                              from m in temp.DefaultIfEmpty()
+                              where t.ProductDetailID == productDetailId
+                              select new ShelfMasterViewModel
+                              {
+                                  shelfid = t.ShelfID,
+                                  size = t.Size,
+                                  bin = t.Bin,
+                                  packageid = t.PackageID,
+                                  notes = t.Notes,
+                                  reordermin = t.ReorderMin,
+                                  reordermax = t.ReorderMax,
+                                  reorderqty = t.ReorderQty
+                              }).ToList();
             }
 
-            return productProfile;
+            return shelfItems;
+        }
+
+        private static List<Cas> GetCASItems(int? productDetailId)
+        {
+            var casItems = new List<Cas>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                casItems = (from t in db.tblCAS
+                            where t.ProductDetailID == productDetailId
+                            select new Cas
+                            {
+                                casid = t.CASID,
+                                productdetailid = t.ProductDetailID,
+                                casnumber = t.CasNumber,
+                                chemicalname = t.ChemicalName,
+                                percentage = t.Percentage,
+                                restrictedqty = t.RestrictedQty,
+                                restrictedamount = t.RestrictedAmount,
+                                reportableqty = t.ReportableQty,
+                                reportableamount = t.ReportableAmount,
+                                lessthan = t.LessThan,
+                                excludefromlabel = t.ExcludeFromLabel
+                            }).ToList();
+            }
+
+            return casItems;
+        }
+
+        private static List<ProductNote> GetLogNotes(int? productDetailId)
+        {
+            var logNotes = new List<ProductNote>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                logNotes = (from t in db.tblPPPDLogNote
+                            where t.ProductDetailID == productDetailId
+                            select new ProductNote
+                            {
+                                productnoteid = t.PPPDLogNoteID,
+                                productdetailid = t.ProductDetailID,
+                                notedate = t.NoteDate,
+                                notes = t.Notes,
+                                reasoncode = t.ReasonCode,
+                                UpdateDate = t.UpdateDate,
+                                UpdateUser = t.UpdateUser,
+                                CreateDate = t.CreateDate,
+                                CreateUser = t.CreateUser
+                            }).ToList();
+            }
+
+            return logNotes;
         }
 
         public static int? GetProductMasterId(int productDetailId)
@@ -313,9 +355,9 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 int? productMasterId = db.tblProductDetail
-                                         .Where(x => x.ProductDetailID == productDetailId)                
+                                         .Where(x => x.ProductDetailID == productDetailId)
                                          .Select(x => x.ProductMasterID).FirstOrDefault();
-                
+
                 return productMasterId;
             }
         }
@@ -334,46 +376,156 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static int SaveProductProfile(ProductProfile productProfile)
+        public static int CreateEquivalent(int productDetailId)
         {
-            int pkProductMaster;
-            int pkProductDetail;
+            var productProfile = new ProductProfile();
+            productProfile.productdetailid = productDetailId;
 
-            if (productProfile.productmasterid == -1)
+            productProfile = ProductsService.GetProductDetail(productProfile);
+            productProfile = ProductsService.GetProductMaster(productProfile);
+            productProfile = ProductsService.GetProductExtendedProps(productProfile);
+
+            // create new record and clear select values for manual entry
+            productProfile.productdetailid = ProductsService.NewProductDetailId();
+            productProfile.productcode = productProfile.productcode + " Clone";
+            productProfile.productname = productProfile.productname + " Clone";
+            productProfile.sgrevisiondate = DateTime.UtcNow;
+            productProfile.createdate = DateTime.UtcNow;
+            productProfile.CreateDateDetail = DateTime.UtcNow;
+            productProfile.CreateUserDetail = HttpContext.Current.User.Identity.Name;
+            productProfile.UpdateDateDetail = DateTime.UtcNow;
+            productProfile.UpdateUserDetail = HttpContext.Current.User.Identity.Name;
+
+            // Save product profile in memory to db with new productdetailid
+            int newProductDetailId = ProductsService.SaveProductProfile(productProfile);
+
+            // Clone details of original product shelfsize, ghs, and cas for new productdetailid
+            ProductsService.CloneShelfItems(productDetailId, productProfile.productdetailid);
+            ProductsService.CloneGHSItems(productDetailId, productProfile.productdetailid);
+            ProductsService.ClonePHItems(productDetailId, productProfile.productdetailid);
+            ProductsService.CloneCASItems(productDetailId, productProfile.productdetailid);
+
+            // Create product log note
+            var productNote = new ProductNote();
+            productNote.productdetailid = productProfile.productdetailid;
+            productNote.notedate = DateTime.UtcNow;
+            productNote.notes = "Equivalent created from product id: " + productDetailId;
+            productNote.reasoncode = "New";
+
+            ProductsService.SaveProductNote(productNote);
+
+            return newProductDetailId;
+        }
+        #region Clone
+
+        private static void CloneCASItems(int originalProductDetailId, int newProductDetailId)
+        {
+            using (var db = new CMCSQL03Entities())
             {
-                productProfile.productmasterid = NewProductMasterID();
+                var casItems = db.tblCAS
+                                 .Where(x => x.ProductDetailID == originalProductDetailId)
+                                 .ToList();
 
-                if (productProfile.productdetailid == -1)
+                for (int i = 0; i < casItems.Count; i++)
                 {
-                    productProfile.productdetailid = NewProductDetailID();
+                    var newCas = casItems[i].Clone();
+                    newCas.ProductDetailID = newProductDetailId;
 
-                    using (var db = new CMCSQL03Entities())
-                    {
-                        var productDetailLogNote = new tblPPPDLogNote();
-
-                        productDetailLogNote.ProductDetailID = productProfile.productdetailid;
-                        productDetailLogNote.NoteDate = DateTime.UtcNow;
-                        productDetailLogNote.Notes = "Master product created";
-                        productDetailLogNote.ReasonCode = "New";
-                        productDetailLogNote.CreateDate = DateTime.UtcNow;
-                        productDetailLogNote.CreateUser = HttpContext.Current.User.Identity.Name;
-                        productDetailLogNote.UpdateDate = DateTime.UtcNow;
-                        productDetailLogNote.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                        db.tblPPPDLogNote.Add(productDetailLogNote);
-                        db.SaveChanges();
-                    }
+                    db.tblCAS.Add(newCas);
+                    db.SaveChanges();
                 }
             }
+        }
 
-            SaveProductMaster(productProfile);
-
-            if (productProfile.productdetailid == -1)
+        private static void ClonePHItems(int originalProductDetailId, int newProductDetailId)
+        {
+            using (var db = new CMCSQL03Entities())
             {
-                productProfile.productdetailid = NewProductDetailID();
+                var phItems = db.tblGHSPHDetail
+                                .Where(x => x.ProductDetailID == originalProductDetailId)
+                                .ToList();
+
+                for (int i = 0; i < phItems.Count; i++)
+                {
+                    var newPh = phItems[i].Clone();
+                    newPh.ProductDetailID = newProductDetailId;
+
+                    db.tblGHSPHDetail.Add(newPh);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        private static void CloneGHSItems(int originalProductDetailId, int newProductDetailId)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var ghsItems = db.tblGHS
+                                 .Where(x=>x.ProductDetailID == originalProductDetailId)
+                                .ToList();
+
+                for (int i = 0; i < ghsItems.Count; i++)
+                {
+                    var newGhs = ghsItems[i].Clone();
+                    newGhs.ProductDetailID = newProductDetailId;
+
+                    db.tblGHS.Add(newGhs);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        private static void CloneShelfItems(int originalProductDetailId, int newProductDetailId)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var shelfItems = db.tblShelfMaster
+                                   .Where(x=>x.ProductDetailID == originalProductDetailId)
+                                   .ToList();
+
+                for (int i = 0; i < shelfItems.Count; i++)
+                {
+                    var newShelfItem = shelfItems[i].Clone();
+                    newShelfItem.ProductDetailID = newProductDetailId;
+
+                    db.tblShelfMaster.Add(newShelfItem);
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        #endregion
+
+        public static int SaveProductProfile(ProductProfile productProfile)
+        {
+            var productNote = new ProductNote();
+            bool isNew = false;
+
+            if (productProfile.productmasterid < 1)
+            {
+                productProfile.productmasterid = ProductsService.NewProductMasterId();
+                productNote.notes = "Master product created";
+                isNew = true;
             }
 
-            SaveProductDetail(productProfile);
+            if (productProfile.productdetailid < 1)
+            {
+                productProfile.productdetailid = ProductsService.NewProductDetailId();
+                productNote.notes = "New product created";
+                isNew = true;
+            }
+
+            ProductsService.SaveProductMaster(productProfile);
+            ProductsService.SaveProductDetail(productProfile);
+
+            if (isNew)
+            {
+                productNote.reasoncode = "New";
+                productNote.productdetailid = productProfile.productdetailid;
+                productNote.notedate = DateTime.UtcNow;
+
+                ProductsService.SaveProductNote(productNote);
+            }
 
             return productProfile.productdetailid;
         }
@@ -473,6 +625,8 @@ namespace MvcPhoenix.Models
                 {
                     productDetail.AccuracyVerifiedBy = HttpContext.Current.User.Identity.Name;
                 }
+
+                productDetail.CustomsValueUnit = "placeholder";
 
                 db.SaveChanges();
             }
@@ -606,12 +760,12 @@ namespace MvcPhoenix.Models
                 productMaster.RCRAReviewDate = productProfile.rcrareviewdate;
                 productMaster.WasteAccumStartDate = productProfile.wasteaccumstartdate;
                 productMaster.ProductSetupDate = productProfile.productsetupdate;
-
+                
                 db.SaveChanges();
             }
         }
 
-        public static int NewProductDetailID()
+        public static int NewProductDetailId()
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -628,7 +782,7 @@ namespace MvcPhoenix.Models
             }
         }
 
-        public static int NewProductMasterID()
+        public static int NewProductMasterId()
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -639,9 +793,9 @@ namespace MvcPhoenix.Models
                 db.tblProductMaster.Add(productMaster);
                 db.SaveChanges();
 
-                int newProductMaster = productMaster.ProductMasterID;
+                int newProductMasterId = productMaster.ProductMasterID;
 
-                return newProductMaster;
+                return newProductMasterId;
             }
         }
 
@@ -650,22 +804,19 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 string updateQuery = "UPDATE tblProductMaster SET Discontinued=1 WHERE ProductMasterID=" + productMasterId;
-
                 db.Database.ExecuteSqlCommand(updateQuery);
             }
         }
 
         public static UN GetUN(string unNumber)
         {
-            // fill a json object for View use
+            var un = new UN();
+
             using (var db = new CMCSQL03Entities())
             {
-                UN un = new UN();
-
-                var getUN = (from t in db.tblUN
-                             orderby t.UNID descending
-                             where t.UNNumber == unNumber
-                             select t).FirstOrDefault();
+                var getUN = db.tblUN.OrderByDescending(x => x.UNID)
+                                    .Where(x => x.UNNumber == unNumber)
+                                    .FirstOrDefault();
 
                 un.unid = getUN.UNID;
                 un.unnumber = getUN.UNNumber;
@@ -676,21 +827,21 @@ namespace MvcPhoenix.Models
                 un.subclass = getUN.SubClass;
                 un.subsidlabelreq = getUN.SubSidLabelReq;
                 un.packinggroup = getUN.PackingGroup;
-
-                return un;
             }
+
+            return un;
         }
 
         #region ProductNotes Methods
 
         public static ProductNote CreateProductNote(int productDetailId)
         {
-            ProductNote productNote = new ProductNote();
+            var productNote = new ProductNote();
 
             using (var db = new CMCSQL03Entities())
             {
                 productNote.productnoteid = -1;
-                productNote.productdetailid = productDetailId;  // important
+                productNote.productdetailid = productDetailId;
                 productNote.reasoncode = null;
                 productNote.notedate = DateTime.UtcNow;
                 productNote.notes = null;
@@ -705,13 +856,11 @@ namespace MvcPhoenix.Models
 
         public static ProductNote GetProductNote(int productDetailLogNoteId)
         {
-            ProductNote productNote = new ProductNote();
+            var productNote = new ProductNote();
 
             using (var db = new CMCSQL03Entities())
             {
-                var getProductNote = (from t in db.tblPPPDLogNote
-                                      where t.PPPDLogNoteID == productDetailLogNoteId
-                                      select t).FirstOrDefault();
+                var getProductNote = db.tblPPPDLogNote.Find(productDetailLogNoteId);
 
                 productNote.productnoteid = getProductNote.PPPDLogNoteID;
                 productNote.productdetailid = getProductNote.ProductDetailID;
@@ -727,11 +876,11 @@ namespace MvcPhoenix.Models
             return productNote;
         }
 
-        public static int SaveProductNote(ProductNote productNote)
+        public static void SaveProductNote(ProductNote productNote)
         {
             using (var db = new CMCSQL03Entities())
             {
-                if (productNote.productnoteid == -1)
+                if (productNote.productnoteid < 1)
                 {
                     var newProductDetailLogNote = new tblPPPDLogNote();
                     newProductDetailLogNote.CreateDate = DateTime.UtcNow;
@@ -743,9 +892,7 @@ namespace MvcPhoenix.Models
                     productNote.productnoteid = newProductDetailLogNote.PPPDLogNoteID;
                 }
 
-                var productDetailLogNote = (from t in db.tblPPPDLogNote
-                                            where t.PPPDLogNoteID == productNote.productnoteid
-                                            select t).FirstOrDefault();
+                var productDetailLogNote = db.tblPPPDLogNote.Find(productNote.productnoteid);
 
                 productDetailLogNote.ProductDetailID = productNote.productdetailid;
                 productDetailLogNote.NoteDate = productNote.notedate;
@@ -753,21 +900,18 @@ namespace MvcPhoenix.Models
                 productDetailLogNote.ReasonCode = productNote.reasoncode;
                 productDetailLogNote.UpdateDate = DateTime.UtcNow;
                 productDetailLogNote.UpdateUser = HttpContext.Current.User.Identity.Name;
-
+                
                 db.SaveChanges();
-
-                return productDetailLogNote.PPPDLogNoteID;
             }
         }
 
-        public static int DeleteProductNote(int productDetailLogNoteId)
+        public static void DeleteProductNote(int productDetailLogNoteId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                db.Database.ExecuteSqlCommand("DELETE FROM tblPPPDLogNote WHERE PPPDLogNoteID=" + productDetailLogNoteId);
+                string deleteQuery = "DELETE FROM tblPPPDLogNote WHERE PPPDLogNoteID=" + productDetailLogNoteId;
+                db.Database.ExecuteSqlCommand(deleteQuery);
             }
-
-            return productDetailLogNoteId;
         }
 
         #endregion ProductNotes Methods
@@ -789,9 +933,7 @@ namespace MvcPhoenix.Models
 
             using (var db = new CMCSQL03Entities())
             {
-                var getCAS = (from t in db.tblCAS
-                              where t.CASID == casId
-                              select t).FirstOrDefault();
+                var getCAS = db.tblCAS.Find(casId);
 
                 cas.casid = getCAS.CASID;
                 cas.productdetailid = getCAS.ProductDetailID;
@@ -804,12 +946,12 @@ namespace MvcPhoenix.Models
                 cas.reportableamount = getCAS.ReportableAmount;
                 cas.lessthan = getCAS.LessThan;
                 cas.excludefromlabel = getCAS.ExcludeFromLabel;
-
-                return cas;
             }
+
+            return cas;
         }
 
-        public static int SaveCAS(Cas cas)
+        public static void SaveCAS(Cas cas)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -817,13 +959,12 @@ namespace MvcPhoenix.Models
                 {
                     var newrec = new tblCAS();
                     db.tblCAS.Add(newrec);
+
                     db.SaveChanges();
                     cas.casid = newrec.CASID;
                 }
 
-                var CAS = (from t in db.tblCAS
-                           where t.CASID == cas.casid
-                           select t).FirstOrDefault();
+                var CAS = db.tblCAS.Find(cas.casid);
 
                 CAS.ProductDetailID = cas.productdetailid;
                 CAS.CasNumber = cas.casnumber;
@@ -837,85 +978,75 @@ namespace MvcPhoenix.Models
                 CAS.ExcludeFromLabel = cas.excludefromlabel;
 
                 db.SaveChanges();
-
-                return CAS.CASID;
             }
         }
 
-        public static int DeleteCAS(int casId)
+        public static void DeleteCAS(int casId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                db.Database.ExecuteSqlCommand("DELETE FROM tblCAS WHERE CASID=" + casId);
+                string deleteQuery = "DELETE FROM tblCAS WHERE CASID=" + casId;
+                db.Database.ExecuteSqlCommand(deleteQuery);
             }
-
-            return casId;
         }
 
         #endregion CAS Methods
 
         #region Client Product Cross Reference Methods
 
-        public static ClientProductXRef GetClientProductCrossReference(int productXReferenceId)
+        public static ClientProductXRef GetClientProductXRef(int productXRefId)
         {
-            ClientProductXRef clientXReference = new ClientProductXRef();
+            var clientXRef = new ClientProductXRef();
 
             using (var db = new CMCSQL03Entities())
             {
-                var productXReference = (from t in db.tblProductXRef
-                                         where t.ProductXRefID == productXReferenceId
-                                         select t).FirstOrDefault();
+                var productXRef = db.tblProductXRef.Find(productXRefId);
 
-                clientXReference.ProductXRefID = productXReference.ProductXRefID;
-                clientXReference.ClientID = productXReference.ClientID;
-                clientXReference.CMCProductCode = productXReference.CMCProductCode;
-                clientXReference.CMCSize = productXReference.CMCSize;
-                clientXReference.ClientProductCode = productXReference.CustProductCode;
-                clientXReference.ClientProductName = productXReference.CustProductName;
-                clientXReference.ClientSize = productXReference.CustSize;
-
-                return clientXReference;
+                clientXRef.ProductXRefID = productXRef.ProductXRefID;
+                clientXRef.ClientID = productXRef.ClientID;
+                clientXRef.CMCProductCode = productXRef.CMCProductCode;
+                clientXRef.CMCSize = productXRef.CMCSize;
+                clientXRef.ClientProductCode = productXRef.CustProductCode;
+                clientXRef.ClientProductName = productXRef.CustProductName;
+                clientXRef.ClientSize = productXRef.CustSize;
             }
+
+            return clientXRef;
         }
 
-        public static int SaveClientProductCrossReference(ClientProductXRef clientProductXRef)
+        public static void SaveClientProductXRef(ClientProductXRef clientProductXRef)
         {
             using (var db = new CMCSQL03Entities())
             {
                 if (clientProductXRef.ProductXRefID == -1)
                 {
-                    var newProductXReference = new tblProductXRef();
-                    db.tblProductXRef.Add(newProductXReference);
+                    var newProductXRef = new tblProductXRef();
+                    db.tblProductXRef.Add(newProductXRef);
                     db.SaveChanges();
 
-                    clientProductXRef.ProductXRefID = newProductXReference.ProductXRefID;
+                    clientProductXRef.ProductXRefID = newProductXRef.ProductXRefID;
                 }
 
-                var productXReference = (from t in db.tblProductXRef
-                                         where t.ProductXRefID == clientProductXRef.ProductXRefID
-                                         select t).FirstOrDefault();
+                var productXRef = db.tblProductXRef.Find(clientProductXRef.ProductXRefID);
 
-                productXReference.ClientID = clientProductXRef.ClientID;
-                productXReference.CMCProductCode = clientProductXRef.CMCProductCode;
-                productXReference.CMCSize = clientProductXRef.CMCSize;
-                productXReference.CustProductCode = clientProductXRef.ClientProductCode;
-                productXReference.CustSize = clientProductXRef.ClientSize;
-                productXReference.CustProductName = clientProductXRef.ClientProductName;
+                productXRef.ClientID = clientProductXRef.ClientID;
+                productXRef.CMCProductCode = clientProductXRef.CMCProductCode;
+                productXRef.CMCSize = clientProductXRef.CMCSize;
+                productXRef.CustProductCode = clientProductXRef.ClientProductCode;
+                productXRef.CustSize = clientProductXRef.ClientSize;
+                productXRef.CustProductName = clientProductXRef.ClientProductName;
 
                 db.SaveChanges();
-
-                return productXReference.ProductXRefID;
             }
         }
 
-        public static int DeleteProductCrossReference(int productXReferenceId)
+        public static void DeleteProductXRef(int productXRefId)
         {
             using (var db = new CMCSQL03Entities())
             {
-                db.Database.ExecuteSqlCommand("DELETE FROM tblProductXRef WHERE ProductXRefID=" + productXReferenceId);
+                string deleteQuery = "DELETE FROM tblProductXRef WHERE ProductXRefID=" + productXRefId;
+                db.Database.ExecuteSqlCommand(deleteQuery);
             }
-
-            return productXReferenceId;
         }
 
         #endregion Client Product Cross Reference Methods

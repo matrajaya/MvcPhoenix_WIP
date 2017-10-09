@@ -18,7 +18,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BuildDivisionDropDown(int clientid)
         {
-            var ddldivision = ApplicationService.ddlBuildDivisionDropDown(clientid);
+            var ddldivision = ApplicationService.ddlBuildDivision(clientid);
 
             return Content(ddldivision);
         }
@@ -59,41 +59,6 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        public static List<ReturnStockViewModel> ListOfStockItems(int clientid)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                var stockitems = (from t in db.tblStock
-                                  join sm in db.tblShelfMaster on t.ShelfID equals sm.ShelfID
-                                  join pd in db.tblProductDetail on sm.ProductDetailID equals pd.ProductDetailID
-                                  join pm in db.tblProductMaster on pd.ProductMasterID equals pm.ProductMasterID
-                                  join bl in db.tblBulk on t.BulkID equals bl.BulkID
-                                  join dv in db.tblDivision on pd.DivisionID equals dv.DivisionID
-                                  where pm.ClientID == clientid
-                                  orderby pd.ProductCode
-                                  select new ReturnStockViewModel
-                                  {
-                                      ClientID = pm.ClientID,
-                                      StockID = t.StockID,
-                                      LotNumber = bl.LotNumber,
-                                      ProductCode = pd.ProductCode,
-                                      ProductName = pd.ProductName,
-                                      Warehouse = t.Warehouse,
-                                      Bin = t.Bin,
-                                      QtyOnHand = t.QtyOnHand,
-                                      Size = sm.Size,
-                                      CurrentWeight = sm.UnitWeight * t.QtyOnHand,
-                                      ExpirationDate = bl.ExpirationDate,
-                                      ShelfStatus = t.ShelfStatus,
-                                      markedforreturn = t.MarkedForReturn,
-                                      divisionid = pd.DivisionID,
-                                      divisionname = dv.DivisionName
-                                  }).ToList();
-
-                return stockitems;
-            }
-        }
-
         public JsonResult GetBulkItems(int clientid, int divisionid, string bulkstatus)
         {
             using (var db = new CMCSQL03Entities())
@@ -108,7 +73,6 @@ namespace MvcPhoenix.Controllers
                 if (!String.IsNullOrEmpty(bulkstatus))
                 {
                     unmarkedbulk = unmarkedbulk.Where(t => t.bulkstatus == bulkstatus).ToList();
-                    //unmarkedbulk = unmarkedbulk.Where(t => t.bulkstatus == bulkstatus & t.bulkstatus != "RETURN").ToList();
                 }
 
                 unmarkedbulk = unmarkedbulk.Where(t => t.markedforreturn != true).ToList();
@@ -119,62 +83,52 @@ namespace MvcPhoenix.Controllers
 
         public JsonResult GetStockItems(int clientid, int divisionid, string stockstatus)
         {
-            using (var db = new CMCSQL03Entities())
+            var unmarkedstock = InventoryService.GetStockItems(clientid);
+
+            if (divisionid > 0)
             {
-                var unmarkedstock = ListOfStockItems(clientid);
-
-                if (divisionid > 0)
-                {
-                    unmarkedstock = unmarkedstock.Where(t => t.divisionid == divisionid).ToList();
-                }
-
-                if (!String.IsNullOrEmpty(stockstatus))
-                {
-                    unmarkedstock = unmarkedstock.Where(t => t.ShelfStatus == stockstatus).ToList();
-                    //unmarkedstock = unmarkedstock.Where(t => t.ShelfStatus == stockstatus & t.ShelfStatus != "RETURN").ToList();
-                }
-
-                unmarkedstock = unmarkedstock.Where(t => t.markedforreturn != true).ToList();
-
-                return Json(unmarkedstock, JsonRequestBehavior.AllowGet);
+                unmarkedstock = unmarkedstock.Where(t => t.divisionid == divisionid).ToList();
             }
+
+            if (!String.IsNullOrEmpty(stockstatus))
+            {
+                unmarkedstock = unmarkedstock.Where(t => t.ShelfStatus == stockstatus).ToList();
+            }
+
+            unmarkedstock = unmarkedstock.Where(t => t.markedforreturn != true).ToList();
+
+            return Json(unmarkedstock, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> SaveSelectedItems(string inputclientid, string inputdivisionid, object[] bulkids, object[] stockids)
         {
-            // Make sure cientid is passed
-            if (String.IsNullOrEmpty(inputclientid))
+            int orderId = 0;
+            int clientId = Convert.ToInt32(inputclientid);
+            int divisionId = Convert.ToInt32(inputdivisionid);
+            var bulkItems = bulkids;
+            var stockItems = stockids;
+
+            if (clientId < 1)
             {
                 return RedirectToAction("Index");
             }
 
-            int orderid = 0;
-            int clientid = Convert.ToInt32(inputclientid);
-            int divisionid = Convert.ToInt32(inputdivisionid);
-
             // Create new order
-            orderid = OrderService.NewOrderId();
+            // Write order master level info to order
+            orderId = OrderService.NewOrderId();
 
             using (var db = new CMCSQL03Entities())
             {
-                // write order master level info to order
-                var om = (from t in db.tblOrderMaster
-                          where t.OrderID == orderid
-                          select t).FirstOrDefault();
+                var orderMaster = db.tblOrderMaster.Find(orderId);
+                var client = db.tblClient.Find(clientId);
 
-                var cl = (from t in db.tblClient
-                          where t.ClientID == clientid
-                          select t).FirstOrDefault();
-
-                om.ClientID = clientid;
-                om.DivisionID = divisionid;
-                om.OrderType = "R";
-                om.OrderDate = DateTime.UtcNow;
-                om.Company = cl.ClientName;
-                om.CreateDate = DateTime.UtcNow;
-                om.CreateUser = HttpContext.User.Identity.Name;
-                om.UpdateDate = DateTime.UtcNow;
-                om.UpdateUser = HttpContext.User.Identity.Name;
+                orderMaster.ClientID = clientId;
+                orderMaster.DivisionID = divisionId;
+                orderMaster.OrderType = "R";
+                orderMaster.OrderDate = DateTime.UtcNow;
+                orderMaster.Company = client.ClientName;
+                orderMaster.UpdateDate = DateTime.UtcNow;
+                orderMaster.UpdateUser = HttpContext.User.Identity.Name;
 
                 db.SaveChanges();
             }
@@ -183,27 +137,27 @@ namespace MvcPhoenix.Controllers
             //-----------------------------------------
 
             // Make sure array has content before processing
-            if (bulkids != null && bulkids.Length != 0)
+            if (bulkItems != null && bulkItems.Length != 0)
             {
-                for (int i = 0; i < bulkids.Length; i++)
+                for (int i = 0; i < bulkItems.Length; i++)
                 {
-                    int bulkid = Convert.ToInt32(bulkids[i]);
-                    int x = await OrderService.AddBulkItemToReturnOrder(orderid, bulkid);
+                    int bulkId = Convert.ToInt32(bulkItems[i]);
+                    int x = await OrderService.AddBulkItemToReturnOrder(orderId, bulkId);
                 }
             }
 
             // Make sure array has content before processing
-            if (stockids != null && stockids.Length != 0)
+            if (stockItems != null && stockItems.Length != 0)
             {
                 for (int i = 0; i < stockids.Length; i++)
                 {
-                    int stockid = Convert.ToInt32(stockids[i]);
-                    int x = await OrderService.AddStockItemToReturnOrder(orderid, stockid, clientid);
+                    int stockId = Convert.ToInt32(stockItems[i]);
+                    int x = await OrderService.AddStockItemToReturnOrder(orderId, stockId, clientId);
                 }
             }
 
-            await Task.Delay(10000);
-            return Json(orderid, JsonRequestBehavior.AllowGet);
+            await Task.Delay(1000);
+            return Json(orderId, JsonRequestBehavior.AllowGet);
         }
     }
 }

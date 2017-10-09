@@ -12,619 +12,606 @@ namespace MvcPhoenix.Models
         {
             using (var db = new CMCSQL03Entities())
             {
-                var obj = (from t in db.tblInvoice
-                           orderby t.CreateDate descending
-                           select new InvoiceViewModel
-                           {
-                               InvoiceId = t.InvoiceID,
-                               InvoiceNumber = t.InvoiceNumber,
-                               ClientName = t.ClientName,
-                               BillingGroup = t.BillingGroup,
-                               InvoiceDate = t.InvoiceDate,
-                               InvoicePeriod = t.InvoicePeriod,
-                               WarehouseLocation = t.WarehouseLocation,
-                               Status = t.Status,
-                               Comments = t.Comments,
-                               UpdateDate = t.UpdateDate,
-                               UpdatedBy = t.UpdatedBy,
-                               CreateDate = t.CreateDate,
-                               CreatedBy = t.CreatedBy
-                           }).ToList();
+                var invoice = (from t in db.tblInvoice
+                               orderby t.CreateDate descending
+                               select new InvoiceViewModel
+                               {
+                                   InvoiceId = t.InvoiceID,
+                                   InvoiceNumber = t.InvoiceNumber,
+                                   ClientName = t.ClientName,
+                                   BillingGroup = t.BillingGroup,
+                                   InvoiceDate = t.InvoiceDate,
+                                   InvoicePeriod = t.InvoicePeriod,
+                                   WarehouseLocation = t.WarehouseLocation,
+                                   Status = t.Status,
+                                   Comments = t.Comments,
+                                   UpdateDate = t.UpdateDate,
+                                   UpdatedBy = t.UpdatedBy,
+                                   CreateDate = t.CreateDate,
+                                   CreatedBy = t.CreatedBy
+                               }).ToList();
 
-                return obj;
+                return invoice;
             }
         }
 
         public static InvoiceViewModel FillInvoice(int id)
         {
+            int invoiceId = id;
+            InvoiceViewModel invoice = new InvoiceViewModel();
+
             using (var db = new CMCSQL03Entities())
             {
-                InvoiceViewModel obj = new InvoiceViewModel();
+                var getInvoice = (from t in db.tblInvoice
+                                  where t.InvoiceID == invoiceId
+                                  select t).FirstOrDefault();
 
-                var q = (from t in db.tblInvoice
-                         where t.InvoiceID == id
-                         select t).FirstOrDefault();
-
-                obj.InvoiceId = q.InvoiceID;
-                obj.InvoiceNumber = q.InvoiceNumber;
-                obj.BillingGroup = q.BillingGroup;
-                obj.WarehouseLocation = q.WarehouseLocation;
-                obj.ClientId = q.ClientID;
-                obj.ClientName = q.ClientName;
-                obj.CreatedBy = q.CreatedBy;
-                obj.CreateDate = q.CreateDate;
-                obj.UpdatedBy = q.UpdatedBy;
-                obj.UpdateDate = q.UpdateDate;
-                obj.VerifiedAccuracy = q.VerifiedAccuracy;
-                obj.VerifiedBy = q.VerifiedBy;
-                obj.VerifiedDate = q.VerifyDate;
-                obj.Status = q.Status;
-                obj.Comments = q.Comments;
-                obj.InvoiceDate = q.InvoiceDate;
-                obj.InvoicePeriod = q.InvoicePeriod;
-                obj.InvoiceStartDate = q.InvoiceStartDate;
-                obj.InvoiceEndDate = q.InvoiceEndDate;
-                obj.PONumber = q.PONumber;
-                obj.NetTerm = q.NetTerm;
-                obj.BillTo = q.BillTo;
-                obj.RemitTo = q.RemitTo;
-                obj.Currency = q.Currency;
-                obj.Tier = q.Tier;
-                obj.OrderType = q.OrderType;                // Sample/International/Revenue - ignore for now
+                invoice.InvoiceId = getInvoice.InvoiceID;
+                invoice.InvoiceNumber = getInvoice.InvoiceNumber;
+                invoice.BillingGroup = getInvoice.BillingGroup;
+                invoice.WarehouseLocation = getInvoice.WarehouseLocation;
+                invoice.ClientId = getInvoice.ClientID;
+                invoice.ClientName = getInvoice.ClientName;
+                invoice.CreatedBy = getInvoice.CreatedBy;
+                invoice.CreateDate = getInvoice.CreateDate;
+                invoice.UpdatedBy = getInvoice.UpdatedBy;
+                invoice.UpdateDate = getInvoice.UpdateDate;
+                invoice.VerifiedAccuracy = getInvoice.VerifiedAccuracy;
+                invoice.VerifiedBy = getInvoice.VerifiedBy;
+                invoice.VerifiedDate = getInvoice.VerifyDate;
+                invoice.Status = getInvoice.Status;
+                invoice.Comments = getInvoice.Comments;
+                invoice.InvoiceDate = getInvoice.InvoiceDate;
+                invoice.InvoicePeriod = getInvoice.InvoicePeriod;
+                invoice.InvoiceStartDate = getInvoice.InvoiceStartDate;
+                invoice.InvoiceEndDate = getInvoice.InvoiceEndDate;
+                invoice.PONumber = getInvoice.PONumber;
+                invoice.NetTerm = getInvoice.NetTerm;
+                invoice.BillTo = getInvoice.BillTo;
+                invoice.RemitTo = getInvoice.RemitTo;
+                invoice.Currency = getInvoice.Currency;
+                invoice.Tier = getInvoice.Tier;
+                invoice.OrderType = getInvoice.OrderType;                // Sample/International/Revenue - ignore for now
 
                 // Shipping Performance
-                obj.SampleShipSameDay = q.SampleShipSameDay;
-                obj.SampleShipNextDay = q.SampleShipNextDay;
-                obj.SampleShipSecondDay = q.SampleShipSecondDay;
-                obj.SampleShipOther = q.SampleShipOther;
+                invoice.SampleShipSameDay = getInvoice.SampleShipSameDay;
+                invoice.SampleShipNextDay = getInvoice.SampleShipNextDay;
+                invoice.SampleShipSecondDay = getInvoice.SampleShipSecondDay;
+                invoice.SampleShipOther = getInvoice.SampleShipOther;
 
                 // Invoice Summary
-                obj.TotalSamples = q.TotalSamples;
-                obj.TotalCostSamples = q.TotalCostSamples;
-                obj.TotalFreight = q.TotalFreight;
-                obj.TotalFrtHzdSchg = q.TotalFrtHzdSchg;
-                obj.TotalServiceCharge = q.TotalServiceCharge;
-                obj.TotalDue = q.TotalDue;
+                invoice.TotalSamples = getInvoice.TotalSamples;
+                invoice.TotalCostSamples = getInvoice.TotalCostSamples;
+                invoice.TotalFreight = getInvoice.TotalFreight;
+                invoice.TotalFrtHzdSchg = getInvoice.TotalFrtHzdSchg;
+                invoice.TotalServiceCharge = getInvoice.TotalServiceCharge;
+                invoice.TotalDue = getInvoice.TotalDue;
 
                 // Billing Worksheet
-                obj.GrandTotalCharge = q.GrandTotal;
+                invoice.GrandTotalCharge = getInvoice.GrandTotal;
 
                 // Quantity
-                obj.AirHzdOnlyQuantity = q.AirHzdOnlyQuantity;
-                obj.CertificateOfOriginQuantity = q.CertificateOfOriginQuantity;
-                obj.CMCPackQuantity = q.CMCPackQuantity;
-                obj.CoolPackQuantity = q.CoolPackQuantity;
-                obj.CreditCardFeeQuantity = q.CreditCardFeeQuantity;
-                obj.CreditCardOrderQuantity = q.CreditCardOrderQuantity;
-                obj.DocumentationHandlingQuantity = q.DocumentationHandlingQuantity;
-                obj.EmptyPackagingQuantity = q.EmptyPackagingQuantity;
-                obj.ExternalSystemQuantity = q.ExternalSystemQuantity;
-                obj.FollowUpOrderQuantity = q.FollowUpOrderQuantity;
-                obj.FreezerPackQuantity = q.FreezerPackQuantity;
-                obj.GHSLabelsQuantity = q.GHSLabelsQuantity;
-                obj.InactiveProductsQuantity = q.InactiveProductsQuantity;
-                obj.IsolationQuantity = q.IsolationQuantity;
-                obj.IsolationBoxQuantity = q.IsolationBoxQuantity;
-                obj.ITFeeQuantity = q.ITFeeQuantity;
-                obj.LabelMaintainanceQuantity = q.LabelMaintainanceQuantity;
-                obj.LabelStockQuantity = q.LabelStockQuantity;
-                obj.LabelsPrintedQuantity = q.LabelsPrintedQuantity;
-                obj.LaborRelabelQuantity = q.LaborRelabelQuantity;
-                obj.LiteratureFeeQuantity = q.LiteratureFeeQuantity;
-                obj.LimitedQtyQuantity = q.LimitedQtyQuantity;
-                obj.ManualHandlingQuantity = q.ManualHandlingQuantity;
-                obj.MSDSPrintsQuantity = q.MSDSPrintsQuantity;
-                obj.NewLabelSetupQuantity = q.NewLabelSetupQuantity;
-                obj.NewProductSetupQuantity = q.NewProductSetupQuantity;
-                obj.OberkPackQuantity = q.OberkPackQuantity;
-                obj.OrderEntryQuantity = q.OrderEntryQuantity;
-                obj.OverPackQuantity = q.OverPackQuantity;
-                obj.PalletReturnQuantity = q.PalletReturnQuantity;
-                obj.PoisonPackQuantity = q.PoisonPackQuantity;
-                obj.ProductSetupChangesQuantity = q.ProductSetupChangesQuantity;
-                obj.QCStorageQuantity = q.QCStorageQuantity;
-                obj.RDHandlingADRQuantity = q.RDHandlingADRQuantity;
-                obj.RDHandlingIATAQuantity = q.RDHandlingIATAQuantity;
-                obj.RDHandlingLQQuantity = q.RDHandlingLQQuantity;
-                obj.RDHandlingNonHzdQuantity = q.RDHandlingNonHzdQuantity;
-                obj.RefrigeratorStorageQuantity = q.RefrigeratorStorageQuantity;
-                obj.RelabelsQuantity = q.RelabelsQuantity;
-                obj.RushShipmentQuantity = q.RushShipmentQuantity;
-                obj.SPA197AppliedQuantity = q.SPA197AppliedQuantity;
-                obj.SPSPaidOrderQuantity = q.SPSPaidOrderQuantity;
-                obj.UNBoxQuantity = q.UNBoxQuantity;
-                obj.WarehouseStorageQuantity = q.WarehouseStorageQuantity;
-                obj.WHMISLabelsQuantity = q.WHMISLabelsQuantity;
+                invoice.AirHzdOnlyQuantity = getInvoice.AirHzdOnlyQuantity;
+                invoice.CertificateOfOriginQuantity = getInvoice.CertificateOfOriginQuantity;
+                invoice.CMCPackQuantity = getInvoice.CMCPackQuantity;
+                invoice.CoolPackQuantity = getInvoice.CoolPackQuantity;
+                invoice.CreditCardFeeQuantity = getInvoice.CreditCardFeeQuantity;
+                invoice.CreditCardOrderQuantity = getInvoice.CreditCardOrderQuantity;
+                invoice.DocumentationHandlingQuantity = getInvoice.DocumentationHandlingQuantity;
+                invoice.EmptyPackagingQuantity = getInvoice.EmptyPackagingQuantity;
+                invoice.ExternalSystemQuantity = getInvoice.ExternalSystemQuantity;
+                invoice.FollowUpOrderQuantity = getInvoice.FollowUpOrderQuantity;
+                invoice.FreezerPackQuantity = getInvoice.FreezerPackQuantity;
+                invoice.GHSLabelsQuantity = getInvoice.GHSLabelsQuantity;
+                invoice.InactiveProductsQuantity = getInvoice.InactiveProductsQuantity;
+                invoice.IsolationQuantity = getInvoice.IsolationQuantity;
+                invoice.IsolationBoxQuantity = getInvoice.IsolationBoxQuantity;
+                invoice.ITFeeQuantity = getInvoice.ITFeeQuantity;
+                invoice.LabelMaintainanceQuantity = getInvoice.LabelMaintainanceQuantity;
+                invoice.LabelStockQuantity = getInvoice.LabelStockQuantity;
+                invoice.LabelsPrintedQuantity = getInvoice.LabelsPrintedQuantity;
+                invoice.LaborRelabelQuantity = getInvoice.LaborRelabelQuantity;
+                invoice.LiteratureFeeQuantity = getInvoice.LiteratureFeeQuantity;
+                invoice.LimitedQtyQuantity = getInvoice.LimitedQtyQuantity;
+                invoice.ManualHandlingQuantity = getInvoice.ManualHandlingQuantity;
+                invoice.MSDSPrintsQuantity = getInvoice.MSDSPrintsQuantity;
+                invoice.NewLabelSetupQuantity = getInvoice.NewLabelSetupQuantity;
+                invoice.NewProductSetupQuantity = getInvoice.NewProductSetupQuantity;
+                invoice.OberkPackQuantity = getInvoice.OberkPackQuantity;
+                invoice.OrderEntryQuantity = getInvoice.OrderEntryQuantity;
+                invoice.OverPackQuantity = getInvoice.OverPackQuantity;
+                invoice.PalletReturnQuantity = getInvoice.PalletReturnQuantity;
+                invoice.PoisonPackQuantity = getInvoice.PoisonPackQuantity;
+                invoice.ProductSetupChangesQuantity = getInvoice.ProductSetupChangesQuantity;
+                invoice.QCStorageQuantity = getInvoice.QCStorageQuantity;
+                invoice.RDHandlingADRQuantity = getInvoice.RDHandlingADRQuantity;
+                invoice.RDHandlingIATAQuantity = getInvoice.RDHandlingIATAQuantity;
+                invoice.RDHandlingLQQuantity = getInvoice.RDHandlingLQQuantity;
+                invoice.RDHandlingNonHzdQuantity = getInvoice.RDHandlingNonHzdQuantity;
+                invoice.RefrigeratorStorageQuantity = getInvoice.RefrigeratorStorageQuantity;
+                invoice.RelabelsQuantity = getInvoice.RelabelsQuantity;
+                invoice.RushShipmentQuantity = getInvoice.RushShipmentQuantity;
+                invoice.SPA197AppliedQuantity = getInvoice.SPA197AppliedQuantity;
+                invoice.SPSPaidOrderQuantity = getInvoice.SPSPaidOrderQuantity;
+                invoice.UNBoxQuantity = getInvoice.UNBoxQuantity;
+                invoice.WarehouseStorageQuantity = getInvoice.WarehouseStorageQuantity;
+                invoice.WHMISLabelsQuantity = getInvoice.WHMISLabelsQuantity;
 
                 // Rates
-                obj.AirHzdOnlyRate = q.AirHzdOnlyRate;
-                obj.CertificateOfOriginRate = q.CertificateOfOriginRate;
-                obj.CMCPackRate = q.CMCPackRate;
-                obj.CoolPackRate = q.CoolPackRate;
-                obj.CreditCardFeeRate = q.CreditCardFeeRate;
-                obj.CreditCardOrderRate = q.CreditCardOrderRate;
-                obj.DocumentationHandlingRate = q.DocumentationHandlingRate;
-                obj.EmptyPackagingRate = q.EmptyPackagingRate;
-                obj.ExternalSystemRate = q.ExternalSystemRate;
-                obj.FollowUpOrderRate = q.FollowUpOrderRate;
-                obj.FreezerPackRate = q.FreezerPackRate;
-                obj.GHSLabelsRate = q.GHSLabelsRate;
-                obj.InactiveProductsRate = q.InactiveProductsRate;
-                obj.IsolationRate = q.IsolationRate;
-                obj.IsolationBoxRate = q.IsolationBoxRate;
-                obj.ITFeeRate = q.ITFeeRate;
-                obj.LabelMaintainanceRate = q.LabelMaintainanceRate;
-                obj.LabelStockRate = q.LabelStockRate;
-                obj.LabelsPrintedRate = q.LabelsPrintedRate;
-                obj.LaborRelabelRate = q.LaborRelabelRate;
-                obj.LiteratureFeeRate = q.LiteratureFeeRate;
-                obj.LimitedQtyRate = q.LimitedQtyRate;
-                obj.ManualHandlingRate = q.ManualHandlingRate;
-                obj.MSDSPrintsRate = q.MSDSPrintsRate;
-                obj.NewLabelSetupRate = q.NewLabelSetupRate;
-                obj.NewProductSetupRate = q.NewProductSetupRate;
-                obj.OberkPackRate = q.OberkPackRate;
-                obj.OrderEntryRate = q.OrderEntryRate;
-                obj.OverPackRate = q.OverPackRate;
-                obj.PalletReturnRate = q.PalletReturnRate;
-                obj.PoisonPackRate = q.PoisonPackRate;
-                obj.ProductSetupChangesRate = q.ProductSetupChangesRate;
-                obj.QCStorageRate = q.QCStorageRate;
-                obj.RDHandlingADRRate = q.RDHandlingADRRate;
-                obj.RDHandlingIATARate = q.RDHandlingIATARate;
-                obj.RDHandlingLQRate = q.RDHandlingLQRate;
-                obj.RDHandlingNonHzdRate = q.RDHandlingNonHzdRate;
-                obj.RefrigeratorStorageRate = q.RefrigeratorStorageRate;
-                obj.RelabelsRate = q.RelabelsRate;
-                obj.RushShipmentRate = q.RushShipmentRate;
-                obj.SPA197AppliedRate = q.SPA197AppliedRate;
-                obj.SPSPaidOrderRate = q.SPSPaidOrderRate;
-                obj.UNBoxRate = q.UNBoxRate;
-                obj.WarehouseStorageRate = q.WarehouseStorageRate;
-                obj.WHMISLabelsRate = q.WHMISLabelsRate;
+                invoice.AirHzdOnlyRate = getInvoice.AirHzdOnlyRate;
+                invoice.CertificateOfOriginRate = getInvoice.CertificateOfOriginRate;
+                invoice.CMCPackRate = getInvoice.CMCPackRate;
+                invoice.CoolPackRate = getInvoice.CoolPackRate;
+                invoice.CreditCardFeeRate = getInvoice.CreditCardFeeRate;
+                invoice.CreditCardOrderRate = getInvoice.CreditCardOrderRate;
+                invoice.DocumentationHandlingRate = getInvoice.DocumentationHandlingRate;
+                invoice.EmptyPackagingRate = getInvoice.EmptyPackagingRate;
+                invoice.ExternalSystemRate = getInvoice.ExternalSystemRate;
+                invoice.FollowUpOrderRate = getInvoice.FollowUpOrderRate;
+                invoice.FreezerPackRate = getInvoice.FreezerPackRate;
+                invoice.GHSLabelsRate = getInvoice.GHSLabelsRate;
+                invoice.InactiveProductsRate = getInvoice.InactiveProductsRate;
+                invoice.IsolationRate = getInvoice.IsolationRate;
+                invoice.IsolationBoxRate = getInvoice.IsolationBoxRate;
+                invoice.ITFeeRate = getInvoice.ITFeeRate;
+                invoice.LabelMaintainanceRate = getInvoice.LabelMaintainanceRate;
+                invoice.LabelStockRate = getInvoice.LabelStockRate;
+                invoice.LabelsPrintedRate = getInvoice.LabelsPrintedRate;
+                invoice.LaborRelabelRate = getInvoice.LaborRelabelRate;
+                invoice.LiteratureFeeRate = getInvoice.LiteratureFeeRate;
+                invoice.LimitedQtyRate = getInvoice.LimitedQtyRate;
+                invoice.ManualHandlingRate = getInvoice.ManualHandlingRate;
+                invoice.MSDSPrintsRate = getInvoice.MSDSPrintsRate;
+                invoice.NewLabelSetupRate = getInvoice.NewLabelSetupRate;
+                invoice.NewProductSetupRate = getInvoice.NewProductSetupRate;
+                invoice.OberkPackRate = getInvoice.OberkPackRate;
+                invoice.OrderEntryRate = getInvoice.OrderEntryRate;
+                invoice.OverPackRate = getInvoice.OverPackRate;
+                invoice.PalletReturnRate = getInvoice.PalletReturnRate;
+                invoice.PoisonPackRate = getInvoice.PoisonPackRate;
+                invoice.ProductSetupChangesRate = getInvoice.ProductSetupChangesRate;
+                invoice.QCStorageRate = getInvoice.QCStorageRate;
+                invoice.RDHandlingADRRate = getInvoice.RDHandlingADRRate;
+                invoice.RDHandlingIATARate = getInvoice.RDHandlingIATARate;
+                invoice.RDHandlingLQRate = getInvoice.RDHandlingLQRate;
+                invoice.RDHandlingNonHzdRate = getInvoice.RDHandlingNonHzdRate;
+                invoice.RefrigeratorStorageRate = getInvoice.RefrigeratorStorageRate;
+                invoice.RelabelsRate = getInvoice.RelabelsRate;
+                invoice.RushShipmentRate = getInvoice.RushShipmentRate;
+                invoice.SPA197AppliedRate = getInvoice.SPA197AppliedRate;
+                invoice.SPSPaidOrderRate = getInvoice.SPSPaidOrderRate;
+                invoice.UNBoxRate = getInvoice.UNBoxRate;
+                invoice.WarehouseStorageRate = getInvoice.WarehouseStorageRate;
+                invoice.WHMISLabelsRate = getInvoice.WHMISLabelsRate;
 
                 // Charges
-                obj.AirHzdOnlyCharge = q.AirHzdOnlyCharge;
-                obj.CertificateOfOriginCharge = q.CertificateOfOriginCharge;
-                obj.CMCPackCharge = q.CMCPackCharge;
-                obj.CoolPackCharge = q.CoolPackCharge;
-                obj.CreditCardFeeCharge = q.CreditCardFeeCharge;
-                obj.CreditCardOrderCharge = q.CreditCardOrderCharge;
-                obj.DocumentationHandlingCharge = q.DocumentationHandlingCharge;
-                obj.EmptyPackagingCharge = q.EmptyPackagingCharge;
-                obj.ExternalSystemCharge = q.ExternalSystemCharge;
-                obj.FollowUpOrderCharge = q.FollowUpOrderCharge;
-                obj.FreezerPackCharge = q.FreezerPackCharge;
-                obj.GHSLabelsCharge = q.GHSLabelsCharge;
-                obj.InactiveProductsCharge = q.InactiveProductsCharge;
-                obj.IsolationCharge = q.IsolationCharge;
-                obj.IsolationBoxCharge = q.IsolationBoxCharge;
-                obj.ITFeeCharge = q.ITFeeCharge;
-                obj.LabelMaintainanceCharge = q.LabelMaintainanceCharge;
-                obj.LabelStockCharge = q.LabelStockCharge;
-                obj.LabelsPrintedCharge = q.LabelsPrintedCharge;
-                obj.LaborRelabelCharge = q.LaborRelabelCharge;
-                obj.LiteratureFeeCharge = q.LiteratureFeeCharge;
-                obj.LimitedQtyCharge = q.LimitedQtyCharge;
-                obj.ManualHandlingCharge = q.ManualHandlingCharge;
-                obj.MSDSPrintsCharge = q.MSDSPrintsCharge;
-                obj.NewLabelSetupCharge = q.NewLabelSetupCharge;
-                obj.NewProductSetupCharge = q.NewProductSetupCharge;
-                obj.OberkPackCharge = q.OberkPackCharge;
-                obj.OrderEntryCharge = q.OrderEntryCharge;
-                obj.OverPackCharge = q.OverPackCharge;
-                obj.PalletReturnCharge = q.PalletReturnCharge;
-                obj.PoisonPackCharge = q.PoisonPackCharge;
-                obj.ProductSetupChangesCharge = q.ProductSetupChangesCharge;
-                obj.QCStorageCharge = q.QCStorageCharge;
-                obj.RDHandlingADRCharge = q.RDHandlingADRCharge;
-                obj.RDHandlingIATACharge = q.RDHandlingIATACharge;
-                obj.RDHandlingLQCharge = q.RDHandlingLQCharge;
-                obj.RDHandlingNonHzdCharge = q.RDHandlingNonHzdCharge;
-                obj.RefrigeratorStorageCharge = q.RefrigeratorStorageCharge;
-                obj.RelabelsCharge = q.RelabelsCharge;
-                obj.RushShipmentCharge = q.RushShipmentCharge;
-                obj.SPA197AppliedCharge = q.SPA197AppliedCharge;
-                obj.SPSPaidOrderCharge = q.SPSPaidOrderCharge;
-                obj.UNBoxCharge = q.UNBoxCharge;
-                obj.WarehouseStorageCharge = q.WarehouseStorageCharge;
-                obj.WHMISLabelsCharge = q.WHMISLabelsCharge;
+                invoice.AirHzdOnlyCharge = getInvoice.AirHzdOnlyCharge;
+                invoice.CertificateOfOriginCharge = getInvoice.CertificateOfOriginCharge;
+                invoice.CMCPackCharge = getInvoice.CMCPackCharge;
+                invoice.CoolPackCharge = getInvoice.CoolPackCharge;
+                invoice.CreditCardFeeCharge = getInvoice.CreditCardFeeCharge;
+                invoice.CreditCardOrderCharge = getInvoice.CreditCardOrderCharge;
+                invoice.DocumentationHandlingCharge = getInvoice.DocumentationHandlingCharge;
+                invoice.EmptyPackagingCharge = getInvoice.EmptyPackagingCharge;
+                invoice.ExternalSystemCharge = getInvoice.ExternalSystemCharge;
+                invoice.FollowUpOrderCharge = getInvoice.FollowUpOrderCharge;
+                invoice.FreezerPackCharge = getInvoice.FreezerPackCharge;
+                invoice.GHSLabelsCharge = getInvoice.GHSLabelsCharge;
+                invoice.InactiveProductsCharge = getInvoice.InactiveProductsCharge;
+                invoice.IsolationCharge = getInvoice.IsolationCharge;
+                invoice.IsolationBoxCharge = getInvoice.IsolationBoxCharge;
+                invoice.ITFeeCharge = getInvoice.ITFeeCharge;
+                invoice.LabelMaintainanceCharge = getInvoice.LabelMaintainanceCharge;
+                invoice.LabelStockCharge = getInvoice.LabelStockCharge;
+                invoice.LabelsPrintedCharge = getInvoice.LabelsPrintedCharge;
+                invoice.LaborRelabelCharge = getInvoice.LaborRelabelCharge;
+                invoice.LiteratureFeeCharge = getInvoice.LiteratureFeeCharge;
+                invoice.LimitedQtyCharge = getInvoice.LimitedQtyCharge;
+                invoice.ManualHandlingCharge = getInvoice.ManualHandlingCharge;
+                invoice.MSDSPrintsCharge = getInvoice.MSDSPrintsCharge;
+                invoice.NewLabelSetupCharge = getInvoice.NewLabelSetupCharge;
+                invoice.NewProductSetupCharge = getInvoice.NewProductSetupCharge;
+                invoice.OberkPackCharge = getInvoice.OberkPackCharge;
+                invoice.OrderEntryCharge = getInvoice.OrderEntryCharge;
+                invoice.OverPackCharge = getInvoice.OverPackCharge;
+                invoice.PalletReturnCharge = getInvoice.PalletReturnCharge;
+                invoice.PoisonPackCharge = getInvoice.PoisonPackCharge;
+                invoice.ProductSetupChangesCharge = getInvoice.ProductSetupChangesCharge;
+                invoice.QCStorageCharge = getInvoice.QCStorageCharge;
+                invoice.RDHandlingADRCharge = getInvoice.RDHandlingADRCharge;
+                invoice.RDHandlingIATACharge = getInvoice.RDHandlingIATACharge;
+                invoice.RDHandlingLQCharge = getInvoice.RDHandlingLQCharge;
+                invoice.RDHandlingNonHzdCharge = getInvoice.RDHandlingNonHzdCharge;
+                invoice.RefrigeratorStorageCharge = getInvoice.RefrigeratorStorageCharge;
+                invoice.RelabelsCharge = getInvoice.RelabelsCharge;
+                invoice.RushShipmentCharge = getInvoice.RushShipmentCharge;
+                invoice.SPA197AppliedCharge = getInvoice.SPA197AppliedCharge;
+                invoice.SPSPaidOrderCharge = getInvoice.SPSPaidOrderCharge;
+                invoice.UNBoxCharge = getInvoice.UNBoxCharge;
+                invoice.WarehouseStorageCharge = getInvoice.WarehouseStorageCharge;
+                invoice.WHMISLabelsCharge = getInvoice.WHMISLabelsCharge;
 
                 // Variable Charges
-                obj.AdministrativeWasteFeeCharge = q.AdministrativeWasteFeeCharge;
-                obj.CreditCharge = q.CreditCharge;
-                obj.CustomsDocumentsCharge = q.CustomsDocumentsCharge;
-                obj.DeliveryDutiesTaxesCharge = q.DeliveryDutiesTaxesCharge;
-                obj.DocumentsCharge = q.DocumentsCharge;
-                obj.HandlingCharge = q.HandlingCharge;
-                obj.MautFuel = q.MautFuel;
-                obj.MiscellaneousLaborCharge = q.MiscellaneousLaborCharge;
-                obj.OtherCharge = q.OtherCharge;
-                obj.WasteProcessingCharge = q.WasteProcessingCharge;
-
-                return obj;
+                invoice.AdministrativeWasteFeeCharge = getInvoice.AdministrativeWasteFeeCharge;
+                invoice.CreditCharge = getInvoice.CreditCharge;
+                invoice.CustomsDocumentsCharge = getInvoice.CustomsDocumentsCharge;
+                invoice.DeliveryDutiesTaxesCharge = getInvoice.DeliveryDutiesTaxesCharge;
+                invoice.DocumentsCharge = getInvoice.DocumentsCharge;
+                invoice.HandlingCharge = getInvoice.HandlingCharge;
+                invoice.MautFuel = getInvoice.MautFuel;
+                invoice.MiscellaneousLaborCharge = getInvoice.MiscellaneousLaborCharge;
+                invoice.OtherCharge = getInvoice.OtherCharge;
+                invoice.WasteProcessingCharge = getInvoice.WasteProcessingCharge;
             }
+            return invoice;
         }
 
         public static int CreateInvoice(int client, string billinggroup, DateTime startdate, DateTime enddate)
         {
+                string period = startdate.ToString("MMMM") + ", " + startdate.Year;
+
             using (var db = new CMCSQL03Entities())
             {
                 var getclient = db.tblClient.Find(client);
-                string period = startdate.ToString("MMMM") + ", " + startdate.Year;
                 int invoiceid = NewInvoiceID();
 
-                var obj = (from t in db.tblInvoice
-                           where t.InvoiceID == invoiceid
-                           select t).FirstOrDefault();
+                var invoice = db.tblInvoice.Find(invoiceid);
 
-                obj.InvoiceDate = DateTime.UtcNow;
-                obj.Status = "New";
-                obj.CreateDate = DateTime.UtcNow;
-                obj.CreatedBy = HttpContext.Current.User.Identity.Name;
-                obj.Status = "NEW";
-                obj.UpdateDate = obj.CreateDate;
-                obj.UpdatedBy = obj.CreatedBy;
-                obj.ClientID = getclient.ClientID;
-                obj.ClientName = getclient.ClientName;
-                obj.BillingGroup = billinggroup;                                    // division, business unit, enduse are available entries
-                obj.WarehouseLocation = getclient.CMCLocation;
-                obj.BillTo = getclient.InvoiceAddress;
-                obj.NetTerm = String.IsNullOrEmpty(getclient.ClientNetTerm) ? "Net 30 Days" : getclient.ClientNetTerm;
-                obj.Currency = getclient.ClientCurrency;
-                obj.PONumber = "Enter PO Number";
-                obj.Tier = 1;
-                obj.InvoicePeriod = period;
-                obj.InvoiceStartDate = startdate;
-                obj.InvoiceEndDate = enddate;
-                obj.RemitTo = "<p><b>Chemical Marketing Concepts, LLC</b><br />c/o Odyssey Logistics &amp; Technology Corp<br />39 Old Ridgebury Road, N-1<br />Danbury, CT 06810</p>";
+                invoice.InvoiceDate = DateTime.UtcNow;
+                invoice.Status = "New";
+                invoice.CreateDate = DateTime.UtcNow;
+                invoice.CreatedBy = HttpContext.Current.User.Identity.Name;
+                invoice.Status = "NEW";
+                invoice.UpdateDate = invoice.CreateDate;
+                invoice.UpdatedBy = invoice.CreatedBy;
+                invoice.ClientID = getclient.ClientID;
+                invoice.ClientName = getclient.ClientName;
+                invoice.BillingGroup = billinggroup;                                    // division, business unit, enduse are available entries
+                invoice.WarehouseLocation = getclient.CMCLocation;
+                invoice.BillTo = getclient.InvoiceAddress;
+                invoice.NetTerm = String.IsNullOrEmpty(getclient.ClientNetTerm) ? "Net 30 Days" : getclient.ClientNetTerm;
+                invoice.Currency = getclient.ClientCurrency;
+                invoice.PONumber = "Enter PO Number";
+                invoice.Tier = 1;
+                invoice.InvoicePeriod = period;
+                invoice.InvoiceStartDate = startdate;
+                invoice.InvoiceEndDate = enddate;
+                invoice.RemitTo = "<p><b>Chemical Marketing Concepts, LLC</b><br />c/o Odyssey Logistics &amp; Technology Corp<br />39 Old Ridgebury Road, N-1<br />Danbury, CT 06810</p>";
 
                 db.SaveChanges();
 
-                return obj.InvoiceID;
+                return invoice.InvoiceID;
             }
         }
 
-        public static int SaveInvoice(InvoiceViewModel vm)
+        public static int SaveInvoice(InvoiceViewModel invoice)
         {
             using (var db = new CMCSQL03Entities())
             {
                 var confirmVerify = false;
-                if (vm.VerifiedAccuracy == true)
+                if (invoice.VerifiedAccuracy == true)
                 {
                     /// Add logic to check invoice status if not new or verified already
                     /// check if verified by user == created user. should be different
                     /// capture verified datetime and user identity and save to db
                     /// verified invoices should be locked from further edits.
-                    vm.Status = "VERIFIED";
+                    invoice.Status = "VERIFIED";
                     confirmVerify = true;
                 }
 
                 // Capture user info in viewmodel
-                vm.UpdatedBy = HttpContext.Current.User.Identity.Name;
-                vm.UpdateDate = DateTime.UtcNow;
+                invoice.UpdatedBy = HttpContext.Current.User.Identity.Name;
+                invoice.UpdateDate = DateTime.UtcNow;
 
-                var q = (from t in db.tblInvoice
-                         where t.InvoiceID == vm.InvoiceId
-                         select t).FirstOrDefault();
+                var Invoice = db.tblInvoice.Find(invoice.InvoiceId);
 
-                q.InvoiceNumber = vm.InvoiceId;
-                q.BillingGroup = vm.BillingGroup;
-                q.ClientID = vm.ClientId;
-                q.ClientName = vm.ClientName;
-                q.CreatedBy = vm.CreatedBy;
-                q.CreateDate = vm.CreateDate;
-                q.UpdatedBy = vm.UpdatedBy;
-                q.UpdateDate = vm.UpdateDate;
-                q.InvoiceStartDate = vm.InvoiceStartDate;
-                q.InvoiceEndDate = vm.InvoiceEndDate;
+                Invoice.InvoiceNumber = invoice.InvoiceId;
+                Invoice.BillingGroup = invoice.BillingGroup;
+                Invoice.ClientID = invoice.ClientId;
+                Invoice.ClientName = invoice.ClientName;
+                Invoice.CreatedBy = invoice.CreatedBy;
+                Invoice.CreateDate = invoice.CreateDate;
+                Invoice.UpdatedBy = invoice.UpdatedBy;
+                Invoice.UpdateDate = invoice.UpdateDate;
+                Invoice.InvoiceStartDate = invoice.InvoiceStartDate;
+                Invoice.InvoiceEndDate = invoice.InvoiceEndDate;
 
                 if (confirmVerify == true)
                 {
-                    q.VerifiedAccuracy = vm.VerifiedAccuracy;
-                    q.VerifiedBy = HttpContext.Current.User.Identity.Name;
-                    q.VerifyDate = System.DateTimeOffset.UtcNow;
+                    Invoice.VerifiedAccuracy = invoice.VerifiedAccuracy;
+                    Invoice.VerifiedBy = HttpContext.Current.User.Identity.Name;
+                    Invoice.VerifyDate = System.DateTimeOffset.UtcNow;
                 }
 
-                q.Status = vm.Status;
-                q.Comments = vm.Comments;
-                q.InvoiceDate = vm.InvoiceDate;
-                q.InvoicePeriod = vm.InvoicePeriod;
-                q.PONumber = vm.PONumber;
-                q.NetTerm = vm.NetTerm;
-                q.BillTo = vm.BillTo;
-                q.RemitTo = vm.RemitTo;
-                q.OrderType = vm.OrderType;
-                q.SampleShipSameDay = vm.SampleShipSameDay;
-                q.SampleShipNextDay = vm.SampleShipNextDay;
-                q.SampleShipSecondDay = vm.SampleShipSecondDay;
-                q.SampleShipOther = vm.SampleShipOther;
-                q.TotalSamples = vm.TotalSamples;
+                Invoice.Status = invoice.Status;
+                Invoice.Comments = invoice.Comments;
+                Invoice.InvoiceDate = invoice.InvoiceDate;
+                Invoice.InvoicePeriod = invoice.InvoicePeriod;
+                Invoice.PONumber = invoice.PONumber;
+                Invoice.NetTerm = invoice.NetTerm;
+                Invoice.BillTo = invoice.BillTo;
+                Invoice.RemitTo = invoice.RemitTo;
+                Invoice.OrderType = invoice.OrderType;
+                Invoice.SampleShipSameDay = invoice.SampleShipSameDay;
+                Invoice.SampleShipNextDay = invoice.SampleShipNextDay;
+                Invoice.SampleShipSecondDay = invoice.SampleShipSecondDay;
+                Invoice.SampleShipOther = invoice.SampleShipOther;
+                Invoice.TotalSamples = invoice.TotalSamples;
 
                 decimal? grandtotal = 0;
 
                 // Quantities
-                q.AirHzdOnlyQuantity = vm.AirHzdOnlyQuantity;
-                q.CertificateOfOriginQuantity = vm.CertificateOfOriginQuantity;
-                q.CMCPackQuantity = vm.CMCPackQuantity;
-                q.CoolPackQuantity = vm.CoolPackQuantity;
-                q.CreditCardFeeQuantity = vm.CreditCardFeeQuantity;
-                q.CreditCardOrderQuantity = vm.CreditCardOrderQuantity;
-                q.DocumentationHandlingQuantity = vm.DocumentationHandlingQuantity;
-                q.EmptyPackagingQuantity = vm.EmptyPackagingQuantity;
-                q.ExternalSystemQuantity = vm.ExternalSystemQuantity;
-                q.FollowUpOrderQuantity = vm.FollowUpOrderQuantity;
-                q.FreezerPackQuantity = vm.FreezerPackQuantity;
-                q.GHSLabelsQuantity = vm.GHSLabelsQuantity;
-                q.InactiveProductsQuantity = vm.InactiveProductsQuantity;
-                q.IsolationQuantity = vm.IsolationQuantity;
-                q.IsolationBoxQuantity = vm.IsolationBoxQuantity;
-                q.ITFeeQuantity = vm.ITFeeQuantity;
-                q.LabelMaintainanceQuantity = vm.LabelMaintainanceQuantity;
-                q.LabelStockQuantity = vm.LabelStockQuantity;
-                q.LabelsPrintedQuantity = vm.LabelsPrintedQuantity;
-                q.LaborRelabelQuantity = vm.LaborRelabelQuantity;
-                q.LiteratureFeeQuantity = vm.LiteratureFeeQuantity;
-                q.LimitedQtyQuantity = vm.LimitedQtyQuantity;
-                q.ManualHandlingQuantity = vm.ManualHandlingQuantity;
-                q.MSDSPrintsQuantity = vm.MSDSPrintsQuantity;
-                q.NewLabelSetupQuantity = vm.NewLabelSetupQuantity;
-                q.NewProductSetupQuantity = vm.NewProductSetupQuantity;
-                q.OberkPackQuantity = vm.OberkPackQuantity;
-                q.OrderEntryQuantity = vm.OrderEntryQuantity;
-                q.OverPackQuantity = vm.OverPackQuantity;
-                q.PalletReturnQuantity = vm.PalletReturnQuantity;
-                q.PoisonPackQuantity = vm.PoisonPackQuantity;
-                q.ProductSetupChangesQuantity = vm.ProductSetupChangesQuantity;
-                q.QCStorageQuantity = vm.QCStorageQuantity;
-                q.RDHandlingADRQuantity = vm.RDHandlingADRQuantity;
-                q.RDHandlingIATAQuantity = vm.RDHandlingIATAQuantity;
-                q.RDHandlingLQQuantity = vm.RDHandlingLQQuantity;
-                q.RDHandlingNonHzdQuantity = vm.RDHandlingNonHzdQuantity;
-                q.RefrigeratorStorageQuantity = vm.RefrigeratorStorageQuantity;
-                q.RelabelsQuantity = vm.RelabelsQuantity;
-                q.RushShipmentQuantity = vm.RushShipmentQuantity;
-                q.SPA197AppliedQuantity = vm.SPA197AppliedQuantity;
-                q.SPSPaidOrderQuantity = vm.SPSPaidOrderQuantity;
-                q.UNBoxQuantity = vm.UNBoxQuantity;
-                q.WarehouseStorageQuantity = vm.WarehouseStorageQuantity;
-                q.WHMISLabelsQuantity = vm.WHMISLabelsQuantity;
+                Invoice.AirHzdOnlyQuantity = invoice.AirHzdOnlyQuantity;
+                Invoice.CertificateOfOriginQuantity = invoice.CertificateOfOriginQuantity;
+                Invoice.CMCPackQuantity = invoice.CMCPackQuantity;
+                Invoice.CoolPackQuantity = invoice.CoolPackQuantity;
+                Invoice.CreditCardFeeQuantity = invoice.CreditCardFeeQuantity;
+                Invoice.CreditCardOrderQuantity = invoice.CreditCardOrderQuantity;
+                Invoice.DocumentationHandlingQuantity = invoice.DocumentationHandlingQuantity;
+                Invoice.EmptyPackagingQuantity = invoice.EmptyPackagingQuantity;
+                Invoice.ExternalSystemQuantity = invoice.ExternalSystemQuantity;
+                Invoice.FollowUpOrderQuantity = invoice.FollowUpOrderQuantity;
+                Invoice.FreezerPackQuantity = invoice.FreezerPackQuantity;
+                Invoice.GHSLabelsQuantity = invoice.GHSLabelsQuantity;
+                Invoice.InactiveProductsQuantity = invoice.InactiveProductsQuantity;
+                Invoice.IsolationQuantity = invoice.IsolationQuantity;
+                Invoice.IsolationBoxQuantity = invoice.IsolationBoxQuantity;
+                Invoice.ITFeeQuantity = invoice.ITFeeQuantity;
+                Invoice.LabelMaintainanceQuantity = invoice.LabelMaintainanceQuantity;
+                Invoice.LabelStockQuantity = invoice.LabelStockQuantity;
+                Invoice.LabelsPrintedQuantity = invoice.LabelsPrintedQuantity;
+                Invoice.LaborRelabelQuantity = invoice.LaborRelabelQuantity;
+                Invoice.LiteratureFeeQuantity = invoice.LiteratureFeeQuantity;
+                Invoice.LimitedQtyQuantity = invoice.LimitedQtyQuantity;
+                Invoice.ManualHandlingQuantity = invoice.ManualHandlingQuantity;
+                Invoice.MSDSPrintsQuantity = invoice.MSDSPrintsQuantity;
+                Invoice.NewLabelSetupQuantity = invoice.NewLabelSetupQuantity;
+                Invoice.NewProductSetupQuantity = invoice.NewProductSetupQuantity;
+                Invoice.OberkPackQuantity = invoice.OberkPackQuantity;
+                Invoice.OrderEntryQuantity = invoice.OrderEntryQuantity;
+                Invoice.OverPackQuantity = invoice.OverPackQuantity;
+                Invoice.PalletReturnQuantity = invoice.PalletReturnQuantity;
+                Invoice.PoisonPackQuantity = invoice.PoisonPackQuantity;
+                Invoice.ProductSetupChangesQuantity = invoice.ProductSetupChangesQuantity;
+                Invoice.QCStorageQuantity = invoice.QCStorageQuantity;
+                Invoice.RDHandlingADRQuantity = invoice.RDHandlingADRQuantity;
+                Invoice.RDHandlingIATAQuantity = invoice.RDHandlingIATAQuantity;
+                Invoice.RDHandlingLQQuantity = invoice.RDHandlingLQQuantity;
+                Invoice.RDHandlingNonHzdQuantity = invoice.RDHandlingNonHzdQuantity;
+                Invoice.RefrigeratorStorageQuantity = invoice.RefrigeratorStorageQuantity;
+                Invoice.RelabelsQuantity = invoice.RelabelsQuantity;
+                Invoice.RushShipmentQuantity = invoice.RushShipmentQuantity;
+                Invoice.SPA197AppliedQuantity = invoice.SPA197AppliedQuantity;
+                Invoice.SPSPaidOrderQuantity = invoice.SPSPaidOrderQuantity;
+                Invoice.UNBoxQuantity = invoice.UNBoxQuantity;
+                Invoice.WarehouseStorageQuantity = invoice.WarehouseStorageQuantity;
+                Invoice.WHMISLabelsQuantity = invoice.WHMISLabelsQuantity;
 
                 // Rates
-                q.AirHzdOnlyRate = vm.AirHzdOnlyRate;
-                q.CertificateOfOriginRate = vm.CertificateOfOriginRate;
-                q.CMCPackRate = vm.CMCPackRate;
-                q.CoolPackRate = vm.CoolPackRate;
-                q.CreditCardFeeRate = vm.CreditCardFeeRate;
-                q.CreditCardOrderRate = vm.CreditCardOrderRate;
-                q.DocumentationHandlingRate = vm.DocumentationHandlingRate;
-                q.EmptyPackagingRate = vm.EmptyPackagingRate;
-                q.ExternalSystemRate = vm.ExternalSystemRate;
-                q.FollowUpOrderRate = vm.FollowUpOrderRate;
-                q.FreezerPackRate = vm.FreezerPackRate;
-                q.GHSLabelsRate = vm.GHSLabelsRate;
-                q.InactiveProductsRate = vm.InactiveProductsRate;
-                q.IsolationRate = vm.IsolationRate;
-                q.IsolationBoxRate = vm.IsolationBoxRate;
-                q.ITFeeRate = vm.ITFeeRate;
-                q.LabelMaintainanceRate = vm.LabelMaintainanceRate;
-                q.LabelStockRate = vm.LabelStockRate;
-                q.LabelsPrintedRate = vm.LabelsPrintedRate;
-                q.LaborRelabelRate = vm.LaborRelabelRate;
-                q.LiteratureFeeRate = vm.LiteratureFeeRate;
-                q.LimitedQtyRate = vm.LimitedQtyRate;
-                q.ManualHandlingRate = vm.ManualHandlingRate;
-                q.MSDSPrintsRate = vm.MSDSPrintsRate;
-                q.NewLabelSetupRate = vm.NewLabelSetupRate;
-                q.NewProductSetupRate = vm.NewProductSetupRate;
-                q.OberkPackRate = vm.OberkPackRate;
-                q.OrderEntryRate = vm.OrderEntryRate;
-                q.OverPackRate = vm.OverPackRate;
-                q.PalletReturnRate = vm.PalletReturnRate;
-                q.PoisonPackRate = vm.PoisonPackRate;
-                q.ProductSetupChangesRate = vm.ProductSetupChangesRate;
-                q.QCStorageRate = vm.QCStorageRate;
-                q.RDHandlingADRRate = vm.RDHandlingADRRate;
-                q.RDHandlingIATARate = vm.RDHandlingIATARate;
-                q.RDHandlingLQRate = vm.RDHandlingLQRate;
-                q.RDHandlingNonHzdRate = vm.RDHandlingNonHzdRate;
-                q.RefrigeratorStorageRate = vm.RefrigeratorStorageRate;
-                q.RelabelsRate = vm.RelabelsRate;
-                q.RushShipmentRate = vm.RushShipmentRate;
-                q.SPA197AppliedRate = vm.SPA197AppliedRate;
-                q.SPSPaidOrderRate = vm.SPSPaidOrderRate;
-                q.UNBoxRate = vm.UNBoxRate;
-                q.WarehouseStorageRate = vm.WarehouseStorageRate;
-                q.WHMISLabelsRate = vm.WHMISLabelsRate;
+                Invoice.AirHzdOnlyRate = invoice.AirHzdOnlyRate;
+                Invoice.CertificateOfOriginRate = invoice.CertificateOfOriginRate;
+                Invoice.CMCPackRate = invoice.CMCPackRate;
+                Invoice.CoolPackRate = invoice.CoolPackRate;
+                Invoice.CreditCardFeeRate = invoice.CreditCardFeeRate;
+                Invoice.CreditCardOrderRate = invoice.CreditCardOrderRate;
+                Invoice.DocumentationHandlingRate = invoice.DocumentationHandlingRate;
+                Invoice.EmptyPackagingRate = invoice.EmptyPackagingRate;
+                Invoice.ExternalSystemRate = invoice.ExternalSystemRate;
+                Invoice.FollowUpOrderRate = invoice.FollowUpOrderRate;
+                Invoice.FreezerPackRate = invoice.FreezerPackRate;
+                Invoice.GHSLabelsRate = invoice.GHSLabelsRate;
+                Invoice.InactiveProductsRate = invoice.InactiveProductsRate;
+                Invoice.IsolationRate = invoice.IsolationRate;
+                Invoice.IsolationBoxRate = invoice.IsolationBoxRate;
+                Invoice.ITFeeRate = invoice.ITFeeRate;
+                Invoice.LabelMaintainanceRate = invoice.LabelMaintainanceRate;
+                Invoice.LabelStockRate = invoice.LabelStockRate;
+                Invoice.LabelsPrintedRate = invoice.LabelsPrintedRate;
+                Invoice.LaborRelabelRate = invoice.LaborRelabelRate;
+                Invoice.LiteratureFeeRate = invoice.LiteratureFeeRate;
+                Invoice.LimitedQtyRate = invoice.LimitedQtyRate;
+                Invoice.ManualHandlingRate = invoice.ManualHandlingRate;
+                Invoice.MSDSPrintsRate = invoice.MSDSPrintsRate;
+                Invoice.NewLabelSetupRate = invoice.NewLabelSetupRate;
+                Invoice.NewProductSetupRate = invoice.NewProductSetupRate;
+                Invoice.OberkPackRate = invoice.OberkPackRate;
+                Invoice.OrderEntryRate = invoice.OrderEntryRate;
+                Invoice.OverPackRate = invoice.OverPackRate;
+                Invoice.PalletReturnRate = invoice.PalletReturnRate;
+                Invoice.PoisonPackRate = invoice.PoisonPackRate;
+                Invoice.ProductSetupChangesRate = invoice.ProductSetupChangesRate;
+                Invoice.QCStorageRate = invoice.QCStorageRate;
+                Invoice.RDHandlingADRRate = invoice.RDHandlingADRRate;
+                Invoice.RDHandlingIATARate = invoice.RDHandlingIATARate;
+                Invoice.RDHandlingLQRate = invoice.RDHandlingLQRate;
+                Invoice.RDHandlingNonHzdRate = invoice.RDHandlingNonHzdRate;
+                Invoice.RefrigeratorStorageRate = invoice.RefrigeratorStorageRate;
+                Invoice.RelabelsRate = invoice.RelabelsRate;
+                Invoice.RushShipmentRate = invoice.RushShipmentRate;
+                Invoice.SPA197AppliedRate = invoice.SPA197AppliedRate;
+                Invoice.SPSPaidOrderRate = invoice.SPSPaidOrderRate;
+                Invoice.UNBoxRate = invoice.UNBoxRate;
+                Invoice.WarehouseStorageRate = invoice.WarehouseStorageRate;
+                Invoice.WHMISLabelsRate = invoice.WHMISLabelsRate;
 
                 // Calulated Charges
-                grandtotal += q.AirHzdOnlyCharge = vm.AirHzdOnlyQuantity * vm.AirHzdOnlyRate;
-                grandtotal += q.CertificateOfOriginCharge = vm.CertificateOfOriginQuantity * vm.CertificateOfOriginRate;
-                grandtotal += q.CMCPackCharge = vm.CMCPackQuantity * vm.CMCPackRate;
-                grandtotal += q.CoolPackCharge = vm.CoolPackQuantity * vm.CoolPackRate;
-                grandtotal += q.CreditCardFeeCharge = vm.CreditCardFeeQuantity * vm.CreditCardFeeRate;
-                grandtotal += q.CreditCardOrderCharge = vm.CreditCardOrderQuantity * vm.CreditCardOrderRate;
-                grandtotal += q.DocumentationHandlingCharge = vm.DocumentationHandlingQuantity * vm.DocumentationHandlingRate;
-                grandtotal += q.EmptyPackagingCharge = vm.EmptyPackagingQuantity * vm.EmptyPackagingRate;
-                grandtotal += q.ExternalSystemCharge = vm.ExternalSystemQuantity * vm.ExternalSystemRate;
-                grandtotal += q.FollowUpOrderCharge = vm.FollowUpOrderQuantity * vm.FollowUpOrderRate;
-                grandtotal += q.FreezerPackCharge = vm.FreezerPackQuantity * vm.FreezerPackRate;
-                grandtotal += q.GHSLabelsCharge = vm.GHSLabelsQuantity * vm.GHSLabelsRate;
-                grandtotal += q.InactiveProductsCharge = vm.InactiveProductsQuantity * vm.InactiveProductsRate;
-                grandtotal += q.IsolationCharge = vm.IsolationQuantity * vm.IsolationRate;
-                grandtotal += q.IsolationBoxCharge = vm.IsolationBoxQuantity * vm.IsolationBoxRate;
-                grandtotal += q.ITFeeCharge = vm.ITFeeQuantity * vm.ITFeeRate;
-                grandtotal += q.LabelMaintainanceCharge = vm.LabelMaintainanceQuantity * vm.LabelMaintainanceRate;
-                grandtotal += q.LabelStockCharge = vm.LabelStockQuantity * vm.LabelStockRate;
-                grandtotal += q.LabelsPrintedCharge = vm.LabelsPrintedQuantity * vm.LabelsPrintedRate;
-                grandtotal += q.LaborRelabelCharge = vm.LaborRelabelQuantity * vm.LaborRelabelRate;
-                grandtotal += q.LiteratureFeeCharge = vm.LiteratureFeeQuantity * vm.LiteratureFeeRate;
-                grandtotal += q.LimitedQtyCharge = vm.LimitedQtyQuantity * vm.LimitedQtyRate;
-                grandtotal += q.ManualHandlingCharge = vm.ManualHandlingQuantity * vm.ManualHandlingRate;
-                grandtotal += q.MSDSPrintsCharge = vm.MSDSPrintsQuantity * vm.MSDSPrintsRate;
-                grandtotal += q.NewLabelSetupCharge = vm.NewLabelSetupQuantity * vm.NewLabelSetupRate;
-                grandtotal += q.NewProductSetupCharge = vm.NewProductSetupQuantity * vm.NewProductSetupRate;
-                grandtotal += q.OberkPackCharge = vm.OberkPackQuantity * vm.OberkPackRate;
-                grandtotal += q.OrderEntryCharge = vm.OrderEntryQuantity * vm.OrderEntryRate;
-                grandtotal += q.OverPackCharge = vm.OverPackQuantity * vm.OverPackRate;
-                grandtotal += q.PalletReturnCharge = vm.PalletReturnQuantity * vm.PalletReturnRate;
-                grandtotal += q.PoisonPackCharge = vm.PoisonPackQuantity * vm.PoisonPackRate;
-                grandtotal += q.ProductSetupChangesCharge = vm.ProductSetupChangesQuantity * vm.ProductSetupChangesRate;
-                grandtotal += q.QCStorageCharge = vm.QCStorageQuantity * vm.QCStorageRate;
-                grandtotal += q.RDHandlingADRCharge = vm.RDHandlingADRQuantity * vm.RDHandlingADRRate;
-                grandtotal += q.RDHandlingIATACharge = vm.RDHandlingIATAQuantity * vm.RDHandlingIATARate;
-                grandtotal += q.RDHandlingLQCharge = vm.RDHandlingLQQuantity * vm.RDHandlingLQRate;
-                grandtotal += q.RDHandlingNonHzdCharge = vm.RDHandlingNonHzdQuantity * vm.RDHandlingNonHzdRate;
-                grandtotal += q.RefrigeratorStorageCharge = vm.RefrigeratorStorageQuantity * vm.RefrigeratorStorageRate;
-                grandtotal += q.RelabelsCharge = vm.RelabelsQuantity * vm.RelabelsRate;
-                grandtotal += q.RushShipmentCharge = vm.RushShipmentQuantity * vm.RushShipmentRate;
-                grandtotal += q.SPA197AppliedCharge = vm.SPA197AppliedQuantity * vm.SPA197AppliedRate;
-                grandtotal += q.SPSPaidOrderCharge = vm.SPSPaidOrderQuantity * vm.SPSPaidOrderRate;
-                grandtotal += q.UNBoxCharge = vm.UNBoxQuantity * vm.UNBoxRate;
-                grandtotal += q.WarehouseStorageCharge = vm.WarehouseStorageQuantity * vm.WarehouseStorageRate;
-                grandtotal += q.WHMISLabelsCharge = vm.WHMISLabelsQuantity * vm.WHMISLabelsRate;
+                grandtotal += Invoice.AirHzdOnlyCharge = invoice.AirHzdOnlyQuantity * invoice.AirHzdOnlyRate;
+                grandtotal += Invoice.CertificateOfOriginCharge = invoice.CertificateOfOriginQuantity * invoice.CertificateOfOriginRate;
+                grandtotal += Invoice.CMCPackCharge = invoice.CMCPackQuantity * invoice.CMCPackRate;
+                grandtotal += Invoice.CoolPackCharge = invoice.CoolPackQuantity * invoice.CoolPackRate;
+                grandtotal += Invoice.CreditCardFeeCharge = invoice.CreditCardFeeQuantity * invoice.CreditCardFeeRate;
+                grandtotal += Invoice.CreditCardOrderCharge = invoice.CreditCardOrderQuantity * invoice.CreditCardOrderRate;
+                grandtotal += Invoice.DocumentationHandlingCharge = invoice.DocumentationHandlingQuantity * invoice.DocumentationHandlingRate;
+                grandtotal += Invoice.EmptyPackagingCharge = invoice.EmptyPackagingQuantity * invoice.EmptyPackagingRate;
+                grandtotal += Invoice.ExternalSystemCharge = invoice.ExternalSystemQuantity * invoice.ExternalSystemRate;
+                grandtotal += Invoice.FollowUpOrderCharge = invoice.FollowUpOrderQuantity * invoice.FollowUpOrderRate;
+                grandtotal += Invoice.FreezerPackCharge = invoice.FreezerPackQuantity * invoice.FreezerPackRate;
+                grandtotal += Invoice.GHSLabelsCharge = invoice.GHSLabelsQuantity * invoice.GHSLabelsRate;
+                grandtotal += Invoice.InactiveProductsCharge = invoice.InactiveProductsQuantity * invoice.InactiveProductsRate;
+                grandtotal += Invoice.IsolationCharge = invoice.IsolationQuantity * invoice.IsolationRate;
+                grandtotal += Invoice.IsolationBoxCharge = invoice.IsolationBoxQuantity * invoice.IsolationBoxRate;
+                grandtotal += Invoice.ITFeeCharge = invoice.ITFeeQuantity * invoice.ITFeeRate;
+                grandtotal += Invoice.LabelMaintainanceCharge = invoice.LabelMaintainanceQuantity * invoice.LabelMaintainanceRate;
+                grandtotal += Invoice.LabelStockCharge = invoice.LabelStockQuantity * invoice.LabelStockRate;
+                grandtotal += Invoice.LabelsPrintedCharge = invoice.LabelsPrintedQuantity * invoice.LabelsPrintedRate;
+                grandtotal += Invoice.LaborRelabelCharge = invoice.LaborRelabelQuantity * invoice.LaborRelabelRate;
+                grandtotal += Invoice.LiteratureFeeCharge = invoice.LiteratureFeeQuantity * invoice.LiteratureFeeRate;
+                grandtotal += Invoice.LimitedQtyCharge = invoice.LimitedQtyQuantity * invoice.LimitedQtyRate;
+                grandtotal += Invoice.ManualHandlingCharge = invoice.ManualHandlingQuantity * invoice.ManualHandlingRate;
+                grandtotal += Invoice.MSDSPrintsCharge = invoice.MSDSPrintsQuantity * invoice.MSDSPrintsRate;
+                grandtotal += Invoice.NewLabelSetupCharge = invoice.NewLabelSetupQuantity * invoice.NewLabelSetupRate;
+                grandtotal += Invoice.NewProductSetupCharge = invoice.NewProductSetupQuantity * invoice.NewProductSetupRate;
+                grandtotal += Invoice.OberkPackCharge = invoice.OberkPackQuantity * invoice.OberkPackRate;
+                grandtotal += Invoice.OrderEntryCharge = invoice.OrderEntryQuantity * invoice.OrderEntryRate;
+                grandtotal += Invoice.OverPackCharge = invoice.OverPackQuantity * invoice.OverPackRate;
+                grandtotal += Invoice.PalletReturnCharge = invoice.PalletReturnQuantity * invoice.PalletReturnRate;
+                grandtotal += Invoice.PoisonPackCharge = invoice.PoisonPackQuantity * invoice.PoisonPackRate;
+                grandtotal += Invoice.ProductSetupChangesCharge = invoice.ProductSetupChangesQuantity * invoice.ProductSetupChangesRate;
+                grandtotal += Invoice.QCStorageCharge = invoice.QCStorageQuantity * invoice.QCStorageRate;
+                grandtotal += Invoice.RDHandlingADRCharge = invoice.RDHandlingADRQuantity * invoice.RDHandlingADRRate;
+                grandtotal += Invoice.RDHandlingIATACharge = invoice.RDHandlingIATAQuantity * invoice.RDHandlingIATARate;
+                grandtotal += Invoice.RDHandlingLQCharge = invoice.RDHandlingLQQuantity * invoice.RDHandlingLQRate;
+                grandtotal += Invoice.RDHandlingNonHzdCharge = invoice.RDHandlingNonHzdQuantity * invoice.RDHandlingNonHzdRate;
+                grandtotal += Invoice.RefrigeratorStorageCharge = invoice.RefrigeratorStorageQuantity * invoice.RefrigeratorStorageRate;
+                grandtotal += Invoice.RelabelsCharge = invoice.RelabelsQuantity * invoice.RelabelsRate;
+                grandtotal += Invoice.RushShipmentCharge = invoice.RushShipmentQuantity * invoice.RushShipmentRate;
+                grandtotal += Invoice.SPA197AppliedCharge = invoice.SPA197AppliedQuantity * invoice.SPA197AppliedRate;
+                grandtotal += Invoice.SPSPaidOrderCharge = invoice.SPSPaidOrderQuantity * invoice.SPSPaidOrderRate;
+                grandtotal += Invoice.UNBoxCharge = invoice.UNBoxQuantity * invoice.UNBoxRate;
+                grandtotal += Invoice.WarehouseStorageCharge = invoice.WarehouseStorageQuantity * invoice.WarehouseStorageRate;
+                grandtotal += Invoice.WHMISLabelsCharge = invoice.WHMISLabelsQuantity * invoice.WHMISLabelsRate;
 
                 // Variables Charges
-                grandtotal += q.AdministrativeWasteFeeCharge = vm.AdministrativeWasteFeeCharge;
-                grandtotal += q.CreditCharge = vm.CreditCharge;
-                grandtotal += q.CustomsDocumentsCharge = vm.CustomsDocumentsCharge;
-                grandtotal += q.DeliveryDutiesTaxesCharge = vm.DeliveryDutiesTaxesCharge;
-                grandtotal += q.DocumentsCharge = vm.DocumentsCharge;
-                grandtotal += q.HandlingCharge = vm.HandlingCharge;
-                grandtotal += q.MautFuel = vm.MautFuel;
-                grandtotal += q.MiscellaneousLaborCharge = vm.MiscellaneousLaborCharge;
-                grandtotal += q.OtherCharge = vm.OtherCharge;
-                grandtotal += q.WasteProcessingCharge = vm.WasteProcessingCharge;
+                grandtotal += Invoice.AdministrativeWasteFeeCharge = invoice.AdministrativeWasteFeeCharge;
+                grandtotal += Invoice.CreditCharge = invoice.CreditCharge;
+                grandtotal += Invoice.CustomsDocumentsCharge = invoice.CustomsDocumentsCharge;
+                grandtotal += Invoice.DeliveryDutiesTaxesCharge = invoice.DeliveryDutiesTaxesCharge;
+                grandtotal += Invoice.DocumentsCharge = invoice.DocumentsCharge;
+                grandtotal += Invoice.HandlingCharge = invoice.HandlingCharge;
+                grandtotal += Invoice.MautFuel = invoice.MautFuel;
+                grandtotal += Invoice.MiscellaneousLaborCharge = invoice.MiscellaneousLaborCharge;
+                grandtotal += Invoice.OtherCharge = invoice.OtherCharge;
+                grandtotal += Invoice.WasteProcessingCharge = invoice.WasteProcessingCharge;
 
-                q.GrandTotal = grandtotal;
-                q.TotalServiceCharge = grandtotal;
+                Invoice.GrandTotal = grandtotal;
+                Invoice.TotalServiceCharge = grandtotal;
 
-                q.TotalCostSamples = vm.TotalCostSamples;
-                q.TotalFreight = vm.TotalFreight;
-                q.TotalFrtHzdSchg = vm.TotalFrtHzdSchg;
-                q.TotalDue = vm.TotalCostSamples + vm.TotalFreight + vm.TotalFrtHzdSchg + grandtotal;
+                Invoice.TotalCostSamples = invoice.TotalCostSamples;
+                Invoice.TotalFreight = invoice.TotalFreight;
+                Invoice.TotalFrtHzdSchg = invoice.TotalFrtHzdSchg;
+                Invoice.TotalDue = invoice.TotalCostSamples + invoice.TotalFreight + invoice.TotalFrtHzdSchg + grandtotal;
 
                 db.SaveChanges();
-
-                return vm.InvoiceId;
             }
+            
+            return invoice.InvoiceId;
         }
 
         public static int GenerateInvoice(int invoiceid)
         {
-            int clientid = 0;
-            int divisionid = 0;
-            string billinggroup;
-            DateTime startdate = DateTime.UtcNow;
-            DateTime enddate = DateTime.UtcNow;
-            int? sampleitemscount = 0;
-            string[] sampletranstypes = { "SAMP", "HAZD", "FLAM", "HEAT", "REFR", "FREZ", "CLEN", "BLND", "NALG", "NITR", "BIOC", "KOSH", "LABL" };
+            int clientId = 0;
+            int divisionId = 0;
+            string billingGroup;
+            int? sampleItemsCount = 0;
+            string[] sampleTransTypes = SampleTransTypes();
+            DateTime startDate = DateTime.UtcNow;
+            DateTime endDate = DateTime.UtcNow;
             Random random = new Random();
-            decimal? grandtotal = 0;
-            decimal? sumsamplecharges;
-            decimal? calcfreightcharges;
-            decimal? calcservicecharges;
-            decimal? sumchargesdue;
+            decimal? grandTotal = 0;
+            decimal? sumSampleCharges;
+            decimal? calcFreightCharges;
+            decimal? calcServiceCharges;
+            decimal? sumChargesDue;
 
             using (var db = new CMCSQL03Entities())
             {
                 // Get invoice info
-                var invoice = (from t in db.tblInvoice
-                               where t.InvoiceID == invoiceid
-                               select t).FirstOrDefault();
+                var invoice = db.tblInvoice.Find(invoiceid);
 
-                clientid = Convert.ToInt32(invoice.ClientID);
-                startdate = Convert.ToDateTime(invoice.InvoiceStartDate);
-                enddate = Convert.ToDateTime(invoice.InvoiceEndDate);
+                clientId = Convert.ToInt32(invoice.ClientID);
+                startDate = Convert.ToDateTime(invoice.InvoiceStartDate);
+                endDate = Convert.ToDateTime(invoice.InvoiceEndDate);
 
                 // Check input for type and determine whether billing group is division or enduse
                 int n;
                 bool isDivision = int.TryParse(invoice.BillingGroup, out n);
+                
+                billingGroup = "ALL";
 
                 if (isDivision == true)
                 {
-                    divisionid = Convert.ToInt32(invoice.BillingGroup);
-                    var getDivision = (from t in db.tblDivision
-                                       where t.DivisionID == divisionid
-                                       select t).FirstOrDefault();
+                    divisionId = Convert.ToInt32(invoice.BillingGroup);
+                    var getDivision = db.tblDivision.Find(divisionId);
 
-                    billinggroup = getDivision.DivisionName + " / " + getDivision.BusinessUnit;
+                    billingGroup = getDivision.DivisionName + " / " + getDivision.BusinessUnit;
                 }
-                else if (isDivision == false)
+
+                if (isDivision == false)
                 {
-                    billinggroup = invoice.BillingGroup;                        // Could be "All" or End Use
-                }
-                else
-                {
-                    billinggroup = "ALL";
+                    billingGroup = invoice.BillingGroup;
                 }
 
                 // Get client info
-                var client = (from t in db.tblClient
-                              where t.ClientID == clientid
-                              select t).FirstOrDefault();
+                var client = db.tblClient.Find(clientId);
 
                 // Get predetermined rates set for client.
                 var servicerates = (from t in db.tblRates
-                                    where t.ClientID == clientid
+                                    where t.ClientID == clientId
                                     select t).FirstOrDefault();
 
                 // Get order items for client within date range.
                 var orderitems = (from t in db.tblOrderItem
                                   join o in db.tblOrderMaster on t.OrderID equals o.OrderID
-                                  where o.ClientID == clientid
-                                  && (t.ShipDate >= startdate && t.ShipDate <= enddate)
+                                  where o.ClientID == clientId
+                                  && (t.ShipDate >= startDate && t.ShipDate <= endDate)
                                   select t).ToList();
 
-                sampleitemscount = (from t in orderitems
-                                   select (t.Qty)).Sum();
+                sampleItemsCount = orderitems.Sum(x => x.Qty);
 
                 // Get order transactions within date range.
                 var transactions = (from t in db.tblOrderTrans
-                                    where t.ClientID == clientid
-                                    && (t.TransDate >= startdate && t.TransDate <= enddate)
+                                    where t.ClientID == clientId
+                                    && (t.TransDate >= startDate && t.TransDate <= endDate)
                                     select t).ToList();
 
-                var samplechargetrans = transactions.Where(x => sampletranstypes.Contains(x.TransType)).ToList();
+                var samplechargetrans = transactions.Where(x => sampleTransTypes.Contains(x.TransType)).ToList();
 
-                sumsamplecharges = (from t in samplechargetrans
-                                    select (t.TransQty * t.TransRate)).Sum();
+                sumSampleCharges = samplechargetrans.Sum(x => x.TransQty * x.TransRate);
 
                 // Bypass business rules within condition if 'ALL' is selected
-                if (billinggroup != "ALL")
+                if (billingGroup != "ALL")
                 {
                     // Filter transactions by billing group if division/businessunit is selected
                     if (isDivision == true)
                     {
-                        var billinggrouptransactions = transactions.Where(x => x.DivisionID == divisionid).ToList();
+                        var billinggrouptransactions = transactions.Where(x => x.DivisionID == divisionId).ToList();
 
                         transactions = billinggrouptransactions;
 
                         // Filter order items by divisionid, count, and sum up the sample charges
                         var sampleitems = (from orderitem in orderitems
                                            join order in db.tblOrderMaster on orderitem.OrderID equals order.OrderID
-                                           where order.DivisionID == divisionid
+                                           where order.DivisionID == divisionId
                                            select orderitem).ToList();
 
-                        sampleitemscount = (from t in sampleitems
-                                            select (t.Qty)).Sum();
+                        sampleItemsCount = sampleitems.Sum(x => x.Qty);
 
                         samplechargetrans = (from trans in transactions
                                              join orderitem in orderitems on trans.OrderItemID equals orderitem.ItemID
-                                             where sampletranstypes.Contains(trans.TransType)
+                                             where sampleTransTypes.Contains(trans.TransType)
                                              select trans).ToList();
-
-                        sumsamplecharges = (from t in samplechargetrans
-                                            select (t.TransQty * t.BillingRate)).Sum();             // Calculate sample charges using billing rate by adjusted tiers
+                        
+                        // Calculate sample charges using billing rate by adjusted tiers
+                        sumSampleCharges = samplechargetrans.Sum(x => x.TransQty * x.BillingRate);
                     }
 
                     // Filter orders by enduse if enduse is selected and match orders to transactions
                     if (isDivision == false)
                     {
-                        string enduse = billinggroup;
+                        string enduse = billingGroup;
 
                         var enduseorders = (from t in db.tblOrderMaster
-                                            where t.ClientID == clientid
+                                            where t.ClientID == clientId
                                             && t.EndUse == enduse
                                             select t).ToList();
 
@@ -640,26 +627,25 @@ namespace MvcPhoenix.Models
                                            where order.EndUse == enduse
                                            select orderitem).ToList();
 
-                        sampleitemscount = (from t in sampleitems
-                                            select (t.Qty)).Sum();
+                        sampleItemsCount = sampleitems.Sum(x => x.Qty);
 
-                        samplechargetrans = transactions.Where(x => sampletranstypes.Contains(x.TransType)).ToList();
-
-                        sumsamplecharges = (from t in samplechargetrans
-                                            select (t.TransQty * t.BillingRate)).Sum();             // Calculate sample charges using billing rate by adjusted tiers
+                        samplechargetrans = transactions.Where(x => sampleTransTypes.Contains(x.TransType)).ToList();
+                        
+                        // Calculate sample charges using billing rate by adjusted tiers
+                        sumSampleCharges = samplechargetrans.Sum(x => x.TransQty * x.BillingRate);
                     }
                 }
 
                 // TODO: Calculate Freight Charges
-                calcfreightcharges = 0;                                                                         // random.Next(100, 999);
+                calcFreightCharges = 0;                                                                         // random.Next(100, 999);
 
                 // TODO: Calculate Freight Hazard Surcharge
                 var calcfreighthazdsurcharges = 0;                                                              // random.Next(100, 999);
 
                 // TODO: Calculate shipping performance.
                 // Is shipping calculated per sample or per order?
-                int? countorderitems = sampleitemscount;
-                invoice.SampleShipSameDay = sampleitemscount;                                                   // (int)(sampleitemscount * 0.5);
+                int? countorderitems = sampleItemsCount;
+                invoice.SampleShipSameDay = sampleItemsCount;                                                   // (int)(sampleitemscount * 0.5);
                 invoice.SampleShipNextDay = 0;                                                                  // (int)(sampleitemscount * 0.25);
                 invoice.SampleShipSecondDay = 0;                                                                // (int)(sampleitemscount * 0.15);
                 invoice.SampleShipOther = 0;                                                                    // (int)(sampleitemscount * 0.1);
@@ -772,80 +758,80 @@ namespace MvcPhoenix.Models
 
                 // Calculate charges by multiplying quantities with corresponding rates.
                 // Aggregate sum into grandtotal.
-                grandtotal += invoice.AirHzdOnlyCharge = invoice.AirHzdOnlyQuantity * invoice.AirHzdOnlyRate;
-                grandtotal += invoice.CertificateOfOriginCharge = invoice.CertificateOfOriginQuantity * invoice.CertificateOfOriginRate;
-                grandtotal += invoice.CMCPackCharge = invoice.CMCPackQuantity * invoice.CMCPackRate;
-                grandtotal += invoice.CoolPackCharge = invoice.CoolPackQuantity * invoice.CoolPackRate;
-                grandtotal += invoice.CreditCardFeeCharge = invoice.CreditCardFeeQuantity * invoice.CreditCardFeeRate;
-                grandtotal += invoice.CreditCardOrderCharge = invoice.CreditCardOrderQuantity * invoice.CreditCardOrderRate;
-                grandtotal += invoice.DocumentationHandlingCharge = invoice.DocumentationHandlingQuantity * invoice.DocumentationHandlingRate;
-                grandtotal += invoice.EmptyPackagingCharge = invoice.EmptyPackagingQuantity * invoice.EmptyPackagingRate;
-                grandtotal += invoice.ExternalSystemCharge = invoice.ExternalSystemQuantity * invoice.ExternalSystemRate;
-                grandtotal += invoice.FollowUpOrderCharge = invoice.FollowUpOrderQuantity * invoice.FollowUpOrderRate;
-                grandtotal += invoice.FreezerPackCharge = invoice.FreezerPackQuantity * invoice.FreezerPackRate;
-                grandtotal += invoice.GHSLabelsCharge = invoice.GHSLabelsQuantity * invoice.GHSLabelsRate;
-                grandtotal += invoice.InactiveProductsCharge = invoice.InactiveProductsQuantity * invoice.InactiveProductsRate;
-                grandtotal += invoice.IsolationCharge = invoice.IsolationQuantity * invoice.IsolationRate;
-                grandtotal += invoice.IsolationBoxCharge = invoice.IsolationBoxQuantity * invoice.IsolationBoxRate;
-                grandtotal += invoice.ITFeeCharge = invoice.ITFeeQuantity * invoice.ITFeeRate;
-                grandtotal += invoice.LabelMaintainanceCharge = invoice.LabelMaintainanceQuantity * invoice.LabelMaintainanceRate;
-                grandtotal += invoice.LabelStockCharge = invoice.LabelStockQuantity * invoice.LabelStockRate;
-                grandtotal += invoice.LabelsPrintedCharge = invoice.LabelsPrintedQuantity * invoice.LabelsPrintedRate;
-                grandtotal += invoice.LaborRelabelCharge = invoice.LaborRelabelQuantity * invoice.LaborRelabelRate;
-                grandtotal += invoice.LiteratureFeeCharge = invoice.LiteratureFeeQuantity * invoice.LiteratureFeeRate;
-                grandtotal += invoice.LimitedQtyCharge = invoice.LimitedQtyQuantity * invoice.LimitedQtyRate;
-                grandtotal += invoice.ManualHandlingCharge = invoice.ManualHandlingQuantity * invoice.ManualHandlingRate;
-                grandtotal += invoice.MSDSPrintsCharge = invoice.MSDSPrintsQuantity * invoice.MSDSPrintsRate;
-                grandtotal += invoice.NewLabelSetupCharge = invoice.NewLabelSetupQuantity * invoice.NewLabelSetupRate;
-                grandtotal += invoice.NewProductSetupCharge = invoice.NewProductSetupQuantity * invoice.NewProductSetupRate;
-                grandtotal += invoice.OberkPackCharge = invoice.OberkPackQuantity * invoice.OberkPackRate;
-                grandtotal += invoice.OrderEntryCharge = invoice.OrderEntryQuantity * invoice.OrderEntryRate;
-                grandtotal += invoice.OverPackCharge = invoice.OverPackQuantity * invoice.OverPackRate;
-                grandtotal += invoice.PalletReturnCharge = invoice.PalletReturnQuantity * invoice.PalletReturnRate;
-                grandtotal += invoice.PoisonPackCharge = invoice.PoisonPackQuantity * invoice.PoisonPackRate;
-                grandtotal += invoice.ProductSetupChangesCharge = invoice.ProductSetupChangesQuantity * invoice.ProductSetupChangesRate;
-                grandtotal += invoice.QCStorageCharge = invoice.QCStorageQuantity * invoice.QCStorageRate;
-                grandtotal += invoice.RDHandlingADRCharge = invoice.RDHandlingADRQuantity * invoice.RDHandlingADRRate;
-                grandtotal += invoice.RDHandlingIATACharge = invoice.RDHandlingIATAQuantity * invoice.RDHandlingIATARate;
-                grandtotal += invoice.RDHandlingLQCharge = invoice.RDHandlingLQQuantity * invoice.RDHandlingLQRate;
-                grandtotal += invoice.RDHandlingNonHzdCharge = invoice.RDHandlingNonHzdQuantity * invoice.RDHandlingNonHzdRate;
-                grandtotal += invoice.RefrigeratorStorageCharge = invoice.RefrigeratorStorageQuantity * invoice.RefrigeratorStorageRate;
-                grandtotal += invoice.RelabelsCharge = invoice.RelabelsQuantity * invoice.RelabelsRate;
-                grandtotal += invoice.RushShipmentCharge = invoice.RushShipmentQuantity * invoice.RushShipmentRate;
-                grandtotal += invoice.SPA197AppliedCharge = invoice.SPA197AppliedQuantity * invoice.SPA197AppliedRate;
-                grandtotal += invoice.SPSPaidOrderCharge = invoice.SPSPaidOrderQuantity * invoice.SPSPaidOrderRate;
-                grandtotal += invoice.UNBoxCharge = invoice.UNBoxQuantity * invoice.UNBoxRate;
-                grandtotal += invoice.WarehouseStorageCharge = invoice.WarehouseStorageQuantity * invoice.WarehouseStorageRate;
-                grandtotal += invoice.WHMISLabelsCharge = invoice.WHMISLabelsQuantity * invoice.WHMISLabelsRate;
+                grandTotal += invoice.AirHzdOnlyCharge = invoice.AirHzdOnlyQuantity * invoice.AirHzdOnlyRate;
+                grandTotal += invoice.CertificateOfOriginCharge = invoice.CertificateOfOriginQuantity * invoice.CertificateOfOriginRate;
+                grandTotal += invoice.CMCPackCharge = invoice.CMCPackQuantity * invoice.CMCPackRate;
+                grandTotal += invoice.CoolPackCharge = invoice.CoolPackQuantity * invoice.CoolPackRate;
+                grandTotal += invoice.CreditCardFeeCharge = invoice.CreditCardFeeQuantity * invoice.CreditCardFeeRate;
+                grandTotal += invoice.CreditCardOrderCharge = invoice.CreditCardOrderQuantity * invoice.CreditCardOrderRate;
+                grandTotal += invoice.DocumentationHandlingCharge = invoice.DocumentationHandlingQuantity * invoice.DocumentationHandlingRate;
+                grandTotal += invoice.EmptyPackagingCharge = invoice.EmptyPackagingQuantity * invoice.EmptyPackagingRate;
+                grandTotal += invoice.ExternalSystemCharge = invoice.ExternalSystemQuantity * invoice.ExternalSystemRate;
+                grandTotal += invoice.FollowUpOrderCharge = invoice.FollowUpOrderQuantity * invoice.FollowUpOrderRate;
+                grandTotal += invoice.FreezerPackCharge = invoice.FreezerPackQuantity * invoice.FreezerPackRate;
+                grandTotal += invoice.GHSLabelsCharge = invoice.GHSLabelsQuantity * invoice.GHSLabelsRate;
+                grandTotal += invoice.InactiveProductsCharge = invoice.InactiveProductsQuantity * invoice.InactiveProductsRate;
+                grandTotal += invoice.IsolationCharge = invoice.IsolationQuantity * invoice.IsolationRate;
+                grandTotal += invoice.IsolationBoxCharge = invoice.IsolationBoxQuantity * invoice.IsolationBoxRate;
+                grandTotal += invoice.ITFeeCharge = invoice.ITFeeQuantity * invoice.ITFeeRate;
+                grandTotal += invoice.LabelMaintainanceCharge = invoice.LabelMaintainanceQuantity * invoice.LabelMaintainanceRate;
+                grandTotal += invoice.LabelStockCharge = invoice.LabelStockQuantity * invoice.LabelStockRate;
+                grandTotal += invoice.LabelsPrintedCharge = invoice.LabelsPrintedQuantity * invoice.LabelsPrintedRate;
+                grandTotal += invoice.LaborRelabelCharge = invoice.LaborRelabelQuantity * invoice.LaborRelabelRate;
+                grandTotal += invoice.LiteratureFeeCharge = invoice.LiteratureFeeQuantity * invoice.LiteratureFeeRate;
+                grandTotal += invoice.LimitedQtyCharge = invoice.LimitedQtyQuantity * invoice.LimitedQtyRate;
+                grandTotal += invoice.ManualHandlingCharge = invoice.ManualHandlingQuantity * invoice.ManualHandlingRate;
+                grandTotal += invoice.MSDSPrintsCharge = invoice.MSDSPrintsQuantity * invoice.MSDSPrintsRate;
+                grandTotal += invoice.NewLabelSetupCharge = invoice.NewLabelSetupQuantity * invoice.NewLabelSetupRate;
+                grandTotal += invoice.NewProductSetupCharge = invoice.NewProductSetupQuantity * invoice.NewProductSetupRate;
+                grandTotal += invoice.OberkPackCharge = invoice.OberkPackQuantity * invoice.OberkPackRate;
+                grandTotal += invoice.OrderEntryCharge = invoice.OrderEntryQuantity * invoice.OrderEntryRate;
+                grandTotal += invoice.OverPackCharge = invoice.OverPackQuantity * invoice.OverPackRate;
+                grandTotal += invoice.PalletReturnCharge = invoice.PalletReturnQuantity * invoice.PalletReturnRate;
+                grandTotal += invoice.PoisonPackCharge = invoice.PoisonPackQuantity * invoice.PoisonPackRate;
+                grandTotal += invoice.ProductSetupChangesCharge = invoice.ProductSetupChangesQuantity * invoice.ProductSetupChangesRate;
+                grandTotal += invoice.QCStorageCharge = invoice.QCStorageQuantity * invoice.QCStorageRate;
+                grandTotal += invoice.RDHandlingADRCharge = invoice.RDHandlingADRQuantity * invoice.RDHandlingADRRate;
+                grandTotal += invoice.RDHandlingIATACharge = invoice.RDHandlingIATAQuantity * invoice.RDHandlingIATARate;
+                grandTotal += invoice.RDHandlingLQCharge = invoice.RDHandlingLQQuantity * invoice.RDHandlingLQRate;
+                grandTotal += invoice.RDHandlingNonHzdCharge = invoice.RDHandlingNonHzdQuantity * invoice.RDHandlingNonHzdRate;
+                grandTotal += invoice.RefrigeratorStorageCharge = invoice.RefrigeratorStorageQuantity * invoice.RefrigeratorStorageRate;
+                grandTotal += invoice.RelabelsCharge = invoice.RelabelsQuantity * invoice.RelabelsRate;
+                grandTotal += invoice.RushShipmentCharge = invoice.RushShipmentQuantity * invoice.RushShipmentRate;
+                grandTotal += invoice.SPA197AppliedCharge = invoice.SPA197AppliedQuantity * invoice.SPA197AppliedRate;
+                grandTotal += invoice.SPSPaidOrderCharge = invoice.SPSPaidOrderQuantity * invoice.SPSPaidOrderRate;
+                grandTotal += invoice.UNBoxCharge = invoice.UNBoxQuantity * invoice.UNBoxRate;
+                grandTotal += invoice.WarehouseStorageCharge = invoice.WarehouseStorageQuantity * invoice.WarehouseStorageRate;
+                grandTotal += invoice.WHMISLabelsCharge = invoice.WHMISLabelsQuantity * invoice.WHMISLabelsRate;
 
                 // Variables charges by group summing amounts with corresponding transaction types.
                 // Aggregate sum into grandtotal.
-                grandtotal += invoice.AdministrativeWasteFeeCharge = getservicetransactions.Where(j => j.TransType == "Administrative Waste Fee").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.CreditCharge = getservicetransactions.Where(j => j.TransType == "Credit").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.CustomsDocumentsCharge = getservicetransactions.Where(j => j.TransType == "Customs Documents").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.DeliveryDutiesTaxesCharge = getservicetransactions.Where(j => j.TransType == "Delivery Duties Taxes").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.DocumentsCharge = getservicetransactions.Where(j => j.TransType == "Documents").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.HandlingCharge = getservicetransactions.Where(j => j.TransType == "Handling").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.MautFuel = getservicetransactions.Where(j => j.TransType == "MautFuel").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.MiscellaneousLaborCharge = getservicetransactions.Where(j => j.TransType == "Miscellaneous Labor").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.OtherCharge = getservicetransactions.Where(j => j.TransType == "Other").Select(i => i.TransAmount).Sum();
-                grandtotal += invoice.WasteProcessingCharge = getservicetransactions.Where(j => j.TransType == "Waste Processing").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.AdministrativeWasteFeeCharge = getservicetransactions.Where(j => j.TransType == "Administrative Waste Fee").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.CreditCharge = getservicetransactions.Where(j => j.TransType == "Credit").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.CustomsDocumentsCharge = getservicetransactions.Where(j => j.TransType == "Customs Documents").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.DeliveryDutiesTaxesCharge = getservicetransactions.Where(j => j.TransType == "Delivery Duties Taxes").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.DocumentsCharge = getservicetransactions.Where(j => j.TransType == "Documents").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.HandlingCharge = getservicetransactions.Where(j => j.TransType == "Handling").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.MautFuel = getservicetransactions.Where(j => j.TransType == "MautFuel").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.MiscellaneousLaborCharge = getservicetransactions.Where(j => j.TransType == "Miscellaneous Labor").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.OtherCharge = getservicetransactions.Where(j => j.TransType == "Other").Select(i => i.TransAmount).Sum();
+                grandTotal += invoice.WasteProcessingCharge = getservicetransactions.Where(j => j.TransType == "Waste Processing").Select(i => i.TransAmount).Sum();
 
-                invoice.GrandTotal = grandtotal;
+                invoice.GrandTotal = grandTotal;
 
                 // Calculate all charges due.
-                sumchargesdue = sumsamplecharges + calcfreightcharges + calcfreighthazdsurcharges + grandtotal;
+                sumChargesDue = sumSampleCharges + calcFreightCharges + calcfreighthazdsurcharges + grandTotal;
 
                 // Fill summary fields.
-                invoice.TotalSamples = sampleitemscount;
-                invoice.TotalCostSamples = sumsamplecharges;
-                invoice.TotalFreight = calcfreightcharges;                                                  // TODO: Random for now
+                invoice.TotalSamples = sampleItemsCount;
+                invoice.TotalCostSamples = sumSampleCharges;
+                invoice.TotalFreight = calcFreightCharges;                                                  // TODO: Random for now
                 invoice.TotalFrtHzdSchg = calcfreighthazdsurcharges;                                        // TODO: Random for now
-                invoice.TotalServiceCharge = grandtotal;
-                invoice.TotalDue = sumchargesdue;
+                invoice.TotalServiceCharge = grandTotal;
+                invoice.TotalDue = sumChargesDue;
 
                 // Revisit
-                invoice.BillingGroup = billinggroup;
+                invoice.BillingGroup = billingGroup;
 
                 db.SaveChanges();
 
@@ -853,16 +839,34 @@ namespace MvcPhoenix.Models
             }
         }
 
+        private static string[] SampleTransTypes()
+        {
+            string[] types = { "SAMP",
+                               "HAZD", 
+                               "FLAM", 
+                               "HEAT", 
+                               "REFR", 
+                               "FREZ", 
+                               "CLEN", 
+                               "BLND", 
+                               "NALG", 
+                               "NITR", 
+                               "BIOC", 
+                               "KOSH", 
+                               "LABL" };
+            return types;
+        }
+
         public static int NewInvoiceID()
         {
             using (var db = new CMCSQL03Entities())
             {
-                tblInvoice nr = new tblInvoice();
-                db.tblInvoice.Add(nr);
+                tblInvoice invoice = new tblInvoice();
+                db.tblInvoice.Add(invoice);
 
                 db.SaveChanges();
 
-                return nr.InvoiceID;
+                return invoice.InvoiceID;
             }
         }
 
@@ -896,16 +900,13 @@ namespace MvcPhoenix.Models
                             int? xtier = gettierlevel.TierLevel;
                             decimal? xrate = gettierlevel.Price;
                             decimal? xcharge = transactions[i].transaction.TransQty * xrate;
+                            var xdate = DateTime.UtcNow.ToString("dd/MM/yyyy");
 
-                            var updatebilling = (from t in db.tblOrderTrans
-                                                 where t.OrderTransID == xtransid
-                                                 && t.OrderItemID == xitemid
-                                                 select t).SingleOrDefault();
+                            var updatebilling = db.tblOrderTrans.Find(xtransid);
 
                             updatebilling.BillingTier = xtier;
                             updatebilling.BillingRate = xrate;
                             updatebilling.BillingCharge = xcharge;
-                            var xdate = DateTime.UtcNow.ToString("dd/MM/yyyy");
                             updatebilling.Comments = updatebilling.Comments + ". " + String.Format("Billing rate updated to {0} per tier {1} pricing on {2}.", xrate, xtier, xdate);
                             updatebilling.UpdateDate = DateTime.UtcNow;
                             updatebilling.UpdateUser = HttpContext.Current.User.Identity.Name;

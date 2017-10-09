@@ -5,165 +5,146 @@ using System.Web;
 
 namespace MvcPhoenix.Services
 {
-    public class Packout
+    public class PackoutService
     {
-        public static int fnCreatePackOutOrder(int id, int Priority)
+        public static int CreatePackOutOrder(int bulkid, int priority)
         {
+            int packoutId = 0;
+
             using (var db = new CMCSQL03Entities())
             {
-                int retval = 0;
-                string s = "";
-                var bulk = db.tblBulk.Find(id);
-                var pmaster = db.tblProductMaster.Find(bulk.ProductMasterID);
-                var client = db.tblClient.Find(pmaster.ClientID);
-                
-				// check to see if there is an open packout already 
-                var qPackout = (from t in db.tblProductionMaster
-                                where t.Company == client.CMCLongCustomer
-                                && t.MasterCode == pmaster.MasterCode
-                                && (t.ProductionStage == 10 | t.ProductionStage == 20)
-                                select t).FirstOrDefault();
-                if (qPackout != null)
+                var bulk = db.tblBulk.Find(bulkid);
+                var productMaster = db.tblProductMaster.Find(bulk.ProductMasterID);
+                var client = db.tblClient.Find(productMaster.ClientID);
+
+                // check to see if there is an open packout already
+                var packout = (from t in db.tblProductionMaster
+                               where t.Company == client.CMCLongCustomer
+                               && t.MasterCode == productMaster.MasterCode
+                               && (t.ProductionStage == 10 | t.ProductionStage == 20)
+                               select t).FirstOrDefault();
+
+                if (packout != null)
                 {
-                    retval = -1;
-                    return retval;
+                    packoutId = -1;
+                    return packoutId;
                 }
 
-                // gather a list of what we need to packout
-                var q = (from t in db.tblBulk
-                         join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                         join pd in db.tblProductDetail on pm.ProductMasterID equals pd.ProductMasterID
-                         join sm in db.tblShelfMaster on pd.ProductDetailID equals sm.ProductDetailID
-                         where t.BulkID == id
-                         select new { t, pd, pm, sm }).ToList();
+                // Get a list of what we need to inform packout
+                var packoutBulk = (from bulks in db.tblBulk
+                                   join productmaster in db.tblProductMaster on bulks.ProductMasterID equals productmaster.ProductMasterID
+                                   join productdetail in db.tblProductDetail on productmaster.ProductMasterID equals productdetail.ProductMasterID
+                                   join shelfmaster in db.tblShelfMaster on productdetail.ProductDetailID equals shelfmaster.ProductDetailID
+                                   where bulks.BulkID == bulkid
+                                   select new { bulks, productdetail, productmaster, shelfmaster }).ToList();
 
-                if (Priority == 0)
-                { Priority = FnTodayColorPriority(); }
-
-                // insert master
-                MvcPhoenix.EF.tblProductionMaster newrec = new MvcPhoenix.EF.tblProductionMaster();
-
-                db.tblProductionMaster.Add(newrec);
-                db.SaveChanges();
-
-                int newPackOutID = newrec.ID;
-                retval = newPackOutID;
-
-                var newMaster = (from t in db.tblProductionMaster
-                                 where t.ID == newPackOutID
-                                 select t).FirstOrDefault();
-
-                // fill master record values from bulk-pm-pd-dv
-                newMaster.BulkID = bulk.BulkID;
-				newMaster.ClientID = client.ClientID;
-                newMaster.CreateDate = DateTime.UtcNow;
-                newMaster.ProdmastCreateDate = DateTime.UtcNow;
-                newMaster.Company = client.CMCLongCustomer;
-                newMaster.Division = "n/a";
-                newMaster.MasterCode = pmaster.MasterCode;
-                newMaster.ProdName = pmaster.MasterName;
-                newMaster.Lot_Number = bulk.LotNumber;
-                newMaster.Bulk_Location = bulk.Bin;
-                newMaster.Contents_Weight = bulk.CurrentWeight;
-                newMaster.Shelf__Life = pmaster.ShelfLife;
-                newMaster.ExpDt = bulk.ExpirationDate;
-                newMaster.CeaseShipDate = bulk.CeaseShipDate;
-                newMaster.RecDate = bulk.ReceiveDate;
-                newMaster.Packout = true;
-                newMaster.Priority = Priority;
-                newMaster.ProductionStage = 10;
-                newMaster.AirUN = "n/a";
-                newMaster.Status = bulk.BulkStatus;
-                newMaster.CMCUser = HttpContext.Current.User.Identity.Name;
-                newMaster.Heat_Prior_To_Filling = pmaster.HeatPriorToFilling;
-                newMaster.Moisture = pmaster.MoistureSensitive;
-                newMaster.CleanRoom = pmaster.CleanRoomEquipment;
-
-                db.SaveChanges();
-
-                foreach (var row in q)
+                if (priority == 0)
                 {
-                    // insert detail records from q
-                    MvcPhoenix.EF.tblProductionDetail newdetail = new MvcPhoenix.EF.tblProductionDetail();
-                    newdetail.MasterID = newMaster.ID;
-                    newdetail.ShelfID = row.sm.ShelfID;
+                    priority = ColorPriorityToday();
+                }
 
-					newdetail.InvRequestedQty = 0;
-                    newdetail.ProdActualQty = 0;
-                    newdetail.LabelQty = 0;
-					
-                    var qLog = (from t in db.tblInvLog
-                                where t.LogType == "SS-SHP" 
-                                && t.ProductDetailID == row.pd.ProductDetailID
-                                select t);
+                // Create new production master
+                var newProductionMaster = new tblProductionMaster();
+                db.tblProductionMaster.Add(newProductionMaster);
+                db.SaveChanges();
 
-                    DateTime? d1 = DateTime.UtcNow.AddDays(-365);
+                int newPackOutID = newProductionMaster.ID;
 
-                    var qSSPY = (from t in qLog
-                                 where t.LogType == "SS-SHP" 
-                                 && t.ProductDetailID == row.pd.ProductDetailID 
-                                 && t.ShipDate >= d1
-                                 select t);
+                // Insert production master
+                var productionMaster = db.tblProductionMaster.Find(newPackOutID);
 
-                    int qShelfShippedPastYear = Convert.ToInt32((from t in qSSPY
-                                                                 select t.LogQty).Sum());
+                productionMaster.BulkID = bulk.BulkID;
+                productionMaster.ClientID = client.ClientID;
+                productionMaster.CreateDate = DateTime.UtcNow;
+                productionMaster.ProdmastCreateDate = DateTime.UtcNow;
+                productionMaster.Company = client.CMCLongCustomer;
+                productionMaster.Division = "N/A";
+                productionMaster.MasterCode = productMaster.MasterCode;
+                productionMaster.ProdName = productMaster.MasterName;
+                productionMaster.Lot_Number = bulk.LotNumber;
+                productionMaster.Bulk_Location = bulk.Bin;
+                productionMaster.Contents_Weight = bulk.CurrentWeight;
+                productionMaster.Shelf__Life = productMaster.ShelfLife;
+                productionMaster.ExpDt = bulk.ExpirationDate;
+                productionMaster.CeaseShipDate = bulk.CeaseShipDate;
+                productionMaster.RecDate = bulk.ReceiveDate;
+                productionMaster.Packout = true;
+                productionMaster.Priority = priority;
+                productionMaster.ProductionStage = 10;
+                productionMaster.AirUN = "N/A";
+                productionMaster.Status = bulk.BulkStatus;
+                productionMaster.CMCUser = HttpContext.Current.User.Identity.Name;
+                productionMaster.Heat_Prior_To_Filling = productMaster.HeatPriorToFilling;
+                productionMaster.Moisture = productMaster.MoistureSensitive;
+                productionMaster.CleanRoom = productMaster.CleanRoomEquipment;
 
-                    DateTime? d2 = DateTime.UtcNow.AddDays(-120);
+                db.SaveChanges();
 
-                    var qSSP4M = (from t in qLog
-                                  where t.LogType == "SS-SHP" 
-                                  && t.ProductDetailID == row.pd.ProductDetailID 
-                                  && t.ShipDate >= d2
-                                  select t);
+                packoutId = newPackOutID;
 
-                    int qShelfShippedPastFourMonths = Convert.ToInt32((from t in qSSP4M
-                                                                       select t.LogQty).Sum());
+                // Insert production details
+                foreach (var row in packoutBulk)
+                {
+                    var newProductionDetail = new tblProductionDetail();
 
-                    decimal? dReorderMin = 0;
+                    newProductionDetail.MasterID = productionMaster.ID;
+                    newProductionDetail.ShelfID = row.shelfmaster.ShelfID;
+                    newProductionDetail.InvRequestedQty = 0;
+                    newProductionDetail.ProdActualQty = 0;
+                    newProductionDetail.LabelQty = 0;
+                    newProductionDetail.UM = row.shelfmaster.Size;
+                    newProductionDetail.Unit_Weight = row.shelfmaster.UnitWeight;
 
-                    if (row.pm.ProductSetupDate <= DateTime.UtcNow.AddDays(-365))
+                    DateTime? oneYearAgo = DateTime.UtcNow.AddDays(-365);
+                    DateTime? fourMonthsAgo = DateTime.UtcNow.AddDays(-120);
+
+                    var log = (from t in db.tblInvLog
+                               where t.LogType == "SS-SHP"
+                               && t.ProductDetailID == row.productdetail.ProductDetailID
+                               select t).ToList();
+
+                    var shippedPastYear = log.Where(x => x.ShipDate >= oneYearAgo);
+                    var shippedPastFourMonths = log.Where(x => x.ShipDate >= fourMonthsAgo);
+
+                    int? totalShippedPastYear = shippedPastYear.Sum(x => x.LogQty);
+                    int? totalShippedPastFourMonths = shippedPastFourMonths.Sum(x => x.LogQty);
+
+                    decimal? reOrderMin = 0;
+
+                    if (row.productmaster.ProductSetupDate <= DateTime.UtcNow.AddDays(-365))
                     {
-                        dReorderMin = ((qShelfShippedPastYear / 12) * 2);
+                        reOrderMin = ((totalShippedPastYear / 12) * 2);
                     }
                     else
                     {
-                        dReorderMin = (qShelfShippedPastFourMonths / 2);
+                        reOrderMin = (totalShippedPastFourMonths / 2);
                     }
 
-                    //int dPK = newPackOutID;
-                    newdetail.UM = row.sm.Size;                                             // string dUM = row.sm.Size;
-                    newdetail.Unit_Weight = row.sm.UnitWeight;                              //decimal? dUnitWeight = row.sm.UnitWeight;
-                    newdetail.SS_REORDMIN = dReorderMin;
-                    newdetail.SS_REORDMAX = (dReorderMin * 2);                              // decimal? dReorderMax = (dReorderMin * 2);
+                    newProductionDetail.SS_REORDMIN = reOrderMin;
+                    newProductionDetail.SS_REORDMAX = (reOrderMin * 2);
 
-                    var qStock = (from t in db.tblStock
-                                  where t.ShelfID == row.sm.ShelfID 
-                                  && t.ShelfStatus == "AVAIL"
-                                  select t);
+                    var stock = db.tblStock.Where(x => x.ShelfID == row.shelfmaster.ShelfID
+                                                    && x.ShelfStatus == "AVAIL");
 
-                    newdetail.OnHand = (from t in qStock
-                                        select t.QtyOnHand).Sum();                          //decimal? dOnHand = (from t in qStock select t.QtyOnHand).Sum();
+                    newProductionDetail.OnHand = stock.Sum(x => x.QtyOnHand);
+                    newProductionDetail.RecQty = newProductionDetail.SS_REORDMAX - newProductionDetail.OnHand;
+                    newProductionDetail.Status = row.bulks.BulkStatus;
+                    newProductionDetail.ProdCode = row.productdetail.ProductCode;
+                    newProductionDetail.ProductName = row.productdetail.ProductName;
+                    newProductionDetail.ShelfStockLocation = row.shelfmaster.Bin;
 
-                    newdetail.RecQty = newdetail.SS_REORDMAX - newdetail.OnHand;            //decimal? dRecQty = dReorderMax - dOnHand;
-                    newdetail.Status = row.t.BulkStatus;                                    // string dStatus = row.t.BulkStatus;
-                    newdetail.ProdCode = row.pd.ProductCode;                                // string dProductCode = row.pd.ProductCode;
-                    newdetail.ProductName = row.pd.ProductName;                             //string dProductName = row.pd.ProductName;
-                    newdetail.ShelfStockLocation = row.sm.Bin;                              //string dShelfStockLocation = row.sm.Bin;
+                    var package = db.tblPackage.Find(row.shelfmaster.PackageID);
+                    newProductionDetail.PackagePartNumber = package.PartNumber;
 
-                    var dPackage = (from t in db.tblPackage
-                                    where t.PackageID == row.sm.PackageID
-                                    select t).FirstOrDefault();
-
-                    newdetail.PackagePartNumber = dPackage.PartNumber;
-
-                    db.tblProductionDetail.Add(newdetail);
+                    db.tblProductionDetail.Add(newProductionDetail);
                     db.SaveChanges();
                 }
-                return retval;
             }
+
+            return packoutId;
         }
 
-        private static int FnTodayColorPriority()
+        private static int ColorPriorityToday()
         {
             switch (System.DateTime.Today.DayOfWeek.ToString())
             {

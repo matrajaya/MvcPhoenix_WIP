@@ -12,7 +12,7 @@ namespace MvcPhoenix.Controllers
         {
             // build the landing page for shelf masters belonging to a productdetailid
             ShelfMasterViewModel obj = new ShelfMasterViewModel();
-            var mylist = ShelfMasterService.fnListOfShelfMasters(id);
+            var mylist = ShelfMasterService.GetShelfs(id);
             FillIndexViewBag(id);
             return View("~/Views/ShelfMaster/Index.cshtml", mylist);
         }
@@ -20,7 +20,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult ShelfMasterList(int id)
         {
             // for the partial in Products Edit
-            var mylist = ShelfMasterService.fnListOfShelfMasters(id);
+            var mylist = ShelfMasterService.GetShelfs(id);
 
             // Exclude inactive sizes from shared list
             var mylistx = (from x in mylist
@@ -52,24 +52,23 @@ namespace MvcPhoenix.Controllers
         public ActionResult Create(int id)
         {
             ShelfMasterViewModel obj = new ShelfMasterViewModel();
-            obj = ShelfMasterService.fnCreateNewShelfMaster(id);
+            obj = ShelfMasterService.CreateShelf(id);
             return PartialView("~/Views/ShelfMaster/_Edit.cshtml", obj);
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            ShelfMasterViewModel obj = new ShelfMasterViewModel();
-            obj = ShelfMasterService.fnFillShelfMasterFromDB(id);
+            var shelf = ShelfMasterService.GetShelf(id);
 
-            return PartialView("~/Views/ShelfMaster/_Edit.cshtml", obj);
+            return PartialView("~/Views/ShelfMaster/_Edit.cshtml", shelf);
         }
 
         [HttpGet]
         public ActionResult CloneShelfMaster(int id)
         {
             // id=shelfid
-            int productid = ShelfMasterService.fnCloneShelfMaster(id);
+            int productid = ShelfMasterService.CloneShelf(id);
 
             if (productid == 0)
             {
@@ -81,7 +80,7 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult BuildShelfMasterPackagesDropDown()
         {
-            return Content(ApplicationService.ddlBuildShelfMasterPackagesDropDown());
+            return Content(ApplicationService.ddlBuildShelfMasterPackage());
         }
 
         [HttpPost]
@@ -97,12 +96,12 @@ namespace MvcPhoenix.Controllers
             }
             if (UserChoice == "Save")
             {
-                ShelfMasterService.fnSaveShelfMaster(obj);
+                ShelfMasterService.SaveShelf(obj);
             }
             if (UserChoice == "Delete")
             {
                 // Need server side validation for Delete - no tblStock records
-                ShelfMasterService.fnDeleteShelfMaster(obj.shelfid);
+                ShelfMasterService.DeleteShelf(obj.shelfid);
             }
 
             return RedirectToAction("Index", new { id = obj.productdetailid });

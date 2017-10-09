@@ -1,6 +1,4 @@
-﻿@{}
-
-<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
+﻿<div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -14,24 +12,23 @@
             <div id="dialogPlaceholderBody" class="modal-body">
 
                 @using (Ajax.BeginForm("LookupClientID", "Orders", FormMethod.Post, new AjaxOptions
-                        {
-                            UpdateTargetId = "dvSearchResults",
-                            InsertionMode = InsertionMode.Replace,
-                            OnSuccess = "$('#dialogPlaceholderModal').modal('hide')"
-                        }))
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')"
+                }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.DropDownList("ClientID", ApplicationService.ddlClientIDs(), new { name = "ClientID", @class = "form-control" })
+                        @Html.DropDownList("ClientID", ApplicationService.ddlClientIDs(), new { name = "ClientID", @class = "form-control", @required = "required" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Last 20" /></span>
                     </div>
                 }
 
-                @using (Ajax.BeginForm("LookupOrderDate", "Orders", FormMethod.Post,
-                        new AjaxOptions
-                        {
-                            UpdateTargetId = "dvSearchResults",
-                            InsertionMode = InsertionMode.Replace
-                        }))
+                @using (Ajax.BeginForm("LookupOrderDate", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace
+                }))
                 {
                     <div class="input-group" style="padding: 5px;">
                         <input class="form-control date-picker" id="searchorderdate" name="searchorderdate" required />
@@ -39,41 +36,38 @@
                     </div>
                 }
 
-                @using (Ajax.BeginForm("LookupCompany", "Orders", FormMethod.Post,
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "dvSearchResults",
-                                InsertionMode = InsertionMode.Replace,
-                                OnFailure = "$.alert('Company Search Failure')"
-                            }))
+                @using (Ajax.BeginForm("LookupCompany", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                    OnFailure = "$.alert('Company Search Failure')"
+                }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchcompany", null, new { @class = "form-control", placeholder = "Ship To..." })
+                        @Html.TextBox("searchcompany", null, new { @class = "form-control", placeholder = "Ship To...", @required = "required" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
 
-                @using (Ajax.BeginForm("LookupZipCode", "Orders", FormMethod.Post,
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "dvSearchResults",
-                                InsertionMode = InsertionMode.Replace,
-                            }))
+                @using (Ajax.BeginForm("LookupZipCode", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchzipcode", null, new { @class = "form-control", placeholder = "Zip/postal code..." })
+                        @Html.TextBox("searchzipcode", null, new { @class = "form-control", placeholder = "Zip/postal code...", @required = "required" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
-                @using (Ajax.BeginForm("LookupSalesRep", "Orders", FormMethod.Post,
-                            new AjaxOptions
-                            {
-                                UpdateTargetId = "dvSearchResults",
-                                InsertionMode = InsertionMode.Replace,
-                            }))
+                @using (Ajax.BeginForm("LookupSalesRep", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchsalesrep", null, new { @class = "form-control", placeholder = "Sales rep name..." })
+                        @Html.TextBox("searchsalesrep", null, new { @class = "form-control", placeholder = "Sales rep name...", @required = "required" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }

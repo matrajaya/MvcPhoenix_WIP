@@ -179,7 +179,7 @@
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Add a Status to Notes</label>
-                            @Html.DropDownListFor(m => m.StatusID, ApplicationService.ddlStatusNotesIDs(), new { onchange = "AddStatusIDToStatus()", @class = "form-control" })
+                            @Html.DropDownListFor(m => m.StatusID, ApplicationService.ddlStatusNotes(), new { onchange = "AddStatusIDToStatus()", @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.StatusID)
                         </div>
                     </div>
@@ -373,7 +373,7 @@
 
         // Hide the modal
         $('#dialogPlaceholderModal').modal('hide');
-
+        
         // Show sample alert note (if available)
         SampleOrderAlert($('#ProductDetailID').val());
     }

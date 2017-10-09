@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Client/LogoFile?id=@Model.ClientId" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
+            <img src="~/Client/ClientLogoFile?id=@Model.ClientId" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
@@ -461,20 +461,29 @@
 
 <script type="text/javascript">
     $('#customer').val($('#clientname').val());
-
-    // CopyDivisionToBillingGroup
-    //$("#divisionid").change(function () {
-    //    var selectedText = $('#divisionid option:selected').text();
-    //    $('#billinggroup').val(selectedText);
-    //});
-
+    
     function SampleOrderAlert(productdetailid) {
         var alerturl = '@Url.Action("CheckProductForAlert", "Orders")';
 
-        $.getJSON(alerturl,
-            { id: productdetailid },
-            function (jsonobj) {
-                $.alert(jsonobj, "Product ID: " + productdetailid);
+        $.getJSON(alerturl, { id: productdetailid })
+            .done(function (jsonobj) {
+                $.confirm({
+                    title: 'Product ID: ' + productdetailid + ' ...',
+                    content: jsonobj,
+                    autoClose: 'closeAction|3000',
+                    buttons: {
+                        closeAction: {
+                            text: 'Close',
+                            action: function () {
+                                location.reload();
+                            }
+                        }
+                    }
+                });
+            })
+            .fail(function () {
+                //$.alert("No product alert!");
+                location.reload();
             });
     }
 

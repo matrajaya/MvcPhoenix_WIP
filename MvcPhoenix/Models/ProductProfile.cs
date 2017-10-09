@@ -141,7 +141,7 @@ namespace MvcPhoenix.Models
         [Required]
         public int? productmasterid { get; set; }
         [Required]
-        public int? clientid { get; set; }
+        public int clientid { get; set; }
         public string clientname { get; set; }
         public bool? discontinued { get; set; }
         [Required]

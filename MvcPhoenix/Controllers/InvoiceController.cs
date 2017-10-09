@@ -113,7 +113,7 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new CMCSQL03Entities())
             {
-                string s = @"DELETE FROM tblInvoice WHERE InvoiceID=" + id.ToString();
+                string s = @"DELETE FROM tblInvoice WHERE InvoiceID=" + id;
                 db.Database.ExecuteSqlCommand(s);
             }
 

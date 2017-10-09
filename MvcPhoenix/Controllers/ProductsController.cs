@@ -4,6 +4,7 @@ using MvcPhoenix.Models;
 using PagedList;
 using Rotativa;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -18,6 +19,11 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            if (String.IsNullOrWhiteSpace(searchString) && String.IsNullOrWhiteSpace(currentFilter))
+            {
+                return new EmptyResult();
+            }
+
             using (var db = new CMCSQL03Entities())
             {
                 ViewBag.CurrentSort = sortOrder;
@@ -28,7 +34,10 @@ namespace MvcPhoenix.Controllers
                 {
                     page = 1;
                 }
-                else { searchString = currentFilter; }
+                else
+                {
+                    searchString = currentFilter;
+                }
 
                 ViewBag.CurrentFilter = searchString;
                 ViewBag.SearchString = searchString;
@@ -38,27 +47,10 @@ namespace MvcPhoenix.Controllers
                 if (!String.IsNullOrEmpty(searchString))
                 {
                     productCodes = productCodes.Where(p => p.ProductCode.Contains(searchString)
-                        || p.ProductName.Contains(searchString));
+                                                        || p.ProductName.Contains(searchString));
                 }
 
-                switch (sortOrder)
-                {
-                    case "name":
-                        productCodes = productCodes.OrderBy(p => p.ProductName);
-                        break;
-
-                    case "name_desc":
-                        productCodes = productCodes.OrderByDescending(p => p.ProductName);
-                        break;
-
-                    case "code_desc":
-                        productCodes = productCodes.OrderByDescending(p => p.ProductCode);
-                        break;
-
-                    default:
-                        productCodes = productCodes.OrderBy(p => p.ProductCode);
-                        break;
-                }
+                productCodes = productCodes.OrderBy(p => p.ProductCode);
 
                 int pageSize = 20;
                 int pageNumber = (page ?? 1);
@@ -69,173 +61,87 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult ProductCodesDropDown(int clientid)
         {
-            return Content(ApplicationService.ddlBuildProductCodeDropDown(clientid));
+            return Content(ApplicationService.ddlBuildProductCode(clientid));
         }
 
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            ProductProfile PP = new ProductProfile();
-            PP.productdetailid = id;
-            PP = ProductsService.FillFromPD(PP);
-            PP = ProductsService.FillFromPM(PP);
-            PP = ProductsService.FillOtherPMProps(PP);
+            int productDetailId = id;
+            var productProfile = new ProductProfile();
+            productProfile.productdetailid = productDetailId;
 
-            return View(PP);
+            productProfile = ProductsService.GetProductDetail(productProfile);
+            productProfile = ProductsService.GetProductMaster(productProfile);
+            productProfile = ProductsService.GetProductExtendedProps(productProfile);
+            
+            return View(productProfile);
         }
 
         public ActionResult PrintProfile(int id)
         {
+            int productDetailId = id;
+            var productProfile = new ProductProfile();
+            productProfile.productdetailid = productDetailId;
+
+            productProfile = ProductsService.GetProductDetail(productProfile);
+            productProfile = ProductsService.GetProductMaster(productProfile);
+            productProfile = ProductsService.GetProductExtendedProps(productProfile);
+
             string footer = "--footer-left \"Printed on: " +
                 DateTime.UtcNow.ToString("R") +
                 "                                                                                                                                    " +
                 " Page: [page]/[toPage]\"" +
                 " --footer-font-size \"9\" --footer-spacing 6 --footer-font-name \"calibri light\"";
 
-            ProductProfile PP = new ProductProfile();
-            PP.productdetailid = id;
-            PP = ProductsService.FillFromPD(PP);
-            PP = ProductsService.FillFromPM(PP);
-            PP = ProductsService.FillOtherPMProps(PP);
-
-            return new ViewAsPdf(PP) { CustomSwitches = footer };
+            return new ViewAsPdf(productProfile) { CustomSwitches = footer };
         }
 
         [HttpPost]
         public ActionResult Create(int clientid)
         {
-            ProductProfile PP = new ProductProfile();
-            PP.clientid = clientid;
-            PP.productmasterid = -1;
-            PP.productdetailid = -1;
-            PP = ProductsService.FillOtherPMProps(PP);
+            var productProfile = new ProductProfile();
+            productProfile.clientid = clientid;
+            productProfile.productmasterid = -1;
+            productProfile.productdetailid = -1;
 
-            return View("~/Views/Products/Edit.cshtml", PP);
+            return View("~/Views/Products/Edit.cshtml", productProfile);
         }
 
         [HttpPost]
         public ActionResult Equivalent()
         {
-            int productDetailId = Convert.ToInt32(Request.Form["productdetailid"].ToString());
+            int productDetailId = Convert.ToInt32(Request.Form["productdetailid"]);
+            int newProductDetailId = ProductsService.CreateEquivalent(productDetailId);
 
-            // fill model to be replicated
-            ProductProfile PP = new ProductProfile();
-            PP.productdetailid = productDetailId;
-            PP = ProductsService.FillFromPD(PP);
-            PP = ProductsService.FillFromPM(PP);
-            PP = ProductsService.FillOtherPMProps(PP);
-
-            // create new record and clear select values for manual entry
-            PP.productdetailid = ProductsService.NewProductDetailID();
-            PP.productcode = PP.productcode + " Clone";
-            PP.productname = PP.productname + " Clone";
-            PP.sgrevisiondate = DateTime.UtcNow;
-            PP.UpdateUserDetail = HttpContext.User.Identity.Name;
-            PP.UpdateDateDetail = DateTime.UtcNow;
-
-            // save model held in memory to db
-            int pk = ProductsService.SaveProductProfile(PP);
-
-            // find entries for shelfsize info, ghs, cas where id = productdetailid3
-            // clone these entries where id = PP.productdetailid
-            using (var db = new CMCSQL03Entities())
-            {
-                // Shelf
-                var shelf = (from s in db.tblShelfMaster
-                             where s.ProductDetailID == productDetailId
-                             select s).ToList();
-
-                for (int i = 0; i < shelf.Count; i++)
-                {
-                    var newShelf = shelf[i].Clone();
-                    newShelf.ProductDetailID = PP.productdetailid;
-
-                    db.tblShelfMaster.Add(newShelf);
-                    db.SaveChanges();
-                }
-
-                // GHS
-                var ghs = (from g in db.tblGHS
-                           where g.ProductDetailID == productDetailId
-                           select g).ToList();
-
-                for (int i = 0; i < ghs.Count; i++)
-                {
-                    var newGhs = ghs[i].Clone();
-                    newGhs.ProductDetailID = PP.productdetailid;
-
-                    db.tblGHS.Add(newGhs);
-                    db.SaveChanges();
-                }
-
-                // PH Detail
-                var ph = (from p in db.tblGHSPHDetail
-                          where p.ProductDetailID == productDetailId
-                          select p).ToList();
-
-                for (int i = 0; i < ph.Count; i++)
-                {
-                    var newPh = ph[i].Clone();
-                    newPh.ProductDetailID = PP.productdetailid;
-
-                    db.tblGHSPHDetail.Add(newPh);
-                    db.SaveChanges();
-                }
-
-                // CAS
-                var cas = (from c in db.tblCAS
-                           where c.ProductDetailID == productDetailId
-                           select c).ToList();
-
-                for (int i = 0; i < cas.Count; i++)
-                {
-                    var newCas = cas[i].Clone();
-                    newCas.ProductDetailID = PP.productdetailid;
-
-                    db.tblCAS.Add(newCas);
-                    db.SaveChanges();
-                }
-
-                // Product Notes Log
-                var pdln = new tblPPPDLogNote();
-
-                pdln.ProductDetailID = PP.productdetailid;
-                pdln.NoteDate = DateTime.UtcNow;
-                pdln.Notes = "Equivalent created from product id: " + productDetailId;
-                pdln.ReasonCode = "New";
-                pdln.CreateDate = DateTime.UtcNow;
-                pdln.CreateUser = HttpContext.User.Identity.Name;
-                pdln.UpdateDate = DateTime.UtcNow;
-                pdln.UpdateUser = HttpContext.User.Identity.Name;
-
-                db.tblPPPDLogNote.Add(pdln);
-                db.SaveChanges();
-            }
-
-            return RedirectToAction("Edit", new { id = pk });
+            return RedirectToAction("Edit", new { id = newProductDetailId });
         }
 
         [HttpPost]
-        public ActionResult SaveProductProfile(ProductProfile PPVM)
+        public ActionResult SaveProductProfile(ProductProfile productProfile)
         {
-            if (String.IsNullOrEmpty(PPVM.productcode) || String.IsNullOrEmpty(PPVM.productname) || String.IsNullOrEmpty(PPVM.mastercode) || String.IsNullOrEmpty(PPVM.mastername))
+            if (String.IsNullOrEmpty(productProfile.productcode)
+                || String.IsNullOrEmpty(productProfile.productname)
+                || String.IsNullOrEmpty(productProfile.mastercode)
+                || String.IsNullOrEmpty(productProfile.mastername))
             {
                 TempData["SaveResult"] = "Product Profile not saved. Missing product code/name";
 
-                return View("Edit", PPVM);
+                return View("Edit", productProfile);
             }
 
-            int pk = ProductsService.SaveProductProfile(PPVM);
+            int productDetailId = ProductsService.SaveProductProfile(productProfile);
             TempData["SaveResult"] = "Product Profile updated on " + DateTime.UtcNow.ToString("R");
 
-            return RedirectToAction("Edit", new { id = pk });
+            return RedirectToAction("Edit", new { id = productDetailId });
         }
 
         [HttpGet]
         public ActionResult DeActivateProductMaster(int id)
         {
-            ProductsService.DeActivateProductMaster(id);
-            // The returned string can be pushed into a message <div>
+            int productMasterId = id;
+            ProductsService.DeActivateProductMaster(productMasterId);
+
             return Content("Product De-Activated");
         }
 
@@ -244,37 +150,41 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult LookupUNGround(string id)
         {
-            UN obj = new UN();
-            obj = ProductsService.GetUN(id);
+            string unNumber = id;
+            var un = new UN();
+            un = ProductsService.GetUN(unNumber);
 
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            return Json(un, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult LookupUNAir(string id)
         {
-            UN obj = new UN();
-            obj = ProductsService.GetUN(id);
+            string unNumber = id;
+            var un = new UN();
+            un = ProductsService.GetUN(unNumber);
 
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            return Json(un, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult LookupUNSea(string id)
         {
-            UN obj = new UN();
-            obj = ProductsService.GetUN(id);
+            string unNumber = id;
+            var un = new UN();
+            un = ProductsService.GetUN(unNumber);
 
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            return Json(un, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult LookupUNRCRA(string id)
         {
-            UN obj = new UN();
-            obj = ProductsService.GetUN(id);
+            string unNumber = id;
+            var un = new UN();
+            un = ProductsService.GetUN(unNumber);
 
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            return Json(un, JsonRequestBehavior.AllowGet);
         }
 
         #endregion Lookup UN Information
@@ -283,52 +193,55 @@ namespace MvcPhoenix.Controllers
 
         public ActionResult ProductLogList(int id)
         {
+            int productDetailId = id;
+            var productLogs = new List<ProductNote>();
+
             using (var db = new CMCSQL03Entities())
             {
-                var obj = (from t in db.tblPPPDLogNote
-                           where t.ProductDetailID == id
-                           orderby t.NoteDate descending
-                           select new ProductNote
-                           {
-                               productnoteid = t.PPPDLogNoteID,
-                               productdetailid = t.ProductDetailID,
-                               notedate = t.NoteDate,
-                               notes = t.Notes,
-                               reasoncode = t.ReasonCode,
-                               UpdateDate = t.UpdateDate,
-                               UpdateUser = t.UpdateUser,
-                               CreateDate = t.CreateDate,
-                               CreateUser = t.CreateUser
-                           }).ToList();
+                productLogs = (from t in db.tblPPPDLogNote
+                               where t.ProductDetailID == productDetailId
+                               orderby t.NoteDate descending
+                               select new ProductNote
+                               {
+                                   productnoteid = t.PPPDLogNoteID,
+                                   productdetailid = t.ProductDetailID,
+                                   notedate = t.NoteDate,
+                                   notes = t.Notes,
+                                   reasoncode = t.ReasonCode,
+                                   UpdateDate = t.UpdateDate,
+                                   UpdateUser = t.UpdateUser,
+                                   CreateDate = t.CreateDate,
+                                   CreateUser = t.CreateUser
+                               }).ToList();
 
-                ViewBag.ParentKey = id;
-
-                return PartialView("~/Views/Products/_LogNotes.cshtml", obj);
+                ViewBag.ParentKey = productDetailId;
             }
+
+            return PartialView("~/Views/Products/_LogNotes.cshtml", productLogs);
         }
 
         [HttpGet]
         public ActionResult CreateProductNote(int id)
         {
-            // id=ProductDetailID as the FK
-            var PN = ProductsService.CreateProductNote(id);
+            int productDetailId = id;
+            var productNote = ProductsService.CreateProductNote(productDetailId);
 
-            return PartialView("~/Views/Products/_LogNotesModal.cshtml", PN);
+            return PartialView("~/Views/Products/_LogNotesModal.cshtml", productNote);
         }
 
         [HttpGet]
         public ActionResult EditProductNote(int id)
         {
-            // id=ProductNoteID as the PK
-            var PN = ProductsService.GetProductNote(id);
+            int productDetailLogNoteId = id;
+            var productNote = ProductsService.GetProductNote(productDetailLogNoteId);
 
-            return PartialView("~/Views/Products/_LogNotesModal.cshtml", PN);
+            return PartialView("~/Views/Products/_LogNotesModal.cshtml", productNote);
         }
 
         [HttpPost]
-        public ActionResult SaveProductNote(ProductNote PN)
+        public ActionResult SaveProductNote(ProductNote productnote)
         {
-            int pk = ProductsService.SaveProductNote(PN);
+            ProductsService.SaveProductNote(productnote);
 
             return Content("Data Updated on " + DateTime.UtcNow.ToString("R"));
         }
@@ -336,7 +249,8 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult DeleteProductNote(int id, int ParentID)
         {
-            int pk = ProductsService.DeleteProductNote(id);
+            int productDetailLogNoteId = id;
+            ProductsService.DeleteProductNote(productDetailLogNoteId);
 
             return null;
         }
@@ -348,60 +262,64 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CasList(int id)
         {
+            int productDetailId = id;
+            var casItems = new List<Cas>();
+
             using (var db = new CMCSQL03Entities())
             {
-                var obj = (from t in db.tblCAS
-                           where t.ProductDetailID == id
-                           select new Cas
-                           {
-                               casid = t.CASID,
-                               productdetailid = t.ProductDetailID,
-                               casnumber = t.CasNumber,
-                               chemicalname = t.ChemicalName,
-                               percentage = t.Percentage,
-                               restrictedqty = t.RestrictedQty,
-                               restrictedamount = t.RestrictedAmount,
-                               reportableqty = t.ReportableQty,
-                               reportableamount = t.ReportableAmount,
-                               lessthan = t.LessThan,
-                               excludefromlabel = t.ExcludeFromLabel
-                           }).ToList();
+                casItems = (from cas in db.tblCAS
+                            where cas.ProductDetailID == productDetailId
+                            select new Cas
+                            {
+                                casid = cas.CASID,
+                                productdetailid = cas.ProductDetailID,
+                                casnumber = cas.CasNumber,
+                                chemicalname = cas.ChemicalName,
+                                percentage = cas.Percentage,
+                                restrictedqty = cas.RestrictedQty,
+                                restrictedamount = cas.RestrictedAmount,
+                                reportableqty = cas.ReportableQty,
+                                reportableamount = cas.ReportableAmount,
+                                lessthan = cas.LessThan,
+                                excludefromlabel = cas.ExcludeFromLabel
+                            }).ToList();
 
-                ViewBag.ParentKey = id;
-
-                return PartialView("~/Views/Products/_Cas.cshtml", obj);
+                ViewBag.ParentKey = productDetailId;
             }
+
+            return PartialView("~/Views/Products/_Cas.cshtml", casItems);
         }
 
         [HttpGet]
         public ActionResult CreateCAS(int id)
         {
-            // id = ProductDetailID
-            var CS = ProductsService.CreateCAS(id);
+            int productDetailId = id;
+            var cas = ProductsService.CreateCAS(productDetailId);
 
-            return PartialView("~/Views/Products/_CasModal.cshtml", CS);
+            return PartialView("~/Views/Products/_CasModal.cshtml", cas);
         }
 
         [HttpGet]
         public ActionResult EditCAS(int id)
         {
-            // id= CASID
-            var CS = ProductsService.GetCAS(id);
+            int casId = id;
+            var cas = ProductsService.GetCAS(casId);
 
-            return PartialView("~/Views/Products/_CasModal.cshtml", CS);
+            return PartialView("~/Views/Products/_CasModal.cshtml", cas);
         }
 
         [HttpPost]
-        public ActionResult SaveCAS(Cas CS)
+        public ActionResult SaveCAS(Cas cas)
         {
-            int pk = ProductsService.SaveCAS(CS);
+            ProductsService.SaveCAS(cas);
 
             return Content("Data Updated on " + DateTime.UtcNow.ToString("R"));
         }
 
         public ActionResult DeleteCAS(int id)
         {
-            int pk = ProductsService.DeleteCAS(id);
+            int casId = id;
+            ProductsService.DeleteCAS(casId);
 
             return null;
         }
@@ -415,30 +333,27 @@ namespace MvcPhoenix.Controllers
         {
             using (var db = new CMCSQL03Entities())
             {
-                var obj = (from t in db.tblProductXRef
-                           orderby t.ProductXRefID
-                           select new ClientProductXRef
-                           {
-                               ProductXRefID = t.ProductXRefID,
-                               ClientID = t.ClientID,
-                               ClientName = (from cn in db.tblClient
-                                             where cn.ClientID == t.ClientID
-                                             select cn.ClientName).FirstOrDefault(),
-
-                               ProductID = (from pd in db.tblProductDetail
-                                            where pd.ProductCode == t.CMCProductCode
-                                            select pd.ProductDetailID).FirstOrDefault(),
-
-                               ProductName = (from pd in db.tblProductDetail
-                                              where pd.ProductCode == t.CMCProductCode
-                                              select pd.ProductName).FirstOrDefault(),
-
-                               CMCProductCode = t.CMCProductCode,
-                               CMCSize = t.CMCSize,
-                               ClientProductCode = t.CustProductCode,
-                               ClientProductName = t.CustProductName,
-                               ClientSize = t.CustSize
-                           }).AsQueryable();
+                var productXRef = (from t in db.tblProductXRef
+                                   orderby t.ProductXRefID
+                                   let client = db.tblClient
+                                                  .Where(x => x.ClientID == t.ClientID)
+                                                  .FirstOrDefault()
+                                   let product = db.tblProductDetail
+                                                   .Where(x => x.ProductCode == t.CMCProductCode)
+                                                   .FirstOrDefault()
+                                   select new ClientProductXRef
+                                   {
+                                       ProductXRefID = t.ProductXRefID,
+                                       ClientID = t.ClientID,
+                                       ClientName = client.ClientName,
+                                       ProductID = product.ProductDetailID,
+                                       ProductName = product.ProductName,
+                                       CMCProductCode = t.CMCProductCode,
+                                       CMCSize = t.CMCSize,
+                                       ClientProductCode = t.CustProductCode,
+                                       ClientProductName = t.CustProductName,
+                                       ClientSize = t.CustSize
+                                   }).AsQueryable();
 
                 if (searchString != null)
                 {
@@ -453,58 +368,59 @@ namespace MvcPhoenix.Controllers
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    obj = obj.Where(x => x.ClientName.Contains(searchString)
-                        || x.ProductName.Contains(searchString)
-                        || x.CMCProductCode.Contains(searchString));
+                    productXRef = productXRef.Where(x => x.ClientName.Contains(searchString)
+                                                      || x.ProductName.Contains(searchString)
+                                                      || x.CMCProductCode.Contains(searchString));
                 }
 
                 switch (sortOrder)
                 {
                     case "name_desc":
-                        obj = obj.OrderByDescending(x => x.ClientName);
+                        productXRef = productXRef.OrderByDescending(x => x.ClientName);
                         break;
 
                     default:
-                        obj = obj.OrderBy(x => x.ClientName);
+                        productXRef = productXRef.OrderBy(x => x.ClientName);
                         break;
                 }
 
                 int pageSize = 10;
                 int pageNumber = (page ?? 1);
 
-                return View("~/Views/Products/ClientXRef.cshtml", obj.ToPagedList(pageNumber, pageSize));
+                return View("~/Views/Products/ClientXRef.cshtml", productXRef.ToPagedList(pageNumber, pageSize));
             }
         }
 
         [HttpGet]
         public ActionResult CreateXRef()
         {
-            ClientProductXRef CXRef = new ClientProductXRef();
-            CXRef.ProductXRefID = -1;
+            var clientProductXRef = new ClientProductXRef();
+            clientProductXRef.ProductXRefID = -1;
 
-            return PartialView("~/Views/Products/_ClientXRefModal.cshtml", CXRef);
+            return PartialView("~/Views/Products/_ClientXRefModal.cshtml", clientProductXRef);
         }
 
         [HttpGet]
         public ActionResult EditXRef(int id)
         {
-            // id = ProductXRefID
-            var CXRef = ProductsService.GetClientProductCrossReference(id);
+            int productXRefId = id;
+            var clientProductXRef = ProductsService.GetClientProductXRef(productXRefId);
 
-            return PartialView("~/Views/Products/_ClientXRefModal.cshtml", CXRef);
+            return PartialView("~/Views/Products/_ClientXRefModal.cshtml", clientProductXRef);
         }
 
         [HttpPost]
-        public ActionResult SaveXRef(ClientProductXRef CXRef)
+        public ActionResult SaveXRef(ClientProductXRef clientProductXRef)
         {
-            int pk = ProductsService.SaveClientProductCrossReference(CXRef);
+            ProductsService.SaveClientProductXRef(clientProductXRef);
 
             return null;
         }
 
         public ActionResult DeleteXRef(int id)
         {
-            int pk = ProductsService.DeleteProductCrossReference(id);
+            int productXRefId = id;
+            ProductsService.DeleteProductXRef(productXRefId);
 
             return null;
         }

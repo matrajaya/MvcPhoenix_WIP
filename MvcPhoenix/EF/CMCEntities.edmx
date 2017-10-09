@@ -1306,7 +1306,7 @@
           <Property Name="LabelInfo" Type="nvarchar(max)" />
           <Property Name="GHSReady" Type="bit" />
           <Property Name="CustomsValue" Type="numeric" Precision="8" Scale="2" />
-          <Property Name="CustomsValueUnit" Type="nvarchar" MaxLength="2" />
+          <Property Name="CustomsValueUnit" Type="nvarchar" MaxLength="5" />
           <Property Name="GlobalProduct" Type="bit" />
           <Property Name="AccuracyVerified" Type="bit" />
           <Property Name="AccuracyVerifiedBy" Type="nvarchar" MaxLength="256" />
@@ -1739,7 +1739,7 @@
           <Property Name="CarrierID" Type="int" />
           <Property Name="TransDate" Type="datetime" />
           <Property Name="CarrierName" Type="nvarchar" MaxLength="50" />
-          <Property Name="Tracking" Type="nvarchar(max)" />
+          <Property Name="Tracking" Type="nvarchar" MaxLength="150" />
           <Property Name="ShipAccount" Type="nvarchar" MaxLength="255" />
           <Property Name="Weight" Type="decimal" Precision="18" Scale="2" />
           <Property Name="DimWeight" Type="decimal" Precision="18" Scale="2" />
@@ -3076,7 +3076,7 @@
           <Property Name="LabelInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="GHSReady" Type="Boolean" />
           <Property Name="CustomsValue" Type="Decimal" Precision="8" Scale="2" />
-          <Property Name="CustomsValueUnit" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CustomsValueUnit" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="GlobalProduct" Type="Boolean" />
           <Property Name="AccuracyVerified" Type="Boolean" />
           <Property Name="AccuracyVerifiedBy" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
@@ -3838,7 +3838,7 @@
           <Property Name="CarrierID" Type="Int32" />
           <Property Name="TransDate" Type="DateTime" Precision="3" />
           <Property Name="CarrierName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Tracking" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tracking" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ShipAccount" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Weight" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="DimWeight" Type="Decimal" Precision="18" Scale="2" />

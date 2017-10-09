@@ -13,7 +13,7 @@
     };
 </script>
 
-<img src="~/Client/LogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
+<img src="~/Client/ClientLogoFile?id=@Model.clientid" style="width: auto; height: 73px; float: right" alt="@Model.clientname logo">
 <h1 class="page-header">
     @ViewBag.Title <small>@Model.productcode - @Model.productname</small>
 </h1>
@@ -71,7 +71,7 @@
             </td>
             <td width="25%">
                 <label>Cross Reference List</label><br />
-                @Html.ListBox("Cross Reference List", ApplicationService.ddlProductCodesXRefs(Model.productcode), new { @class = "form-control form-group", @style = "width:100%;" })
+                @Html.ListBox("Cross Reference List", ApplicationService.ddlProductCodeXRefs(Model.productcode), new { @class = "form-control form-group", @style = "width:100%;" })
             </td>
             <td>
                 Global @Html.CheckBox("globalproduct", Model.globalproduct != null && (bool)Model.globalproduct)

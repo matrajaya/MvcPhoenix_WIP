@@ -21,7 +21,7 @@
                     @using (Html.BeginForm("Create", "Orders", FormMethod.Post))
                     {
                         <div class="input-group">
-                            @Html.DropDownList("NewClientID", ApplicationService.ddlClientIDs(), new { name = "NewClientID", @class = "form-control" })
+                            @Html.DropDownList("NewClientID", ApplicationService.ddlClientIDs(), new { name = "NewClientID", @class = "form-control", @required = "required" })
                             <span class="input-group-btn"><input type="submit" class="btn btn-success" value="Create New Order" /></span>
                         </div>
                     }
@@ -64,16 +64,16 @@
                         <div id="quickquery" class="panel-body collapse" style="margin-bottom:-20px;">
                             <ul class="list-unstyled">
                                 <li>
-                                    @Ajax.ActionLink("Today", "OrdersToday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show Orders Created Today" })
+                                    @Ajax.ActionLink("Today's Orders", "OrdersToday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show Orders Created Today" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Yesterday", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show Orders Created Yesterday" })
+                                    @Ajax.ActionLink("Yesterday's Orders", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show Orders Created Yesterday" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Last 10 Orders", "OrdersLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show ALL Last 10 Orders" })
+                                    @Ajax.ActionLink("All Recent Orders", "OrdersRecentAll", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show ALL Last 10 Orders" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("My Orders (10)", "OrdersMineLastTen", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show MY Last 10 Orders" })
+                                    @Ajax.ActionLink("My Recent Orders", "OrdersRecentUser", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show MY Last 10 Orders" })
                                 </li>
                                 <li>
                                     @Ajax.ActionLink("Need Allocation", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Show MY Last 10 Orders" })

@@ -10,545 +10,429 @@ namespace MvcPhoenix.Services
 {
     public class ReceivingService
     {
-        public static List<BulkContainerViewModel> fnIndexList()
+        /// <summary>
+        /// Get bulk containers received
+        /// </summary>
+        /// <returns>bulkContainers</returns>
+        public static List<BulkContainerViewModel> GetBulkContainers()
         {
-            // List for the Index View
-            using (var db = new CMCSQL03Entities())
-            {
-                var obj = (from t in db.tblBulk
-                           join pm in db.tblProductMaster on t.ProductMasterID equals pm.ProductMasterID
-                           join cn in db.tblClient on pm.ClientID equals cn.ClientID
-                           where t.BulkStatus == "RECD"
-                           orderby t.BulkID descending
-                           select new BulkContainerViewModel
-                           {
-                               clientid = cn.ClientID,
-                               clientname = cn.ClientName,
-                               bulkid = t.BulkID,
-                               warehouse = t.Warehouse,
-                               receivedate = t.ReceiveDate,
-                               carrier = t.Carrier,
-                               MasterName = pm.MasterName,
-                               MasterCode = pm.MasterCode,
-                               receiveweight = t.ReceiveWeight,
-                               lotnumber = t.LotNumber,
-                               expirationdate = t.ExpirationDate,
-                               bulkstatus = t.BulkStatus,
-                               um = t.UM
-                           }).ToList();
-                return obj;
-            }
+            var bulkContainers = BulkService.GetBulkContainers()
+                                            .Where(t => t.bulkstatus == "RECD")
+                                            .OrderBy(x => x.bulkid).ToList();
+
+            return bulkContainers;
         }
 
-        public static List<OpenBulkOrderItems> fnOpenBulkOrderItems(int id)
+        #region Receive Known Bulk
+
+        public static BulkContainerViewModel GetBulkContainer(int bulkid)
         {
-            // reset the flag on all order items first
+            var bulkContainer = new BulkContainerViewModel();
+
             using (var db = new CMCSQL03Entities())
             {
-                db.Database.ExecuteSqlCommand("UPDATE tblBulkOrderItem SET ToBeClosed=null WHERE ProductMasterID=" + id);
-            }
+                bulkContainer = (from t in db.tblBulk
+                                 where t.BulkID == bulkid
+                                 select new BulkContainerViewModel
+                                 {
+                                     pm_sumofcurrentweight = db.tblBulk
+                                                               .Where(x => x.ProductMasterID == t.ProductMasterID)
+                                                               .Sum(x => x.CurrentWeight),
+                                     isknownmaterial = true,
+                                     bulkid = t.BulkID,
+                                     productmasterid = t.ProductMasterID,
+                                     warehouse = t.Warehouse,
+                                     receivedate = t.ReceiveDate,
+                                     carrier = t.Carrier,
+                                     receivedby = t.ReceivedBy,
+                                     enteredby = t.EnteredBy,
+                                     receiveweight = t.ReceiveWeight,
+                                     lotnumber = t.LotNumber,
+                                     mfgdate = t.MfgDate,
+                                     expirationdate = t.ExpirationDate,
+                                     ceaseshipdate = t.CeaseShipDate,
+                                     bulkstatus = t.BulkStatus,
+                                     qty = "1",
+                                     um = t.UM,
+                                     containercolor = t.ContainerColor,
+                                     bin = t.Bin,
+                                     containertype = t.ContainerType,
+                                     coaincluded = t.COAIncluded,
+                                     msdsincluded = t.MSDSIncluded,
+                                     currentweight = t.CurrentWeight,
+                                     qcdate = t.QCDate,
+                                     noticedate = t.NoticeDate,
+                                     bulklabelnote = t.BulkLabelNote,
+                                     receivedascode = t.ReceivedAsCode,
+                                     receivedasname = t.ReceivedAsName,
+                                     containernotes = t.ContainerNotes
+                                 }).FirstOrDefault();
 
-            // build a list of Open Bulk Order Items for the Partial View
-            List<OpenBulkOrderItems> mylist = new List<OpenBulkOrderItems>();
-            using (var db = new CMCSQL03Entities())
-            {
-                mylist = (from t in db.tblBulkOrderItem
-                          join t2 in db.tblBulkOrder on t.BulkOrderID equals t2.BulkOrderID
-                          where t.ProductMasterID == id
-                          && t.Status == "OP"
-                          select
-                          new OpenBulkOrderItems
-                          {
-                              bulkorderitemid = t.BulkOrderItemID,
-                              bulkorderid = t.BulkOrderID,
-                              productmasterid = t.ProductMasterID,
-                              weight = t.Weight,
-                              status = t.Status,
-                              eta = t.ETA,
-                              supplyid = t.SupplyID,
-                              itemnotes = t.ItemNotes,
-                              orderdate = t2.OrderDate,
-                              ToBeClosed = t.ToBeClosed
-                          }).ToList();
-                return mylist;
-            }
-        }
+                var productMaster = db.tblProductMaster.Find(bulkContainer.productmasterid);
+                var productDetail = db.tblProductDetail.FirstOrDefault(x => x.ProductMasterID == bulkContainer.productmasterid);
+                int clientId = Convert.ToInt32(productMaster.ClientID);
+                var client = ClientService.GetClient(clientId);
 
-        public static void fnTagItemToBeClosed(int id, bool ischecked)
-        {
-            // update the ToBeClosed flag on the bulk order item record
-            string s = "";
-            using (var db = new CMCSQL03Entities())
-            {
-                // clear it always
-                s = "UPDATE tblBulkOrderItem SET ToBeClosed=0 WHERE BulkOrderItemID=" + id;
-                db.Database.ExecuteSqlCommand(s);
-            }
-            if (ischecked == true)
-            {
-                using (var db = new CMCSQL03Entities())
-                {
-                    // tag it
-                    s = "UPDATE tblBulkOrderItem SET ToBeClosed=1 WHERE BulkOrderItemID=" + id;
-                    db.Database.ExecuteSqlCommand(s);
-                }
-            }
-        }
+                bulkContainer.clientid = productMaster.ClientID;
+                bulkContainer.clientname = client.ClientName;
 
-        #region Known Bulk Receiving Methods
+                bulkContainer.MasterCode = productMaster.MasterCode;
+                bulkContainer.MasterName = productMaster.MasterName;
+                bulkContainer.pm_alertnotesreceiving = productMaster.AlertNotesReceiving;
+                bulkContainer.pm_OtherHandlingInstr = productMaster.OtherHandlingInstr;
+                bulkContainer.pm_refrigerate = productMaster.Refrigerate;
+                bulkContainer.pm_flammablestorageroom = productMaster.FlammableStorageRoom;
+                bulkContainer.pm_freezerstorage = productMaster.FREEZERSTORAGE;
+                bulkContainer.pm_otherstorage = productMaster.OtherStorage;
+                bulkContainer.pm_cleanroomgmp = productMaster.CleanRoomGMP;
+                bulkContainer.pm_alertnotesreceiving = productMaster.AlertNotesReceiving;
+                bulkContainer.pm_restrictedtoamount = productMaster.RestrictedToAmount;
+                bulkContainer.pm_tempraturecontrolledstorage = productMaster.TemperatureControlledStorage;
+                bulkContainer.pm_shelflife = productMaster.ShelfLife;
+                bulkContainer.pm_packoutonreceipt = productMaster.PackOutOnReceipt;
 
-        public static BulkContainerViewModel fnNewBulkContainer(int productmasterid, int? productdetailid)
-        {
-            // id=productmasterid
-            BulkContainerViewModel obj = new BulkContainerViewModel();
-            using (var db = new CMCSQL03Entities())
-            {
-                obj.isknownmaterial = true;
-                obj.pm_sumofcurrentweight = 0;
-
-                var x = (from t in db.tblBulk
-                         where t.ProductMasterID == productmasterid
-                         select t).ToList();
-
-                foreach (var row in x)
-                {
-                    obj.pm_sumofcurrentweight = obj.pm_sumofcurrentweight + row.CurrentWeight;
-                }
-
-                // R/O fields from PM
-                var qPM = db.tblProductMaster.Find(productmasterid);
-                obj.MasterCode = qPM.MasterCode;
-                obj.MasterName = qPM.MasterName;
-
-                obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
-                obj.pm_OtherHandlingInstr = qPM.OtherHandlingInstr;
-                obj.pm_refrigerate = qPM.Refrigerate;
-                obj.pm_flammablestorageroom = qPM.FlammableStorageRoom;
-                obj.pm_freezerstorage = qPM.FREEZERSTORAGE;
-                obj.pm_otherstorage = qPM.OtherStorage;
-                obj.pm_cleanroomgmp = qPM.CleanRoomGMP;
-                obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
-                obj.pm_restrictedtoamount = qPM.RestrictedToAmount;
-                obj.pm_tempraturecontrolledstorage = qPM.TemperatureControlledStorage;
-                obj.pm_shelflife = qPM.ShelfLife;
-                obj.pm_packoutonreceipt = qPM.PackOutOnReceipt;
-                obj.pm_ceaseshipdifferential = qPM.CeaseShipDifferential;
-
-                // R/O from related PD
-                var qPD = (from t in db.tblProductDetail
-                           where t.ProductMasterID == obj.productmasterid
-                           select t).FirstOrDefault();
-
-                obj.pd_groundunnum = qPD.GRNUNNUMBER;
-                obj.pd_groundpackinggrp = qPD.GRNPKGRP;
-                obj.pd_groundhazardclass = qPD.GRNHAZCL;
-                obj.pd_groundhazardsubclass = qPD.GRNHAZSUBCL;
-                obj.pd_epabiocide = qPD.EPABiocide;
+                bulkContainer.pd_groundunnum = productDetail.GRNUNNUMBER;
+                bulkContainer.pd_groundpackinggrp = productDetail.GRNPKGRP;
+                bulkContainer.pd_groundhazardclass = productDetail.GRNHAZCL;
+                bulkContainer.pd_groundhazardsubclass = productDetail.GRNHAZSUBCL;
+                bulkContainer.pd_epabiocide = productDetail.EPABiocide;
 
                 try
                 {
-                    var qGHS = (from t in db.tblGHS
-                                join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
-                                where pd.ProductMasterID == obj.productmasterid
-                                select t).FirstOrDefault();
+                    var ghs = (from t in db.tblGHS
+                               join productdetail in db.tblProductDetail on t.ProductDetailID equals productdetail.ProductDetailID
+                               where productdetail.ProductMasterID == bulkContainer.productmasterid
+                               select t).FirstOrDefault();
 
-                    obj.ghs_signalword = qGHS.SignalWord;
-                    obj.ghs_symbol1 = qGHS.Symbol1;
-                    obj.ghs_symbol2 = qGHS.Symbol2;
-                    obj.ghs_symbol3 = qGHS.Symbol3;
-                    obj.ghs_symbol4 = qGHS.Symbol4;
-                    obj.ghs_symbol5 = qGHS.Symbol5;
+                    bulkContainer.ghs_signalword = ghs.SignalWord;
+                    bulkContainer.ghs_symbol1 = ghs.Symbol1;
+                    bulkContainer.ghs_symbol2 = ghs.Symbol2;
+                    bulkContainer.ghs_symbol3 = ghs.Symbol3;
+                    bulkContainer.ghs_symbol4 = ghs.Symbol4;
+                    bulkContainer.ghs_symbol5 = ghs.Symbol5;
                 }
                 catch (Exception)
                 {
                     // if no ghs entry is found assign NONE to fields
-                    obj.ghs_signalword = "NONE";
-                    obj.ghs_symbol1 = "NONE";
-                    obj.ghs_symbol2 = "NONE";
-                    obj.ghs_symbol3 = "NONE";
-                    obj.ghs_symbol4 = "NONE";
-                    obj.ghs_symbol5 = "NONE";
-                }
-
-                var dbClient = db.tblClient.Find(qPM.ClientID);
-                obj.clientid = dbClient.ClientID;
-                obj.warehouse = dbClient.CMCLocation;
-                obj.clientname = dbClient.ClientName;
-
-                obj.bulkid = -1;    // for insert later
-                obj.productmasterid = productmasterid;
-                obj.receivedate = DateTime.UtcNow;
-                obj.bulkstatus = "RECD";
-                obj.enteredby = HttpContext.Current.User.Identity.Name;
-                
-                return obj;
-            }
-        }
-
-        public static bool fnSaveBulkContainerKnown(BulkContainerViewModel incoming)
-        {
-            bool retval = true;
-            try
-            {
-                using (var db = new CMCSQL03Entities())
-                {
-                    int pk = incoming.bulkid;
-                    if (incoming.bulkid == -1)
-                    {
-                        var newrec = new tblBulk
-                        {
-                            ProductMasterID = incoming.productmasterid
-                        };
-
-                        newrec.CreateDate = DateTime.UtcNow;
-                        newrec.CreateUser = HttpContext.Current.User.Identity.Name;
-
-                        db.tblBulk.Add(newrec);
-                        db.SaveChanges();
-
-                        pk = newrec.BulkID;
-                    }
-
-                    var bulk = (from t in db.tblBulk
-                                where t.BulkID == pk
-                                select t).FirstOrDefault();
-
-                    bulk.Warehouse = incoming.warehouse;
-                    bulk.ReceiveDate = incoming.receivedate;
-                    bulk.Carrier = incoming.carrier;
-                    bulk.ReceivedBy = incoming.receivedby;
-                    bulk.EnteredBy = incoming.enteredby;
-                    bulk.ProductMasterID = incoming.productmasterid;
-                    bulk.ReceiveWeight = incoming.receiveweight;
-                    bulk.LotNumber = incoming.lotnumber;
-                    bulk.MfgDate = incoming.mfgdate;
-                    bulk.ExpirationDate = incoming.expirationdate;
-                    bulk.CeaseShipDate = incoming.ceaseshipdate;
-                    bulk.BulkStatus = incoming.bulkstatus;
-                    bulk.UM = incoming.um;
-                    bulk.ContainerColor = incoming.containercolor;
-                    bulk.Bin = incoming.bin;
-                    bulk.ContainerType = incoming.containertype;
-                    bulk.COAIncluded = incoming.coaincluded;
-                    bulk.MSDSIncluded = incoming.msdsincluded;
-                    bulk.ContainerNotes = incoming.containernotes;
-                    bulk.CurrentWeight = incoming.receiveweight;
-                    bulk.QCDate = incoming.qcdate;
-                    bulk.NoticeDate = incoming.noticedate;
-                    bulk.BulkLabelNote = incoming.bulklabelnote;
-                    bulk.ReceivedAsCode = incoming.receivedascode;
-                    bulk.ReceivedAsName = incoming.receivedasname;
-                    bulk.UpdateDate = DateTime.UtcNow;
-                    bulk.UpdateUser = HttpContext.Current.User.Identity.Name;
-
-                    db.SaveChanges();
-
-                    // Close items tagged to be closed for this productmasterid (would be better to pass a comma delimited list of PKs)
-                    db.Database.ExecuteSqlCommand("UPDATE tblBulkOrderItem SET Status='CL' WHERE ToBeClosed=1 AND productmasterid=" + incoming.productmasterid);
-
-                    retval = true;
+                    bulkContainer.ghs_signalword = "NONE";
+                    bulkContainer.ghs_symbol1 = "NONE";
+                    bulkContainer.ghs_symbol2 = "NONE";
+                    bulkContainer.ghs_symbol3 = "NONE";
+                    bulkContainer.ghs_symbol4 = "NONE";
+                    bulkContainer.ghs_symbol5 = "NONE";
                 }
             }
-            catch
-            {
-                retval = false;
-                throw new Exception("Error occurred saving Bulk Container");
-            }
-            return retval;
+
+            return bulkContainer;
         }
 
-        public static BulkContainerViewModel fnFillBulkContainerFromDB(int id)
+        public static BulkContainerViewModel NewBulkContainer(int productmasterid, int? productdetailid)
         {
-            // id=bulkid
+            var bulkContainer = new BulkContainerViewModel();
+
             using (var db = new CMCSQL03Entities())
             {
-                var obj = (from t in db.tblBulk
-                           where t.BulkID == id
-                           select new BulkContainerViewModel
-                               {
-                                   pm_sumofcurrentweight = (from x in db.tblBulk
-                                                            where x.ProductMasterID == t.ProductMasterID
-                                                            select x.CurrentWeight).Sum(),
-                                   isknownmaterial = true,
-                                   bulkid = t.BulkID,
-                                   productmasterid = t.ProductMasterID,
-                                   warehouse = t.Warehouse,
-                                   receivedate = t.ReceiveDate,
-                                   carrier = t.Carrier,
-                                   receivedby = t.ReceivedBy,
-                                   enteredby = t.EnteredBy,
-                                   receiveweight = t.ReceiveWeight,
-                                   lotnumber = t.LotNumber,
-                                   mfgdate = t.MfgDate,
-                                   expirationdate = t.ExpirationDate,
-                                   ceaseshipdate = t.CeaseShipDate,
-                                   bulkstatus = t.BulkStatus,
-                                   qty = "1",
-                                   um = t.UM,
-                                   containercolor = t.ContainerColor,
-                                   bin = t.Bin,
-                                   containertype = t.ContainerType,
-                                   coaincluded = t.COAIncluded,
-                                   msdsincluded = t.MSDSIncluded,
-                                   currentweight = t.CurrentWeight,
-                                   qcdate = t.QCDate,
-                                   noticedate = t.NoticeDate,
-                                   bulklabelnote = t.BulkLabelNote,
-                                   receivedascode = t.ReceivedAsCode,
-                                   receivedasname = t.ReceivedAsName,
-                                   containernotes = t.ContainerNotes
-                               }).FirstOrDefault();
+                bulkContainer.isknownmaterial = true;
+                bulkContainer.pm_sumofcurrentweight = 0;
 
-                var qPM = db.tblProductMaster.Find(obj.productmasterid);
-                var qCL = (from t in db.tblClient
-                           where t.ClientID == qPM.ClientID
-                           select t).FirstOrDefault();
+                var bulk = db.tblBulk.Where(x => x.ProductMasterID == productmasterid);
 
-                obj.clientid = qPM.ClientID;
-                obj.clientname = qCL.ClientName;
+                foreach (var row in bulk)
+                {
+                    bulkContainer.pm_sumofcurrentweight = bulkContainer.pm_sumofcurrentweight + row.CurrentWeight;
+                }
 
-                // R/O fields from PM
-                obj.MasterCode = qPM.MasterCode;
-                obj.MasterName = qPM.MasterName;
-                obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
-                obj.pm_OtherHandlingInstr = qPM.OtherHandlingInstr;
-                obj.pm_refrigerate = qPM.Refrigerate;
-                obj.pm_flammablestorageroom = qPM.FlammableStorageRoom;
-                obj.pm_freezerstorage = qPM.FREEZERSTORAGE;
-                obj.pm_otherstorage = qPM.OtherStorage;
-                obj.pm_cleanroomgmp = qPM.CleanRoomGMP;
-                obj.pm_alertnotesreceiving = qPM.AlertNotesReceiving;
-                obj.pm_restrictedtoamount = qPM.RestrictedToAmount;
-                obj.pm_tempraturecontrolledstorage = qPM.TemperatureControlledStorage;
-                obj.pm_shelflife = qPM.ShelfLife;
-                obj.pm_packoutonreceipt = qPM.PackOutOnReceipt;
+                var productMaster = db.tblProductMaster.Find(productmasterid);
 
-                // R/O from related PD
-                var qPD = (from t in db.tblProductDetail
-                           where t.ProductMasterID == obj.productmasterid
-                           select t).FirstOrDefault();
+                bulkContainer.MasterCode = productMaster.MasterCode;
+                bulkContainer.MasterName = productMaster.MasterName;
+                bulkContainer.pm_alertnotesreceiving = productMaster.AlertNotesReceiving;
+                bulkContainer.pm_OtherHandlingInstr = productMaster.OtherHandlingInstr;
+                bulkContainer.pm_refrigerate = productMaster.Refrigerate;
+                bulkContainer.pm_flammablestorageroom = productMaster.FlammableStorageRoom;
+                bulkContainer.pm_freezerstorage = productMaster.FREEZERSTORAGE;
+                bulkContainer.pm_otherstorage = productMaster.OtherStorage;
+                bulkContainer.pm_cleanroomgmp = productMaster.CleanRoomGMP;
+                bulkContainer.pm_alertnotesreceiving = productMaster.AlertNotesReceiving;
+                bulkContainer.pm_restrictedtoamount = productMaster.RestrictedToAmount;
+                bulkContainer.pm_tempraturecontrolledstorage = productMaster.TemperatureControlledStorage;
+                bulkContainer.pm_shelflife = productMaster.ShelfLife;
+                bulkContainer.pm_packoutonreceipt = productMaster.PackOutOnReceipt;
+                bulkContainer.pm_ceaseshipdifferential = productMaster.CeaseShipDifferential;
 
-                obj.pd_groundunnum = qPD.GRNUNNUMBER;
-                obj.pd_groundpackinggrp = qPD.GRNPKGRP;
-                obj.pd_groundhazardclass = qPD.GRNHAZCL;
-                obj.pd_groundhazardsubclass = qPD.GRNHAZSUBCL;
-                obj.pd_epabiocide = qPD.EPABiocide;
+                var productDetail = db.tblProductDetail
+                                      .Where(x => x.ProductMasterID == bulkContainer.productmasterid)
+                                      .FirstOrDefault();
+
+                bulkContainer.pd_groundunnum = productDetail.GRNUNNUMBER;
+                bulkContainer.pd_groundpackinggrp = productDetail.GRNPKGRP;
+                bulkContainer.pd_groundhazardclass = productDetail.GRNHAZCL;
+                bulkContainer.pd_groundhazardsubclass = productDetail.GRNHAZSUBCL;
+                bulkContainer.pd_epabiocide = productDetail.EPABiocide;
 
                 try
                 {
-                    var qGHS = (from t in db.tblGHS
-                                join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
-                                where pd.ProductMasterID == obj.productmasterid
-                                select t).FirstOrDefault();
+                    var ghs = (from t in db.tblGHS
+                               join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID
+                               where pd.ProductMasterID == bulkContainer.productmasterid
+                               select t).FirstOrDefault();
 
-                    obj.ghs_signalword = qGHS.SignalWord;
-                    obj.ghs_symbol1 = qGHS.Symbol1;
-                    obj.ghs_symbol2 = qGHS.Symbol2;
-                    obj.ghs_symbol3 = qGHS.Symbol3;
-                    obj.ghs_symbol4 = qGHS.Symbol4;
-                    obj.ghs_symbol5 = qGHS.Symbol5;
+                    bulkContainer.ghs_signalword = ghs.SignalWord;
+                    bulkContainer.ghs_symbol1 = ghs.Symbol1;
+                    bulkContainer.ghs_symbol2 = ghs.Symbol2;
+                    bulkContainer.ghs_symbol3 = ghs.Symbol3;
+                    bulkContainer.ghs_symbol4 = ghs.Symbol4;
+                    bulkContainer.ghs_symbol5 = ghs.Symbol5;
                 }
                 catch (Exception)
                 {
                     // if no ghs entry is found assign NONE to fields
-                    obj.ghs_signalword = "NONE";
-                    obj.ghs_symbol1 = "NONE";
-                    obj.ghs_symbol2 = "NONE";
-                    obj.ghs_symbol3 = "NONE";
-                    obj.ghs_symbol4 = "NONE";
-                    obj.ghs_symbol5 = "NONE";
+                    bulkContainer.ghs_signalword = "NONE";
+                    bulkContainer.ghs_symbol1 = "NONE";
+                    bulkContainer.ghs_symbol2 = "NONE";
+                    bulkContainer.ghs_symbol3 = "NONE";
+                    bulkContainer.ghs_symbol4 = "NONE";
+                    bulkContainer.ghs_symbol5 = "NONE";
                 }
 
-                return obj;
+                var client = db.tblClient.Find(productMaster.ClientID);
+
+                bulkContainer.clientid = client.ClientID;
+                bulkContainer.warehouse = client.CMCLocation;
+                bulkContainer.clientname = client.ClientName;
+
+                bulkContainer.bulkid = -1;
+                bulkContainer.productmasterid = productmasterid;
+                bulkContainer.receivedate = DateTime.UtcNow;
+                bulkContainer.bulkstatus = "RECD";
+                bulkContainer.enteredby = HttpContext.Current.User.Identity.Name;
             }
+
+            return bulkContainer;
         }
 
-        #endregion Known Bulk Receiving Methods
-
-        #region Unknown Bulk Receiving Methods
-
-        public static BulkContainerViewModel fnNewBulkContainerUnKnown()
+        public static void SaveBulkContainerKnown(BulkContainerViewModel bulkcontainer)
         {
-            BulkContainerViewModel obj = new BulkContainerViewModel();
             using (var db = new CMCSQL03Entities())
             {
-                obj.isknownmaterial = false;
-                obj.bulkid = -1;
-                obj.receivedate = DateTime.UtcNow;
-                obj.enteredby = HttpContext.Current.User.Identity.Name;
-                obj.receivedby = HttpContext.Current.User.Identity.Name;
+                int bulkId = bulkcontainer.bulkid;
 
-                return obj;
-            }
-        }
-
-        public static bool fnSaveBulkContainerUnKnown(BulkContainerViewModel incoming)
-        {
-            bool retval = true;
-            try
-            {
-                using (var db = new CMCSQL03Entities())
+                if (bulkcontainer.bulkid == -1)
                 {
-                    var newitem = new tblBulkUnKnown
+                    var newBulk = new tblBulk
                     {
-                        ReceivedAsCode = incoming.receivedascode,
-                        ReceivedAsName = incoming.receivedasname,
-                        ReceiveDate = incoming.receivedate,
-                        Warehouse = incoming.warehouse,
-                        LotNumber = incoming.lotnumber,
-                        Carrier = incoming.carrier,
-                        ReceiveWeight = incoming.receiveweight,
-                        CurrentWeight = incoming.receiveweight,
-                        EnteredBy = incoming.enteredby,
-                        ReceivedBy = incoming.receivedby,
-                        COAIncluded = incoming.coaincluded,
-                        MSDSIncluded = incoming.msdsincluded,
-                        MfgDate = incoming.mfgdate,
-                        ExpirationDate = incoming.expirationdate,
-                        CeaseShipDate = incoming.ceaseshipdate,
-                        QCDate = incoming.qcdate,
-                        ContainerNotes = incoming.containernotes,
-                        Bin = incoming.bin,
-                        ContainerColor = incoming.containercolor,
-                        ReturnLocation = incoming.returnlocation,
-                        ContainerType = incoming.containertype,
-                        BulkLabelNote = incoming.bulklabelnote,
-                        UM = incoming.um,
-                        NoticeDate = DateTime.UtcNow,
-                        LogNotes = "Unknown bulk stock received by " + HttpContext.Current.User.Identity.Name + " on " + DateTime.UtcNow.ToString("R"),
-                        BulkStatus = "HOLD"
+                        ProductMasterID = bulkcontainer.productmasterid
                     };
 
-                    db.tblBulkUnKnown.Add(newitem);
+                    newBulk.CreateDate = DateTime.UtcNow;
+                    newBulk.CreateUser = HttpContext.Current.User.Identity.Name;
+
+                    db.tblBulk.Add(newBulk);
                     db.SaveChanges();
 
-                    retval = true;
+                    bulkId = newBulk.BulkID;
                 }
-            }
-            catch
-            {
-                retval = false;
-                throw new Exception("Error occurred saving Unknown Bulk Container");
-            }
 
-            return retval;
+                var bulk = db.tblBulk.Find(bulkId);
+
+                bulk.Warehouse = bulkcontainer.warehouse;
+                bulk.ReceiveDate = bulkcontainer.receivedate;
+                bulk.Carrier = bulkcontainer.carrier;
+                bulk.ReceivedBy = bulkcontainer.receivedby;
+                bulk.EnteredBy = bulkcontainer.enteredby;
+                bulk.ProductMasterID = bulkcontainer.productmasterid;
+                bulk.ReceiveWeight = bulkcontainer.receiveweight;
+                bulk.LotNumber = bulkcontainer.lotnumber;
+                bulk.MfgDate = bulkcontainer.mfgdate;
+                bulk.ExpirationDate = bulkcontainer.expirationdate;
+                bulk.CeaseShipDate = bulkcontainer.ceaseshipdate;
+                bulk.BulkStatus = bulkcontainer.bulkstatus;
+                bulk.UM = bulkcontainer.um;
+                bulk.ContainerColor = bulkcontainer.containercolor;
+                bulk.Bin = bulkcontainer.bin;
+                bulk.ContainerType = bulkcontainer.containertype;
+                bulk.COAIncluded = bulkcontainer.coaincluded;
+                bulk.MSDSIncluded = bulkcontainer.msdsincluded;
+                bulk.ContainerNotes = bulkcontainer.containernotes;
+                bulk.CurrentWeight = bulkcontainer.receiveweight;
+                bulk.QCDate = bulkcontainer.qcdate;
+                bulk.NoticeDate = bulkcontainer.noticedate;
+                bulk.BulkLabelNote = bulkcontainer.bulklabelnote;
+                bulk.ReceivedAsCode = bulkcontainer.receivedascode;
+                bulk.ReceivedAsName = bulkcontainer.receivedasname;
+                bulk.UpdateDate = DateTime.UtcNow;
+                bulk.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                db.SaveChanges();
+
+                // Close items tagged to be closed for this productmasterid
+                int? productMasterId = bulkcontainer.productmasterid;
+
+                string updateQuery = "UPDATE tblBulkOrderItem SET Status='CL' WHERE ToBeClosed=1 AND productmasterid=" + productMasterId;
+                db.Database.ExecuteSqlCommand(updateQuery);
+            }
         }
 
-        #endregion Unknown Bulk Receiving Methods
+        #endregion Receive Known Bulk
 
-        #region Prepack Receiving Methods
+        #region Receive Unknown Bulk
 
-        public static PrePackViewModel fnNewBulkContainerForPrePack(int clientid, int productdetailid)
+        public static BulkContainerViewModel NewBulkContainerUnKnown()
         {
-            PrePackViewModel obj = new PrePackViewModel();
+            var bulkContainer = new BulkContainerViewModel();
+
             using (var db = new CMCSQL03Entities())
             {
-                var dbClient = db.tblClient.Find(clientid);
-                var dbProductDetail = db.tblProductDetail.Find(productdetailid);
-                var qPM = db.tblProductMaster.Find(dbProductDetail.ProductMasterID);
+                bulkContainer.isknownmaterial = false;
+                bulkContainer.bulkid = -1;
+                bulkContainer.receivedate = DateTime.UtcNow;
+                bulkContainer.enteredby = HttpContext.Current.User.Identity.Name;
+                bulkContainer.receivedby = HttpContext.Current.User.Identity.Name;
+            }
 
-                obj.productmasterid = dbProductDetail.ProductMasterID;
-                obj.isknownmaterial = true;
-                obj.clientid = clientid;
-                obj.clientname = dbClient.ClientName;
-                obj.bulkid = -1;
-                obj.receivedate = DateTime.UtcNow;
-                obj.carrier = null;
-                obj.warehouse = null;
-                obj.enteredby = HttpContext.Current.User.Identity.Name;
-                obj.lotnumber = null;
-                obj.receivedby = HttpContext.Current.User.Identity.Name;
-                obj.mfgdate = null;
-                obj.expirationdate = null;
-                obj.ceaseshipdate = null;
-                obj.qcdate = null;
-                obj.msdsincluded = null;
-                obj.coaincluded = null;
-                obj.productcode = dbProductDetail.ProductCode;
-                obj.productname = dbProductDetail.ProductName;
-                obj.pm_ceaseshipdifferential = qPM.CeaseShipDifferential;
+            return bulkContainer;
+        }
 
-                obj.ListOfShelfMasters = (from t in db.tblShelfMaster
-                                          orderby t.ShelfID
-                                          where t.ProductDetailID == productdetailid
-                                          select new ItemForPrePackViewModel
-                                          {
-                                              shelfid = t.ShelfID,
-                                              size = t.Size,
-                                              bin = t.Bin
-                                          }).ToList();
+        public static void SaveBulkContainerUnKnown(BulkContainerViewModel bulkcontainer)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var bulkUnknown = new tblBulkUnKnown
+                {
+                    ReceivedAsCode = bulkcontainer.receivedascode,
+                    ReceivedAsName = bulkcontainer.receivedasname,
+                    ReceiveDate = bulkcontainer.receivedate,
+                    Warehouse = bulkcontainer.warehouse,
+                    LotNumber = bulkcontainer.lotnumber,
+                    Carrier = bulkcontainer.carrier,
+                    ReceiveWeight = bulkcontainer.receiveweight,
+                    CurrentWeight = bulkcontainer.receiveweight,
+                    EnteredBy = bulkcontainer.enteredby,
+                    ReceivedBy = bulkcontainer.receivedby,
+                    COAIncluded = bulkcontainer.coaincluded,
+                    MSDSIncluded = bulkcontainer.msdsincluded,
+                    MfgDate = bulkcontainer.mfgdate,
+                    ExpirationDate = bulkcontainer.expirationdate,
+                    CeaseShipDate = bulkcontainer.ceaseshipdate,
+                    QCDate = bulkcontainer.qcdate,
+                    ContainerNotes = bulkcontainer.containernotes,
+                    Bin = bulkcontainer.bin,
+                    ContainerColor = bulkcontainer.containercolor,
+                    ReturnLocation = bulkcontainer.returnlocation,
+                    ContainerType = bulkcontainer.containertype,
+                    BulkLabelNote = bulkcontainer.bulklabelnote,
+                    UM = bulkcontainer.um,
+                    NoticeDate = DateTime.UtcNow,
+                    LogNotes = "Unknown bulk stock received by " + HttpContext.Current.User.Identity.Name + " on " + DateTime.UtcNow.ToString("R"),
+                    BulkStatus = "HOLD"
+                };
 
-                obj.ItemsCount = obj.ListOfShelfMasters.Count();
-
-                return obj;
+                db.tblBulkUnKnown.Add(bulkUnknown);
+                db.SaveChanges();
             }
         }
 
-        public static bool fnSavePrePack(PrePackViewModel vm, FormCollection fc)
+        #endregion Receive Unknown Bulk
+
+        #region Receive Prepack
+
+        public static PrePackViewModel NewBulkContainerPrePack(int clientid, int productdetailid)
         {
-            bool retval = true;
-            try
+            var prePack = new PrePackViewModel();
+
+            using (var db = new CMCSQL03Entities())
             {
-                using (var db = new CMCSQL03Entities())
+                var client = db.tblClient.Find(clientid);
+                var productDetail = db.tblProductDetail.Find(productdetailid);
+                var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
+                var userName = HttpContext.Current.User.Identity.Name;
+
+                prePack.productmasterid = productDetail.ProductMasterID;
+                prePack.isknownmaterial = true;
+                prePack.clientid = clientid;
+                prePack.clientname = client.ClientName;
+                prePack.bulkid = -1;
+                prePack.receivedate = DateTime.UtcNow;
+                prePack.carrier = null;
+                prePack.warehouse = null;
+                prePack.enteredby = userName;
+                prePack.lotnumber = null;
+                prePack.receivedby = userName;
+                prePack.mfgdate = null;
+                prePack.expirationdate = null;
+                prePack.ceaseshipdate = null;
+                prePack.qcdate = null;
+                prePack.msdsincluded = null;
+                prePack.coaincluded = null;
+                prePack.productcode = productDetail.ProductCode;
+                prePack.productname = productDetail.ProductName;
+                prePack.pm_ceaseshipdifferential = productMaster.CeaseShipDifferential;
+                prePack.ListOfShelfMasters = (from t in db.tblShelfMaster
+                                              orderby t.ShelfID
+                                              where t.ProductDetailID == productdetailid
+                                              select new ItemForPrePackViewModel
+                                              {
+                                                  shelfid = t.ShelfID,
+                                                  size = t.Size,
+                                                  bin = t.Bin
+                                              }).ToList();
+                prePack.ItemsCount = prePack.ListOfShelfMasters.Count();
+            }
+
+            return prePack;
+        }
+
+        public static void SavePrePack(PrePackViewModel prepack, FormCollection form)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var newBulk = new tblBulk();
+
+                newBulk.ProductMasterID = prepack.productmasterid;
+                newBulk.ReceiveDate = prepack.receivedate;
+                newBulk.LotNumber = prepack.lotnumber;
+                newBulk.CeaseShipDate = prepack.ceaseshipdate;
+                newBulk.Carrier = prepack.carrier;
+                newBulk.ReceivedBy = prepack.receivedby;
+                newBulk.QCDate = prepack.qcdate;
+                newBulk.Warehouse = prepack.warehouse;
+                newBulk.MfgDate = prepack.mfgdate;
+                newBulk.COAIncluded = prepack.coaincluded;
+                newBulk.EnteredBy = prepack.enteredby;
+                newBulk.ExpirationDate = prepack.expirationdate;
+                newBulk.MSDSIncluded = prepack.msdsincluded;
+                newBulk.BulkStatus = "PP";
+                newBulk.Bin = "PREPACK";
+
+                db.tblBulk.Add(newBulk);
+                db.SaveChanges();
+
+                int newBulkID = newBulk.BulkID;
+
+                for (int i = 1; i <= prepack.ItemsCount; i++)
                 {
-                    var newbulk = new tblBulk();
+                    int ThisShelfID = Convert.ToInt32(form["Key" + i.ToString()]);
+                    int ThisQty = Convert.ToInt32(form["Value" + i.ToString()]);
 
-                    newbulk.ProductMasterID = vm.productmasterid;
-                    newbulk.ReceiveDate = vm.receivedate;
-                    newbulk.LotNumber = vm.lotnumber;
-                    newbulk.CeaseShipDate = vm.ceaseshipdate;
-                    newbulk.Carrier = vm.carrier;
-                    newbulk.ReceivedBy = vm.receivedby;
-                    newbulk.QCDate = vm.qcdate;
-                    newbulk.Warehouse = vm.warehouse;
-                    newbulk.MfgDate = vm.mfgdate;
-                    newbulk.COAIncluded = vm.coaincluded;
-                    newbulk.EnteredBy = vm.enteredby;
-                    newbulk.ExpirationDate = vm.expirationdate;
-                    newbulk.MSDSIncluded = vm.msdsincluded;
-                    newbulk.BulkStatus = "PP";
-                    newbulk.Bin = "PREPACK";
+                    var newstock = new tblStock();
 
-                    db.tblBulk.Add(newbulk);
+                    newstock.BulkID = newBulkID;
+                    newstock.ShelfID = ThisShelfID;
+                    newstock.CreateDate = DateTime.UtcNow;
+                    newstock.CreateUser = HttpContext.Current.User.Identity.Name;
+                    newstock.Warehouse = prepack.warehouse;
+                    newstock.QtyOnHand = ThisQty;
+                    newstock.ShelfStatus = "RECD";
+                    newstock.Bin = db.tblShelfMaster
+                                     .Where(x => x.ShelfID == newstock.ShelfID)
+                                     .Select(x => x.Bin).FirstOrDefault();
+
+                    db.tblStock.Add(newstock);
                     db.SaveChanges();
-
-                    int newBulkID = newbulk.BulkID;
-
-                    for (int i = 1; i <= vm.ItemsCount; i++)
-                    {
-                        string sThisShelfID = fc["Key" + i.ToString()];
-                        int ThisShelfID = Convert.ToInt32(sThisShelfID);
-
-                        string sThisQty = fc["Value" + i.ToString()];
-                        int ThisQty = Convert.ToInt32(sThisQty);
-
-                        var newstock = new tblStock();
-
-                        newstock.BulkID = newBulkID;
-                        newstock.ShelfID = ThisShelfID;
-                        newstock.CreateDate = DateTime.UtcNow;
-                        newstock.CreateUser = HttpContext.Current.User.Identity.Name;
-                        newstock.Warehouse = vm.warehouse;
-                        newstock.QtyOnHand = ThisQty;
-                        newstock.ShelfStatus = "RECD";
-                        newstock.Bin = (from t in db.tblShelfMaster
-                                        where t.ShelfID == newstock.ShelfID
-                                        select t.Bin).FirstOrDefault();
-
-                        db.tblStock.Add(newstock);
-                        db.SaveChanges();
-                    }
                 }
             }
-            catch
-            {
-                retval = false;
-                throw new Exception("Error occurred saving Pre Packs");
-            }
-
-            return retval;
         }
 
-        #endregion Prepack Receiving Methods
+        #endregion Receive Prepack
     }
 }

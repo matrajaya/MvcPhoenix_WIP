@@ -13,12 +13,12 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Client/LogoFile?id=@Model.PP.clientid" style="width: auto; height: 73px; float: right" alt="@Model.PP.clientname logo">
+            <img src="~/Client/ClientLogoFile?id=@Model.ProductProfile.clientid" style="width: auto; height: 73px; float: right" alt="@Model.ProductProfile.clientname logo">
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
-                @ViewBag.Title: <small>@Model.PP.productcode - @Model.PP.productname [@Model.PP.productmasterid]</small>
-                @if (@Model.PP.productcode == @Model.PP.mastercode)
+                @ViewBag.Title: <small>@Model.ProductProfile.productcode - @Model.ProductProfile.productname [@Model.ProductProfile.productmasterid]</small>
+                @if (@Model.ProductProfile.productcode == @Model.ProductProfile.mastercode)
                 {
                     <span class="fa-stack fa-lg" style="font-size:small" title="Master Level Product">
                         <i class="fa fa-circle fa-stack-2x"></i>
@@ -32,12 +32,12 @@
 
     @using (Html.BeginForm("Save", "Inventory", FormMethod.Post))
     {
-        @Html.HiddenFor(m => m.PP.productdetailid)
+        @Html.HiddenFor(m => m.ProductProfile.productdetailid)
 
         <div class="form-group row">
             <div class="col-lg-12">
                 <i class="fa fa-arrow-circle-left"></i> @Html.ActionLink("Back to Inventory Main", "Index")
-                <span class="pull-right label label-info">Product ID: @Model.PP.productdetailid</span>
+                <span class="pull-right label label-info">Product ID: @Model.ProductProfile.productdetailid</span>
             </div>
             <div class="col-md-12">
                 <div class="pull-left">
@@ -54,16 +54,16 @@
         <div class="panel panel-primary">
             <div class="panel-body">
                 <div class="row" style="padding-bottom:15px;">
-                    <div class="col-md-3"><b>Product ID</b><div>@Model.PP.productdetailid</div></div>
-                    <div class="col-md-3"><b>Created On</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.CreateDateDetail)</div></div>
-                    <div class="col-md-3"><b>Last Update On</b><div>@String.Format("{0:dd MMM yyyy}", @Model.PP.UpdateDateDetail)</div></div>
-                    <div class="col-md-3"><b>Last Update By</b><div>@Model.PP.UpdateUserDetail</div></div>
+                    <div class="col-md-3"><b>Product ID</b><div>@Model.ProductProfile.productdetailid</div></div>
+                    <div class="col-md-3"><b>Created On</b><div>@String.Format("{0:dd MMM yyyy}", @Model.ProductProfile.CreateDateDetail)</div></div>
+                    <div class="col-md-3"><b>Last Update On</b><div>@String.Format("{0:dd MMM yyyy}", @Model.ProductProfile.UpdateDateDetail)</div></div>
+                    <div class="col-md-3"><b>Last Update By</b><div>@Model.ProductProfile.UpdateUserDetail</div></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3"><b>Client</b><div>@Model.PP.clientname</div></div>
+                    <div class="col-md-3"><b>Client</b><div>@Model.ProductProfile.clientname</div></div>
                     <div class="col-md-3"><b>Client Code</b><div>@Model.ClientCode</div></div>
                     <div class="col-md-3"><b>Division</b><div>@Model.Division</div></div>
-                    <div class="col-md-3"><b>Supplier ID</b><div>@Model.PP.supplyid</div></div>
+                    <div class="col-md-3"><b>Supplier ID</b><div>@Model.ProductProfile.supplyid</div></div>
                 </div>
             </div>
         </div>
@@ -77,35 +77,35 @@
                 <div class="row">
                     <div class="col-md-3 form-group">
                         <label>Master Code</label>
-                        <input class="form-control" value="@Model.PP.mastercode" disabled="disabled" />
+                        <input class="form-control" value="@Model.ProductProfile.mastercode" disabled="disabled" />
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Product Code</label>
-                        <input class="form-control" value="@Model.PP.productcode" disabled="disabled" />
+                        <input class="form-control" value="@Model.ProductProfile.productcode" disabled="disabled" />
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Product Name</label>
-                        <input class="form-control" value="@Model.PP.productname" disabled="disabled" />
+                        <input class="form-control" value="@Model.ProductProfile.productname" disabled="disabled" />
                     </div>
                 </div>
                 <div class="row">
                     <div class=" form-group col-md-3">
                         <label>Equivalents</label>
                         <div>
-                            @Html.ListBox("Equivalents", ApplicationService.ddlProductEquivalents(Model.PP.productmasterid, Model.PP.productcode), new { @class = "form-control", @size = 8 })
+                            @Html.ListBox("Equivalents", ApplicationService.ddlProductEquivalents(Model.ProductProfile.productmasterid, Model.ProductProfile.productcode), new { @class = "form-control", @size = 8 })
                         </div>
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Specific Gravity</label>
-                        <input class="form-control" value="@Model.PP.specificgravity" disabled="disabled" />
+                        <input class="form-control" value="@Model.ProductProfile.specificgravity" disabled="disabled" />
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Density</label>
-                        <input class="form-control" value="@Model.PP.density" disabled="disabled" />
+                        <input class="form-control" value="@Model.ProductProfile.density" disabled="disabled" />
                     </div>
                     <div class="col-md-3 form-group">
                         <label>Discontinued</label>
-                        <input type="checkbox" checked="@Model.PP.discontinued" disabled="disabled" class="checkbox">
+                        <input type="checkbox" checked="@Model.ProductProfile.discontinued" disabled="disabled" class="checkbox">
                     </div>
                     <div class="col-md-9">
                         <div class="panel panel-info">
@@ -113,15 +113,15 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label>Shelf Life</label>
-                                        <input class="form-control" value="@Model.PP.shelflife" disabled="disabled" />
+                                        <input class="form-control" value="@Model.ProductProfile.shelflife" disabled="disabled" />
                                     </div>
                                     <div class="col-md-4">
                                         <label>Cease Ship Differential</label>
-                                        <input class="form-control" value="@Model.PP.ceaseshipdifferential" disabled="disabled" />
+                                        <input class="form-control" value="@Model.ProductProfile.ceaseshipdifferential" disabled="disabled" />
                                     </div>
                                     <div class="col-md-4">
                                         <label>Restricted To Amount</label>
-                                        <input class="form-control" value="@Model.PP.restrictedtoamount" disabled="disabled" />
+                                        <input class="form-control" value="@Model.ProductProfile.restrictedtoamount" disabled="disabled" />
                                     </div>
                                 </div>
                             </div>
@@ -138,12 +138,12 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <ul class="list-unstyled list-3-col">
-                                            <li><p><input type="checkbox" checked="@Model.PP.flammablestorageroom" disabled="disabled"> Flammable Room</p></li>
-                                            <li><p><input type="checkbox" checked="@Model.PP.toxic" disabled="disabled"> Toxic</p></li>
-                                            <li><p><input type="checkbox" checked="@Model.PP.physicaltoxic" disabled="disabled"> Physically Toxic</p></li>
-                                            <li><p><input type="checkbox" checked="@Model.PP.freezerstorage" disabled="disabled" style="background-color:yellow;"> Freezable Storage</p></li>
-                                            <li><p><input type="checkbox" checked="@Model.PP.freezablelist" disabled="disabled"> Freezable List</p></li>
-                                            <li><p><input type="checkbox" checked="@Model.PP.refrigerate" disabled="disabled"> Refrigerate</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.ProductProfile.flammablestorageroom" disabled="disabled"> Flammable Room</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.ProductProfile.toxic" disabled="disabled"> Toxic</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.ProductProfile.physicaltoxic" disabled="disabled"> Physically Toxic</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.ProductProfile.freezerstorage" disabled="disabled" style="background-color:yellow;"> Freezable Storage</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.ProductProfile.freezablelist" disabled="disabled"> Freezable List</p></li>
+                                            <li><p><input type="checkbox" checked="@Model.ProductProfile.refrigerate" disabled="disabled"> Refrigerate</p></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -170,15 +170,15 @@
                                     <div class="col-md-12">
                                         <ul class="list-unstyled list-3-col">
                                             <li><input type="checkbox" checked="@Model.BackOrderPending" disabled="disabled"> Back Order Pending</li>
-                                            <li><input type="checkbox" checked="@Model.PP.prepacked" disabled="disabled"> Prepacked</li>
-                                            <li><input type="checkbox" checked="@Model.PP.noreorder" disabled="disabled"> Do Not Reorder</li>
+                                            <li><input type="checkbox" checked="@Model.ProductProfile.prepacked" disabled="disabled"> Prepacked</li>
+                                            <li><input type="checkbox" checked="@Model.ProductProfile.noreorder" disabled="disabled"> Do Not Reorder</li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Reorder Adjustment Days</label>
-                                        <input class="form-control" value="@Model.PP.reorderadjustmentdays" disabled="disabled" />
+                                        <input class="form-control" value="@Model.ProductProfile.reorderadjustmentdays" disabled="disabled" />
                                     </div>
                                     <div class="col-md-6">
                                         <label>Bulk Currently On Order (@Model.ClientUM)</label>
@@ -260,7 +260,7 @@
                 <h3 class="panel-title" data-toggle="collapse" data-target="#replenishorderpan"><i class="fa fa-file-text-o fa-fw"></i> Open Replenishment Orders</h3>
             </div>
             <div id="replenishorderpan" class="panel-body collapse in">
-                @{Html.RenderAction("BulkOrdersList", "Inventory", new { productDetailId = @Model.PP.productdetailid });}
+                @{Html.RenderAction("BulkOrdersList", "Inventory", new { productDetailId = @Model.ProductProfile.productdetailid });}
             </div>
         </div>
 
@@ -270,7 +270,7 @@
             </div>
             <div id="bulkstockpan" class="panel-body collapse in">
                 <div id="">
-                    @{Html.RenderAction("BulkStockList", "Inventory", new { productmasterid = @Model.PP.productmasterid, productdetailid = @Model.PP.productdetailid });}
+                    @{Html.RenderAction("BulkStockList", "Inventory", new { productmasterid = @Model.ProductProfile.productmasterid, productdetailid = @Model.ProductProfile.productdetailid });}
                 </div>
             </div>
         </div>
@@ -281,7 +281,7 @@
             </div>
             <div id="shelfstockpan" class="panel-body collapse in">
                 <div id="">
-                    @{Html.RenderAction("ShelfStockList", "Inventory", new { productdetailid = @Model.PP.productdetailid });}
+                    @{Html.RenderAction("ShelfStockList", "Inventory", new { productdetailid = @Model.ProductProfile.productdetailid });}
                 </div>
             </div>
         </div>
@@ -297,14 +297,14 @@
                         <span class="pull-right form-inline">
                             <em>shown if added in an order request</em>
                         </span>
-                        @Html.TextAreaFor(m => m.PP.alertnotesorderentry, new { @class = "form-control" })
+                        @Html.TextAreaFor(m => m.ProductProfile.alertnotesorderentry, new { @class = "form-control" })
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Receiving Alert Note <i class="fa fa-fw fa-star" style="color:gold"></i></label>
                         <span class="pull-right form-inline">
                             <em>shown upon receipt of bulk</em>
                         </span>
-                        @Html.TextAreaFor(m => m.PP.alertnotesreceiving, new { @class = "form-control" })
+                        @Html.TextAreaFor(m => m.ProductProfile.alertnotesreceiving, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -313,14 +313,14 @@
                         <span class="pull-right form-inline">
                             <em>shown during shipment packaging</em>
                         </span>
-                        @Html.TextAreaFor(m => m.PP.alertnotesshipping, new { @class = "form-control" })
+                        @Html.TextAreaFor(m => m.ProductProfile.alertnotesshipping, new { @class = "form-control" })
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Packout Request Alert Note <i class="fa fa-fw fa-star" style="color:gold"></i></label>
                         <span class="pull-right form-inline">
                             <em>shown during packout process</em>
                         </span>
-                        @Html.TextAreaFor(m => m.PP.alertnotespackout, new { @class = "form-control" })
+                        @Html.TextAreaFor(m => m.ProductProfile.alertnotespackout, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="row">
@@ -336,7 +336,7 @@
                 <h3 class="panel-title" data-toggle="collapse" data-target="#inventorylogpan"><i class="fa fa-file-text-o fa-fw"></i> Inventory Log <i class="fa fa-fw fa-star" style="color:gold"></i></h3>
             </div>
             <div id="inventorylogpan" class="panel-body collapse in">
-                @{Html.RenderAction("InventoryLogList", "Inventory", new { productDetailId = @Model.PP.productdetailid });}
+                @{Html.RenderAction("InventoryLogList", "Inventory", new { productDetailId = @Model.ProductProfile.productdetailid });}
             </div>
         </div>
 
@@ -345,7 +345,7 @@
                 <h3 class="panel-title" data-toggle="collapse" data-target="#lognotespan"><i class="fa fa-file-text-o fa-fw"></i> Product Log</h3>
             </div>
             <div id="lognotespan" class="panel-body collapse in">
-                @{Html.RenderAction("ProductLogList", "Inventory", new { id = @Model.PP.productdetailid });}
+                @{Html.RenderAction("ProductLogList", "Inventory", new { id = @Model.ProductProfile.productdetailid });}
             </div>
         </div>
 

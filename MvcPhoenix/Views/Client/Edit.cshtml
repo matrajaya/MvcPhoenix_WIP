@@ -8,7 +8,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12">
-            <img src="~/Client/LogoFile?id=@Model.ClientID" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
+            <img src="~/Client/ClientLogoFile?id=@Model.ClientID" style="width: auto; height: 73px; float: right" alt="@Model.ClientName logo">
         </div>
         <div class="col-lg-12">
             <h1 class="page-header">
@@ -142,12 +142,12 @@
                         <label>Upload Logo</label>
                         <div class="input-group">
                             <span class="btn input-group-addon btn-file">
-                                <i class="fa fa-folder-o"></i> Select File <input type="file" id="logoupload" name="logoupload" accept="image/*" style="" onchange="uploadvalidation()">
+                                <i class="fa fa-folder-o"></i> Select File <input type="file" id="logoclient" name="logoclient" accept="image/*" style="" onchange="uploadvalidation()">
                             </span>
                             <input type="text" id="LogoUploadFileName" name="LogoUploadFileName" class="form-control" />
                         </div>
                         <div style="border:solid 1px lightgrey;">
-                            <img src="~/Client/LogoFile?id=@Model.ClientID" alt="@Model.ClientName Logo" title="@Model.ClientName Logo">
+                            <img src="~/Client/ClientLogoFile?id=@Model.ClientID" alt="@Model.ClientName Logo" title="@Model.ClientName Logo">
                         </div>
                     </div>
                     <div class="col-md-6 form-group">
@@ -348,22 +348,22 @@
     CKEDITOR.inline('KeyContactDir');
 
     function uploadvalidation() {
-        var fname = (document.getElementById('logoupload').value).substring(12);
-        var fsize = document.getElementById('logoupload').files[0].size;
+        var fname = (document.getElementById('logoclient').value).substring(12);
+        var fsize = document.getElementById('logoclient').files[0].size;
         var re = /(\.gif|.jpg|.jpeg)$/i;
 
         if (re.exec(fname)) {
-            document.getElementById('LogoUploadFileName').value = (document.getElementById('logoupload').value).substring(12);
+            document.getElementById('LogoUploadFileName').value = (document.getElementById('logoclient').value).substring(12);
 
             if (fsize > 102400) {
                 $.alert("The max size allowed is 100kb. Your file size in kb is ~" + (fsize / 1024).toFixed(2));
-                document.getElementById('logoupload').value = "";
+                document.getElementById('logoclient').value = "";
                 return false;
             }
         }
         else {
             $.alert("File not supported! Only .gif and .jpg images are allowed.");
-            document.getElementById('logoupload').value = "";
+            document.getElementById('logoclient').value = "";
             return false;
         }
     }

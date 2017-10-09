@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -8,7 +7,8 @@ namespace MvcPhoenix.Models
 {
     public class Inventory
     {
-        public ProductProfile PP { get; set; }
+        public ProductProfile ProductProfile { get; set; }
+
         public string ClientCode { get; set; }
         public string Division { get; set; }
         public string ClientUM { get; set; }
@@ -72,12 +72,16 @@ namespace MvcPhoenix.Models
         public int? QtyOnHand { get; set; }
         public int? QtyAvailable { get; set; }
         public int? QtyAllocated { get; set; }
+
         [StringLength(15, ErrorMessage = "[Max 15]")]
         public string Bin { get; set; }
+
         public string ShelfStatus { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? WasteAccumStartDate { get; set; }
+
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
@@ -106,14 +110,14 @@ namespace MvcPhoenix.Models
 
     public class BulkContainerViewModel
     {
-        public decimal? pm_sumofcurrentweight { get; set; }                         // hold sum(CurrentWeight) for ProductMasterID        
+        public decimal? pm_sumofcurrentweight { get; set; }                         // hold sum(CurrentWeight) for ProductMasterID
         public string pm_OtherHandlingInstr { get; set; }
         public bool? pm_refrigerate { get; set; }
         public bool? pm_flammablestorageroom { get; set; }
         public bool? pm_freezerstorage { get; set; }
         public string pm_otherstorage { get; set; }
         public bool? pm_cleanroomgmp { get; set; }
-		public string pm_alertnotesreceiving { get; set; }
+        public string pm_alertnotesreceiving { get; set; }
         public decimal? pm_restrictedtoamount { get; set; }
         public bool? pm_tempraturecontrolledstorage { get; set; }
         public decimal? pm_shelflife { get; set; }
@@ -123,7 +127,7 @@ namespace MvcPhoenix.Models
         public string pd_groundpackinggrp { get; set; }
         public string pd_groundhazardclass { get; set; }
         public string pd_groundhazardsubclass { get; set; }
-        public bool? pd_epabiocide{ get; set; }
+        public bool? pd_epabiocide { get; set; }
         public string ghs_signalword { get; set; }
         public string ghs_symbol1 { get; set; }
         public string ghs_symbol2 { get; set; }
@@ -138,10 +142,13 @@ namespace MvcPhoenix.Models
 
         // ******* basic info
         public int bulkid { get; set; }
+
         public string warehouse { get; set; }
         public DateTime? receivedate { get; set; }
+
         [StringLength(12, ErrorMessage = "[Max 12]")]
         public string carrier { get; set; }
+
         public string receivedby { get; set; }
         public string enteredby { get; set; }
         public int? productmasterid { get; set; }
@@ -152,42 +159,57 @@ namespace MvcPhoenix.Models
         // ******* batch and lot info
         [StringLength(25, ErrorMessage = "Max 25)")]
         public string lotnumber { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? mfgdate { get; set; }
+
         public DateTime? expirationdate { get; set; }
         public DateTime? ceaseshipdate { get; set; }
         public string bulkstatus { get; set; }
         public string qty { get; set; }                                         // default=1, No user interface, remove from db?
+
         [StringLength(20, ErrorMessage = "Max 20)")]
         public string um { get; set; }                                          // previous fieldname was Container
+
         [StringLength(15, ErrorMessage = "Max 15)")]
         public string containercolor { get; set; }
+
         [StringLength(25, ErrorMessage = "Max 25)")]
         public string bin { get; set; }
+
         public string containertype { get; set; }                               // Steel, Plastic, Fiber, Other
         public bool? coaincluded { get; set; }
         public bool? msdsincluded { get; set; }
         public decimal? currentweight { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? qcdate { get; set; }
+
         [StringLength(10, ErrorMessage = "Max 10)")]
         public string returnlocation { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? noticedate { get; set; }
+
         [StringLength(100, ErrorMessage = "Max 100)")]
         public string bulklabelnote { get; set; }
+
         [StringLength(20, ErrorMessage = "Max 20)")]
         public string receivedascode { get; set; }
+
         [StringLength(25, ErrorMessage = "Max 25)")]
         public string receivedasname { get; set; }
+
         [StringLength(500, ErrorMessage = "Max 500)")]
         public string containernotes { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? wasteaccumstartdate { get; set; }
+
         public bool? markedforreturn { get; set; }
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
@@ -210,7 +232,9 @@ namespace MvcPhoenix.Models
 
     public class InventoryLog
     {
+        [StringLength(6)]
         public string LogType { get; set; }
+
         public int? BulkId { get; set; }
         public int? StockId { get; set; }
         public int? ProductMasterId { get; set; }
@@ -219,7 +243,10 @@ namespace MvcPhoenix.Models
         public decimal? LogAmount { get; set; }
         public string UM { get; set; }
         public string LogNotes { get; set; }
+
+        [Required]
         public int? ClientId { get; set; }
+
         public string ClientName { get; set; }
         public string Status { get; set; }
         public string ProductCode { get; set; }
