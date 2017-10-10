@@ -24,7 +24,6 @@ namespace MvcPhoenix.Models
         public Nullable<int> OrderID { get; set; }
         public int? ClientID { get; set; }
         public string ProductName { get; set; }
-        public string Mnemonic { get; set; }
         public int? AllocatedBulkID { get; set; }
         public int? AllocatedStockID { get; set; }
         public string ImportItemID { get; set; }

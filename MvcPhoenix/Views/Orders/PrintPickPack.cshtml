@@ -253,7 +253,7 @@
                     @if (Model.Special != null)
                     {
                         <label>Special Instrutions: </label><em>@Html.DisplayFor(m => m.Special)</em>
-                    }                    
+                    }
                 </td>
             </tr>
         </table>
@@ -370,13 +370,13 @@
     <table>
         <tr>
             <td style="border:solid 1px;">
-                @try
+                @if (String.IsNullOrWhiteSpace(Model.Country))
                 {
-                    @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.Country })
+                    <h2>The destination country was not selected ¯\_(ツ)_/¯</h2>
                 }
-                catch (Exception)
+                else
                 {
-                    <h2>Sorry, the destination country was not found. :(</h2>
+                   @Html.Action("PrintPreferredCarrierMatrix", "Orders", new { country = Model.Country })
                 }
             </td>
         </tr>

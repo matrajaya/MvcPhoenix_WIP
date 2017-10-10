@@ -423,7 +423,50 @@ namespace MvcPhoenix.Services
 
             return false;
         }
+        
+        public static PreferredCarrierViewModel GetPreferredCarrier(string country)
+        {
+            var preferredCarrier = new PreferredCarrierViewModel();
 
+            if (!String.IsNullOrWhiteSpace(country))
+            {
+                using (var db = new CMCSQL03Entities())
+                {
+                    var suggestedCarrier = db.tblPreferredCarrierList
+                                             .Where(x => x.CountryName.Contains(country))
+                                             .FirstOrDefault();
+
+                    if (suggestedCarrier == null)
+                    {
+                        return null;
+                    }
+
+                    preferredCarrier.CountryCode = suggestedCarrier.CountryCode;
+                    preferredCarrier.CountryName = suggestedCarrier.CountryName;
+                    preferredCarrier.CommInvoiceReq = suggestedCarrier.CommInvoiceReq;
+                    preferredCarrier.NonHazSm = suggestedCarrier.NonHaz_Sm;
+                    preferredCarrier.NonHazLg = suggestedCarrier.NonHaz_Lg;
+                    preferredCarrier.NonHazIncoTerms = suggestedCarrier.NonHaz_IncoTerms;
+                    preferredCarrier.HazIATASm = suggestedCarrier.HazIATA_Sm;
+                    preferredCarrier.HazIATALg = suggestedCarrier.HazIATA_Lg;
+                    preferredCarrier.HazGroundLQ = suggestedCarrier.HazGround_LQ;
+                    preferredCarrier.HazGround = suggestedCarrier.HazGround;
+                    preferredCarrier.HazIncoterms = suggestedCarrier.Haz_Incoterms;
+                    preferredCarrier.IncotermsAlt = suggestedCarrier.Incoterms_Alt;
+                    preferredCarrier.NotesGeneral = suggestedCarrier.Notes_General;
+                    preferredCarrier.NotesIATAADR = suggestedCarrier.Notes_IATA_ADR;
+                    preferredCarrier.NonHazIncotermsAlt = suggestedCarrier.NonHazIncoterms_Alt;
+                    preferredCarrier.HazIncotermsAlt = suggestedCarrier.HazIncoterms_Alt;
+                }
+            }
+            else
+            {
+                return null;
+            }
+
+            return preferredCarrier;
+        }
+        
         #endregion Order
 
         #region Order Item
@@ -445,12 +488,13 @@ namespace MvcPhoenix.Services
                                       BulkID = t.BulkID,
                                       ProductDetailID = t.ProductDetailID,
                                       ProductCode = t.ProductCode,
-                                      Mnemonic = t.Mnemonic,
                                       ProductName = t.ProductName,
                                       Size = t.Size,
                                       SRSize = t.SRSize,
+                                      Bin = t.Bin,
                                       LotNumber = t.LotNumber,
                                       Qty = t.Qty,
+                                      CeaseShipDate = t.CeaseShipDate,
                                       ShipDate = t.ShipDate,
                                       Via = t.Via,
                                       BackOrdered = t.BackOrdered,
@@ -459,19 +503,31 @@ namespace MvcPhoenix.Services
                                       CSAllocate = t.CSAllocate,
                                       NonCMCDelay = t.NonCMCDelay,
                                       RDTransfer = t.RDTransfer,
-                                      GrnUnNumber = productdetail.GRNUNNUMBER,
-                                      GrnPkGroup = productdetail.GRNPKGRP,
                                       AirUnNumber = productdetail.AIRUNNUMBER,
                                       AirPkGroup = productdetail.AIRPKGRP,
+                                      AirHzdClass = productdetail.AIRHAZCL,
+                                      GrnUnNumber = productdetail.GRNUNNUMBER,
+                                      GrnPkGroup = productdetail.GRNPKGRP,
+                                      GrnHzdClass = productdetail.GRNHAZCL,
+                                      SeaUnNumber = productdetail.SEAUNNUM,
+                                      SeaPkGroup = productdetail.SEAPKGRP,
+                                      SeaHzdClass = productdetail.SEAHAZCL,
+                                      HarmonizedCode = productdetail.HarmonizedCode,
+                                      AlertNotesOrderEntry = productdetail.AlertNotesOrderEntry,
+                                      AlertNotesShipping = productdetail.AlertNotesShipping,
                                       QtyAvailable = (from x in db.tblStock
                                                       where (x.ShelfID != null)
                                                       && (x.ShelfID == t.ShelfID)
                                                       && (x.ShelfStatus == "AVAIL")
                                                       select (x.QtyOnHand - x.QtyAllocated)).Sum(),
+                                      FreezableList = db.tblProductMaster
+                                                        .Where(x => x.ProductMasterID == productdetail.ProductMasterID)
+                                                        .Select(x => x.FreezableList).FirstOrDefault(),
                                       CreateDate = t.CreateDate,
                                       CreateUser = t.CreateUser,
                                       UpdateDate = t.UpdateDate,
-                                      UpdateUser = t.UpdateUser
+                                      UpdateUser = t.UpdateUser,
+                                      DelayReason = t.DelayReason
                                   }).ToList();
 
                 return orderItems;
@@ -664,7 +720,7 @@ namespace MvcPhoenix.Services
 
             // Update transaction charges
             GenerateOrderTransaction(orderitem.ItemID);
-            
+
             return orderitem.ItemID;
         }
 
@@ -754,7 +810,7 @@ namespace MvcPhoenix.Services
                 db.Database.ExecuteSqlCommand(deleteQuery);
 
                 var tierSize = db.tblTier
-                                 .Where(t=> t.ClientID == order.ClientID
+                                 .Where(t => t.ClientID == order.ClientID
                                          && t.Size == orderItem.Size
                                          && t.TierLevel == 1)
                                  .FirstOrDefault();
@@ -786,7 +842,7 @@ namespace MvcPhoenix.Services
                 else
                 {
                     var tierSpecialRequest = db.tblTier
-                                               .Where(t=> t.ClientID == order.ClientID
+                                               .Where(t => t.ClientID == order.ClientID
                                                        && t.Size == "1SR"
                                                        && t.TierLevel == 1)
                                                .FirstOrDefault();

@@ -4,44 +4,47 @@
     ViewBag.Title = "Packing List Order Items";
 }
 
-<hr />
+@if (Model.Count > 0)
+{
+    <hr />
 
-<h3>Current Shipment Contents</h3>
+    <h3>Current Shipment Contents</h3>
 
-<div class="table-responsive">
-    <table id="mytable" class="table table-hover table-striped">
-        <thead>
-            <tr style="border-top:solid 2px;border-bottom:solid 2px;">
-                <th>Code</th>
-                <th>Product Name</th>
-                <th>Qty</th>
-                <th>Size</th>
-                <th>Lot#</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+    <div class="table-responsive">
+        <table id="mytable" class="table table-hover table-striped">
+            <thead>
+                <tr style="border-top:solid 2px;border-bottom:solid 2px;">
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Qty</th>
+                    <th>Size</th>
+                    <th>Lot#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.ProductCode</td>
-                    <td>@item.ProductName</td>
-                    <td>@item.Qty</td>
-                    <td>@item.Size</td>
-                    <td>@item.LotNumber</td>
-                </tr>
-                <tr style="border-bottom:solid 1px;">
-                    <td colspan="5">
-                        <table>
-                            <tr>
-                                <td>AIR: @item.AirUnNumber, @item.AirPkGroup, @item.AirHzdClass</td>
-                                <td>GROUND: @item.GrnUnNumber, @item.GrnPkGroup, @item.GrnHzdClass</td>
-                                <td>SEA: @item.SeaUnNumber, @item.SeaPkGroup, @item.SeaHzdClass</td>
-                                <td>Harmonized Code: @item.HarmonizedCode</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+            <tr>
+                <td>@item.ProductCode</td>
+                <td>@item.ProductName</td>
+                <td>@item.Qty</td>
+                <td>@item.Size</td>
+                <td>@item.LotNumber</td>
+            </tr>
+            <tr style="border-bottom:solid 1px;">
+                <td colspan="5">
+                    <table>
+                        <tr>
+                            <td>AIR: @item.AirUnNumber, @item.AirPkGroup, @item.AirHzdClass</td>
+                            <td>GROUND: @item.GrnUnNumber, @item.GrnPkGroup, @item.GrnHzdClass</td>
+                            <td>SEA: @item.SeaUnNumber, @item.SeaPkGroup, @item.SeaHzdClass</td>
+                            <td>Harmonized Code: @item.HarmonizedCode</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
             }
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
+}

@@ -3,57 +3,69 @@
     ViewBag.Title = "Preferred Carrier Matrix";
 }
 
-<table style="font-size:small;">
-    <tr>
-        <td colspan="4">
-            <label style="font-size:1.5em;">Preferred Carrier Selection Matrix: @Model.CountryName</label>
-        </td>
-    </tr>
-    <tr>
-        <td width="25%">Commercial Invoice:</td>
-        <td width="25%">@if (Model.CommInvoiceReq == true){<text>Yes</text>} else {<text>No</text>}</td>
-        <td width="25%"></td>
-        <td width="25%"></td>
-    </tr>
-    <tr>
-        <td>Non-Haz Small:</td>
-        <td>@Model.NonHazSm</td>
-        <td>Haz Carrier ADR LQ:</td>
-        <td>@Model.HazGroundLQ</td>
-    <tr>
-        <td>Non-Haz Large:</td>
-        <td>@Model.NonHazLg</td>
-        <td>Haz Carrier ADR</td>
-        <td>@Model.HazGround</td>
-    <tr>
-        <td></td>
-        <td></td>
-        <td>Haz IATA Small:</td>
-        <td>@Model.HazIATASm</td>
-    <tr>
-        <td></td>
-        <td></td>
-        <td>Haz IATA Large:</td>
-        <td>@Model.HazIATALg</td>
-    </tr>
-    <tr>
-        <td>Non-Haz Incoterms:</td>
-        <td>@Model.NonHazIncoTerms</td>
-        <td>Haz Incoterms:</td>
-        <td>@Model.HazIncoterms</td>
-    </tr>
-    <tr>
-        <td>Non-Haz Inco Alt:</td>
-        <td>@Model.NonHazIncotermsAlt</td>
-        <td>Haz Inco. Alt:</td>
-        <td>@Model.HazIncotermsAlt</td>
-    </tr>
-    <tr>
-        <td>General Notes:</td>
-        <td colspan="3">@Model.NotesGeneral</td>
-    </tr>
-    <tr>
-        <td>IATA / ADR Notes:</td>
-        <td colspan="3">@Model.NotesIATAADR</td>
-    </tr>
-</table>
+@if (Model != null)
+{
+    <table style="font-size:small;">
+        <tr>
+            <td colspan="4">
+                <label style="font-size:1.5em;">Preferred Carrier Selection Matrix: @Model.CountryName</label>
+            </td>
+        </tr>
+        <tr>
+            <td width="25%">Commercial Invoice:</td>
+            <td width="25%">
+                @if (Model.CommInvoiceReq == true)
+                {<text>Yes</text>}
+                else
+                {<text>No</text>}
+            </td>
+            <td width="25%"></td>
+            <td width="25%"></td>
+        </tr>
+        <tr>
+            <td>Non-Haz Small:</td>
+            <td>@Model.NonHazSm</td>
+            <td>Haz Carrier ADR LQ:</td>
+            <td>@Model.HazGroundLQ</td>
+        <tr>
+            <td>Non-Haz Large:</td>
+            <td>@Model.NonHazLg</td>
+            <td>Haz Carrier ADR</td>
+            <td>@Model.HazGround</td>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Haz IATA Small:</td>
+            <td>@Model.HazIATASm</td>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Haz IATA Large:</td>
+            <td>@Model.HazIATALg</td>
+        </tr>
+        <tr>
+            <td>Non-Haz Incoterms:</td>
+            <td>@Model.NonHazIncoTerms</td>
+            <td>Haz Incoterms:</td>
+            <td>@Model.HazIncoterms</td>
+        </tr>
+        <tr>
+            <td>Non-Haz Inco Alt:</td>
+            <td>@Model.NonHazIncotermsAlt</td>
+            <td>Haz Inco. Alt:</td>
+            <td>@Model.HazIncotermsAlt</td>
+        </tr>
+        <tr>
+            <td>General Notes:</td>
+            <td colspan="3">@Model.NotesGeneral</td>
+        </tr>
+        <tr>
+            <td>IATA / ADR Notes:</td>
+            <td colspan="3">@Model.NotesIATAADR</td>
+        </tr>
+    </table>
+}
+else
+{
+    <h2>We could not find preferred carriers for destination country ¯\_(ツ)_/¯</h2>
+}

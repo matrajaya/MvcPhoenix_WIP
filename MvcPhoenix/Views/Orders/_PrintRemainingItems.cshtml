@@ -4,36 +4,39 @@
     ViewBag.Title = "Excluded Order Items";
 }
 
-<hr />
+@if (Model.Count > 0)
+{
+    <hr />
 
-<div class="table-responsive">
-    <h3>Excluded Order Items</h3>
-    <table id="mytable" class="table table-hover table-striped" style="border:solid 1px;">
-        <thead>
-            <tr>
-                <th>Code</th>
-                <th>Product Name</th>
-                <th>Qty</th>
-                <th>Size</th>
-                <th>Lot#</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <div class="table-responsive">
+        <h3>Excluded Order Items</h3>
+        <table id="mytable" class="table table-hover table-striped" style="border:solid 1px;">
+            <thead>
                 <tr>
-                    <td>@item.ProductCode</td>
-                    <td>@item.ProductName</td>
-                    <td>@item.Qty</td>
-                    <td>@item.Size</td>
-                    <td>@item.LotNumber</td>
-                    <td>
-                        @if (item.ShipDate != null)
-                        { <p>Shipped on @String.Format("{0:dd MMM yyyy}", item.ShipDate).</p> }                       
-                    </td>
+                    <th>Code</th>
+                    <th>Product Name</th>
+                    <th>Qty</th>
+                    <th>Size</th>
+                    <th>Lot#</th>
+                    <th>Status</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductCode</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Qty</td>
+                        <td>@item.Size</td>
+                        <td>@item.LotNumber</td>
+                        <td>
+                            @if (item.ShipDate != null)
+                            { <p>Shipped on @String.Format("{0:dd MMM yyyy}", item.ShipDate).</p> }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
