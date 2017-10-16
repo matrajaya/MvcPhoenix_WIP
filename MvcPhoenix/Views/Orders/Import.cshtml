@@ -19,6 +19,19 @@
         </div>
     </div>
 
+    @if (ViewBag.OrdersImportedCount != null)
+    {
+        <div class="row">
+            <div class="col-md-3 col-md-offset-3 ">
+                <h3>Total orders imported: @ViewBag.OrdersImportedCount</h3>
+            </div>
+            <div class="col-md-3">
+                <h3>Import ran for: @ViewBag.RunTime <small>(min:sec:msec)</small></h3>
+            </div>
+        </div>
+    }
+    
+
     @if (Model.Count > 0)
     {
         <div class="panel panel-primary">

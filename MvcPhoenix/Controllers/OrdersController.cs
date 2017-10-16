@@ -288,6 +288,11 @@ namespace MvcPhoenix.Controllers
             int orderId = id;
             var order = OrderService.FillOrder(orderId);
 
+            if (order == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             return View("~/Views/Orders/Edit.cshtml", order);
         }
 
@@ -330,7 +335,7 @@ namespace MvcPhoenix.Controllers
         public ActionResult EditItem(int id)
         {
             int orderItemId = id;
-            var orderItem = OrderService.GetOrderItems(orderItemId);
+            var orderItem = OrderService.GetOrderItem(orderItemId);
 
             return PartialView("~/Views/Orders/_OrderItemModal.cshtml", orderItem);
         }
@@ -499,7 +504,7 @@ namespace MvcPhoenix.Controllers
         #region Order Import
 
         [HttpGet]
-        public ActionResult OrdersImport()
+        public ActionResult OrdersImport(int? count, TimeSpan? time)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -510,6 +515,9 @@ namespace MvcPhoenix.Controllers
                                      orderby t.OrderDate, t.GUID
                                      select t).ToList();
 
+                ViewBag.OrdersImportedCount = count;
+                ViewBag.RunTime = String.Format("{0:mm\\:ss\\:ff}", time);
+
                 return View("~/Views/Orders/Import.cshtml", failedimports);
             }
         }
@@ -517,10 +525,12 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult OrdersImportProcess()
         {
-            int ImportCount = OrderService.ImportOrders();        // Actual import
-            ViewBag.ImportCount = ImportCount;
+            int OrdersImportedCount;
+            TimeSpan runTime;
 
-            return RedirectToAction("OrdersImport");
+            OrderService.ImportOrders(out OrdersImportedCount, out runTime);
+            
+            return RedirectToAction("OrdersImport", new { count = OrdersImportedCount, time = runTime });
         }
 
         #endregion Order Import

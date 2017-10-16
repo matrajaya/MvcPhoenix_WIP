@@ -36,9 +36,12 @@
             {
                 <tr>
                     <td>
-                        <div style="zoom:15%;">
-                            @Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.LotNumber + "~" + @item.Size))
-                        </div>
+                        @if (item.ProductDetailID > 0)
+                        {
+                            <div style="zoom:15%;">
+                                @Html.GenerateMatrixCode(Convert.ToString(@item.ProductCode + "~" + @item.LotNumber + "~" + @item.Size))
+                            </div>
+                        }
                     </td>
                     <td>@(Model.IndexOf(item) + 1)</td>
                     <td>@item.ItemID</td>
@@ -59,7 +62,7 @@
                     <td class="text-center">@item.QtyAvailable</td>
                     <td class="text-center">@String.Format("{0:dd MMM yyyy}", item.ShipDate)</td>
                     <td class="text-center">@item.Via</td>
-                    <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false" /></td>
+                    <td class="text-center"><input type="checkbox" checked="@item.NonCMCDelay" readonly="readonly" onclick="return false;" /></td>
                     <td class="text-center">
                         @item.AllocateStatus
                         @if (item.AllocateStatus == "A" && item.ShipDate.ToString() == "")
@@ -81,13 +84,26 @@
                     <td class="text-center">@item.AirUnNumber, @item.AirPkGroup</td>
                     <td title="Updated by: @item.UpdateUser">@String.Format("{0:dd MMM yyyy}", item.UpdateDate)</td>
                     <td id="noprint" class="text-right">
-                        @Ajax.ActionLink(" ", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
+                        @if (item.ProductDetailID > 0)
                         {
-                            UpdateTargetId = "dialogPlaceholder",
-                            InsertionMode = InsertionMode.Replace,
-                            HttpMethod = "GET",
-                            OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
-                        }, new { @class = "btn btn-primary btn-sm fa fa-pencil", @title = "Edit" })
+                            @Ajax.ActionLink(" ", "EditItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
+                            {
+                                UpdateTargetId = "dialogPlaceholder",
+                                InsertionMode = InsertionMode.Replace,
+                                HttpMethod = "GET",
+                                OnSuccess = "$('#dialogPlaceholderModal').modal('show');"
+                            }, new { @class = "btn btn-primary btn-sm fa fa-pencil", @title = "Edit" })
+                        }
+                        else
+                        {
+                            <div id="alertNotes" class="hidden">@item.ItemNotes</div>
+                            <a class="btn btn-primary btn-sm fa fa-sticky-note-o" onclick="ShowNote(alertNotes.textContent)" title="Show Notes"></a>
+                            @Ajax.ActionLink(" ", "DeleteItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
+                            {
+                                UpdateTargetId = "dialogPlaceholder",
+                                OnComplete = "UpdateItemsList()"
+                            }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Delete" })
+                        }
                     </td>
                 </tr>
             }
@@ -135,5 +151,9 @@
 <script type="text/javascript">
     function UpdateItemsList() {
         $("#dvOrderItemsList").load('@Url.Action("OrderItemsList", "Orders", new { orderid = @Model[0].OrderID })');
+    }
+
+    function ShowNote(itemNote){
+        alert(itemNote);
     }
 </script>

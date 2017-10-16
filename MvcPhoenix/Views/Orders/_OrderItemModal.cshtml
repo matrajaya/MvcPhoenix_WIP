@@ -342,11 +342,14 @@
     // Initial ddl build for shelf id and sizes
     function GetShelfSizes(productdetailid) {
         var data = productdetailid;
-        var myurl = '@Url.Action("BuildSizeDropDown", "Orders")';
 
-        $('#FirstShelfID').empty();
-        $('#ShelfID').removeClass('hidden');
-        $("#ShelfID").load(myurl, { productdetailid: data });
+        if (data > 0) {
+            var url = '@Url.Action("BuildSizeDropDown", "Orders")';
+
+            $('#FirstShelfID').empty();
+            $('#ShelfID').removeClass('hidden');
+            $("#ShelfID").load(url, { productdetailid: data });
+        }
     }
 
     // Add status notes selected to list
