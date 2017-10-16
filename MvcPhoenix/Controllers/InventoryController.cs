@@ -206,7 +206,7 @@ namespace MvcPhoenix.Controllers
                 prePackStock.BulkContainer.bulkid = -1;
                 prePackStock.BulkContainer.receivedate = DateTime.UtcNow;
                 prePackStock.BulkContainer.warehouse = client.CMCLocation;
-                prePackStock.BulkContainer.lotnumber = "lotnumber";
+                prePackStock.BulkContainer.lotnumber = "";
                 prePackStock.BulkContainer.mfgdate = DateTime.UtcNow;
                 prePackStock.BulkContainer.clientid = productMaster.ClientID;
                 prePackStock.BulkContainer.productmasterid = productMaster.ProductMasterID;

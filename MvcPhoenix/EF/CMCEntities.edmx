@@ -163,7 +163,7 @@
           <Property Name="EnteredBy" Type="nvarchar(max)" />
           <Property Name="Carrier" Type="nvarchar" MaxLength="12" />
           <Property Name="LogNotes" Type="nvarchar(max)" />
-          <Property Name="ContainerType" Type="nvarchar" MaxLength="1" />
+          <Property Name="ContainerType" Type="nvarchar" MaxLength="15" />
           <Property Name="COAIncluded" Type="bit" />
           <Property Name="MSDSIncluded" Type="bit" />
           <Property Name="PercentSolids" Type="int" />
@@ -2163,7 +2163,7 @@
           <Property Name="EnteredBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Carrier" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="LogNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ContainerType" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="ContainerType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="COAIncluded" Type="Boolean" />
           <Property Name="MSDSIncluded" Type="Boolean" />
           <Property Name="PercentSolids" Type="Int32" />

@@ -626,8 +626,6 @@ namespace MvcPhoenix.Models
                     productDetail.AccuracyVerifiedBy = HttpContext.Current.User.Identity.Name;
                 }
 
-                productDetail.CustomsValueUnit = "placeholder";
-
                 db.SaveChanges();
             }
         }

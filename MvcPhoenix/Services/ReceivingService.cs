@@ -401,7 +401,7 @@ namespace MvcPhoenix.Services
                 newBulk.EnteredBy = prepack.enteredby;
                 newBulk.ExpirationDate = prepack.expirationdate;
                 newBulk.MSDSIncluded = prepack.msdsincluded;
-                newBulk.BulkStatus = "PP";
+                newBulk.BulkStatus = "RECD";
                 newBulk.Bin = "PREPACK";
 
                 db.tblBulk.Add(newBulk);

@@ -93,6 +93,7 @@ namespace MvcPhoenix.Models
             AVAIL,
             HOLD,
             QC,
+            RECD,
             RETURN,
             TEST
         }
