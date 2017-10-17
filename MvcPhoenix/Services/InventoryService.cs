@@ -16,9 +16,9 @@ namespace MvcPhoenix.Services
             var productProfile = new ProductProfile();
             productProfile.productdetailid = productdetailid;
 
-            productProfile = ProductsService.GetProductDetail(productProfile);
-            productProfile = ProductsService.GetProductMaster(productProfile);
-            productProfile = ProductsService.GetProductExtendedProps(productProfile);
+            productProfile = ProductService.GetProductDetail(productProfile);
+            productProfile = ProductService.GetProductMaster(productProfile);
+            productProfile = ProductService.GetProductExtendedProps(productProfile);
             inventory.ProductProfile = productProfile;
 
             var client = ClientService.GetClient(productProfile.clientid);
@@ -364,12 +364,187 @@ namespace MvcPhoenix.Services
             }
         }
 
+        public static List<BulkOrderItemForInventory> GetBulkOrderItems(int productDetailId)
+        {
+            var bulkOrderItems = new List<BulkOrderItemForInventory>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var productDetail = db.tblProductDetail.Find(productDetailId);
+                var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
+
+                bulkOrderItems = (from items in db.tblBulkOrderItem
+                                  join orders in db.tblBulkOrder on items.BulkOrderID equals orders.BulkOrderID
+                                  join pm in db.tblProductMaster on items.ProductMasterID equals pm.ProductMasterID
+                                  where items.ProductMasterID == productMaster.ProductMasterID && items.Status == "OP"
+                                  orderby orders.OrderDate
+                                  select new BulkOrderItemForInventory
+                                  {
+                                      bulkorderitemid = items.BulkOrderItemID,
+                                      bulkorderid = items.BulkOrderID,
+                                      productmasterid = items.ProductMasterID,
+                                      mastercode = pm.MasterCode,
+                                      mastername = pm.MasterName,
+                                      weight = items.Weight,
+                                      itemstatus = items.Status,
+                                      eta = items.ETA,
+                                      datereceived = items.DateReceived,
+                                      itemnotes = items.ItemNotes,
+                                      OrderDate = orders.OrderDate,
+                                      SupplyID = orders.SupplyID,
+                                      OrderStatus = orders.Status,
+                                      OrderComment = orders.Comment
+                                  }).ToList();
+            }
+            return bulkOrderItems;
+        }
+
+        public static PrePackStock CreatePrepackedStock(int productDetailId)
+        {
+            var prePackStock = new PrePackStock();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var productDetail = db.tblProductDetail.Find(productDetailId);
+                var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
+                var client = db.tblClient.Find(productMaster.ClientID);
+
+                prePackStock.ProductDetailID = productDetailId;
+                prePackStock.BulkContainer = new BulkContainerViewModel();
+                prePackStock.BulkContainer.bulkid = -1;
+                prePackStock.BulkContainer.receivedate = DateTime.UtcNow;
+                prePackStock.BulkContainer.warehouse = client.CMCLocation;
+                prePackStock.BulkContainer.lotnumber = "";
+                prePackStock.BulkContainer.mfgdate = DateTime.UtcNow;
+                prePackStock.BulkContainer.clientid = productMaster.ClientID;
+                prePackStock.BulkContainer.productmasterid = productMaster.ProductMasterID;
+                prePackStock.BulkContainer.bulkstatus = "AVAIL";
+                prePackStock.ProductCode = productDetail.ProductCode;
+                prePackStock.ProductName = productDetail.ProductName;
+                prePackStock.BulkContainer.bin = "PREPACK";
+                prePackStock.ListOfShelfMasterIDs = (from t in db.tblShelfMaster
+                                                     where t.ProductDetailID == productDetailId
+                                                     && t.Discontinued == false
+                                                     select new ShelfMasterViewModel
+                                                     {
+                                                         shelfid = t.ShelfID,
+                                                         productdetailid = t.ProductDetailID,
+                                                         bin = t.Bin,
+                                                         size = t.Size
+                                                     }).ToList();
+
+                prePackStock.ShelfMasterCount = prePackStock.ListOfShelfMasterIDs.Count();
+                prePackStock.BulkContainer.pm_ceaseshipdifferential = productMaster.CeaseShipDifferential;
+                prePackStock.BulkContainer.pm_shelflife = productMaster.ShelfLife;
+            }
+
+            return prePackStock;
+        }
+
+        public static bool ConvertStockToBulk(int stockItemId, int stockQuantity)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                try
+                {
+                    var shelfStock = db.tblStock.Find(stockItemId);
+
+                    if (shelfStock.QtyAvailable < stockQuantity
+                        || shelfStock.QtyAvailable < 1
+                        || shelfStock.QtyAvailable == null)
+                    {
+                        return false;
+                    }
+
+                    shelfStock.QtyAvailable = shelfStock.QtyAvailable - stockQuantity;
+                    shelfStock.QtyOnHand = shelfStock.QtyOnHand - stockQuantity;
+                    shelfStock.UpdateDate = DateTime.UtcNow;
+                    shelfStock.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    int? bulkid = shelfStock.BulkID;
+                    var bulkstock = db.tblBulk.Find(bulkid);
+                    if (bulkstock.BulkStatus == "Virtual" || bulkstock.BulkStatus == "BF")
+                    {
+                        bulkstock.Bin = shelfStock.Bin;
+                        bulkstock.BulkStatus = shelfStock.ShelfStatus;
+                    }
+
+                    int? shelfid = shelfStock.ShelfID;
+                    decimal? unitWeight = ShelfMasterService.GetUnitWeight(shelfid);
+                    decimal? shelfstockweight = stockQuantity * unitWeight;
+                    bulkstock.CurrentWeight = bulkstock.CurrentWeight + shelfstockweight;
+                    bulkstock.UpdateDate = DateTime.UtcNow;
+                    bulkstock.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                    db.SaveChanges();
+
+                    // Write to inventory log
+                    InventoryLogNote inventoryLogNote = new InventoryLogNote();
+
+                    inventoryLogNote.productnoteid = -1;
+                    inventoryLogNote.productmasterid = bulkstock.ProductMasterID;
+                    inventoryLogNote.notes = "Converted " + stockQuantity + " from shelf stock id: " + shelfStock.StockID + " to bulk stock id: " + bulkstock.BulkID + ".\n";
+                    inventoryLogNote.reasoncode = "Change Packaging";
+
+                    InventoryService.SaveInventoryLogNote(inventoryLogNote);
+
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public static List<BulkContainerViewModel> GetBulkStocks(int productmasterid)
+        {
+            var bulkContainers = new List<BulkContainerViewModel>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var bulkProducts = (from t in db.tblBulk
+                                    where t.ProductMasterID == productmasterid
+                                    select t).ToList();
+
+                foreach (var row in bulkProducts)
+                {
+                    bulkContainers.Add(BulkService.GetBulkContainer(row.BulkID));
+                }
+            }
+
+            return bulkContainers;
+        }
+
+        public static List<StockViewModel> GetShelfStocks(int productdetailid)
+        {
+            var stocks = new List<StockViewModel>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var stockProducts = (from stock in db.tblStock
+                                     join shelf in db.tblShelfMaster on stock.ShelfID equals shelf.ShelfID
+                                     join productDetail in db.tblProductDetail on shelf.ProductDetailID equals productDetail.ProductDetailID
+                                     join bulk in db.tblBulk on stock.BulkID equals bulk.BulkID
+                                     where productDetail.ProductDetailID == productdetailid
+                                     && stock.QtyOnHand > 0
+                                     select stock).ToList();
+
+                foreach (var row in stockProducts)
+                {
+                    stocks.Add(InventoryService.GetStock(row.StockID));
+                }
+            }
+
+            return stocks;
+        }
+
         /// <summary>
         /// Get inventory log notes
         /// </summary>
         /// <param name="masterid"></param>
         /// <returns>List of log notes</returns>
-        public static List<InventoryLogNote> ListInvPMLogNotes(int? masterid)
+        public static List<InventoryLogNote> GetProductMasterNotes(int? masterid)
         {
             var logNotes = new List<InventoryLogNote>();
 
@@ -393,6 +568,31 @@ namespace MvcPhoenix.Services
             }
 
             return logNotes;
+        }
+
+        public static List<ProductNote> GetProductDetailNotes(int productDetailId)
+        {
+            var productLogNotes = new List<ProductNote>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                productLogNotes = (from t in db.tblPPPDLogNote
+                                   where t.ProductDetailID == productDetailId
+                                   orderby t.NoteDate descending
+                                   select new ProductNote
+                                   {
+                                       productnoteid = t.PPPDLogNoteID,
+                                       productdetailid = t.ProductDetailID,
+                                       notedate = t.NoteDate,
+                                       notes = t.Notes,
+                                       reasoncode = t.ReasonCode,
+                                       UpdateDate = t.UpdateDate,
+                                       UpdateUser = t.UpdateUser,
+                                       CreateDate = t.CreateDate,
+                                       CreateUser = t.CreateUser
+                                   }).ToList();
+            }
+            return productLogNotes;
         }
 
         public static InventoryLogNote GetInventoryNote(int inventorylognoteid)
@@ -613,6 +813,172 @@ namespace MvcPhoenix.Services
 
                 db.tblInvLog.Add(InventoryLog);
                 db.SaveChanges();
+            }
+        }
+        
+        public static int CreatePackOutOrder(int bulkid, int priority)
+        {
+            int packoutId = 0;
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var bulk = db.tblBulk.Find(bulkid);
+                var productMaster = db.tblProductMaster.Find(bulk.ProductMasterID);
+                var client = db.tblClient.Find(productMaster.ClientID);
+
+                // check to see if there is an open packout already
+                var packout = (from t in db.tblProductionMaster
+                               where t.Company == client.CMCLongCustomer
+                               && t.MasterCode == productMaster.MasterCode
+                               && (t.ProductionStage == 10 | t.ProductionStage == 20)
+                               select t).FirstOrDefault();
+
+                if (packout != null)
+                {
+                    packoutId = -1;
+                    return packoutId;
+                }
+
+                // Get a list of what we need to inform packout
+                var packoutBulk = (from bulks in db.tblBulk
+                                   join productmaster in db.tblProductMaster on bulks.ProductMasterID equals productmaster.ProductMasterID
+                                   join productdetail in db.tblProductDetail on productmaster.ProductMasterID equals productdetail.ProductMasterID
+                                   join shelfmaster in db.tblShelfMaster on productdetail.ProductDetailID equals shelfmaster.ProductDetailID
+                                   where bulks.BulkID == bulkid
+                                   select new { bulks, productdetail, productmaster, shelfmaster }).ToList();
+
+                if (priority == 0)
+                {
+                    priority = ColorPriorityToday();
+                }
+
+                // Create new production master
+                var newProductionMaster = new tblProductionMaster();
+                db.tblProductionMaster.Add(newProductionMaster);
+                db.SaveChanges();
+
+                int newPackOutID = newProductionMaster.ID;
+
+                // Insert production master
+                var productionMaster = db.tblProductionMaster.Find(newPackOutID);
+
+                productionMaster.BulkID = bulk.BulkID;
+                productionMaster.ClientID = client.ClientID;
+                productionMaster.CreateDate = DateTime.UtcNow;
+                productionMaster.ProdmastCreateDate = DateTime.UtcNow;
+                productionMaster.Company = client.CMCLongCustomer;
+                productionMaster.Division = "N/A";
+                productionMaster.MasterCode = productMaster.MasterCode;
+                productionMaster.ProdName = productMaster.MasterName;
+                productionMaster.Lot_Number = bulk.LotNumber;
+                productionMaster.Bulk_Location = bulk.Bin;
+                productionMaster.Contents_Weight = bulk.CurrentWeight;
+                productionMaster.Shelf__Life = productMaster.ShelfLife;
+                productionMaster.ExpDt = bulk.ExpirationDate;
+                productionMaster.CeaseShipDate = bulk.CeaseShipDate;
+                productionMaster.RecDate = bulk.ReceiveDate;
+                productionMaster.Packout = true;
+                productionMaster.Priority = priority;
+                productionMaster.ProductionStage = 10;
+                productionMaster.AirUN = "N/A";
+                productionMaster.Status = bulk.BulkStatus;
+                productionMaster.CMCUser = HttpContext.Current.User.Identity.Name;
+                productionMaster.Heat_Prior_To_Filling = productMaster.HeatPriorToFilling;
+                productionMaster.Moisture = productMaster.MoistureSensitive;
+                productionMaster.CleanRoom = productMaster.CleanRoomEquipment;
+
+                db.SaveChanges();
+
+                packoutId = newPackOutID;
+
+                // Insert production details
+                foreach (var row in packoutBulk)
+                {
+                    var newProductionDetail = new tblProductionDetail();
+
+                    newProductionDetail.MasterID = productionMaster.ID;
+                    newProductionDetail.ShelfID = row.shelfmaster.ShelfID;
+                    newProductionDetail.InvRequestedQty = 0;
+                    newProductionDetail.ProdActualQty = 0;
+                    newProductionDetail.LabelQty = 0;
+                    newProductionDetail.UM = row.shelfmaster.Size;
+                    newProductionDetail.Unit_Weight = row.shelfmaster.UnitWeight;
+
+                    DateTime? oneYearAgo = DateTime.UtcNow.AddDays(-365);
+                    DateTime? fourMonthsAgo = DateTime.UtcNow.AddDays(-120);
+
+                    var log = (from t in db.tblInvLog
+                               where t.LogType == "SS-SHP"
+                               && t.ProductDetailID == row.productdetail.ProductDetailID
+                               select t).ToList();
+
+                    var shippedPastYear = log.Where(x => x.ShipDate >= oneYearAgo);
+                    var shippedPastFourMonths = log.Where(x => x.ShipDate >= fourMonthsAgo);
+
+                    int? totalShippedPastYear = shippedPastYear.Sum(x => x.LogQty);
+                    int? totalShippedPastFourMonths = shippedPastFourMonths.Sum(x => x.LogQty);
+
+                    decimal? reOrderMin = 0;
+
+                    if (row.productmaster.ProductSetupDate <= DateTime.UtcNow.AddDays(-365))
+                    {
+                        reOrderMin = ((totalShippedPastYear / 12) * 2);
+                    }
+                    else
+                    {
+                        reOrderMin = (totalShippedPastFourMonths / 2);
+                    }
+
+                    newProductionDetail.SS_REORDMIN = reOrderMin;
+                    newProductionDetail.SS_REORDMAX = (reOrderMin * 2);
+
+                    var stock = db.tblStock.Where(x => x.ShelfID == row.shelfmaster.ShelfID
+                                                    && x.ShelfStatus == "AVAIL");
+
+                    newProductionDetail.OnHand = stock.Sum(x => x.QtyOnHand);
+                    newProductionDetail.RecQty = newProductionDetail.SS_REORDMAX - newProductionDetail.OnHand;
+                    newProductionDetail.Status = row.bulks.BulkStatus;
+                    newProductionDetail.ProdCode = row.productdetail.ProductCode;
+                    newProductionDetail.ProductName = row.productdetail.ProductName;
+                    newProductionDetail.ShelfStockLocation = row.shelfmaster.Bin;
+
+                    var package = db.tblPackage.Find(row.shelfmaster.PackageID);
+                    newProductionDetail.PackagePartNumber = package.PartNumber;
+
+                    db.tblProductionDetail.Add(newProductionDetail);
+                    db.SaveChanges();
+                }
+            }
+
+            return packoutId;
+        }
+
+        private static int ColorPriorityToday()
+        {
+            switch (System.DateTime.Today.DayOfWeek.ToString())
+            {
+                case "Monday":
+                    return 2;
+                    break;
+
+                case "Tuesday":
+                    return 3;
+                    break;
+
+                case "Wednesday":
+                    return 3;
+                    break;
+
+                case "Thursday":
+                    return 4;
+                    break;
+
+                case "Friday":
+                    return 6;
+                    break;
+
+                default:
+                    return 1;
             }
         }
     }

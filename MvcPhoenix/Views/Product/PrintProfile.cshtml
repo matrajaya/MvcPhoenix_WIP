@@ -380,7 +380,7 @@
 
 <div class="form-group">
     <h3> Ingredients Information (CAS)</h3>
-    @{Html.RenderAction("CasList", "Products", new { id = @Model.productdetailid });}
+    @{Html.RenderAction("CasList", "Product", new { id = @Model.productdetailid });}
 </div>
 
 <hr />
@@ -529,7 +529,7 @@
 
 <div class="form-group">
     <h3>Product Log</h3>
-    @{Html.RenderAction("ProductLogList", "Products", new { id = @Model.productdetailid });}
+    @{Html.RenderAction("ProductLogList", "Product", new { id = @Model.productdetailid });}
 </div>
 
 <script type="text/javascript">$("#bcTarget").barcode("", "");</script>

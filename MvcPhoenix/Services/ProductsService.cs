@@ -2,20 +2,19 @@
 using MvcPhoenix.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 
 namespace MvcPhoenix.Models
 {
-    public class ProductsService
+    public class ProductService
     {
         public static ProductProfile GetProductDetail(int productdetailid)
         {
             var productProfile = new ProductProfile();
             productProfile.productdetailid = productdetailid;
 
-            productProfile = ProductsService.GetProductDetail(productProfile);
+            productProfile = ProductService.GetProductDetail(productProfile);
 
             return productProfile;
         }
@@ -115,6 +114,16 @@ namespace MvcPhoenix.Models
                 productProfile.UpdateDateDetail = productDetail.UpdateDate;
                 productProfile.UpdateUserDetail = productDetail.UpdateUser;
             }
+
+            return productProfile;
+        }
+
+        public static ProductProfile GetProductMaster(int? productmasterid)
+        {
+            var productProfile = new ProductProfile();
+            productProfile.productmasterid = productmasterid;
+
+            productProfile = ProductService.GetProductDetail(productProfile);
 
             return productProfile;
         }
@@ -263,11 +272,11 @@ namespace MvcPhoenix.Models
         {
             int? productDetailId = productProfile.productdetailid;
 
-            productProfile.ListOfProductNotes = ProductsService.GetLogNotes(productDetailId);
+            productProfile.ListOfProductNotes = ProductService.GetLogNotes(productDetailId);
 
-            productProfile.ListOfCasNumbers = ProductsService.GetCASItems(productDetailId);
+            productProfile.ListOfCasNumbers = ProductService.GetCASItems(productDetailId);
 
-            productProfile.ListOfShelfItems = ProductsService.GetShelfItems(productDetailId);
+            productProfile.ListOfShelfItems = ProductService.GetShelfItems(productDetailId);
 
             return productProfile;
         }
@@ -381,12 +390,12 @@ namespace MvcPhoenix.Models
             var productProfile = new ProductProfile();
             productProfile.productdetailid = productDetailId;
 
-            productProfile = ProductsService.GetProductDetail(productProfile);
-            productProfile = ProductsService.GetProductMaster(productProfile);
-            productProfile = ProductsService.GetProductExtendedProps(productProfile);
+            productProfile = ProductService.GetProductDetail(productProfile);
+            productProfile = ProductService.GetProductMaster(productProfile);
+            productProfile = ProductService.GetProductExtendedProps(productProfile);
 
             // create new record and clear select values for manual entry
-            productProfile.productdetailid = ProductsService.NewProductDetailId();
+            productProfile.productdetailid = ProductService.NewProductDetailId();
             productProfile.productcode = productProfile.productcode + " Clone";
             productProfile.productname = productProfile.productname + " Clone";
             productProfile.sgrevisiondate = DateTime.UtcNow;
@@ -397,13 +406,13 @@ namespace MvcPhoenix.Models
             productProfile.UpdateUserDetail = HttpContext.Current.User.Identity.Name;
 
             // Save product profile in memory to db with new productdetailid
-            int newProductDetailId = ProductsService.SaveProductProfile(productProfile);
+            int newProductDetailId = ProductService.SaveProductProfile(productProfile);
 
             // Clone details of original product shelfsize, ghs, and cas for new productdetailid
-            ProductsService.CloneShelfItems(productDetailId, productProfile.productdetailid);
-            ProductsService.CloneGHSItems(productDetailId, productProfile.productdetailid);
-            ProductsService.ClonePHItems(productDetailId, productProfile.productdetailid);
-            ProductsService.CloneCASItems(productDetailId, productProfile.productdetailid);
+            ProductService.CloneShelfItems(productDetailId, productProfile.productdetailid);
+            ProductService.CloneGHSItems(productDetailId, productProfile.productdetailid);
+            ProductService.ClonePHItems(productDetailId, productProfile.productdetailid);
+            ProductService.CloneCASItems(productDetailId, productProfile.productdetailid);
 
             // Create product log note
             var productNote = new ProductNote();
@@ -412,10 +421,11 @@ namespace MvcPhoenix.Models
             productNote.notes = "Equivalent created from product id: " + productDetailId;
             productNote.reasoncode = "New";
 
-            ProductsService.SaveProductNote(productNote);
+            ProductService.SaveProductNote(productNote);
 
             return newProductDetailId;
         }
+
         #region Clone
 
         private static void CloneCASItems(int originalProductDetailId, int newProductDetailId)
@@ -461,7 +471,7 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 var ghsItems = db.tblGHS
-                                 .Where(x=>x.ProductDetailID == originalProductDetailId)
+                                 .Where(x => x.ProductDetailID == originalProductDetailId)
                                 .ToList();
 
                 for (int i = 0; i < ghsItems.Count; i++)
@@ -480,7 +490,7 @@ namespace MvcPhoenix.Models
             using (var db = new CMCSQL03Entities())
             {
                 var shelfItems = db.tblShelfMaster
-                                   .Where(x=>x.ProductDetailID == originalProductDetailId)
+                                   .Where(x => x.ProductDetailID == originalProductDetailId)
                                    .ToList();
 
                 for (int i = 0; i < shelfItems.Count; i++)
@@ -494,7 +504,7 @@ namespace MvcPhoenix.Models
             }
         }
 
-        #endregion
+        #endregion Clone
 
         public static int SaveProductProfile(ProductProfile productProfile)
         {
@@ -503,20 +513,20 @@ namespace MvcPhoenix.Models
 
             if (productProfile.productmasterid < 1)
             {
-                productProfile.productmasterid = ProductsService.NewProductMasterId();
+                productProfile.productmasterid = ProductService.NewProductMasterId();
                 productNote.notes = "Master product created";
                 isNew = true;
             }
 
             if (productProfile.productdetailid < 1)
             {
-                productProfile.productdetailid = ProductsService.NewProductDetailId();
+                productProfile.productdetailid = ProductService.NewProductDetailId();
                 productNote.notes = "New product created";
                 isNew = true;
             }
 
-            ProductsService.SaveProductMaster(productProfile);
-            ProductsService.SaveProductDetail(productProfile);
+            ProductService.SaveProductMaster(productProfile);
+            ProductService.SaveProductDetail(productProfile);
 
             if (isNew)
             {
@@ -524,7 +534,7 @@ namespace MvcPhoenix.Models
                 productNote.productdetailid = productProfile.productdetailid;
                 productNote.notedate = DateTime.UtcNow;
 
-                ProductsService.SaveProductNote(productNote);
+                ProductService.SaveProductNote(productNote);
             }
 
             return productProfile.productdetailid;
@@ -758,7 +768,7 @@ namespace MvcPhoenix.Models
                 productMaster.RCRAReviewDate = productProfile.rcrareviewdate;
                 productMaster.WasteAccumStartDate = productProfile.wasteaccumstartdate;
                 productMaster.ProductSetupDate = productProfile.productsetupdate;
-                
+
                 db.SaveChanges();
             }
         }
@@ -797,6 +807,19 @@ namespace MvcPhoenix.Models
             }
         }
 
+        public static tblProductMaster GetProductMasterReference(int productdetailid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var productReference = (from productMaster in db.tblProductMaster
+                                        join productDetail in db.tblProductDetail on productMaster.ProductMasterID equals productDetail.ProductMasterID
+                                        where productDetail.ProductDetailID == productdetailid
+                                        select productMaster).FirstOrDefault();
+
+                return productReference;
+            }
+        }
+
         public static void DeActivateProductMaster(int productMasterId)
         {
             using (var db = new CMCSQL03Entities())
@@ -830,26 +853,32 @@ namespace MvcPhoenix.Models
             return un;
         }
 
-        #region ProductNotes Methods
+        #region Product Notes
 
-        public static ProductNote CreateProductNote(int productDetailId)
+        public static List<ProductNote> GetProductNotes(int productDetailId)
         {
-            var productNote = new ProductNote();
+            var productNotes = new List<ProductNote>();
 
             using (var db = new CMCSQL03Entities())
             {
-                productNote.productnoteid = -1;
-                productNote.productdetailid = productDetailId;
-                productNote.reasoncode = null;
-                productNote.notedate = DateTime.UtcNow;
-                productNote.notes = null;
-                productNote.UpdateDate = DateTime.UtcNow;
-                productNote.UpdateUser = HttpContext.Current.User.Identity.Name;
-                productNote.CreateDate = DateTime.UtcNow;
-                productNote.CreateUser = HttpContext.Current.User.Identity.Name;
+                productNotes = (from t in db.tblPPPDLogNote
+                                where t.ProductDetailID == productDetailId
+                                orderby t.NoteDate descending
+                                select new ProductNote
+                                {
+                                    productnoteid = t.PPPDLogNoteID,
+                                    productdetailid = t.ProductDetailID,
+                                    notedate = t.NoteDate,
+                                    notes = t.Notes,
+                                    reasoncode = t.ReasonCode,
+                                    UpdateDate = t.UpdateDate,
+                                    UpdateUser = t.UpdateUser,
+                                    CreateDate = t.CreateDate,
+                                    CreateUser = t.CreateUser
+                                }).ToList();
             }
 
-            return productNote;
+            return productNotes;
         }
 
         public static ProductNote GetProductNote(int productDetailLogNoteId)
@@ -869,6 +898,26 @@ namespace MvcPhoenix.Models
                 productNote.UpdateUser = getProductNote.UpdateUser;
                 productNote.CreateDate = getProductNote.CreateDate;
                 productNote.CreateUser = getProductNote.CreateUser;
+            }
+
+            return productNote;
+        }
+
+        public static ProductNote CreateProductNote(int productDetailId)
+        {
+            var productNote = new ProductNote();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                productNote.productnoteid = -1;
+                productNote.productdetailid = productDetailId;
+                productNote.reasoncode = null;
+                productNote.notedate = DateTime.UtcNow;
+                productNote.notes = null;
+                productNote.UpdateDate = DateTime.UtcNow;
+                productNote.UpdateUser = HttpContext.Current.User.Identity.Name;
+                productNote.CreateDate = DateTime.UtcNow;
+                productNote.CreateUser = HttpContext.Current.User.Identity.Name;
             }
 
             return productNote;
@@ -898,7 +947,7 @@ namespace MvcPhoenix.Models
                 productDetailLogNote.ReasonCode = productNote.reasoncode;
                 productDetailLogNote.UpdateDate = DateTime.UtcNow;
                 productDetailLogNote.UpdateUser = HttpContext.Current.User.Identity.Name;
-                
+
                 db.SaveChanges();
             }
         }
@@ -912,22 +961,40 @@ namespace MvcPhoenix.Models
             }
         }
 
-        #endregion ProductNotes Methods
+        #endregion Product Notes
 
-        #region CAS Methods
+        #region CAS
 
-        public static Cas CreateCAS(int productDetailId)
+        public static List<Cas> GetCasItems(int productDetailId)
         {
-            Cas cas = new Cas();
-            cas.casid = -1;
-            cas.productdetailid = productDetailId;
+            var casItems = new List<Cas>();
 
-            return cas;
+            using (var db = new CMCSQL03Entities())
+            {
+                casItems = (from cas in db.tblCAS
+                            where cas.ProductDetailID == productDetailId
+                            select new Cas
+                            {
+                                casid = cas.CASID,
+                                productdetailid = cas.ProductDetailID,
+                                casnumber = cas.CasNumber,
+                                chemicalname = cas.ChemicalName,
+                                percentage = cas.Percentage,
+                                restrictedqty = cas.RestrictedQty,
+                                restrictedamount = cas.RestrictedAmount,
+                                reportableqty = cas.ReportableQty,
+                                reportableamount = cas.ReportableAmount,
+                                lessthan = cas.LessThan,
+                                excludefromlabel = cas.ExcludeFromLabel
+                            }).ToList();
+            }
+
+            return casItems;
         }
 
         public static Cas GetCAS(int casId)
         {
-            Cas cas = new Cas();
+            var cas = new Cas();
 
             using (var db = new CMCSQL03Entities())
             {
@@ -945,6 +1012,15 @@ namespace MvcPhoenix.Models
                 cas.lessthan = getCAS.LessThan;
                 cas.excludefromlabel = getCAS.ExcludeFromLabel;
             }
+
+            return cas;
+        }
+
+        public static Cas CreateCAS(int productDetailId)
+        {
+            Cas cas = new Cas();
+            cas.casid = -1;
+            cas.productdetailid = productDetailId;
 
             return cas;
         }
@@ -988,7 +1064,7 @@ namespace MvcPhoenix.Models
             }
         }
 
-        #endregion CAS Methods
+        #endregion CAS
 
         #region Client Product Cross Reference Methods
 

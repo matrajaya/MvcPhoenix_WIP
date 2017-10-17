@@ -3,7 +3,7 @@
 <div id="dvCasList">
     <div class="row">
         <div class="col-md-3 pull-right">
-            @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Products", new { id = ViewBag.ParentKey }, new AjaxOptions
+            @Ajax.ActionLink("+ Add New Cas", "CreateCAS", "Product", new { id = ViewBag.ParentKey }, new AjaxOptions
                 {
                     InsertionMode = InsertionMode.Replace,
                     HttpMethod = "GET",
@@ -34,7 +34,7 @@
                 {
                     <tr>
                         <td id="noprint">
-                            @Ajax.ActionLink(" ", "DeleteCAS", "Products", new { id = @item.casid },
+                            @Ajax.ActionLink(" ", "DeleteCAS", "Product", new { id = @item.casid },
                              new AjaxOptions
                              {
                                  Confirm = "Delete This CAS/EC Entry?",
@@ -52,7 +52,7 @@
                         <td><input type="checkbox" checked="@item.restrictedqty" disabled="disabled"></td>
                         <td>@item.restrictedamount</td>
                         <td id="noprint" style="text-align:right">
-                            @Ajax.ActionLink(" ", "EditCAS", "Products", new { id = @item.casid }, new AjaxOptions
+                            @Ajax.ActionLink(" ", "EditCAS", "Product", new { id = @item.casid }, new AjaxOptions
                                {
                                    InsertionMode = InsertionMode.Replace,
                                    HttpMethod = "GET",
@@ -69,6 +69,6 @@
 
 <script type="text/javascript">
     function UpdateCasList() {
-        $("#dvCasList").load('@Url.Action("CasList", "Products", new { id = @ViewBag.ParentKey })');
+        $("#dvCasList").load('@Url.Action("CasList", "Product", new { id = @ViewBag.ParentKey })');
     }
 </script>

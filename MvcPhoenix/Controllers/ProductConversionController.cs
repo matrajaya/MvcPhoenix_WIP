@@ -24,9 +24,9 @@ namespace MvcPhoenix.Controllers
             var productProfile = new ProductProfile();
             productProfile.productdetailid = productdetailid;
 
-            productProfile = ProductsService.GetProductDetail(productProfile);
-            productProfile = ProductsService.GetProductMaster(productProfile);
-            productProfile = ProductsService.GetProductExtendedProps(productProfile);
+            productProfile = ProductService.GetProductDetail(productProfile);
+            productProfile = ProductService.GetProductMaster(productProfile);
+            productProfile = ProductService.GetProductExtendedProps(productProfile);
             ViewBag.Division = ClientService.GetDivision(productProfile.divisionid).DivisionName;                                             // not in PP
 
             return PartialView("~/Views/ProductConversion/_ProductDetail.cshtml", productProfile);
@@ -46,7 +46,7 @@ namespace MvcPhoenix.Controllers
                 db.SaveChanges();
             }
             
-            return RedirectToAction("Edit", "Products", new { id = productDetailId });
+            return RedirectToAction("Edit", "Product", new { id = productDetailId });
         }
 
         public ActionResult BuildProductCodeDropDown(int id)

@@ -276,9 +276,8 @@
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
-    <Compile Include="Controllers\PackOutController.cs" />
     <Compile Include="Controllers\ProductConversionController.cs" />
-    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ReceivingController.cs" />
     <Compile Include="Controllers\ReplenishmentsController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
@@ -538,7 +537,6 @@
     <Compile Include="Services\InventoryService.cs" />
     <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Services\OrderService.cs" />
-    <Compile Include="Services\PackOutService.cs" />
     <Compile Include="Services\ProductsService.cs" />
     <Compile Include="Services\ReceivingService.cs" />
     <Compile Include="Services\ReplenishmentsService.cs" />
@@ -858,12 +856,12 @@
     <Content Include="Views\Orders\_IndexPartial.cshtml" />
     <Content Include="Views\Orders\_OrderItems.cshtml" />
     <Content Include="Views\Orders\_OrderTrans.cshtml" />
-    <Content Include="Views\Products\Edit.cshtml" />
-    <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\Products\_Cas.cshtml" />
-    <Content Include="Views\Products\_CasModal.cshtml" />
-    <Content Include="Views\Products\_LogNotes.cshtml" />
-    <Content Include="Views\Products\_LogNotesModal.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\_Cas.cshtml" />
+    <Content Include="Views\Product\_CasModal.cshtml" />
+    <Content Include="Views\Product\_LogNotes.cshtml" />
+    <Content Include="Views\Product\_LogNotesModal.cshtml" />
     <Content Include="Views\Receiving\Index.cshtml" />
     <Content Include="Views\Receiving\_OpenOrderItems.cshtml" />
     <Content Include="Views\Receiving\_SearchResults.cshtml" />
@@ -887,14 +885,14 @@
     <Content Include="Views\Replenishments\_SuggestedItemModal.cshtml" />
     <Content Include="Views\Replenishments\_BulkOrderItemModal.cshtml" />
     <Content Include="Views\Replenishments\Email.cshtml" />
-    <Content Include="Views\Products\Search.cshtml" />
+    <Content Include="Views\Product\Search.cshtml" />
     <Content Include="Views\Bulk\Edit.cshtml" />
     <Content Include="Views\Bulk\Index.cshtml" />
     <Content Include="Views\Bulk\_SearchResults.cshtml" />
     <Content Include="Views\ShelfMaster\Index.cshtml" />
     <Content Include="Views\ShelfMaster\_Edit.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
-    <Content Include="Views\Products\PrintProfile.cshtml" />
+    <Content Include="Views\Product\PrintProfile.cshtml" />
     <Content Include="Views\Shared\_LayoutPrint.cshtml" />
     <Content Include="Views\Orders\Edit.cshtml">
       <SubType>Code</SubType>
@@ -915,14 +913,13 @@
     <Content Include="Views\Receiving\Search.cshtml" />
     <Content Include="Views\Invoice\Edit.cshtml" />
     <Content Include="Views\Invoice\Search.cshtml" />
-    <Content Include="Views\Inventory\_RecentBulkReceived.cshtml" />
     <Content Include="Views\Inventory\PrePackStock.cshtml" />
     <Content Include="Views\Inventory\_ProductLogNotes.cshtml" />
-    <Content Include="Views\Products\_ShelfSize.cshtml" />
+    <Content Include="Views\Product\_ShelfSize.cshtml" />
     <Content Include="Views\Inventory\_InventoryLogNotes.cshtml" />
     <Content Include="Views\Inventory\_InventoryLogNotesModal.cshtml" />
     <Content Include="Views\GHS\Index.cshtml" />
-    <Content Include="Views\Products\_GHSInfo.cshtml" />
+    <Content Include="Views\Product\_GHSInfo.cshtml" />
     <Content Include="Views\GHS\Search.cshtml" />
     <Content Include="Views\GHS\Detail.cshtml" />
     <Content Include="Views\GHS\CloneEdit.cshtml" />
@@ -943,12 +940,11 @@
     <Content Include="Views\Reports\View.cshtml" />
     <Content Include="Views\Client\_DivisionListing.cshtml" />
     <Content Include="Views\Client\_DivisionEditModal.cshtml" />
-    <Content Include="Views\Packout\Index.cshtml" />
     <Content Include="Views\Client\_Tiers.cshtml" />
     <Content Include="Views\Client\_TiersModal.cshtml" />
     <Content Include="Views\Client\_Surcharges.cshtml" />
-    <Content Include="Views\Products\ClientXRef.cshtml" />
-    <Content Include="Views\Products\_ClientXRefModal.cshtml" />
+    <Content Include="Views\Product\ClientXRef.cshtml" />
+    <Content Include="Views\Product\_ClientXRefModal.cshtml" />
     <Content Include="Views\Client\_ContactsModal.cshtml" />
     <Content Include="Views\Client\_Contacts.cshtml" />
     <Content Include="Views\Client\_EndUses.cshtml" />
@@ -961,6 +957,7 @@
     <Content Include="Views\Client\_ServiceChargeRates.cshtml" />
     <Content Include="Views\Inventory\_ShelfStockConvertToBulkModal.cshtml" />
     <Content Include="Views\Client\_AccountReps.cshtml" />
+    <Content Include="Views\Inventory\_Packout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\DocsDir\" />

@@ -29,20 +29,5 @@
             @Html.ActionLink("Create Return Order", "Index", "ReturnOrders", null, new { @class = "btn btn-primary btn-block" })
         </div>
     </div>
-
-    <div class="panel panel-primary">
-        <div class="panel-body">
-            <div id="dvGridPlaceHolder">
-                <div class="col-md-12 text-center">
-                    <label class="lead">Recently Received Bulk</label>
-                </div>
-                <div class="table-responsive">
-                    @{Html.RenderAction("RecentBulkReceived", "Inventory");}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @Html.Action("UnkownBulkList", "Receiving")
-
+    
 </div>

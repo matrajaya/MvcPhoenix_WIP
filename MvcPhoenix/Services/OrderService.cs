@@ -1505,7 +1505,7 @@ namespace MvcPhoenix.Services
                                           x.MasterName
                                       }).FirstOrDefault();
 
-                var productDetailId = ProductsService.GetProductDetailId(productMaster.ProductMasterID);
+                var productDetailId = ProductService.GetProductDetailId(productMaster.ProductMasterID);
                 var productDetail = db.tblProductDetail.Find(productDetailId);
 
                 newOrderItem.ShelfID = ShelfMasterService.GetShelfIdProductMaster(productMaster.ProductMasterID, bulk.UM);

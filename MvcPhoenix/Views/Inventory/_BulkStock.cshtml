@@ -46,7 +46,7 @@
                         <span class="pull-right">
                             @if (row.bulkstatus == "AVAIL")
                             {
-                                @Html.ActionLink(" ", "Index", "Packout", new { id = row.bulkid, productdetailid = PDid }, new { @class = "btn btn-primary btn-sm fa fa-cog", @title = "Packout Request", @target = "_blank" })
+                                @Html.ActionLink(" ", "Packout", "Inventory", new { id = row.bulkid, productdetailid = PDid }, new { @class = "btn btn-primary btn-sm fa fa-cog", @title = "Packout Request", @target = "_blank" })
                             }
                             else
                             {

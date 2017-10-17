@@ -300,7 +300,7 @@ namespace MvcPhoenix.Services
         /// <returns>shelfId</returns>
         public static int GetShelfIdProductMaster(int? productmasterid, string um)
         {
-            int productDetailId = ProductsService.GetProductDetailId(productmasterid);
+            int productDetailId = ProductService.GetProductDetailId(productmasterid);
             int shelfId = GetShelfIdProductDetail(productDetailId, um);
 
             return shelfId;

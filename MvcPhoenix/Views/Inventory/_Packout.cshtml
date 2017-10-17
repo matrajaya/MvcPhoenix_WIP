@@ -1,6 +1,6 @@
 ﻿@model MvcPhoenix.Models.BulkContainerViewModel
 @{
-    ViewBag.Title = "Create Packout";
+    ViewBag.Title = "Packout";
 }
 
 <div class="row">
@@ -24,7 +24,7 @@
                 <h3 class="panel-title"><i class="fa fa-file-text-o fa-fw"></i> Packout from @Model.bin</h3>
             </div>
             <div class="panel-body">
-                @using (Html.BeginForm("CreateNewPackout", "PackOut", FormMethod.Post))
+                @using (Html.BeginForm("CreatePackout", "Inventory", FormMethod.Post))
                 {
                     @Html.HiddenFor(m => m.bulkid)
                     <input type="hidden" id="productdetailid" name="productdetailid" value="@TempData["productdetailid"]" />

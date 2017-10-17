@@ -28,7 +28,7 @@ namespace MvcPhoenix.Controllers
                            select x).ToList();
 
             ViewBag.ParentID = id;
-            return PartialView("~/Views/Products/_ShelfSize.cshtml", mylistx);
+            return PartialView("~/Views/Product/_ShelfSize.cshtml", mylistx);
         }
 
         public ActionResult FillIndexViewBag(int id)

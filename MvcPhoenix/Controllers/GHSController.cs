@@ -50,7 +50,7 @@ namespace MvcPhoenix.Controllers
             ViewBag.ParentID = productDetailId;
             TempData["ProductDetId"] = productDetailId;
 
-            var product = ProductsService.GetProductDetail(productDetailId);
+            var product = ProductService.GetProductDetail(productDetailId);
 
             ViewBag.productcode = product.productcode;
             ViewBag.productname = product.productname;
@@ -78,7 +78,7 @@ namespace MvcPhoenix.Controllers
             var GHS = new GHSViewModel();
             ViewBag.ParentID = productDetailId;
 
-            var product = ProductsService.GetProductDetail(productDetailId);
+            var product = ProductService.GetProductDetail(productDetailId);
 
             ViewBag.productcode = product.productcode;
             ViewBag.productname = product.productname;
@@ -88,11 +88,11 @@ namespace MvcPhoenix.Controllers
             {
                 GHS = GHSService.GetGHS(productDetailId);
 
-                return PartialView("~/Views/Products/_GHSInfo.cshtml", GHS);
+                return PartialView("~/Views/Product/_GHSInfo.cshtml", GHS);
             }
             catch (Exception)
             {
-                return PartialView("~/Views/Products/_GHSInfo.cshtml", GHS);
+                return PartialView("~/Views/Product/_GHSInfo.cshtml", GHS);
             }
         }
 

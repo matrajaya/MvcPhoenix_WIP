@@ -3,7 +3,7 @@
 <div id="dialogPlaceholderModal" class="modal fade" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            @using (Ajax.BeginForm("SaveProductNote", "Products", new AjaxOptions
+            @using (Ajax.BeginForm("SaveProductNote", "Product", new AjaxOptions
                 {
                     HttpMethod = "POST",
                     UpdateTargetId = "dialogResult",
@@ -54,7 +54,7 @@
 <script type="text/javascript">
     function UpdateProductNotesList() {
         // Update the list
-        $("#dvLogNotes").load('@Url.Action("ProductLogList", "Products", new { id = @Model.productdetailid })');
+        $("#dvLogNotes").load('@Url.Action("ProductLogList", "Product", new { id = @Model.productdetailid })');
 
         // Activate to hide the modal after list update
         $("#dialogPlaceholderModal").modal('hide');

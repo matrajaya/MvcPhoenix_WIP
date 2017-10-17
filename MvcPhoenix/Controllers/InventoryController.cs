@@ -19,288 +19,14 @@ namespace MvcPhoenix.Controllers
             return View();
         }
 
-        public ActionResult RecentBulkReceived()
-        {
-            List<BulkContainerViewModel> bulkContainers = ReceivingService.GetBulkContainers();
-
-            return PartialView("~/Views/Inventory/_RecentBulkReceived.cshtml", bulkContainers);
-        }
-
-        public ActionResult Edit(int id)
-        {
-            int productDetailId = id;
-            var inventory = InventoryService.GetProductInventory(productDetailId);
-
-            return View("~/Views/Inventory/Edit.cshtml", inventory);
-        }
-
-        [HttpPost]
-        public ActionResult Save(Inventory inventory)
-        {
-            InventoryService.SaveInventory(inventory);
-            int productDetailId = inventory.ProductProfile.productdetailid;
-
-            return RedirectToAction("Edit", new { id = productDetailId });
-        }
-
-        public ActionResult EditBulk(int id)
-        {
-            int bulkId = id;
-            var bulk = BulkService.GetBulkContainer(bulkId);
-
-            return View("~/Views/Bulk/Edit.cshtml", bulk);
-        }
-
-        public ActionResult EditBulkOrder(int bulkorderid)
-        {
-            return RedirectToAction("Edit", "Replenishments", new { id = bulkorderid });
-        }
-
-        public ActionResult BulkStockList(int productmasterid, int productdetailid)
-        {
-            var bulkContainers = new List<BulkContainerViewModel>();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                var bulkProducts = (from t in db.tblBulk
-                                    where t.ProductMasterID == productmasterid
-                                    select t).ToList();
-
-                foreach (var row in bulkProducts)
-                {
-                    bulkContainers.Add(BulkService.GetBulkContainer(row.BulkID));
-                }
-            }
-
-            TempData["productdetailid"] = productdetailid;
-
-            return PartialView("~/Views/Inventory/_BulkStock.cshtml", bulkContainers);
-        }
-
-        public ActionResult ShelfStockList(int productdetailid)
-        {
-            var stocks = new List<StockViewModel>();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                var stockProducts = (from stock in db.tblStock
-                                     join shelf in db.tblShelfMaster on stock.ShelfID equals shelf.ShelfID
-                                     join productDetail in db.tblProductDetail on shelf.ProductDetailID equals productDetail.ProductDetailID
-                                     join bulk in db.tblBulk on stock.BulkID equals bulk.BulkID
-                                     where productDetail.ProductDetailID == productdetailid
-                                     && stock.QtyOnHand > 0
-                                     select stock).ToList();
-
-                var productReference = (from productMaster in db.tblProductMaster
-                                        join productDetail in db.tblProductDetail on productMaster.ProductMasterID equals productDetail.ProductMasterID
-                                        where productDetail.ProductDetailID == productdetailid
-                                        select productMaster).FirstOrDefault();
-
-                foreach (var row in stockProducts)
-                {
-                    stocks.Add(InventoryService.GetStock(row.StockID));
-                }
-
-                ViewBag.ParentID = productdetailid;
-                ViewBag.ShelfLife = productReference.ShelfLife;
-                ViewBag.CeaseShipDays = productReference.CeaseShipDifferential;
-            }
-
-            return PartialView("~/Views/Inventory/_ShelfStock.cshtml", stocks);
-        }
-
-        public ActionResult EditStock(int shelfstockid)
-        {
-            var stock = InventoryService.GetStock(shelfstockid);
-
-            return PartialView("~/Views/Inventory/_ShelfStockModal.cshtml", stock);
-        }
-
-        public ActionResult ShelfStockConvertToBulk(int shelfstockid)
-        {
-            int stockId;
-            int quantityAvailable;
-
-            using (var db = new CMCSQL03Entities())
-            {
-                var shelfStock = db.tblStock.Find(shelfstockid);
-                stockId = shelfStock.StockID;
-                quantityAvailable = shelfStock.QtyAvailable ?? 0;
-            }
-
-            ViewBag.StockItemId = stockId;
-            ViewBag.StockQty = quantityAvailable;
-
-            return PartialView("~/Views/Inventory/_ShelfStockConvertToBulkModal.cshtml");
-        }
-
-        [HttpPost]
-        public ActionResult ShelfStockConvertToBulk(int stockItemId, int stockQuantity)
-        {
-            using (var db = new CMCSQL03Entities())
-            {
-                try
-                {
-                    var shelfStock = db.tblStock.Find(stockItemId);
-
-                    if (shelfStock.QtyAvailable < stockQuantity
-                        || shelfStock.QtyAvailable < 1
-                        || shelfStock.QtyAvailable == null)
-                    {
-                        return null;
-                    }
-
-                    shelfStock.QtyAvailable = shelfStock.QtyAvailable - stockQuantity;
-                    shelfStock.QtyOnHand = shelfStock.QtyOnHand - stockQuantity;
-                    shelfStock.UpdateDate = DateTime.UtcNow;
-                    shelfStock.UpdateUser = HttpContext.User.Identity.Name;
-
-                    int? bulkid = shelfStock.BulkID;
-                    var bulkstock = db.tblBulk.Find(bulkid);
-                    if (bulkstock.BulkStatus == "Virtual" || bulkstock.BulkStatus == "BF")
-                    {
-                        bulkstock.Bin = shelfStock.Bin;
-                        bulkstock.BulkStatus = shelfStock.ShelfStatus;
-                    }
-
-                    int? shelfid = shelfStock.ShelfID;
-                    decimal? unitWeight = ShelfMasterService.GetUnitWeight(shelfid);
-                    decimal? shelfstockweight = stockQuantity * unitWeight;
-                    bulkstock.CurrentWeight = bulkstock.CurrentWeight + shelfstockweight;
-                    bulkstock.UpdateDate = DateTime.UtcNow;
-                    bulkstock.UpdateUser = HttpContext.User.Identity.Name;
-
-                    db.SaveChanges();
-
-                    // Write to inventory log
-                    InventoryLogNote inventoryLogNote = new InventoryLogNote();
-
-                    inventoryLogNote.productnoteid = -1;
-                    inventoryLogNote.productmasterid = bulkstock.ProductMasterID;
-                    inventoryLogNote.notes = "Converted " + stockQuantity + " from shelf stock id: " + shelfStock.StockID + " to bulk stock id: " + bulkstock.BulkID + ".\n";
-                    inventoryLogNote.reasoncode = "Change Packaging";
-
-                    InventoryService.SaveInventoryLogNote(inventoryLogNote);
-
-                    return null;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-        }
-
-        public ActionResult CreatePrePackStock(int productDetailId)
-        {
-            PrePackStock prePackStock = new PrePackStock();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                var productDetail = db.tblProductDetail.Find(productDetailId);
-                var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
-                var client = db.tblClient.Find(productMaster.ClientID);
-
-                prePackStock.ProductDetailID = productDetailId;
-                prePackStock.BulkContainer = new BulkContainerViewModel();
-                prePackStock.BulkContainer.bulkid = -1;
-                prePackStock.BulkContainer.receivedate = DateTime.UtcNow;
-                prePackStock.BulkContainer.warehouse = client.CMCLocation;
-                prePackStock.BulkContainer.lotnumber = "";
-                prePackStock.BulkContainer.mfgdate = DateTime.UtcNow;
-                prePackStock.BulkContainer.clientid = productMaster.ClientID;
-                prePackStock.BulkContainer.productmasterid = productMaster.ProductMasterID;
-                prePackStock.BulkContainer.bulkstatus = "AVAIL";
-                prePackStock.ProductCode = productDetail.ProductCode;
-                prePackStock.ProductName = productDetail.ProductName;
-                prePackStock.BulkContainer.bin = "PREPACK";
-                prePackStock.ListOfShelfMasterIDs = (from t in db.tblShelfMaster
-                                                     where t.ProductDetailID == productDetailId
-                                                     && t.Discontinued == false
-                                                     select new ShelfMasterViewModel
-                                                     {
-                                                         shelfid = t.ShelfID,
-                                                         productdetailid = t.ProductDetailID,
-                                                         bin = t.Bin,
-                                                         size = t.Size
-                                                     }).ToList();
-
-                prePackStock.ShelfMasterCount = prePackStock.ListOfShelfMasterIDs.Count();
-                prePackStock.BulkContainer.pm_ceaseshipdifferential = productMaster.CeaseShipDifferential;
-                prePackStock.BulkContainer.pm_shelflife = productMaster.ShelfLife;
-            }
-
-            return View("~/Views/Inventory/PrePackStock.cshtml", prePackStock);
-        }
-
-        [HttpPost]
-        public ActionResult SavePrePackStock(PrePackStock prePackStock, FormCollection form)
-        {
-            InventoryService.SavePrePackStock(prePackStock, form);
-
-            return RedirectToAction("Edit", new { id = prePackStock.ProductDetailID });
-        }
-
-        [HttpPost]
-        public ActionResult SaveStock(StockViewModel stock)
-        {
-            InventoryService.SaveStock(stock);
-            int productDetailId = stock.ProductDetailID ?? 0;
-
-            if (productDetailId < 1)
-            {
-                return RedirectToAction("Index");
-            }
-
-            return RedirectToAction("Edit", new { id = productDetailId });
-        }
-
-        public ActionResult BulkOrdersList(int productDetailId)
-        {
-            var bulkOrderItems = new List<BulkOrderItemForInventory>();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                var productDetail = db.tblProductDetail.Find(productDetailId);
-                var productMaster = db.tblProductMaster.Find(productDetail.ProductMasterID);
-
-                bulkOrderItems = (from items in db.tblBulkOrderItem
-                                  join orders in db.tblBulkOrder on items.BulkOrderID equals orders.BulkOrderID
-                                  join pm in db.tblProductMaster on items.ProductMasterID equals pm.ProductMasterID
-                                  where items.ProductMasterID == productMaster.ProductMasterID && items.Status == "OP"
-                                  orderby orders.OrderDate
-                                  select new BulkOrderItemForInventory
-                                  {
-                                      bulkorderitemid = items.BulkOrderItemID,
-                                      bulkorderid = items.BulkOrderID,
-                                      productmasterid = items.ProductMasterID,
-                                      mastercode = pm.MasterCode,
-                                      mastername = pm.MasterName,
-                                      weight = items.Weight,
-                                      itemstatus = items.Status,
-                                      eta = items.ETA,
-                                      datereceived = items.DateReceived,
-                                      itemnotes = items.ItemNotes,
-                                      OrderDate = orders.OrderDate,
-                                      SupplyID = orders.SupplyID,
-                                      OrderStatus = orders.Status,
-                                      OrderComment = orders.Comment
-                                  }).ToList();
-            }
-
-            ViewBag.ProductDetailID = productDetailId;
-
-            return PartialView("~/Views/Inventory/_ReplenishOrders.cshtml", bulkOrderItems);
-        }
-
         public ActionResult Search(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
             using (var db = new CMCSQL03Entities())
             {
-                ViewBag.CurrentSort = sortOrder;
-                ViewBag.CodeSortParm = String.IsNullOrEmpty(sortOrder) ? "code_desc" : "";
-                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-
                 if (searchString != null)
                 {
                     page = 1;
@@ -344,17 +70,197 @@ namespace MvcPhoenix.Controllers
             }
         }
 
-        #region Inventory Product Master Log Notes
+        public ActionResult Edit(int id)
+        {
+            int productDetailId = id;
+            var inventory = InventoryService.GetProductInventory(productDetailId);
+
+            return View("~/Views/Inventory/Edit.cshtml", inventory);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Inventory inventory)
+        {
+            InventoryService.SaveInventory(inventory);
+            int productDetailId = inventory.ProductProfile.productdetailid;
+
+            return RedirectToAction("Edit", new { id = productDetailId });
+        }
+
+        #region Bulk Stock
+
+        public ActionResult BulkStockList(int productmasterid, int productdetailid)
+        {
+            var bulkContainers = InventoryService.GetBulkStocks(productmasterid);
+
+            TempData["productdetailid"] = productdetailid;
+
+            return PartialView("~/Views/Inventory/_BulkStock.cshtml", bulkContainers);
+        }
+        
+        public ActionResult EditBulk(int id)
+        {
+            int bulkId = id;
+            var bulk = BulkService.GetBulkContainer(bulkId);
+
+            return View("~/Views/Bulk/Edit.cshtml", bulk);
+        }
+
+
+
+        #endregion
+        
+        #region Shelf Stock
+
+        public ActionResult ShelfStockList(int productdetailid)
+        {
+            var stocks = InventoryService.GetShelfStocks(productdetailid);
+
+            var productReference = ProductService.GetProductMasterReference(productdetailid);
+
+            ViewBag.ParentID = productdetailid;
+            ViewBag.ShelfLife = productReference.ShelfLife + " months";
+            ViewBag.CeaseShipDays = productReference.CeaseShipDifferential + " days";
+
+            return PartialView("~/Views/Inventory/_ShelfStock.cshtml", stocks);
+        }
+
+        public ActionResult EditStock(int shelfstockid)
+        {
+            var stock = InventoryService.GetStock(shelfstockid);
+
+            return PartialView("~/Views/Inventory/_ShelfStockModal.cshtml", stock);
+        }
+
+        [HttpPost]
+        public ActionResult SaveStock(StockViewModel stock)
+        {
+            InventoryService.SaveStock(stock);
+
+            int? productDetailId = stock.ProductDetailID;
+
+            if (productDetailId < 1)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Edit", new { id = productDetailId });
+        }
+                
+        #endregion
+
+        #region Convert Stock
+
+        public ActionResult Packout(int id, int productdetailid)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var bulkId = id;
+                var bulkContainer = BulkService.GetBulkContainer(bulkId);
+
+                TempData["productdetailid"] = productdetailid;
+
+                return View("~/Views/Inventory/_Packout.cshtml", bulkContainer);
+            }
+        }
+        
+        public ActionResult CreatePackout(BulkContainerViewModel bulkcontainer, FormCollection form)
+        {
+            int productDetailId = Convert.ToInt32(form["productdetailid"]);
+            int priority = Convert.ToInt32(form["priority"]);
+
+            if (String.IsNullOrEmpty(form["priority"]))
+            {
+                TempData["ResultMessage"] = "Please select a Priority value";
+                return RedirectToAction("Packout", new { id = bulkcontainer.bulkid, productdetailid = productDetailId });
+            }
+
+            int PackOutResult = InventoryService.CreatePackOutOrder(bulkcontainer.bulkid, priority);
+            
+            if (PackOutResult > 0)
+            {
+                TempData["ResultMessage"] = "New packout order number " + PackOutResult.ToString() + " successfully created on " + DateTime.UtcNow.ToString("R");
+                return RedirectToAction("Packout", new { id = bulkcontainer.bulkid, productdetailid = productDetailId });
+            }
+
+            if (PackOutResult == -1)
+            {
+                TempData["ResultMessage"] = "There is already an existing Pack Out order for the selected Bulk item";
+                return RedirectToAction("Packout", new { id = bulkcontainer.bulkid, productdetailid = productDetailId });
+            }
+
+            if (PackOutResult == 0)
+            {
+                TempData["ResultMessage"] = "An error occurred trying to create a Pack Out on " + DateTime.UtcNow.ToString("R");
+            }
+
+            return RedirectToAction("Edit", "Inventory", new { id = productDetailId });
+        }
+
+        public ActionResult ShelfStockConvertToBulk(int shelfstockid)
+        {
+            var shelfStock = InventoryService.GetStock(shelfstockid);
+
+            ViewBag.StockItemId = shelfStock.StockID;
+            ViewBag.StockQty = shelfStock.QtyAvailable;
+
+            return PartialView("~/Views/Inventory/_ShelfStockConvertToBulkModal.cshtml");
+        }
+
+        [HttpPost]
+        public ActionResult ShelfStockConvertToBulk(int stockItemId, int stockQuantity)
+        {
+            bool result = InventoryService.ConvertStockToBulk(stockItemId, stockQuantity);
+
+            return null;
+        }
+
+        #endregion
+
+        public ActionResult CreatePrePackStock(int productDetailId)
+        {
+            var prePackStock = InventoryService.CreatePrepackedStock(productDetailId);
+
+            return View("~/Views/Inventory/PrePackStock.cshtml", prePackStock);
+        }
+
+        [HttpPost]
+        public ActionResult SavePrePackStock(PrePackStock prePackStock, FormCollection form)
+        {
+            InventoryService.SavePrePackStock(prePackStock, form);
+
+            return RedirectToAction("Edit", new { id = prePackStock.ProductDetailID });
+        }
+
+        #region Bulk Order Replenishment
+
+        public ActionResult BulkOrdersList(int productDetailId)
+        {
+            var bulkOrderItems = InventoryService.GetBulkOrderItems(productDetailId);
+
+            ViewBag.ProductDetailID = productDetailId;
+
+            return PartialView("~/Views/Inventory/_ReplenishOrders.cshtml", bulkOrderItems);
+        }
+
+        public ActionResult EditBulkOrder(int bulkorderid)
+        {
+            return RedirectToAction("Edit", "Replenishments", new { id = bulkorderid });
+        }
+
+        #endregion
+
+        #region Product Log Notes
 
         /// <summary>
-        /// Takes in productdetailid but returns obj on master level.
+        /// Takes in productdetailid but returns obj on master level. Product master notes.
         /// Changes reflect in related equivalents.
         /// id comes in as detail key; find master id equiv
         /// </summary>
         public ActionResult InventoryLogList(int productDetailId)
         {
-            int? productMasterId = ProductsService.GetProductMasterId(productDetailId);
-            var inventoryLogNotes = InventoryService.ListInvPMLogNotes(productMasterId);
+            int? productMasterId = ProductService.GetProductMasterId(productDetailId);
+            var inventoryLogNotes = InventoryService.GetProductMasterNotes(productMasterId);
 
             ViewBag.ParentKey = productDetailId;
 
@@ -368,7 +274,7 @@ namespace MvcPhoenix.Controllers
         [HttpGet]
         public ActionResult CreateInventoryLogNote(int productDetailId)
         {
-            int? productMasterId = ProductsService.GetProductMasterId(productDetailId);
+            int? productMasterId = ProductService.GetProductMasterId(productDetailId);
             var inventoryLogNote = InventoryService.CreateInventoryLogNote(productMasterId);
 
             return PartialView("~/Views/Inventory/_InventoryLogNotesModal.cshtml", inventoryLogNote);
@@ -405,33 +311,14 @@ namespace MvcPhoenix.Controllers
         public ActionResult ProductLogList(int id)
         {
             int productDetailId = id;
-            var productLogNotes = new List<ProductNote>();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                productLogNotes = (from t in db.tblPPPDLogNote
-                                   where t.ProductDetailID == productDetailId
-                                   orderby t.NoteDate descending
-                                   select new ProductNote
-                                   {
-                                       productnoteid = t.PPPDLogNoteID,
-                                       productdetailid = t.ProductDetailID,
-                                       notedate = t.NoteDate,
-                                       notes = t.Notes,
-                                       reasoncode = t.ReasonCode,
-                                       UpdateDate = t.UpdateDate,
-                                       UpdateUser = t.UpdateUser,
-                                       CreateDate = t.CreateDate,
-                                       CreateUser = t.CreateUser
-                                   }).ToList();
-            }
+            var productLogNotes = InventoryService.GetProductDetailNotes(productDetailId);
 
             ViewBag.ParentKey = productDetailId;
 
             return PartialView("~/Views/Inventory/_ProductLogNotes.cshtml", productLogNotes);
         }
 
-        #endregion Inventory Product Master Log Notes
+        #endregion Product Log Notes
 
         #region Label Printing
 

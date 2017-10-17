@@ -3,7 +3,7 @@
 <div id="dvLogNotes">
     <div class="row">
         <div class="col-md-3 pull-right">
-            @Ajax.ActionLink("+ Add New Log", "CreateProductNote", "Products", new { id = @ViewBag.ParentKey }, new AjaxOptions
+            @Ajax.ActionLink("+ Add New Log", "CreateProductNote", "Product", new { id = @ViewBag.ParentKey }, new AjaxOptions
             {
                 InsertionMode = InsertionMode.Replace,
                 HttpMethod = "GET",
@@ -31,7 +31,7 @@
                 {
                     <tr>
                         <td id="noprint">
-                            @Ajax.ActionLink(" ", "DeleteProductNote", "Products", new { id = @item.productnoteid, ParentID = Model[0].productdetailid }, new AjaxOptions
+                            @Ajax.ActionLink(" ", "DeleteProductNote", "Product", new { id = @item.productnoteid, ParentID = Model[0].productdetailid }, new AjaxOptions
                              {
                                  Confirm = "Delete This Product Note?",
                                  HttpMethod = "GET",
@@ -44,7 +44,7 @@
                         <td title="Created on @item.CreateDate">@item.UpdateDate</td>
                         <td title="Created by @item.CreateUser">@item.UpdateUser</td>
                         <td id="noprint" style="text-align:right">
-                            @Ajax.ActionLink(" ", "EditProductNote", "Products", new { id = @item.productnoteid }, new AjaxOptions
+                            @Ajax.ActionLink(" ", "EditProductNote", "Product", new { id = @item.productnoteid }, new AjaxOptions
                                {
                                    InsertionMode = InsertionMode.Replace,
                                    HttpMethod = "GET",
@@ -61,6 +61,6 @@
 
 <script type="text/javascript">
     function UpdateProductNotesList() {
-        $("#dvLogNotes").load('@Url.Action("ProductLogList", "Products", new { id = @ViewBag.ParentKey })');
+        $("#dvLogNotes").load('@Url.Action("ProductLogList", "Product", new { id = @ViewBag.ParentKey })');
     }
 </script>

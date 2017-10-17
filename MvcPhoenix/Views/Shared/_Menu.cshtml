@@ -5,7 +5,7 @@
             if (User.IsInRole("Admin"))
             {
                 <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-fw fa-dashboard"></i> Dashboards</a></li>
-                <li><a href="@Url.Action("Index", "Products")"><i class="fa fa-fw fa-briefcase"></i> Products</a></li>
+                <li><a href="@Url.Action("Index", "Product")"><i class="fa fa-fw fa-briefcase"></i> Product Management</a></li>
                 <li><a href="#" data-toggle="collapse" data-target="#csrmenunav"><i class="fa fa-fw fa-indent"></i> Customer Service Options</a></li>
                 <li>
                     <ul id="csrmenunav" class="collapse">
@@ -38,7 +38,7 @@
             else if (User.IsInRole("Manager"))
             {
                 <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-fw fa-dashboard"></i> Dashboards</a></li>
-                <li><a href="@Url.Action("Index", "Products")"><i class="fa fa-fw fa-briefcase"></i> Products</a></li>
+                <li><a href="@Url.Action("Index", "Product")"><i class="fa fa-fw fa-briefcase"></i> Product Management</a></li>
                 <li><a href="#" data-toggle="collapse" data-target="#csrmenunav"><i class="fa fa-fw fa-indent"></i> Customer Service Options</a></li>
                 <li>
                     <ul id="csrmenunav" class="collapse">

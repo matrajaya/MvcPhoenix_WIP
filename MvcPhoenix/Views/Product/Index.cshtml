@@ -27,7 +27,7 @@
                     <div class="alert alert-success">
                         <label>Create Original Product Profile</label>
                         <p>This will create a product with a mastercode type attribute</p><br />
-                        @using (Html.BeginForm("Create", "Products"))
+                        @using (Html.BeginForm("Create", "Product"))
                         {
                             <div class="input-group">
                                 @Html.DropDownList("clientid", ApplicationService.ddlClientIDs(), new { @class = "form-control", @required = "required" })
@@ -42,7 +42,7 @@
                 <div class="col-md-6">
                     <div class="alert alert-warning">
                         <label>Create Equivalent Product Profile</label>
-                        @using (Html.BeginForm("Equivalent", "Products"))
+                        @using (Html.BeginForm("Equivalent", "Product"))
                         {
                             <div class="form-group">
                                 @Html.DropDownList("clientidEquivalent", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientIdEquivalent()", @class = "form-control" })
@@ -76,7 +76,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="row">
-                            @using (Ajax.BeginForm("Search", "Products", new AjaxOptions
+                            @using (Ajax.BeginForm("Search", "Product", new AjaxOptions
                             {
                                 UpdateTargetId = "dvSearchProduct",
                                 InsertionMode = InsertionMode.Replace,
@@ -97,7 +97,7 @@
                     </div>
                     <div class="col-md-7">
                         <div class="row">
-                            @using (Html.BeginForm("Edit", "Products"))
+                            @using (Html.BeginForm("Edit", "Product"))
                             {
                                 <div class="form-group">
                                     @Html.DropDownList("clientidEdit", ApplicationService.ddlClientIDs(), new { onchange = "OnChangeClientIdEdit()", @class = "form-control" })
@@ -126,7 +126,7 @@
                 </div>
                 <div class="panel-body">
                     @Html.ActionLink("Convert Equivalent to Product Master", "DetailToMaster", "ProductConversion", null, new { @class = "btn btn-block btn-primary", @target = "_blank" })
-                    @Html.ActionLink("Set Client Product Cross-Reference", "XRefList", "Products", null, new { @class = "btn btn-block btn-primary", @target = "_blank" })
+                    @Html.ActionLink("Set Client Product Cross-Reference", "XRefList", "Product", null, new { @class = "btn btn-block btn-primary", @target = "_blank" })
                     <button class="btn btn-block btn-primary">&nbsp;</button>
                 </div>
             </div>
@@ -138,13 +138,13 @@
 
 <script type="text/javascript">
     function OnChangeClientIdEdit() {
-        var url = '@Url.Action("ProductCodesDropDown", "Products")';
+        var url = '@Url.Action("ProductCodesDropDown", "Product")';
         var data = $('#clientidEdit').val();
         $("#productdetailidedit").load(url, { clientid: data });
     }
 
     function OnChangeClientIdEquivalent() {
-        var url = '@Url.Action("ProductCodesDropDown", "Products")';
+        var url = '@Url.Action("ProductCodesDropDown", "Product")';
         var data = $('#clientidEquivalent').val();
         $("#productdetailid").load(url, { clientid: data });
     }
@@ -157,7 +157,7 @@
         var productid = $('#productid').val();
 
         if (productid > 1) {
-            window.location = "/Products/Edit/" + productid;
+            window.location = "/Product/Edit/" + productid;
         } else {
             $.alert("Please select a valid product from the drop down list.");
         }        

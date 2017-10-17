@@ -23,7 +23,7 @@
 
     <div class="row">
         <div class="col-md-6 form-group">
-            @using (Html.BeginForm("XRefList", "Products", FormMethod.Get))
+            @using (Html.BeginForm("XRefList", "Product", FormMethod.Get))
             {
                 <div class="input-group">
                     @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search Client, Product Code or Name" })
@@ -34,7 +34,7 @@
             }
         </div>
         <div class="col-md-3 pull-right form-group">
-            @Ajax.ActionLink("+ Add Product XRef", "CreateXref", "Products", null, new AjaxOptions
+            @Ajax.ActionLink("+ Add Product XRef", "CreateXref", "Product", null, new AjaxOptions
                                     {
                                         InsertionMode = InsertionMode.Replace,
                                         HttpMethod = "GET",
@@ -69,7 +69,7 @@
                         {
                             <tr>
                                 <td id="noprint">
-                                    @Ajax.ActionLink(" ", "DeleteXRef", "Products", new { id = @item.ProductXRefID },
+                                    @Ajax.ActionLink(" ", "DeleteXRef", "Product", new { id = @item.ProductXRefID },
                                      new AjaxOptions
                                      {
                                          Confirm = "Delete This XRef Entry?",
@@ -88,7 +88,7 @@
                                 <td>@item.ClientProductName</td>
                                 <td>@item.ClientSize</td>
                                 <td id="noprint" style="text-align:right">
-                                    @Ajax.ActionLink(" ", "EditXref", "Products", new { id = @item.ProductXRefID }, new AjaxOptions
+                                    @Ajax.ActionLink(" ", "EditXref", "Product", new { id = @item.ProductXRefID }, new AjaxOptions
                                     {
                                         InsertionMode = InsertionMode.Replace,
                                         HttpMethod = "GET",
