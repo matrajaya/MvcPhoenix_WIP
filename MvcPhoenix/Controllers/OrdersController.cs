@@ -271,7 +271,7 @@ namespace MvcPhoenix.Controllers
 
             if (clientId < 1)
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -388,7 +388,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(company))
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -450,7 +450,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(attention))
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -512,7 +512,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(zipCode))
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -574,7 +574,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(salesRep))
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -651,7 +651,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(clientReference))
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -713,7 +713,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(clientOrderNumber))
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -775,7 +775,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(trackingNumber))
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -837,7 +837,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(internalNotes))
             {
-                return RedirectToAction("AdvancedSearch()");
+                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
