@@ -269,11 +269,6 @@ namespace MvcPhoenix.Controllers
                 isStale = true;
             }
 
-            if (clientId < 1)
-            {
-                return RedirectToAction("AdvancedSearch");
-            }
-
             if (orders == null)
             {
                 isStale = true;
@@ -386,11 +381,6 @@ namespace MvcPhoenix.Controllers
                 isStale = true;
             }
 
-            if (String.IsNullOrWhiteSpace(company))
-            {
-                return RedirectToAction("AdvancedSearch");
-            }
-
             if (orders == null)
             {
                 isStale = true;
@@ -446,11 +436,6 @@ namespace MvcPhoenix.Controllers
             else
             {
                 isStale = true;
-            }
-
-            if (String.IsNullOrWhiteSpace(attention))
-            {
-                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -510,11 +495,6 @@ namespace MvcPhoenix.Controllers
                 isStale = true;
             }
 
-            if (String.IsNullOrWhiteSpace(zipCode))
-            {
-                return RedirectToAction("AdvancedSearch");
-            }
-
             if (orders == null)
             {
                 isStale = true;
@@ -570,11 +550,6 @@ namespace MvcPhoenix.Controllers
             else
             {
                 isStale = true;
-            }
-
-            if (String.IsNullOrWhiteSpace(salesRep))
-            {
-                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -649,11 +624,6 @@ namespace MvcPhoenix.Controllers
                 isStale = true;
             }
 
-            if (String.IsNullOrWhiteSpace(clientReference))
-            {
-                return RedirectToAction("AdvancedSearch");
-            }
-
             if (orders == null)
             {
                 isStale = true;
@@ -709,11 +679,6 @@ namespace MvcPhoenix.Controllers
             else
             {
                 isStale = true;
-            }
-
-            if (String.IsNullOrWhiteSpace(clientOrderNumber))
-            {
-                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)
@@ -773,11 +738,6 @@ namespace MvcPhoenix.Controllers
                 isStale = true;
             }
 
-            if (String.IsNullOrWhiteSpace(trackingNumber))
-            {
-                return RedirectToAction("AdvancedSearch");
-            }
-
             if (orders == null)
             {
                 isStale = true;
@@ -833,11 +793,6 @@ namespace MvcPhoenix.Controllers
             else
             {
                 isStale = true;
-            }
-
-            if (String.IsNullOrWhiteSpace(internalNotes))
-            {
-                return RedirectToAction("AdvancedSearch");
             }
 
             if (orders == null)

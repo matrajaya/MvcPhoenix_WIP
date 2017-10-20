@@ -48,7 +48,7 @@
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchcompany", null, new { @class = "form-control", placeholder = "Ship To...", @required = "required" })
+                        @Html.TextBox("searchcompany", null, new { @class = "form-control", placeholder = "Ship To...", @required = "required", @pattern = "[A-Za-z0-9]{1,20}" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
@@ -90,7 +90,7 @@
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchsalesrep", null, new { @class = "form-control", placeholder = "Sales Rep Name...", @required = "required" })
+                        @Html.TextBox("searchsalesrep", null, new { @class = "form-control", placeholder = "Sales Rep Name...", @required = "required", @pattern = "[A-Za-z0-9]{1,20}" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
@@ -146,7 +146,7 @@
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchtrackingnumber", null, new { @class = "form-control", placeholder = "Tracking Number...", @required = "required" })
+                        @Html.TextBox("searchtrackingnumber", null, new { @class = "form-control", placeholder = "Tracking Number...", @required = "required", @pattern = "[A-Za-z0-9]{1,20}" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
@@ -160,7 +160,7 @@
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchinternalnotes", null, new { @class = "form-control", placeholder = "Internal Notes...", @required = "required" })
+                        @Html.TextBox("searchinternalnotes", null, new { @class = "form-control", placeholder = "Internal Notes...", @required = "required", @pattern="[A-Za-z0-9]{1,20}" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
