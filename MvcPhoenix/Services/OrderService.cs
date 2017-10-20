@@ -21,31 +21,37 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 orders = (from t in db.tblOrderMaster
-                          join client in db.tblClient on t.ClientID equals client.ClientID
-                          let count = (from items in db.tblOrderItem
-                                       where items.OrderID == t.OrderID
-                                       select items).Count()
-                          let allocationcount = (from i in db.tblOrderItem
-                                                 where i.OrderID == t.OrderID
-                                                 && i.ShipDate == null
-                                                 && i.Qty > 0
-                                                 && String.IsNullOrEmpty(i.AllocateStatus)
-                                                 && i.ProductDetailID != null
-                                                 && i.ShelfID == null
-                                                 select i).Count()
+                          join client in db.tblClient
+                          on t.ClientID equals client.ClientID
+                          let count = db.tblOrderItem
+                                        .Where(x => x.OrderID == t.OrderID)
+                                        .Count()
+                          let allocationcount = db.tblOrderItem
+                                                  .Where(i => i.OrderID == t.OrderID &&
+                                                              i.ShipDate == null &&
+                                                              i.Qty > 0 &&
+                                                              String.IsNullOrEmpty(i.AllocateStatus) &&
+                                                              i.ProductDetailID != null &&
+                                                              i.ShelfID == null).Count()
                           select new OrderMasterFull
                           {
-                              ClientId = t.ClientID,
                               OrderID = t.OrderID,
-                              Customer = t.Customer,
-                              ClientName = client.ClientName,
                               OrderType = t.OrderType,
                               OrderDate = t.OrderDate,
-                              Company = t.Company,
-                              CreateUser = t.CreateUser,
-                              ItemsCount = count,
+                              ClientId = t.ClientID,
+                              ClientName = client.ClientName,
+                              Customer = t.Customer,                // client name on order master
+                              Company = t.Company,                  // ship to
+                              Attention = t.Attention,
                               Zip = t.Zip,
                               SalesRepName = t.SalesRep,
+                              Tracking = t.Tracking,
+                              WebOrderId = t.WebOrderID ?? 0,
+                              ClientOrderNumber = t.CustOrdNum,
+                              ClientRefNumber = t.RefNum,
+                              SpecialInternal = t.SpecialInternal,
+                              CreateUser = t.CreateUser,
+                              ItemsCount = count,
                               NeedAllocationCount = allocationcount
                           }).ToList();
             }
@@ -62,10 +68,10 @@ namespace MvcPhoenix.Services
                 orders = OrderService.GetOrders();
 
                 // Get list of order ids for orders not shipped.
-                var unshippedOrders = (from i in db.tblOrderItem
-                                       where i.ShipDate == null
-                                       && i.Qty > 0
-                                       select i).ToList();
+                var unshippedOrders = db.tblOrderItem
+                                        .Where(i => i.ShipDate == null &&
+                                                    i.Qty > 0)
+                                        .ToList();
 
                 unshippedOrders = unshippedOrders.GroupBy(x => x.OrderID)
                                                  .Select(g => g.First())
@@ -73,8 +79,10 @@ namespace MvcPhoenix.Services
 
                 // Get list of open orders.
                 orders = (from t in orders
-                          join u in unshippedOrders on t.OrderID equals u.OrderID
-                          join c in db.tblClientAccountRep on t.ClientId equals c.ClientID
+                          join u in unshippedOrders
+                          on t.OrderID equals u.OrderID
+                          join c in db.tblClientAccountRep
+                          on t.ClientId equals c.ClientID
                           where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
                           orderby t.OrderID descending, t.OrderDate descending
                           select t).ToList();
@@ -85,8 +93,10 @@ namespace MvcPhoenix.Services
                 {
                     orders = OrderService.GetOrders();
                     orders = (from t in orders
-                              join u in unshippedOrders on t.OrderID equals u.OrderID
-                              join c in db.tblClient on t.ClientId equals c.ClientID
+                              join u in unshippedOrders
+                              on t.OrderID equals u.OrderID
+                              join c in db.tblClient
+                              on t.ClientId equals c.ClientID
                               where c.CMCLocation == "EU"
                               orderby t.OrderID descending, t.OrderDate descending
                               select t).ToList();
@@ -124,7 +134,7 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var orderDetails = db.tblOrderMaster.Find(orderid);
-                
+
                 if (orderDetails == null)
                 {
                     return null;
@@ -355,15 +365,15 @@ namespace MvcPhoenix.Services
                 {
                     var getOrder = db.tblOrderMaster.Find(order.OrderID);
 
-                    var country = (from t in db.tblCountry
-                                   where t.Country == order.Country
-                                   && t.DoNotShip == true
-                                   select t).FirstOrDefault();
+                    var country = db.tblCountry
+                                    .Where(x => x.Country == order.Country &&
+                                                x.DoNotShip == true)
+                                    .FirstOrDefault();
 
-                    var orderItems = (from t in db.tblOrderItem
-                                      where t.OrderID == order.OrderID
-                                      && t.AllocateStatus == null
-                                      select t).ToList();
+                    var orderItems = db.tblOrderItem
+                                       .Where(x => x.OrderID == order.OrderID &&
+                                                   x.AllocateStatus == null)
+                                       .ToList();
 
                     if (country != null)
                     {
@@ -390,14 +400,15 @@ namespace MvcPhoenix.Services
                     if (order.Country != "0")
                     {
                         int countryId = 0;
-                        countryId = (from t in db.tblCountry
-                                     where t.Country.Contains(order.Country)
-                                     select t.CountryID).FirstOrDefault();
+                        countryId = db.tblCountry
+                                      .Where(x => x.Country.Contains(order.Country))
+                                      .Select(x => x.CountryID)
+                                      .FirstOrDefault();
 
-                        var ceaseShipOffset = (from t in db.tblCeaseShipOffSet
-                                               where t.ClientID == order.ClientId
-                                               && t.CountryID == countryId
-                                               select t).FirstOrDefault();
+                        var ceaseShipOffset = db.tblCeaseShipOffSet
+                                                .Where(x => x.ClientID == order.ClientId &&
+                                                            x.CountryID == countryId)
+                                                .FirstOrDefault();
 
                         if (ceaseShipOffset != null)
                         {
@@ -484,7 +495,9 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var orderItems = (from t in db.tblOrderItem
-                                  join pd in db.tblProductDetail on t.ProductDetailID equals pd.ProductDetailID into productDetailOrderItem
+                                  join pd in db.tblProductDetail
+                                  on t.ProductDetailID equals pd.ProductDetailID
+                                  into productDetailOrderItem
                                   from productdetail in productDetailOrderItem.DefaultIfEmpty()
                                   where t.OrderID == orderid
                                   orderby t.ItemID
@@ -524,11 +537,10 @@ namespace MvcPhoenix.Services
                                       HarmonizedCode = productdetail.HarmonizedCode,
                                       AlertNotesOrderEntry = productdetail.AlertNotesOrderEntry,
                                       AlertNotesShipping = productdetail.AlertNotesShipping,
-                                      QtyAvailable = (from x in db.tblStock
-                                                      where (x.ShelfID != null)
-                                                      && (x.ShelfID == t.ShelfID)
-                                                      && (x.ShelfStatus == "AVAIL")
-                                                      select (x.QtyOnHand - x.QtyAllocated)).Sum(),
+                                      QtyAvailable = db.tblStock.Where(x => x.ShelfID != null &&
+                                                                            x.ShelfID == t.ShelfID &&
+                                                                            x.ShelfStatus == "AVAIL")
+                                                                .Select(x => (x.QtyOnHand - x.QtyAllocated)).Sum(),
                                       FreezableList = db.tblProductMaster
                                                         .Where(x => x.ProductMasterID == productdetail.ProductMasterID)
                                                         .Select(x => x.FreezableList).FirstOrDefault(),
@@ -1377,11 +1389,11 @@ namespace MvcPhoenix.Services
                 var isReversed = false;
                 var log = new InventoryLog();
 
-                var orderItem = (from t in db.tblOrderItem
-                                 where t.ItemID == orderitemid
-                                 && t.AllocateStatus == "A"
-                                 && t.ShipDate == null
-                                 select t).FirstOrDefault();
+                var orderItem = db.tblOrderItem
+                                  .Where(x => x.ItemID == orderitemid &&
+                                              x.AllocateStatus == "A" &&
+                                              x.ShipDate == null)
+                                  .FirstOrDefault();
 
                 var order = db.tblOrderMaster
                               .Where(x => x.OrderID == orderItem.OrderID)
@@ -1588,7 +1600,8 @@ namespace MvcPhoenix.Services
                                   x.ShelfID,
                                   x.Size,
                                   x.UnitWeight
-                              }).FirstOrDefault();
+                              })
+                              .FirstOrDefault();
 
                 var bulk = db.tblBulk
                              .Where(x => x.BulkID == stockItem.BulkID)
@@ -1596,7 +1609,8 @@ namespace MvcPhoenix.Services
                              {
                                  x.ProductMasterID,
                                  x.LotNumber
-                             }).FirstOrDefault();
+                             })
+                             .FirstOrDefault();
 
                 var productDetail = db.tblProductDetail
                                       .Where(x => x.ProductDetailID == shelf.ProductDetailID)
@@ -1611,7 +1625,8 @@ namespace MvcPhoenix.Services
                                           x.AIRPKGRP,
                                           x.AlertNotesOrderEntry,
                                           x.AlertNotesShipping
-                                      }).FirstOrDefault();
+                                      })
+                                      .FirstOrDefault();
 
                 newOrderItem.OrderID = orderid;
                 newOrderItem.ShelfID = shelf.ShelfID;
@@ -1844,7 +1859,7 @@ namespace MvcPhoenix.Services
                         item.ImportStatus = "IMPORTED";
                         item.CMCLocation = location;
                         item.OrderID = newOrderId;
-                        
+
                         db.SaveChanges();
                     }
 
@@ -1880,7 +1895,8 @@ namespace MvcPhoenix.Services
                 var divisions = db.tblDivision.AsQueryable();
                 var shelfItems = db.tblShelfMaster.AsQueryable();
                 var products = (from productdetail in db.tblProductDetail
-                                join productmaster in db.tblProductMaster on productdetail.ProductMasterID equals productmaster.ProductMasterID
+                                join productmaster in db.tblProductMaster
+                                on productdetail.ProductMasterID equals productmaster.ProductMasterID
                                 select new { productdetail, productmaster }).AsQueryable();
 
                 foreach (var item in orderImports)

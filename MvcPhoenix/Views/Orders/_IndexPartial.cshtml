@@ -4,41 +4,51 @@
     <label class="lead">@TempData["SearchResultsMessage"]</label>
 </div>
 
-<div class="table-responsive">
-    <table class="table table-hover table-striped">
-        <thead>
-            <tr>
-                <th>Client</th>
-                <th>Order Date</th>
-                <th>Ship To</th>
-                <th>Order ID</th>
-                <th>Type</th>
-                <th>CreatedBy</th>
-                <th>Items</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+@if (Model.Count > 0)
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
                 <tr>
-                    <td>@item.ClientName</td>
-                    <td>@String.Format("{0:dd MMM yyyy}", @item.OrderDate)</td>
-                    <td>@item.Company</td>
-                    <td>@item.OrderID.ToString()</td>
-                    <td>@item.OrderType</td>
-                    <td>@item.CreateUser</td>
-                    <td>@item.ItemsCount</td>
-                    <td>
-                        <span class="pull-right">
-                            <a class="btn btn-xs btn-primary" title="Edit Order" href="~/Orders/Edit/@item.OrderID"><i class="fa fa-fw fa-pencil"></i></a>
-                        </span>
-                    </td>
+                    <th>Client</th>
+                    <th>Order Date</th>
+                    <th>Ship To</th>
+                    <th>Order ID</th>
+                    <th>Type</th>
+                    <th>CreatedBy</th>
+                    <th>Items</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ClientName</td>
+                        <td>@String.Format("{0:dd MMM yyyy}", @item.OrderDate)</td>
+                        <td>@item.Company</td>
+                        <td>@item.OrderID.ToString()</td>
+                        <td>@item.OrderType</td>
+                        <td>@item.CreateUser</td>
+                        <td>@item.ItemsCount</td>
+                        <td>
+                            <span class="pull-right">
+                                <a class="btn btn-xs btn-primary" title="Edit Order" href="~/Orders/Edit/@item.OrderID"><i class="fa fa-fw fa-pencil"></i></a>
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="col-md-12 text-center">
+        <label class="lead">No Results Found</label>
+    </div>
+}
+
 
 @*Pagination control*@
 @if (@ViewBag.DisplayActivePage > 0)
@@ -49,11 +59,11 @@
             <div class="row">
                 @if (ViewBag.Page > 0)
                 {
-                    @Ajax.ActionLink("Prev", "OpenOrders", "Orders", new { page = ViewBag.Page - 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Previous", @class = "btn btn-primary btn-sm" })
+                    @Ajax.ActionLink("Prev", (string)ViewBag.ControllerName, "Orders", new { filter = ViewBag.FilterKey, page = ViewBag.Page - 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Previous", @class = "btn btn-primary btn-sm" })
                 }
                 @if (ViewBag.Page < ViewBag.MaxPage)
                 {
-                    @Ajax.ActionLink("Next", "OpenOrders", "Orders", new { page = ViewBag.Page + 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Next", @class = "btn btn-primary btn-sm" })
+                    @Ajax.ActionLink("Next", (string)ViewBag.ControllerName, "Orders", new { filter = ViewBag.FilterKey, page = ViewBag.Page + 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Next", @class = "btn btn-primary btn-sm" })
                 }
             </div>
         </div>

@@ -16,7 +16,6 @@ namespace MvcPhoenix.Controllers
         public ActionResult OpenOrders(int page = 0)
         {
             var orders = Session["openOrders"] as List<OrderMasterFull>;
-            TempData["SearchResultsMessage"] = "Open Orders";
 
             // If session store is empty go fetch new open orders
             if (orders == null)
@@ -33,6 +32,8 @@ namespace MvcPhoenix.Controllers
             ViewBag.MaxPage = maxpage;
             ViewBag.DisplayActivePage = page + 1;
             ViewBag.DisplayLastPage = maxpage + 1;
+
+            TempData["SearchResultsMessage"] = "Open Orders";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
@@ -61,74 +62,188 @@ namespace MvcPhoenix.Controllers
         }
 
         [HttpGet]
-        public ActionResult OrdersNeedAllocation()
+        public ActionResult OrdersRecentUser(string filter, int page = 0)
         {
-            var orders = OrderService.GetOrders();
+            string storeName = "ordersRecentUser";
 
-            orders = orders.Where(t => t.NeedAllocationCount > 0)
-                           .OrderByDescending(t => t.OrderID)
-                           .ToList();
+            var orders = Session[storeName] as List<OrderMasterFull>;
 
-            TempData["SearchResultsMessage"] = "Orders Needing Allocation";
+            if (String.IsNullOrWhiteSpace(filter))
+            {
+                orders = OrderService.GetOrders();
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
-        }
+                orders = orders.Where(t => t.CreateUser == User.Identity.Name ||
+                                           t.UpdateUser == User.Identity.Name)
+                               .OrderByDescending(t => t.OrderID)
+                               .Take(100).ToList();
 
-        [HttpGet]
-        public ActionResult OrdersToday()
-        {
-            DateTime today = DateTime.Today.AddDays(0);
-            var orders = OrderService.GetOrders();
+                Session[storeName] = orders;
+            }
 
-            orders = orders.Where(t => t.OrderDate.Value.Date == today.Date)
-                           .OrderByDescending(t => t.OrderID)
-                           .ToList();
+            List<OrderMasterFull> data = null;
 
-            TempData["SearchResultsMessage"] = "Orders Created Today";
+            const int PageSize = 20;
+            int count = orders.Count();
+            data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
-        }
-
-        [HttpGet]
-        public ActionResult OrdersYesterday()
-        {
-            DateTime yesterday = DateTime.UtcNow.Date.AddDays(-1);
-            var orders = OrderService.GetOrders();
-
-            orders = orders.Where(t => t.OrderDate.Value.Date == yesterday.Date)
-                           .OrderByDescending(t => t.OrderID)
-                           .ToList();
-
-            TempData["SearchResultsMessage"] = "Orders Created Yesterday";
-
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
-        }
-
-        [HttpGet]
-        public ActionResult OrdersRecentAll()
-        {
-            var orders = OrderService.GetOrders();
-
-            orders = orders.OrderByDescending(x => x.OrderID).Take(100).ToList();
-
-            TempData["SearchResultsMessage"] = "All Recent Orders";
-
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
-        }
-
-        [HttpGet]
-        public ActionResult OrdersRecentUser()
-        {
-            var orders = OrderService.GetOrders();
-
-            orders = orders.Where(t => t.CreateUser == User.Identity.Name ||
-                                       t.UpdateUser == User.Identity.Name)
-                           .OrderByDescending(t => t.OrderID)
-                           .Take(20).ToList();
+            ViewBag.Page = page;
+            ViewBag.MaxPage = maxpage;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+            ViewBag.FilterKey = "RecentUser";
 
             TempData["SearchResultsMessage"] = "My Recent Orders";
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        [HttpGet]
+        public ActionResult OrdersRecentAll(string filter, int page = 0)
+        {
+            string storeName = "ordersRecentAll";
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (String.IsNullOrWhiteSpace(filter))
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.OrderByDescending(x => x.OrderID).Take(100).ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            const int PageSize = 20;
+            int count = orders.Count();
+            data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            ViewBag.Page = page;
+            ViewBag.MaxPage = maxpage;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+            ViewBag.FilterKey = "RecentAll";
+
+            TempData["SearchResultsMessage"] = "All Recent Orders";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        [HttpGet]
+        public ActionResult OrdersToday(string filter, int page = 0)
+        {
+            DateTime today = DateTime.Today.AddDays(0);
+            string storeName = "ordersToday";
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (String.IsNullOrWhiteSpace(filter))
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.OrderDate.Value.Date == today.Date)
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            const int PageSize = 20;
+            int count = orders.Count();
+            data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            ViewBag.Page = page;
+            ViewBag.MaxPage = maxpage;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+            ViewBag.FilterKey = "Today";
+
+            TempData["SearchResultsMessage"] = "Orders Created Today";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        [HttpGet]
+        public ActionResult OrdersYesterday(string filter, int page = 0)
+        {
+            DateTime yesterday = DateTime.UtcNow.Date.AddDays(-1);
+            string storeName = "ordersYesterday";
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (String.IsNullOrWhiteSpace(filter))
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.OrderDate.Value.Date == yesterday.Date)
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            const int PageSize = 20;
+            int count = orders.Count();
+            data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            ViewBag.Page = page;
+            ViewBag.MaxPage = maxpage;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+            ViewBag.FilterKey = "Yesterday";
+
+            TempData["SearchResultsMessage"] = "Orders Created Yesterday";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        [HttpGet]
+        public ActionResult OrdersNeedAllocation(string filter, int page = 0)
+        {
+            string storeName = "ordersNeedAllocation";
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (String.IsNullOrWhiteSpace(filter))
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.NeedAllocationCount > 0)
+                           .OrderByDescending(t => t.OrderID)
+                           .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            const int PageSize = 20;
+            int count = orders.Count();
+            data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            ViewBag.Page = page;
+            ViewBag.MaxPage = maxpage;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+            ViewBag.FilterKey = "NeedAllocation";
+
+            TempData["SearchResultsMessage"] = "Orders Needing Allocation";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
         [HttpGet]
@@ -137,114 +252,632 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_AdvancedSearchModal.cshtml");
         }
 
-        [HttpPost]
-        public ActionResult LookupClientID(FormCollection form)
+        public ActionResult LookupClientID(FormCollection form, string filter, int page = 0)
         {
-            int clientId = Convert.ToInt32(form["ClientID"]);
-            var orders = OrderService.GetOrders();
+            int? clientId = Convert.ToInt32(form["searchclient"]);
+            string storeName = "clientOrders";
+            bool isStale = false;
 
-            orders = orders.Where(t => t.ClientId == clientId)
-                           .OrderByDescending(t => t.OrderID)
-                           .Take(100).ToList();
+            var orders = Session[storeName] as List<OrderMasterFull>;
 
-            if (orders.Count() > 0)
+            if (filter != null)
             {
-                TempData["SearchResultsMessage"] = "Last 100 Orders - " + orders[0].ClientName;
+                clientId = Convert.ToInt32(filter);
             }
             else
             {
-                TempData["SearchResultsMessage"] = "No Results Found";
+                isStale = true;
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
+            if (clientId < 1)
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.ClientId == clientId)
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = clientId.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders For '" + orders[0].ClientName + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpPost]
-        public ActionResult LookupOrderDate(FormCollection form)
+        public ActionResult LookupOrderDate(FormCollection form, string filter, int page = 0)
         {
             DateTime orderDate = Convert.ToDateTime(form["searchorderdate"]);
+            string storeName = "dateOrders";
+            bool isStale = false;
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (filter != null)
+            {
+                orderDate = Convert.ToDateTime(filter);
+            }
+            else
+            {
+                isStale = true;
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.OrderDate.Value.Date == orderDate.Date)
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = orderDate.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders On " + orders[0].OrderDate.Value.ToShortDateString();
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        public ActionResult LookupCompany(FormCollection form, string filter, int page = 0)
+        {
+            string company = form["searchcompany"];
+            string storeName = "companyOrders";
+            bool isStale = false;
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (filter != null)
+            {
+                company = filter;
+            }
+            else
+            {
+                isStale = true;
+            }
+
+            if (String.IsNullOrWhiteSpace(company))
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.Company != null &&
+                                           t.Company.ToLower().Contains(company.ToLower()))
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = company.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders With Ship To '" + company + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        public ActionResult LookupAttention(FormCollection form, string filter, int page = 0)
+        {
+            string attention = form["searchattention"];
+            string storeName = "attentionOrders";
+            bool isStale = false;
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (filter != null)
+            {
+                attention = filter;
+            }
+            else
+            {
+                isStale = true;
+            }
+
+            if (String.IsNullOrWhiteSpace(attention))
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.Attention != null &&
+                                       t.Attention.ToLower().Contains(attention.ToLower()))
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = attention.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders With Attention Matching '" + attention + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        public ActionResult LookupZipCode(FormCollection form, string filter, int page = 0)
+        {
+            string zipCode = form["searchzipcode"];
+            string storeName = "zipcodeOrders";
+            bool isStale = false;
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (filter != null)
+            {
+                zipCode = filter;
+            }
+            else
+            {
+                isStale = true;
+            }
+
+            if (String.IsNullOrWhiteSpace(zipCode))
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.Zip != null &&
+                                           t.Zip.Contains(zipCode))
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = zipCode.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders For Zip Code '" + zipCode + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        public ActionResult LookupSalesRep(FormCollection form, string filter, int page = 0)
+        {
+            string salesRep = form["searchsalesrep"];
+            string storeName = "salesrepOrders";
+            bool isStale = false;
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (filter != null)
+            {
+                salesRep = filter;
+            }
+            else
+            {
+                isStale = true;
+            }
+
+            if (String.IsNullOrWhiteSpace(salesRep))
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.SalesRepName != null &&
+                                           t.SalesRepName.ToLower().Contains(salesRep.ToLower()))
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = salesRep.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders For Sales Rep '" + salesRep + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        public ActionResult LookupWebOrderId(FormCollection form)
+        {
+            int? webOrderId = Convert.ToInt32(form["searchweborderid"]);
             var orders = OrderService.GetOrders();
 
-            orders = orders.Where(t => t.OrderDate.Value.Date == orderDate.Date)
+            orders = orders.Where(t => t.WebOrderId != 0 &&
+                                       t.WebOrderId == webOrderId)
                            .OrderByDescending(t => t.OrderID)
                            .ToList();
 
-            if (orders.Count() > 0)
-            {
-                TempData["SearchResultsMessage"] = "Orders For " + orderDate.ToShortDateString();
-            }
-            else
-            {
-                TempData["SearchResultsMessage"] = "No Results Found";
-            }
+            TempData["SearchResultsMessage"] = "Orders With Web Order Id Matching '" + webOrderId + "'";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
         }
 
-        [HttpPost]
-        public ActionResult LookupCompany(FormCollection form)
+        public ActionResult LookupClientReference(FormCollection form, string filter, int page = 0)
         {
-            var company = form["searchcompany"];
-            var orders = OrderService.GetOrders();
+            string clientReference = form["searchclientreference"];
+            string storeName = "clientRefOrders";
+            bool isStale = false;
 
-            orders = orders.Where(t => t.Company != null &&
-                                       t.Company.ToLower().Contains(company.ToLower()))
-                           .ToList();
+            var orders = Session[storeName] as List<OrderMasterFull>;
 
-            if (orders.Count() > 0)
+            if (filter != null)
             {
-                TempData["SearchResultsMessage"] = "Orders For Ship To " + company;
+                clientReference = filter;
             }
             else
             {
-                TempData["SearchResultsMessage"] = "No Results Found";
+                isStale = true;
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
+            if (String.IsNullOrWhiteSpace(clientReference))
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.ClientRefNumber != null &&
+                                           t.ClientRefNumber.ToLower().Contains(clientReference.ToLower()))
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = clientReference.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders With Client Reference Matching '" + clientReference + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpPost]
-        public ActionResult LookupZipCode(FormCollection form)
+        public ActionResult LookupClientOrderNumber(FormCollection form, string filter, int page = 0)
         {
-            var zipCode = form["searchzipcode"];
-            var orders = OrderService.GetOrders();
+            string clientOrderNumber = form["searchclientordernumber"];
+            string storeName = "clientnumOrders";
+            bool isStale = false;
 
-            orders = orders.Where(t => t.Zip != null && 
-                                       t.Zip.Contains(zipCode))
-                           .ToList();
+            var orders = Session[storeName] as List<OrderMasterFull>;
 
-            if (orders.Count() > 0)
+            if (filter != null)
             {
-                TempData["SearchResultsMessage"] = "Orders For Zip Code " + zipCode;
+                clientOrderNumber = filter;
             }
             else
             {
-                TempData["SearchResultsMessage"] = "No Results Found";
+                isStale = true;
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
+            if (String.IsNullOrWhiteSpace(clientOrderNumber))
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.ClientOrderNumber != null &&
+                                           t.ClientOrderNumber.ToLower().Contains(clientOrderNumber.ToLower()))
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = clientOrderNumber.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders With Client Order Number Matching '" + clientOrderNumber + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpPost]
-        public ActionResult LookupSalesRep(FormCollection form)
+        public ActionResult LookupTrackingNumber(FormCollection form, string filter, int page = 0)
         {
-            var salesRep = form["searchsalesrep"];
-            var orders = OrderService.GetOrders();
+            string trackingNumber = form["searchtrackingnumber"];
+            string storeName = "trackingOrders";
+            bool isStale = false;
 
-            orders = orders.Where(t => t.SalesRepName != null && 
-                                       t.SalesRepName.ToLower().Contains(salesRep.ToLower()))
-                           .ToList();
+            var orders = Session[storeName] as List<OrderMasterFull>;
 
-            if (orders.Count() > 0)
+            if (filter != null)
             {
-                TempData["SearchResultsMessage"] = "Orders For sales Rep " + salesRep;
+                trackingNumber = filter;
             }
             else
             {
-                TempData["SearchResultsMessage"] = "No Results Found";
+                isStale = true;
             }
 
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", orders);
+            if (String.IsNullOrWhiteSpace(trackingNumber))
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.Tracking != null &&
+                                       t.Tracking.ToLower().Contains(trackingNumber.ToLower()))
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = trackingNumber.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders With Tracking Number Matching '" + trackingNumber + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+
+        public ActionResult LookupInternalNotes(FormCollection form, string filter, int page = 0)
+        {
+            string internalNotes = form["searchinternalnotes"];
+            string storeName = "internalnotesOrders";
+            bool isStale = false;
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (filter != null)
+            {
+                internalNotes = filter;
+            }
+            else
+            {
+                isStale = true;
+            }
+
+            if (String.IsNullOrWhiteSpace(internalNotes))
+            {
+                return RedirectToAction("AdvancedSearch()");
+            }
+
+            if (orders == null)
+            {
+                isStale = true;
+            }
+
+            if (isStale == true)
+            {
+                orders = OrderService.GetOrders();
+
+                orders = orders.Where(t => t.SpecialInternal != null &&
+                                       t.SpecialInternal.ToLower().Contains(internalNotes.ToLower()))
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            if (orders.Count() > 0)
+            {
+                const int PageSize = 20;
+                int count = orders.Count();
+                data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+                int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+                ViewBag.Page = page;
+                ViewBag.MaxPage = maxpage;
+                ViewBag.DisplayActivePage = page + 1;
+                ViewBag.DisplayLastPage = maxpage + 1;
+
+                ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+                ViewBag.FilterKey = internalNotes.ToString();
+            }
+
+            TempData["SearchResultsMessage"] = "Orders With Internal Notes Matching '" + internalNotes + "'";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
         [HttpGet]
@@ -529,7 +1162,7 @@ namespace MvcPhoenix.Controllers
             TimeSpan runTime;
 
             OrderService.ImportOrders(out OrdersImportedCount, out runTime);
-            
+
             return RedirectToAction("OrdersImport", new { count = OrdersImportedCount, time = runTime });
         }
 

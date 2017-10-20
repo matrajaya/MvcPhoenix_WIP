@@ -100,13 +100,17 @@
                         {
                             <div id="alertNotes" class="hidden">@item.ItemNotes</div>
                             <a class="btn btn-primary btn-sm fa fa-sticky-note-o" onclick="ShowNote(alertNotes.textContent)" title="Show Notes"></a>
-                            @Ajax.ActionLink(" ", "DeleteItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
+                            if (item.AllocateStatus != "A")
                             {
-                                UpdateTargetId = "dialogPlaceholder",
-                                OnComplete = "UpdateItemsList()"
-                            }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Delete" })
+                                @Ajax.ActionLink(" ", "DeleteItem", "Orders", new { id = @item.ItemID }, new AjaxOptions
+                                {
+                                    UpdateTargetId = "dialogPlaceholder",
+                                    OnComplete = "UpdateItemsList()"
+                                }, new { @class = "btn btn-danger btn-sm fa fa-trash-o", @title = "Delete" })
+                            }
                         }
                     </td>
+
                 </tr>
             }
         </tbody>

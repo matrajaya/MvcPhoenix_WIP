@@ -15,11 +15,12 @@
                 {
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
-                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')"
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Client Search Failure')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.DropDownList("ClientID", ApplicationService.ddlClientIDs(), new { name = "ClientID", @class = "form-control", @required = "required" })
+                        @Html.DropDownList("searchclient", ApplicationService.ddlClientIDs(), new { name = "searchclient", @class = "form-control", @required = "required" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Last 20" /></span>
                     </div>
                 }
@@ -27,7 +28,9 @@
                 @using (Ajax.BeginForm("LookupOrderDate", "Orders", FormMethod.Post, new AjaxOptions
                 {
                     UpdateTargetId = "dvSearchResults",
-                    InsertionMode = InsertionMode.Replace
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Order Date Search Failure')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -40,6 +43,7 @@
                 {
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
                     OnFailure = "$.alert('Company Search Failure')"
                 }))
                 {
@@ -49,25 +53,114 @@
                     </div>
                 }
 
+                @using (Ajax.BeginForm("LookupAttention", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Attention Search Failure')"
+                }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchattention", null, new { @class = "form-control", placeholder = "Attention...", @required = "required" })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
+                    </div>
+                }
+
                 @using (Ajax.BeginForm("LookupZipCode", "Orders", FormMethod.Post, new AjaxOptions
                 {
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Zip Code Search Failure')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchzipcode", null, new { @class = "form-control", placeholder = "Zip/postal code...", @required = "required" })
+                        @Html.TextBox("searchzipcode", null, new { @class = "form-control", placeholder = "Zip/Postal Code...", @required = "required" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
+
                 @using (Ajax.BeginForm("LookupSalesRep", "Orders", FormMethod.Post, new AjaxOptions
                 {
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Sales Rep Search Failure')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchsalesrep", null, new { @class = "form-control", placeholder = "Sales rep name...", @required = "required" })
+                        @Html.TextBox("searchsalesrep", null, new { @class = "form-control", placeholder = "Sales Rep Name...", @required = "required" })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
+                    </div>
+                }
+
+                @using (Ajax.BeginForm("LookupWebOrderId", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Web Order Id Search Failure')"
+                }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchweborderid", null, new { @class = "form-control", placeholder = "Web Order Id...", @required = "required", @type = "number"  })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
+                    </div>
+                }
+
+                @using (Ajax.BeginForm("LookupClientReference", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Client Reference Search Failure')"
+                }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchclientreference", null, new { @class = "form-control", placeholder = "Client Reference...", @required = "required" })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
+                    </div>
+                }
+
+                @using (Ajax.BeginForm("LookupClientOrderNumber", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Client Order Number Search Failure')"
+                }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchclientordernumber", null, new { @class = "form-control", placeholder = "Client Order Number...", @required = "required" })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
+                    </div>
+                }
+
+                @using (Ajax.BeginForm("LookupTrackingNumber", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Tracking Number Search Failure')"
+                }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchtrackingnumber", null, new { @class = "form-control", placeholder = "Tracking Number...", @required = "required" })
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
+                    </div>
+                }
+
+                @using (Ajax.BeginForm("LookupInternalNotes", "Orders", FormMethod.Post, new AjaxOptions
+                {
+                    UpdateTargetId = "dvSearchResults",
+                    InsertionMode = InsertionMode.Replace,
+                    OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
+                    OnFailure = "$.alert('Internal Notes Search Failure')"
+                }))
+                {
+                    <div class="input-group" style="padding: 5px;">
+                        @Html.TextBox("searchinternalnotes", null, new { @class = "form-control", placeholder = "Internal Notes...", @required = "required" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
