@@ -778,17 +778,17 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        public ActionResult LookupInternalNotes(FormCollection form, string filter, int page = 0)
+        public ActionResult LookupInstructions(FormCollection form, string filter, int page = 0)
         {
-            string internalNotes = form["searchinternalnotes"];
-            string storeName = "internalnotesOrders";
+            string specialInstructions = form["searchinstructions"];
+            string storeName = "specialInstructionOrders";
             bool isStale = false;
 
             var orders = Session[storeName] as List<OrderMasterFull>;
 
             if (filter != null)
             {
-                internalNotes = filter;
+                specialInstructions = filter;
             }
             else
             {
@@ -804,8 +804,10 @@ namespace MvcPhoenix.Controllers
             {
                 orders = OrderService.GetOrders();
 
-                orders = orders.Where(t => t.SpecialInternal != null &&
-                                       t.SpecialInternal.ToLower().Contains(internalNotes.ToLower()))
+                orders = orders.Where(t => (t.SpecialInternal != null &&
+                                            t.SpecialInternal.ToLower().Contains(specialInstructions.ToLower())) ||
+                                           (t.Special != null &&
+                                            t.Special.ToLower().Contains(specialInstructions.ToLower())))
                                .OrderByDescending(t => t.OrderID)
                                .ToList();
 
@@ -827,10 +829,10 @@ namespace MvcPhoenix.Controllers
                 ViewBag.DisplayLastPage = maxpage + 1;
 
                 ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
-                ViewBag.FilterKey = internalNotes.ToString();
+                ViewBag.FilterKey = specialInstructions.ToString();
             }
 
-            TempData["SearchResultsMessage"] = "Orders With Internal Notes Matching '" + internalNotes + "'";
+            TempData["SearchResultsMessage"] = "Orders With Special Instructions Matching '" + specialInstructions + "'";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }

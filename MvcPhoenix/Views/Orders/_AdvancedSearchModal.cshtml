@@ -16,12 +16,12 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Client Search Failure')"
+                    OnFailure = "$.alert('Client search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
                         @Html.DropDownList("searchclient", ApplicationService.ddlClientIDs(), new { name = "searchclient", @class = "form-control", @required = "required" })
-                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Last 20" /></span>
+                        <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
 
@@ -30,11 +30,11 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Order Date Search Failure')"
+                    OnFailure = "$.alert('Order date search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        <input class="form-control date-picker" id="searchorderdate" name="searchorderdate" required />
+                        <input class="form-control date-picker" id="searchorderdate" name="searchorderdate" placeholder="DD-MMM-YYYY" required />
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }
@@ -44,7 +44,7 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Company Search Failure')"
+                    OnFailure = "$.alert('Company search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -58,7 +58,7 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Attention Search Failure')"
+                    OnFailure = "$.alert('Attention search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -72,7 +72,7 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Zip Code Search Failure')"
+                    OnFailure = "$.alert('Zip/Post code search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -86,7 +86,7 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Sales Rep Search Failure')"
+                    OnFailure = "$.alert('Sales rep search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -100,7 +100,7 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Web Order Id Search Failure')"
+                    OnFailure = "$.alert('Web order id search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -114,7 +114,7 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Client Reference Search Failure')"
+                    OnFailure = "$.alert('Client reference search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -128,7 +128,7 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Client Order Number Search Failure')"
+                    OnFailure = "$.alert('Client order number search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -142,7 +142,7 @@
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Tracking Number Search Failure')"
+                    OnFailure = "$.alert('Tracking number search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
@@ -151,16 +151,16 @@
                     </div>
                 }
 
-                @using (Ajax.BeginForm("LookupInternalNotes", "Orders", FormMethod.Post, new AjaxOptions
+                @using (Ajax.BeginForm("LookupInstructions", "Orders", FormMethod.Post, new AjaxOptions
                 {
                     UpdateTargetId = "dvSearchResults",
                     InsertionMode = InsertionMode.Replace,
                     OnSuccess = "$('#dialogPlaceholderModal').modal('hide')",
-                    OnFailure = "$.alert('Internal Notes Search Failure')"
+                    OnFailure = "$.alert('Special instructions search result not found')"
                 }))
                 {
                     <div class="input-group" style="padding: 5px;">
-                        @Html.TextBox("searchinternalnotes", null, new { @class = "form-control", placeholder = "Internal Notes...", @required = "required", @pattern="[A-Za-z0-9]{1,20}" })
+                        @Html.TextBox("searchinstructions", null, new { @class = "form-control", placeholder = "Special Instructions...", @required = "required", @maxlength = "30" })
                         <span class="input-group-btn"><input type="submit" class="btn btn-primary" value="Search" /></span>
                     </div>
                 }

@@ -50,6 +50,7 @@ namespace MvcPhoenix.Services
                               ClientOrderNumber = t.CustOrdNum,
                               ClientRefNumber = t.RefNum,
                               SpecialInternal = t.SpecialInternal,
+                              Special = t.Special,
                               CreateUser = t.CreateUser,
                               ItemsCount = count,
                               NeedAllocationCount = allocationcount
