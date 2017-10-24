@@ -16,24 +16,24 @@
                     <h4 class="modal-title">Inventory Log Note</h4>
                 </div>
                 <div id="dialogPlaceholderBody" class="modal-body">
-                    @Html.HiddenFor(m => m.productnoteid)
-                    @Html.HiddenFor(m => m.productmasterid)
+                    @Html.HiddenFor(m => m.ProductNoteId)
+                    @Html.HiddenFor(m => m.ProductMasterId)
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Date</label>
-                            @Html.TextBoxFor(m => m.notedate, "{0:dd MMM yyy}", new { @class = "form-control", @readonly = "readonly" })
+                            @Html.TextBoxFor(m => m.NoteDate, "{0:dd MMM yyy}", new { @class = "form-control", @readonly = "readonly" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label>Reason</label>
-                            @Html.DropDownListFor(m => m.reasoncode, ApplicationService.ddlReasonCodes(), new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.ReasonCode, ApplicationService.ddlReasonCodes(), new { @class = "form-control" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <label>Note</label>
-                            @Html.TextAreaFor(m => m.notes, new { @class = "form-control" })
+                            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control" })
                         </div>
                     </div>
                 </div>

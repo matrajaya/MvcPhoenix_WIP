@@ -1,5 +1,6 @@
 ﻿using MvcPhoenix.EF;
 using MvcPhoenix.Extensions;
+using MvcPhoenix.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -272,7 +273,7 @@ namespace MvcPhoenix.Models
         {
             int? productDetailId = productProfile.productdetailid;
 
-            productProfile.ListOfProductNotes = ProductService.GetLogNotes(productDetailId);
+            productProfile.ListOfProductNotes = ProductService.GetProductNotes(productDetailId);
 
             productProfile.ListOfCasNumbers = ProductService.GetCASItems(productDetailId);
 
@@ -334,32 +335,7 @@ namespace MvcPhoenix.Models
             return casItems;
         }
 
-        private static List<ProductNote> GetLogNotes(int? productDetailId)
-        {
-            var logNotes = new List<ProductNote>();
-
-            using (var db = new CMCSQL03Entities())
-            {
-                logNotes = (from t in db.tblPPPDLogNote
-                            where t.ProductDetailID == productDetailId
-                            select new ProductNote
-                            {
-                                productnoteid = t.PPPDLogNoteID,
-                                productdetailid = t.ProductDetailID,
-                                notedate = t.NoteDate,
-                                notes = t.Notes,
-                                reasoncode = t.ReasonCode,
-                                UpdateDate = t.UpdateDate,
-                                UpdateUser = t.UpdateUser,
-                                CreateDate = t.CreateDate,
-                                CreateUser = t.CreateUser
-                            }).ToList();
-            }
-
-            return logNotes;
-        }
-
-        public static int? GetProductMasterId(int productDetailId)
+        public static int? GetProductMasterId(int? productDetailId)
         {
             using (var db = new CMCSQL03Entities())
             {
@@ -416,10 +392,10 @@ namespace MvcPhoenix.Models
 
             // Create product log note
             var productNote = new ProductNote();
-            productNote.productdetailid = productProfile.productdetailid;
-            productNote.notedate = DateTime.UtcNow;
-            productNote.notes = "Equivalent created from product id: " + productDetailId;
-            productNote.reasoncode = "New";
+            productNote.ProductDetailId = productProfile.productdetailid;
+            productNote.NoteDate = DateTime.UtcNow;
+            productNote.Notes = "Equivalent created from product id: " + productDetailId;
+            productNote.ReasonCode = "New";
 
             ProductService.SaveProductNote(productNote);
 
@@ -514,14 +490,14 @@ namespace MvcPhoenix.Models
             if (productProfile.productmasterid < 1)
             {
                 productProfile.productmasterid = ProductService.NewProductMasterId();
-                productNote.notes = "Master product created";
+                productNote.Notes = "Master product created";
                 isNew = true;
             }
 
             if (productProfile.productdetailid < 1)
             {
                 productProfile.productdetailid = ProductService.NewProductDetailId();
-                productNote.notes = "New product created";
+                productNote.Notes = "New product created";
                 isNew = true;
             }
 
@@ -530,9 +506,9 @@ namespace MvcPhoenix.Models
 
             if (isNew)
             {
-                productNote.reasoncode = "New";
-                productNote.productdetailid = productProfile.productdetailid;
-                productNote.notedate = DateTime.UtcNow;
+                productNote.ReasonCode = "New";
+                productNote.ProductDetailId = productProfile.productdetailid;
+                productNote.NoteDate = DateTime.UtcNow;
 
                 ProductService.SaveProductNote(productNote);
             }
@@ -855,7 +831,7 @@ namespace MvcPhoenix.Models
 
         #region Product Notes
 
-        public static List<ProductNote> GetProductNotes(int productDetailId)
+        public static List<ProductNote> GetProductNotes(int? productDetailId)
         {
             var productNotes = new List<ProductNote>();
 
@@ -863,14 +839,15 @@ namespace MvcPhoenix.Models
             {
                 productNotes = (from t in db.tblPPPDLogNote
                                 where t.ProductDetailID == productDetailId
-                                orderby t.NoteDate descending
+                                orderby t.PPPDLogNoteID descending
                                 select new ProductNote
                                 {
-                                    productnoteid = t.PPPDLogNoteID,
-                                    productdetailid = t.ProductDetailID,
-                                    notedate = t.NoteDate,
-                                    notes = t.Notes,
-                                    reasoncode = t.ReasonCode,
+                                    ProductNoteId = t.PPPDLogNoteID,
+                                    ProductDetailId = t.ProductDetailID,
+                                    NoteDate = t.NoteDate,
+                                    Notes = t.Notes,
+                                    ReasonCode = t.ReasonCode,
+                                    Charge = t.Charge,
                                     UpdateDate = t.UpdateDate,
                                     UpdateUser = t.UpdateUser,
                                     CreateDate = t.CreateDate,
@@ -880,7 +857,7 @@ namespace MvcPhoenix.Models
 
             return productNotes;
         }
-
+        
         public static ProductNote GetProductNote(int productDetailLogNoteId)
         {
             var productNote = new ProductNote();
@@ -889,11 +866,12 @@ namespace MvcPhoenix.Models
             {
                 var getProductNote = db.tblPPPDLogNote.Find(productDetailLogNoteId);
 
-                productNote.productnoteid = getProductNote.PPPDLogNoteID;
-                productNote.productdetailid = getProductNote.ProductDetailID;
-                productNote.reasoncode = getProductNote.ReasonCode;
-                productNote.notedate = getProductNote.NoteDate;
-                productNote.notes = getProductNote.Notes;
+                productNote.ProductNoteId = getProductNote.PPPDLogNoteID;
+                productNote.ProductDetailId = getProductNote.ProductDetailID;
+                productNote.ReasonCode = getProductNote.ReasonCode;
+                productNote.NoteDate = getProductNote.NoteDate;
+                productNote.Notes = getProductNote.Notes;
+                productNote.Charge = getProductNote.Charge;
                 productNote.UpdateDate = getProductNote.UpdateDate;
                 productNote.UpdateUser = getProductNote.UpdateUser;
                 productNote.CreateDate = getProductNote.CreateDate;
@@ -909,11 +887,12 @@ namespace MvcPhoenix.Models
 
             using (var db = new CMCSQL03Entities())
             {
-                productNote.productnoteid = -1;
-                productNote.productdetailid = productDetailId;
-                productNote.reasoncode = null;
-                productNote.notedate = DateTime.UtcNow;
-                productNote.notes = null;
+                productNote.ProductNoteId = -1;
+                productNote.ProductDetailId = productDetailId;
+                productNote.ReasonCode = null;
+                productNote.NoteDate = DateTime.UtcNow;
+                productNote.Notes = null;
+                productNote.Charge = 0;
                 productNote.UpdateDate = DateTime.UtcNow;
                 productNote.UpdateUser = HttpContext.Current.User.Identity.Name;
                 productNote.CreateDate = DateTime.UtcNow;
@@ -927,29 +906,58 @@ namespace MvcPhoenix.Models
         {
             using (var db = new CMCSQL03Entities())
             {
-                if (productNote.productnoteid < 1)
+                if (productNote.ProductNoteId < 1)
                 {
                     var newProductDetailLogNote = new tblPPPDLogNote();
                     newProductDetailLogNote.CreateDate = DateTime.UtcNow;
                     newProductDetailLogNote.CreateUser = HttpContext.Current.User.Identity.Name;
+                    newProductDetailLogNote.Charge = GetReasonCodeCharge(productNote.ProductDetailId, productNote.ReasonCode);
 
                     db.tblPPPDLogNote.Add(newProductDetailLogNote);
                     db.SaveChanges();
 
-                    productNote.productnoteid = newProductDetailLogNote.PPPDLogNoteID;
+                    productNote.ProductNoteId = newProductDetailLogNote.PPPDLogNoteID;
+                    productNote.Charge = newProductDetailLogNote.Charge;
                 }
 
-                var productDetailLogNote = db.tblPPPDLogNote.Find(productNote.productnoteid);
+                var productDetailLogNote = db.tblPPPDLogNote.Find(productNote.ProductNoteId);
 
-                productDetailLogNote.ProductDetailID = productNote.productdetailid;
-                productDetailLogNote.NoteDate = productNote.notedate;
-                productDetailLogNote.Notes = productNote.notes;
-                productDetailLogNote.ReasonCode = productNote.reasoncode;
+                productDetailLogNote.ProductDetailID = productNote.ProductDetailId;
+                productDetailLogNote.NoteDate = productNote.NoteDate;
+                productDetailLogNote.Notes = productNote.Notes;
+                productDetailLogNote.ReasonCode = productNote.ReasonCode;
+                productDetailLogNote.Charge = productNote.Charge;
                 productDetailLogNote.UpdateDate = DateTime.UtcNow;
                 productDetailLogNote.UpdateUser = HttpContext.Current.User.Identity.Name;
 
                 db.SaveChanges();
             }
+        }
+
+        private static decimal? GetReasonCodeCharge(int? productDetailId, string reasonCode)
+        {
+            decimal? charge = 0;
+            int clientId;
+            int? productMasterId = GetProductMasterId(productDetailId);
+            
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var productMaster = db.tblProductMaster.Find(productMasterId);
+
+                clientId = productMaster.ClientID ?? 0;
+                if (clientId > 0)
+                {
+                    var serviceChargeRates = ClientService.GetServiceChargeRates(clientId);
+
+                    if (reasonCode == "New")
+                    {
+                        charge = serviceChargeRates.NewProductSetup;
+                    }
+                }
+            }
+
+            return charge;
         }
 
         public static void DeleteProductNote(int productDetailLogNoteId)
@@ -1066,7 +1074,7 @@ namespace MvcPhoenix.Models
 
         #endregion CAS
 
-        #region Client Product Cross Reference Methods
+        #region Client Product Cross Reference
 
         public static ClientProductXRef GetClientProductXRef(int productXRefId)
         {
@@ -1123,6 +1131,6 @@ namespace MvcPhoenix.Models
             }
         }
 
-        #endregion Client Product Cross Reference Methods
+        #endregion Client Product Cross Reference
     }
 }

@@ -26,11 +26,12 @@ namespace MvcPhoenix.Models
 
     public class ProductNote
     {
-        public int productnoteid { get; set; }
-        public int? productdetailid { get; set; }
-        public DateTime? notedate { get; set; }
-        public string notes { get; set; }
-        public string reasoncode { get; set; }
+        public int ProductNoteId { get; set; }
+        public int? ProductDetailId { get; set; }
+        public DateTime? NoteDate { get; set; }
+        public string Notes { get; set; }
+        public string ReasonCode { get; set; }
+        public decimal? Charge { get; set; }
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }

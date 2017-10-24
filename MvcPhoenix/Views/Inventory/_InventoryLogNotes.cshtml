@@ -37,8 +37,7 @@
                     <th width="10%">Date</th>
                     <th>Notes</th>
                     <th>Reason Code</th>
-                    <th>Updated On</th>
-                    <th>Updated By</th>
+                    <th>Updated</th>
                     <th id="noprint"></th>
                 </tr>
             </thead>
@@ -47,21 +46,20 @@
                 {
                     <tr>
                         <td id="noprint">
-                            @Ajax.ActionLink(" ", "DeleteInventoryLogNote", "Inventory", new { logNoteId = @item.productnoteid }, new AjaxOptions
+                            @Ajax.ActionLink(" ", "DeleteInventoryLogNote", "Inventory", new { logNoteId = @item.ProductNoteId }, new AjaxOptions
                              {
                                  Confirm = "Delete This Inventory Log Note?",
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateInventoryNotesList"
                              }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;", @title = "Delete Inventory Log" })
                         </td>
-                        <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
-                        <td>@item.notes</td>
-                        <td>@item.reasoncode</td>
-                        <td title="Created on @item.CreateDate">@item.UpdateDate</td>
-                        <td title="Created by @item.CreateUser">@item.UpdateUser</td>
+                        <td>@String.Format("{0:dd MMM yyyy}", @item.NoteDate)</td>
+                        <td>@item.Notes</td>
+                        <td>@item.ReasonCode</td>
+                        <td title="Updated by @item.UpdateUser. &#013;Created on @item.CreateDate. &#013;Created by @item.CreateUser.">@item.UpdateDate</td>
                         <td id="noprint">
                             <span class="pull-right">
-                                @Ajax.ActionLink(" ", "EditInventoryLogNote", "Inventory", new { logNoteId = @item.productnoteid }, new AjaxOptions
+                                @Ajax.ActionLink(" ", "EditInventoryLogNote", "Inventory", new { logNoteId = @item.ProductNoteId }, new AjaxOptions
                                {
                                    InsertionMode = InsertionMode.Replace,
                                    HttpMethod = "GET",

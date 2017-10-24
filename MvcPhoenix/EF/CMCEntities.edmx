@@ -1237,6 +1237,7 @@
           <Property Name="NoteDate" Type="datetime" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="ReasonCode" Type="nvarchar" MaxLength="25" />
+          <Property Name="Charge" Type="decimal" Precision="18" Scale="2" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -3007,6 +3008,7 @@
           <Property Name="NoteDate" Type="DateTime" Precision="3" />
           <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ReasonCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Charge" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
@@ -4927,6 +4929,7 @@
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Charge" ColumnName="Charge" />
                 <ScalarProperty Name="ReasonCode" ColumnName="ReasonCode" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="NoteDate" ColumnName="NoteDate" />

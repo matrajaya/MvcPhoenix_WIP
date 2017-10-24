@@ -481,10 +481,10 @@ namespace MvcPhoenix.Services
                     // Write to inventory log
                     InventoryLogNote inventoryLogNote = new InventoryLogNote();
 
-                    inventoryLogNote.productnoteid = -1;
-                    inventoryLogNote.productmasterid = bulkstock.ProductMasterID;
-                    inventoryLogNote.notes = "Converted " + stockQuantity + " from shelf stock id: " + shelfStock.StockID + " to bulk stock id: " + bulkstock.BulkID + ".\n";
-                    inventoryLogNote.reasoncode = "Change Packaging";
+                    inventoryLogNote.ProductNoteId = -1;
+                    inventoryLogNote.ProductMasterId = bulkstock.ProductMasterID;
+                    inventoryLogNote.Notes = "Converted " + stockQuantity + " from shelf stock id: " + shelfStock.StockID + " to bulk stock id: " + bulkstock.BulkID + ".\n";
+                    inventoryLogNote.ReasonCode = "Change Packaging";
 
                     InventoryService.SaveInventoryLogNote(inventoryLogNote);
 
@@ -555,11 +555,11 @@ namespace MvcPhoenix.Services
                             orderby t.InvPMLogNoteIDID descending
                             select new InventoryLogNote
                             {
-                                productnoteid = t.InvPMLogNoteIDID,
-                                productmasterid = t.ProductMasterID,
-                                notedate = t.NoteDate,
-                                notes = t.Notes,
-                                reasoncode = t.Comment,
+                                ProductNoteId = t.InvPMLogNoteIDID,
+                                ProductMasterId = t.ProductMasterID,
+                                NoteDate = t.NoteDate,
+                                Notes = t.Notes,
+                                ReasonCode = t.Comment,
                                 UpdateDate = t.UpdateDate,
                                 UpdateUser = t.UpdateUser,
                                 CreateDate = t.CreateDate,
@@ -581,11 +581,11 @@ namespace MvcPhoenix.Services
                                    orderby t.NoteDate descending
                                    select new ProductNote
                                    {
-                                       productnoteid = t.PPPDLogNoteID,
-                                       productdetailid = t.ProductDetailID,
-                                       notedate = t.NoteDate,
-                                       notes = t.Notes,
-                                       reasoncode = t.ReasonCode,
+                                       ProductNoteId = t.PPPDLogNoteID,
+                                       ProductDetailId = t.ProductDetailID,
+                                       NoteDate = t.NoteDate,
+                                       Notes = t.Notes,
+                                       ReasonCode = t.ReasonCode,
                                        UpdateDate = t.UpdateDate,
                                        UpdateUser = t.UpdateUser,
                                        CreateDate = t.CreateDate,
@@ -603,11 +603,11 @@ namespace MvcPhoenix.Services
             {
                 var productLogNote = db.tblInvPMLogNote.Find(inventorylognoteid);
 
-                inventoryLogNote.productnoteid = productLogNote.InvPMLogNoteIDID;
-                inventoryLogNote.productmasterid = productLogNote.ProductMasterID;
-                inventoryLogNote.reasoncode = productLogNote.Comment;
-                inventoryLogNote.notedate = productLogNote.NoteDate;
-                inventoryLogNote.notes = productLogNote.Notes;
+                inventoryLogNote.ProductNoteId = productLogNote.InvPMLogNoteIDID;
+                inventoryLogNote.ProductMasterId = productLogNote.ProductMasterID;
+                inventoryLogNote.ReasonCode = productLogNote.Comment;
+                inventoryLogNote.NoteDate = productLogNote.NoteDate;
+                inventoryLogNote.Notes = productLogNote.Notes;
                 inventoryLogNote.UpdateDate = productLogNote.UpdateDate;
                 inventoryLogNote.UpdateUser = productLogNote.UpdateUser;
                 inventoryLogNote.CreateDate = productLogNote.CreateDate;
@@ -626,11 +626,11 @@ namespace MvcPhoenix.Services
         {
             var inventoryLogNote = new InventoryLogNote();
 
-            inventoryLogNote.productnoteid = -1;
-            inventoryLogNote.productmasterid = productMasterId;
-            inventoryLogNote.reasoncode = null;
-            inventoryLogNote.notedate = DateTime.UtcNow;
-            inventoryLogNote.notes = null;
+            inventoryLogNote.ProductNoteId = -1;
+            inventoryLogNote.ProductMasterId = productMasterId;
+            inventoryLogNote.ReasonCode = null;
+            inventoryLogNote.NoteDate = DateTime.UtcNow;
+            inventoryLogNote.Notes = null;
             inventoryLogNote.UpdateDate = DateTime.UtcNow;
             inventoryLogNote.UpdateUser = HttpContext.Current.User.Identity.Name;
             inventoryLogNote.CreateDate = DateTime.UtcNow;
@@ -647,7 +647,7 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                if (inventoryLogNote.productnoteid == -1)
+                if (inventoryLogNote.ProductNoteId == -1)
                 {
                     var newLogNote = new tblInvPMLogNote();
                     newLogNote.CreateDate = DateTime.UtcNow;
@@ -656,15 +656,15 @@ namespace MvcPhoenix.Services
 
                     db.SaveChanges();
 
-                    inventoryLogNote.productnoteid = newLogNote.InvPMLogNoteIDID;
+                    inventoryLogNote.ProductNoteId = newLogNote.InvPMLogNoteIDID;
                 }
 
-                var logNote = db.tblInvPMLogNote.Find(inventoryLogNote.productnoteid);
+                var logNote = db.tblInvPMLogNote.Find(inventoryLogNote.ProductNoteId);
 
-                logNote.ProductMasterID = inventoryLogNote.productmasterid;
+                logNote.ProductMasterID = inventoryLogNote.ProductMasterId;
                 logNote.NoteDate = DateTime.UtcNow;
-                logNote.Notes = inventoryLogNote.notes;
-                logNote.Comment = inventoryLogNote.reasoncode;
+                logNote.Notes = inventoryLogNote.Notes;
+                logNote.Comment = inventoryLogNote.ReasonCode;
                 logNote.UpdateDate = DateTime.UtcNow;
                 logNote.UpdateUser = HttpContext.Current.User.Identity.Name;
 

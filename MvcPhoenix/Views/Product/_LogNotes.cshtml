@@ -21,8 +21,8 @@
                     <th width="10%">Date</th>
                     <th>Notes</th>
                     <th>Reason Code</th>
-                    <th>Updated On</th>
-                    <th>Updated By</th>
+                    <th>Charge</th>
+                    <th>Updated</th>
                     <th id="noprint"></th>
                 </tr>
             </thead>
@@ -31,20 +31,20 @@
                 {
                     <tr>
                         <td id="noprint">
-                            @Ajax.ActionLink(" ", "DeleteProductNote", "Product", new { id = @item.productnoteid, ParentID = Model[0].productdetailid }, new AjaxOptions
+                            @Ajax.ActionLink(" ", "DeleteProductNote", "Product", new { id = @item.ProductNoteId, ParentID = Model[0].ProductDetailId }, new AjaxOptions
                              {
                                  Confirm = "Delete This Product Note?",
                                  HttpMethod = "GET",
                                  OnSuccess = "UpdateProductNotesList"
                              }, new { @class = "fa fa-fw fa-minus-circle", @style = "color:red;text-decoration:none;" })
                         </td>
-                        <td>@String.Format("{0:dd MMM yyyy}", @item.notedate)</td>
-                        <td>@item.notes</td>
-                        <td>@item.reasoncode</td>
-                        <td title="Created on @item.CreateDate">@item.UpdateDate</td>
-                        <td title="Created by @item.CreateUser">@item.UpdateUser</td>
+                        <td>@String.Format("{0:dd MMM yyyy}", @item.NoteDate)</td>
+                        <td>@item.Notes</td>
+                        <td>@item.ReasonCode</td>
+                        <td>@item.Charge</td>
+                        <td title="Updated by @item.UpdateUser. &#013;Created on @item.CreateDate. &#013;Created by @item.CreateUser.">@item.UpdateDate</td>
                         <td id="noprint" style="text-align:right">
-                            @Ajax.ActionLink(" ", "EditProductNote", "Product", new { id = @item.productnoteid }, new AjaxOptions
+                            @Ajax.ActionLink(" ", "EditProductNote", "Product", new { id = @item.ProductNoteId }, new AjaxOptions
                                {
                                    InsertionMode = InsertionMode.Replace,
                                    HttpMethod = "GET",

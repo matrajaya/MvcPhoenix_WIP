@@ -19,6 +19,7 @@ namespace MvcPhoenix.EF
         public Nullable<System.DateTime> NoteDate { get; set; }
         public string Notes { get; set; }
         public string ReasonCode { get; set; }
+        public Nullable<decimal> Charge { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

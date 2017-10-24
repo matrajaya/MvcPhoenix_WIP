@@ -219,11 +219,11 @@ namespace MvcPhoenix.Models
 
     public class InventoryLogNote
     {
-        public int productnoteid { get; set; }
-        public int? productmasterid { get; set; }
-        public DateTime? notedate { get; set; }
-        public string notes { get; set; }
-        public string reasoncode { get; set; }                                  //current represented as comments in table. Change later - Iffy
+        public int ProductNoteId { get; set; }
+        public int? ProductMasterId { get; set; }
+        public DateTime? NoteDate { get; set; }
+        public string Notes { get; set; }
+        public string ReasonCode { get; set; }
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
