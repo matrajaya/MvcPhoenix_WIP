@@ -2075,7 +2075,7 @@ namespace MvcPhoenix.Services
             newOrderItem.Qty = item.Qty;
             newOrderItem.LotNumber = item.LotNumber;
             newOrderItem.ShipDate = item.ShipDate;
-            newOrderItem.CSAllocate = item.CSAllocate;
+            newOrderItem.CSAllocate = true;
             newOrderItem.AllocateStatus = item.AllocateStatus;
             newOrderItem.NonCMCDelay = item.NonCMCDelay;
             newOrderItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;
