@@ -190,9 +190,15 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 form-group">
                             <label>Item Notes</label>
                             @Html.TextAreaFor(m => m.ItemNotes, new { rows = "2", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>External Item Id / Import Item Id</label>
+                            @Html.TextBoxFor(m => m.ImportItemID, new { @class = "form-control" })
                         </div>
                     </div>
                 </div>

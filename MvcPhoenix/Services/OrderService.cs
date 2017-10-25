@@ -51,9 +51,12 @@ namespace MvcPhoenix.Services
                               ClientRefNumber = t.RefNum,
                               SpecialInternal = t.SpecialInternal,
                               Special = t.Special,
-                              CreateUser = t.CreateUser,
                               ItemsCount = count,
-                              NeedAllocationCount = allocationcount
+                              NeedAllocationCount = allocationcount,
+                              CreateDate = t.CreateDate,
+                              CreateUser = t.CreateUser,
+                              UpdateDate = t.UpdateDate,
+                              UpdateUser = t.UpdateUser
                           }).ToList();
             }
 
@@ -594,13 +597,15 @@ namespace MvcPhoenix.Services
                 orderItem.Status = getOrderItem.Status;
                 orderItem.StatusID = null;
                 orderItem.ItemNotes = getOrderItem.ItemNotes;
+                orderItem.ImportItemID = getOrderItem.ImportItemID;
                 orderItem.WasteOrderTotalWeight = getOrderItem.WasteOrderTotalWeight;
                 orderItem.AlertNotesShipping = getOrderItem.AlertNotesShipping;
                 orderItem.AlertNotesPackOut = getOrderItem.AlertNotesPackout;
                 orderItem.AlertNotesOrderEntry = getOrderItem.AlertNotesOrderEntry;
                 orderItem.AlertNotesOther = getOrderItem.AlertNotesOther;
 
-                if (getOrderItem.ShipDate != null || getOrderItem.AllocateStatus == "A")
+                if (getOrderItem.ShipDate != null || 
+                    getOrderItem.AllocateStatus == "A")
                 {
                     orderItem.CrudMode = "RO";
                 }
@@ -705,16 +710,17 @@ namespace MvcPhoenix.Services
                 orderItem.DelayReason = orderitem.DelayReason;
                 orderItem.SPSCharge = orderitem.SPSCharge;
                 orderItem.ItemNotes = orderitem.ItemNotes;
+                orderItem.ImportItemID = orderitem.ImportItemID;
                 orderItem.WasteOrderTotalWeight = orderitem.WasteOrderTotalWeight;
                 orderItem.AlertNotesShipping = productDetail.AlertNotesShipping;
                 orderItem.AlertNotesOrderEntry = productDetail.AlertNotesOrderEntry;
                 orderItem.AlertNotesPackout = productMaster.AlertNotesPackout;
 
                 // Specific alert for order item
-                if (productDetail.AIRUNNUMBER == "UN3082"
-                    || productDetail.AIRUNNUMBER == "UN3077"
-                    || productDetail.GRNUNNUMBER == "UN3082"
-                    || productDetail.GRNUNNUMBER == "UN3077")
+                if (productDetail.AIRUNNUMBER == "UN3082" ||
+                    productDetail.AIRUNNUMBER == "UN3077" ||
+                    productDetail.GRNUNNUMBER == "UN3082" ||
+                    productDetail.GRNUNNUMBER == "UN3077")
                 {
                     orderItem.AlertNotesOther = "Products with UN3082 and UN3077 may be shipped as non hazardous if under 5 kg";
                 }
@@ -2075,6 +2081,7 @@ namespace MvcPhoenix.Services
             newOrderItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;
             newOrderItem.Status = item.Status;
             newOrderItem.DelayReason = item.DelayReason;
+            newOrderItem.ImportItemID = item.ImportItemID;
             newOrderItem.ItemNotes = item.ItemNotes;
 
             // Check special request size and zero out if not decimal.
@@ -2122,6 +2129,7 @@ namespace MvcPhoenix.Services
             orderItem.Qty = importItem.Qty;
             orderItem.Size = importItem.Size;
             orderItem.LotNumber = importItem.LotNumber;
+            orderItem.ImportItemID = importItem.ImportItemID;
             orderItem.ItemNotes = importItem.ItemNotes;
             orderItem.AlertNotesOrderEntry = importItem.ItemNotes;
             orderItem.CreateDate = DateTime.UtcNow;

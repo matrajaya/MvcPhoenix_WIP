@@ -940,7 +940,6 @@ namespace MvcPhoenix.Models
             int clientId;
             int? productMasterId = GetProductMasterId(productDetailId);
             
-
             using (var db = new CMCSQL03Entities())
             {
                 var productMaster = db.tblProductMaster.Find(productMasterId);
@@ -950,9 +949,16 @@ namespace MvcPhoenix.Models
                 {
                     var serviceChargeRates = ClientService.GetServiceChargeRates(clientId);
 
-                    if (reasonCode == "New")
+                    // Treat these charges alike in EU. They don't charge for these reasons.
+                    var nonChargeReasons = new[]{"New", "Delete", "Re-Activate", "Change Free Of Charge"};
+
+                    if (nonChargeReasons.Contains(reasonCode, StringComparer.OrdinalIgnoreCase))
                     {
                         charge = serviceChargeRates.NewProductSetup;
+                    }
+                    else if (reasonCode.ToLower().Contains("change"))
+                    {
+                        charge = serviceChargeRates.ProductSetupChanges;
                     }
                 }
             }
