@@ -2078,8 +2078,7 @@ namespace MvcPhoenix.Services
             newOrderItem.CSAllocate = true;
             newOrderItem.AllocateStatus = item.AllocateStatus;
             newOrderItem.NonCMCDelay = item.NonCMCDelay;
-            newOrderItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;
-            newOrderItem.Status = item.Status;
+            newOrderItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;            
             newOrderItem.DelayReason = item.DelayReason;
             newOrderItem.ImportItemID = item.ImportItemID;
             newOrderItem.ItemNotes = item.ItemNotes;
