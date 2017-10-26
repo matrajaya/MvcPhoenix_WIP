@@ -26,10 +26,13 @@
                 {
                     <tr>
                         <td>
-                            @if ((DateTime.Now - item.CreateDate.Value).TotalHours < 8)
+                            @if (item.CreateDate.HasValue)
                             {
-                                <i class="fa fa-exclamation-circle text-success" title="New Order"></i>
-                            }                            
+                                if ((DateTime.Now - item.CreateDate.Value).TotalHours < 8)
+                                {
+                                    <i class="fa fa-exclamation-circle text-success" title="New Order"></i>
+                                }
+                            }
                         </td>
                         <td>@item.ClientName</td>
                         <td>@String.Format("{0:dd MMM yyyy}", @item.OrderDate)</td>
@@ -55,7 +58,6 @@ else
         <label class="lead">No Results Found</label>
     </div>
 }
-
 
 @*Pagination control*@
 @if (@ViewBag.DisplayActivePage > 0)
