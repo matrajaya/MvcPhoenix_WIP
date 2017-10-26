@@ -115,7 +115,8 @@ namespace MvcPhoenix.Controllers
 
             // Create new order
             // Write order master level info to order
-            orderId = OrderService.NewOrderId();
+            string user = HttpContext.User.Identity.Name;
+            orderId = OrderService.NewOrderId(user);
 
             using (var db = new CMCSQL03Entities())
             {

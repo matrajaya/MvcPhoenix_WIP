@@ -28,7 +28,7 @@
                 <th class="text-center">Allocated On</th>
                 <th class="text-center">Grn UN</th>
                 <th class="text-center">Air UN</th>
-                <th>Updated On</th>
+                <th>Updated</th>
                 <th id="noprint"></th>
             </tr>
         </thead>
@@ -84,7 +84,7 @@
                     <td class="text-center">@String.Format("{0:dd MMM yyyy}", item.AllocatedDate)</td>
                     <td class="text-center">@item.GrnUnNumber, @item.GrnPkGroup</td>
                     <td class="text-center">@item.AirUnNumber, @item.AirPkGroup</td>
-                    <td title="Updated by: @item.UpdateUser">@String.Format("{0:dd MMM yyyy}", item.UpdateDate)</td>
+                    <td title="Updated by @item.UpdateUser. &#013;Created on @String.Format("{0:dd MMM yyyy}", item.CreateDate). &#013;Created by @item.CreateUser">@String.Format("{0:dd MMM yyyy}", item.UpdateDate)</td>
                     <td id="noprint" class="text-right">
                         @if (item.ProductDetailID > 0)
                         {

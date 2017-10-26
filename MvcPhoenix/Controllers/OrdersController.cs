@@ -38,7 +38,6 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpPost]
         public ActionResult LookupOrderID(FormCollection form)
         {
             int orderId = Convert.ToInt32(form["orderid"]);
@@ -61,7 +60,6 @@ namespace MvcPhoenix.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
         public ActionResult OrdersRecentUser(string filter, int page = 0)
         {
             string storeName = "ordersRecentUser";
@@ -99,7 +97,6 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpGet]
         public ActionResult OrdersRecentAll(string filter, int page = 0)
         {
             string storeName = "ordersRecentAll";
@@ -134,7 +131,6 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpGet]
         public ActionResult OrdersToday(string filter, int page = 0)
         {
             DateTime today = DateTime.Today.AddDays(0);
@@ -172,7 +168,6 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpGet]
         public ActionResult OrdersYesterday(string filter, int page = 0)
         {
             DateTime yesterday = DateTime.UtcNow.Date.AddDays(-1);
@@ -210,7 +205,6 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpGet]
         public ActionResult OrdersNeedAllocation(string filter, int page = 0)
         {
             string storeName = "ordersNeedAllocation";
@@ -246,7 +240,6 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        [HttpGet]
         public ActionResult AdvancedSearch()
         {
             return PartialView("~/Views/Orders/_AdvancedSearchModal.cshtml");
@@ -889,6 +882,8 @@ namespace MvcPhoenix.Controllers
         [HttpPost]
         public ActionResult Save(OrderMasterFull order)
         {
+            order.CreateUser = HttpContext.User.Identity.Name;
+
             int orderId = OrderService.SaveOrder(order);
             TempData["SaveResult"] = "Order updated on " + DateTime.UtcNow.ToString("R");
 

@@ -254,14 +254,14 @@ namespace MvcPhoenix.Services
             return order;
         }
 
-        public static int NewOrderId()
+        public static int NewOrderId(string user)
         {
             var newOrder = new tblOrderMaster();
 
             using (var db = new CMCSQL03Entities())
             {
                 newOrder.CreateDate = DateTime.UtcNow;
-                newOrder.CreateUser = HttpContext.Current.User.Identity.Name;
+                newOrder.CreateUser = user ?? HttpContext.Current.User.Identity.Name;
 
                 db.tblOrderMaster.Add(newOrder);
                 db.SaveChanges();
@@ -274,7 +274,7 @@ namespace MvcPhoenix.Services
         {
             if (order.OrderID == -1)
             {
-                order.OrderID = NewOrderId();
+                order.OrderID = NewOrderId(order.CreateUser);
             }
 
             using (var db = new CMCSQL03Entities())
@@ -604,7 +604,7 @@ namespace MvcPhoenix.Services
                 orderItem.AlertNotesOrderEntry = getOrderItem.AlertNotesOrderEntry;
                 orderItem.AlertNotesOther = getOrderItem.AlertNotesOther;
 
-                if (getOrderItem.ShipDate != null || 
+                if (getOrderItem.ShipDate != null ||
                     getOrderItem.AllocateStatus == "A")
                 {
                     orderItem.CrudMode = "RO";
@@ -660,7 +660,7 @@ namespace MvcPhoenix.Services
                 {
                     orderitem.ItemID = OrderService.NewOrderItemId();
                     orderitem.CreateDate = DateTime.UtcNow;
-                    orderitem.CreateUser = HttpContext.Current.User.Identity.Name;
+                    orderitem.CreateUser = orderitem.CreateUser ?? HttpContext.Current.User.Identity.Name;
                 }
 
                 var orderMaster = db.tblOrderMaster.Find(orderitem.OrderID);
@@ -1804,7 +1804,7 @@ namespace MvcPhoenix.Services
 
         #endregion SPS Billing
 
-        #region Order Import Methods
+        #region Order Import
 
         public static void ImportOrders(out int OrdersImportedCount, out TimeSpan runTime)
         {
@@ -2051,7 +2051,7 @@ namespace MvcPhoenix.Services
             order.Distributor = orderImport.Distributor;
             order.PreferredCarrier = orderImport.PreferredCarrier;
             order.ApprovalNeeded = Convert.ToBoolean(orderImport.ApprovalNeeded);
-            order.CreateUser = orderImport.CreateUser;
+            order.CreateUser = "System [Import]";
             order.CreateDate = orderImport.CreateDate;
             order.UpdateUser = orderImport.UpdateUser;
             order.UpdateDate = orderImport.UpdateDate;
@@ -2067,9 +2067,6 @@ namespace MvcPhoenix.Services
 
             newOrderItem.ItemID = -1;
             newOrderItem.OrderID = newOrderId;
-            newOrderItem.CreateDate = DateTime.UtcNow;
-            newOrderItem.CreateUser = "System [Import]";
-            newOrderItem.UpdateUser = HttpContext.Current.User.Identity.Name;
             newOrderItem.ProductDetailID = item.ProductDetailID;
             newOrderItem.ShelfID = item.ShelfID;
             newOrderItem.Qty = item.Qty;
@@ -2078,10 +2075,14 @@ namespace MvcPhoenix.Services
             newOrderItem.CSAllocate = true;
             newOrderItem.AllocateStatus = item.AllocateStatus;
             newOrderItem.NonCMCDelay = item.NonCMCDelay;
-            newOrderItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;            
+            newOrderItem.CarrierInvoiceRcvd = item.CarrierInvoiceRcvd;
             newOrderItem.DelayReason = item.DelayReason;
             newOrderItem.ImportItemID = item.ImportItemID;
             newOrderItem.ItemNotes = item.ItemNotes;
+            newOrderItem.CreateDate = DateTime.UtcNow;
+            newOrderItem.CreateUser = "System [Import]";
+            newOrderItem.UpdateDate = DateTime.UtcNow;
+            newOrderItem.UpdateUser = HttpContext.Current.User.Identity.Name;
 
             // Check special request size and zero out if not decimal.
             if (item.Size == "1SR")
@@ -2143,6 +2144,6 @@ namespace MvcPhoenix.Services
             }
         }
 
-        #endregion Order Import Methods
+        #endregion Order Import
     }
 }

@@ -14,8 +14,7 @@
                 <th style="text-align:center;">Amount</th>
                 <th>Date</th>
                 <th>Comments</th>
-                <th>Updated By</th>
-                <th>Updated On</th>
+                <th>Updated</th>
                 <th id="noprint"></th>
             </tr>
         </thead>
@@ -31,8 +30,7 @@
                     <td style="text-align:center;">@item.TransAmount</td>
                     <td>@String.Format("{0:dd MMM yyyy}", item.TransDate)</td>
                     <td width="30%">@item.Comments</td>
-                    <td title="Created By: @item.CreateUser">@item.UpdateUser</td>
-                    <td title="Created On: @String.Format("{0:dd MMM yyyy}", item.CreateDate)">@String.Format("{0:dd MMM yyyy}", item.UpdateDate)</td>
+                    <td title="Updated by @item.UpdateUser. &#013;Created on @String.Format("{0:dd MMM yyyy}", item.CreateDate). &#013;Created by @item.CreateUser">@String.Format("{0:dd MMM yyyy}", item.UpdateDate)</td>
                     <td id="noprint" class="text-right">
                         @Ajax.ActionLink(" ", "EditTrans", "Orders", new { id = @item.OrderTransID }, new AjaxOptions
                              {

@@ -76,7 +76,7 @@
                                     @Ajax.ActionLink("Yesterday's Orders", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "All orders created yesterday", @class = "label label-warning" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Need Allocation", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "All orders with items not allocated", @class = "label label-danger" })
+                                    @Ajax.ActionLink("Need Allocation + Attention", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "All orders with items not allocated or needs attention", @class = "label label-danger" })
                                 </li>
                             </ul>
                         </div>
