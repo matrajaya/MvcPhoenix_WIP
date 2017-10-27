@@ -145,8 +145,14 @@ namespace MvcPhoenix.Services
                 }
 
                 var client = db.tblClient.Find(orderDetails.ClientID);
-                order.ItemsCount = db.tblOrderItem.Where(x => x.OrderID == orderid).Count();
-                order.TransCount = db.tblOrderTrans.Where(x => x.OrderID == orderid).Count();
+
+                order.ItemsCount = db.tblOrderItem
+                                     .Where(x => x.OrderID == orderid)
+                                     .Count();
+
+                order.TransCount = db.tblOrderTrans
+                                     .Where(x => x.OrderID == orderid)
+                                     .Count();
 
                 order.ClientName = client.ClientName;
                 order.ClientCode = client.ClientCode;
@@ -434,12 +440,14 @@ namespace MvcPhoenix.Services
                 return true;
             }
 
-            if (!String.IsNullOrEmpty(order.Street) && file.Contains(order.Street))
+            if (!String.IsNullOrEmpty(order.Street) && 
+                file.Contains(order.Street))
             {
                 return true;
             }
 
-            if (!String.IsNullOrEmpty(order.Attention) && file.Contains(order.Attention))
+            if (!String.IsNullOrEmpty(order.Attention) && 
+                file.Contains(order.Attention))
             {
                 return true;
             }
@@ -671,7 +679,8 @@ namespace MvcPhoenix.Services
 
                 // Set shelf details for special request
                 orderItem.SRSize = 0;
-                if (orderitem.SRSize > 0 && shelfMaster.Size == "1SR")
+                if (orderitem.SRSize > 0 && 
+                    shelfMaster.Size == "1SR")
                 {
                     orderItem.SRSize = orderitem.SRSize;
                     orderItem.Size = "1SR";
@@ -826,9 +835,9 @@ namespace MvcPhoenix.Services
                 db.Database.ExecuteSqlCommand(deleteQuery);
 
                 var tierSize = db.tblTier
-                                 .Where(t => t.ClientID == order.ClientID
-                                         && t.Size == orderItem.Size
-                                         && t.TierLevel == 1)
+                                 .Where(t => t.ClientID == order.ClientID &&
+                                             t.Size == orderItem.Size &&
+                                             t.TierLevel == 1)
                                  .FirstOrDefault();
 
                 if (tierSize != null)
@@ -858,9 +867,9 @@ namespace MvcPhoenix.Services
                 else
                 {
                     var tierSpecialRequest = db.tblTier
-                                               .Where(t => t.ClientID == order.ClientID
-                                                       && t.Size == "1SR"
-                                                       && t.TierLevel == 1)
+                                               .Where(t => t.ClientID == order.ClientID &&
+                                                           t.Size == "1SR" &&
+                                                           t.TierLevel == 1)
                                                .FirstOrDefault();
 
                     if (tierSpecialRequest != null)
@@ -1255,7 +1264,8 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var orderItems = (from orderitem in db.tblOrderItem
-                                  join ordermaster in db.tblOrderMaster on orderitem.OrderID equals ordermaster.OrderID
+                                  join ordermaster in db.tblOrderMaster 
+                                  on orderitem.OrderID equals ordermaster.OrderID
                                   where orderitem.OrderID == OrderID
                                   && orderitem.ShipDate == null
                                   && orderitem.AllocateStatus == null
@@ -1271,7 +1281,8 @@ namespace MvcPhoenix.Services
                 foreach (var item in orderItems)
                 {
                     var stock = (from itemstock in db.tblStock
-                                 join itembulk in db.tblBulk on itemstock.BulkID equals itembulk.BulkID
+                                 join itembulk in db.tblBulk 
+                                 on itemstock.BulkID equals itembulk.BulkID
                                  orderby itembulk.CeaseShipDate
                                  where itemstock.ShelfID == item.orderitem.ShelfID
                                  select new
@@ -1437,7 +1448,8 @@ namespace MvcPhoenix.Services
                 log.LogAmount = orderItem.Qty * unitWeight;
 
                 // Bulk item
-                if (orderItem.AllocatedStockID == null && orderItem.AllocatedBulkID != null)
+                if (orderItem.AllocatedStockID == null && 
+                    orderItem.AllocatedBulkID != null)
                 {
                     bulk.Qty += orderItem.Qty;
                     bulk.CurrentWeight += orderItem.Weight;
