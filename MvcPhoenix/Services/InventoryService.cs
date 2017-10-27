@@ -245,11 +245,16 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 stockItems = (from stock in db.tblStock
-                              join shelfmaster in db.tblShelfMaster on stock.ShelfID equals shelfmaster.ShelfID
-                              join productdetail in db.tblProductDetail on shelfmaster.ProductDetailID equals productdetail.ProductDetailID
-                              join productmaster in db.tblProductMaster on productdetail.ProductMasterID equals productmaster.ProductMasterID
-                              join bulk in db.tblBulk on stock.BulkID equals bulk.BulkID
-                              join division in db.tblDivision on productdetail.DivisionID equals division.DivisionID
+                              join shelfmaster in db.tblShelfMaster 
+                              on stock.ShelfID equals shelfmaster.ShelfID
+                              join productdetail in db.tblProductDetail 
+                              on shelfmaster.ProductDetailID equals productdetail.ProductDetailID
+                              join productmaster in db.tblProductMaster 
+                              on productdetail.ProductMasterID equals productmaster.ProductMasterID
+                              join bulk in db.tblBulk 
+                              on stock.BulkID equals bulk.BulkID
+                              join division in db.tblDivision 
+                              on productdetail.DivisionID equals division.DivisionID
                               where productmaster.ClientID == clientid
                               orderby productdetail.ProductCode
                               select new ReturnStockViewModel
@@ -396,6 +401,7 @@ namespace MvcPhoenix.Services
                                       OrderComment = orders.Comment
                                   }).ToList();
             }
+
             return bulkOrderItems;
         }
 
@@ -449,9 +455,9 @@ namespace MvcPhoenix.Services
                 {
                     var shelfStock = db.tblStock.Find(stockItemId);
 
-                    if (shelfStock.QtyAvailable < stockQuantity
-                        || shelfStock.QtyAvailable < 1
-                        || shelfStock.QtyAvailable == null)
+                    if (shelfStock.QtyAvailable < stockQuantity ||
+                        shelfStock.QtyAvailable < 1 ||
+                        shelfStock.QtyAvailable == null)
                     {
                         return false;
                     }
@@ -463,7 +469,9 @@ namespace MvcPhoenix.Services
 
                     int? bulkid = shelfStock.BulkID;
                     var bulkstock = db.tblBulk.Find(bulkid);
-                    if (bulkstock.BulkStatus == "Virtual" || bulkstock.BulkStatus == "BF")
+
+                    if (bulkstock.BulkStatus == "Virtual" || 
+                        bulkstock.BulkStatus == "BF")
                     {
                         bulkstock.Bin = shelfStock.Bin;
                         bulkstock.BulkStatus = shelfStock.ShelfStatus;
@@ -503,9 +511,9 @@ namespace MvcPhoenix.Services
 
             using (var db = new CMCSQL03Entities())
             {
-                var bulkProducts = (from t in db.tblBulk
-                                    where t.ProductMasterID == productmasterid
-                                    select t).ToList();
+                var bulkProducts = db.tblBulk
+                                     .Where(x => x.ProductMasterID == productmasterid)
+                                     .ToList();
 
                 foreach (var row in bulkProducts)
                 {
@@ -523,9 +531,12 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var stockProducts = (from stock in db.tblStock
-                                     join shelf in db.tblShelfMaster on stock.ShelfID equals shelf.ShelfID
-                                     join productDetail in db.tblProductDetail on shelf.ProductDetailID equals productDetail.ProductDetailID
-                                     join bulk in db.tblBulk on stock.BulkID equals bulk.BulkID
+                                     join shelf in db.tblShelfMaster 
+                                     on stock.ShelfID equals shelf.ShelfID
+                                     join productDetail in db.tblProductDetail 
+                                     on shelf.ProductDetailID equals productDetail.ProductDetailID
+                                     join bulk in db.tblBulk 
+                                     on stock.BulkID equals bulk.BulkID
                                      where productDetail.ProductDetailID == productdetailid
                                      && stock.QtyOnHand > 0
                                      select stock).ToList();
@@ -592,6 +603,7 @@ namespace MvcPhoenix.Services
                                        CreateUser = t.CreateUser
                                    }).ToList();
             }
+
             return productLogNotes;
         }
 
@@ -680,7 +692,7 @@ namespace MvcPhoenix.Services
         {
             using (var db = new CMCSQL03Entities())
             {
-                string deleteQuery = "Delete from tblInvPMLogNote Where InvPMLogNoteIDID=" + inventoryProductLogNoteId;
+                string deleteQuery = "DELETE FROM tblInvPMLogNote WHERE InvPMLogNoteIDID=" + inventoryProductLogNoteId;
                 db.Database.ExecuteSqlCommand(deleteQuery);
             }
         }
@@ -749,17 +761,42 @@ namespace MvcPhoenix.Services
         }
 
         /// <summary>
-        /// Update inventory when product is received.
+        /// 
         /// </summary>
-        public static void UpdateInventoryReceived()
+        public static void UpdateInventoryShelfReceived()
         {
+            var log = new InventoryLog();
+
+            log.LogType = "SS-RCV";
+            log.LogNotes = "Received shelf stock item";
+
+            InventoryService.LogInventoryUpdates(log);
         }
 
         /// <summary>
-        /// Update inventory when product is packed out for special requests.
+        /// 
         /// </summary>
-        public static void UpdateInventoryOnPackout()
+        public static void UpdateInventoryBulkReceived()
         {
+            var log = new InventoryLog();
+
+            log.LogType = "BS-RCV";
+            log.LogNotes = "Received bulk stock item";
+
+            InventoryService.LogInventoryUpdates(log);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void UpdateInventoryOnSpecialRequestPackout()
+        {
+            var log = new InventoryLog();
+
+            log.LogType = "SR-PKO";
+            log.LogNotes = "Packout special request item";
+
+            InventoryService.LogInventoryUpdates(log);
         }
 
         /// <summary>
@@ -827,11 +864,11 @@ namespace MvcPhoenix.Services
                 var client = db.tblClient.Find(productMaster.ClientID);
 
                 // check to see if there is an open packout already
-                var packout = (from t in db.tblProductionMaster
-                               where t.Company == client.CMCLongCustomer
-                               && t.MasterCode == productMaster.MasterCode
-                               && (t.ProductionStage == 10 | t.ProductionStage == 20)
-                               select t).FirstOrDefault();
+                var packout = db.tblProductionMaster
+                                .Where(x => x.Company == client.CMCLongCustomer &&
+                                            x.MasterCode == productMaster.MasterCode &&
+                                            (x.ProductionStage == 10 | x.ProductionStage == 20))
+                                .FirstOrDefault();
 
                 if (packout != null)
                 {
@@ -841,9 +878,12 @@ namespace MvcPhoenix.Services
 
                 // Get a list of what we need to inform packout
                 var packoutBulk = (from bulks in db.tblBulk
-                                   join productmaster in db.tblProductMaster on bulks.ProductMasterID equals productmaster.ProductMasterID
-                                   join productdetail in db.tblProductDetail on productmaster.ProductMasterID equals productdetail.ProductMasterID
-                                   join shelfmaster in db.tblShelfMaster on productdetail.ProductDetailID equals shelfmaster.ProductDetailID
+                                   join productmaster in db.tblProductMaster 
+                                   on bulks.ProductMasterID equals productmaster.ProductMasterID
+                                   join productdetail in db.tblProductDetail 
+                                   on productmaster.ProductMasterID equals productdetail.ProductMasterID
+                                   join shelfmaster in db.tblShelfMaster 
+                                   on productdetail.ProductDetailID equals shelfmaster.ProductDetailID
                                    where bulks.BulkID == bulkid
                                    select new { bulks, productdetail, productmaster, shelfmaster }).ToList();
 
@@ -907,10 +947,10 @@ namespace MvcPhoenix.Services
                     DateTime? oneYearAgo = DateTime.UtcNow.AddDays(-365);
                     DateTime? fourMonthsAgo = DateTime.UtcNow.AddDays(-120);
 
-                    var log = (from t in db.tblInvLog
-                               where t.LogType == "SS-SHP"
-                               && t.ProductDetailID == row.productdetail.ProductDetailID
-                               select t).ToList();
+                    var log = db.tblInvLog
+                                .Where(x => x.LogType == "SS-SHP" && 
+                                            x.ProductDetailID == row.productdetail.ProductDetailID)
+                                .ToList();
 
                     var shippedPastYear = log.Where(x => x.ShipDate >= oneYearAgo);
                     var shippedPastFourMonths = log.Where(x => x.ShipDate >= fourMonthsAgo);
@@ -932,8 +972,8 @@ namespace MvcPhoenix.Services
                     newProductionDetail.SS_REORDMIN = reOrderMin;
                     newProductionDetail.SS_REORDMAX = (reOrderMin * 2);
 
-                    var stock = db.tblStock.Where(x => x.ShelfID == row.shelfmaster.ShelfID
-                                                    && x.ShelfStatus == "AVAIL");
+                    var stock = db.tblStock.Where(x => x.ShelfID == row.shelfmaster.ShelfID && 
+                                                       x.ShelfStatus == "AVAIL");
 
                     newProductionDetail.OnHand = stock.Sum(x => x.QtyOnHand);
                     newProductionDetail.RecQty = newProductionDetail.SS_REORDMAX - newProductionDetail.OnHand;
@@ -955,7 +995,7 @@ namespace MvcPhoenix.Services
 
         private static int ColorPriorityToday()
         {
-            switch (System.DateTime.Today.DayOfWeek.ToString())
+            switch (DateTime.Today.DayOfWeek.ToString())
             {
                 case "Monday":
                     return 2;

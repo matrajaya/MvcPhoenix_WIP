@@ -1657,7 +1657,7 @@ namespace MvcPhoenix.Services
                 newOrderItem.AirPkGroup = productDetail.AIRPKGRP;
                 newOrderItem.AlertNotesOrderEntry = productDetail.AlertNotesOrderEntry;
                 newOrderItem.AlertNotesShipping = productDetail.AlertNotesShipping;
-                newOrderItem.ItemNotes = "Return Shelf Order Item";
+                newOrderItem.ItemNotes = "Return shelf order item";
                 newOrderItem.CreateDate = DateTime.UtcNow;
                 newOrderItem.CreateUser = HttpContext.Current.User.Identity.Name;
                 newOrderItem.UpdateDate = DateTime.UtcNow;
