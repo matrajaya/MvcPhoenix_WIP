@@ -109,6 +109,7 @@ namespace MvcPhoenix.EF
         public string Misc2 { get; set; }
         public string ApprovedBy { get; set; }
         public Nullable<System.DateTime> ApprovedByDate { get; set; }
+        public string AssignedOwner { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string CreateUser { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }

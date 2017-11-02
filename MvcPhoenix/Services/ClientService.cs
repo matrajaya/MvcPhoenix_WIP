@@ -1111,6 +1111,21 @@ namespace MvcPhoenix.Services
 
         #region Account Representative
 
+        public static List<int> GetAccountRepClientIds(string user)
+        {
+            var clientids = new List<int>();
+
+            using(var db = new CMCSQL03Entities())
+            { 
+                clientids = db.tblClientAccountRep
+                              .Where(x => x.AccountRepEmail == user)
+                              .Select(x => x.ClientID)
+                              .ToList();
+            }
+
+            return clientids;
+        }
+
         public static List<AccountRep> GetAccountReps(int clientid)
         {
             var accountReps = new List<AccountRep>();

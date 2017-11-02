@@ -91,6 +91,7 @@ namespace MvcPhoenix.Models
         public bool ApprovalNeeded { get; set; }
         public bool? IsSDN { get; set; }
         public bool? IsSDNOverride { get; set; }
+        public string AssignedOwner { get; set; }
         public DateTime? CreateDate { get; set; }
         public string CreateUser { get; set; }
         public DateTime? UpdateDate { get; set; }

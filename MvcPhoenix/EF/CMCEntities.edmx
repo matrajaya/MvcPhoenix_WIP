@@ -1138,6 +1138,7 @@
           <Property Name="Misc2" Type="nvarchar" MaxLength="200" />
           <Property Name="ApprovedBy" Type="nvarchar" MaxLength="25" />
           <Property Name="ApprovedByDate" Type="datetime" />
+          <Property Name="AssignedOwner" Type="nvarchar" MaxLength="256" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="CreateUser" Type="nvarchar" MaxLength="256" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -3741,6 +3742,7 @@
           <Property Name="Misc2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ApprovedBy" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="ApprovedByDate" Type="DateTime" Precision="3" />
+          <Property Name="AssignedOwner" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="CreateUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
@@ -5592,6 +5594,7 @@
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="AssignedOwner" ColumnName="AssignedOwner" />
                 <ScalarProperty Name="ApprovedByDate" ColumnName="ApprovedByDate" />
                 <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
                 <ScalarProperty Name="Misc2" ColumnName="Misc2" />

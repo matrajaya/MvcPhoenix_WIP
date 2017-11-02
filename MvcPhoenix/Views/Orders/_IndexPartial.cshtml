@@ -16,6 +16,7 @@
                     <th>Ship To</th>
                     <th>Order ID</th>
                     <th>Type</th>
+                    <th class="text-center">Assign</th>
                     <th>Updated</th>
                     <th>Items</th>
                     <th></th>
@@ -32,6 +33,10 @@
                                 {
                                     <i class="fa fa-exclamation-circle text-success" title="New Order"></i>
                                 }
+                                if (item.OrderStatus != null)
+                                {
+                                    <i class="fa fa-wrench text-success" title="Work in progress..."></i>
+                                }
                             }
                         </td>
                         <td>@item.ClientName</td>
@@ -39,6 +44,30 @@
                         <td>@item.Company</td>
                         <td>@item.OrderID.ToString()</td>
                         <td>@item.OrderType</td>
+                        <td class="text-center">
+                            @if (String.IsNullOrWhiteSpace(item.AssignedOwner))
+                            {
+                                <div id="@("assignself"+@item.OrderID)">
+                                    @Ajax.ActionLink(" ", "AssignOrderToSelf", "Orders", new { check = true, orderid = item.OrderID }, new AjaxOptions
+                                    {
+                                        HttpMethod = "POST",
+                                        UpdateTargetId = "assignself"+@item.OrderID,
+                                        InsertionMode = InsertionMode.ReplaceWith,                                    
+                                    }, new { @class = "fa fa-fw fa-check-square-o", @title = "Assign to self", @id = "hideeditbutton" })                                    
+                                </div>
+                            }
+                            else
+                            {
+                                if (item.AssignedOwner == HttpContext.Current.User.Identity.Name)
+                                {
+                                    <i class="fa fa-check text-success" title="Assigned to @item.AssignedOwner"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-check text-danger" title="Assigned to @item.AssignedOwner"></i>
+                                }
+                            }
+                        </td>
                         <td title="Updated by @item.UpdateUser. &#013;Created on @item.CreateDate. &#013;Created by @item.CreateUser">@item.UpdateDate</td>
                         <td>@item.ItemsCount</td>
                         <td>

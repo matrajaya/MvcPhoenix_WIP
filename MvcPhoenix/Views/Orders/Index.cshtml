@@ -64,19 +64,39 @@
                         <div id="quickquery" class="panel-body collapse" style="margin-bottom:-20px;">
                             <ul class="list-unstyled list-2-col">
                                 <li>
-                                    @Ajax.ActionLink("My Recent Orders", "OrdersRecentUser", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "My recent orders", @class = "label label-success" })
+                                    @Ajax.ActionLink("My Assigned Orders", "OpenOrdersAssignedSelf", "Orders", null, new AjaxOptions
+                                    {
+                                        UpdateTargetId = "dvSearchResults",
+                                        InsertionMode = InsertionMode.Replace
+                                    }, new { @title = "My assigned open orders", @class = "label label-success" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("All Recent Orders", "OrdersRecentAll", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "All recent orders", @class = "label label-primary" })
+                                    @Ajax.ActionLink("Open Client Orders", "OpenOrdersClientAccounts", "Orders", null, new AjaxOptions
+                                    {
+                                        UpdateTargetId = "dvSearchResults",
+                                        InsertionMode = InsertionMode.Replace
+                                    }, new { @title = "All open orders", @class = "label label-primary" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Today's Orders", "OrdersToday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "All orders created today", @class = "label label-info" })
+                                    @Ajax.ActionLink("Today's Orders", "OrdersToday", "Orders", null, new AjaxOptions
+                                    {
+                                        UpdateTargetId = "dvSearchResults",
+                                        InsertionMode = InsertionMode.Replace
+                                    }, new { @title = "All orders created today", @class = "label label-info" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Yesterday's Orders", "OrdersYesterday", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "All orders created yesterday", @class = "label label-warning" })
+                                    @Ajax.ActionLink("Yesterday's Orders", "OrdersYesterday", "Orders", null, new AjaxOptions
+                                    {
+                                        UpdateTargetId = "dvSearchResults",
+                                        InsertionMode = InsertionMode.Replace
+                                    }, new { @title = "All orders created yesterday", @class = "label label-warning" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Need Allocation + Attention", "OrdersNeedAllocation", "Orders", null, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "All orders with items not allocated or needs attention", @class = "label label-danger" })
+                                    @Ajax.ActionLink("Need Attention Orders", "OrdersNeedAttention", "Orders", null, new AjaxOptions
+                                    {
+                                        UpdateTargetId = "dvSearchResults",
+                                        InsertionMode = InsertionMode.Replace
+                                    }, new { @title = "All orders that needs attention", @class = "label label-danger" })
                                 </li>
                             </ul>
                         </div>
@@ -89,7 +109,7 @@
     <div class="panel panel-primary">
         <div class="panel-body">
             <div id="dvSearchResults">
-                @Html.Action("OpenOrders")
+                @Html.Action("OpenOrdersAssignedSelf")
             </div>
         </div>
     </div>

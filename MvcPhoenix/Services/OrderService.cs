@@ -36,6 +36,7 @@ namespace MvcPhoenix.Services
                           select new OrderMasterFull
                           {
                               OrderID = t.OrderID,
+                              OrderStatus = t.OrderStatus,
                               OrderType = t.OrderType,
                               OrderDate = t.OrderDate,
                               ClientId = t.ClientID,
@@ -53,6 +54,7 @@ namespace MvcPhoenix.Services
                               Special = t.Special,
                               ItemsCount = count,
                               NeedAllocationCount = allocationcount,
+                              AssignedOwner = t.AssignedOwner,
                               CreateDate = t.CreateDate,
                               CreateUser = t.CreateUser,
                               UpdateDate = t.UpdateDate,
@@ -63,15 +65,29 @@ namespace MvcPhoenix.Services
             return orders;
         }
 
-        public static List<OrderMasterFull> GetAssignedOpenOrders()
+        public static List<OrderMasterFull> GetOpenOrders()
         {
             var orders = new List<OrderMasterFull>();
+            orders = OrderService.GetOrders();
 
             using (var db = new CMCSQL03Entities())
             {
-                orders = OrderService.GetOrders();
+                var unshippedOrders = OrderService.GetUnshippedOrders();
 
-                // Get list of order ids for orders not shipped.
+                orders = (from t in orders
+                          join u in unshippedOrders
+                          on t.OrderID equals u.OrderID
+                          orderby t.OrderID descending
+                          select t).ToList();
+            }
+
+            return orders;
+        }
+
+        public static List<tblOrderItem> GetUnshippedOrders()
+        {
+            using (var db = new CMCSQL03Entities())
+            {
                 var unshippedOrders = db.tblOrderItem
                                         .Where(i => i.ShipDate == null &&
                                                     i.Qty > 0)
@@ -81,31 +97,45 @@ namespace MvcPhoenix.Services
                                                  .Select(g => g.First())
                                                  .ToList();
 
-                // Get list of open orders.
-                orders = (from t in orders
-                          join u in unshippedOrders
-                          on t.OrderID equals u.OrderID
-                          join c in db.tblClientAccountRep
-                          on t.ClientId equals c.ClientID
-                          where c.AccountRepEmail == HttpContext.Current.User.Identity.Name
-                          orderby t.OrderID descending, t.OrderDate descending
-                          select t).ToList();
-
-                // Display all clients in EU if user has no client assignments.
-                // Since CMCEU does not have specific csr assignments for clients.
-                if (orders.Count() < 1)
-                {
-                    orders = OrderService.GetOrders();
-                    orders = (from t in orders
-                              join u in unshippedOrders
-                              on t.OrderID equals u.OrderID
-                              join c in db.tblClient
-                              on t.ClientId equals c.ClientID
-                              where c.CMCLocation == "EU"
-                              orderby t.OrderID descending, t.OrderDate descending
-                              select t).ToList();
-                }
+                return unshippedOrders;
             }
+        }
+
+        public static List<OrderMasterFull> GetClientAccountOpenOrders()
+        {
+            string user = HttpContext.Current.User.Identity.Name;
+            var orders = new List<OrderMasterFull>();
+            orders = OrderService.GetOrders();
+            var unshippedOrders = OrderService.GetUnshippedOrders();
+            List<int> clientAccounts = ClientService.GetAccountRepClientIds(user);
+
+            // Get list of open orders for user client accounts
+            orders = (from t in orders
+                      join u in unshippedOrders
+                      on t.OrderID equals u.OrderID
+                      orderby t.OrderID descending
+                      select t).ToList();
+
+            // Filter order list if user is managing specific clients
+            if (clientAccounts.Count > 0)
+            {
+                orders = orders.Where(x => clientAccounts.Contains(x.ClientId.Value)).ToList();
+            }
+
+            return orders;
+        }
+
+        public static List<OrderMasterFull> GetAssignedOpenOrders(string user)
+        {
+            var orders = new List<OrderMasterFull>();
+            orders = OrderService.GetOrders();
+
+            var unshippedOrders = OrderService.GetUnshippedOrders();
+
+            orders = orders.Where(t => t.AssignedOwner == user)
+                           .Where(t => unshippedOrders.Select(x => x.OrderID).Contains(t.OrderID))
+                           .OrderByDescending(t => t.OrderID)
+                           .ToList();
 
             return orders;
         }
@@ -431,6 +461,23 @@ namespace MvcPhoenix.Services
             }
         }
 
+        public static void AssignOrderOwner(int orderid, string user)
+        {
+            using (var db = new CMCSQL03Entities())
+            {
+                var order = db.tblOrderMaster.Find(orderid);
+
+                if (order != null)
+                {
+                    order.AssignedOwner = user;
+                    order.UpdateUser = user;
+                    order.UpdateDate = DateTime.UtcNow;
+
+                    db.SaveChanges();
+                }
+            }
+        }
+
         public static bool IsSDN(OrderMasterFull order)
         {
             var file = System.IO.File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/sdnlist.txt"));
@@ -440,13 +487,13 @@ namespace MvcPhoenix.Services
                 return true;
             }
 
-            if (!String.IsNullOrEmpty(order.Street) && 
+            if (!String.IsNullOrEmpty(order.Street) &&
                 file.Contains(order.Street))
             {
                 return true;
             }
 
-            if (!String.IsNullOrEmpty(order.Attention) && 
+            if (!String.IsNullOrEmpty(order.Attention) &&
                 file.Contains(order.Attention))
             {
                 return true;
@@ -679,7 +726,7 @@ namespace MvcPhoenix.Services
 
                 // Set shelf details for special request
                 orderItem.SRSize = 0;
-                if (orderitem.SRSize > 0 && 
+                if (orderitem.SRSize > 0 &&
                     shelfMaster.Size == "1SR")
                 {
                     orderItem.SRSize = orderitem.SRSize;
@@ -1264,7 +1311,7 @@ namespace MvcPhoenix.Services
             using (var db = new CMCSQL03Entities())
             {
                 var orderItems = (from orderitem in db.tblOrderItem
-                                  join ordermaster in db.tblOrderMaster 
+                                  join ordermaster in db.tblOrderMaster
                                   on orderitem.OrderID equals ordermaster.OrderID
                                   where orderitem.OrderID == OrderID
                                   && orderitem.ShipDate == null
@@ -1281,7 +1328,7 @@ namespace MvcPhoenix.Services
                 foreach (var item in orderItems)
                 {
                     var stock = (from itemstock in db.tblStock
-                                 join itembulk in db.tblBulk 
+                                 join itembulk in db.tblBulk
                                  on itemstock.BulkID equals itembulk.BulkID
                                  orderby itembulk.CeaseShipDate
                                  where itemstock.ShelfID == item.orderitem.ShelfID
@@ -1356,6 +1403,8 @@ namespace MvcPhoenix.Services
                                 item.orderitem.AllocatedDate = DateTime.UtcNow;
                                 item.orderitem.UpdateDate = DateTime.UtcNow;
                                 item.orderitem.UpdateUser = HttpContext.Current.User.Identity.Name;
+
+                                item.ordermaster.OrderStatus = "ALC";
 
                                 db.SaveChanges();
 
@@ -1448,7 +1497,7 @@ namespace MvcPhoenix.Services
                 log.LogAmount = orderItem.Qty * unitWeight;
 
                 // Bulk item
-                if (orderItem.AllocatedStockID == null && 
+                if (orderItem.AllocatedStockID == null &&
                     orderItem.AllocatedBulkID != null)
                 {
                     bulk.Qty += orderItem.Qty;
@@ -2065,7 +2114,7 @@ namespace MvcPhoenix.Services
             order.ApprovalNeeded = Convert.ToBoolean(orderImport.ApprovalNeeded);
             order.CreateUser = "System [Import]";
             order.CreateDate = orderImport.CreateDate;
-            order.UpdateUser = orderImport.UpdateUser;
+            order.UpdateUser = "System [Import]";
             order.UpdateDate = orderImport.UpdateDate;
 
             int newOrderId = OrderService.SaveOrder(order);

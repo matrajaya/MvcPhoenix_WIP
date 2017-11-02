@@ -13,14 +13,34 @@ namespace MvcPhoenix.Controllers
     {
         #region Search
 
-        public ActionResult OpenOrders(int page = 0)
+        public ActionResult LookupOrderID(FormCollection form)
         {
-            var orders = Session["openOrders"] as List<OrderMasterFull>;
+            int orderId = Convert.ToInt32(form["orderid"]);
+
+            if (orderId > 0)
+            {
+                var order = OrderService.FillOrder(orderId);
+
+                if (order != null)
+                {
+                    return RedirectToAction("Edit", new { id = order.OrderID });
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult OpenOrdersClientAccounts(string filter, int page = 0)
+        {
+            string storeName = "openOrdersClientAcct";
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
 
             // If session store is empty go fetch new open orders
-            if (orders == null)
+            if (String.IsNullOrWhiteSpace(filter))
             {
-                orders = OrderService.GetAssignedOpenOrders();
+                orders = OrderService.GetClientAccountOpenOrders();
+                Session[storeName] = orders;
             }
 
             const int PageSize = 20;
@@ -32,49 +52,26 @@ namespace MvcPhoenix.Controllers
             ViewBag.MaxPage = maxpage;
             ViewBag.DisplayActivePage = page + 1;
             ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+            ViewBag.FilterKey = "OpenOrders";
 
-            TempData["SearchResultsMessage"] = "Open Orders";
+            TempData["SearchResultsMessage"] = "Open Orders For Client Accounts";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        public ActionResult LookupOrderID(FormCollection form)
+        public ActionResult OpenOrdersAssignedSelf(string filter, int page = 0)
         {
-            int orderId = Convert.ToInt32(form["orderid"]);
-
-            if (orderId == 0)
-            {
-                return RedirectToAction("Index");
-            }
-
-            using (var db = new CMCSQL03Entities())
-            {
-                var order = db.tblOrderMaster.Find(orderId);
-
-                if (order != null)
-                {
-                    return RedirectToAction("Edit", new { id = orderId });
-                }
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult OrdersRecentUser(string filter, int page = 0)
-        {
-            string storeName = "ordersRecentUser";
+            string storeName = "openOrdersAssignedSelf";
+            string user = HttpContext.User.Identity.Name;
 
             var orders = Session[storeName] as List<OrderMasterFull>;
 
             if (String.IsNullOrWhiteSpace(filter))
             {
-                orders = OrderService.GetOrders();
-
-                orders = orders.Where(t => t.CreateUser == User.Identity.Name ||
-                                           t.UpdateUser == User.Identity.Name)
-                               .OrderByDescending(t => t.OrderID)
-                               .Take(100).ToList();
-
+                orders = OrderService.GetAssignedOpenOrders(user);
                 Session[storeName] = orders;
             }
 
@@ -90,47 +87,13 @@ namespace MvcPhoenix.Controllers
             ViewBag.DisplayActivePage = page + 1;
             ViewBag.DisplayLastPage = maxpage + 1;
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
-            ViewBag.FilterKey = "RecentUser";
+            ViewBag.FilterKey = "OpenOrdersAssignedSelf";
 
-            TempData["SearchResultsMessage"] = "My Recent Orders";
-
-            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
-        }
-
-        public ActionResult OrdersRecentAll(string filter, int page = 0)
-        {
-            string storeName = "ordersRecentAll";
-
-            var orders = Session[storeName] as List<OrderMasterFull>;
-
-            if (String.IsNullOrWhiteSpace(filter))
-            {
-                orders = OrderService.GetOrders();
-
-                orders = orders.OrderByDescending(x => x.OrderID).Take(100).ToList();
-
-                Session[storeName] = orders;
-            }
-
-            List<OrderMasterFull> data = null;
-
-            const int PageSize = 20;
-            int count = orders.Count();
-            data = orders.Skip(page * PageSize).Take(PageSize).ToList();
-            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
-
-            ViewBag.Page = page;
-            ViewBag.MaxPage = maxpage;
-            ViewBag.DisplayActivePage = page + 1;
-            ViewBag.DisplayLastPage = maxpage + 1;
-            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
-            ViewBag.FilterKey = "RecentAll";
-
-            TempData["SearchResultsMessage"] = "All Recent Orders";
+            TempData["SearchResultsMessage"] = "Open Orders Assigned";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
-
+        
         public ActionResult OrdersToday(string filter, int page = 0)
         {
             DateTime today = DateTime.Today.AddDays(0);
@@ -140,7 +103,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(filter))
             {
-                orders = OrderService.GetOrders();
+                orders = OrderService.GetClientAccountOpenOrders();
 
                 orders = orders.Where(t => t.OrderDate.Value.Date == today.Date)
                                .OrderByDescending(t => t.OrderID)
@@ -177,7 +140,7 @@ namespace MvcPhoenix.Controllers
 
             if (String.IsNullOrWhiteSpace(filter))
             {
-                orders = OrderService.GetOrders();
+                orders = OrderService.GetClientAccountOpenOrders();
 
                 orders = orders.Where(t => t.OrderDate.Value.Date == yesterday.Date)
                                .OrderByDescending(t => t.OrderID)
@@ -205,14 +168,14 @@ namespace MvcPhoenix.Controllers
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
 
-        public ActionResult OrdersNeedAllocation(string filter, int page = 0)
+        public ActionResult OrdersNeedAttention(string filter, int page = 0)
         {
-            string storeName = "ordersNeedAllocation";
+            string storeName = "ordersNeedAttention";
             var orders = Session[storeName] as List<OrderMasterFull>;
 
             if (String.IsNullOrWhiteSpace(filter))
             {
-                orders = OrderService.GetOrders();
+                orders = OrderService.GetClientAccountOpenOrders();
 
                 orders = orders.Where(t => t.NeedAllocationCount > 0)
                            .OrderByDescending(t => t.OrderID)
@@ -233,13 +196,13 @@ namespace MvcPhoenix.Controllers
             ViewBag.DisplayActivePage = page + 1;
             ViewBag.DisplayLastPage = maxpage + 1;
             ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
-            ViewBag.FilterKey = "NeedAllocation";
+            ViewBag.FilterKey = "NeedAttention";
 
-            TempData["SearchResultsMessage"] = "Orders Needing Allocation";
+            TempData["SearchResultsMessage"] = "Orders Needing Attention";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
-
+        
         public ActionResult AdvancedSearch()
         {
             return PartialView("~/Views/Orders/_AdvancedSearchModal.cshtml");
@@ -839,16 +802,24 @@ namespace MvcPhoenix.Controllers
             return Json(contact, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult AssignOrderToSelf(bool check, int orderid)
+        {
+            string user = HttpContext.User.Identity.Name;
+
+            if (check)
+            {
+                OrderService.AssignOrderOwner(orderid, user);
+            }
+
+            return new EmptyResult();
+        }
+
         #endregion Search
 
         #region Order
 
         public ActionResult Index()
         {
-            // Preload open orders in session data store
-            var openOrders = OrderService.GetAssignedOpenOrders();
-            Session["openOrders"] = openOrders;
-
             return View("~/Views/Orders/Index.cshtml");
         }
 
