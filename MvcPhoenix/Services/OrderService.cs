@@ -12,7 +12,7 @@ namespace MvcPhoenix.Services
 {
     public class OrderService
     {
-        #region Order
+        #region Order list filters
 
         public static List<OrderMasterFull> GetOrders()
         {
@@ -139,6 +139,33 @@ namespace MvcPhoenix.Services
 
             return orders;
         }
+
+        public static List<OrderMasterFull> GetOrdersBackorderItems()
+        {
+            var orders = new List<OrderMasterFull>();
+            orders = OrderService.GetClientAccountOpenOrders();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                var backorderItems = db.tblOrderItem
+                                       .Where(x => x.DelayReason == "Backorder")
+                                       .OrderBy(x => x.OrderID)
+                                       .ToList();
+
+                backorderItems = backorderItems.DistinctBy(x => x.OrderID).ToList();
+
+                orders = orders.Where(x => backorderItems.Select(b => b.OrderID)
+                               .Contains(x.OrderID))
+                               .OrderBy(x => x.OrderID)
+                               .ToList();
+            }
+
+            return orders;
+        }
+
+        #endregion
+
+        #region Order
 
         public static OrderMasterFull CreateOrder(int clientid)
         {

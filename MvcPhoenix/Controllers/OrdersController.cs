@@ -178,8 +178,8 @@ namespace MvcPhoenix.Controllers
                 orders = OrderService.GetClientAccountOpenOrders();
 
                 orders = orders.Where(t => t.NeedAllocationCount > 0)
-                           .OrderByDescending(t => t.OrderID)
-                           .ToList();
+                               .OrderByDescending(t => t.OrderID)
+                               .ToList();
 
                 Session[storeName] = orders;
             }
@@ -199,6 +199,37 @@ namespace MvcPhoenix.Controllers
             ViewBag.FilterKey = "NeedAttention";
 
             TempData["SearchResultsMessage"] = "Orders Needing Attention";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
+        
+        public ActionResult OrdersWithBackorderItem(string filter, int page = 0)
+        {
+            string storeName = "ordersWithBackorderItem";
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (String.IsNullOrWhiteSpace(filter))
+            {
+                orders = OrderService.GetOrdersBackorderItems();
+
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            const int PageSize = 20;
+            int count = orders.Count();
+            data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            ViewBag.Page = page;
+            ViewBag.MaxPage = maxpage;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+            ViewBag.FilterKey = "BackorderItem";
+
+            TempData["SearchResultsMessage"] = "Orders With Backorder Item";
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
