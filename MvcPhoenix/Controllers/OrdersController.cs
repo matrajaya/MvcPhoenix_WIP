@@ -93,6 +93,37 @@ namespace MvcPhoenix.Controllers
 
             return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
         }
+
+        public ActionResult OpenOrdersUnassigned(string filter, int page = 0)
+        {
+            string storeName = "openOrdersUnassigned";
+
+            var orders = Session[storeName] as List<OrderMasterFull>;
+
+            if (String.IsNullOrWhiteSpace(filter))
+            {
+                orders = OrderService.GetUnassignedOpenOrders();
+                Session[storeName] = orders;
+            }
+
+            List<OrderMasterFull> data = null;
+
+            const int PageSize = 20;
+            int count = orders.Count();
+            data = orders.Skip(page * PageSize).Take(PageSize).ToList();
+            int maxpage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            ViewBag.Page = page;
+            ViewBag.MaxPage = maxpage;
+            ViewBag.DisplayActivePage = page + 1;
+            ViewBag.DisplayLastPage = maxpage + 1;
+            ViewBag.ControllerName = this.ControllerContext.RouteData.Values["action"].ToString();
+            ViewBag.FilterKey = "OpenOrdersUnassigned";
+
+            TempData["SearchResultsMessage"] = "Open Orders Un-Assigned";
+
+            return PartialView("~/Views/Orders/_IndexPartial.cshtml", data);
+        }
         
         public ActionResult OrdersToday(string filter, int page = 0)
         {

@@ -137,6 +137,24 @@ namespace MvcPhoenix.Services
                            .OrderByDescending(t => t.OrderID)
                            .ToList();
 
+            // Remove orders with items allocated, delayed, or in production for packout
+            if (orders.Count > 0)
+            {
+                orders = FilterOutProcessedOrders(orders);
+            }
+
+            return orders;
+        }
+
+        public static List<OrderMasterFull> GetUnassignedOpenOrders()
+        {
+            var orders = new List<OrderMasterFull>();
+            orders = OrderService.GetOpenOrders();
+
+            orders = orders.Where(t => t.AssignedOwner == null)
+                           .OrderByDescending(t => t.OrderID)
+                           .ToList();
+
             return orders;
         }
 
@@ -163,7 +181,40 @@ namespace MvcPhoenix.Services
             return orders;
         }
 
-        #endregion
+        public static List<OrderMasterFull> FilterOutProcessedOrders(List<OrderMasterFull> orders)
+        {
+            var unprocessedOrders = new List<OrderMasterFull>();
+
+            using (var db = new CMCSQL03Entities())
+            {
+                foreach (var order in orders)
+                {
+                    bool isOrderProcessed = false;
+                    var items = db.tblOrderItem.Where(x => x.OrderID == order.OrderID).AsQueryable();
+
+                    foreach (var item in items)
+                    {
+                        if (item.AllocateStatus == "A" ||
+                            item.PackID > 0 ||
+                            item.NonCMCDelay == true ||
+                            !String.IsNullOrEmpty(item.DelayReason))
+                        {
+                            isOrderProcessed = true;
+                        }
+                    }
+
+                    if (isOrderProcessed == false)
+                    {
+                        unprocessedOrders.Add(order);
+                        isOrderProcessed = false;
+                    }
+                }
+            }
+
+            return unprocessedOrders;
+        }
+
+        #endregion Order list filters
 
         #region Order
 

@@ -51,9 +51,9 @@
                                     @Ajax.ActionLink(" ", "AssignOrderToSelf", "Orders", new { check = true, orderid = item.OrderID }, new AjaxOptions
                                     {
                                         HttpMethod = "POST",
-                                        UpdateTargetId = "assignself"+@item.OrderID,
-                                        InsertionMode = InsertionMode.ReplaceWith,                                    
-                                    }, new { @class = "fa fa-fw fa-check-square-o", @title = "Assign to self", @id = "hideeditbutton" })                                    
+                                        UpdateTargetId = "assignself" + @item.OrderID,
+                                        InsertionMode = InsertionMode.ReplaceWith,
+                                    }, new { @class = "fa fa-fw fa-check-square-o", @title = "Assign to self", @id = "hideeditbutton" })
                                 </div>
                             }
                             else
@@ -91,19 +91,22 @@ else
 @*Pagination control*@
 @if (@ViewBag.DisplayActivePage > 0)
 {
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <label>@ViewBag.DisplayActivePage / @ViewBag.DisplayLastPage</label>
-            <div class="row">
-                @if (ViewBag.Page > 0)
-                {
-                    @Ajax.ActionLink("Prev", (string)ViewBag.ControllerName, "Orders", new { filter = ViewBag.FilterKey, page = ViewBag.Page - 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Previous", @class = "btn btn-primary btn-sm" })
-                }
-                @if (ViewBag.Page < ViewBag.MaxPage)
-                {
-                    @Ajax.ActionLink("Next", (string)ViewBag.ControllerName, "Orders", new { filter = ViewBag.FilterKey, page = ViewBag.Page + 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Next", @class = "btn btn-primary btn-sm" })
-                }
+    if (ViewBag.MaxPage > 0)
+    {
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <label>@ViewBag.DisplayActivePage / @ViewBag.DisplayLastPage</label>
+                <div class="row">
+                    @if (ViewBag.Page > 0)
+                    {
+                        @Ajax.ActionLink("Prev", (string)ViewBag.ControllerName, "Orders", new { filter = ViewBag.FilterKey, page = ViewBag.Page - 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Previous", @class = "btn btn-primary btn-sm" })
+                    }
+                    @if (ViewBag.Page < ViewBag.MaxPage)
+                    {
+                        @Ajax.ActionLink("Next", (string)ViewBag.ControllerName, "Orders", new { filter = ViewBag.FilterKey, page = ViewBag.Page + 1 }, new AjaxOptions { UpdateTargetId = "dvSearchResults", InsertionMode = InsertionMode.Replace }, new { @title = "Next", @class = "btn btn-primary btn-sm" })
+                    }
+                </div>
             </div>
         </div>
-    </div>
+    }
 }

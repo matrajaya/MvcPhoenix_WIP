@@ -85,21 +85,21 @@
                                     }, new { @title = "All orders created today", @class = "label label-info" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Yesterday's Orders", "OrdersYesterday", "Orders", null, new AjaxOptions
+                                    @Ajax.ActionLink("Un-Assigned Open Orders", "OpenOrdersUnassigned", "Orders", null, new AjaxOptions
                                     {
                                         UpdateTargetId = "dvSearchResults",
                                         InsertionMode = InsertionMode.Replace
-                                    }, new { @title = "All orders created yesterday", @class = "label label-warning" })
+                                    }, new { @title = "All orders not assigned", @class = "label label-warning" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Need Attention Orders", "OrdersNeedAttention", "Orders", null, new AjaxOptions
+                                    @Ajax.ActionLink("Orders Need Attention", "OrdersNeedAttention", "Orders", null, new AjaxOptions
                                     {
                                         UpdateTargetId = "dvSearchResults",
                                         InsertionMode = InsertionMode.Replace
-                                    }, new { @title = "All orders that needs attention", @class = "label label-danger" })
+                                    }, new { @title = "All orders that have atleast a problem item imported", @class = "label label-danger" })
                                 </li>
                                 <li>
-                                    @Ajax.ActionLink("Backorder Item Orders", "OrdersWithBackorderItem", "Orders", null, new AjaxOptions
+                                    @Ajax.ActionLink("Orders w/Backorder Item ", "OrdersWithBackorderItem", "Orders", null, new AjaxOptions
                                     {
                                         UpdateTargetId = "dvSearchResults",
                                         InsertionMode = InsertionMode.Replace
